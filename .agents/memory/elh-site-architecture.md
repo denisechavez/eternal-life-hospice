@@ -22,6 +22,11 @@ description: Which pages use shared elh.css vs inline-only CSS in the elh-previe
 ## Editing index.html / resources.html
 - These have long single-line body HTML — use python/grep, not line-based read/edit, to extract or replace blocks (e.g. `re.sub(r'<header\b.*?</header>', ..., flags=DOTALL)`).
 
+## Modality card photos — duotone was baked into the image bytes, not CSS
+- The 9 `#modalities` card photos (`.mod-photo`) carry their look in the FILE itself. No CSS tint/blend exists; `.mod-photo{filter:none;opacity:1}` and `.mod-img{background:var(--cream-mid)}` are intentionally neutral.
+- **Why it matters:** a mauve/sepia duotone that several cards once showed was pre-applied to the inline base64 images, so no CSS edit could remove it — only swapping the asset bytes did. If a card's tint/treatment looks wrong, fix the source file (re-export/replace), don't hunt for a CSS rule.
+- All 9 now reference external files in `assets/img/` (photos as `.jpg`, resized to max 900px); none are base64. Keep new card photos as optimized external files, not inline base64.
+
 ## Coverage-area architecture (decided)
 - The county page `hospice-ventura-and-los-angeles-county-ca.html` is the single coverage/SEO hub. It owns the only "real" map: a designed image `assets/img/service-hero-map.png` (with a Google Maps HQ pin), plus per-county sections.
 - Homepage `#coverage` uses that SAME static map image + a "View our full coverage area →" CTA to the hub. The old code-drawn SVG map (JS-built `#mapPanel`/`mapSvg`/`.cpill` county pills + the footer-fill IIFE using a `/hospice-care-SLUG` href scheme) was REMOVED — it looked like a crude doodle. Don't reintroduce it.
