@@ -112,6 +112,8 @@ footer a:hover{color:var(--gold)}
 .hero--tall{min-height:48vh;display:flex;flex-direction:column;justify-content:center}
 /* airier hero overlay (lighter scrim; legibility kept at the type band) */
 .hero--airy::after{background:linear-gradient(180deg,rgba(40,24,56,.30) 0%,rgba(40,24,56,.42) 52%,rgba(40,24,56,.64) 100%)}
+/* earth page: forest-green overlay at top, fades to plum at the text band */
+.hero--earth::after{background:linear-gradient(180deg,rgba(18,52,12,.20) 0%,rgba(22,58,16,.38) 45%,rgba(40,24,56,.68) 100%)}
 /* breadcrumb back to the Resources hub */
 .backlink{display:inline-block;font-size:13px;font-weight:600;color:var(--slate);letter-spacing:.04em;margin-bottom:1.3rem}
 .backlink:hover{color:var(--plum)}
