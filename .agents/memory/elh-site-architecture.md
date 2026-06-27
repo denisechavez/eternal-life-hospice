@@ -28,6 +28,12 @@ description: Which pages use shared elh.css vs inline-only CSS in the elh-previe
 - **Why:** the 16 `hospice-<city>-ca.html` pages were thin (~666 words, no unique images, near-duplicate) = doorway-page risk. They are PARKED: `<meta name="robots" content="noindex,follow">`, removed from `sitemap.xml`, and every internal `<a>` to them sitewide converted to plain `<span>` text (city names kept for content, links gone). Files NOT deleted.
 - **How to apply:** keep city pages out of the sitemap and unlinked until each has genuinely unique copy + a unique location image; only then flip to indexable and re-link. To find stray links: `grep -roP 'href="hospice-(?!ventura-and-los-angeles)[a-z-]+-ca\.html'`.
 
+## Trust bar (credential marquee) — now sitewide
+- Animated `.cred-strip > .cred-track` marquee (CMS/CDPH/ACHC cards + 2 SVG info cards, content duplicated for the `cscroll` translateX(-50%) loop). Lives under the header on the homepage AND all inner pages.
+- Homepage embeds the 3 accreditation logos as inline base64; inner pages reference extracted file copies `assets/img/cred-{cms,cdph,achc}.png` (reuse those, don't re-extract). Shared CSS + `@keyframes cscroll` + `--cream-mid` var live in `assets/elh.css`.
+- **Why margin-top differs:** homepage inline `.cred-strip{margin-top:74px}` (fixed header needs the offset); elh.css version uses `margin-top:0` (inner headers are sticky and already occupy space). Any element placed right after `</header>` must follow this same fixed-vs-sticky rule.
+- Inner pages still keep their mid-page static `.creds` text line (separate element, left in place).
+
 ## Fonts — naming/loading is split (latent inconsistency)
 - Two typefaces sitewide: Fraunces (display) + Jost (body). BUT family names differ by page: `index.html` declares `'Fraunces'`/`'Jost'` (its own base64 fonts, `:root --ff-d/--ff-b` point to those); `assets/elh.css` (all inner pages) + `resources.html` declare `'Fraunces ELH'`/`'Jost ELH'` (elh.css loads `assets/fonts/*.woff2`, resources.html base64). Same designs, different names AND different font files/subsets.
 - `assets/fonts/JostELH-*.woff2` only ships weights 300/400/500/600 → any `font-weight:700` renders faux-bold (elh.css uses 700 in ~9 places; homepage in ~20).

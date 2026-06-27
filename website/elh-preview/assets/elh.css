@@ -5,7 +5,7 @@
 @font-face{font-family:'Jost ELH';font-weight:400;font-display:swap;src:url(fonts/JostELH-Regular.woff2) format('woff2')}
 @font-face{font-family:'Jost ELH';font-weight:500;font-display:swap;src:url(fonts/JostELH-Medium.woff2) format('woff2')}
 @font-face{font-family:'Jost ELH';font-weight:600;font-display:swap;src:url(fonts/JostELH-SemiBold.woff2) format('woff2')}
-:root{--plum:#5B2E59;--deep:#3C1C3B;--slate:#6793AC;--gold:#C9B07E;--cream:#F5F0EB;--cream-dark:#D8CDBF;--ink:#3a2b39;--ink-soft:#6b5d68;--text-mid:#5A4057;--ff-d:'Fraunces ELH',Georgia,serif;--ff-b:'Jost ELH',system-ui,sans-serif;--hdr-h:74px}
+:root{--plum:#5B2E59;--deep:#3C1C3B;--slate:#6793AC;--gold:#C9B07E;--cream:#F5F0EB;--cream-dark:#D8CDBF;--cream-mid:#EDE6DE;--ink:#3a2b39;--ink-soft:#6b5d68;--text-mid:#5A4057;--ff-d:'Fraunces ELH',Georgia,serif;--ff-b:'Jost ELH',system-ui,sans-serif;--hdr-h:74px}
 *{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
 body{font-family:var(--ff-b);color:var(--ink);background:var(--cream);-webkit-font-smoothing:antialiased;font-optical-sizing:auto;text-rendering:optimizeLegibility;line-height:1.62}
@@ -223,3 +223,26 @@ details.all-communities .comm-list span{color:var(--ink-soft)}
 
 .hero.hero--map .hero-btns .btn-ghost{color:var(--plum);border-color:rgba(91,46,89,.5)}
 .hero.hero--map .hero-btns .btn-ghost:hover{border-color:var(--plum);background:rgba(91,46,89,.06)}
+
+/* ===== CREDENTIAL STRIP (trust bar — matches homepage) ===== */
+.cred-strip{margin-top:0;background:var(--cream);overflow:hidden;position:relative;border-bottom:1px solid var(--cream-dark)}
+.cred-strip::before,.cred-strip::after{content:'';position:absolute;top:0;bottom:0;width:90px;z-index:4;pointer-events:none}
+.cred-strip::before{left:0;background:linear-gradient(to right,var(--cream),transparent)}
+.cred-strip::after{right:0;background:linear-gradient(to left,var(--cream),transparent)}
+.cred-track{display:flex;align-items:center;animation:cscroll 62s linear infinite;width:max-content;padding:1.15rem 0}
+.cred-track:hover{animation-play-state:paused}
+@keyframes cscroll{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+.csep{width:1px;height:46px;background:var(--cream-dark);flex-shrink:0}
+.lc{display:inline-flex;align-items:center;gap:1.1rem;padding:.55rem 2.1rem;flex-shrink:0;position:relative;height:64px}
+.lc:hover{background:var(--cream-mid)}
+.ic:hover{background:var(--cream-mid)}
+.lc img{display:block;object-fit:contain;opacity:1}
+.lc.cms img{height:44px}
+.lc.cdph img{height:46px}
+.lc.achc img{height:56px}
+.ct{display:flex;flex-direction:column;gap:2px}
+.cl{font-size:13px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--plum);line-height:1.2;white-space:nowrap}
+.csub{font-size:11px;color:var(--text-mid);white-space:nowrap}
+.ext{font-size:8.5px;font-weight:600;color:var(--gold);opacity:0;transition:opacity .2s;margin-top:2px}
+.lc:hover .ext{opacity:1}
+.ic{display:inline-flex;align-items:center;gap:.95rem;padding:.55rem 2.1rem;flex-shrink:0;height:64px;text-decoration:none;color:inherit;cursor:pointer}
