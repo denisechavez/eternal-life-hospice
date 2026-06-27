@@ -21,3 +21,14 @@ description: Which pages use shared elh.css vs inline-only CSS in the elh-previe
 
 ## Editing index.html / resources.html
 - These have long single-line body HTML — use python/grep, not line-based read/edit, to extract or replace blocks (e.g. `re.sub(r'<header\b.*?</header>', ..., flags=DOTALL)`).
+
+## Coverage-area architecture (decided)
+- The county page `hospice-ventura-and-los-angeles-county-ca.html` is the single coverage/SEO hub. It owns the only "real" map: a designed image `assets/img/service-hero-map.png` (with a Google Maps HQ pin), plus per-county sections.
+- Homepage `#coverage` uses that SAME static map image + a "View our full coverage area →" CTA to the hub. The old code-drawn SVG map (JS-built `#mapPanel`/`mapSvg`/`.cpill` county pills + the footer-fill IIFE using a `/hospice-care-SLUG` href scheme) was REMOVED — it looked like a crude doodle. Don't reintroduce it.
+- **Why:** the 16 `hospice-<city>-ca.html` pages were thin (~666 words, no unique images, near-duplicate) = doorway-page risk. They are PARKED: `<meta name="robots" content="noindex,follow">`, removed from `sitemap.xml`, and every internal `<a>` to them sitewide converted to plain `<span>` text (city names kept for content, links gone). Files NOT deleted.
+- **How to apply:** keep city pages out of the sitemap and unlinked until each has genuinely unique copy + a unique location image; only then flip to indexable and re-link. To find stray links: `grep -roP 'href="hospice-(?!ventura-and-los-angeles)[a-z-]+-ca\.html'`.
+
+## Fonts — naming/loading is split (latent inconsistency)
+- Two typefaces sitewide: Fraunces (display) + Jost (body). BUT family names differ by page: `index.html` declares `'Fraunces'`/`'Jost'` (its own base64 fonts, `:root --ff-d/--ff-b` point to those); `assets/elh.css` (all inner pages) + `resources.html` declare `'Fraunces ELH'`/`'Jost ELH'` (elh.css loads `assets/fonts/*.woff2`, resources.html base64). Same designs, different names AND different font files/subsets.
+- `assets/fonts/JostELH-*.woff2` only ships weights 300/400/500/600 → any `font-weight:700` renders faux-bold (elh.css uses 700 in ~9 places; homepage in ~20).
+- **How to apply:** for true consistency, unify the family naming and ensure the same weights exist everywhere; don't assume editing elh.css affects homepage/resources.html fonts.

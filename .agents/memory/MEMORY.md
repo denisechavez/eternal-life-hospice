@@ -1,1 +1,1 @@
-- [ELH site architecture](elh-site-architecture.md) — elh-preview static site: index.html & resources.html are inline-CSS-only (NOT linked to elh.css); shared-header markup/JS/parity rules.
+- [ELH site architecture](elh-site-architecture.md) — elh-preview static site: index.html & resources.html are inline-CSS-only; shared-header parity; coverage hub = county page (city pages parked/noindex); split font naming.
