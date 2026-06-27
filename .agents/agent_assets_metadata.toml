@@ -1,0 +1,26 @@
+uploads = []
+outputs = []
+
+[[generated]]
+id = "Fb78tkZxeGtIwBqf7EKrP"
+uri = "file://website/elh-preview/assets/img/comfort-therapies-new.png"
+type = "image"
+title = "comfort therapies warm home"
+
+[[generated]]
+id = "6kfoAVYegvj0ZZuFQuP6s"
+uri = "file://website/elh-preview/assets/img/the-circle-around-you-new.png"
+type = "image"
+title = "three generations hands circle"
+
+[[generated]]
+id = "k0yDnJ0n0h2K07jZAYmJW"
+uri = "file://website/elh-preview/assets/img/when-is-it-time-new.png"
+type = "image"
+title = "tea window morning light"
+
+[[generated]]
+id = "1HxZyySmfQBH6NV0iTZIr"
+uri = "file://website/elh-preview/assets/img/first-48-hours-new.png"
+type = "image"
+title = "caregiver patient home warm"
