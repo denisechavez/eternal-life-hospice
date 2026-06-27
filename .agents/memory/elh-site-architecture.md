@@ -48,3 +48,9 @@ description: Which pages use shared elh.css vs inline-only CSS in the elh-previe
 - `providers.html` is the compliance-led "For Referring Providers" hub (standard elh.css inner page; chrome cloned from careers.html). ALL provider entry points sitewide route here: homepage hero "For Referring Providers" CTA, the "For Providers" nav link on every page (homepage, inner pages, and `resources/*` subpages via `../providers.html`).
 - The actual referral form is the homepage lead-capture `#leadcap`. To deep-link a specific tab cross-page, use `index.html?lead=<cat>#leadcap` (cats: family/physician/casemanager/coordinator). The homepage JS ALREADY has a `URLSearchParams('lead')` handler that clicks `.lead-cat[data-cat=...]` on load — reuse it; do NOT add a duplicate. (Same-page links use `data-leadtab="<cat>"` instead.)
 - **Why:** keeps "For Providers" (info hub) separate from "Refer a Patient"/"Refer a Patient →" (the intake form), and gives the providers page reachable, consistent navigation.
+
+## Brand language: "founder-led" is banned sitewide (decided)
+- Do NOT use "founder-led" / "Founder-led" anywhere on the site. It was deliberately removed from all prose, headings, meta descriptions, OG tags and JSON-LD.
+- Approved positioning terms: "independent", "integrative", "compliance-led", and "physician-led clinical model" (physician-led = how care is directed, NOT the company owner).
+- **Why:** the user decided "founder-led" should be dropped entirely. The founder's *origin story* sections (#founder / #amethyst / "About Eternal") are fine to keep — only the "founder-led" descriptor is banned.
+- **How to apply:** after any content edit, `grep -rin 'founder-led' website/elh-preview` must return nothing.
