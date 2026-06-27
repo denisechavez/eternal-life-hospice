@@ -349,6 +349,11 @@ nav a:hover{color:var(--gold)}
 .counties{padding:6rem 2rem;background:var(--deep)}
 .counties .sec-head h2{color:var(--cream)}
 .counties .sec-head p{color:rgba(245,240,235,.6)}
+.coverage-map{max-width:900px;margin:2.6rem auto 0}
+.coverage-map-img{display:block;border-radius:18px;overflow:hidden;box-shadow:0 24px 60px rgba(0,0,0,.35);border:1px solid rgba(201,176,126,.28)}
+.coverage-map-img img{display:block;width:100%;height:auto}
+.coverage-cta{display:inline-block;margin-top:1.7rem;background:var(--gold);color:var(--deep);padding:.85rem 1.7rem;border-radius:999px;font-weight:600;text-decoration:none;font-family:var(--ff-b);letter-spacing:.01em}
+.coverage-cta:hover{filter:brightness(1.07)}
 
 /* ===== BY THE NUMBERS (proof band) — v6 addition ===== */
 .proof-band{background:var(--cream-mid);padding:5rem 2rem}
@@ -684,6 +689,7 @@ section[id]{scroll-margin-top:84px}#wsDetail{scroll-margin-top:96px}.foot-discla
 @media(max-width:480px){.fc-links{grid-template-columns:1fr}}
 .fc-links a{font-size:11.5px;color:rgba(245,240,235,.5);line-height:1.9;transition:color .2s}
 .fc-links a:hover{color:var(--gold)}
+.fc-links .fc-city{font-size:11.5px;color:rgba(245,240,235,.5);line-height:1.9}
 .fc-links a.fc-all{grid-column:1/-1;color:var(--gold);font-weight:600;margin-top:.5rem}
 
 /* sticky stack — locked, full-page alternating, hero photo + full copy */
@@ -1317,24 +1323,11 @@ section[id]{scroll-margin-top:90px}
   <div class="sec-head reveal">
     <div class="eyebrow gold-c" style="text-align:center">Ventura County &middot; Los Angeles County</div>
     <h2 style="color:var(--cream)">Serving families across <em>Southern California.</em></h2>
-    <p>We provide hospice care in every city across Ventura County and Los Angeles County. Tap a county to see the cities we serve.</p>
+    <p>We provide hospice care at home in every city across Ventura County and Los Angeles County.</p>
   </div>
-  <div class="county-pills">
-    <button class="cpill" data-county="ventura">Ventura County <span class="chev"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3,5 7,9 11,5"/></svg></span></button>
-    <button class="cpill" data-county="la">Los Angeles County <span class="chev"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3,5 7,9 11,5"/></svg></span></button>
-    
-  </div>
-  <div class="county-page-links" style="text-align:center;margin:.4rem 0 1.4rem"><a href="hospice-ventura-and-los-angeles-county-ca.html#ventura-county" style="color:var(--gold-c,#C9B07E);font-weight:600;margin:0 .6rem">Ventura County hospice care &#8594;</a><a href="hospice-ventura-and-los-angeles-county-ca.html#los-angeles-county" style="color:var(--gold-c,#C9B07E);font-weight:600;margin:0 .6rem">Los Angeles County hospice care &#8594;</a></div><div class="map-panel" id="mapPanel">
-    <div class="map-inner">
-      <div class="map-svg-wrap">
-        <div class="map-county-name" id="mapCountyName"></div>
-        <svg class="map-svg" id="mapSvg" viewBox="0 0 400 280" xmlns="http://www.w3.org/2000/svg"></svg>
-      </div>
-      <div class="city-list-side">
-        <h5 id="cityListHeading">Cities We Serve</h5>
-        <div class="city-links" id="cityLinks"></div>
-      </div>
-    </div>
+  <div class="coverage-map reveal">
+    <a href="hospice-ventura-and-los-angeles-county-ca.html" class="coverage-map-img" aria-label="View our full coverage area across Ventura and Los Angeles County"><img src="assets/img/service-hero-map.png" alt="Map of Ventura County and Los Angeles County showing the communities Eternal Life Hospice serves"></a>
+    <div style="text-align:center"><a href="hospice-ventura-and-los-angeles-county-ca.html" class="coverage-cta">View our full coverage area &#8594;</a></div>
   </div>
 </section>
 <!-- ===== CITY PAGE TEMPLATE — NATIVE ARTBOARD (Thousand Oaks) ===== -->
@@ -1444,11 +1437,11 @@ section[id]{scroll-margin-top:90px}
   <div class="foot-cities">
     <div class="foot-cities-col">
       <h4>Hospice Care · Ventura County</h4>
-      <div class="fc-links" id="fcVentura"><a href="hospice-ventura-and-los-angeles-county-ca.html#ventura-county" style="font-weight:600">Ventura County &#8594;</a><a href="hospice-thousand-oaks-ca.html">Thousand Oaks</a><a href="hospice-westlake-village-ca.html">Westlake Village</a><a href="hospice-newbury-park-ca.html">Newbury Park</a><a href="hospice-simi-valley-ca.html">Simi Valley</a><a href="hospice-moorpark-ca.html">Moorpark</a><a href="hospice-camarillo-ca.html">Camarillo</a><a href="hospice-oxnard-ca.html">Oxnard</a><a href="hospice-ventura-ca.html">Ventura</a></div>
+      <div class="fc-links" id="fcVentura"><a href="hospice-ventura-and-los-angeles-county-ca.html#ventura-county" style="font-weight:600">Ventura County &#8594;</a><span class="fc-city">Thousand Oaks</span><span class="fc-city">Westlake Village</span><span class="fc-city">Newbury Park</span><span class="fc-city">Simi Valley</span><span class="fc-city">Moorpark</span><span class="fc-city">Camarillo</span><span class="fc-city">Oxnard</span><span class="fc-city">Ventura</span></div>
     </div>
     <div class="foot-cities-col">
       <h4>Hospice Care · Los Angeles County</h4>
-      <div class="fc-links" id="fcLA"><a href="hospice-ventura-and-los-angeles-county-ca.html#los-angeles-county" style="font-weight:600">Los Angeles County &#8594;</a><a href="hospice-calabasas-ca.html">Calabasas</a><a href="hospice-agoura-hills-ca.html">Agoura Hills</a><a href="hospice-woodland-hills-ca.html">Woodland Hills</a><a href="hospice-encino-ca.html">Encino</a><a href="hospice-tarzana-ca.html">Tarzana</a><a href="hospice-sherman-oaks-ca.html">Sherman Oaks</a><a href="hospice-santa-monica-ca.html">Santa Monica</a><a href="hospice-malibu-ca.html">Malibu</a></div>
+      <div class="fc-links" id="fcLA"><a href="hospice-ventura-and-los-angeles-county-ca.html#los-angeles-county" style="font-weight:600">Los Angeles County &#8594;</a><span class="fc-city">Calabasas</span><span class="fc-city">Agoura Hills</span><span class="fc-city">Woodland Hills</span><span class="fc-city">Encino</span><span class="fc-city">Tarzana</span><span class="fc-city">Sherman Oaks</span><span class="fc-city">Santa Monica</span><span class="fc-city">Malibu</span></div>
     </div>
   </div>
   <div class="foot-grid">
@@ -1531,77 +1524,6 @@ section[id]{scroll-margin-top:90px}
   // guided walkthrough launcher
   var gCard=document.querySelector('.guide-card'), gStart=document.getElementById('guideStart');
   if(gStart){ gStart.addEventListener('click', function(){ gCard.classList.add('open'); ga={}; hist=[1]; showStep(1); }); }
-
-  // county map data with approximate relative coordinates (viewBox 400x280)
-  var counties = {
-    ventura: { name:'Ventura County', cities:[
-      {n:'Westlake Village',x:330,y:215,slug:'westlake-village'},{n:'Thousand Oaks',x:300,y:200,slug:'thousand-oaks'},{n:'Agoura Hills',x:350,y:210,slug:'agoura-hills'},
-      {n:'Newbury Park',x:275,y:210,slug:'newbury-park'},{n:'Camarillo',x:210,y:195,slug:'camarillo'},{n:'Oxnard',x:165,y:215,slug:'oxnard'},
-      {n:'Moorpark',x:255,y:160,slug:'moorpark'},{n:'Simi Valley',x:310,y:150,slug:'simi-valley'},{n:'Ventura',x:135,y:175,slug:'ventura'},
-      {n:'Calabasas',x:370,y:205,slug:'calabasas'},{n:'Malibu',x:330,y:250,slug:'malibu'},{n:'Oak Park',x:330,y:185,slug:'oak-park'}
-    ]},
-    la: { name:'Los Angeles County', cities:[
-      {n:'Santa Monica',x:120,y:210,slug:'santa-monica'},{n:'Sherman Oaks',x:210,y:120,slug:'sherman-oaks'},{n:'Encino',x:180,y:125,slug:'encino'},
-      {n:'Tarzana',x:155,y:130,slug:'tarzana'},{n:'Woodland Hills',x:120,y:135,slug:'woodland-hills'},{n:'Malibu',x:70,y:210,slug:'malibu'},
-      {n:'Calabasas',x:95,y:160,slug:'calabasas'},{n:'West Hills',x:100,y:115,slug:'west-hills'},{n:'Canoga Park',x:130,y:110,slug:'canoga-park'},
-      {n:'Pacific Palisades',x:95,y:195,slug:'pacific-palisades'},{n:'Brentwood',x:130,y:185,slug:'brentwood'}
-    ]}
-  };
-  function slugify(s){return s.toLowerCase().replace(/ñ/g,"n").replace(/[.'’]/g,"").replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"");}
-  var allCitiesData={ventura:["Camarillo","Fillmore","Moorpark","Ojai","Oxnard","Port Hueneme","Santa Paula","Simi Valley","Thousand Oaks","Ventura","Oak Park","Newbury Park"],la:["Agoura Hills","Alhambra","Arcadia","Artesia","Avalon","Azusa","Baldwin Park","Bell","Bell Gardens","Bellflower","Beverly Hills","Bradbury","Burbank","Calabasas","Carson","Cerritos","Claremont","Commerce","Compton","Covina","Cudahy","Culver City","Diamond Bar","Downey","Duarte","El Monte","El Segundo","Gardena","Glendale","Glendora","Hawaiian Gardens","Hawthorne","Hermosa Beach","Hidden Hills","Huntington Park","Industry","Inglewood","Irwindale","La Cañada Flintridge","La Habra Heights","La Mirada","La Puente","La Verne","Lakewood","Lancaster","Lawndale","Lomita","Long Beach","Los Angeles","Lynwood","Malibu","Manhattan Beach","Maywood","Monrovia","Montebello","Monterey Park","Norwalk","Palmdale","Palos Verdes Estates","Paramount","Pasadena","Pico Rivera","Pomona","Rancho Palos Verdes","Redondo Beach","Rolling Hills","Rolling Hills Estates","Rosemead","San Dimas","San Fernando","San Gabriel","San Marino","Santa Clarita","Santa Fe Springs","Santa Monica","Sierra Madre","Signal Hill","South El Monte","South Gate","South Pasadena","Temple City","Torrance","Vernon","Walnut","West Covina","West Hollywood","Westlake Village","Whittier"]};
-  (function(){var pV=['Thousand Oaks','Westlake Village','Newbury Park','Agoura Hills','Oak Park','Calabasas','Camarillo','Moorpark','Simi Valley','Oxnard','Ventura','Malibu'];var pL=['Santa Monica','Sherman Oaks','Encino','Tarzana','Woodland Hills','West Hills','Canoga Park','Pacific Palisades','Brentwood','Beverly Hills','Culver City','West Hollywood','Studio City','Calabasas','Hidden Hills'];var fill=function(id,names){var el=document.getElementById(id);if(!el)return;el.innerHTML='';names.forEach(function(nm){var a=document.createElement('a');a.href='/hospice-care-'+slugify(nm);a.textContent=nm;el.appendChild(a);});var all=document.createElement('a');all.href='#coverage';all.className='fc-all';all.textContent='View all coverage areas \u2192';el.appendChild(all);};fill('fcVentura',pV);fill('fcLA',pL);})();
-  var mapPanel=document.getElementById('mapPanel'), mapSvg=document.getElementById('mapSvg'), mapName=document.getElementById('mapCountyName'), cityLinks=document.getElementById('cityLinks'), active=null;
-  function renderMap(c){
-    var data=counties[c];
-    mapName.textContent=data.name;
-    // build SVG: stylized county shape + dots
-    var shape='<path d="M30 90 Q60 40 140 50 Q260 30 360 70 Q385 130 360 200 Q280 250 160 240 Q70 250 35 180 Z" fill="rgba(201,176,126,0.16)" stroke="rgba(201,176,126,0.35)" stroke-width="1.5"/>';
-    var dots='';
-    data.cities.forEach(function(ct){
-      if(ct.slug==='thousand-oaks'){
-        dots += '<circle class="map-dot live-ring" cx="'+ct.x+'" cy="'+ct.y+'" r="11"></circle>';
-        dots += '<circle class="map-dot live" cx="'+ct.x+'" cy="'+ct.y+'" r="7" onclick="document.getElementById(\'coverage\').scrollIntoView({behavior:\'smooth\'})"><title>'+ct.n+' — live example</title></circle>';
-        dots += '<text class="map-label" x="'+(ct.x+10)+'" y="'+(ct.y+3)+'" style="fill:var(--gold);font-weight:600">'+ct.n+'</text>';
-      } else {
-        dots += '<circle class="map-dot" cx="'+ct.x+'" cy="'+ct.y+'" r="5"><title>'+ct.n+'</title></circle>';
-        dots += '<text class="map-label" x="'+(ct.x+8)+'" y="'+(ct.y+3)+'">'+ct.n+'</text>';
-      }
-    });
-    if(data.cities.length===0){
-      mapSvg.innerHTML = shape + '<text class="map-label" x="200" y="140" text-anchor="middle" style="font-size:11px;opacity:.7">Map — cities to confirm</text>';
-    } else {
-      var coverage='<text x="200" y="270" text-anchor="middle" style="fill:var(--gold);opacity:.85;font-size:11px;font-weight:700;letter-spacing:.08em">FULL COUNTY COVERAGE</text>';
-      mapSvg.innerHTML = shape + dots + coverage;
-    }
-    // city links list — full county coverage
-    cityLinks.innerHTML='';
-    var names = allCitiesData[c] || data.cities.map(function(x){return x.n;});
-    if(!names || names.length===0){
-      var ph=document.createElement('div'); ph.className='city-link placeholder'; ph.textContent='Cities to confirm with Aleksandra before publishing'; cityLinks.appendChild(ph);
-    } else {
-      var sorted = names.slice().sort(function(x,y){ return (x==='Thousand Oaks'?-1:0)-(y==='Thousand Oaks'?-1:0); });
-      sorted.forEach(function(nm){
-        var slug=slugify(nm), a=document.createElement('a');
-        if(slug==='thousand-oaks'){
-          a.className='city-link live'; a.href='#coverage';
-          a.innerHTML='<span>Hospice Care in '+nm+'<span class="badge-live">Live example</span></span><span class="arrow">↓</span>';
-        } else {
-          a.className='city-link muted'; a.href='#coverage';
-          a.title='Renders from the Thousand Oaks template — view the live example';
-          a.innerHTML='<span class="cl-name">'+nm+'</span><span class="arrow">→</span>';
-        }
-        cityLinks.appendChild(a);
-      });
-    }
-  }
-  document.querySelectorAll('.cpill').forEach(function(p){
-    p.addEventListener('click', function(){
-      var c=p.dataset.county;
-      if(active===c){ p.classList.remove('active'); mapPanel.classList.remove('open'); active=null; return; }
-      document.querySelectorAll('.cpill').forEach(function(x){ x.classList.remove('active'); });
-      p.classList.add('active'); active=c; renderMap(c); mapPanel.classList.add('open');
-    });
-  });
 
   // modality cards
   document.querySelectorAll('.mod-card').forEach(function(card){ card.addEventListener('click', function(e){ if(e.target.closest('.freq-row')) return; card.classList.toggle('open'); }); });
