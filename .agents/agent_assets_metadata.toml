@@ -24,3 +24,9 @@ id = "1HxZyySmfQBH6NV0iTZIr"
 uri = "file://website/elh-preview/assets/img/first-48-hours-new.png"
 type = "image"
 title = "caregiver patient home warm"
+
+[[generated]]
+id = "GEoc53LKJWO4GGpBa6lzg"
+uri = "file://attached_assets/generated_images/providers-hero.png"
+type = "image"
+title = "generated_image"
