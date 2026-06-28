@@ -97,6 +97,11 @@ description: Which pages use shared elh.css vs inline-only CSS in the elh-previe
 ## Header warm 24/7 invite (decided)
 - The header phone pill is wrapped: `<div class="hdr-cta-wrap"><span class="hdr-cta-note">Here for you, 24/7 —</span><a class="hdr-cta" href="tel:18059537273">805.953.7273</a></div>` on all 31 header pages. Both `.hdr-cta` and `.hdr-cta-note` are hidden together on mobile. CSS lives in the same 3 places as the footer/header (elh.css + index inline + resources.html inline).
 
+## assets/img weight — keep photos as optimized JPGs; watch orphaned variants
+- Resource hero/card + homepage modality photos must be optimized JPGs (no-alpha, ~1800px max, q85), NOT multi-MB PNGs. Folder should stay single-digit MB.
+- **Trap:** optimized variants can sit unreferenced (e.g. a `*-new.png`) while the site still points at the big original — the smaller file exists but was never repointed. Don't trust filename; verify what's actually referenced.
+- **How to apply:** before shipping, scan `assets/img` for files referenced nowhere across `*.html/*.css/*.js` (orphans → delete) and for >1MB no-alpha PNGs (convert to jpg, repoint refs in ALL three path styles `assets/img/`, `/assets/img/`, `../assets/img/`, then delete the png).
+
 ## Chatbot (guided + AI)
 - Widget: `assets/chat.js` — fully self-contained (injects its own <style>+markup) because index.html & resources.html don't link elh.css. Loaded via `<script src="/assets/chat.js" defer>` on all 33 pages (before </body>). Guided FAQ chips + free-text. Emergency + clinical regex short-circuit in code → route to 24/7 line / 911, never sent to AI.
 - Collapsed launcher is a DISCREET single circular icon button (no phone pill, no text label) — user explicitly chose this to mimic westlakevillagehospice.com's chat bubble. **Why it matters:** the phone number is intentionally NOT shown until the panel opens (the gold "Call" button is the top item in the panel header). Do NOT "restore" an always-visible call pill to the collapsed dock — that was the prior design the user deliberately replaced.
