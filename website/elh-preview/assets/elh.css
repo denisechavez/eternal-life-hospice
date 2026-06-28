@@ -314,3 +314,5 @@ p,li,blockquote{text-wrap:pretty}
   @media(max-width:860px){#site-footer .foot-grid{grid-template-columns:1fr 1fr}#site-footer .foot-bottom{flex-direction:column}#site-footer .foot-bottom>span{text-align:center!important}}
   @media(max-width:560px){#site-footer .foot-grid{grid-template-columns:1fr}}
   
+/* Custom eternal-mark cursor on interactive elements */
+a,button,summary,label,select,[role="button"],input[type="submit"],input[type="button"]{cursor:url("img/cursor-eternal.png") 16 16,pointer}
