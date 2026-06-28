@@ -356,6 +356,7 @@ a,button,summary,label,select,[role="button"],input[type="submit"],input[type="b
 .cqn-chips{display:flex;flex-wrap:wrap;gap:.55rem}
 .cqn-chips a{font-size:14px;font-weight:600;color:var(--plum);background:var(--cream-mid);border:1px solid transparent;border-radius:999px;padding:.42rem .92rem;text-decoration:none;transition:background .2s,color .2s,transform .2s}
 .cqn-chips a:hover{background:var(--plum);color:var(--cream);transform:translateY(-2px)}
+.cqn-chips span{font-size:14px;font-weight:500;color:var(--ink-soft);background:var(--cream);border:1px solid var(--cream-dark);border-radius:999px;padding:.42rem .92rem;cursor:default}
 @media(max-width:680px){.cqn-cols{grid-template-columns:1fr}}
 
 .distinct .distinct-band{background:linear-gradient(150deg,var(--plum),var(--deep));border-radius:22px;padding:2.7rem 2rem;box-shadow:0 30px 70px rgba(60,28,59,.28)}
