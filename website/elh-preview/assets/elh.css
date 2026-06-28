@@ -295,6 +295,9 @@ p,li,blockquote{text-wrap:pretty}
   #site-footer .foot-col h4{font-size:11.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#B7A89D;margin-bottom:.85rem}
   #site-footer .foot-col a,#site-footer .foot-col p{display:block;font-size:14px;color:rgba(245,240,235,.6);line-height:2.1;text-decoration:none}
   #site-footer .foot-col a:hover{color:var(--cream)}
+  #site-footer .foot-qr{display:flex;align-items:center;gap:.7rem;margin-top:1.15rem}
+  #site-footer .foot-qr img{width:96px;height:96px;border-radius:12px;display:block;background:var(--cream)}
+  #site-footer .foot-qr span{font-size:12.5px;line-height:1.55;color:rgba(245,240,235,.6)}
   #site-footer .fc-line{display:flex;align-items:center;gap:.5rem;font-size:14px;color:rgba(245,240,235,.6);line-height:2.1;text-decoration:none}
   #site-footer .fc-line .fci{width:13px;height:13px;flex-shrink:0;opacity:.85}
   #site-footer .fc-line.fc-addr{align-items:flex-start}
