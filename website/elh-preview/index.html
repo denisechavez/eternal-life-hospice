@@ -1707,7 +1707,7 @@ p,li,blockquote{text-wrap:pretty}
   // when a city link is clicked, auto-expand the template
   document.querySelectorAll('#cityLinks a').forEach && (function(){});
   document.addEventListener('click', function(e){ var a=e.target.closest && e.target.closest('a[href="#coverage"]'); if(a){ cpOpen(true); } });
-  document.addEventListener('click', function(e){ var a=e.target.closest && e.target.closest('a[href^="/"]'); if(!a) return; e.preventDefault(); if(a.getAttribute('href').indexOf('/hospice-care-')===0){ var cov=document.getElementById('coverage'); if(cov) cov.scrollIntoView({behavior:'smooth'}); } });
+  document.addEventListener('click', function(e){ var a=e.target.closest && e.target.closest('a[href^="/hospice-care-"]'); if(!a) return; e.preventDefault(); var cov=document.getElementById('coverage'); if(cov) cov.scrollIntoView({behavior:'smooth'}); });
   document.addEventListener('click', function(e){ var a=e.target.closest && e.target.closest('[data-leadtab]'); if(!a) return; var cat=a.getAttribute('data-leadtab'); setTimeout(function(){ var b=document.querySelector('.lead-cat[data-cat="'+cat+'"]'); if(b) b.click(); }, 350); });
   (function(){ try{ var p=new URLSearchParams(location.search).get('lead'); if(p && /^[a-z]+$/.test(p)){ setTimeout(function(){ var b2=document.querySelector('.lead-cat[data-cat="'+p+'"]'); if(b2) b2.click(); }, 400); } }catch(_e){} })();
 
