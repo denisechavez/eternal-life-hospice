@@ -30,6 +30,24 @@ uri = "file://attached_assets/generated_images/providers-hero.png"
 type = "image"
 title = "generated_image"
 
+[[generated]]
+id = "oPy_r1psajWvjQatMMscr"
+uri = "file://attached_assets/generated_images/amethyst_a.png"
+type = "image"
+title = "generated_image"
+
+[[generated]]
+id = "a6reTvCAFpMecDxDxLcbv"
+uri = "file://attached_assets/generated_images/amethyst_b.png"
+type = "image"
+title = "generated_image"
+
+[[generated]]
+id = "N2NeeYb4vAnIEwr-sGSCD"
+uri = "file://attached_assets/generated_images/amethyst_c.png"
+type = "image"
+title = "generated_image"
+
 [[outputs]]
 id = "qLfrLYeW6vnnXMfZ4rxbP"
 uri = "file://attached_assets/ELH-QR_eternallifehospice_cream.png"
@@ -41,3 +59,21 @@ id = "yaQobLvwN1e1GeZI0iPz9"
 uri = "file://attached_assets/ELH-QR_eternallifehospice_transparent.png"
 type = "image"
 title = "QR Code — Transparent background (for dark/plum surfaces)"
+
+[[outputs]]
+id = "dtRvwpy1mLlpBlcNQacQi"
+uri = "file://attached_assets/generated_images/amethyst_a.png"
+type = "image"
+title = "A — Geode interior (glowing center)"
+
+[[outputs]]
+id = "q_Md3liWq6KxFqm7OeWSM"
+uri = "file://attached_assets/generated_images/amethyst_b.png"
+type = "image"
+title = "B — Crystal crown (soft light bloom)"
+
+[[outputs]]
+id = "aCfeGcIAHJvbWUL5Udc0o"
+uri = "file://attached_assets/generated_images/amethyst_c.png"
+type = "image"
+title = "C — Light through the peak (sunburst)"
