@@ -297,12 +297,12 @@
   function localFallback() {
     aiAvailable = false;
     addMsg(
-      "I can't reach the assistant at the moment \u2014 but I can still guide you. You can tap one of the common questions below, or call our team any time at " +
+      "I\u2019m having trouble responding just now \u2014 but please don\u2019t let that stop you. Our team is available any time at " +
         PHONE_DISPLAY +
-        " and a real person will be glad to support you.",
+        ", and a real person will be glad to support you.",
       "bot"
     );
-    addChips(GUIDED);
+    addCallbackChip();
   }
 
   /* ---------- callback request ---------- */
