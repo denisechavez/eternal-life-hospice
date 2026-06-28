@@ -48,6 +48,18 @@ uri = "file://attached_assets/generated_images/amethyst_c.png"
 type = "image"
 title = "generated_image"
 
+[[generated]]
+id = "-hvLi37WOvT2aYH_SxbGB"
+uri = "file://attached_assets/generated_images/amethyst_d.png"
+type = "image"
+title = "generated_image"
+
+[[generated]]
+id = "WIaYvAmS8uc2mQittFiRx"
+uri = "file://attached_assets/generated_images/amethyst_e.png"
+type = "image"
+title = "generated_image"
+
 [[outputs]]
 id = "qLfrLYeW6vnnXMfZ4rxbP"
 uri = "file://attached_assets/ELH-QR_eternallifehospice_cream.png"
@@ -77,3 +89,15 @@ id = "aCfeGcIAHJvbWUL5Udc0o"
 uri = "file://attached_assets/generated_images/amethyst_c.png"
 type = "image"
 title = "C — Light through the peak (sunburst)"
+
+[[outputs]]
+id = "3pEEsNRhakE5IapYEFl6a"
+uri = "file://attached_assets/generated_images/amethyst_d.png"
+type = "image"
+title = "D — Single point on dark velvet (minimal)"
+
+[[outputs]]
+id = "fgz-YTCHX3K6VPK2-ZeNJ"
+uri = "file://attached_assets/generated_images/amethyst_e.png"
+type = "image"
+title = "E — Geode slice, top-down (banded)"
