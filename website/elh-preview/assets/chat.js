@@ -257,8 +257,7 @@
     botSequence(
       [
         "Hello, thank you for reaching out.",
-        "You can ask me anything about Eternal Life Hospice \u2014 or just tell me what\u2019s on your mind.",
-        "And whenever you\u2019d rather talk with a real person, our team is one tap away, day or night."
+        "I\u2019m here to guide you through any hospice-related questions that you may have. How can I best support you?"
       ],
       function () {
         addCallbackChip();
