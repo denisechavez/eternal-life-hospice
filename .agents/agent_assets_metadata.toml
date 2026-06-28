@@ -119,3 +119,27 @@ id = "EmfREeZHYPLakP5ZvgtXb"
 uri = "file://attached_assets/stock_images/malibu_coast_3.jpg"
 type = "image"
 title = "Malibu coastline ocean"
+
+[[outputs]]
+id = "o87mbFylZFgjFurubVMmg"
+uri = "file://attached_assets/stock_images/malibu_pier_1.jpg"
+type = "image"
+title = "Malibu Pier California landmark"
+
+[[outputs]]
+id = "eXCo-jCPBx2UM0pSnMzwx"
+uri = "file://attached_assets/stock_images/malibu_pier_2.jpg"
+type = "image"
+title = "Malibu Pier California landmark"
+
+[[outputs]]
+id = "SzFgtRWI4VeOp49FnWc2p"
+uri = "file://attached_assets/stock_images/malibu_pier_3.jpg"
+type = "image"
+title = "Malibu Pier California landmark"
+
+[[outputs]]
+id = "TurLU4lc_vPtAfas9ppP9"
+uri = "file://attached_assets/stock_images/malibu_pier_4.jpg"
+type = "image"
+title = "Malibu Pier California landmark"
