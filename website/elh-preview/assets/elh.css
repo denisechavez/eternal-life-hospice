@@ -325,7 +325,10 @@ a,button,summary,label,select,[role="button"],input[type="submit"],input[type="b
 .hero--city::after{content:"";position:absolute;inset:0;z-index:1;background:linear-gradient(180deg,rgba(60,28,59,.52) 0%,rgba(91,46,89,.46) 46%,rgba(40,24,56,.86) 100%)}
 .hero--city>:not(.hero-bg){position:relative;z-index:2}
 .lfaq{max-width:860px}
-.lfaq .faq-item{padding:18px 0;border-bottom:1px solid rgba(91,46,89,.16)}
+.lfaq .faq-item{border-bottom:1px solid rgba(91,46,89,.16)}
 .lfaq .faq-item:first-of-type{border-top:1px solid rgba(91,46,89,.16)}
-.lfaq h3{margin:0 0 .45rem;font-size:18px;color:var(--plum);line-height:1.35}
-.lfaq p{margin:0;color:var(--ink-soft);line-height:1.75}
+.lfaq summary{cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center;gap:1rem;padding:18px 0;font-size:18px;font-weight:600;color:var(--plum);line-height:1.35}
+.lfaq summary::-webkit-details-marker{display:none}
+.lfaq summary::after{content:"+";color:var(--gold);font-weight:700;font-size:22px;line-height:1;flex:none}
+.lfaq details[open] summary::after{content:"\2212"}
+.lfaq p{margin:0;color:var(--ink-soft);line-height:1.75;padding:0 0 18px}
