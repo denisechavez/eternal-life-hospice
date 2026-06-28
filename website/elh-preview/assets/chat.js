@@ -282,8 +282,8 @@
     var head = el("div", "elhc-head");
     var top = el("div", "elhc-head-top");
     var titleWrap = el("div");
-    titleWrap.appendChild(el("div", "elhc-title", "How can we help?"));
-    titleWrap.appendChild(el("div", "elhc-sub", "Eternal Life Hospice \u00b7 here with you"));
+    titleWrap.appendChild(el("div", "elhc-title", "We\u2019re here for you"));
+    titleWrap.appendChild(el("div", "elhc-sub", "Warm, caring support \u2014 any hour, day or night, 7 days a week."));
     var x = el("button", "elhc-x");
     x.type = "button";
     x.setAttribute("aria-label", "Close the help assistant");
