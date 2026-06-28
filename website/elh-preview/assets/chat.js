@@ -165,12 +165,55 @@
     catch (e) { log.scrollTop = log.scrollHeight; }
   }
 
-  function addMsg(text, who) {
+  // Reveal speed: aim for a natural, human cadence regardless of length, but
+  // never so slow it feels broken or so fast it's instant.
+  function charDelay(text) {
+    return Math.min(Math.max(Math.round(950 / text.length), 10), 26);
+  }
+  // Gently "type" text into a bubble, character by character.
+  function typeInto(node, text, done) {
+    var i = 0, delay = charDelay(text);
+    var step = function () {
+      i += 1;
+      node.textContent = text.slice(0, i);
+      scrollDown();
+      if (i < text.length) window.setTimeout(step, delay);
+      else if (done) done();
+    };
+    step();
+  }
+
+  function addMsg(text, who, stream, done) {
     var m = el("div", "elhc-msg " + (who === "user" ? "elhc-user" : "elhc-bot"));
-    m.textContent = text;
     log.appendChild(m);
+    if (who === "bot" && stream && !reduced()) {
+      typeInto(m, text, done);
+    } else {
+      m.textContent = text;
+      if (done) done();
+    }
     scrollDown();
     return m;
+  }
+
+  // Play a short series of bot bubbles one after another, each preceded by the
+  // typing dots, so the welcome feels like a real person responding.
+  function botSequence(lines, done) {
+    var i = 0;
+    var next = function () {
+      if (i >= lines.length) { if (done) done(); return; }
+      var line = lines[i++];
+      if (reduced()) { addMsg(line, "bot"); next(); return; }
+      var t = showTyping();
+      var pause = Math.min(420 + line.length * 11, 1100);
+      window.setTimeout(function () {
+        if (t.parentNode) t.parentNode.removeChild(t);
+        addMsg(line, "bot", true, function () {
+          window.setTimeout(next, 320);
+        });
+      }, pause);
+    };
+    next();
   }
 
   function addChips(items) {
@@ -184,7 +227,7 @@
         addMsg(it.q, "user");
         history.push({ role: "user", content: it.q });
         var pushAnswer = function () {
-          addMsg(it.a, "bot");
+          addMsg(it.a, "bot", true);
           history.push({ role: "assistant", content: it.a });
         };
         if (reduced()) { pushAnswer(); return; }
@@ -211,12 +254,17 @@
   /* ---------- conversation ---------- */
   function greet() {
     greeted = true;
-    addMsg(
-      "Hello, thank you for reaching out. You can ask me anything about Eternal Life Hospice, or just tell me what's on your mind. And whenever you'd rather talk with a real person, our team is one tap away, day or night.",
-      "bot"
+    botSequence(
+      [
+        "Hello, thank you for reaching out.",
+        "You can ask me anything about Eternal Life Hospice \u2014 or just tell me what\u2019s on your mind.",
+        "And whenever you\u2019d rather talk with a real person, our team is one tap away, day or night."
+      ],
+      function () {
+        addChips(STARTERS);
+        addCallbackChip();
+      }
     );
-    addChips(STARTERS);
-    addCallbackChip();
   }
 
   function addCallbackChip() {
@@ -440,7 +488,7 @@
         sendBtn.disabled = false;
         var reply = data && data.reply ? String(data.reply).trim() : "";
         if (!reply) { localFallback(); return; }
-        addMsg(reply, "bot");
+        addMsg(reply, "bot", true);
         history.push({ role: "assistant", content: reply });
       })
       .catch(function () {
