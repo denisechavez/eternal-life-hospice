@@ -68,6 +68,23 @@ description: Which pages use shared elh.css vs inline-only CSS in the elh-previe
 - Lead forms submit via AJAX urlencoded, but **any form with a file upload must use `enctype="multipart/form-data"` and submit `new FormData(form)` with no manual Content-Type** — the urlencoded path silently drops the file.
 - **Why:** A job-application/upload funnel must never show false success. Gate the success UI on `response.ok`; on failure keep the form, re-enable the button, and show a phone fallback.
 
+## Unified footer (decided) — the mega-footer is `#site-footer`, lives in 3 CSS places
+- ALL pages that have a footer use the homepage mega-footer markup `<footer id="site-footer">` (5-col grid: logo/tagline + Our Care / For Families / For Providers / Contact, then disclaimer + bottom bar). 31 pages carry it.
+- `family-guide.html` and `ELH_Family_Guide_Interactive.html` have NO footer by design — never add one.
+- CSS is scoped under `#site-footer` and must exist in THREE places (same rule as the header): `assets/elh.css` (covers all linked inner + `resources/*` pages), `index.html` inline, and `resources.html` inline. The legacy generic `footer{}` / `.ftag` / `.fcontact` rules in elh.css are dead but harmless; the `#site-footer`-scoped block (appended later) wins on specificity+order.
+- Path prefixes by depth: root pages use `index.html#x` / `assets/...`; `resources/*` subpages use `../index.html#x` / `../assets/...`. Footer logo is `assets/img/inline-edee248dcb.png` (cream wordmark).
+- **"Refer a Patient" routing in the footer:** homepage uses the `#leadcap` modal (`data-leadtab="physician"`); every NON-home page instead links to `providers.html` (a modal anchor can't open cross-page). This intentional difference keeps the link functional — don't "fix" it to a shared `#leadcap`.
+
+## index.html is fully externalized — no base64 left
+- All 27 inline base64 data URIs (jpeg/png/woff2) were pulled out of `index.html` to `assets/img/inline-*.{jpg,png}` and `assets/fonts/inline-*.woff2`, shrinking it from ~4.58MB to ~174KB (huge SEO/crawl win). Keep new homepage assets as external files; never reintroduce base64 into index.html.
+
+## Global font-size lifts MUST exempt SVG map-label selectors
+- A site-wide readability "floor-lift" (regex bumping every `font-size:Npx`, e.g. 8.5→10.5 … 15.5→16.5, leaving ≥16 alone) is the accepted way to enlarge small UI/label/caption text across `*.html` + `elh.css`. Homepage body is already 19px.
+- **But it crowds the service-area maps:** the SVG label selectors `.served-lab .soon-lab .cty-lab .city-lab .city-name .hq-lab .inset-lab .inset-cap` (elh.css) and `.map-label` (index.html) are spatially constrained — bumping them overlaps labels on the region map. After any blanket bump, REVERT these to originals (13/12/15/11/11/13/11/9.5; .map-label 9.5). Verify on `hospice-ventura-and-los-angeles-county-ca.html`.
+
+## Header warm 24/7 invite (decided)
+- The header phone pill is wrapped: `<div class="hdr-cta-wrap"><span class="hdr-cta-note">Here for you, 24/7 —</span><a class="hdr-cta" href="tel:18059537273">805.953.7273</a></div>` on all 31 header pages. Both `.hdr-cta` and `.hdr-cta-note` are hidden together on mobile. CSS lives in the same 3 places as the footer/header (elh.css + index inline + resources.html inline).
+
 ## Chatbot (guided + AI)
 - Widget: `assets/chat.js` — fully self-contained (injects its own <style>+markup) because index.html & resources.html don't link elh.css. Loaded via `<script src="/assets/chat.js" defer>` on all 33 pages (before </body>). Guided FAQ chips + free-text. Emergency + clinical regex short-circuit in code → route to 24/7 line / 911, never sent to AI.
 - Collapsed launcher is a DISCREET single circular icon button (no phone pill, no text label) — user explicitly chose this to mimic westlakevillagehospice.com's chat bubble. **Why it matters:** the phone number is intentionally NOT shown until the panel opens (the gold "Call" button is the top item in the panel header). Do NOT "restore" an always-visible call pill to the collapsed dock — that was the prior design the user deliberately replaced.
