@@ -295,7 +295,7 @@
     teaser.setAttribute("aria-label", "Open the support guide");
     teaser.style.display = "none";
     teaser.innerHTML =
-      "<strong>We\u2019re here for you</strong>Have a question about hospice care? I\u2019m happy to help \u2014 any time, day or night.";
+      "<strong>Hello</strong>Thank you for reaching out. I\u2019m here to guide you through any hospice questions you may have. How can I best support you?";
     var tClose = el("button", "elhc-teaser-close");
     tClose.type = "button";
     tClose.setAttribute("aria-label", "Dismiss");
