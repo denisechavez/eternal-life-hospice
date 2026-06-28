@@ -143,3 +143,369 @@ id = "TurLU4lc_vPtAfas9ppP9"
 uri = "file://attached_assets/stock_images/malibu_pier_4.jpg"
 type = "image"
 title = "Malibu Pier California landmark"
+
+[[outputs]]
+id = "sm-fmjJ5FaDkVOlxQzDbL"
+uri = "file://attached_assets/stock_images/camarillo_1.jpg"
+type = "image"
+title = "Camarillo California Ranch House landmark"
+
+[[outputs]]
+id = "yOzflJcPR08JgSgd6wU0h"
+uri = "file://attached_assets/stock_images/camarillo_2.jpg"
+type = "image"
+title = "Camarillo California Ranch House landmark"
+
+[[outputs]]
+id = "RmwBVkn9YjY8znwgKSn-u"
+uri = "file://attached_assets/stock_images/camarillo_3.jpg"
+type = "image"
+title = "Camarillo California Ranch House landmark"
+
+[[outputs]]
+id = "8vtyqluJnjN71gktuRTym"
+uri = "file://attached_assets/stock_images/moorpark_1.jpg"
+type = "image"
+title = "Moorpark California High Street town"
+
+[[outputs]]
+id = "5skYWx5yNVSOi0fA0wRMK"
+uri = "file://attached_assets/stock_images/moorpark_2.jpg"
+type = "image"
+title = "Moorpark California High Street town"
+
+[[outputs]]
+id = "EdQe_ud5PihtjodTymTMB"
+uri = "file://attached_assets/stock_images/moorpark_3.jpg"
+type = "image"
+title = "Moorpark California High Street town"
+
+[[outputs]]
+id = "_aYAyiNiQsxXnqbJ55ZjZ"
+uri = "file://attached_assets/stock_images/newbury_park_1.jpg"
+type = "image"
+title = "Boney Mountain Newbury Park California"
+
+[[outputs]]
+id = "L1qOmb0oIjQSCP6zTf9tq"
+uri = "file://attached_assets/stock_images/newbury_park_2.jpg"
+type = "image"
+title = "Boney Mountain Newbury Park California"
+
+[[outputs]]
+id = "mv3ItSVY-B9Aph1lxP6hd"
+uri = "file://attached_assets/stock_images/newbury_park_3.jpg"
+type = "image"
+title = "Boney Mountain Newbury Park California"
+
+[[outputs]]
+id = "IB--tU_WhsNiObTLzJf5-"
+uri = "file://attached_assets/stock_images/oxnard_1.jpg"
+type = "image"
+title = "Channel Islands Harbor Oxnard California"
+
+[[outputs]]
+id = "J0Uc8zOTGe38-zcKGdPv7"
+uri = "file://attached_assets/stock_images/oxnard_2.jpg"
+type = "image"
+title = "Channel Islands Harbor Oxnard California"
+
+[[outputs]]
+id = "doq7WKAoqoDZdTx_w8Ssy"
+uri = "file://attached_assets/stock_images/oxnard_3.jpg"
+type = "image"
+title = "Channel Islands Harbor Oxnard California"
+
+[[outputs]]
+id = "BIYU42UVhpYcUPsOTztKX"
+uri = "file://attached_assets/stock_images/simi_valley_1.jpg"
+type = "image"
+title = "Reagan Presidential Library Simi Valley California"
+
+[[outputs]]
+id = "-kJZjUANq7YeG6e2-OVHj"
+uri = "file://attached_assets/stock_images/simi_valley_2.jpg"
+type = "image"
+title = "Reagan Presidential Library Simi Valley California"
+
+[[outputs]]
+id = "uYUx-xgMPDx269suR-s8I"
+uri = "file://attached_assets/stock_images/simi_valley_3.jpg"
+type = "image"
+title = "Reagan Presidential Library Simi Valley California"
+
+[[outputs]]
+id = "ZM5JHtgU5vKZyzvWsZQr6"
+uri = "file://attached_assets/stock_images/thousand_oaks_1.jpg"
+type = "image"
+title = "Thousand Oaks California Conejo Valley landscape"
+
+[[outputs]]
+id = "euYL0AGEyzCEnCttcQyK6"
+uri = "file://attached_assets/stock_images/thousand_oaks_2.jpg"
+type = "image"
+title = "Thousand Oaks California Conejo Valley landscape"
+
+[[outputs]]
+id = "moGnPEPzaqIe63_p0XK2s"
+uri = "file://attached_assets/stock_images/thousand_oaks_3.jpg"
+type = "image"
+title = "Thousand Oaks California Conejo Valley landscape"
+
+[[outputs]]
+id = "WOzD2EUTLZF-L1U3wMsvg"
+uri = "file://attached_assets/stock_images/ventura_1.jpg"
+type = "image"
+title = "Ventura California pier ocean"
+
+[[outputs]]
+id = "2aSgCxzNiRHCCqrz6zmEt"
+uri = "file://attached_assets/stock_images/ventura_2.jpg"
+type = "image"
+title = "Ventura California pier ocean"
+
+[[outputs]]
+id = "3pZI1_goh4nDkmLzSgMdN"
+uri = "file://attached_assets/stock_images/ventura_3.jpg"
+type = "image"
+title = "Ventura California pier ocean"
+
+[[outputs]]
+id = "0WMAn2h4C2uGz1A7821Yq"
+uri = "file://attached_assets/stock_images/westlake_village_1.jpg"
+type = "image"
+title = "Westlake Village California lake"
+
+[[outputs]]
+id = "bBMYVex91f0G3J1PY9RuX"
+uri = "file://attached_assets/stock_images/westlake_village_2.jpg"
+type = "image"
+title = "Westlake Village California lake"
+
+[[outputs]]
+id = "Kl4UGQTsIGbJLWXCyJrNX"
+uri = "file://attached_assets/stock_images/westlake_village_3.jpg"
+type = "image"
+title = "Westlake Village California lake"
+
+[[outputs]]
+id = "0CDdTvwU6ofgCjMfBsJyQ"
+uri = "file://attached_assets/stock_images/agoura_hills_1.jpg"
+type = "image"
+title = "Ladyface Mountain Agoura Hills California"
+
+[[outputs]]
+id = "HwTdOY-rfYD3wtVdKNXuP"
+uri = "file://attached_assets/stock_images/agoura_hills_2.jpg"
+type = "image"
+title = "Ladyface Mountain Agoura Hills California"
+
+[[outputs]]
+id = "PORD9tIgTHL2mHhsN1JrJ"
+uri = "file://attached_assets/stock_images/agoura_hills_3.jpg"
+type = "image"
+title = "Ladyface Mountain Agoura Hills California"
+
+[[outputs]]
+id = "Ol5xbe_cW7p690AQNFMHj"
+uri = "file://attached_assets/stock_images/calabasas_1.jpg"
+type = "image"
+title = "Calabasas California hills landscape"
+
+[[outputs]]
+id = "T3XwRp5tGorxH6CR0jNeb"
+uri = "file://attached_assets/stock_images/calabasas_2.jpg"
+type = "image"
+title = "Calabasas California hills landscape"
+
+[[outputs]]
+id = "Tsauok32r5lmSuGhjbDVK"
+uri = "file://attached_assets/stock_images/calabasas_3.jpg"
+type = "image"
+title = "Calabasas California hills landscape"
+
+[[outputs]]
+id = "H9DBIziIU8zMR3S-KfdM8"
+uri = "file://attached_assets/stock_images/encino_1.jpg"
+type = "image"
+title = "Lake Balboa Encino California"
+
+[[outputs]]
+id = "XuOH3ifQIJL1xkF2U-5J1"
+uri = "file://attached_assets/stock_images/encino_2.jpg"
+type = "image"
+title = "Lake Balboa Encino California"
+
+[[outputs]]
+id = "sCBwsWA9zesPSQ5x6bfl1"
+uri = "file://attached_assets/stock_images/encino_3.jpg"
+type = "image"
+title = "Lake Balboa Encino California"
+
+[[outputs]]
+id = "3ZuhILJ0TwuOiepHWZiYK"
+uri = "file://attached_assets/stock_images/santa_monica_1.jpg"
+type = "image"
+title = "Santa Monica Pier California"
+
+[[outputs]]
+id = "9od-oMTXsBFY8YH3-vgLK"
+uri = "file://attached_assets/stock_images/santa_monica_2.jpg"
+type = "image"
+title = "Santa Monica Pier California"
+
+[[outputs]]
+id = "Bo8pt4wtrS658pDYph3L6"
+uri = "file://attached_assets/stock_images/santa_monica_3.jpg"
+type = "image"
+title = "Santa Monica Pier California"
+
+[[outputs]]
+id = "vNh3v6J0omTS4d9PxM4Pp"
+uri = "file://attached_assets/stock_images/sherman_oaks_1.jpg"
+type = "image"
+title = "Ventura Boulevard Sherman Oaks California"
+
+[[outputs]]
+id = "XZ0692jxel0-zxQ7LgokP"
+uri = "file://attached_assets/stock_images/sherman_oaks_2.jpg"
+type = "image"
+title = "Ventura Boulevard Sherman Oaks California"
+
+[[outputs]]
+id = "IIFOzUun5kD4YEZwXtie8"
+uri = "file://attached_assets/stock_images/sherman_oaks_3.jpg"
+type = "image"
+title = "Ventura Boulevard Sherman Oaks California"
+
+[[outputs]]
+id = "wTtBwY1Y5ISyHJ_FYUrHU"
+uri = "file://attached_assets/stock_images/tarzana_1.jpg"
+type = "image"
+title = "Tarzana California San Fernando Valley street"
+
+[[outputs]]
+id = "anQ1ttNCW3NZ-HoWRaH3B"
+uri = "file://attached_assets/stock_images/tarzana_2.jpg"
+type = "image"
+title = "Tarzana California San Fernando Valley street"
+
+[[outputs]]
+id = "bydP-tO_d6GijE4gj3kCJ"
+uri = "file://attached_assets/stock_images/tarzana_3.jpg"
+type = "image"
+title = "Tarzana California San Fernando Valley street"
+
+[[outputs]]
+id = "6S-8hOVJ-sTtsR3K19L4S"
+uri = "file://attached_assets/stock_images/woodland_hills_1.jpg"
+type = "image"
+title = "Warner Center Woodland Hills California"
+
+[[outputs]]
+id = "rdTSVT8XyuaFUPIerVC8C"
+uri = "file://attached_assets/stock_images/woodland_hills_2.jpg"
+type = "image"
+title = "Warner Center Woodland Hills California"
+
+[[outputs]]
+id = "VLSvRR6x6xp24arJgm4J0"
+uri = "file://attached_assets/stock_images/woodland_hills_3.jpg"
+type = "image"
+title = "Warner Center Woodland Hills California"
+
+[[outputs]]
+id = "xyOYaRA5lQZNqpSLWnPc8"
+uri = "file://attached_assets/stock_images/camarillo_b_1.jpg"
+type = "image"
+title = "strawberry fields farmland Ventura County California"
+
+[[outputs]]
+id = "qZyOby-6WnQ5fpKV5O8-U"
+uri = "file://attached_assets/stock_images/camarillo_b_2.jpg"
+type = "image"
+title = "strawberry fields farmland Ventura County California"
+
+[[outputs]]
+id = "zLXS1i9r0N8q7gvHPT8I_"
+uri = "file://attached_assets/stock_images/camarillo_b_3.jpg"
+type = "image"
+title = "strawberry fields farmland Ventura County California"
+
+[[outputs]]
+id = "822SJFVMQoNkHEaYtcQ-Q"
+uri = "file://attached_assets/stock_images/moorpark_b_1.jpg"
+type = "image"
+title = "oak trees rolling golden hills Southern California countryside"
+
+[[outputs]]
+id = "WjPKHNi_7tRb2zaSVH3km"
+uri = "file://attached_assets/stock_images/moorpark_b_2.jpg"
+type = "image"
+title = "oak trees rolling golden hills Southern California countryside"
+
+[[outputs]]
+id = "G05wv3dLZzRcLJFvmWISd"
+uri = "file://attached_assets/stock_images/moorpark_b_3.jpg"
+type = "image"
+title = "oak trees rolling golden hills Southern California countryside"
+
+[[outputs]]
+id = "vqkU-oYj1ZZjhcwq3qBy0"
+uri = "file://attached_assets/stock_images/tarzana_b_1.jpg"
+type = "image"
+title = "Santa Monica Mountains overlook San Fernando Valley California"
+
+[[outputs]]
+id = "o3nXyZGTIPXFX3JhhXnbx"
+uri = "file://attached_assets/stock_images/tarzana_b_2.jpg"
+type = "image"
+title = "Santa Monica Mountains overlook San Fernando Valley California"
+
+[[outputs]]
+id = "_oBkrO_s--UYyWzS7eKrC"
+uri = "file://attached_assets/stock_images/tarzana_b_3.jpg"
+type = "image"
+title = "Santa Monica Mountains overlook San Fernando Valley California"
+
+[[outputs]]
+id = "ZCfzX7rvxWmBJgc-gBPB3"
+uri = "file://attached_assets/stock_images/westlake_village_b_1.jpg"
+type = "image"
+title = "lakeside homes marina Southern California suburb"
+
+[[outputs]]
+id = "W77qpJ8sktaVqxnJSNWW9"
+uri = "file://attached_assets/stock_images/westlake_village_b_2.jpg"
+type = "image"
+title = "lakeside homes marina Southern California suburb"
+
+[[outputs]]
+id = "sQTpOwPWMIuA1WESh3sIr"
+uri = "file://attached_assets/stock_images/westlake_village_b_3.jpg"
+type = "image"
+title = "lakeside homes marina Southern California suburb"
+
+[[outputs]]
+id = "83JPWFUR_3_CGP-su5GwZ"
+uri = "file://attached_assets/stock_images/agoura_hills_b_1.jpg"
+type = "image"
+title = "Malibu Creek State Park rock formation Santa Monica Mountains California"
+
+[[outputs]]
+id = "cuE-GrBsBhUk8J0PMehBX"
+uri = "file://attached_assets/stock_images/agoura_hills_b_2.jpg"
+type = "image"
+title = "Malibu Creek State Park rock formation Santa Monica Mountains California"
+
+[[outputs]]
+id = "85IgzkA52QkOhMxxtFuAd"
+uri = "file://attached_assets/stock_images/agoura_hills_b_3.jpg"
+type = "image"
+title = "Malibu Creek State Park rock formation Santa Monica Mountains California"
+
+[[outputs]]
+id = "uxr4F-QXyrW8eodOwbAMc"
+uri = "file://attached_assets/previews/elh_photo_picks.png"
+type = "image"
+title = "City photo picks — 15 pages"
