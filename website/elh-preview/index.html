@@ -539,7 +539,8 @@ nav a:hover{color:var(--gold)}
 .founder-photo.has-portrait{position:relative;min-height:480px;overflow:hidden;margin:0}
 .founder-photo.has-portrait::after{content:"";position:absolute;left:0;right:0;bottom:0;height:66%;background:linear-gradient(transparent,rgba(36,16,40,.14) 18%,rgba(36,16,40,.74) 66%,rgba(36,16,40,.92));z-index:1;pointer-events:none}
 .founder-overlay{position:absolute;z-index:2;left:0;right:0;bottom:0;display:flex;flex-direction:column;align-items:flex-start;gap:1rem;padding:2.4rem 2.4rem 1.6rem}
-.founder-words{margin:0;color:rgba(245,240,235,.97);font-family:var(--ff-d);font-style:italic;font-size:19px;line-height:1.55;text-shadow:0 2px 16px rgba(0,0,0,.6)}
+.founder-words{margin:0;color:rgba(245,240,235,.97);font-family:var(--ff-d);font-style:italic;font-size:19px;line-height:1.55;text-shadow:0 2px 16px rgba(0,0,0,.6);transition:opacity .2s ease}
+.founder-words.is-fading{opacity:0}
 .founder-play{display:inline-flex;align-items:center;gap:.55rem;background:rgba(201,176,126,.96);color:var(--deep);border:0;border-radius:999px;padding:.52rem 1.1rem;font-family:var(--ff-b);font-size:13px;font-weight:600;letter-spacing:.02em;cursor:pointer;box-shadow:0 8px 22px rgba(0,0,0,.3);transition:transform .18s,background .18s}
 .founder-play:hover{transform:translateY(-1px);background:var(--gold)}
 .founder-play .ico{display:inline-block;width:0;height:0;border-style:solid;border-width:5px 0 5px 9px;border-color:transparent transparent transparent var(--deep)}
@@ -1467,8 +1468,8 @@ p,li,blockquote{text-wrap:pretty}
   <figure class="founder-photo has-portrait">
     <img class="founder-portrait" src="assets/img/inline-e143eb7e1b.jpg" alt="Aleksandra Dubina, founder of Eternal Life Hospice">
     <div class="founder-overlay">
-      <blockquote class="founder-words">Placeholder — paste Aleksandra's welcome words here and they will appear across the lower half of her portrait, gently overlaid for easy reading.</blockquote>
-      <button type="button" class="founder-play" aria-label="Play welcome message from Aleksandra Dubina"><span class="ico" aria-hidden="true"></span><span class="lbl">Hear her welcome</span></button>
+      <blockquote class="founder-words">Hello, I'm Aleksandra Dubina, certified hospice administrator and founder of Eternal Life Hospice.</blockquote>
+      <button type="button" class="founder-play" aria-pressed="false"><span class="ico" aria-hidden="true"></span><span class="lbl">Hear her welcome</span></button>
       <div class="founder-vcap">A welcome from our founder, Aleksandra Dubina</div>
     </div>
     <audio class="founder-audio" preload="metadata"><source src="assets/audio/aleksandra-welcome.mp3" type="audio/mpeg"></audio>
@@ -1737,13 +1738,30 @@ p,li,blockquote{text-wrap:pretty}
 (function(){
   var btn=document.querySelector('.founder-play');
   var audio=document.querySelector('.founder-audio');
+  var wordsEl=document.querySelector('.founder-words');
   if(!btn||!audio)return;
   var lbl=btn.querySelector('.lbl');
-  function reset(){btn.classList.remove('is-playing');if(lbl)lbl.textContent='Hear her welcome';}
+  var SEG=[
+   {s:0.0,t:"Hello, I'm Aleksandra Dubina, certified hospice administrator and founder of Eternal Life Hospice."},
+   {s:8.22,t:"Thank you for allowing us to be part of this deeply sensitive time."},
+   {s:12.6,t:"If you are visiting us, your family may be facing important decisions and many questions."},
+   {s:18.7,t:"I want you to know this. You do not have to figure everything out alone."},
+   {s:23.94,t:"Our role is to bring calm, comfort, and clear guidance into the home."},
+   {s:29.61,t:"We support the clinical needs of your loved one and care for the whole person."},
+   {s:34.38,t:"Body, mind, spirit, patient, and family."},
+   {s:39.22,t:"From your first call forward, we guide you through each next step, what to expect,"},
+   {s:44.56,t:"and how to keep your loved one comfortable with dignity, compassion, privacy, and responsible care."},
+   {s:52.02,t:"At Eternal, we are here in moments that matter most, and provide care that honors life."}
+  ];
+  var cur=-1,swapT;
+  function idxAt(t){for(var i=SEG.length-1;i>=0;i--){if(t>=SEG[i].s)return i;}return 0;}
+  function show(i){if(i===cur||!wordsEl)return;cur=i;wordsEl.classList.add('is-fading');clearTimeout(swapT);swapT=setTimeout(function(){wordsEl.textContent=SEG[i].t;wordsEl.classList.remove('is-fading');},180);}
+  function reset(){btn.classList.remove('is-playing');btn.setAttribute('aria-pressed','false');if(lbl)lbl.textContent='Hear her welcome';}
   btn.addEventListener('click',function(){if(audio.paused){audio.play();}else{audio.pause();}});
-  audio.addEventListener('play',function(){btn.classList.add('is-playing');if(lbl)lbl.textContent='Pause';});
+  audio.addEventListener('play',function(){btn.classList.add('is-playing');btn.setAttribute('aria-pressed','true');if(lbl)lbl.textContent='Pause';});
   audio.addEventListener('pause',reset);
-  audio.addEventListener('ended',reset);
+  audio.addEventListener('timeupdate',function(){show(idxAt(audio.currentTime));});
+  audio.addEventListener('ended',function(){reset();cur=-1;show(0);});
 })();
 </script>
 <script src="/assets/chat.js" defer></script>
