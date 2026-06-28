@@ -95,11 +95,12 @@
       ".elhc-cb-submit:hover{background:var(--deep)}.elhc-cb-submit:disabled{opacity:.6;cursor:default}",
       ".elhc-cb-cancel{background:transparent;border:none;color:var(--mid);font-family:inherit;font-size:12.5px;cursor:pointer;padding:.42rem}",
       ".elhc-cb-cancel:hover{color:var(--p)}",
-      ".elhc-panel{position:fixed;right:20px;bottom:20px;z-index:2147483000;width:370px;max-width:calc(100vw - 32px);height:560px;max-height:calc(100vh - 40px);background:var(--cream);border-radius:18px;box-shadow:0 24px 60px rgba(60,28,59,.34);display:none;flex-direction:column;overflow:hidden;border:1px solid var(--cdark)}",
-      ".elhc-panel.open{display:flex;animation:elhcUp .42s cubic-bezier(.22,1,.36,1)}",
-      ".elhc-panel.closing{display:flex;animation:elhcDown .26s cubic-bezier(.4,0,1,1) forwards}",
-      "@keyframes elhcUp{from{opacity:0;transform:translateY(18px) scale(.985)}to{opacity:1;transform:none}}",
-      "@keyframes elhcDown{from{opacity:1;transform:none}to{opacity:0;transform:translateY(16px) scale(.985)}}",
+      ".elhc-panel{position:fixed;top:0;right:0;bottom:0;z-index:2147483000;width:410px;max-width:100vw;height:100vh;height:100dvh;background:var(--cream);border-radius:22px 0 0 22px;box-shadow:-22px 0 70px rgba(60,28,59,.30);display:none;flex-direction:column;overflow:hidden;border-left:1px solid var(--cdark)}",
+      "@media(max-width:480px){.elhc-panel{border-radius:0}}",
+      ".elhc-panel.open{display:flex;animation:elhcSlideIn .44s cubic-bezier(.22,1,.36,1)}",
+      ".elhc-panel.closing{display:flex;animation:elhcSlideOut .3s cubic-bezier(.4,0,1,1) forwards}",
+      "@keyframes elhcSlideIn{from{transform:translateX(100%)}to{transform:none}}",
+      "@keyframes elhcSlideOut{from{transform:none}to{transform:translateX(100%)}}",
       ".elhc-head{background:linear-gradient(135deg,var(--p),var(--deep));color:var(--cream);padding:.95rem 1rem .9rem}",
       ".elhc-head-top{display:flex;align-items:center;justify-content:space-between;gap:.5rem}",
       ".elhc-title{font-family:'Fraunces ELH',Georgia,serif;font-size:1.12rem;line-height:1.2}",
@@ -658,8 +659,8 @@
     panel.classList.add("closing");
     closeTimer = window.setTimeout(function () {
       panel.classList.remove("closing");
-      dock.classList.remove("hide"); // reveal launcher only after panel has faded out
-    }, 280);
+      dock.classList.remove("hide"); // reveal launcher only after panel has slid out
+    }, 300);
   }
 
   if (document.readyState === "loading") {
