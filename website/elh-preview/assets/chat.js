@@ -106,7 +106,7 @@
       ".elhc-head{background:linear-gradient(180deg,#ffffff,var(--cream));color:var(--deep);padding:.9rem .85rem .85rem;border-bottom:1px solid var(--cdark)}",
       ".elhc-head-top{display:flex;align-items:center;justify-content:space-between;gap:.4rem}",
       ".elhc-title{font-family:'Fraunces ELH',Georgia,serif;font-size:.9rem;line-height:1.15;color:var(--deep);white-space:nowrap}",
-      ".elhc-sub{font-size:11.5px;color:var(--p);opacity:.78;margin-top:2px}",
+      ".elhc-sub{font-size:11.5px;color:var(--p);opacity:.78;margin-top:2px;white-space:nowrap}",
       ".elhc-x{background:transparent;border:none;color:var(--p);cursor:pointer;opacity:.7;padding:4px;border-radius:6px;line-height:0}",
       ".elhc-x:hover{opacity:1;background:rgba(91,46,89,.1)}",
       ".elhc-call{display:flex;align-items:center;justify-content:center;gap:.45rem;margin-top:.7rem;background:var(--blue);color:#fff;text-decoration:none;font-weight:700;font-size:14px;padding:.55rem;border-radius:10px}",
@@ -546,7 +546,7 @@
     var top = el("div", "elhc-head-top");
     var titleWrap = el("div");
     titleWrap.appendChild(el("div", "elhc-title", "Here in Moments that Matter Most"));
-    titleWrap.appendChild(el("div", "elhc-sub", "To guide and support you from this moment forward."));
+    titleWrap.appendChild(el("div", "elhc-sub", "To guide and support from this moment forward."));
     var x = el("button", "elhc-x");
     x.type = "button";
     x.setAttribute("aria-label", "Close the support guide");
