@@ -27,6 +27,15 @@ description: Which pages use shared elh.css vs inline-only CSS in the elh-previe
 - **Why it matters:** a mauve/sepia duotone that several cards once showed was pre-applied to the inline base64 images, so no CSS edit could remove it — only swapping the asset bytes did. If a card's tint/treatment looks wrong, fix the source file (re-export/replace), don't hunt for a CSS rule.
 - All 9 now reference external files in `assets/img/` (photos as `.jpg`, resized to max 900px); none are base64. Keep new card photos as optimized external files, not inline base64.
 
+## Offerings / therapies display has TWO tiers (decided)
+- `#modalities` (homepage, inline CSS) = tier 1: 9 INTEGRATIVE therapy cards WITH per-therapy photos (`.mod-grid`/`.mod-card`): Music, Massage, Reiki, Aromatherapy, Pet, Audiology, Holistic Medicine, End-of-Life Doula, Sound Bath.
+- Tier 2 = `.mod-extra` (id `clinical-mobile`) photo-LESS card grid (`.svc-grid`/`.svc-item`, gold ✦ chips) under subheading "Clinical & Mobile Services": Physical/Occupational/Speech Therapy, Dietitian, Mobile Podiatry/Optometry/Dialysis, Lab Testing, Licensed Gerontologist.
+- **Why:** new clinical/mobile services have no photos; mixing photo + photo-less cards in one grid looks broken, so non-comfort services live in their own photo-less tier. Don't add photo-less cards into `.mod-grid`.
+- City pages only summarize therapies in the `.prov` "What we provide" list ("…and more") — the detailed two-tier display is homepage-only; don't duplicate it onto city pages.
+
+## `.prov` / `.creds` styling (shared elh.css, city pages)
+- `.prov` "What we provide" = on-brand white cards (cream-dark border, gold ✦ chip in a rounded square, hover lift). `.creds` compliance line = cream-gradient bar; separators are `<span class="cd-sep" aria-hidden="true">&#10022;</span>` (gold ✦), NOT `&middot;`. The slate (`--slate`, off-brand blue) color was replaced by `--text-mid`; avoid `--slate` for text.
+
 ## Coverage-area architecture (decided)
 - The county page `hospice-ventura-and-los-angeles-county-ca.html` is the single coverage/SEO hub. It owns the only "real" map: a designed image `assets/img/service-hero-map.png` (with a Google Maps HQ pin), plus per-county sections.
 - Homepage `#coverage` uses that SAME static map image + a "View our full coverage area →" CTA to the hub. The old code-drawn SVG map (JS-built `#mapPanel`/`mapSvg`/`.cpill` county pills + the footer-fill IIFE using a `/hospice-care-SLUG` href scheme) was REMOVED — it looked like a crude doodle. Don't reintroduce it.

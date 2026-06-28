@@ -64,7 +64,8 @@ a{color:inherit;text-decoration:none}
 .nearby a{font-size:13.5px;color:var(--deep);background:#fff;border:1px solid rgba(91,46,89,.14);border-radius:18px;padding:6px 13px;transition:background .2s,color .2s}
 .nearby a:hover{background:var(--plum);color:#fff;border-color:var(--plum)}
 .nearby .fc-city{font-size:13.5px;color:var(--deep);background:#fff;border:1px solid rgba(91,46,89,.14);border-radius:18px;padding:6px 13px;cursor:default}
-.creds{background:#fff;border-top:1px solid rgba(91,46,89,.08);border-bottom:1px solid rgba(91,46,89,.08);text-align:center;padding:1.6rem;font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:var(--text-mid);font-weight:600}
+.creds{background:linear-gradient(180deg,#fff,var(--cream-mid));border-top:1px solid rgba(91,46,89,.08);border-bottom:1px solid rgba(91,46,89,.08);text-align:center;padding:1.5rem 1.6rem;font-size:12.5px;letter-spacing:.15em;line-height:1.9;text-transform:uppercase;color:var(--text-mid);font-weight:600}
+.creds .cd-sep{color:var(--gold);font-size:9px;margin:0 .4em;vertical-align:2px;display:inline-block}
 .cta{background:linear-gradient(135deg,#5B2E59,#3C1C3B);color:#F5F0EB;text-align:center;padding:3.2rem 1.6rem}
 .cta h2{font-family:var(--ff-d);font-weight:300;font-size:clamp(24px,3.2vw,32px);margin-bottom:.6rem}
 .cta p{color:rgba(245,240,235,.85);margin-bottom:1.4rem}
