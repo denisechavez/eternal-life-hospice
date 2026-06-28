@@ -261,7 +261,6 @@
         "And whenever you\u2019d rather talk with a real person, our team is one tap away, day or night."
       ],
       function () {
-        addChips(STARTERS);
         addCallbackChip();
       }
     );
