@@ -58,3 +58,8 @@ description: Which pages use shared elh.css vs inline-only CSS in the elh-previe
 ## Netlify forms — file uploads
 - Lead forms submit via AJAX urlencoded, but **any form with a file upload must use `enctype="multipart/form-data"` and submit `new FormData(form)` with no manual Content-Type** — the urlencoded path silently drops the file.
 - **Why:** A job-application/upload funnel must never show false success. Gate the success UI on `response.ok`; on failure keep the form, re-enable the button, and show a phone fallback.
+
+## Chatbot (guided + AI)
+- Widget: `assets/chat.js` — fully self-contained (injects its own <style>+markup) because index.html & resources.html don't link elh.css. Loaded via `<script src="/assets/chat.js" defer>` on all 33 pages (before </body>). Persistent gold "Call" pill + chat launcher in collapsed dock (phone always visible). Guided FAQ chips + free-text. Emergency + clinical regex short-circuit in code → route to 24/7 line / 911, never sent to AI.
+- AI: `netlify/functions/chat.js` (CommonJS exports.handler, global fetch, OpenAI gpt-4o-mini). Mirrors the same emergency/clinical guards server-side.
+- **Why Netlify Function (not Replit integration):** site deploys to Netlify, so the OpenAI key MUST live in Netlify env (`OPENAI_API_KEY`) — Replit-managed/integration creds don't reach the Netlify runtime. Never commit the key. Guided answers + phone work with no key; AI activates once key is set.
