@@ -103,9 +103,9 @@
       ".elhc-panel.closing{display:flex;animation:elhcSlideOut .3s cubic-bezier(.4,0,1,1) forwards}",
       "@keyframes elhcSlideIn{from{transform:translateX(100%)}to{transform:none}}",
       "@keyframes elhcSlideOut{from{transform:none}to{transform:translateX(100%)}}",
-      ".elhc-head{background:linear-gradient(180deg,#ffffff,var(--cream));color:var(--deep);padding:.95rem 1rem .9rem;border-bottom:1px solid var(--cdark)}",
-      ".elhc-head-top{display:flex;align-items:center;justify-content:space-between;gap:.5rem}",
-      ".elhc-title{font-family:'Fraunces ELH',Georgia,serif;font-size:1.12rem;line-height:1.2;color:var(--deep)}",
+      ".elhc-head{background:linear-gradient(180deg,#ffffff,var(--cream));color:var(--deep);padding:.9rem .85rem .85rem;border-bottom:1px solid var(--cdark)}",
+      ".elhc-head-top{display:flex;align-items:center;justify-content:space-between;gap:.4rem}",
+      ".elhc-title{font-family:'Fraunces ELH',Georgia,serif;font-size:.9rem;line-height:1.15;color:var(--deep);white-space:nowrap}",
       ".elhc-sub{font-size:11.5px;color:var(--p);opacity:.78;margin-top:2px}",
       ".elhc-x{background:transparent;border:none;color:var(--p);cursor:pointer;opacity:.7;padding:4px;border-radius:6px;line-height:0}",
       ".elhc-x:hover{opacity:1;background:rgba(91,46,89,.1)}",
@@ -546,7 +546,7 @@
     var top = el("div", "elhc-head-top");
     var titleWrap = el("div");
     titleWrap.appendChild(el("div", "elhc-title", "Here in Moments that Matter Most"));
-    titleWrap.appendChild(el("div", "elhc-sub", "Here to support 24/7"));
+    titleWrap.appendChild(el("div", "elhc-sub", "Committed to your support 24/7"));
     var x = el("button", "elhc-x");
     x.type = "button";
     x.setAttribute("aria-label", "Close the support guide");
