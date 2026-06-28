@@ -395,11 +395,24 @@ nav a:hover{color:var(--gold)}
 .counties{padding:6rem 2rem;background:var(--deep)}
 .counties .sec-head h2{color:var(--cream)}
 .counties .sec-head p{color:rgba(245,240,235,.6)}
+.coverage-stats{display:flex;justify-content:center;flex-wrap:wrap;margin:2.2rem auto 0;max-width:760px}
+.cs-item{text-align:center;padding:.35rem 2.4rem}
+.cs-item:not(:first-child){border-left:1px solid rgba(201,176,126,.25)}
+.cs-num{font-family:var(--ff-d);font-size:2.1rem;line-height:1;color:var(--gold)}
+.cs-lbl{margin-top:.5rem;font-size:.74rem;letter-spacing:.09em;text-transform:uppercase;color:rgba(245,240,235,.62)}
 .coverage-map{max-width:900px;margin:2.6rem auto 0}
-.coverage-map-img{display:block;border-radius:18px;overflow:hidden;box-shadow:0 24px 60px rgba(0,0,0,.35);border:1px solid rgba(201,176,126,.28)}
-.coverage-map-img img{display:block;width:100%;height:auto}
-.coverage-cta{display:inline-block;margin-top:1.7rem;background:var(--gold);color:var(--deep);padding:.85rem 1.7rem;border-radius:999px;font-weight:600;text-decoration:none;font-family:var(--ff-b);letter-spacing:.01em}
+.coverage-map-img{position:relative;display:block;border-radius:18px;overflow:hidden;box-shadow:0 24px 60px rgba(0,0,0,.35);border:1px solid rgba(201,176,126,.28);transition:transform .5s cubic-bezier(.22,1,.36,1),box-shadow .5s cubic-bezier(.22,1,.36,1)}
+.coverage-map-img img{display:block;width:100%;height:auto;transition:transform .6s cubic-bezier(.22,1,.36,1)}
+.coverage-map-img:hover{transform:translateY(-4px);box-shadow:0 34px 74px rgba(0,0,0,.46)}
+.coverage-map-img:hover img{transform:scale(1.045)}
+.coverage-map-label{position:absolute;left:50%;bottom:20px;transform:translateX(-50%) translateY(10px);opacity:0;transition:opacity .4s ease,transform .4s cubic-bezier(.22,1,.36,1);background:rgba(60,28,59,.86);-webkit-backdrop-filter:blur(5px);backdrop-filter:blur(5px);color:var(--cream);padding:.62rem 1.25rem;border-radius:999px;font-family:var(--ff-b);font-size:.9rem;font-weight:600;border:1px solid rgba(201,176,126,.45);pointer-events:none;white-space:nowrap}
+.coverage-map-img:hover .coverage-map-label,.coverage-map-img:focus-visible .coverage-map-label{opacity:1;transform:translateX(-50%) translateY(0)}
+.coverage-cta{display:inline-block;margin-top:1.7rem;background:var(--gold);color:var(--deep);padding:.85rem 1.7rem;border-radius:999px;font-weight:600;text-decoration:none;font-family:var(--ff-b);letter-spacing:.01em;transition:filter .2s ease}
 .coverage-cta:hover{filter:brightness(1.07)}
+.coverage-cta .cta-arrow{display:inline-block;margin-left:.5rem;transition:transform .25s ease}
+.coverage-cta:hover .cta-arrow{transform:translateX(4px)}
+@media(max-width:560px){.cs-item{padding:.35rem 1.3rem}.cs-item:not(:first-child){border-left:none}.cs-num{font-size:1.8rem}}
+@media(prefers-reduced-motion:reduce){.coverage-map-img,.coverage-map-img img,.coverage-map-label,.cta-arrow{transition:none}.coverage-map-img:hover{transform:none}.coverage-map-img:hover img{transform:none}}
 
 /* ===== BY THE NUMBERS (proof band) — v6 addition ===== */
 .proof-band{background:var(--cream-mid);padding:5rem 2rem}
@@ -1377,9 +1390,14 @@ p,li,blockquote{text-wrap:pretty}
     <h2 style="color:var(--cream)">Serving families across <em style="color:var(--gold)">Southern California.</em></h2>
     <p>We provide hospice care at home in every city across<br>Ventura County and Los Angeles County.</p>
   </div>
+  <div class="coverage-stats reveal">
+    <div class="cs-item"><div class="cs-num">2</div><div class="cs-lbl">Counties Served</div></div>
+    <div class="cs-item"><div class="cs-num">24/7</div><div class="cs-lbl">Admissions &amp; On-Call</div></div>
+    <div class="cs-item"><div class="cs-num">$0</div><div class="cs-lbl">Out-of-Pocket on Medicare</div></div>
+  </div>
   <div class="coverage-map reveal">
-    <a href="hospice-ventura-and-los-angeles-county-ca.html" class="coverage-map-img" aria-label="View our full coverage area across Ventura and Los Angeles County"><img src="assets/img/service-hero-map.png" alt="Map of Ventura County and Los Angeles County showing the communities Eternal Life Hospice serves"></a>
-    <div style="text-align:center"><a href="hospice-ventura-and-los-angeles-county-ca.html" class="coverage-cta">View our full coverage area &#8594;</a></div>
+    <a href="hospice-ventura-and-los-angeles-county-ca.html" class="coverage-map-img" aria-label="View our full coverage area across Ventura and Los Angeles County"><img src="assets/img/service-hero-map.png" alt="Map of Ventura County and Los Angeles County showing the communities Eternal Life Hospice serves"><span class="coverage-map-label">View coverage area &#8594;</span></a>
+    <div style="text-align:center"><a href="hospice-ventura-and-los-angeles-county-ca.html" class="coverage-cta">View our full coverage area <span class="cta-arrow">&#8594;</span></a></div>
   </div>
 </section>
 <!-- CARE WHEREVER HOME IS — care settings (v6) -->
