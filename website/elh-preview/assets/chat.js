@@ -61,7 +61,7 @@
     var css = [
       ".elhc, .elhc *{box-sizing:border-box}",
       ".elhc{--p:#5B2E59;--deep:#3C1C3B;--gold:#C9B07E;--cream:#F5F0EB;--cmid:#EDE6DE;--cdark:#D8CDBF;--ink:#3a2b39;--mid:#5A4057;font-family:'Jost ELH',system-ui,-apple-system,Segoe UI,Roboto,sans-serif}",
-      ".elhc-dock{position:fixed;right:20px;bottom:20px;z-index:2147483000;display:flex;flex-direction:column;align-items:flex-end;gap:.55rem}",
+      ".elhc-dock{position:fixed;right:36px;bottom:20px;z-index:2147483000;display:flex;flex-direction:column;align-items:flex-end;gap:.55rem}",
       ".elhc-dock.hide{display:none}",
       ".elhc-launch{position:relative;display:flex;align-items:center;justify-content:center;border:none;cursor:pointer;background:var(--p);color:var(--cream);width:58px;height:58px;border-radius:50%;box-shadow:0 8px 24px rgba(60,28,59,.34);transition:transform .2s,box-shadow .2s}",
       ".elhc-launch:hover{transform:translateY(-2px);box-shadow:0 12px 30px rgba(60,28,59,.42)}",
