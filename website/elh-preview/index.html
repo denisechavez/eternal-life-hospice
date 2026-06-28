@@ -321,6 +321,26 @@ nav a:hover{color:var(--gold)}
 .mod-card[data-mod="reiki"] .mod-img::before{content:'';position:absolute;z-index:1;inset:0;pointer-events:none;opacity:0;background:radial-gradient(circle at 58% 45%,rgba(255,255,255,.4),rgba(255,255,255,0) 55%)}
 .mod-card[data-mod="reiki"]:hover .mod-img::before{animation:glowPulse 3.2s ease-in-out infinite}
 @keyframes glowPulse{0%,100%{opacity:0}50%{opacity:1}}
+.mod-card[data-mod="massage"] .mod-img::before{content:'';position:absolute;z-index:1;left:50%;top:55%;width:74px;height:74px;margin:-37px 0 0 -37px;border-radius:50%;background:radial-gradient(circle,rgba(255,236,210,.55),rgba(255,236,210,0) 70%);opacity:0;pointer-events:none}
+.mod-card[data-mod="massage"]:hover .mod-img::before{animation:warmBreath 4.2s ease-in-out infinite}
+@keyframes warmBreath{0%,100%{opacity:0;transform:scale(.7)}50%{opacity:.85;transform:scale(1.18)}}
+.mod-card[data-mod="pet"] .mod-img::before,.mod-card[data-mod="pet"] .mod-img::after{content:'\2665';position:absolute;z-index:1;bottom:8px;left:42%;color:rgba(255,226,226,.82);font-size:16px;opacity:0;pointer-events:none}
+.mod-card[data-mod="pet"] .mod-img::after{left:58%;font-size:12px}
+.mod-card[data-mod="pet"]:hover .mod-img::before{animation:heartRise 3.4s ease-out infinite}
+.mod-card[data-mod="pet"]:hover .mod-img::after{animation:heartRise 3.4s ease-out 1.4s infinite}
+@keyframes heartRise{0%{opacity:0;transform:translateY(0) scale(.8)}25%{opacity:.85}100%{opacity:0;transform:translateY(-52px) scale(1.1)}}
+.mod-card[data-mod="audiology"] .mod-img::before,.mod-card[data-mod="audiology"] .mod-img::after{content:'';position:absolute;z-index:1;top:50%;right:30%;width:14px;height:14px;border-radius:50%;border:1.5px solid rgba(255,255,255,.62);opacity:0;pointer-events:none;transform:translate(50%,-50%)}
+.mod-card[data-mod="audiology"]:hover .mod-img::before{animation:soundPing 2.4s ease-out infinite}
+.mod-card[data-mod="audiology"]:hover .mod-img::after{animation:soundPing 2.4s ease-out 1.2s infinite}
+@keyframes soundPing{0%{opacity:.7;width:14px;height:14px}100%{opacity:0;width:92px;height:92px}}
+.mod-card[data-mod="holistic"] .mod-img::before,.mod-card[data-mod="holistic"] .mod-img::after{content:'';position:absolute;z-index:1;bottom:10px;left:46%;width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.72);box-shadow:0 0 6px rgba(255,255,255,.5);opacity:0;pointer-events:none}
+.mod-card[data-mod="holistic"] .mod-img::after{left:58%;width:4px;height:4px}
+.mod-card[data-mod="holistic"]:hover .mod-img::before{animation:moteDrift 4.6s ease-in-out infinite}
+.mod-card[data-mod="holistic"]:hover .mod-img::after{animation:moteDrift 4.6s ease-in-out 1.8s infinite}
+@keyframes moteDrift{0%{opacity:0;transform:translate(0,0)}25%{opacity:.8}60%{transform:translate(-8px,-34px)}100%{opacity:0;transform:translate(6px,-70px)}}
+.mod-card[data-mod="doula"] .mod-img::before{content:'';position:absolute;z-index:1;bottom:6px;left:50%;width:48px;height:48px;margin-left:-24px;border-radius:50%;background:radial-gradient(circle,rgba(255,233,204,.6),rgba(255,233,204,0) 70%);filter:blur(4px);opacity:0;pointer-events:none}
+.mod-card[data-mod="doula"]:hover .mod-img::before{animation:lightAscend 5s ease-out infinite}
+@keyframes lightAscend{0%{opacity:0;transform:translateY(0) scale(.8)}30%{opacity:.7}100%{opacity:0;transform:translateY(-72px) scale(1.3)}}
 }
 .mod-detail{max-height:0;overflow:hidden;transition:max-height .4s ease}
 .mod-card.open .mod-detail{max-height:600px}
