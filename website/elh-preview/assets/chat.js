@@ -62,12 +62,10 @@
       ".elhc{--p:#5B2E59;--deep:#3C1C3B;--gold:#C9B07E;--cream:#F5F0EB;--cmid:#EDE6DE;--cdark:#D8CDBF;--ink:#3a2b39;--mid:#5A4057;font-family:'Jost ELH',system-ui,-apple-system,Segoe UI,Roboto,sans-serif}",
       ".elhc-dock{position:fixed;right:20px;bottom:20px;z-index:2147483000;display:flex;flex-direction:column;align-items:flex-end;gap:.55rem}",
       ".elhc-dock.hide{display:none}",
-      ".elhc-dock-call{display:flex;align-items:center;gap:.5rem;background:var(--gold);color:var(--deep);text-decoration:none;font-weight:700;font-size:14px;padding:.6rem .95rem;border-radius:40px;box-shadow:0 8px 22px rgba(60,28,59,.26);transition:transform .2s,filter .2s}",
-      ".elhc-dock-call:hover{transform:translateY(-2px);filter:brightness(1.04)}",
-      ".elhc-dock-call small{font-weight:500;opacity:.8}",
-      ".elhc-launch{display:flex;align-items:center;gap:.55rem;border:none;cursor:pointer;background:var(--p);color:var(--cream);padding:.8rem 1.1rem;border-radius:40px;box-shadow:0 10px 30px rgba(60,28,59,.34);font-size:15px;font-weight:600;transition:transform .2s,box-shadow .2s}",
-      ".elhc-launch:hover{transform:translateY(-2px);box-shadow:0 14px 36px rgba(60,28,59,.42)}",
-      ".elhc-launch svg{width:20px;height:20px;flex-shrink:0}",
+      ".elhc-launch{position:relative;display:flex;align-items:center;justify-content:center;border:none;cursor:pointer;background:var(--p);color:var(--cream);width:58px;height:58px;border-radius:50%;box-shadow:0 8px 24px rgba(60,28,59,.34);transition:transform .2s,box-shadow .2s}",
+      ".elhc-launch:hover{transform:translateY(-2px);box-shadow:0 12px 30px rgba(60,28,59,.42)}",
+      ".elhc-launch svg{width:24px;height:24px;flex-shrink:0}",
+      ".elhc-launch::after{content:'';position:absolute;top:2px;right:2px;width:11px;height:11px;border-radius:50%;background:var(--gold);border:2px solid var(--cream)}",
       ".elhc-panel{position:fixed;right:20px;bottom:20px;z-index:2147483000;width:370px;max-width:calc(100vw - 32px);height:560px;max-height:calc(100vh - 40px);background:var(--cream);border-radius:18px;box-shadow:0 24px 60px rgba(60,28,59,.34);display:none;flex-direction:column;overflow:hidden;border:1px solid var(--cdark)}",
       ".elhc-panel.open{display:flex;animation:elhcUp .26s ease}",
       "@keyframes elhcUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}",
@@ -100,7 +98,7 @@
       ".elhc-send svg{width:18px;height:18px}",
       ".elhc-note{font-size:10.5px;color:var(--mid);text-align:center;margin-top:.45rem;line-height:1.4}",
       "@media (max-width:480px){.elhc-panel{right:8px;bottom:8px;width:calc(100vw - 16px);height:calc(100vh - 16px);max-height:calc(100vh - 16px)}.elhc-dock{right:14px;bottom:14px}}",
-      "@media (prefers-reduced-motion:reduce){.elhc-panel.open{animation:none}.elhc-launch,.elhc-dock-call{transition:none}.elhc-typing span{animation:none}}"
+      "@media (prefers-reduced-motion:reduce){.elhc-panel.open{animation:none}.elhc-launch{transition:none}.elhc-typing span{animation:none}}"
     ].join("\n");
     var s = document.createElement("style");
     s.setAttribute("data-elhc", "");
@@ -248,24 +246,14 @@
 
     dock = el("div", "elhc elhc-dock");
 
-    var dockCall = el("a", "elhc-dock-call");
-    dockCall.href = "tel:" + PHONE_TEL;
-    dockCall.setAttribute(
-      "aria-label",
-      "Call Eternal Life Hospice at " + PHONE_DISPLAY + ", available 24 hours a day"
-    );
-    dockCall.innerHTML =
-      '<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M6.6 10.8a15.5 15.5 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.24 11.4 11.4 0 0 0 3.6.58 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.46.58 3.6a1 1 0 0 1-.24 1z"/></svg>' +
-      "<span>Call " + PHONE_DISPLAY + " <small>\u00b7 24/7</small></span>";
-
     openBtn = el("button", "elhc-launch");
     openBtn.type = "button";
     openBtn.setAttribute("aria-label", "Open the help assistant");
+    openBtn.setAttribute("title", "Questions? We\u2019re here");
     openBtn.innerHTML =
-      '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-8.5 8.5 9.5 9.5 0 0 1-4-.9L3 20l1.4-4.5a8.4 8.4 0 0 1-1-4A8.38 8.38 0 0 1 12 3a8.38 8.38 0 0 1 9 8.5z"/></svg><span>Questions? We\u2019re here</span>';
+      '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-8.5 8.5 9.5 9.5 0 0 1-4-.9L3 20l1.4-4.5a8.4 8.4 0 0 1-1-4A8.38 8.38 0 0 1 12 3a8.38 8.38 0 0 1 9 8.5z"/></svg>';
     openBtn.addEventListener("click", open);
 
-    dock.appendChild(dockCall);
     dock.appendChild(openBtn);
 
     panel = el("div", "elhc elhc-panel");
