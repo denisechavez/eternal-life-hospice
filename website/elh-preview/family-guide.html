@@ -207,7 +207,8 @@ table.ws td.cell{padding:0}
 .contact .cname{font-family:var(--ff-d);font-weight:600;font-size:16px;color:var(--cream);letter-spacing:.01em;margin-bottom:7px}
 .contact .addr{margin-bottom:6px}
 .contact .phones{margin-bottom:4px}
-.contact .info .ph{color:var(--cream)}
+.contact .info .ph{color:var(--cream);white-space:nowrap}
+.contact .info .sep{opacity:.5}
 .contact .tag{font-family:var(--ff-d);font-style:normal;font-size:19px;color:var(--gold);text-align:right;margin-left:auto;margin-right:18px;line-height:1.18}
 
 .resources{margin-top:26px}
@@ -612,9 +613,8 @@ body.booklet .page{transition:transform 1.2s cubic-bezier(.3,.4,.2,1),opacity .5
             <div class="cname">Eternal Life Hospice, Inc.</div>
             <div class="addr">4165 E Thousand Oaks Blvd, Suite 325B<br>Westlake Village CA 91362</div>
             <div class="cf247" style="font-size:13px;color:var(--gold);letter-spacing:.02em;margin-bottom:5px">Here for you, 24/7</div>
-            <div class="phones"><span class="ph">Main 805.953.7273</span> &nbsp;&middot;&nbsp; Secondary 818.798.9303 &nbsp;&middot;&nbsp; Fax 805.953.8530</div>
-            <div class="web">info@eternallifehospice.com &nbsp;&middot;&nbsp; eternallifehospice.com</div>
-            <div class="cf-build" style="margin-top:8px;font-size:12.5px;opacity:.72">A <a href="https://conduitint.com" target="_blank" rel="noopener" style="color:inherit;text-decoration:underline">Conduit International</a> build</div>
+            <div class="phones"><span class="ph">Main 805.953.7273</span> <span class="sep">&middot;</span> <span class="ph">Secondary 818.798.9303</span> <span class="sep">&middot;</span> <span class="ph">Fax 805.953.8530</span></div>
+            <div class="web"><span class="ph">info@eternallifehospice.com</span> <span class="sep">&middot;</span> <span class="ph">eternallifehospice.com</span></div>
           </div>
           <div class="tag">Care That<br>Honors Life</div>
         </div>
@@ -634,7 +634,7 @@ body.booklet .page{transition:transform 1.2s cubic-bezier(.3,.4,.2,1),opacity .5
 </div>
 
 <div class="indicator">
-  <span class="lbl" id="pageLbl">1 / 6</span>
+  <span class="lbl" id="pageLbl">Cover</span>
   <div class="dots" id="dots"></div>
 </div>
 
@@ -668,13 +668,13 @@ body.booklet .page{transition:transform 1.2s cubic-bezier(.3,.4,.2,1),opacity .5
   var prevBtn=document.getElementById('prevBtn'), nextBtn=document.getElementById('nextBtn');
   var pagesEl=document.getElementById('pages');
   var dotsWrap=document.getElementById('dots');
-  for(var d=0;d<N;d++){var dt=document.createElement('div');dt.className='dot'+(d===0?' on':'');dt.setAttribute('data-i',d);dotsWrap.appendChild(dt);}
+  for(var d=1;d<N;d++){var dt=document.createElement('div');dt.className='dot';dt.setAttribute('data-i',d);dotsWrap.appendChild(dt);}
   var dots=Array.prototype.slice.call(dotsWrap.children);
 
   pages.forEach(function(p,idx){
     if(idx===0) return; // cover carries its own footer; no folio
     var f=document.createElement('div'); f.className='pfoot';
-    f.innerHTML='<span class="pf-l">Eternal Life Hospice &middot; Care That Honors Life</span><span class="pf-r">'+(idx+1)+' / '+N+'</span>';
+    f.innerHTML='<span class="pf-l">Eternal Life Hospice &middot; Care That Honors Life</span><span class="pf-r">'+idx+' / '+(N-1)+'</span>';
     p.appendChild(f);
   });
 
@@ -695,8 +695,8 @@ body.booklet .page{transition:transform 1.2s cubic-bezier(.3,.4,.2,1),opacity .5
     restingZ(); setHeight();
   }
   function chrome(){
-    dots.forEach(function(dt,idx){dt.classList.toggle('on',idx===cur);});
-    lbl.textContent=(cur+1)+' / '+N;
+    dots.forEach(function(dt){dt.classList.toggle('on',+dt.getAttribute('data-i')===cur);});
+    lbl.textContent=(cur===0)?'Cover':(cur+' / '+(N-1));
     prevBtn.disabled=(cur===0); nextBtn.disabled=(cur===N-1);
   }
   function go(target){
