@@ -537,10 +537,15 @@ nav a:hover{color:var(--gold)}
 .founder-photo{background:linear-gradient(150deg,var(--plum),var(--deep));position:relative;min-height:420px}
 .founder-photo-note{position:absolute;bottom:1.5rem;left:1.5rem;right:1.5rem;font-size:12px;color:rgba(245,240,235,.5);font-style:italic;line-height:1.6;border:1px dashed rgba(245,240,235,.22);border-radius:10px;padding:1rem 1.2rem;background:rgba(0,0,0,.12)}
 .founder-photo.has-portrait{position:relative;min-height:480px;overflow:hidden;margin:0}
-.founder-photo.has-portrait::after{content:"";position:absolute;left:0;right:0;bottom:0;height:64%;background:linear-gradient(transparent,rgba(36,16,40,.14) 20%,rgba(36,16,40,.72) 68%,rgba(36,16,40,.9));z-index:1;pointer-events:none}
-.founder-words{position:absolute;z-index:2;left:0;right:0;bottom:3.4rem;margin:0;padding:0 2.4rem;color:rgba(245,240,235,.97);font-family:var(--ff-d);font-style:italic;font-size:19px;line-height:1.55;text-shadow:0 2px 16px rgba(0,0,0,.6)}
-.founder-vcap{position:absolute;z-index:2;bottom:1.1rem;left:50%;transform:translateX(-50%);font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:rgba(245,240,235,.82);font-family:var(--ff-b)}
-@media(max-width:850px){.founder-words{font-size:17px;bottom:3rem;padding:0 1.6rem}}
+.founder-photo.has-portrait::after{content:"";position:absolute;left:0;right:0;bottom:0;height:66%;background:linear-gradient(transparent,rgba(36,16,40,.14) 18%,rgba(36,16,40,.74) 66%,rgba(36,16,40,.92));z-index:1;pointer-events:none}
+.founder-overlay{position:absolute;z-index:2;left:0;right:0;bottom:0;display:flex;flex-direction:column;align-items:flex-start;gap:1rem;padding:2.4rem 2.4rem 1.6rem}
+.founder-words{margin:0;color:rgba(245,240,235,.97);font-family:var(--ff-d);font-style:italic;font-size:19px;line-height:1.55;text-shadow:0 2px 16px rgba(0,0,0,.6)}
+.founder-play{display:inline-flex;align-items:center;gap:.55rem;background:rgba(201,176,126,.96);color:var(--deep);border:0;border-radius:999px;padding:.52rem 1.1rem;font-family:var(--ff-b);font-size:13px;font-weight:600;letter-spacing:.02em;cursor:pointer;box-shadow:0 8px 22px rgba(0,0,0,.3);transition:transform .18s,background .18s}
+.founder-play:hover{transform:translateY(-1px);background:var(--gold)}
+.founder-play .ico{display:inline-block;width:0;height:0;border-style:solid;border-width:5px 0 5px 9px;border-color:transparent transparent transparent var(--deep)}
+.founder-play.is-playing .ico{width:9px;height:10px;border:0;border-left:3px solid var(--deep);border-right:3px solid var(--deep);box-sizing:border-box}
+.founder-vcap{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:rgba(245,240,235,.72);font-family:var(--ff-b)}
+@media(max-width:850px){.founder-words{font-size:17px}.founder-overlay{padding:2rem 1.6rem 1.3rem;gap:.85rem}}
 .founder-copy{padding:0 3.5rem 4.5rem;display:flex;flex-direction:column;justify-content:flex-start}
 .founder-copy h2{color:var(--deep);margin-bottom:1.5rem}
 .founder-copy h2 em{font-style:italic}
@@ -1461,8 +1466,12 @@ p,li,blockquote{text-wrap:pretty}
 <section class="founder">
   <figure class="founder-photo has-portrait">
     <img class="founder-portrait" src="assets/img/inline-e143eb7e1b.jpg" alt="Aleksandra Dubina, founder of Eternal Life Hospice">
-    <blockquote class="founder-words">Placeholder — paste Aleksandra's welcome words here and they will appear across the lower half of her portrait, gently overlaid for easy reading.</blockquote>
-    <figcaption class="founder-vcap">A welcome from our founder, Aleksandra Dubina</figcaption>
+    <div class="founder-overlay">
+      <blockquote class="founder-words">Placeholder — paste Aleksandra's welcome words here and they will appear across the lower half of her portrait, gently overlaid for easy reading.</blockquote>
+      <button type="button" class="founder-play" aria-label="Play welcome message from Aleksandra Dubina"><span class="ico" aria-hidden="true"></span><span class="lbl">Hear her welcome</span></button>
+      <div class="founder-vcap">A welcome from our founder, Aleksandra Dubina</div>
+    </div>
+    <audio class="founder-audio" preload="metadata"><source src="assets/audio/aleksandra-welcome.mp3" type="audio/mpeg"></audio>
   </figure>
   <div class="founder-copy reveal">
     <div class="eyebrow">Heart-Centered Leadership</div>
@@ -1722,6 +1731,19 @@ p,li,blockquote{text-wrap:pretty}
   if(el.dataset.fmt)return;el.dataset.fmt='1';
   el.addEventListener('input',function(){var atEnd=el.selectionStart===el.value.length;el.value=fmt(el.value);if(atEnd){el.selectionStart=el.selectionEnd=el.value.length;}});});}
  if(document.readyState!=='loading')bind();else document.addEventListener('DOMContentLoaded',bind);
+})();
+</script>
+<script>
+(function(){
+  var btn=document.querySelector('.founder-play');
+  var audio=document.querySelector('.founder-audio');
+  if(!btn||!audio)return;
+  var lbl=btn.querySelector('.lbl');
+  function reset(){btn.classList.remove('is-playing');if(lbl)lbl.textContent='Hear her welcome';}
+  btn.addEventListener('click',function(){if(audio.paused){audio.play();}else{audio.pause();}});
+  audio.addEventListener('play',function(){btn.classList.add('is-playing');if(lbl)lbl.textContent='Pause';});
+  audio.addEventListener('pause',reset);
+  audio.addEventListener('ended',reset);
 })();
 </script>
 <script src="/assets/chat.js" defer></script>
