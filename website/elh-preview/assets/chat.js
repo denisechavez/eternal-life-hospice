@@ -57,6 +57,10 @@
   // send these to the AI; we route the person to a real person on the phone.
   var CLINICAL = /\b(should (i|we|he|she|they|my)|is it (normal|safe|ok|okay)|how (much|many|often)|what dose|dosage|\d+\s?mg|increase (the|his|her)|lower (the|his|her)|stop (taking|the|giving)|side ?effect|morphine|oxycodone|hydrocodone|fentanyl|lorazepam|ativan|haldol|haloperidol|methadone|opioid|medication|prescrib|symptom|shortness of breath|short of breath|trouble breathing|in pain|severe pain|won'?t eat|not eating|not drinking|stopped eating|vomit|nause|fever|seizure|hallucinat|agitat|infection|\bwound\b|rash|swelling)\b/i;
 
+  // When someone asks to be phoned back, we offer a small in-chat form rather
+  // than sending it to the AI.
+  var CALLBACK = /(call me|call back|callback|have (someone|somebody) call|someone to call|request a call|can you call|could you call|please call me)/i;
+
   var history = []; // {role, content} pairs for the AI
   var panel, log, openBtn, dock, inputEl, sendBtn, teaser, opened = false, aiAvailable = true;
   var greeted = false, greetTimer = null, closeTimer = null, focusTimer = null;
@@ -78,6 +82,19 @@
       ".elhc-teaser-close{position:absolute;top:-9px;right:-9px;width:21px;height:21px;border-radius:50%;background:var(--p);color:var(--cream);border:2px solid var(--cream);cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;line-height:0}",
       ".elhc-teaser-close:hover{background:var(--deep)}",
       ".elhc-teaser-close svg{width:10px;height:10px}",
+      ".elhc-chip-cb{background:var(--p);color:var(--cream);border-color:var(--p)}",
+      ".elhc-chip-cb:hover{background:var(--deep);border-color:var(--deep);color:var(--cream)}",
+      ".elhc-cb{align-self:stretch;background:#fff;border:1px solid var(--cdark);border-radius:14px;padding:.75rem .8rem;display:flex;flex-direction:column;gap:.55rem;animation:elhcRise .4s cubic-bezier(.22,1,.36,1) both}",
+      ".elhc-cb label{font-size:11.5px;color:var(--mid);display:block;margin-bottom:.22rem}",
+      ".elhc-cb input,.elhc-cb textarea{width:100%;border:1px solid var(--cdark);border-radius:10px;padding:.5rem .6rem;font-family:inherit;font-size:13.5px;color:var(--ink);background:#fff}",
+      ".elhc-cb textarea{resize:none;min-height:46px;line-height:1.4}",
+      ".elhc-cb input:focus,.elhc-cb textarea:focus{outline:none;border-color:var(--gold);box-shadow:0 0 0 3px rgba(201,176,126,.22)}",
+      ".elhc-cb-err{color:#9a2b2b;font-size:11.5px}",
+      ".elhc-cb-actions{display:flex;gap:.5rem;align-items:center}",
+      ".elhc-cb-submit{flex:1;border:none;cursor:pointer;background:var(--p);color:var(--cream);font-family:inherit;font-weight:700;font-size:13.5px;padding:.58rem;border-radius:10px;transition:background .15s}",
+      ".elhc-cb-submit:hover{background:var(--deep)}.elhc-cb-submit:disabled{opacity:.6;cursor:default}",
+      ".elhc-cb-cancel{background:transparent;border:none;color:var(--mid);font-family:inherit;font-size:12.5px;cursor:pointer;padding:.42rem}",
+      ".elhc-cb-cancel:hover{color:var(--p)}",
       ".elhc-panel{position:fixed;right:20px;bottom:20px;z-index:2147483000;width:370px;max-width:calc(100vw - 32px);height:560px;max-height:calc(100vh - 40px);background:var(--cream);border-radius:18px;box-shadow:0 24px 60px rgba(60,28,59,.34);display:none;flex-direction:column;overflow:hidden;border:1px solid var(--cdark)}",
       ".elhc-panel.open{display:flex;animation:elhcUp .42s cubic-bezier(.22,1,.36,1)}",
       ".elhc-panel.closing{display:flex;animation:elhcDown .26s cubic-bezier(.4,0,1,1) forwards}",
@@ -133,6 +150,11 @@
     return String(t).replace(/[&<>"']/g, function (c) {
       return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
     });
+  }
+  function encodeForm(obj) {
+    return Object.keys(obj)
+      .map(function (k) { return encodeURIComponent(k) + "=" + encodeURIComponent(obj[k]); })
+      .join("&");
   }
   function reduced() {
     try { return !!(window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches); }
@@ -194,6 +216,18 @@
       "bot"
     );
     addChips(STARTERS);
+    addCallbackChip();
+  }
+
+  function addCallbackChip() {
+    var wrap = el("div", "elhc-chips");
+    var c = el("button", "elhc-chip elhc-chip-cb");
+    c.type = "button";
+    c.textContent = "Request a callback";
+    c.addEventListener("click", showCallbackForm);
+    wrap.appendChild(c);
+    log.appendChild(wrap);
+    scrollDown();
   }
 
   function emergencyReply() {
@@ -225,6 +259,147 @@
     addChips(GUIDED);
   }
 
+  /* ---------- callback request ---------- */
+  function showCallbackForm() {
+    addMsg(
+      "Of course \u2014 I'd be glad to arrange that. Leave your name and number below and a member of our team will call you. If it's urgent, calling " +
+        PHONE_DISPLAY +
+        " is the fastest way to reach us.",
+      "bot"
+    );
+
+    var form = el("div", "elhc-cb");
+
+    var nameWrap = el("div");
+    nameWrap.appendChild(el("label", null, "Your name"));
+    var nameIn = el("input");
+    nameIn.type = "text";
+    nameIn.setAttribute("autocomplete", "name");
+    nameIn.placeholder = "First and last name";
+    nameWrap.appendChild(nameIn);
+
+    var phoneWrap = el("div");
+    phoneWrap.appendChild(el("label", null, "Phone number"));
+    var phoneIn = el("input");
+    phoneIn.type = "tel";
+    phoneIn.setAttribute("autocomplete", "tel");
+    phoneIn.placeholder = "805.000.0000";
+    phoneWrap.appendChild(phoneIn);
+
+    var timeWrap = el("div");
+    timeWrap.appendChild(el("label", null, "Best time to reach you (optional)"));
+    var timeIn = el("input");
+    timeIn.type = "text";
+    timeIn.placeholder = "e.g. mornings, after 5pm";
+    timeWrap.appendChild(timeIn);
+
+    var noteWrap = el("div");
+    noteWrap.appendChild(el("label", null, "Anything we should know? (optional)"));
+    var noteIn = el("textarea");
+    noteIn.placeholder = "No medical details needed.";
+    noteWrap.appendChild(noteIn);
+
+    var err = el("div", "elhc-cb-err");
+
+    var actions = el("div", "elhc-cb-actions");
+    var submitBtn = el("button", "elhc-cb-submit");
+    submitBtn.type = "button";
+    submitBtn.textContent = "Send request";
+    var cancelBtn = el("button", "elhc-cb-cancel");
+    cancelBtn.type = "button";
+    cancelBtn.textContent = "Maybe later";
+    actions.appendChild(submitBtn);
+    actions.appendChild(cancelBtn);
+
+    form.appendChild(nameWrap);
+    form.appendChild(phoneWrap);
+    form.appendChild(timeWrap);
+    form.appendChild(noteWrap);
+    form.appendChild(err);
+    form.appendChild(actions);
+    log.appendChild(form);
+    scrollDown();
+    try { nameIn.focus(); } catch (e) {}
+
+    cancelBtn.addEventListener("click", function () {
+      if (form.parentNode) form.parentNode.removeChild(form);
+      addMsg(
+        "No problem at all. Whenever you're ready, I'm here \u2014 or you can call us any time at " +
+          PHONE_DISPLAY +
+          ".",
+        "bot"
+      );
+    });
+
+    submitBtn.addEventListener("click", function () {
+      var name = (nameIn.value || "").trim();
+      var phone = (phoneIn.value || "").trim();
+      if (!name) {
+        err.textContent = "Please add your name so we know who we're calling.";
+        nameIn.focus();
+        return;
+      }
+      if (phone.replace(/[^0-9]/g, "").length < 10) {
+        err.textContent = "Please add a phone number we can reach you at.";
+        phoneIn.focus();
+        return;
+      }
+      err.textContent = "";
+      submitBtn.disabled = true;
+      submitBtn.textContent = "Sending\u2026";
+      submitCallback(
+        {
+          name: name,
+          phone: phone,
+          preferred_time: (timeIn.value || "").trim(),
+          message: (noteIn.value || "").trim()
+        },
+        form,
+        submitBtn,
+        err
+      );
+    });
+  }
+
+  function submitCallback(data, form, submitBtn, err) {
+    var body = encodeForm({
+      "form-name": "elh-chat-callback",
+      source: "chat",
+      "bot-field": "",
+      name: data.name,
+      phone: data.phone,
+      preferred_time: data.preferred_time,
+      message: data.message
+    });
+    fetch("/", {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: body
+    })
+      .then(function (r) {
+        if (!r.ok) throw new Error("bad status");
+        if (form.parentNode) form.parentNode.removeChild(form);
+        addMsg(
+          "Thank you, " +
+            data.name.split(" ")[0] +
+            ". I've passed this along \u2014 a member of our team will call you" +
+            (data.preferred_time ? " (" + data.preferred_time + ")" : "") +
+            " as soon as we can. If anything comes up in the meantime, we're always here at " +
+            PHONE_DISPLAY +
+            ".",
+          "bot"
+        );
+      })
+      .catch(function () {
+        submitBtn.disabled = false;
+        submitBtn.textContent = "Send request";
+        err.textContent =
+          "I couldn't send that just now \u2014 please call us at " +
+          PHONE_DISPLAY +
+          " and we'll help right away.";
+      });
+  }
+
   function send(text) {
     text = (text || "").trim();
     if (!text) return;
@@ -238,6 +413,10 @@
     }
     if (CLINICAL.test(text)) {
       window.setTimeout(clinicalReply, 200);
+      return;
+    }
+    if (CALLBACK.test(text)) {
+      window.setTimeout(showCallbackForm, 200);
       return;
     }
     if (!aiAvailable) {
