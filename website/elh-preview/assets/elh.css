@@ -64,7 +64,7 @@ a{color:inherit;text-decoration:none}
 .nearby a{font-size:14.5px;color:var(--deep);background:#fff;border:1px solid rgba(91,46,89,.14);border-radius:18px;padding:6px 13px;transition:background .2s,color .2s}
 .nearby a:hover{background:var(--plum);color:#fff;border-color:var(--plum)}
 .nearby .fc-city{font-size:14.5px;color:var(--deep);background:#fff;border:1px solid rgba(91,46,89,.14);border-radius:18px;padding:6px 13px;cursor:default}
-a.fc-city{cursor:url("img/cursor-eternal.png") 16 16,pointer;text-decoration:none;font-weight:600;color:var(--plum);border-color:rgba(91,46,89,.35);transition:background .2s,color .2s,border-color .2s}
+a.fc-city{cursor:pointer;text-decoration:none;font-weight:600;color:var(--plum);border-color:rgba(91,46,89,.35);transition:background .2s,color .2s,border-color .2s}
 a.fc-city:hover{background:var(--plum);color:#fff;border-color:var(--plum)}
 .creds{background:linear-gradient(180deg,#fff,var(--cream-mid));border-top:1px solid rgba(91,46,89,.08);border-bottom:1px solid rgba(91,46,89,.08);text-align:center;padding:1.5rem 1.6rem;font-size:13.5px;letter-spacing:.15em;line-height:1.9;text-transform:uppercase;color:var(--text-mid);font-weight:600}
 .creds .cd-sep{color:var(--gold);font-size:12px;margin:0 .4em;vertical-align:2px;display:inline-block}
@@ -317,7 +317,7 @@ p,li,blockquote{text-wrap:pretty}
   @media(max-width:560px){#site-footer .foot-grid{grid-template-columns:1fr}}
   
 /* Custom eternal-mark cursor on interactive elements */
-a,button,summary,label,select,[role="button"],input[type="submit"],input[type="button"]{cursor:url("img/cursor-eternal.png") 16 16,pointer}
+a,button,summary,label,select,[role="button"],input[type="submit"],input[type="button"]{cursor:pointer}
 
 /* City hero photo + local FAQ (city pages) */
 .hero.hero--city{position:relative;overflow:hidden;background:#2a1838}
