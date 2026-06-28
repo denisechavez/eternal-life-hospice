@@ -4,13 +4,13 @@
  * Eternal Life Hospice and hospice care, never gives medical advice, and always
  * points people to a real person on the 24/7 line for anything urgent or personal.
  *
- * Required: set OPENAI_API_KEY in your Netlify site settings
+ * Required: set ANTHROPIC_API_KEY in your Netlify site settings
  *   (Site settings -> Environment variables). The key is read only on the
  *   server and is never sent to the browser. If the key is missing, this
  *   function returns a graceful message and the website falls back to the
  *   guided answers + phone number.
  *
- * Optional: OPENAI_MODEL (defaults to gpt-4o-mini).
+ * Optional: ANTHROPIC_MODEL (defaults to claude-3-5-sonnet-latest).
  */
 
 const PHONE = "805.953.7273";
@@ -51,7 +51,7 @@ exports.handler = async function (event) {
     return json(405, { error: "Method not allowed" });
   }
 
-  const apiKey = process.env.OPENAI_API_KEY;
+  const apiKey = process.env.ANTHROPIC_API_KEY;
   if (!apiKey) {
     // Not configured yet — tell the site to fall back to guided answers + phone.
     return json(200, {
@@ -112,28 +112,28 @@ exports.handler = async function (event) {
     });
   }
 
-  const model = process.env.OPENAI_MODEL || "gpt-4o-mini";
+  const model = process.env.ANTHROPIC_MODEL || "claude-3-5-sonnet-latest";
 
   try {
-    const resp = await fetch("https://api.openai.com/v1/chat/completions", {
+    const resp = await fetch("https://api.anthropic.com/v1/messages", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: "Bearer " + apiKey
+        "x-api-key": apiKey,
+        "anthropic-version": "2023-06-01"
       },
       body: JSON.stringify({
         model: model,
+        system: SYSTEM_PROMPT,
         temperature: 0.8,
-        presence_penalty: 0.3,
-        frequency_penalty: 0.3,
         max_tokens: 320,
-        messages: [{ role: "system", content: SYSTEM_PROMPT }].concat(cleaned)
+        messages: cleaned
       })
     });
 
     if (!resp.ok) {
       const detail = await resp.text();
-      console.error("OpenAI error", resp.status, detail.slice(0, 500));
+      console.error("Anthropic error", resp.status, detail.slice(0, 500));
       return json(502, {
         reply: "",
         fallback:
@@ -145,8 +145,8 @@ exports.handler = async function (event) {
 
     const data = await resp.json();
     const reply =
-      data && data.choices && data.choices[0] && data.choices[0].message
-        ? (data.choices[0].message.content || "").trim()
+      data && Array.isArray(data.content) && data.content[0] && data.content[0].text
+        ? data.content[0].text.trim()
         : "";
 
     return json(200, {
