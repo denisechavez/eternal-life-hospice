@@ -17,10 +17,6 @@ author = "agent"
 task = "workflow.run"
 args = "Preview Site"
 
-[[workflows.workflow.tasks]]
-task = "workflow.run"
-args = "Start application"
-
 [[workflows.workflow]]
 name = "Preview Site"
 author = "agent"
@@ -28,18 +24,6 @@ author = "agent"
 [[workflows.workflow.tasks]]
 task = "shell.exec"
 args = "serve website/elh-preview -p 5000 --no-clipboard"
-waitForPort = 5000
-
-[workflows.workflow.metadata]
-outputType = "webview"
-
-[[workflows.workflow]]
-name = "Start application"
-author = "agent"
-
-[[workflows.workflow.tasks]]
-task = "shell.exec"
-args = "python3 -m http.server 5000 --directory website/elh-preview"
 waitForPort = 5000
 
 [workflows.workflow.metadata]
