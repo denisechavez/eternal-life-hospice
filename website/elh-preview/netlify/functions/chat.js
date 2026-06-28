@@ -51,8 +51,9 @@ exports.handler = async function (event) {
     return json(405, { error: "Method not allowed" });
   }
 
-  const apiKey = process.env.ANTHROPIC_API_KEY;
-  if (!apiKey) {
+  const hasAnthropic = !!process.env.ANTHROPIC_API_KEY;
+  const hasOpenAI = !!process.env.OPENAI_API_KEY;
+  if (!hasAnthropic && !hasOpenAI) {
     // Not configured yet — tell the site to fall back to guided answers + phone.
     return json(200, {
       reply: "",
@@ -112,58 +113,108 @@ exports.handler = async function (event) {
     });
   }
 
-  const model = process.env.ANTHROPIC_MODEL || "claude-3-5-sonnet-latest";
+  // Generate a reply. Prefer Claude (warmer, more personable); if it isn't
+  // configured or errors out, automatically fall back to OpenAI. Both calls use
+  // the SAME warm, compassionate SYSTEM_PROMPT and the same settings, so the
+  // tone is identical no matter which one answers.
+  let reply = "";
+  let lastErr = null;
 
-  try {
-    const resp = await fetch("https://api.anthropic.com/v1/messages", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "x-api-key": apiKey,
-        "anthropic-version": "2023-06-01"
-      },
-      body: JSON.stringify({
-        model: model,
-        system: SYSTEM_PROMPT,
-        temperature: 0.8,
-        max_tokens: 320,
-        messages: cleaned
-      })
-    });
-
-    if (!resp.ok) {
-      const detail = await resp.text();
-      console.error("Anthropic error", resp.status, detail.slice(0, 500));
-      return json(502, {
-        reply: "",
-        fallback:
-          "I'm having trouble responding right now. Please call us at " +
-          PHONE +
-          " \u2014 a real person will be glad to help."
-      });
+  if (hasAnthropic) {
+    try {
+      reply = await callClaude(cleaned);
+    } catch (err) {
+      lastErr = err;
+      console.error("Anthropic failed, falling back to OpenAI:", err && err.message);
     }
+  }
 
-    const data = await resp.json();
-    const reply =
-      data && Array.isArray(data.content) && data.content[0] && data.content[0].text
-        ? data.content[0].text.trim()
-        : "";
+  if (!reply && hasOpenAI) {
+    try {
+      reply = await callOpenAI(cleaned);
+    } catch (err) {
+      lastErr = err;
+      console.error("OpenAI failed:", err && err.message);
+    }
+  }
 
-    return json(200, {
-      reply:
-        reply ||
-        "I'm not certain about that one, but our team can help \u2014 please call " + PHONE + ".",
-      configured: true
-    });
-  } catch (err) {
-    console.error("Function error", err);
+  if (reply) {
+    return json(200, { reply: reply, configured: true });
+  }
+
+  if (lastErr) {
     return json(502, {
       reply: "",
       fallback:
-        "I couldn't connect just now. Please call us any time at " + PHONE + " and we'll help right away."
+        "I'm having trouble responding right now. Please call us at " +
+        PHONE +
+        " \u2014 a real person will be glad to help."
     });
   }
+
+  // Configured, but the model returned nothing usable.
+  return json(200, {
+    reply: "I'm not certain about that one, but our team can help \u2014 please call " + PHONE + ".",
+    configured: true
+  });
 };
+
+// Claude (Anthropic) — primary. Warm and personable. Returns reply text or throws.
+async function callClaude(messages) {
+  const model = process.env.ANTHROPIC_MODEL || "claude-3-5-sonnet-latest";
+  const resp = await fetch("https://api.anthropic.com/v1/messages", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "x-api-key": process.env.ANTHROPIC_API_KEY,
+      "anthropic-version": "2023-06-01"
+    },
+    body: JSON.stringify({
+      model: model,
+      system: SYSTEM_PROMPT,
+      temperature: 0.8,
+      max_tokens: 320,
+      messages: messages
+    })
+  });
+  if (!resp.ok) {
+    const detail = await resp.text();
+    throw new Error("Anthropic " + resp.status + ": " + detail.slice(0, 300));
+  }
+  const data = await resp.json();
+  return data && Array.isArray(data.content) && data.content[0] && data.content[0].text
+    ? data.content[0].text.trim()
+    : "";
+}
+
+// OpenAI — automatic fallback. Uses the same warm SYSTEM_PROMPT and settings,
+// and defaults to the fuller gpt-4o (not the mini) so the tone stays human.
+async function callOpenAI(messages) {
+  const model = process.env.OPENAI_MODEL || "gpt-4o";
+  const resp = await fetch("https://api.openai.com/v1/chat/completions", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + process.env.OPENAI_API_KEY
+    },
+    body: JSON.stringify({
+      model: model,
+      temperature: 0.8,
+      presence_penalty: 0.3,
+      frequency_penalty: 0.3,
+      max_tokens: 320,
+      messages: [{ role: "system", content: SYSTEM_PROMPT }].concat(messages)
+    })
+  });
+  if (!resp.ok) {
+    const detail = await resp.text();
+    throw new Error("OpenAI " + resp.status + ": " + detail.slice(0, 300));
+  }
+  const data = await resp.json();
+  return data && data.choices && data.choices[0] && data.choices[0].message
+    ? (data.choices[0].message.content || "").trim()
+    : "";
+}
 
 function json(statusCode, obj) {
   return {
