@@ -332,3 +332,15 @@ a,button,summary,label,select,[role="button"],input[type="submit"],input[type="b
 .lfaq summary::after{content:"+";color:var(--gold);font-weight:700;font-size:22px;line-height:1;flex:none}
 .lfaq details[open] summary::after{content:"\2212"}
 .lfaq p{margin:0;color:var(--ink-soft);line-height:1.75;padding:0 0 18px}
+
+.sigfeat{max-width:980px}
+.sigfeat-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:1.4rem}
+.sigcard{display:block;text-decoration:none;background:#fff;border:1px solid rgba(91,46,89,.14);border-radius:16px;padding:26px 24px;transition:transform .25s ease,box-shadow .25s ease,border-color .25s ease}
+.sigcard:hover{transform:translateY(-3px);box-shadow:0 14px 34px rgba(60,28,59,.12);border-color:rgba(201,176,126,.6)}
+.sigcard-ic{width:46px;height:46px;display:flex;align-items:center;justify-content:center;border-radius:12px;background:linear-gradient(140deg,var(--plum),var(--deep));color:var(--gold);margin-bottom:14px}
+.sigcard-ic svg{width:24px;height:24px}
+.sigcard h3{margin:0 0 .5rem;font-size:19px;color:var(--plum);line-height:1.3}
+.sigcard p{margin:0 0 .9rem;color:var(--ink-soft);line-height:1.7;font-size:15px}
+.sigcard-link{font-weight:600;color:var(--plum);font-size:14.5px}
+.sigcard:hover .sigcard-link{color:var(--deep)}
+@media(max-width:760px){.sigfeat-grid{grid-template-columns:1fr}}
