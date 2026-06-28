@@ -60,6 +60,18 @@ uri = "file://attached_assets/generated_images/amethyst_e.png"
 type = "image"
 title = "generated_image"
 
+[[generated]]
+id = "Ayg9Xcjg4dx-Dc2BMmoJM"
+uri = "file://website/elh-preview/assets/img/carebidet-hero.png"
+type = "image"
+title = "generated_image"
+
+[[generated]]
+id = "LXywkNryK9PENW-yAqkY3"
+uri = "file://website/elh-preview/assets/img/carebidet-care.png"
+type = "image"
+title = "generated_image"
+
 [[outputs]]
 id = "qLfrLYeW6vnnXMfZ4rxbP"
 uri = "file://attached_assets/ELH-QR_eternallifehospice_cream.png"
