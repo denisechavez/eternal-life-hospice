@@ -75,6 +75,11 @@ description: Which pages use shared elh.css vs inline-only CSS in the elh-previe
 - Path prefixes by depth: root pages use `index.html#x` / `assets/...`; `resources/*` subpages use `../index.html#x` / `../assets/...`. Footer logo is `assets/img/inline-edee248dcb.png` (cream wordmark).
 - **"Refer a Patient" routing in the footer:** homepage uses the `#leadcap` modal (`data-leadtab="physician"`); every NON-home page instead links to `providers.html` (a modal anchor can't open cross-page). This intentional difference keeps the link functional — don't "fix" it to a shared `#leadcap`.
 
+## QR codes (point to eternallifehospice.com)
+- A QR placed on a DARK surface must carry its own light backing or it won't scan. The footer sits on `--deep` (dark plum), so the footer QR uses the **cream** variant (`assets/img/qr-cream.png` = plum modules on cream) — NOT the transparent/plum variant, which would be dark-on-dark and unscannable. **Why:** scanners need module/background contrast; "transparent for dark backgrounds" is wrong for QR. Same reasoning anywhere a QR lands on a colored surface.
+- QR source PNGs are generated with high error-correction (level H) so the centered ELH infinity logo doesn't break decoding. If you regenerate or resize, keep EC level H and re-decode to confirm before shipping (see family-guide memory for the puppeteer+jsQR verify pattern).
+- Placements: footer brand column on all 31 footer pages (`.foot-qr`, CSS in the same 3 places as header/footer — elh.css + index inline + resources.html inline), a `.res-qr-card` callout on resources.html, and a self-contained `.guide-qr` block on the family-guide colophon leaf. `family-guide.html` carries `.guide-qr`, not `.foot-qr` (it has no site footer). Path depth rule applies: root = `assets/img/...`, `resources/*` subpages = `../assets/img/...`.
+
 ## index.html is fully externalized — no base64 left
 - All 27 inline base64 data URIs (jpeg/png/woff2) were pulled out of `index.html` to `assets/img/inline-*.{jpg,png}` and `assets/fonts/inline-*.woff2`, shrinking it from ~4.58MB to ~174KB (huge SEO/crawl win). Keep new homepage assets as external files; never reintroduce base64 into index.html.
 
