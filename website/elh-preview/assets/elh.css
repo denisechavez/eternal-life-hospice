@@ -133,7 +133,8 @@ footer a:hover{color:var(--gold)}
 .rgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem}
 .rc{background:#fff;border:1px solid rgba(91,46,89,.1);border-radius:13px;overflow:hidden;display:flex;flex-direction:column;transition:transform .25s,box-shadow .25s}
 .rc:hover{transform:translateY(-3px);box-shadow:0 14px 32px rgba(60,28,59,.12)}
-.rc-img{height:130px;background:#3c1c3b center/cover no-repeat}
+.rc-img{height:130px;background:#3c1c3b center/cover no-repeat;position:relative}
+.rc-img::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(245,240,235,.16),rgba(91,46,89,.12));pointer-events:none}
 .rc-body{padding:1.15rem 1.15rem 1.3rem;display:flex;flex-direction:column;flex:1}
 .rc-tag{font-size:12px;font-weight:600;letter-spacing:.13em;text-transform:uppercase;color:var(--slate);margin-bottom:.5rem}
 .rc-title{font-family:var(--ff-d);font-weight:500;font-size:18px;color:var(--deep);line-height:1.16;margin-bottom:.45rem}
