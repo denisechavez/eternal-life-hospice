@@ -97,12 +97,12 @@
       ".elhc-cb-cancel:hover{color:var(--p)}",
       ".elhc-backdrop{position:fixed;inset:0;z-index:2147482998;background:rgba(60,28,59,.42);-webkit-backdrop-filter:blur(2px);backdrop-filter:blur(2px);opacity:0;visibility:hidden;transition:opacity .32s ease,visibility .32s ease}",
       ".elhc-backdrop.show{opacity:1;visibility:visible}",
-      ".elhc-panel{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);z-index:2147483000;width:400px;max-width:calc(100vw - 32px);height:min(620px,90vh);max-height:calc(100vh - 36px);background:var(--cream);border-radius:24px;box-shadow:0 30px 90px rgba(60,28,59,.34);display:none;flex-direction:column;overflow:hidden;border:1px solid var(--cdark)}",
-      "@media(max-width:480px){.elhc-panel{width:calc(100vw - 24px);height:86vh;height:86dvh}}",
-      ".elhc-panel.open{display:flex;animation:elhcPop .4s cubic-bezier(.22,1,.36,1)}",
-      ".elhc-panel.closing{display:flex;animation:elhcPopOut .26s cubic-bezier(.4,0,1,1) forwards}",
-      "@keyframes elhcPop{from{opacity:0;transform:translate(-50%,-46%) scale(.96)}to{opacity:1;transform:translate(-50%,-50%) scale(1)}}",
-      "@keyframes elhcPopOut{from{opacity:1;transform:translate(-50%,-50%) scale(1)}to{opacity:0;transform:translate(-50%,-48%) scale(.97)}}",
+      ".elhc-panel{position:fixed;top:0;right:0;bottom:0;z-index:2147483000;width:410px;max-width:100vw;height:100vh;height:100dvh;background:var(--cream);border-radius:22px 0 0 22px;box-shadow:-22px 0 70px rgba(60,28,59,.30);display:none;flex-direction:column;overflow:hidden;border-left:1px solid var(--cdark)}",
+      "@media(max-width:480px){.elhc-panel{border-radius:0}}",
+      ".elhc-panel.open{display:flex;animation:elhcSlideIn .44s cubic-bezier(.22,1,.36,1)}",
+      ".elhc-panel.closing{display:flex;animation:elhcSlideOut .3s cubic-bezier(.4,0,1,1) forwards}",
+      "@keyframes elhcSlideIn{from{transform:translateX(100%)}to{transform:none}}",
+      "@keyframes elhcSlideOut{from{transform:none}to{transform:translateX(100%)}}",
       ".elhc-head{background:linear-gradient(180deg,#ffffff,var(--cream));color:var(--deep);padding:.95rem 1rem .9rem;border-bottom:1px solid var(--cdark)}",
       ".elhc-head-top{display:flex;align-items:center;justify-content:space-between;gap:.5rem}",
       ".elhc-title{font-family:'Fraunces ELH',Georgia,serif;font-size:1.12rem;line-height:1.2;color:var(--deep)}",
@@ -642,7 +642,6 @@
     window.clearTimeout(closeTimer);
     panel.classList.remove("closing");
     panel.classList.add("open");
-    backdrop.classList.add("show");
     dock.classList.add("hide");
     if (!opened) {
       opened = true;
@@ -658,7 +657,6 @@
     window.clearTimeout(closeTimer);
     if (!greeted) opened = false; // allow greeting on next open if it never ran
     panel.classList.remove("open");
-    backdrop.classList.remove("show");
     if (reduced()) {
       panel.classList.remove("closing");
       dock.classList.remove("hide");
