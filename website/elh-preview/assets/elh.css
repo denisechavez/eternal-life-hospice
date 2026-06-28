@@ -308,7 +308,7 @@ p,li,blockquote{text-wrap:pretty}
   #site-footer .foot-bottom a{color:rgba(245,240,235,.55);text-decoration:none}
   #site-footer .foot-bottom a:hover{color:var(--gold)}
   #site-footer .foot-bottom>span:first-child{flex:1 1 0;text-align:left}
-  #site-footer .foot-bottom>span:last-child{flex:1 1 0;text-align:right}
+  #site-footer .foot-bottom>span:last-child{flex:1 1 0;text-align:right;padding-right:72px}
   @media(max-width:860px){#site-footer .foot-grid{grid-template-columns:1fr 1fr}#site-footer .foot-bottom{flex-direction:column}#site-footer .foot-bottom>span{text-align:center!important}}
   @media(max-width:560px){#site-footer .foot-grid{grid-template-columns:1fr}}
   
