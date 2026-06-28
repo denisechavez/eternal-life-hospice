@@ -247,7 +247,7 @@
   // calming ambient soundscape + entry veil
     var ambNodes=null, ambOn=false;
     function setAmbBtn(on){ var b=document.getElementById('sbSoundToggle'); if(!b)return; b.classList.toggle('on',on); b.setAttribute('aria-pressed',on?'true':'false'); var l=b.querySelector('.sb-st-lbl'); if(l)l.textContent=on?'Sound on':'Play calm'; }
-    function startAmbient(){ var ctx=sbCtx(); if(!ctx||ambOn)return; ctx.resume().then(function(){ if(ambOn)return; var n=[]; n=n.concat(mkDrone(110,0.06,0.05,1.2)); n=n.concat(mkDrone(164.81,0.045,0.04,1.0)); n=n.concat(mkDrone(220,0.028,0.06,0.8)); n=n.concat(mkBin(110,4,0.035)); ambNodes=n; ambOn=true; setAmbBtn(true); }); }
+    function startAmbient(){ var ctx=sbCtx(); if(!ctx||ambOn)return; ctx.resume().then(function(){ if(ambOn)return; var n=[]; n=n.concat(mkDrone(87,0.035,0.06,0.8)); n=n.concat(mkDrone(174,0.06,0.05,1.2)); n=n.concat(mkDrone(396,0.04,0.04,1.0)); n=n.concat(mkBin(100,6,0.035)); ambNodes=n; ambOn=true; setAmbBtn(true); }); }
     function stopAmbient(){ if(!ambOn)return; sbFadeStop(ambNodes); ambNodes=null; ambOn=false; setAmbBtn(false); }
     (function(){ var veil=document.getElementById('sbVeil'), orb=document.getElementById('sbOrb'), skip=document.getElementById('sbSkip'), stog=document.getElementById('sbSoundToggle'); function hideVeil(){ if(!veil)return; veil.classList.add('hidden'); setTimeout(function(){ veil.style.display='none'; },950); } if(orb)orb.addEventListener('click',function(){ startAmbient(); hideVeil(); }); if(skip)skip.addEventListener('click',hideVeil); if(stog)stog.addEventListener('click',function(){ ambOn?stopAmbient():startAmbient(); }); })();
     })();</script>
