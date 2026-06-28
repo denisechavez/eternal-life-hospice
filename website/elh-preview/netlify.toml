@@ -5,3 +5,7 @@
 
 # Pretty URLs (serving /page from page.html) are enabled by default.
 # Custom 404 is served automatically from /404.html.
+
+[functions]
+  directory = "netlify/functions"
+  node_bundler = "esbuild"
