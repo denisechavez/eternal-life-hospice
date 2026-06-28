@@ -102,6 +102,19 @@ description: Which pages use shared elh.css vs inline-only CSS in the elh-previe
 - **Trap:** optimized variants can sit unreferenced (e.g. a `*-new.png`) while the site still points at the big original — the smaller file exists but was never repointed. Don't trust filename; verify what's actually referenced.
 - **How to apply:** before shipping, scan `assets/img` for files referenced nowhere across `*.html/*.css/*.js` (orphans → delete) and for >1MB no-alpha PNGs (convert to jpg, repoint refs in ALL three path styles `assets/img/`, `/assets/img/`, `../assets/img/`, then delete the png).
 
+## Local preview MUST use `serve` (clean URLs), not python http.server
+- Netlify serves pretty/clean URLs (`/family-guide` → `family-guide.html`). The dev preview iframe rewrites in-page links to that extensionless form when clicked.
+- **Why it matters:** if port 5000 (what the preview uses) is served by `python3 -m http.server`, every extensionless click 404s and the whole site looks like "all links broken" — but it's purely the dev server, links are fine in a real browser/Netlify. `serve` (npm) has cleanUrls on by default and resolves both `/family-guide` and `/family-guide.html`, matching production.
+- **How to apply:** keep ONE webview workflow on port 5000 running `serve website/elh-preview -p 5000 --no-clipboard`. If two workflows both grab 5000, python can win the port — remove the python one. Verify with `curl -o/dev/null -w '%{http_code}' localhost:5000/family-guide` → expect 200, not 404.
+
+## Never use broad document-level anchor-click interceptors
+- A global `document.addEventListener('click', a=e.target.closest('a[href^="/"]'); e.preventDefault();...)` that only *acts* on some links but `preventDefault()`s ALL matched ones silently kills every other root-relative link (made worse when the preview rewrites links to root-relative form).
+- **How to apply:** scope the selector to exactly the intended links (e.g. `a[href^="/hospice-care-"]`) and only call `preventDefault()` inside the matched branch. The homepage `#coverage` city-scroll handler is the one legitimate case.
+
+## Image treatments + Netlify perf/SEO files (audit baseline, June 2026)
+- All `<img>` carry `alt` (decorative = `alt=""`); below-the-fold imgs have `loading="lazy" decoding="async"`; the 62 header-logo imgs (`sym-cream`/`sym-plum`, 2×31 pages) stay EAGER for LCP. Re-run the lazy script idempotently (skips tags with `loading=` and logo classes).
+- SEO/Netlify control files live at the publish root `website/elh-preview/`: `robots.txt`, `sitemap.xml`, `llms.txt` (AI-crawler summary), `_headers` (security headers on `/*`, 1-day cache `/assets/*`, 1yr immutable `/assets/fonts/*`). Keep sitemap URLs in clean form (no `.html`).
+
 ## Chatbot (guided + AI)
 - Widget: `assets/chat.js` — fully self-contained (injects its own <style>+markup) because index.html & resources.html don't link elh.css. Loaded via `<script src="/assets/chat.js" defer>` on all 33 pages (before </body>). Guided FAQ chips + free-text. Emergency + clinical regex short-circuit in code → route to 24/7 line / 911, never sent to AI.
 - Collapsed launcher is a DISCREET single circular icon button (no phone pill, no text label) — user explicitly chose this to mimic westlakevillagehospice.com's chat bubble. **Why it matters:** the phone number is intentionally NOT shown until the panel opens (the gold "Call" button is the top item in the panel header). Do NOT "restore" an always-visible call pill to the collapsed dock — that was the prior design the user deliberately replaced.
