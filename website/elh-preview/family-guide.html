@@ -766,33 +766,34 @@ body.booklet .page{transition:transform 1.2s cubic-bezier(.3,.4,.2,1),opacity .5
   });
   var prevState={};
   /* Letter is 11in tall; with ~0.55in margins the printable height is ~9.9in.
-     Scale each leaf to a conservative 9.5in so it always fits ONE sheet (no spill = no blank pages).
-     transform:scale does not shrink the layout box, so we also set the page height to the scaled height. */
-  var PRINT_AVAIL_PX=Math.round(9.5*96);
+     Shrink each leaf with CSS zoom (which shrinks the LAYOUT box, unlike transform:scale) so each
+     leaf genuinely fits one sheet and the browser paginates to exactly one page per leaf.
+     We do NOT rely only on the beforeprint event (Safari & some browsers never fire it): the Print
+     button applies the fit synchronously before calling window.print(). */
+  var PRINT_AVAIL_PX=Math.round(9.6*96);
   function fitPrint(){
     document.body.classList.add('printing');
     Array.prototype.slice.call(document.querySelectorAll('#pages .page')).forEach(function(p){
       var w=p.querySelector('.printwrap');
       if(!w){ w=document.createElement('div'); w.className='printwrap'; while(p.firstChild){w.appendChild(p.firstChild);} p.appendChild(w); }
-      w.style.transformOrigin='top left';
-      w.style.transform='none';
-      p.style.height='auto';
+      w.style.zoom='';
       var h=w.scrollHeight;
       var s=(h>PRINT_AVAIL_PX && h>0)?(PRINT_AVAIL_PX/h):1;
-      w.style.transform=(s<1)?('scale('+s+')'):'none';
-      p.style.height=Math.ceil(h*s)+'px';
+      if(s<1){ w.style.zoom=s; }
     });
   }
   function endPrint(){
     document.body.classList.remove('printing');
-    Array.prototype.slice.call(document.querySelectorAll('#pages .page')).forEach(function(p){ p.style.height=''; });
     Array.prototype.slice.call(document.querySelectorAll('.printwrap')).forEach(function(w){
-      w.style.transform=''; var p=w.parentNode; while(w.firstChild){p.insertBefore(w.firstChild,w);} p.removeChild(w);
+      w.style.zoom=''; var p=w.parentNode; while(w.firstChild){p.insertBefore(w.firstChild,w);} p.removeChild(w);
     });
   }
-  window.addEventListener('beforeprint',function(){prevState.lowink=document.body.classList.contains('lowink');document.body.classList.add('lowink');fitPrint();});
-  window.addEventListener('afterprint',function(){endPrint();if(!prevState.lowink)document.body.classList.remove('lowink');});
-  document.getElementById('printBtn').onclick=function(){window.print();};
+  var printing=false;
+  function startPrint(){ if(printing)return; printing=true; prevState.lowink=document.body.classList.contains('lowink'); document.body.classList.add('lowink'); fitPrint(); }
+  function finishPrint(){ if(!printing)return; printing=false; endPrint(); if(!prevState.lowink)document.body.classList.remove('lowink'); }
+  window.addEventListener('beforeprint',startPrint);
+  window.addEventListener('afterprint',finishPrint);
+  document.getElementById('printBtn').onclick=function(){ startPrint(); setTimeout(function(){ window.print(); setTimeout(finishPrint,1000); },90); };
   document.getElementById('resetBtn').onclick=function(){
     if(!confirm('Clear everything you have typed and checked?'))return;
     document.querySelectorAll('[data-field]').forEach(function(f){ if(f.type==='checkbox')f.checked=false; else f.value=''; });
