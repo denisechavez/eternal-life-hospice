@@ -190,7 +190,7 @@
   function greet() {
     greeted = true;
     addMsg(
-      "Hi there \u2014 I'm really glad you reached out. You can ask me anything about Eternal Life Hospice, or just tell me what's on your mind. And whenever you'd rather talk with a real person, our team is one tap away, day or night.",
+      "Thank you for reaching out. You can ask me anything about Eternal Life Hospice, or just tell me what's on your mind. And whenever you'd rather talk with a real person, our team is one tap away, day or night.",
       "bot"
     );
     addChips(STARTERS);
