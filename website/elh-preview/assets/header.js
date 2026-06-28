@@ -42,4 +42,17 @@
       a.addEventListener('click', closeMenu);
     });
   }
+
+  var ctaPill = hdr.querySelector('.hdr-cta');
+  if (ctaPill) {
+    var ctaHues = ['cta-hue1', 'cta-hue2', 'cta-hue3'], ctaIdx = 0;
+    ctaPill.addEventListener('mouseenter', function () {
+      ctaPill.classList.remove('cta-hue1', 'cta-hue2', 'cta-hue3');
+      ctaPill.classList.add(ctaHues[ctaIdx % 3]);
+      ctaIdx++;
+    });
+    ctaPill.addEventListener('mouseleave', function () {
+      ctaPill.classList.remove('cta-hue1', 'cta-hue2', 'cta-hue3');
+    });
+  }
 })();
