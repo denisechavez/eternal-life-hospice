@@ -1,5 +1,4 @@
 uploads = []
-outputs = []
 
 [[generated]]
 id = "Fb78tkZxeGtIwBqf7EKrP"
@@ -30,3 +29,15 @@ id = "GEoc53LKJWO4GGpBa6lzg"
 uri = "file://attached_assets/generated_images/providers-hero.png"
 type = "image"
 title = "generated_image"
+
+[[outputs]]
+id = "qLfrLYeW6vnnXMfZ4rxbP"
+uri = "file://attached_assets/ELH-QR_eternallifehospice_cream.png"
+type = "image"
+title = "QR Code — Cream background (for light/cream surfaces)"
+
+[[outputs]]
+id = "yaQobLvwN1e1GeZI0iPz9"
+uri = "file://attached_assets/ELH-QR_eternallifehospice_transparent.png"
+type = "image"
+title = "QR Code — Transparent background (for dark/plum surfaces)"
