@@ -284,7 +284,7 @@
     var top = el("div", "elhc-head-top");
     var titleWrap = el("div");
     titleWrap.appendChild(el("div", "elhc-title", "We\u2019re here for you"));
-    titleWrap.appendChild(el("div", "elhc-sub", "Caring support \u2014 any hour, day or night, available 24/7 days a week."));
+    titleWrap.appendChild(el("div", "elhc-sub", "Caring support \u2014 any hour, day or night, 24 hours 7 days a week."));
     var x = el("button", "elhc-x");
     x.type = "button";
     x.setAttribute("aria-label", "Close the support guide");
