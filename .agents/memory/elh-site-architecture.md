@@ -54,3 +54,7 @@ description: Which pages use shared elh.css vs inline-only CSS in the elh-previe
 - Approved positioning terms: "independent", "integrative", "compliance-led", and "physician-led clinical model" (physician-led = how care is directed, NOT the company owner).
 - **Why:** the user decided "founder-led" should be dropped entirely. The founder's *origin story* sections (#founder / #amethyst / "About Eternal") are fine to keep — only the "founder-led" descriptor is banned.
 - **How to apply:** after any content edit, `grep -rin 'founder-led' website/elh-preview` must return nothing.
+
+## Netlify forms — file uploads
+- Lead forms submit via AJAX urlencoded, but **any form with a file upload must use `enctype="multipart/form-data"` and submit `new FormData(form)` with no manual Content-Type** — the urlencoded path silently drops the file.
+- **Why:** A job-application/upload funnel must never show false success. Gate the success UI on `response.ok`; on failure keep the form, re-enable the button, and show a phone fallback.

@@ -46,7 +46,7 @@
       "name": "How do I apply for a job at Eternal Life Hospice?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Reach out by phone at 805.953.7273 or email info@eternallifehospice.com with a little about your background and the role that interests you. We will set up a conversation and walk you through next steps."
+        "text": "The fastest way is the online application at the bottom of our careers page — share a little about your background, choose the role that interests you and attach your résumé. You can also call 805.953.7273. We will set up a conversation and walk you through next steps."
       }
     },
     {
@@ -160,12 +160,46 @@
 
 <div class="creds">Medicare-Certified &middot; CDPH-Licensed &middot; ACHC-Accredited &middot; 24/7 Availability</div>
 
-<section class="cta">
-  <h2>Start with a conversation</h2>
-  <p>Tell us a little about yourself and the work you are looking for. We will guide you from there.</p>
-  <div class="btns">
-    <a class="btn-gold" href="tel:18059537273">Call 805.953.7273</a>
-    <a class="btn-ghost" href="index.html?lead=coordinator#leadcap">Apply with us &#8594;</a>
+<section class="sec wrap apply" id="apply">
+  <div class="eyebrow" style="text-align:center">Apply Today</div>
+  <h2 style="text-align:center">Apply to join our team</h2>
+  <p style="text-align:center;max-width:560px;margin:.6rem auto 2rem">Tell us a little about yourself and the role that draws you, and attach your r&eacute;sum&eacute;. We will reach out to set up a conversation. Prefer to talk first? Call <a href="tel:18059537273">805.953.7273</a>.</p>
+  <form id="careersForm" class="apply-form" name="elh-careers" method="POST" data-netlify="true" netlify-honeypot="bot-field" enctype="multipart/form-data" action="/">
+    <input type="hidden" name="form-name" value="elh-careers">
+    <p class="hp"><label>Leave this field blank if you are human: <input name="bot-field"></label></p>
+    <div class="af-row">
+      <div class="af-field"><label for="af-first">First name</label><input id="af-first" name="first_name" type="text" required placeholder="First name"></div>
+      <div class="af-field"><label for="af-last">Last name</label><input id="af-last" name="last_name" type="text" required placeholder="Last name"></div>
+    </div>
+    <div class="af-row">
+      <div class="af-field"><label for="af-email">Email</label><input id="af-email" name="email" type="email" required placeholder="you@email.com"></div>
+      <div class="af-field"><label for="af-phone">Phone</label><input id="af-phone" name="phone" type="tel" required placeholder="805.000.0000"></div>
+    </div>
+    <div class="af-field"><label for="af-role">Role you are interested in</label>
+      <select id="af-role" name="role" required>
+        <option value="" disabled selected>Select a role&hellip;</option>
+        <option>Registered Nurse / LVN</option>
+        <option>Certified Home Health Aide</option>
+        <option>Social Worker</option>
+        <option>Chaplain / Spiritual Care</option>
+        <option>Bereavement Counselor</option>
+        <option>Integrative Therapist</option>
+        <option>Outreach / Community Liaison</option>
+        <option>Office / Administrative</option>
+        <option>Other</option>
+      </select>
+    </div>
+    <div class="af-field"><label for="af-resume">R&eacute;sum&eacute; <span class="af-opt">(PDF or Word document)</span></label>
+      <input id="af-resume" name="resume" type="file" accept=".pdf,.doc,.docx" required>
+    </div>
+    <div class="af-field"><label for="af-msg">A little about you</label><textarea id="af-msg" name="message" rows="4" placeholder="Your background, license or specialty, and what draws you to hospice care."></textarea></div>
+    <button type="submit" class="af-submit">Submit application &#8594;</button>
+  </form>
+  <div class="apply-error" id="applyError" hidden>Sorry &mdash; something went wrong sending your application. Please try again, or call us at <a href="tel:18059537273">805.953.7273</a>.</div>
+  <div class="apply-success" id="applySuccess" hidden>
+    <div class="as-icon">&#10003;</div>
+    <h3>Thank you &mdash; your application is in.</h3>
+    <p>We have received your details and r&eacute;sum&eacute;. Someone from our team will reach out soon. If you would like to talk sooner, call 805.953.7273.</p>
   </div>
 </section>
 
@@ -175,4 +209,26 @@
   <a href="tel:18059537273">805.953.7273</a> &middot; <a href="mailto:info@eternallifehospice.com">info@eternallifehospice.com</a> &middot; <a href="index.html">eternallifehospice.com</a></div>
 </footer>
 <script src="assets/header.js" defer></script>
+<script>
+(function(){
+  var f=document.getElementById('careersForm'); if(!f) return;
+  var btn=f.querySelector('.af-submit'); var orig=btn?btn.innerHTML:'';
+  f.addEventListener('submit', function(e){
+    e.preventDefault();
+    var err=document.getElementById('applyError'); if(err) err.hidden=true;
+    if(btn){ btn.disabled=true; btn.textContent='Sending\u2026'; }
+    fetch('/',{method:'POST',body:new FormData(f)})
+      .then(function(r){
+        if(!r.ok) throw new Error('submit failed');
+        f.style.display='none';
+        var s=document.getElementById('applySuccess');
+        if(s){ s.hidden=false; s.scrollIntoView({behavior:'smooth',block:'center'}); }
+      })
+      .catch(function(){
+        if(btn){ btn.disabled=false; btn.innerHTML=orig; }
+        if(err){ err.hidden=false; err.scrollIntoView({behavior:'smooth',block:'center'}); }
+      });
+  });
+})();
+</script>
 </body></html>
