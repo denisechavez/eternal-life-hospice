@@ -95,13 +95,13 @@ footer a:hover{color:var(--gold)}
 .role{background:#fff;border:1px solid rgba(91,46,89,.1);border-radius:13px;padding:1.25rem 1.35rem;transition:transform .25s,box-shadow .25s}
 .role:hover{transform:translateY(-3px);box-shadow:0 14px 32px rgba(60,28,59,.12)}
 .role h3{font-family:var(--ff-d);font-weight:500;font-size:18px;color:var(--plum);line-height:1.15;margin-bottom:.35rem}
-.role p{font-size:15px;color:var(--ink-soft);margin:0}
+.role p{font-size:16px;color:var(--ink-soft);margin:0}
 /* steps — numbered */
 .steps{counter-reset:step;display:grid;gap:1rem;margin-top:1.3rem;max-width:760px}
 .step{position:relative;padding-left:3.2rem}
 .step::before{counter-increment:step;content:counter(step);position:absolute;left:0;top:0;width:2.2rem;height:2.2rem;border-radius:50%;background:var(--plum);color:#F5F0EB;font-family:var(--ff-d);font-size:16px;display:flex;align-items:center;justify-content:center}
 .step h3{font-family:var(--ff-b);font-weight:600;font-size:16.5px;color:var(--deep);margin-bottom:.15rem}
-.step p{font-size:15.5px;color:var(--ink-soft);margin:0}
+.step p{font-size:16px;color:var(--ink-soft);margin:0}
 /* keep-in-mind / note panel */
 .note-panel{background:#fff;border-left:3px solid var(--gold);border-radius:0 10px 10px 0;padding:1.1rem 1.3rem;margin:1.4rem 0;font-size:15.5px;color:var(--ink-soft);max-width:760px}
 .note-panel b{color:var(--plum)}
@@ -291,17 +291,17 @@ p,li,blockquote{text-wrap:pretty}
   #site-footer .foot-logo img{height:40px;opacity:1;margin-bottom:.85rem;display:block}
   #site-footer .foot-logo a{display:inline-block}
   #site-footer .foot-tag{font-family:var(--ff-d);font-style:italic;font-size:18px;color:var(--gold);margin:.2rem 0 .6rem}
-  #site-footer .foot-legal{font-size:13px;color:rgba(245,240,235,.45);line-height:1.7;max-width:32ch}
+  #site-footer .foot-legal{font-size:14px;color:rgba(245,240,235,.6);line-height:1.7;max-width:32ch}
   #site-footer .foot-col h4{font-size:11.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#B7A89D;margin-bottom:.85rem}
-  #site-footer .foot-col a,#site-footer .foot-col p{display:block;font-size:13px;color:rgba(245,240,235,.45);line-height:2.1;text-decoration:none}
+  #site-footer .foot-col a,#site-footer .foot-col p{display:block;font-size:14px;color:rgba(245,240,235,.6);line-height:2.1;text-decoration:none}
   #site-footer .foot-col a:hover{color:var(--cream)}
-  #site-footer .fc-line{display:flex;align-items:center;gap:.5rem;font-size:13px;color:rgba(245,240,235,.45);line-height:2.1;text-decoration:none}
+  #site-footer .fc-line{display:flex;align-items:center;gap:.5rem;font-size:14px;color:rgba(245,240,235,.6);line-height:2.1;text-decoration:none}
   #site-footer .fc-line .fci{width:13px;height:13px;flex-shrink:0;opacity:.85}
   #site-footer .fc-line.fc-addr{align-items:flex-start}
   #site-footer .fc-addr .fci{margin-top:7px}
   #site-footer .fc-fax{cursor:default}
-  #site-footer .foot-disclaimer{max-width:1140px;margin:2rem auto 0;padding-top:1.5rem;border-top:1px solid rgba(255,255,255,.08);font-size:12px;color:rgba(245,240,235,.32);line-height:1.7}
-  #site-footer .foot-bottom{max-width:1140px;margin:1.5rem auto 0;display:flex;justify-content:space-between;flex-wrap:wrap;gap:.5rem;font-size:12px;color:rgba(245,240,235,.3)}
+  #site-footer .foot-disclaimer{max-width:1140px;margin:2rem auto 0;padding-top:1.5rem;border-top:1px solid rgba(255,255,255,.08);font-size:13px;color:rgba(245,240,235,.42);line-height:1.7}
+  #site-footer .foot-bottom{max-width:1140px;margin:1.5rem auto 0;display:flex;justify-content:space-between;flex-wrap:wrap;gap:.5rem;font-size:13px;color:rgba(245,240,235,.42)}
   #site-footer .foot-bottom a{color:rgba(245,240,235,.55);text-decoration:none}
   #site-footer .foot-bottom a:hover{color:var(--gold)}
   #site-footer .foot-bottom>span:first-child{flex:1 1 0;text-align:left}

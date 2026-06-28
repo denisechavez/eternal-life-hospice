@@ -78,6 +78,12 @@ description: Which pages use shared elh.css vs inline-only CSS in the elh-previe
 ## index.html is fully externalized — no base64 left
 - All 27 inline base64 data URIs (jpeg/png/woff2) were pulled out of `index.html` to `assets/img/inline-*.{jpg,png}` and `assets/fonts/inline-*.woff2`, shrinking it from ~4.58MB to ~174KB (huge SEO/crawl win). Keep new homepage assets as external files; never reintroduce base64 into index.html.
 
+## resources.html is also externalized now
+- `resources.html` (inline-CSS page) previously embedded 6 base64 `@font-face` woff2 + 1 base64 hero JPEG (~654KB). Fonts now point to existing `assets/fonts/*.woff2` (4 Jost weights matched by content hash; the 2 Fraunces variable normal+italic reuse the shared `Fraunces-var.woff2`/`Fraunces-Italic-var.woff2` — near-identical builds, renders fine), hero JPEG extracted to `assets/img/resources-hero.jpg`. File ~33KB. Don't reintroduce base64.
+
+## Internal link audits — two false-positive traps
+- A naive href/src audit over this site WILL falsely flag two link styles that are actually valid: (1) **absolute paths** like `/assets/chat.js`, `/assets/img/*` resolve to the Netlify **publish root** (= `website/elh-preview/`), not the OS filesystem root — strip the leading `/` and resolve from the site root. (2) **query-string links** like `index.html?lead=physician#leadcap` are valid (homepage `URLSearchParams('lead')` handler) — split off `?...` before the existence check. After accounting for both, the site has zero broken internal links.
+
 ## Global font-size lifts MUST exempt SVG map-label selectors
 - A site-wide readability "floor-lift" (regex bumping every `font-size:Npx`, e.g. 8.5→10.5 … 15.5→16.5, leaving ≥16 alone) is the accepted way to enlarge small UI/label/caption text across `*.html` + `elh.css`. Homepage body is already 19px.
 - **But it crowds the service-area maps:** the SVG label selectors `.served-lab .soon-lab .cty-lab .city-lab .city-name .hq-lab .inset-lab .inset-cap` (elh.css) and `.map-label` (index.html) are spatially constrained — bumping them overlaps labels on the region map. After any blanket bump, REVERT these to originals (13/12/15/11/11/13/11/9.5; .map-label 9.5). Verify on `hospice-ventura-and-los-angeles-county-ca.html`.
