@@ -317,7 +317,7 @@ body.lowink .cover-foot{border-top-color:var(--cream-dark)}
   .stage{padding:0;display:block}
   .pages{max-width:none}
   .page{display:block!important;box-shadow:none!important;border:none!important;border-radius:0;
-    width:7.4in;max-width:100%;height:auto;box-sizing:border-box;overflow:hidden;
+    width:7.4in;max-width:100%;height:auto;min-height:0!important;box-sizing:border-box;overflow:hidden;
     padding:0;margin:0 auto;animation:none;background:#fff!important;color:#000;
     break-inside:avoid;break-after:page;page-break-after:always}
   .page:last-child{break-after:auto;page-break-after:auto}
@@ -349,7 +349,7 @@ body.printing .elhc-dock,body.printing .elhc-panel{display:none!important}
 body.printing .stage{padding:0;display:block}
 body.printing .pages{height:auto!important;max-width:none;perspective:none}
 body.printing .page{position:relative!important;transform:none!important;opacity:1!important;display:block!important;
-  width:7.4in;max-width:100%;height:auto;box-sizing:border-box;overflow:hidden;padding:0;margin:0 auto;
+  width:7.4in;max-width:100%;height:auto;min-height:0!important;box-sizing:border-box;overflow:hidden;padding:0;margin:0 auto;
   background:#fff;box-shadow:none!important;border:none!important;border-radius:0}
 body.printing .page::after{display:none!important}
 body.printing .pfoot{display:none!important}
@@ -772,7 +772,11 @@ body.booklet .page{transition:transform 1.2s cubic-bezier(.3,.4,.2,1),opacity .5
      leaf genuinely fits one sheet and the browser paginates to exactly one page per leaf.
      We do NOT rely only on the beforeprint event (Safari & some browsers never fire it): the Print
      button applies the fit synchronously before calling window.print(). */
-  var PRINT_AVAIL_PX=Math.round(9.6*96);
+  /* Conservative on purpose: the printable area is ~9.9in, but screen-media
+     measurement differs slightly from the print render, so we fit each leaf to
+     9.0in. Higher values (9.5–9.6) leave a leaf at ~10.2in and spill to a 7th
+     sheet. Do not raise this without re-running the puppeteer PDF page-count. */
+  var PRINT_AVAIL_PX=Math.round(9.0*96);
   function fitPrint(){
     document.body.classList.add('printing');
     Array.prototype.slice.call(document.querySelectorAll('#pages .page')).forEach(function(p){
