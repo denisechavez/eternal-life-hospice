@@ -536,10 +536,11 @@ nav a:hover{color:var(--gold)}
 @media(max-width:850px){.founder{grid-template-columns:1fr}}
 .founder-photo{background:linear-gradient(150deg,var(--plum),var(--deep));position:relative;min-height:420px}
 .founder-photo-note{position:absolute;bottom:1.5rem;left:1.5rem;right:1.5rem;font-size:12px;color:rgba(245,240,235,.5);font-style:italic;line-height:1.6;border:1px dashed rgba(245,240,235,.22);border-radius:10px;padding:1rem 1.2rem;background:rgba(0,0,0,.12)}
-.founder-photo.has-video{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1.1rem;padding:2.2rem;margin:0}
-.founder-video{width:100%;max-width:480px;aspect-ratio:16/9;height:auto;object-fit:cover;border-radius:18px;box-shadow:0 18px 50px rgba(0,0,0,.38);background:#000}
-.founder-vcap{position:absolute;z-index:2;bottom:1rem;left:50%;transform:translateX(-50%);font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:rgba(245,240,235,.55);font-family:var(--ff-b)}
-.founder-photo.has-video .founder-vcap{position:static;transform:none;left:auto;bottom:auto;color:rgba(245,240,235,.72)}
+.founder-photo.has-portrait{position:relative;min-height:480px;overflow:hidden;margin:0}
+.founder-photo.has-portrait::after{content:"";position:absolute;left:0;right:0;bottom:0;height:64%;background:linear-gradient(transparent,rgba(36,16,40,.14) 20%,rgba(36,16,40,.72) 68%,rgba(36,16,40,.9));z-index:1;pointer-events:none}
+.founder-words{position:absolute;z-index:2;left:0;right:0;bottom:3.4rem;margin:0;padding:0 2.4rem;color:rgba(245,240,235,.97);font-family:var(--ff-d);font-style:italic;font-size:19px;line-height:1.55;text-shadow:0 2px 16px rgba(0,0,0,.6)}
+.founder-vcap{position:absolute;z-index:2;bottom:1.1rem;left:50%;transform:translateX(-50%);font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:rgba(245,240,235,.82);font-family:var(--ff-b)}
+@media(max-width:850px){.founder-words{font-size:17px;bottom:3rem;padding:0 1.6rem}}
 .founder-copy{padding:0 3.5rem 4.5rem;display:flex;flex-direction:column;justify-content:flex-start}
 .founder-copy h2{color:var(--deep);margin-bottom:1.5rem}
 .founder-copy h2 em{font-style:italic}
@@ -1458,7 +1459,11 @@ p,li,blockquote{text-wrap:pretty}
   </div>
 </section>
 <section class="founder">
-  <figure class="founder-photo has-video"><figcaption class="founder-vcap">A welcome from our founder, Aleksandra Dubina</figcaption><video class="founder-video" controls preload="metadata" playsinline aria-label="Welcome video from Aleksandra Dubina, founder of Eternal Life Hospice" poster="assets/img/inline-e143eb7e1b.jpg"><source src="assets/video/aleksandra-welcome.mp4" type="video/mp4">Your browser does not support the video tag.</video></figure>
+  <figure class="founder-photo has-portrait">
+    <img class="founder-portrait" src="assets/img/inline-e143eb7e1b.jpg" alt="Aleksandra Dubina, founder of Eternal Life Hospice">
+    <blockquote class="founder-words">Placeholder — paste Aleksandra's welcome words here and they will appear across the lower half of her portrait, gently overlaid for easy reading.</blockquote>
+    <figcaption class="founder-vcap">A welcome from our founder, Aleksandra Dubina</figcaption>
+  </figure>
   <div class="founder-copy reveal">
     <div class="eyebrow">Heart-Centered Leadership</div>
     <h2>Aleksandra Dubina</h2>
