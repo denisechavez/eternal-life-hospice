@@ -47,6 +47,21 @@
   .sb-note{max-width:760px;margin:2.6rem auto;background:#efe7df;border:1px solid rgba(91,46,89,.16);border-left:3px solid var(--gold);border-radius:12px;padding:20px 24px;font-size:14px;line-height:1.72;color:var(--text-mid)}
   .sb-note strong{color:var(--plum)}
   .sb-expect{max-width:760px}
+  .sb-veil{position:absolute;inset:0;z-index:6;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1.1rem;padding:20px;text-align:center;background:radial-gradient(circle at 50% 42%,rgba(74,37,72,.55),rgba(42,19,42,.9));backdrop-filter:blur(2px);-webkit-backdrop-filter:blur(2px);transition:opacity .9s ease,visibility .9s}
+  .sb-veil.hidden{opacity:0;visibility:hidden}
+  .sb-orb{position:relative;width:94px;height:94px;border-radius:50%;border:0;cursor:pointer;background:linear-gradient(160deg,var(--gold),#b9975f);color:var(--deep);display:flex;align-items:center;justify-content:center;transition:transform .25s;animation:sborb 3.6s ease-out infinite}
+  .sb-orb svg{width:30px;height:30px;fill:currentColor;margin-left:5px}
+  .sb-orb:hover{transform:scale(1.05)}
+  @keyframes sborb{0%{box-shadow:0 0 0 0 rgba(201,176,126,.45)}70%{box-shadow:0 0 0 28px rgba(201,176,126,0)}100%{box-shadow:0 0 0 0 rgba(201,176,126,0)}}
+  .sb-veil-label{color:var(--cream);font-family:var(--ff-d);font-size:1.3rem;letter-spacing:.01em}
+  .sb-veil-skip{background:none;border:0;color:rgba(245,240,235,.62);font-size:13px;cursor:pointer;text-decoration:underline;text-underline-offset:3px}
+  .sb-veil-skip:hover{color:var(--cream)}
+  .sb-soundtoggle{position:fixed;left:18px;bottom:18px;z-index:60;display:inline-flex;align-items:center;gap:.5rem;background:var(--plum);color:var(--cream);border:1px solid rgba(201,176,126,.5);border-radius:999px;padding:.52rem .9rem;font-size:13px;font-weight:600;cursor:pointer;box-shadow:0 8px 22px rgba(60,28,59,.3);transition:background .2s,transform .2s}
+  .sb-soundtoggle:hover{background:var(--deep);transform:translateY(-1px)}
+  .sb-soundtoggle.on{background:var(--gold);color:var(--deep);border-color:var(--gold)}
+  .sb-st-ic{font-size:15px;line-height:1}
+  @media(prefers-reduced-motion:reduce){.sb-orb{animation:none}}
+  @media(max-width:560px){.sb-soundtoggle{left:12px;bottom:12px;padding:.46rem .78rem;font-size:12px}}
   </style>
 
   <script type="application/ld+json">{
@@ -157,6 +172,11 @@
 
 <section class="sb-hero">
     <div class="sb-rings"><span></span><span></span><span></span><span></span></div>
+      <div class="sb-veil" id="sbVeil">
+        <button class="sb-orb" id="sbOrb" aria-label="Begin a moment of calm with sound"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></button>
+        <div class="sb-veil-label">Press for a moment of calm</div>
+        <button class="sb-veil-skip" id="sbSkip">Continue without sound</button>
+      </div>
     <div class="eyebrow">A Comfort Offering &middot; Included in Our Care</div>
     <h1>The Sound Bath</h1>
     <p class="lede">Resonant tones from Tibetan and crystal singing bowls &mdash; and original soundscapes composed in our own studio &mdash; offered gently at the bedside, purely for rest and comfort.</p>
@@ -195,7 +215,8 @@
       <a class="btn-ghost" href="index.html#modalities">See all comfort therapies &#8594;</a>
     </div>
   </section>
-  <script>(function(){
+  <button class="sb-soundtoggle" id="sbSoundToggle" aria-pressed="false" aria-label="Toggle calming ambient sound"><span class="sb-st-ic" aria-hidden="true">&#9834;</span><span class="sb-st-lbl">Play calm</span></button>
+    <script>(function(){
     var actx=null, masterGain=null; var activeSounds=[], currentTrack=-1, sbStart=0, sbTimer=null;
     function sbCtx(){ if(!actx){ try{ actx=new (window.AudioContext||window.webkitAudioContext)(); masterGain=actx.createGain(); masterGain.gain.value=0.72; masterGain.connect(actx.destination); }catch(e){ return null; } } return actx; }
     function sbFmt(s){ var m=Math.floor(s/60), sec=Math.floor(s%60); return m+':'+(sec<10?'0':'')+sec; }
@@ -211,8 +232,14 @@
     function sbStopAll(){ sbFadeStop(activeSounds); activeSounds=[]; if(sbTimer){clearInterval(sbTimer);sbTimer=null;} }
     function sbSetBtn(i,playing){ var btn=document.getElementById('btn-'+i); if(!btn)return; btn.classList.toggle('playing',playing); btn.setAttribute('aria-pressed',playing?'true':'false'); btn.innerHTML=playing?'<svg viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>':'<svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>'; var el=document.getElementById('playerEl-'+i); if(el)el.classList.toggle('active',playing); }
     function sbReset(i){ var p=document.getElementById('prog-'+i); if(p)p.style.width='0%'; var tm=document.getElementById('timer-'+i); if(tm)tm.textContent='0:00'; }
-    window.toggleSound=function(i){ var ctx=sbCtx(); if(!ctx)return; ctx.resume().then(function(){ if(currentTrack===i){ sbStopAll(); sbSetBtn(i,false); sbReset(i); currentTrack=-1; return; } if(currentTrack>=0){ sbStopAll(); sbSetBtn(currentTrack,false); sbReset(currentTrack); } currentTrack=i; activeSounds=SB_TRACKS[i](); sbSetBtn(i,true); var DUR=30; sbStart=Date.now(); sbTimer=setInterval(function(){ var el=(Date.now()-sbStart)/1000; var pct=Math.min(el/DUR*100,100); var p=document.getElementById('prog-'+i); if(p)p.style.width=pct+'%'; var tm=document.getElementById('timer-'+i); if(tm)tm.textContent=sbFmt(el); if(el>=DUR){ sbStopAll(); sbSetBtn(i,false); sbReset(i); currentTrack=-1; } },100); }); };
-  })();</script>
+    window.toggleSound=function(i){ var ctx=sbCtx(); if(!ctx)return; ctx.resume().then(function(){ if(currentTrack===i){ sbStopAll(); sbSetBtn(i,false); sbReset(i); currentTrack=-1; return; } if(currentTrack>=0){ sbStopAll(); sbSetBtn(currentTrack,false); sbReset(currentTrack); } if(ambOn){stopAmbient();} currentTrack=i; activeSounds=SB_TRACKS[i](); sbSetBtn(i,true); var DUR=30; sbStart=Date.now(); sbTimer=setInterval(function(){ var el=(Date.now()-sbStart)/1000; var pct=Math.min(el/DUR*100,100); var p=document.getElementById('prog-'+i); if(p)p.style.width=pct+'%'; var tm=document.getElementById('timer-'+i); if(tm)tm.textContent=sbFmt(el); if(el>=DUR){ sbStopAll(); sbSetBtn(i,false); sbReset(i); currentTrack=-1; } },100); }); };
+  // calming ambient soundscape + entry veil
+    var ambNodes=null, ambOn=false;
+    function setAmbBtn(on){ var b=document.getElementById('sbSoundToggle'); if(!b)return; b.classList.toggle('on',on); b.setAttribute('aria-pressed',on?'true':'false'); var l=b.querySelector('.sb-st-lbl'); if(l)l.textContent=on?'Sound on':'Play calm'; }
+    function startAmbient(){ var ctx=sbCtx(); if(!ctx||ambOn)return; ctx.resume().then(function(){ if(ambOn)return; var n=[]; n=n.concat(mkDrone(110,0.06,0.05,1.2)); n=n.concat(mkDrone(164.81,0.045,0.04,1.0)); n=n.concat(mkDrone(220,0.028,0.06,0.8)); n=n.concat(mkBin(110,4,0.035)); ambNodes=n; ambOn=true; setAmbBtn(true); }); }
+    function stopAmbient(){ if(!ambOn)return; sbFadeStop(ambNodes); ambNodes=null; ambOn=false; setAmbBtn(false); }
+    (function(){ var veil=document.getElementById('sbVeil'), orb=document.getElementById('sbOrb'), skip=document.getElementById('sbSkip'), stog=document.getElementById('sbSoundToggle'); function hideVeil(){ if(!veil)return; veil.classList.add('hidden'); setTimeout(function(){ veil.style.display='none'; },950); } if(orb)orb.addEventListener('click',function(){ startAmbient(); hideVeil(); }); if(skip)skip.addEventListener('click',hideVeil); if(stog)stog.addEventListener('click',function(){ ambOn?stopAmbient():startAmbient(); }); })();
+    })();</script>
   <footer id="site-footer">
   <div class="foot-grid">
     <div><div class="foot-logo"><a href="index.html" aria-label="Eternal Life Hospice — home"><img loading="lazy" decoding="async" src="assets/img/inline-edee248dcb.png" alt="Eternal Life Hospice logo"></a></div><p class="foot-tag">Care That Honors Life.</p><p class="foot-legal">Medicare-Certified · CDPH-Licensed · ACHC-Accredited. Serving families across Ventura and Los Angeles Counties.</p><div class="foot-qr"><img src="assets/img/qr-cream.png" alt="Scan to visit eternallifehospice.com" width="96" height="96" loading="lazy"><span>Scan to visit<br>on your phone</span></div></div>

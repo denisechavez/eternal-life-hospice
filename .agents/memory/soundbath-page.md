@@ -35,6 +35,16 @@ and nothing flaggable.
 - JSON-LD uses WebPage + BreadcrumbList only — deliberately NOT MedicalProcedure/Therapy, so the
   page does not assert a medical service.
 
+## "Open to a calming sound" — entry orb, not autoplay
+**Why:** Browsers block audio on load (AudioContext starts suspended; needs a user gesture), so true
+autoplay is silently blocked.
+**How to apply:** The hero shows a `.sb-veil` overlay with a glowing `.sb-orb` ("Press for a moment of
+calm") + a "Continue without sound" skip. Clicking the orb resumes the ctx, starts a continuous, low-gain
+ambient soundscape (startAmbient: soft drones 110/164.81/220 + slow binaural, NO timeout strikes, no DUR
+stop) and fades the veil. A fixed bottom-left `.sb-soundtoggle` ("Play calm"/"Sound on") toggles ambient
+anytime (bottom-LEFT to avoid the bottom-right chat bubble). Starting any 30s journey calls stopAmbient()
+so they never overlap.
+
 ## Note on benign matches
 A site-wide grep for "cure" legitimately hits the required negative disclaimer
 ("diagnose, treat, cure or prevent") and standard hospice phrasing ("from cure to comfort") — those
