@@ -101,3 +101,21 @@ id = "fgz-YTCHX3K6VPK2-ZeNJ"
 uri = "file://attached_assets/generated_images/amethyst_e.png"
 type = "image"
 title = "E — Geode slice, top-down (banded)"
+
+[[outputs]]
+id = "keXqBt7uAD0EDBRMRPPFi"
+uri = "file://attached_assets/stock_images/malibu_coast_1.jpg"
+type = "image"
+title = "Malibu coastline ocean"
+
+[[outputs]]
+id = "Ghxi3ydODlo1cE6EbTFUu"
+uri = "file://attached_assets/stock_images/malibu_coast_2.jpg"
+type = "image"
+title = "Malibu coastline ocean"
+
+[[outputs]]
+id = "EmfREeZHYPLakP5ZvgtXb"
+uri = "file://attached_assets/stock_images/malibu_coast_3.jpg"
+type = "image"
+title = "Malibu coastline ocean"

@@ -316,3 +316,14 @@ p,li,blockquote{text-wrap:pretty}
   
 /* Custom eternal-mark cursor on interactive elements */
 a,button,summary,label,select,[role="button"],input[type="submit"],input[type="button"]{cursor:url("img/cursor-eternal.png") 16 16,pointer}
+
+/* City landing photo + local FAQ (city pages) */
+.city-photo{max-width:1080px;margin:0 auto 6px;padding:0 22px}
+.city-photo figure{margin:0;border-radius:18px;overflow:hidden;box-shadow:0 22px 60px -28px rgba(60,28,59,.55);border:1px solid rgba(91,46,89,.12)}
+.city-photo img{display:block;width:100%;height:auto;aspect-ratio:16/9;object-fit:cover}
+.city-photo figcaption{font-size:13px;color:var(--text-mid);text-align:center;padding:11px 6px 0;font-style:italic}
+.lfaq{max-width:860px}
+.lfaq .faq-item{padding:18px 0;border-bottom:1px solid rgba(91,46,89,.16)}
+.lfaq .faq-item:first-of-type{border-top:1px solid rgba(91,46,89,.16)}
+.lfaq h3{margin:0 0 .45rem;font-size:18px;color:var(--plum);line-height:1.35}
+.lfaq p{margin:0;color:var(--ink-soft);line-height:1.75}
