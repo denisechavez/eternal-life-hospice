@@ -58,7 +58,7 @@
   var CLINICAL = /\b(should (i|we|he|she|they|my)|is it (normal|safe|ok|okay)|how (much|many|often)|what dose|dosage|\d+\s?mg|increase (the|his|her)|lower (the|his|her)|stop (taking|the|giving)|side ?effect|morphine|oxycodone|hydrocodone|fentanyl|lorazepam|ativan|haldol|haloperidol|methadone|opioid|medication|prescrib|symptom|shortness of breath|short of breath|trouble breathing|in pain|severe pain|won'?t eat|not eating|not drinking|stopped eating|vomit|nause|fever|seizure|hallucinat|agitat|infection|\bwound\b|rash|swelling)\b/i;
 
   var history = []; // {role, content} pairs for the AI
-  var panel, log, openBtn, dock, inputEl, sendBtn, opened = false, aiAvailable = true;
+  var panel, log, openBtn, dock, inputEl, sendBtn, teaser, opened = false, aiAvailable = true;
   var greeted = false, greetTimer = null, closeTimer = null, focusTimer = null;
 
   /* ---------- styles ---------- */
@@ -72,6 +72,12 @@
       ".elhc-launch:hover{transform:translateY(-2px);box-shadow:0 12px 30px rgba(60,28,59,.42)}",
       ".elhc-launch svg{width:24px;height:24px;flex-shrink:0}",
       ".elhc-launch::after{content:'';position:absolute;top:2px;right:2px;width:11px;height:11px;border-radius:50%;background:var(--gold);border:2px solid var(--cream)}",
+      ".elhc-teaser{position:relative;max-width:236px;background:#fff;color:var(--ink);border:1px solid var(--cdark);border-radius:14px;border-bottom-right-radius:5px;padding:.62rem .72rem;font-size:13px;line-height:1.45;box-shadow:0 12px 30px rgba(60,28,59,.24);cursor:pointer;animation:elhcRise .42s cubic-bezier(.22,1,.36,1) both}",
+      ".elhc-teaser:hover{border-color:var(--gold)}",
+      ".elhc-teaser strong{display:block;font-family:'Fraunces ELH',Georgia,serif;font-weight:600;font-size:14px;color:var(--p);margin-bottom:2px}",
+      ".elhc-teaser-close{position:absolute;top:-9px;right:-9px;width:21px;height:21px;border-radius:50%;background:var(--p);color:var(--cream);border:2px solid var(--cream);cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;line-height:0}",
+      ".elhc-teaser-close:hover{background:var(--deep)}",
+      ".elhc-teaser-close svg{width:10px;height:10px}",
       ".elhc-panel{position:fixed;right:20px;bottom:20px;z-index:2147483000;width:370px;max-width:calc(100vw - 32px);height:560px;max-height:calc(100vh - 40px);background:var(--cream);border-radius:18px;box-shadow:0 24px 60px rgba(60,28,59,.34);display:none;flex-direction:column;overflow:hidden;border:1px solid var(--cdark)}",
       ".elhc-panel.open{display:flex;animation:elhcUp .42s cubic-bezier(.22,1,.36,1)}",
       ".elhc-panel.closing{display:flex;animation:elhcDown .26s cubic-bezier(.4,0,1,1) forwards}",
@@ -107,7 +113,7 @@
       ".elhc-send svg{width:18px;height:18px}",
       ".elhc-note{font-size:10.5px;color:var(--mid);text-align:center;margin-top:.45rem;line-height:1.4}",
       "@media (max-width:480px){.elhc-panel{right:8px;bottom:8px;width:calc(100vw - 16px);height:calc(100vh - 16px);max-height:calc(100vh - 16px)}.elhc-dock{right:14px;bottom:14px}}",
-      "@media (prefers-reduced-motion:reduce){.elhc-panel.open,.elhc-panel.closing,.elhc-msg,.elhc-chip,.elhc-typing{animation:none}.elhc-launch{transition:none}.elhc-typing span{animation:none}}",
+      "@media (prefers-reduced-motion:reduce){.elhc-panel.open,.elhc-panel.closing,.elhc-msg,.elhc-chip,.elhc-typing,.elhc-teaser{animation:none}.elhc-launch{transition:none}.elhc-typing span{animation:none}}",
       "@media print{.elhc-dock,.elhc-panel{display:none!important}}"
     ].join("\n");
     var s = document.createElement("style");
@@ -281,6 +287,29 @@
 
     dock.appendChild(openBtn);
 
+    // Gentle welcome nudge beside the launcher so visitors feel greeted before
+    // they even open the panel. Dismissible, and shows once per visit.
+    teaser = el("div", "elhc-teaser");
+    teaser.setAttribute("role", "button");
+    teaser.setAttribute("tabindex", "0");
+    teaser.setAttribute("aria-label", "Open the support guide");
+    teaser.style.display = "none";
+    teaser.innerHTML =
+      "<strong>We\u2019re here for you</strong>Have a question about hospice care? I\u2019m happy to help \u2014 any time, day or night.";
+    var tClose = el("button", "elhc-teaser-close");
+    tClose.type = "button";
+    tClose.setAttribute("aria-label", "Dismiss");
+    tClose.innerHTML =
+      '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>';
+    tClose.addEventListener("click", function (e) { e.stopPropagation(); dismissTeaser(true); });
+    teaser.appendChild(tClose);
+    teaser.addEventListener("click", open);
+    teaser.addEventListener("keydown", function (e) {
+      if (e.target !== teaser) return; // ignore keys from the close button
+      if (e.key === "Enter" || e.key === " ") { e.preventDefault(); open(); }
+    });
+    dock.insertBefore(teaser, openBtn);
+
     panel = el("div", "elhc elhc-panel");
     panel.setAttribute("role", "dialog");
     panel.setAttribute("aria-label", "Eternal Life Hospice support guide");
@@ -347,6 +376,26 @@
 
     document.body.appendChild(dock);
     document.body.appendChild(panel);
+
+    maybeShowTeaser();
+  }
+
+  function maybeShowTeaser() {
+    if (opened) return;
+    try { if (sessionStorage.getItem("elhcTeaserSeen")) return; } catch (e) {}
+    var delay = reduced() ? 700 : 2200;
+    window.setTimeout(function () {
+      if (opened || !teaser) return;
+      teaser.style.display = "block";
+      try { sessionStorage.setItem("elhcTeaserSeen", "1"); } catch (e) {}
+      // Gently retire the nudge if it goes unnoticed, so it never nags.
+      window.setTimeout(function () { if (!opened) dismissTeaser(false); }, 14000);
+    }, delay);
+  }
+
+  function dismissTeaser(remember) {
+    if (teaser) teaser.style.display = "none";
+    if (remember) { try { sessionStorage.setItem("elhcTeaserSeen", "1"); } catch (e) {} }
   }
 
   function submit() {
@@ -357,6 +406,7 @@
   }
 
   function open() {
+    dismissTeaser(true);
     window.clearTimeout(closeTimer);
     panel.classList.remove("closing");
     panel.classList.add("open");

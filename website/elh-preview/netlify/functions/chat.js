@@ -4,13 +4,15 @@
  * Eternal Life Hospice and hospice care, never gives medical advice, and always
  * points people to a real person on the 24/7 line for anything urgent or personal.
  *
- * Required: set ANTHROPIC_API_KEY in your Netlify site settings
- *   (Site settings -> Environment variables). The key is read only on the
- *   server and is never sent to the browser. If the key is missing, this
- *   function returns a graceful message and the website falls back to the
- *   guided answers + phone number.
+ * Providers: it prefers Claude (Anthropic) and automatically falls back to
+ *   OpenAI. Set either or both keys in your Netlify site settings
+ *   (Site settings -> Environment variables): ANTHROPIC_API_KEY and/or
+ *   OPENAI_API_KEY. Keys are read only on the server and never sent to the
+ *   browser. Set both for full resilience; with neither, this function returns
+ *   a graceful message and the website falls back to guided answers + phone.
  *
- * Optional: ANTHROPIC_MODEL (defaults to claude-3-5-sonnet-latest).
+ * Optional: ANTHROPIC_MODEL (defaults to claude-3-5-sonnet-latest) and
+ *   OPENAI_MODEL (defaults to gpt-4o).
  */
 
 const PHONE = "805.953.7273";
