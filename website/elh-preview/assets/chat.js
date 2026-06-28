@@ -54,6 +54,7 @@
 
   var history = []; // {role, content} pairs for the AI
   var panel, log, openBtn, dock, inputEl, sendBtn, opened = false, aiAvailable = true;
+  var greeted = false, greetTimer = null, closeTimer = null, focusTimer = null;
 
   /* ---------- styles ---------- */
   function injectStyles() {
@@ -67,8 +68,10 @@
       ".elhc-launch svg{width:24px;height:24px;flex-shrink:0}",
       ".elhc-launch::after{content:'';position:absolute;top:2px;right:2px;width:11px;height:11px;border-radius:50%;background:var(--gold);border:2px solid var(--cream)}",
       ".elhc-panel{position:fixed;right:20px;bottom:20px;z-index:2147483000;width:370px;max-width:calc(100vw - 32px);height:560px;max-height:calc(100vh - 40px);background:var(--cream);border-radius:18px;box-shadow:0 24px 60px rgba(60,28,59,.34);display:none;flex-direction:column;overflow:hidden;border:1px solid var(--cdark)}",
-      ".elhc-panel.open{display:flex;animation:elhcUp .26s ease}",
-      "@keyframes elhcUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}",
+      ".elhc-panel.open{display:flex;animation:elhcUp .42s cubic-bezier(.22,1,.36,1)}",
+      ".elhc-panel.closing{display:flex;animation:elhcDown .26s cubic-bezier(.4,0,1,1) forwards}",
+      "@keyframes elhcUp{from{opacity:0;transform:translateY(18px) scale(.985)}to{opacity:1;transform:none}}",
+      "@keyframes elhcDown{from{opacity:1;transform:none}to{opacity:0;transform:translateY(16px) scale(.985)}}",
       ".elhc-head{background:linear-gradient(135deg,var(--p),var(--deep));color:var(--cream);padding:.95rem 1rem .9rem}",
       ".elhc-head-top{display:flex;align-items:center;justify-content:space-between;gap:.5rem}",
       ".elhc-title{font-family:'Fraunces ELH',Georgia,serif;font-size:1.12rem;line-height:1.2}",
@@ -79,13 +82,14 @@
       ".elhc-call:hover{filter:brightness(1.04)}",
       ".elhc-call small{font-weight:500;opacity:.8}",
       ".elhc-log{flex:1;overflow-y:auto;padding:1rem .9rem;display:flex;flex-direction:column;gap:.6rem;background:var(--cream)}",
-      ".elhc-msg{max-width:84%;padding:.62rem .8rem;border-radius:14px;font-size:14px;line-height:1.5;white-space:pre-wrap;word-wrap:break-word}",
+      ".elhc-msg{max-width:84%;padding:.62rem .8rem;border-radius:14px;font-size:14px;line-height:1.5;white-space:pre-wrap;word-wrap:break-word;animation:elhcRise .4s cubic-bezier(.22,1,.36,1) both}",
+      "@keyframes elhcRise{from{opacity:0;transform:translateY(9px)}to{opacity:1;transform:none}}",
       ".elhc-bot{align-self:flex-start;background:var(--cmid);color:var(--ink);border-bottom-left-radius:5px}",
       ".elhc-user{align-self:flex-end;background:var(--p);color:var(--cream);border-bottom-right-radius:5px}",
       ".elhc-chips{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.2rem}",
-      ".elhc-chip{background:#fff;border:1px solid var(--cdark);color:var(--p);font-family:inherit;font-size:12.5px;padding:.42rem .7rem;border-radius:20px;cursor:pointer;text-align:left;transition:background .15s,border-color .15s}",
-      ".elhc-chip:hover{background:var(--cmid);border-color:var(--gold)}",
-      ".elhc-typing{align-self:flex-start;display:flex;gap:4px;padding:.7rem .85rem;background:var(--cmid);border-radius:14px;border-bottom-left-radius:5px}",
+      ".elhc-chip{background:#fff;border:1px solid var(--cdark);color:var(--p);font-family:inherit;font-size:12.5px;padding:.42rem .7rem;border-radius:20px;cursor:pointer;text-align:left;transition:background .18s,border-color .18s,transform .18s,box-shadow .18s;animation:elhcRise .42s cubic-bezier(.22,1,.36,1) both}",
+      ".elhc-chip:hover{background:var(--cmid);border-color:var(--gold);transform:translateY(-1px);box-shadow:0 4px 12px rgba(60,28,59,.12)}",
+      ".elhc-typing{align-self:flex-start;display:flex;gap:4px;padding:.7rem .85rem;background:var(--cmid);border-radius:14px;border-bottom-left-radius:5px;animation:elhcRise .3s ease both}",
       ".elhc-typing span{width:6px;height:6px;border-radius:50%;background:var(--p);opacity:.5;animation:elhcBlink 1.2s infinite}",
       ".elhc-typing span:nth-child(2){animation-delay:.2s}.elhc-typing span:nth-child(3){animation-delay:.4s}",
       "@keyframes elhcBlink{0%,60%,100%{opacity:.25;transform:translateY(0)}30%{opacity:.9;transform:translateY(-3px)}}",
@@ -98,7 +102,7 @@
       ".elhc-send svg{width:18px;height:18px}",
       ".elhc-note{font-size:10.5px;color:var(--mid);text-align:center;margin-top:.45rem;line-height:1.4}",
       "@media (max-width:480px){.elhc-panel{right:8px;bottom:8px;width:calc(100vw - 16px);height:calc(100vh - 16px);max-height:calc(100vh - 16px)}.elhc-dock{right:14px;bottom:14px}}",
-      "@media (prefers-reduced-motion:reduce){.elhc-panel.open{animation:none}.elhc-launch{transition:none}.elhc-typing span{animation:none}}"
+      "@media (prefers-reduced-motion:reduce){.elhc-panel.open,.elhc-panel.closing,.elhc-msg,.elhc-chip,.elhc-typing{animation:none}.elhc-launch{transition:none}.elhc-typing span{animation:none}}"
     ].join("\n");
     var s = document.createElement("style");
     s.setAttribute("data-elhc", "");
@@ -118,7 +122,14 @@
       return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
     });
   }
-  function scrollDown() { log.scrollTop = log.scrollHeight; }
+  function reduced() {
+    try { return !!(window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches); }
+    catch (e) { return false; }
+  }
+  function scrollDown() {
+    try { log.scrollTo({ top: log.scrollHeight, behavior: reduced() ? "auto" : "smooth" }); }
+    catch (e) { log.scrollTop = log.scrollHeight; }
+  }
 
   function addMsg(text, who) {
     var m = el("div", "elhc-msg " + (who === "user" ? "elhc-user" : "elhc-bot"));
@@ -130,17 +141,24 @@
 
   function addChips(items) {
     var wrap = el("div", "elhc-chips");
-    items.forEach(function (it) {
+    items.forEach(function (it, i) {
       var c = el("button", "elhc-chip");
       c.type = "button";
       c.textContent = it.q;
+      c.style.animationDelay = (0.08 * i + 0.12).toFixed(2) + "s";
       c.addEventListener("click", function () {
         addMsg(it.q, "user");
         history.push({ role: "user", content: it.q });
-        window.setTimeout(function () {
+        var pushAnswer = function () {
           addMsg(it.a, "bot");
           history.push({ role: "assistant", content: it.a });
-        }, 280);
+        };
+        if (reduced()) { pushAnswer(); return; }
+        var t = showTyping();
+        window.setTimeout(function () {
+          if (t.parentNode) t.parentNode.removeChild(t);
+          pushAnswer();
+        }, 650);
       });
       wrap.appendChild(c);
     });
@@ -158,6 +176,7 @@
 
   /* ---------- conversation ---------- */
   function greet() {
+    greeted = true;
     addMsg(
       "Hello, and welcome. I'm here to gently help with questions about Eternal Life Hospice \u2014 our care, coverage, and how to begin. Whenever you'd rather speak with a person, our team is one tap away, any time.",
       "bot"
@@ -332,17 +351,34 @@
   }
 
   function open() {
+    window.clearTimeout(closeTimer);
+    panel.classList.remove("closing");
     panel.classList.add("open");
     dock.classList.add("hide");
     if (!opened) {
       opened = true;
-      greet();
+      if (reduced()) greet();
+      else greetTimer = window.setTimeout(greet, 220);
     }
-    window.setTimeout(function () { inputEl.focus(); }, 120);
+    if (reduced()) inputEl.focus();
+    else focusTimer = window.setTimeout(function () { inputEl.focus(); }, 260);
   }
   function close() {
+    window.clearTimeout(greetTimer);
+    window.clearTimeout(focusTimer);
+    window.clearTimeout(closeTimer);
+    if (!greeted) opened = false; // allow greeting on next open if it never ran
     panel.classList.remove("open");
-    dock.classList.remove("hide");
+    if (reduced()) {
+      panel.classList.remove("closing");
+      dock.classList.remove("hide");
+      return;
+    }
+    panel.classList.add("closing");
+    closeTimer = window.setTimeout(function () {
+      panel.classList.remove("closing");
+      dock.classList.remove("hide"); // reveal launcher only after panel has faded out
+    }, 280);
   }
 
   if (document.readyState === "loading") {
