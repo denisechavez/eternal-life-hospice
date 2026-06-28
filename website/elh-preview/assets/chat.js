@@ -178,7 +178,7 @@
   function greet() {
     greeted = true;
     addMsg(
-      "Hello, and welcome. I'm here to gently help with questions about Eternal Life Hospice \u2014 our care, coverage, and how to begin. Whenever you'd rather speak with a person, our team is one tap away, any time.",
+      "Hello, and welcome. I'm here to gently guide you through questions about Eternal Life Hospice \u2014 our care, coverage, and how to begin. Whenever you'd rather speak with a person, our team is one tap away, any time, 24/7.",
       "bot"
     );
     addChips(GUIDED);
@@ -188,14 +188,14 @@
     addMsg(
       "If this is a medical emergency, please call 911 right away. For an urgent hospice need, our nurses are available around the clock at " +
         PHONE_DISPLAY +
-        " \u2014 please call and a real person will help you right now.",
+        " \u2014 please call and a real person will support you right now.",
       "bot"
     );
   }
 
   function clinicalReply() {
     addMsg(
-      "I want to make sure you get the right help \u2014 a question like that is best for one of our nurses rather than me. Please call " +
+      "I want to make sure you get the right support \u2014 a question like that is best for one of our nurses rather than me. Please call " +
         PHONE_DISPLAY +
         " any time, day or night, and a caring person will talk it through with you. If this is an emergency, please call 911.",
       "bot"
@@ -205,9 +205,9 @@
   function localFallback() {
     aiAvailable = false;
     addMsg(
-      "I can't reach the assistant at the moment \u2014 but I can still help. You can tap one of the common questions below, or call our team any time at " +
+      "I can't reach the assistant at the moment \u2014 but I can still guide you. You can tap one of the common questions below, or call our team any time at " +
         PHONE_DISPLAY +
-        " and a real person will be glad to help.",
+        " and a real person will be glad to support you.",
       "bot"
     );
     addChips(GUIDED);
@@ -267,7 +267,7 @@
 
     openBtn = el("button", "elhc-launch");
     openBtn.type = "button";
-    openBtn.setAttribute("aria-label", "Open the help assistant");
+    openBtn.setAttribute("aria-label", "Open the support guide");
     openBtn.setAttribute("title", "Questions? We\u2019re here");
     openBtn.innerHTML =
       '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-8.5 8.5 9.5 9.5 0 0 1-4-.9L3 20l1.4-4.5a8.4 8.4 0 0 1-1-4A8.38 8.38 0 0 1 12 3a8.38 8.38 0 0 1 9 8.5z"/></svg>';
@@ -277,7 +277,7 @@
 
     panel = el("div", "elhc elhc-panel");
     panel.setAttribute("role", "dialog");
-    panel.setAttribute("aria-label", "Eternal Life Hospice help assistant");
+    panel.setAttribute("aria-label", "Eternal Life Hospice support guide");
 
     var head = el("div", "elhc-head");
     var top = el("div", "elhc-head-top");
@@ -286,7 +286,7 @@
     titleWrap.appendChild(el("div", "elhc-sub", "Warm, caring support \u2014 any hour, day or night, 7 days a week."));
     var x = el("button", "elhc-x");
     x.type = "button";
-    x.setAttribute("aria-label", "Close the help assistant");
+    x.setAttribute("aria-label", "Close the support guide");
     x.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>';
     x.addEventListener("click", close);
     top.appendChild(titleWrap);
