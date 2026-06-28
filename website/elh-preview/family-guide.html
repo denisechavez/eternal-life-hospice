@@ -317,6 +317,9 @@ body.lowink .cover-foot{border-top-color:var(--cream-dark)}
   .pages{max-width:none}
   .page{display:block!important;box-shadow:none!important;border:none!important;border-radius:0;
     min-height:auto;padding:0 0 8mm;margin:0;animation:none;background:#fff!important;color:#000}
+  /* one booklet leaf per physical sheet */
+  .page{break-after:page;page-break-after:always}
+  .page:last-child{break-after:auto;page-break-after:auto}
   .page.cover{background:#fff!important;color:#000}
   .page.cover h1.title{color:var(--deep)}
   .num{background:transparent!important;border:2px solid var(--gold-deep);color:var(--gold-deep)!important}
