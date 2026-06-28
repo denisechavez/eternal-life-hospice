@@ -509,3 +509,93 @@ id = "uxr4F-QXyrW8eodOwbAMc"
 uri = "file://attached_assets/previews/elh_photo_picks.png"
 type = "image"
 title = "City photo picks — 15 pages"
+
+[[outputs]]
+id = "I0xI9bV9joKXSlbFIgXER"
+uri = "file://attached_assets/stock_images/camarillo_c_1.jpg"
+type = "image"
+title = "Ventura County coastal farmland green mountains California sunny"
+
+[[outputs]]
+id = "mmXL0qKgEhRypwzsaKR0n"
+uri = "file://attached_assets/stock_images/camarillo_c_2.jpg"
+type = "image"
+title = "Ventura County coastal farmland green mountains California sunny"
+
+[[outputs]]
+id = "DYTwGZpXIcRfqSgKI0YYW"
+uri = "file://attached_assets/stock_images/camarillo_c_3.jpg"
+type = "image"
+title = "Ventura County coastal farmland green mountains California sunny"
+
+[[outputs]]
+id = "7nnaHuNRRVX5AqjuJ2-YZ"
+uri = "file://attached_assets/stock_images/newbury_park_c_1.jpg"
+type = "image"
+title = "Boney Mountain Conejo Valley chaparral hills California"
+
+[[outputs]]
+id = "6_xiJiVJkEup8imruBIpZ"
+uri = "file://attached_assets/stock_images/newbury_park_c_2.jpg"
+type = "image"
+title = "Boney Mountain Conejo Valley chaparral hills California"
+
+[[outputs]]
+id = "GL7mc7Zr_IZF_8tGWjqvv"
+uri = "file://attached_assets/stock_images/newbury_park_c_3.jpg"
+type = "image"
+title = "Boney Mountain Conejo Valley chaparral hills California"
+
+[[outputs]]
+id = "ZlbsINcWeqL9N_0L0Xty8"
+uri = "file://attached_assets/stock_images/thousand_oaks_c_1.jpg"
+type = "image"
+title = "Conejo Valley green hills oak trees California suburb"
+
+[[outputs]]
+id = "uDgAyYmWmVP2DzT0rdhuT"
+uri = "file://attached_assets/stock_images/thousand_oaks_c_2.jpg"
+type = "image"
+title = "Conejo Valley green hills oak trees California suburb"
+
+[[outputs]]
+id = "-48C7NMSdctSGc1h11RVz"
+uri = "file://attached_assets/stock_images/thousand_oaks_c_3.jpg"
+type = "image"
+title = "Conejo Valley green hills oak trees California suburb"
+
+[[outputs]]
+id = "IWWCGIqL9h1o6UA1UtJu2"
+uri = "file://attached_assets/stock_images/tarzana_c_1.jpg"
+type = "image"
+title = "San Fernando Valley sunset hills palm trees California"
+
+[[outputs]]
+id = "-Zb7RqxeNMDtQ7xnt404v"
+uri = "file://attached_assets/stock_images/tarzana_c_2.jpg"
+type = "image"
+title = "San Fernando Valley sunset hills palm trees California"
+
+[[outputs]]
+id = "vJN6jhs7PNheuQiGT3V21"
+uri = "file://attached_assets/stock_images/tarzana_c_3.jpg"
+type = "image"
+title = "San Fernando Valley sunset hills palm trees California"
+
+[[outputs]]
+id = "7xJGW27F1EFrOziRPS2up"
+uri = "file://attached_assets/stock_images/westlake_village_c_1.jpg"
+type = "image"
+title = "calm lake reflection mountains palm trees California"
+
+[[outputs]]
+id = "72cSUneoDQ7aL_N_dl_m9"
+uri = "file://attached_assets/stock_images/westlake_village_c_2.jpg"
+type = "image"
+title = "calm lake reflection mountains palm trees California"
+
+[[outputs]]
+id = "2H57LhXoovViBbb735fXs"
+uri = "file://attached_assets/stock_images/westlake_village_c_3.jpg"
+type = "image"
+title = "calm lake reflection mountains palm trees California"
