@@ -46,6 +46,11 @@
     }
   ];
 
+  // A few gentle conversation starters shown on the greeting — kept short so the
+  // panel feels like a warm chat, not a long FAQ menu. People can ask anything
+  // in their own words in the box below.
+  var STARTERS = [GUIDED[0], GUIDED[1], GUIDED[6]];
+
   var EMERGENCY = /(emergenc|call 911|\b911\b|can'?t breathe|cannot breathe|chest pain|suicid|kill myself|end my life|overdose|unconscious|not breathing|severe bleeding)/i;
 
   // Clinical / health-detail questions are for a nurse, not the bot. We never
@@ -179,10 +184,10 @@
   function greet() {
     greeted = true;
     addMsg(
-      "Hello, and welcome. I'm here to gently guide you through questions about Eternal Life Hospice \u2014 our care, coverage, and how to begin. Whenever you'd rather speak with a person, our team is one tap away, any time, 24/7.",
+      "Hi there \u2014 I'm really glad you reached out. You can ask me anything about Eternal Life Hospice, or just tell me what's on your mind. And whenever you'd rather talk with a real person, our team is one tap away, day or night.",
       "bot"
     );
-    addChips(GUIDED);
+    addChips(STARTERS);
   }
 
   function emergencyReply() {
@@ -284,7 +289,7 @@
     var top = el("div", "elhc-head-top");
     var titleWrap = el("div");
     titleWrap.appendChild(el("div", "elhc-title", "We\u2019re here for you"));
-    titleWrap.appendChild(el("div", "elhc-sub", "Caring support \u2014 any hour, day or night, 24 hours 7 days a week."));
+    titleWrap.appendChild(el("div", "elhc-sub", "Real, caring support \u2014 any time, day or night."));
     var x = el("button", "elhc-x");
     x.type = "button";
     x.setAttribute("aria-label", "Close the support guide");
