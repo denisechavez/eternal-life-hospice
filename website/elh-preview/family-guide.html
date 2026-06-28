@@ -313,6 +313,7 @@ body.lowink .cover-foot{border-top-color:var(--cream-dark)}
   .page::after{display:none!important}
   .contact .cname{color:var(--deep)!important}
   .toolbar,.indicator,.navbtn,.begin{display:none!important}
+  .elhc-dock,.elhc-panel{display:none!important}
   .stage{padding:0;display:block}
   .pages{max-width:none}
   .page{display:block!important;box-shadow:none!important;border:none!important;border-radius:0;
@@ -344,6 +345,7 @@ body.lowink .cover-foot{border-top-color:var(--cream-dark)}
 /* JS-driven print: scale each booklet leaf to fit one physical sheet (measured on-screen via this class so it matches the print layout) */
 body.printing{background:#fff}
 body.printing .toolbar,body.printing .indicator,body.printing .navbtn,body.printing .begin{display:none!important}
+body.printing .elhc-dock,body.printing .elhc-panel{display:none!important}
 body.printing .stage{padding:0;display:block}
 body.printing .pages{height:auto!important;max-width:none;perspective:none}
 body.printing .page{position:relative!important;transform:none!important;opacity:1!important;display:block!important;
@@ -793,7 +795,14 @@ body.booklet .page{transition:transform 1.2s cubic-bezier(.3,.4,.2,1),opacity .5
   function finishPrint(){ if(!printing)return; printing=false; endPrint(); if(!prevState.lowink)document.body.classList.remove('lowink'); }
   window.addEventListener('beforeprint',startPrint);
   window.addEventListener('afterprint',finishPrint);
-  document.getElementById('printBtn').onclick=function(){ startPrint(); setTimeout(function(){ window.print(); setTimeout(finishPrint,1000); },90); };
+  /* matchMedia('print') fires on BOTH entering and leaving print (incl. Safari), so teardown is
+     event-driven — never on a guessed timer that could strip the zoom before the preview commits. */
+  if(window.matchMedia){
+    var mqP=window.matchMedia('print');
+    var onMq=function(m){ if(m.matches){startPrint();}else{finishPrint();} };
+    if(mqP.addEventListener){mqP.addEventListener('change',onMq);} else if(mqP.addListener){mqP.addListener(onMq);}
+  }
+  document.getElementById('printBtn').onclick=function(){ startPrint(); setTimeout(function(){ window.print(); },90); };
   document.getElementById('resetBtn').onclick=function(){
     if(!confirm('Clear everything you have typed and checked?'))return;
     document.querySelectorAll('[data-field]').forEach(function(f){ if(f.type==='checkbox')f.checked=false; else f.value=''; });

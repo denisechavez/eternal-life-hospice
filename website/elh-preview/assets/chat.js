@@ -102,7 +102,8 @@
       ".elhc-send svg{width:18px;height:18px}",
       ".elhc-note{font-size:10.5px;color:var(--mid);text-align:center;margin-top:.45rem;line-height:1.4}",
       "@media (max-width:480px){.elhc-panel{right:8px;bottom:8px;width:calc(100vw - 16px);height:calc(100vh - 16px);max-height:calc(100vh - 16px)}.elhc-dock{right:14px;bottom:14px}}",
-      "@media (prefers-reduced-motion:reduce){.elhc-panel.open,.elhc-panel.closing,.elhc-msg,.elhc-chip,.elhc-typing{animation:none}.elhc-launch{transition:none}.elhc-typing span{animation:none}}"
+      "@media (prefers-reduced-motion:reduce){.elhc-panel.open,.elhc-panel.closing,.elhc-msg,.elhc-chip,.elhc-typing{animation:none}.elhc-launch{transition:none}.elhc-typing span{animation:none}}",
+      "@media print{.elhc-dock,.elhc-panel{display:none!important}}"
     ].join("\n");
     var s = document.createElement("style");
     s.setAttribute("data-elhc", "");
