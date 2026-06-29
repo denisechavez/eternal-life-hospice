@@ -683,3 +683,9 @@ id = "i3u9Ynd5Ay63ocOu6mlKr"
 uri = "file://website/elh-preview/assets/og-image.jpg"
 type = "image"
 title = "Eternal Life Hospice — share card"
+
+[[outputs]]
+id = "ljBT8_MEggFoIbnTf62zw"
+uri = "file://exports/eternal-life-rack-card.pdf"
+type = "pdf"
+title = "Eternal Life Hospice — Rack Card (4×9, print-ready)"
