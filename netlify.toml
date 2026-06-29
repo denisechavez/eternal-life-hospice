@@ -1,0 +1,12 @@
+# Netlify configuration (repo root) for Eternal Life Hospice
+# The static site lives in website/elh-preview/. No build step.
+[build]
+  publish = "website/elh-preview"
+
+[functions]
+  directory = "website/elh-preview/netlify/functions"
+  node_bundler = "esbuild"
+
+# Pretty URLs (serving /page from page.html) are enabled by default.
+# Custom 404 is served automatically from /404.html.
+# _redirects and _headers inside the publish directory are honored automatically.
