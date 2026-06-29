@@ -88,6 +88,8 @@ footer a:hover{color:var(--gold)}
 .hero--photo{position:relative;background:#2a1838 center/cover no-repeat;color:#F7F2ED}
 .hero--photo::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(40,24,56,.60) 0%,rgba(40,24,56,.66) 55%,rgba(40,24,56,.84) 100%)}
 .hero--photo>*{position:relative;z-index:1}
+.hero-photo-full{display:block;width:100%;max-width:760px;height:auto;margin:0 auto 1.6rem;border-radius:14px;box-shadow:0 16px 40px rgba(20,10,28,.4);border:3px solid rgba(232,217,184,.45)}
+@media(max-width:600px){.hero-photo-full{margin-bottom:1.2rem;border-radius:10px}}
 .hero--photo .kicker,.hero--photo h1,.hero--photo p{text-shadow:0 2px 16px rgba(20,10,28,.55)}
 .hero--photo .eyebrow{color:var(--gold)}
 /* intro lede */
