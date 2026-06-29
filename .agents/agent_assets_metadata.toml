@@ -102,6 +102,12 @@ uri = "file://.canvas/assets/fg-cover-3-togetherness.png"
 type = "image"
 title = "generated_image"
 
+[[generated]]
+id = "dQfOXPx4jNJORYygSJrbp"
+uri = "file://attached_assets/generated_images/walking-figure.png"
+type = "image"
+title = "walking office figure"
+
 [[outputs]]
 id = "qLfrLYeW6vnnXMfZ4rxbP"
 uri = "file://attached_assets/ELH-QR_eternallifehospice_cream.png"
