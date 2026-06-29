@@ -12,7 +12,7 @@ description: Which pages use shared elh.css vs inline-only CSS in the elh-previe
 - **How to apply:** Before changing any "site-wide" CSS, grep each target page for `elh.css`; for inline-only pages, edit their `<style>` directly.
 
 ## Shared header (wordmark + hamburger nav)
-- Markup uses `<header id="hdr">` + `.hdr-in` > `.hdr-logo` (two swap imgs `assets/img/logo-sym-cream.png` / `logo-sym-plum.png` + `.hdr-wordmark`), `nav`, `.hdr-cta` phone pill, `.menu-btn`.
+- Markup uses `<header id="hdr">` + `.hdr-in` > `.hdr-logo` (two swap imgs `assets/img/elh-sym-cream.png` / `elh-sym-plum.png` + `.hdr-wordmark`), `nav`, `.hdr-cta` phone pill, `.menu-btn`.
 - Behavior JS: `assets/header.js` (scroll→`.scrolled`, hamburger→`.nav-open`, close on outside-click + nav-link click). Faithfully mirrors homepage inline JS — keep at parity; homepage has no Esc/aria-controls, so don't add them to inner pages only.
 - Inner pages use `position:sticky` (avoids hero overlap); homepage uses `position:fixed`. Accepted divergence.
 - Path variants: top-level pages use `index.html#...` / `assets/...`; `resources/*` subpages use `../index.html#...` / `../assets/...`.
@@ -74,9 +74,16 @@ description: Which pages use shared elh.css vs inline-only CSS in the elh-previe
 - ALL pages that have a footer use the homepage mega-footer markup `<footer id="site-footer">` (5-col grid: logo/tagline + Our Care / For Families / For Providers / Contact, then disclaimer + bottom bar). 31 pages carry it.
 - `family-guide.html` and `ELH_Family_Guide_Interactive.html` have NO footer by design — never add one.
 - CSS is scoped under `#site-footer` and must exist in THREE places (same rule as the header): `assets/elh.css` (covers all linked inner + `resources/*` pages), `index.html` inline, and `resources.html` inline. The legacy generic `footer{}` / `.ftag` / `.fcontact` rules in elh.css are dead but harmless; the `#site-footer`-scoped block (appended later) wins on specificity+order.
-- Path prefixes by depth: root pages use `index.html#x` / `assets/...`; `resources/*` subpages use `../index.html#x` / `../assets/...`. Footer logo is `assets/img/inline-edee248dcb.png` (cream wordmark).
+- Path prefixes by depth: root pages use `index.html#x` / `assets/...`; `resources/*` subpages use `../index.html#x` / `../assets/...`. Footer logo is `assets/img/elh-logo-cream.png` (full cream stacked logo).
 - **"Refer a Patient" routing in the footer:** homepage uses the `#leadcap` modal (`data-leadtab="physician"`); every NON-home page instead links to `providers.html` (a modal anchor can't open cross-page). This intentional difference keeps the link functional — don't "fix" it to a shared `#leadcap`.
 - **Contact-icon spacing (`.fc-line`/`.fci`) — keep icons a UNIFORM box, no per-type `transform:scale`.** The icon→text gap "kept changing" because `.fci` had a fixed box (`width:13px`) but phone/mail used `transform:scale(1.22/1.14)`, which overflows the box (doesn't grow layout) and visually eats into the `gap` differently per row while fax/address stayed put. Fix kept: one size for all (`.fc-line .fci{width:15px;height:15px}`) + a single flex `gap:.55rem`, scale rules deleted, in all 3 CSS places. **How to apply:** never reintroduce per-icon transforms for sizing — change the shared `.fci` width/height so every row's gap stays equal.
+
+## Brand logo assets — source of truth + swap mechanics (decided)
+- The canonical brand logo is the STACKED lockup in `attached_assets/ELH-Stacked-{Cream,Plum,Black}_*.png` (1494×1230, infinity mark above "Eternal / LIFE HOSPICE"). `attached_assets/` is NOT web-served — always copy into `assets/img/` before referencing.
+- Header uses the infinity MARK ONLY (cropped from the top band of the stacked source: `magick SRC -crop 1494x450+0+0 +repage -trim +repage -resize 600x`) → `assets/img/elh-sym-cream.png` (shows on dark header) + `elh-sym-plum.png` (shows on `#hdr.scrolled`). The mark is wide/flat (~3.1:1), so header height is 38px (`.hdr-logo img.s`, in all 3 CSS places). Wordmark text (`.hdr-wordmark`) stays as a separate element beside the mark.
+- Footer uses the FULL stacked lockup (`-trim -resize 680x`) → `assets/img/elh-logo-cream.png` at `.foot-logo img{height:52px}`.
+- Each of these 3 files is referenced by 33 pages, so a logo change = overwrite/rename the file + one `sed` over `$(rg -l ...)`, NEVER per-page markup edits.
+- **Why renamed (was `logo-sym-{cream,plum}.png` / `inline-edee248dcb.png`):** `_headers` caches `/assets/*` 1 day, so swapping bytes at the SAME filename serves the stale logo for up to a day on live. Renaming the file busts that cache instantly. **How to apply:** when replacing a logo's content, give it a NEW filename and sed all refs, rather than overwriting in place.
 
 ## QR codes (point to eternallifehospice.com)
 - A QR placed on a DARK surface must carry its own light backing or it won't scan. The footer sits on `--deep` (dark plum), so the footer QR uses the **cream** variant (`assets/img/qr-cream.png` = plum modules on cream) — NOT the transparent/plum variant, which would be dark-on-dark and unscannable. **Why:** scanners need module/background contrast; "transparent for dark backgrounds" is wrong for QR. Same reasoning anywhere a QR lands on a colored surface.
@@ -123,7 +130,7 @@ description: Which pages use shared elh.css vs inline-only CSS in the elh-previe
 - **How to apply:** scope the selector to exactly the intended links (e.g. `a[href^="/hospice-care-"]`) and only call `preventDefault()` inside the matched branch. The homepage `#coverage` city-scroll handler is the one legitimate case.
 
 ## Image treatments + Netlify perf/SEO files (audit baseline, June 2026)
-- All `<img>` carry `alt` (decorative = `alt=""`); below-the-fold imgs have `loading="lazy" decoding="async"`; the 62 header-logo imgs (`sym-cream`/`sym-plum`, 2×31 pages) stay EAGER for LCP. Re-run the lazy script idempotently (skips tags with `loading=` and logo classes).
+- All `<img>` carry `alt` (decorative = `alt=""`); below-the-fold imgs have `loading="lazy" decoding="async"`; the header-logo imgs (`sym-cream`/`sym-plum` classes, 2×33 pages) stay EAGER for LCP. Re-run the lazy script idempotently (skips tags with `loading=` and logo classes).
 - SEO/Netlify control files live at the publish root `website/elh-preview/`: `robots.txt`, `sitemap.xml`, `llms.txt` (AI-crawler summary), `_headers` (security headers on `/*`, 1-day cache `/assets/*`, 1yr immutable `/assets/fonts/*`). Keep sitemap URLs in clean form (no `.html`).
 
 ## Hero photos from portrait sources — coherent crop vs blurred-fill (decided)
