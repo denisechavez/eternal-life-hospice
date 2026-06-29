@@ -431,9 +431,7 @@
         addMsg(
           "Thank you, " +
             data.name.split(" ")[0] +
-            ". I've passed this along \u2014 a member of our team will call you" +
-            (data.preferred_time ? " (" + data.preferred_time + ")" : "") +
-            " as soon as we can. If anything comes up in the meantime, we're always here at " +
+            ". I've passed this along \u2014 a member of our team will call you back as soon as your message is received. If anything comes up in the meantime, we're always here at " +
             PHONE_DISPLAY +
             ".",
           "bot"
