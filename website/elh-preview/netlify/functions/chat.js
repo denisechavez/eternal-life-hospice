@@ -164,7 +164,35 @@ exports.handler = async function (event) {
 
 // Claude (Anthropic) — primary. Warm and personable. Returns reply text or throws.
 async function callClaude(messages) {
-  const model = process.env.ANTHROPIC_MODEL || "claude-sonnet-4-20250514";
+  const preferred = process.env.ANTHROPIC_MODEL || "claude-sonnet-4-0";
+  let result = await postClaude(preferred, messages);
+
+  // If the configured model is unavailable (retired, renamed, or not enabled on
+  // this account), ask Anthropic which models this account CAN use and retry
+  // once with a sensible pick. This keeps the chat working even as Anthropic
+  // rotates model names over time, so we never have to hard-code a moving target.
+  if (result.status === 404) {
+    const fallbackModel = await pickAvailableClaudeModel();
+    if (fallbackModel && fallbackModel !== preferred) {
+      console.error(
+        "Anthropic model '" + preferred + "' unavailable; auto-selected '" + fallbackModel + "'."
+      );
+      result = await postClaude(fallbackModel, messages);
+    }
+  }
+
+  if (!result.ok) {
+    throw new Error("Anthropic " + result.status + ": " + (result.detail || "").slice(0, 300));
+  }
+  const data = result.data;
+  return data && Array.isArray(data.content) && data.content[0] && data.content[0].text
+    ? data.content[0].text.trim()
+    : "";
+}
+
+// Single POST to Anthropic's messages API for a given model.
+// Returns { ok, status, data } on success or { ok:false, status, detail } on error.
+async function postClaude(model, messages) {
   const resp = await fetch("https://api.anthropic.com/v1/messages", {
     method: "POST",
     headers: {
@@ -181,13 +209,37 @@ async function callClaude(messages) {
     })
   });
   if (!resp.ok) {
-    const detail = await resp.text();
-    throw new Error("Anthropic " + resp.status + ": " + detail.slice(0, 300));
+    return { ok: false, status: resp.status, detail: await resp.text() };
   }
-  const data = await resp.json();
-  return data && Array.isArray(data.content) && data.content[0] && data.content[0].text
-    ? data.content[0].text.trim()
-    : "";
+  return { ok: true, status: 200, data: await resp.json() };
+}
+
+// Ask Anthropic which models this account can use and choose a sensible one:
+// newest Sonnet first (best balance of warmth + cost), then newest Haiku, then
+// whatever is available. Returns a model id, or "" if the list can't be fetched.
+async function pickAvailableClaudeModel() {
+  try {
+    const resp = await fetch("https://api.anthropic.com/v1/models?limit=100", {
+      headers: {
+        "x-api-key": process.env.ANTHROPIC_API_KEY,
+        "anthropic-version": "2023-06-01"
+      }
+    });
+    if (!resp.ok) return "";
+    const body = await resp.json();
+    const ids = Array.isArray(body.data)
+      ? body.data.map(function (m) { return m && m.id; }).filter(Boolean)
+      : [];
+    if (!ids.length) return "";
+    const newestFirst = function (a, b) { return a < b ? 1 : a > b ? -1 : 0; };
+    const sonnet = ids.filter(function (id) { return id.indexOf("sonnet") !== -1; }).sort(newestFirst);
+    if (sonnet.length) return sonnet[0];
+    const haiku = ids.filter(function (id) { return id.indexOf("haiku") !== -1; }).sort(newestFirst);
+    if (haiku.length) return haiku[0];
+    return ids.slice().sort(newestFirst)[0];
+  } catch (e) {
+    return "";
+  }
 }
 
 // OpenAI — automatic fallback. Uses the same warm SYSTEM_PROMPT and settings,
