@@ -5,6 +5,13 @@
 <link rel="canonical" href="https://eternallifehospice.com/resources/comfort-therapies">
 <meta property="og:type" content="website"><meta property="og:title" content="The Therapies That Bring Comfort | Eternal Life Hospice"><meta property="og:description" content="The integrative comfort therapies Eternal Life Hospice weaves into care, from music and gentle massage to aromatherapy and a calm sound bath. Comfort that surrounds medical care. Serving Ventura and Los Angeles counties."><meta property="og:url" content="https://eternallifehospice.com/resources/comfort-therapies"><meta property="og:image" content="https://eternallifehospice.com/assets/og-image.jpg"><meta property="og:site_name" content="Eternal Life Hospice"><meta name="twitter:card" content="summary_large_image"><link rel="icon" type="image/png" href="../assets/favicon.png">
 <link rel="stylesheet" href="../assets/elh.css?v=20260629120000">
+<style>
+/* Comfort Therapies hero: keep the standard full-bleed format but lighten the
+   shared overlay so the rose-quartz heart photo reads clearly behind the text. */
+#ctHero{background-position:center 42%}
+#ctHero::after{background:linear-gradient(180deg,rgba(40,24,56,.30) 0%,rgba(40,24,56,.34) 50%,rgba(40,24,56,.60) 100%)}
+#ctHero .kicker,#ctHero h1,#ctHero p{text-shadow:0 2px 10px rgba(20,10,28,.9),0 1px 24px rgba(20,10,28,.6)}
+</style>
 
 <script type="application/ld+json">{
   "@context": "https://schema.org",
@@ -112,7 +119,7 @@
     <button class="menu-btn" aria-label="Menu" aria-expanded="false"><svg width="22" height="16" viewBox="0 0 22 16"><line x1="0" y1="2" x2="22" y2="2" stroke="#F5F0EB" stroke-width="2" stroke-linecap="round"/><line x1="0" y1="8" x2="22" y2="8" stroke="#F5F0EB" stroke-width="2" stroke-linecap="round"/><line x1="0" y1="14" x2="22" y2="14" stroke="#F5F0EB" stroke-width="2" stroke-linecap="round"/></svg></button>
   </div>
 </header>
-<section class="hero hero--photo" style="background-image:url('../assets/img/comfort-therapies-hero.jpg')">
+<section id="ctHero" class="hero hero--photo" style="background-image:url('../assets/img/comfort-therapies-hero.jpg')">
   <div class="kicker">Comfort, Earth &amp; Community &middot; Integrative Comfort</div>
   <h1>The Therapies That Bring Comfort</h1>
   <p>Music, massage, aromatherapy and more, woven into care to ease the body, quiet the mind and bring love to the spirit.</p>
