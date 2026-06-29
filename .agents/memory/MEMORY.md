@@ -3,3 +3,4 @@
 - [Sound Bath page](soundbath-page.md) — sound-bath.html: Web Audio engine + player CSS duplicated from index.html (update both); strict compliance framing (no efficacy claims, Medicare-not-covered, WebPage schema not Medical).
 - [Chat widget ops](chat-widget-ops.md) — Netlify Function chat.js: fast 4-5ms reply = missing key (scope=All+redeploy); Anthropic 404=model retired not credits; function self-heals via /v1/models.
 - [Form auto-reply](form-autoreply.md) — submission-created.js sends client auto-reply via Resend; always returns 200; gate by form allowlist (email-collecting forms only); key in Netlify not Replit.
+- [OG share card](og-image.md) — assets/og-image.jpg (1200×630) is shared site-wide; regen via temp og-card.html + headless chromium screenshot; 100vw/vh fill avoids white band; share.google is Google's wrapper.
