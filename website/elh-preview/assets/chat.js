@@ -431,9 +431,9 @@
         addMsg(
           "Thank you, " +
             data.name.split(" ")[0] +
-            ". I've passed this along \u2014 a member of our team will call you back as soon as your message is received. If anything comes up in the meantime, we're always here at " +
+            ". Your message has been sent and a member of our team will call you back within the hour. If anything comes up in the meantime, feel free to call us anytime at " +
             PHONE_DISPLAY +
-            ".",
+            ". We're here 24/7.",
           "bot"
         );
       })
