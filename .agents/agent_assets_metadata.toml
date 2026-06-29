@@ -671,3 +671,15 @@ id = "-VJyMsy4qx_tgbP7J2zkv"
 uri = "file://attached_assets/stock_images/singing_bowl_4.jpg"
 type = "image"
 title = "brass bowl meditation"
+
+[[outputs]]
+id = "HU3GiZe7HBBC7QJYVCw2R"
+uri = "file://.canvas/assets/og-qr.png"
+type = "image"
+title = "Scan to view the share card on your phone"
+
+[[outputs]]
+id = "i3u9Ynd5Ay63ocOu6mlKr"
+uri = "file://website/elh-preview/assets/og-image.jpg"
+type = "image"
+title = "Eternal Life Hospice — share card"
