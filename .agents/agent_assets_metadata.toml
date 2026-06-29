@@ -78,6 +78,12 @@ uri = "file://website/elh-preview/assets/img/careers.png"
 type = "image"
 title = "generated_image"
 
+[[generated]]
+id = "Lv-_bdPZg0TUTqoc_T822"
+uri = "file://website/elh-preview/assets/img/resources-hero.png"
+type = "image"
+title = "generated_image"
+
 [[outputs]]
 id = "qLfrLYeW6vnnXMfZ4rxbP"
 uri = "file://attached_assets/ELH-QR_eternallifehospice_cream.png"
