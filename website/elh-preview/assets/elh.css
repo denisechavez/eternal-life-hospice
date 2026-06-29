@@ -5,7 +5,7 @@
 @font-face{font-family:'Jost ELH';font-weight:400;font-display:swap;src:url(fonts/JostELH-Regular.woff2) format('woff2')}
 @font-face{font-family:'Jost ELH';font-weight:500;font-display:swap;src:url(fonts/JostELH-Medium.woff2) format('woff2')}
 @font-face{font-family:'Jost ELH';font-weight:600;font-display:swap;src:url(fonts/JostELH-SemiBold.woff2) format('woff2')}
-:root{--plum:#5B2E59;--deep:#4A1B46;--slate:#6793AC;--gold:#C9B07E;--cream:#F5F0EB;--cream-dark:#D8CDBF;--cream-mid:#EDE6DE;--ink:#3a2b39;--ink-soft:#6b5d68;--text-mid:#5A4057;--ff-d:'Fraunces ELH',Georgia,serif;--ff-b:'Jost ELH',system-ui,sans-serif;--hdr-h:74px}
+:root{--plum:#5B2E59;--deep:#3C1C3B;--slate:#6793AC;--gold:#C9B07E;--cream:#F5F0EB;--cream-dark:#D8CDBF;--cream-mid:#EDE6DE;--ink:#3a2b39;--ink-soft:#6b5d68;--text-mid:#5A4057;--ff-d:'Fraunces ELH',Georgia,serif;--ff-b:'Jost ELH',system-ui,sans-serif;--hdr-h:74px}
 *{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
 body{font-family:var(--ff-b);color:var(--ink);background:var(--cream);-webkit-font-smoothing:antialiased;font-optical-sizing:auto;text-rendering:optimizeLegibility;line-height:1.62}
