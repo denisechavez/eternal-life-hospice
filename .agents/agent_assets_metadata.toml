@@ -84,6 +84,24 @@ uri = "file://website/elh-preview/assets/img/resources-hero.png"
 type = "image"
 title = "generated_image"
 
+[[generated]]
+id = "o4DiboM61Li7mcCbWCKOH"
+uri = "file://.canvas/assets/fg-cover-1-tender-hands.png"
+type = "image"
+title = "generated_image"
+
+[[generated]]
+id = "t9HcBcHGxhlggby0G9pMa"
+uri = "file://.canvas/assets/fg-cover-2-quiet-light.png"
+type = "image"
+title = "generated_image"
+
+[[generated]]
+id = "XfiDNrW5oFP6KaugiOn-c"
+uri = "file://.canvas/assets/fg-cover-3-togetherness.png"
+type = "image"
+title = "generated_image"
+
 [[outputs]]
 id = "qLfrLYeW6vnnXMfZ4rxbP"
 uri = "file://attached_assets/ELH-QR_eternallifehospice_cream.png"
