@@ -178,10 +178,15 @@
   </div>
 </section>
 <section class="sec wrap county-quicknav">
-  <div class="cqn-head"><div class="eyebrow">Find Your Community</div><h2>Hospice care in your city</h2><p>Every community we serve across Ventura and Los Angeles County &mdash; our care comes to you wherever you call home. If you don&rsquo;t see your town listed, please call; chances are we&rsquo;re already nearby.</p></div>
+  <div class="cqn-head"><div class="eyebrow">Find Your Community</div><h2>Hospice care in your city</h2><p>Every community we serve across Ventura and Los Angeles County &mdash; our care comes to you wherever you call home. If you don&rsquo;t see your town listed, please call; chances are we&rsquo;re already nearby.</p>
+    <label for="cqnSearch" class="cqn-sr">Search for your city or town</label>
+    <div class="cqn-search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.3-4.3"/></svg><input type="text" id="cqnSearch" placeholder="Search for your city or town&hellip;" autocomplete="off"></div>
+    <span id="cqnStatus" class="cqn-sr" aria-live="polite"></span>
+    <p class="cqn-legend">Towns marked with <b>&#8599;</b> have a dedicated care guide &mdash; but <b>every</b> community below is served exactly the same.</p>
+  </div>
   <div class="cqn-cols">
     <div class="cqn-col">
-      <div class="cqn-county">Ventura County</div>
+      <div class="cqn-county">Ventura County <span class="cqn-count">19 communities</span></div>
       <div class="cqn-chips">
         <span>Brandeis</span>
         <a href="hospice-camarillo-ca.html">Camarillo</a>
@@ -205,7 +210,7 @@
       </div>
     </div>
     <div class="cqn-col">
-      <div class="cqn-county">Los Angeles County</div>
+      <div class="cqn-county">Los Angeles County <span class="cqn-count">116 communities</span></div>
       <div class="cqn-chips">
         <span>Acton</span>
         <a href="hospice-agoura-hills-ca.html">Agoura Hills</a>
@@ -326,6 +331,7 @@
       </div>
     </div>
   </div>
+  <p class="cqn-noresult" id="cqnNoResult">We couldn&rsquo;t find that name &mdash; but we very likely still serve your area. Please call <a href="tel:18059537273">805.953.7273</a> and we&rsquo;ll help.</p>
 </section>
 <section class="sec wrap">
   <h2>One standard of care, across the region</h2>
@@ -355,6 +361,28 @@
   <div class="foot-disclaimer"><strong style="color:rgba(245,240,235,.5)">Disclaimer:</strong> Eternal Life Hospice Inc. is a licensed and Medicare-certified hospice care provider. We do not sell, prescribe, dispense or ship prescription medications, and we do not operate an online pharmacy or telemedicine prescribing service. All hospice services are provided in person by licensed healthcare professionals. Any references to Medicare coverage, medication support or medical coordination relate solely to patient care delivered under physician direction and do not constitute prescription drug sales or online medical services. The integrative modalities described are complementary care offered for patient comfort and wellbeing; they are not intended to diagnose, treat, cure or prevent any medical condition. Medicare coverage details are subject to change; confirm current eligibility with your care team or call <a href="tel:18006334227" style="color:inherit;text-decoration:none">1.800.MEDICARE</a>.</div>
   <div class="foot-bottom"><span>© 2026 Eternal Life Hospice Inc. All rights reserved. · A <a href="https://conduitint.com" target="_blank" rel="noopener" style="color:inherit;text-decoration:none">Conduit International</a> build</span><span><a href="index.html" style="color:inherit">eternallifehospice.com</a></span></div>
 </footer>
+<script>
+(function(){
+  var inp=document.getElementById('cqnSearch'); if(!inp)return;
+  var cols=[].slice.call(document.querySelectorAll('.county-quicknav .cqn-col'));
+  var nores=document.getElementById('cqnNoResult');
+  var status=document.getElementById('cqnStatus');
+  function norm(s){return s.toLowerCase().replace(/[^a-z0-9 ]/g,'').trim();}
+  inp.addEventListener('input',function(){
+    var q=norm(inp.value), total=0;
+    cols.forEach(function(col){
+      var chips=[].slice.call(col.querySelectorAll('.cqn-chips a,.cqn-chips span')), shown=0;
+      chips.forEach(function(c){
+        var m=!q||norm(c.textContent).indexOf(q)>-1;
+        c.style.display=m?'':'none'; if(m)shown++;
+      });
+      col.style.display=shown?'':'none'; total+=shown;
+    });
+    if(nores)nores.style.display=total?'none':'block';
+    if(status)status.textContent=!q?'':(total?total+(total===1?' community':' communities')+' found':'No matching community found');
+  });
+})();
+</script>
 <script src="assets/header.js" defer></script>
 <script src="/assets/chat.js" defer></script>
 </body></html>
