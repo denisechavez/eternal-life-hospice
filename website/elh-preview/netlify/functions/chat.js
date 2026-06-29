@@ -11,8 +11,9 @@
  *   browser. Set both for full resilience; with neither, this function returns
  *   a graceful message and the website falls back to guided answers + phone.
  *
- * Optional: ANTHROPIC_MODEL (defaults to claude-3-5-sonnet-latest) and
- *   OPENAI_MODEL (defaults to gpt-4o).
+ * Optional: ANTHROPIC_MODEL (defaults to claude-sonnet-4-0; if that model is
+ *   unavailable, the function auto-discovers a working one) and OPENAI_MODEL
+ *   (defaults to gpt-4o).
  */
 
 const PHONE = "805.953.7273";
@@ -227,16 +228,26 @@ async function pickAvailableClaudeModel() {
     });
     if (!resp.ok) return "";
     const body = await resp.json();
-    const ids = Array.isArray(body.data)
-      ? body.data.map(function (m) { return m && m.id; }).filter(Boolean)
+    const models = Array.isArray(body.data)
+      ? body.data.filter(function (m) { return m && m.id; })
       : [];
-    if (!ids.length) return "";
-    const newestFirst = function (a, b) { return a < b ? 1 : a > b ? -1 : 0; };
-    const sonnet = ids.filter(function (id) { return id.indexOf("sonnet") !== -1; }).sort(newestFirst);
-    if (sonnet.length) return sonnet[0];
-    const haiku = ids.filter(function (id) { return id.indexOf("haiku") !== -1; }).sort(newestFirst);
-    if (haiku.length) return haiku[0];
-    return ids.slice().sort(newestFirst)[0];
+    if (!models.length) return "";
+    // Newest first: prefer Anthropic's own release timestamp (created_at) when
+    // present, and fall back to the model id string only when it isn't — so we
+    // stay correct even if a future naming scheme doesn't sort lexicographically.
+    const newestFirst = function (a, b) {
+      const ta = Date.parse(a.created_at || "");
+      const tb = Date.parse(b.created_at || "");
+      if (!isNaN(ta) && !isNaN(tb) && ta !== tb) return tb - ta;
+      return a.id < b.id ? 1 : a.id > b.id ? -1 : 0;
+    };
+    const pick = function (kind) {
+      const matches = models
+        .filter(function (m) { return m.id.indexOf(kind) !== -1; })
+        .sort(newestFirst);
+      return matches.length ? matches[0].id : "";
+    };
+    return pick("sonnet") || pick("haiku") || models.slice().sort(newestFirst)[0].id;
   } catch (e) {
     return "";
   }

@@ -1,3 +1,4 @@
 - [ELH site architecture](elh-site-architecture.md) — elh-preview static site: index.html & resources.html are inline-CSS-only; shared-header parity; coverage hub = county page (city pages parked/noindex); split font naming.
 - [Family-guide booklet](family-guide.md) — page-turn duration duplicated in CSS+JS; appended overrides re-break reduced-motion; bootveil blocks screenshots (QA via curl); mobile worksheet restack keeps thead pills; fonts externalized.
 - [Sound Bath page](soundbath-page.md) — sound-bath.html: Web Audio engine + player CSS duplicated from index.html (update both); strict compliance framing (no efficacy claims, Medicare-not-covered, WebPage schema not Medical).
+- [Chat widget ops](chat-widget-ops.md) — Netlify Function chat.js: fast 4-5ms reply = missing key (scope=All+redeploy); Anthropic 404=model retired not credits; function self-heals via /v1/models.
