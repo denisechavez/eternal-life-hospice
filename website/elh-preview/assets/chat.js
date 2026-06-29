@@ -431,7 +431,7 @@
         addMsg(
           "Thank you, " +
             data.name.split(" ")[0] +
-            ". Your message has been sent and a member of our team will call you back within the hour. If anything comes up in the meantime, feel free to call us anytime at " +
+            ". Your message has been sent and a member of our team will call you back within the hour. If anything comes up in the meantime, please feel free to call us anytime at " +
             PHONE_DISPLAY +
             ". We're here 24/7.",
           "bot"
