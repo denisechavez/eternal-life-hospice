@@ -310,6 +310,8 @@ p,li,blockquote{text-wrap:pretty}
   #site-footer .foot-qr span{font-size:12.5px;line-height:1.55;color:rgba(245,240,235,.6)}
   #site-footer .fc-line{display:flex;align-items:center;gap:.4rem;font-size:14px;color:rgba(245,240,235,.6);line-height:2.5;text-decoration:none}
   #site-footer .fc-line .fci{width:13px;height:13px;flex-shrink:0;opacity:.85}
+  #site-footer .fc-line[href^="tel:"] .fci{transform:scale(1.22)}
+  #site-footer .fc-line[href^="mailto:"] .fci{transform:scale(1.14)}
   #site-footer .fc-line.fc-addr{align-items:flex-start;font-size:12px;line-height:1.55}
   #site-footer .fc-addr span{white-space:nowrap}
   #site-footer .fc-addr .fci{margin-top:4px}
