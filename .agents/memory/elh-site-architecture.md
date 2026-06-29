@@ -108,6 +108,10 @@ description: Which pages use shared elh.css vs inline-only CSS in the elh-previe
 - **Why it matters:** if port 5000 (what the preview uses) is served by `python3 -m http.server`, every extensionless click 404s and the whole site looks like "all links broken" — but it's purely the dev server, links are fine in a real browser/Netlify. `serve` (npm) has cleanUrls on by default and resolves both `/family-guide` and `/family-guide.html`, matching production.
 - **How to apply:** keep ONE webview workflow on port 5000 running `serve website/elh-preview -p 5000 --no-clipboard`. If two workflows both grab 5000, python can win the port — remove the python one. Verify with `curl -o/dev/null -w '%{http_code}' localhost:5000/family-guide` → expect 200, not 404.
 
+## "Image looks blank / shows the old version" reports are almost always client cache or un-republished Netlify, not code
+- Repeatedly the user reports a hero/card image as blank or stale that renders correctly in the local preview (verified via app_preview screenshot + assets returning HTTP 200). The file and reference are fine; the gap is the user's browser cache or the live Netlify site not yet redeployed from GitHub.
+- **How to apply:** before editing anything, screenshot the page locally and curl the asset for a 200. If both pass, the fix is a hard-refresh or a republish — not a code change. `_headers` sets 1-day cache on `/assets/*`, so swapped images at the same filename can serve stale for up to a day.
+
 ## Never use broad document-level anchor-click interceptors
 - A global `document.addEventListener('click', a=e.target.closest('a[href^="/"]'); e.preventDefault();...)` that only *acts* on some links but `preventDefault()`s ALL matched ones silently kills every other root-relative link (made worse when the preview rewrites links to root-relative form).
 - **How to apply:** scope the selector to exactly the intended links (e.g. `a[href^="/hospice-care-"]`) and only call `preventDefault()` inside the matched branch. The homepage `#coverage` city-scroll handler is the one legitimate case.
