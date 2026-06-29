@@ -108,6 +108,12 @@ footer a:hover{color:var(--gold)}
 /* keep-in-mind / note panel */
 .note-panel{background:#fff;border-left:3px solid var(--gold);border-radius:0 10px 10px 0;padding:1.1rem 1.3rem;margin:1.4rem 0;font-size:15.5px;color:var(--ink-soft);max-width:760px}
 .note-panel b{color:var(--plum)}
+/* clinical & mobile services — compact two-column list */
+.svc-list{display:grid;grid-template-columns:1fr 1fr;gap:.55rem 1.6rem;margin:.5rem 0 1.3rem;padding:0;list-style:none}
+.svc-list li{position:relative;padding-left:1.05rem;font-size:15.5px;color:var(--ink);line-height:1.45;margin:0}
+.svc-list li::before{content:"";position:absolute;left:0;top:.5em;width:5px;height:5px;border-radius:50%;background:var(--gold)}
+.svc-list b{color:var(--plum);font-weight:600}
+@media(max-width:560px){.svc-list{grid-template-columns:1fr}}
 /* ---- resources post article ---- */
 .article{max-width:760px;margin:0 auto}
 .article p{font-size:16.5px;color:var(--ink);max-width:none;margin-bottom:1.15rem;line-height:1.7}
