@@ -11,6 +11,15 @@ description: Which pages use shared elh.css vs inline-only CSS in the elh-previe
 - **Why it matters:** Editing elh.css does NOT affect index.html or resources.html. Any shared style change (header, vars, etc.) must be duplicated into those two pages' inline `<style>` blocks separately, or they silently render unstyled/stale. This caused rework — resources.html's new header was unstyled until its inline CSS was patched.
 - **How to apply:** Before changing any "site-wide" CSS, grep each target page for `elh.css`; for inline-only pages, edit their `<style>` directly.
 
+## After editing shared elh.css, bump the `?v=` cache version in LOCKSTEP across every referencing file
+- elh.css is linked with a `?v=<timestamp>` query on most pages. `_headers` caches `/assets/*` 1 day, so without a version bump the live site serves stale CSS for up to a day after a change.
+- **Trap:** linkage is not uniform even for the version — the ~23 top-level pages carried `elh.css?v=<ts>` but the `resources/*` article pages were VERSIONLESS (`../assets/elh.css`). A blanket bump must (a) replace the old `?v=` on versioned pages AND (b) add a `?v=` to the versionless ones, leaving zero versionless refs.
+- **How to apply:** pick one new version string and apply to all refs in one pass: `rg -l 'elh\.css\?v=OLD' | xargs sed -i 's/elh.css?v=OLD/elh.css?v=NEW/g'` then `rg -l 'assets/elh\.css"' | xargs sed -i 's#assets/elh.css"#assets/elh.css?v=NEW"#g'`. Verify: `rg -No 'elh\.css\?v=[0-9]+'` shows ONE version, and `rg -l 'assets/elh\.css"'` returns nothing. (chat.js only mentions elh.css in a comment — not a real link.)
+
+## `.hero--photo` is shared site-wide — scope a single page's hero change by DROPPING the class, not editing the shared rule
+- `.hero--photo` (+ `::after` dark overlay, bg-image) is used by many pages. To restructure ONE page's hero (e.g. comfort-therapies.html → a plain plum-gradient `.hero` with a round `<img class="hero-heart">` above the kicker/h1/copy), remove `hero--photo` + its inline `background-image` from that page only and add a scoped class; never edit the shared `.hero--photo` rule.
+- **Why:** editing the shared rule would silently restyle every other photographic hero. `.hero-heart` (round, gold border) is the scoped add-on, defined once in elh.css.
+
 ## Shared header (wordmark + hamburger nav)
 - Markup uses `<header id="hdr">` + `.hdr-in` > `.hdr-logo` (two swap imgs `assets/img/elh-logo-h-cream.png` / `elh-logo-h-plum.png` = the FULL horizontal logo + a now-hidden `.hdr-wordmark`), `nav`, `.hdr-cta` phone pill, `.menu-btn`.
 - **The header logo is the brand's full HORIZONTAL lockup image (mark + "Eternal / LIFE HOSPICE" logotype), NOT a mark + CSS text.** The old `.hdr-wordmark` text span is still in markup but set `display:none` in all 3 CSS places — the image carries the name. Don't "restore" the CSS wordmark; the user explicitly wanted the real logotype font from the logo file. `.hdr-logo img.s{height:46px}`.
