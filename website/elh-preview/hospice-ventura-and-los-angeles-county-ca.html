@@ -185,8 +185,8 @@
     <p class="cqn-legend">Towns marked with <b>&#8599;</b> have a dedicated care guide &mdash; but <b>every</b> community below is served exactly the same.</p>
   </div>
   <div class="cqn-cols">
-    <div class="cqn-col">
-      <div class="cqn-county">Ventura County <span class="cqn-count">19 communities</span></div>
+    <details class="cqn-col" open data-default-open="1">
+      <summary class="cqn-county">Ventura County <span class="cqn-count">19 communities</span><span class="cqn-toggle" aria-hidden="true"></span></summary>
       <div class="cqn-chips">
         <span>Brandeis</span>
         <a href="hospice-camarillo-ca.html">Camarillo</a>
@@ -208,9 +208,9 @@
         <a href="hospice-ventura-ca.html">Ventura</a>
         <a href="hospice-westlake-village-ca.html">Westlake Village</a>
       </div>
-    </div>
-    <div class="cqn-col">
-      <div class="cqn-county">Los Angeles County <span class="cqn-count">116 communities</span></div>
+    </details>
+    <details class="cqn-col">
+      <summary class="cqn-county">Los Angeles County <span class="cqn-count">116 communities</span><span class="cqn-toggle" aria-hidden="true"></span></summary>
       <div class="cqn-chips">
         <span>Acton</span>
         <a href="hospice-agoura-hills-ca.html">Agoura Hills</a>
@@ -329,7 +329,7 @@
         <span>Whittier</span>
         <a href="hospice-woodland-hills-ca.html">Woodland Hills</a>
       </div>
-    </div>
+    </details>
   </div>
   <p class="cqn-noresult" id="cqnNoResult">We couldn&rsquo;t find that name &mdash; but we very likely still serve your area. Please call <a href="tel:18059537273">805.953.7273</a> and we&rsquo;ll help.</p>
 </section>
@@ -377,6 +377,7 @@
         c.style.display=m?'':'none'; if(m)shown++;
       });
       col.style.display=shown?'':'none'; total+=shown;
+      if(col.tagName==='DETAILS'){col.open = q ? shown>0 : col.hasAttribute('data-default-open');}
     });
     if(nores)nores.style.display=total?'none':'block';
     if(status)status.textContent=!q?'':(total?total+(total===1?' community':' communities')+' found':'No matching community found');
