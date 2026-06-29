@@ -112,6 +112,11 @@ description: Which pages use shared elh.css vs inline-only CSS in the elh-previe
 - Repeatedly the user reports a hero/card image as blank or stale that renders correctly in the local preview (verified via app_preview screenshot + assets returning HTTP 200). The file and reference are fine; the gap is the user's browser cache or the live Netlify site not yet redeployed from GitHub.
 - **How to apply:** before editing anything, screenshot the page locally and curl the asset for a 200. If both pass, the fix is a hard-refresh or a republish — not a code change. `_headers` sets 1-day cache on `/assets/*`, so swapped images at the same filename can serve stale for up to a day.
 
+## In-page anchor stops on index.html need a corrective re-scroll (lazy-load shift)
+- index.html is long with many `loading="lazy"` images, so a fresh load that jumps to a `#hash` (e.g. cross-page footer/nav links like `index.html#founder`, `#standard`, `#medicare`, `#clinical-mobile`) lands TOO HIGH — images above the target size in after the jump and push the target down, leaving the prior section in view.
+- Fix already in place: two on-load IIFEs near the end of the homepage script — one specific to `#leadcap`/`?lead=`, plus a GENERAL handler that re-runs `scrollIntoView({block:'start'})` at staggered timeouts (~80–1600ms) for any valid in-page `#hash`. `scroll-margin-top` (sections 90px, `#clinical-mobile` div 84px; header is 74px) supplies the offset so it stops just below the sticky header.
+- **Why:** without the corrective re-scroll only `#leadcap` worked; all other footer/menu anchors stopped on the wrong section. Keep the general handler; don't assume native hash-jump alone is enough on this image-heavy page.
+
 ## Never use broad document-level anchor-click interceptors
 - A global `document.addEventListener('click', a=e.target.closest('a[href^="/"]'); e.preventDefault();...)` that only *acts* on some links but `preventDefault()`s ALL matched ones silently kills every other root-relative link (made worse when the preview rewrites links to root-relative form).
 - **How to apply:** scope the selector to exactly the intended links (e.g. `a[href^="/hospice-care-"]`) and only call `preventDefault()` inside the matched branch. The homepage `#coverage` city-scroll handler is the one legitimate case.
