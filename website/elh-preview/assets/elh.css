@@ -346,18 +346,30 @@ a,button,summary,label,select,[role="button"],input[type="submit"],input[type="b
 @media(max-width:760px){.sigfeat-grid{grid-template-columns:1fr}}
 
 /* ===== County hub: city quick-nav + distinction; city hero CTAs (v7) ===== */
-.county-quicknav .cqn-head{text-align:center;max-width:660px;margin:0 auto 1.9rem}
+.county-quicknav .cqn-head{text-align:center;max-width:680px;margin:0 auto 2rem}
 .county-quicknav .cqn-head .eyebrow{display:block;margin-bottom:.5rem}
-.cqn-cols{display:grid;grid-template-columns:1fr 1fr;gap:22px;max-width:900px;margin:0 auto}
-.cqn-col{background:#fff;border:1px solid var(--cream-dark);border-radius:16px;padding:22px 22px 24px;box-shadow:0 12px 32px rgba(60,28,59,.06)}
-.cqn-county{display:flex;align-items:center;gap:.45rem;font-family:var(--ff-d);font-weight:300;font-size:1.4rem;color:var(--plum);text-decoration:none;padding-bottom:.65rem;margin-bottom:1rem;border-bottom:1px solid rgba(201,176,126,.4)}
-.cqn-county span{color:var(--gold);transition:transform .25s ease}
-.cqn-county:hover span{transform:translateX(4px)}
-.cqn-chips{display:flex;flex-wrap:wrap;gap:.55rem}
-.cqn-chips a{font-size:14px;font-weight:600;color:var(--plum);background:var(--cream-mid);border:1px solid transparent;border-radius:999px;padding:.42rem .92rem;text-decoration:none;transition:background .2s,color .2s,transform .2s}
-.cqn-chips a:hover{background:var(--plum);color:var(--cream);transform:translateY(-2px)}
-.cqn-chips span{font-size:14px;font-weight:500;color:var(--ink-soft);background:var(--cream);border:1px solid var(--cream-dark);border-radius:999px;padding:.42rem .92rem;cursor:default}
-@media(max-width:680px){.cqn-cols{grid-template-columns:1fr}}
+.cqn-sr{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.cqn-search{position:relative;max-width:440px;margin:1.5rem auto 0}
+.cqn-search svg{position:absolute;left:18px;top:50%;transform:translateY(-50%);width:18px;height:18px;color:var(--plum);opacity:.55;pointer-events:none}
+.cqn-search input{width:100%;font-family:var(--ff-b);font-size:15px;color:var(--deep);background:#fff;border:1px solid var(--cream-dark);border-radius:999px;padding:.78rem 1.2rem .78rem 2.9rem;outline:none;box-shadow:0 6px 18px rgba(60,28,59,.05);transition:border-color .2s,box-shadow .2s}
+.cqn-search input:focus{border-color:var(--plum);box-shadow:0 0 0 3px rgba(91,46,89,.13)}
+.cqn-search input::placeholder{color:var(--ink-soft)}
+.cqn-legend{margin:1.15rem auto 0;font-size:13.5px;color:var(--ink-soft);text-align:center;max-width:580px}
+.cqn-legend b{color:var(--plum);font-weight:600}
+.cqn-cols{display:flex;flex-direction:column;gap:18px;max-width:980px;margin:0 auto}
+.cqn-col{background:#fff;border:1px solid var(--cream-dark);border-radius:18px;padding:24px 26px 26px;box-shadow:0 12px 32px rgba(60,28,59,.06)}
+.cqn-county{display:flex;align-items:baseline;flex-wrap:wrap;gap:.7rem;font-family:var(--ff-d);font-weight:300;font-size:1.5rem;color:var(--plum);padding-bottom:.75rem;margin-bottom:1.15rem;border-bottom:1px solid rgba(201,176,126,.4)}
+.cqn-count{font-family:var(--ff-b);font-size:.72rem;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:#8f7338;background:rgba(201,176,126,.16);padding:.22rem .62rem;border-radius:999px}
+.cqn-chips{display:flex;flex-wrap:wrap;gap:.5rem}
+.cqn-chips a,.cqn-chips span{font-size:14px;border-radius:999px;padding:.46rem 1rem;line-height:1.2;border:1px solid var(--cream-dark);background:#fff}
+.cqn-chips span{font-weight:500;color:var(--ink-soft);cursor:default}
+.cqn-chips a{font-weight:600;color:var(--plum);border-color:rgba(91,46,89,.28);text-decoration:none;display:inline-flex;align-items:center;gap:.32rem;transition:background .18s,color .18s,border-color .18s,transform .18s,box-shadow .18s}
+.cqn-chips a::after{content:"\2197";font-size:11px;color:var(--gold);transition:color .18s,transform .18s}
+.cqn-chips a:hover{background:var(--plum);color:var(--cream);border-color:var(--plum);transform:translateY(-2px);box-shadow:0 8px 18px rgba(91,46,89,.22)}
+.cqn-chips a:hover::after{color:var(--cream);transform:translate(1px,-1px)}
+.cqn-noresult{display:none;text-align:center;color:var(--ink-soft);margin:1.4rem auto 0;font-size:15px;max-width:520px}
+.cqn-noresult a{color:var(--plum);font-weight:600}
+@media(max-width:680px){.cqn-col{padding:20px 18px 22px}.cqn-county{font-size:1.3rem}}
 
 .distinct .distinct-band{background:linear-gradient(150deg,var(--plum),var(--deep));border-radius:22px;padding:2.7rem 2rem;box-shadow:0 30px 70px rgba(60,28,59,.28)}
 .distinct .distinct-head{text-align:center;max-width:700px;margin:0 auto 2rem}
