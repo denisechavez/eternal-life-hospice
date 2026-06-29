@@ -5,10 +5,24 @@ description: How the eternallifehospice.com share-preview image is made and how 
 
 # OG / social share card
 
-The link-preview image lives at `assets/og-image.jpg` (1200×630). **Every page
-references the same file** (`https://eternallifehospice.com/assets/og-image.jpg`),
-except a few that point at their own hero (sound-bath, carebidet, city pages).
-So replacing that one file updates the share card site-wide — no HTML edits.
+The link-preview image is a **versioned filename** (currently
+`assets/og-image-v2.jpg`, 2400×1260, 1.91:1). **Every page references the same
+file**, except a few that point at their own hero (sound-bath, carebidet, city
+pages). Replacing the file content alone is NOT enough — see cache gotcha below.
+
+**Cropping:** social platforms (FB/LinkedIn) crop a square card to 1.91:1 and
+chop the logo top + domain bottom. Always build the card **WIDE 1200×630**, not
+square.
+
+**Cache gotcha (the "still blurry / still old" trap):** FB & LinkedIn cache the
+image **keyed by its URL** for ~days; re-uploading the SAME filename does not
+refresh them, and the LinkedIn Post Inspector often won't bust it either. When
+the live file is already correct (verify with `curl -sL -o /dev/null -w '%{size_download}'
+https://eternallifehospice.com/assets/<file>` and compare byte size to local)
+but previews stay stale, **rename the image** (og-image.jpg → og-image-v2.jpg)
+and sed-update every `og:image` meta + JSON-LD `"image"` across all *.html, then
+Git Sync. New URL = no cache = fresh fetch. **Why:** content-only swaps can't
+beat URL-keyed caches.
 
 **How it's generated:** build a temporary `og-card.html` at the repo root
 (website/elh-preview/) styled with the site's embedded Fraunces + Jost @font-face
@@ -17,8 +31,13 @@ So replacing that one file updates the share card site-wide — no HTML edits.
 chromium --headless=new --disable-gpu --no-sandbox --hide-scrollbars \
   --force-device-scale-factor=2 --window-size=1200,630 --virtual-time-budget=4000 \
   --screenshot=/tmp/og.png http://localhost:5000/og-card.html
-magick /tmp/og.png -resize 1200x630! -quality 90 -sampling-factor 4:2:0 -strip assets/og-image.jpg
+# Keep the 2x render (2400×1260) — do NOT downscale. Encode 4:4:4 (no chroma
+# subsampling) at q95 so colored text/edges stay crisp:
+magick /tmp/og.png -quality 95 -sampling-factor 1x1 -strip assets/og-image-v2.jpg
 ```
+**Blur cause (fixed):** the old command downscaled to 1200×630 AND used
+`-sampling-factor 4:2:0`, which blurred the gold/plum text edges and looked soft
+on retina. Fix = keep 2x size + 4:4:4 (`-sampling-factor 1x1`) + q95.
 Then **delete og-card.html** so no stray indexable page ships on this SEO-locked
 site. Chromium binary is at a nix path (just call `chromium`).
 
