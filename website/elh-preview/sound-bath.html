@@ -44,6 +44,11 @@
   .sb-hero p.lede{max-width:660px;margin:0 auto;font-size:1.12rem;line-height:1.72;color:rgba(245,240,235,.87)}
   .sb-listen-card{max-width:720px;margin:1.5rem auto 0;background:#fff;border:1px solid rgba(91,46,89,.14);border-radius:18px;padding:24px 26px 20px;box-shadow:0 14px 40px rgba(60,28,59,.08)}
   .sb-tradnote{font-size:12.5px;color:var(--text-light);margin:0 0 .4rem;font-style:italic}
+  .sb-listen-row{display:flex;gap:1.5rem;align-items:stretch;max-width:1010px;margin:1.5rem auto 0}
+  .sb-listen-figure{flex:0 0 300px;margin:0;border-radius:18px;overflow:hidden;box-shadow:0 16px 44px rgba(60,28,59,.18)}
+  .sb-listen-figure img{width:100%;height:100%;min-height:360px;object-fit:cover;object-position:50% 42%;display:block}
+  .sb-listen-row .sb-listen-card{margin:0;flex:1;min-width:0;max-width:none}
+  @media(max-width:780px){.sb-listen-row{flex-direction:column;gap:1rem}.sb-listen-figure{flex:0 0 auto}.sb-listen-figure img{min-height:0;height:230px;object-position:50% 40%}}
   .sb-note{max-width:760px;margin:2.6rem auto;background:#efe7df;border:1px solid rgba(91,46,89,.16);border-left:3px solid var(--gold);border-radius:12px;padding:20px 24px;font-size:14px;line-height:1.72;color:var(--text-mid)}
   .sb-note strong{color:var(--plum)}
   .sb-expect{max-width:760px}
@@ -205,15 +210,17 @@
   <section class="sec wrap">
     <h2>Three sound journeys &mdash; listen here</h2>
     <p>We composed three original soundscapes for the patients in our care. Each preview plays right here; the full sessions are offered in person, at the patient&rsquo;s own pace. Best experienced with headphones.</p>
-    <div class="sb-listen-card">
+    <div class="sb-listen-row">
+      <figure class="sb-listen-figure"><img src="assets/img/singing-bowl.jpg" alt="A Tibetan singing bowl resting on a cushion, played gently with a wooden mallet" loading="lazy" decoding="async"></figure>
+      <div class="sb-listen-card">
       <p class="sb-tradnote">The names below come from the sound-healing tradition &mdash; they describe the tones used, not medical effects.</p>
       <div class="players"><div class="player" id="playerEl-0"><button class="play-btn" id="btn-0" onclick="toggleSound(0)" aria-pressed="false" aria-label="Play Release and Ground sound journey"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></button><div class="player-info"><div class="player-name">Release &amp; Ground</div><div class="player-desc">Slow, grounding tones — for moments of grief, fear, or restlessness</div><div class="freq-pills"><span class="fpill earth">174 Hz — grounding</span><span class="fpill earth">396 Hz — release</span><span class="fpill binaural">theta 6 Hz binaural</span></div></div><div class="player-right"><div class="progress-track"><div class="progress-fill" id="prog-0"></div></div><div class="timer" id="timer-0">0:00</div></div></div><div class="player" id="playerEl-1"><button class="play-btn" id="btn-1" onclick="toggleSound(1)" aria-pressed="false" aria-label="Play Love and Transformation sound journey"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></button><div class="player-info"><div class="player-name">Love &amp; Transformation</div><div class="player-desc">Warm, heart-opening tones for peace and connection</div><div class="freq-pills"><span class="fpill rose">528 Hz — the heart tone</span><span class="fpill amber">432 Hz — natural tuning</span><span class="fpill sage">639 Hz — connection</span><span class="fpill binaural">alpha 10 Hz binaural</span></div></div><div class="player-right"><div class="progress-track"><div class="progress-fill" id="prog-1"></div></div><div class="timer" id="timer-1">0:00</div></div></div><div class="player" id="playerEl-2"><button class="play-btn" id="btn-2" onclick="toggleSound(2)" aria-pressed="false" aria-label="Play Sacred Passage sound journey"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></button><div class="player-info"><div class="player-name">Sacred Passage</div><div class="player-desc">Spacious, open tones for stillness and reflection</div><div class="freq-pills"><span class="fpill violet">111 Hz — stillness</span><span class="fpill indigo">852 Hz — return</span><span class="fpill violet">963 Hz — openness</span><span class="fpill binaural">delta 2 Hz binaural</span></div></div><div class="player-right"><div class="progress-track"><div class="progress-fill" id="prog-2"></div></div><div class="timer" id="timer-2">0:00</div></div></div><p class="freq-disclaimer">Each journey is a layered soundscape, synthesized for preview and best experienced with headphones. Offered for relaxation and comfort only.</p></div>
+    </div>
     </div>
   </section>
   <section class="sec wrap">
     <h2>An ancient practice, brought home</h2>
     <p>Singing bowls have been part of meditation, prayer, and quiet reflection for centuries. The bowls are played slowly, the tones layered, and the room is allowed to grow still around them. We bring that same unhurried practice to the bedside &mdash; wherever home is, and only when it is welcome.</p>
-    <figure class="sb-figure"><img src="assets/img/sound-bath-bowl.jpg" alt="A bronze singing bowl ringed by concentric waves of golden light" loading="lazy" decoding="async"></figure>
   </section>
   <section class="sec wrap sb-expect">
     <h2>What to expect</h2>

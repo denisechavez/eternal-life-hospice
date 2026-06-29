@@ -647,3 +647,27 @@ id = "2H57LhXoovViBbb735fXs"
 uri = "file://attached_assets/stock_images/westlake_village_c_3.jpg"
 type = "image"
 title = "calm lake reflection mountains palm trees California"
+
+[[outputs]]
+id = "e_GgRhvcJHyoHRwffbYDP"
+uri = "file://attached_assets/stock_images/singing_bowl_1.jpg"
+type = "image"
+title = "brass bowl meditation"
+
+[[outputs]]
+id = "SD2wq2Ww41gNE0JRSWnpu"
+uri = "file://attached_assets/stock_images/singing_bowl_2.jpg"
+type = "image"
+title = "brass bowl meditation"
+
+[[outputs]]
+id = "pTMaXQ2cnqjbDLa0WkKOg"
+uri = "file://attached_assets/stock_images/singing_bowl_3.jpg"
+type = "image"
+title = "brass bowl meditation"
+
+[[outputs]]
+id = "-VJyMsy4qx_tgbP7J2zkv"
+uri = "file://attached_assets/stock_images/singing_bowl_4.jpg"
+type = "image"
+title = "brass bowl meditation"
