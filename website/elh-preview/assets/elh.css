@@ -378,9 +378,12 @@ details.cqn-col:not([open])>summary.cqn-county{margin-bottom:0;padding-bottom:0;
 .cqn-noresult a{color:var(--plum);font-weight:600}
 @media(max-width:680px){.cqn-col{padding:20px 18px 22px}.cqn-county{font-size:1.3rem}}
 
-.distinct .distinct-band{position:relative;background:linear-gradient(150deg,var(--plum),var(--deep));border-radius:22px;padding:2.7rem 2rem;box-shadow:0 30px 70px rgba(60,28,59,.28),0 0 0 1px rgba(201,176,126,.5),0 0 36px rgba(201,176,126,.4);animation:distinctGlow 3.8s ease-in-out infinite}
-@keyframes distinctGlow{0%,100%{box-shadow:0 30px 70px rgba(60,28,59,.28),0 0 0 1px rgba(201,176,126,.42),0 0 26px rgba(201,176,126,.32)}50%{box-shadow:0 32px 74px rgba(60,28,59,.32),0 0 0 1px rgba(201,176,126,.72),0 0 54px rgba(201,176,126,.6)}}
-@media(prefers-reduced-motion:reduce){.distinct .distinct-band{animation:none}}
+.distinct .distinct-band{position:relative;z-index:0;background:linear-gradient(150deg,var(--plum),var(--deep));border-radius:22px;padding:2.7rem 2rem;box-shadow:0 30px 70px rgba(60,28,59,.28),0 0 0 1px rgba(201,176,126,.32),0 0 30px rgba(201,176,126,.22)}
+.distinct .distinct-band::before{content:"";position:absolute;top:0;left:50%;transform:translateX(-50%);width:76%;height:2px;background:linear-gradient(90deg,transparent,var(--gold),transparent);z-index:3;pointer-events:none}
+.distinct .distinct-band::after{content:"";position:absolute;inset:0;border-radius:22px;z-index:2;pointer-events:none;padding:1.5px;background:conic-gradient(from var(--dang),rgba(201,176,126,0) 0deg,rgba(201,176,126,0) 255deg,rgba(201,176,126,.85) 312deg,rgba(245,228,184,1) 333deg,rgba(201,176,126,.85) 354deg,rgba(201,176,126,0) 360deg);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;filter:drop-shadow(0 0 5px rgba(201,176,126,.55));animation:distinctOrbit 9s linear infinite}
+@property --dang{syntax:'<angle>';inherits:false;initial-value:0deg}
+@keyframes distinctOrbit{to{--dang:360deg}}
+@media(prefers-reduced-motion:reduce){.distinct .distinct-band::after{animation:none;background:none;filter:none}}
 .distinct .distinct-head{text-align:center;max-width:700px;margin:0 auto 2rem}
 .distinct .distinct-head .eyebrow{display:block;color:var(--gold);margin-bottom:.5rem}
 .distinct .distinct-head h2{color:var(--cream);margin-bottom:.6rem}
