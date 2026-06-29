@@ -31,7 +31,7 @@
   .timer{font-size:12.5px;color:var(--text-light);font-variant-numeric:tabular-nums}
   @media(max-width:480px){.player{gap:.55rem;padding:.6rem .6rem}.player-desc{font-size:12.5px}}
   .freq-disclaimer{font-size:12px;color:var(--text-light);font-style:italic;margin-top:.6rem;line-height:1.5}
-  .sb-hero{position:relative;overflow:hidden;background:radial-gradient(120% 120% at 50% 0%,#4a2548 0%,var(--deep) 62%,#2a132a 100%);color:var(--cream);text-align:center;padding:120px 20px 100px;isolation:isolate}
+  .sb-hero{position:relative;overflow:hidden;background:radial-gradient(120% 120% at 50% 0%,rgba(74,37,72,.82) 0%,rgba(60,28,59,.85) 55%,rgba(42,19,42,.93) 100%),url(assets/img/sound-bath-hero.jpg) center/cover;color:var(--cream);text-align:center;padding:94px 20px 80px;isolation:isolate}
   .sb-rings{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;z-index:-1;pointer-events:none}
   .sb-rings span{position:absolute;width:120px;height:120px;border-radius:50%;border:1px solid rgba(201,176,126,.30);animation:sbpulse 7s ease-out infinite}
   .sb-rings span:nth-child(2){animation-delay:1.75s}
@@ -62,6 +62,10 @@
   .sb-st-ic{font-size:15px;line-height:1}
   @media(prefers-reduced-motion:reduce){.sb-orb{animation:none}}
   @media(max-width:560px){.sb-soundtoggle{left:12px;bottom:12px;padding:.46rem .78rem;font-size:12px}}
+  .sec{padding:2.2rem 0}
+  .cta{padding:2.6rem 1.6rem}
+  .sb-figure{max-width:500px;margin:1.7rem auto .2rem;border-radius:16px;overflow:hidden;box-shadow:0 20px 52px rgba(60,28,59,.2)}
+  .sb-figure img{display:block;width:100%;height:auto}
   </style>
 
   <script type="application/ld+json">{
@@ -208,6 +212,7 @@
   <section class="sec wrap">
     <h2>An ancient practice, brought home</h2>
     <p>Singing bowls have been part of meditation, prayer, and quiet reflection for centuries. The bowls are played slowly, the tones layered, and the room is allowed to grow still around them. We bring that same unhurried practice to the bedside &mdash; wherever home is, and only when it is welcome.</p>
+    <figure class="sb-figure"><img src="assets/img/sound-bath-bowl.jpg" alt="A bronze singing bowl ringed by concentric waves of golden light" loading="lazy" decoding="async"></figure>
   </section>
   <section class="sec wrap sb-expect">
     <h2>What to expect</h2>
