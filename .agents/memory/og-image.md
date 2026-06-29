@@ -34,3 +34,9 @@ double gold hairline frame, cream Fraunces headline with the middle word in
 **Note:** the "share.google" label users sometimes see under the preview is
 Google's own share-link wrapper, NOT controlled by our meta tags — sharing the
 direct eternallifehospice.com URL shows the real domain.
+
+## Plum-metallic logo (logo-plum.png)
+- Only a cream/silver logo PNG exists (logo-cream.png, transparent bg). For LIGHT grounds, a flat plum fill loses the metallic sheen and a dark medallion behind cream logo reads "mortuary."
+- Make a plum-metallic by mapping the logo's luminance through a plum gradient CLUT (deep plum shadows -> light lilac highlights), preserving alpha:
+  - extract alpha; grayscale the RGB; `-sigmoidal-contrast 4,55%` to boost ribbon contrast; `-clut` with `gradient:"#200c24"-"#b585b0"`; re-apply alpha via CopyOpacity.
+- **Why:** keeps the metallic ribbon shine while staying readable on cream — solves the "feels like a mortuary" complaint without any dark mass.
