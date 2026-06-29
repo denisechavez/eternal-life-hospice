@@ -443,7 +443,7 @@ nav a:hover{color:var(--gold)}
 .care-settings{background:var(--cream);padding:5.5rem 2rem}
 .ws-lead{font-family:var(--ff-d);font-style:italic;font-size:clamp(1.25rem,2.6vw,1.65rem);color:var(--plum);text-align:center;max-width:640px;margin:0 auto 2.75rem;line-height:1.4}
 .ws-grid{max-width:1040px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);gap:1.1rem}
-.ws-tile{display:block;width:100%;text-align:left;cursor:pointer;font-family:inherit;color:inherit;background:#fff;border:1px solid var(--cream-dark);border-radius:14px;padding:1.6rem 1.4rem;transition:transform .2s,box-shadow .2s,border-color .2s,background .2s}
+.ws-tile{position:relative;display:block;width:100%;text-align:left;cursor:pointer;font-family:inherit;color:inherit;background:#fff;border:1px solid var(--cream-dark);border-radius:14px;padding:1.6rem 1.4rem;box-shadow:0 3px 12px rgba(56,27,55,.06);transition:transform .2s,box-shadow .2s,border-color .2s,background .2s}
 .ws-tile:hover,.ws-tile:focus-visible{transform:translateY(-3px);box-shadow:0 16px 36px rgba(56,27,55,.14);border-color:var(--plum);background:linear-gradient(180deg,#fff,var(--cream))}
 .ws-tile:focus-visible{outline:2px solid var(--plum);outline-offset:3px}
 .ws-ico{width:44px;height:44px;border-radius:11px;background:var(--cream-mid);display:flex;align-items:center;justify-content:center;color:var(--plum);margin-bottom:1rem;transition:background .2s,color .2s}
@@ -451,9 +451,8 @@ nav a:hover{color:var(--gold)}
 .ws-tile h4{font-family:var(--ff-d);font-weight:400;font-size:1.12rem;color:var(--deep);margin-bottom:.45rem;line-height:1.2;transition:color .2s}
 .ws-tile:hover h4,.ws-tile:focus-visible h4{color:var(--plum)}
 .ws-tile p{font-size:13.5px;color:var(--text-mid);line-height:1.6}
-.ws-more{display:inline-flex;align-items:center;gap:.35rem;margin-top:1rem;font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--gold);opacity:0;transform:translateX(-4px);transition:opacity .2s,transform .2s}
-.ws-tile:hover .ws-more,.ws-tile:focus-visible .ws-more{opacity:1;transform:none}
-@media(hover:none){.ws-more{opacity:1;transform:none;color:var(--plum)}}
+.ws-more{display:inline-flex;align-items:center;gap:.35rem;margin-top:1rem;font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--gold);opacity:.9;transition:gap .2s,opacity .2s}
+.ws-tile:hover .ws-more,.ws-tile:focus-visible .ws-more{opacity:1;gap:.55rem}
 .ws-tile.is-active{transform:translateY(-3px);box-shadow:0 16px 36px rgba(56,27,55,.14);border-color:var(--plum);background:linear-gradient(180deg,#fff,var(--cream))}
 .ws-tile.is-active .ws-ico{background:var(--plum);color:var(--cream)}
 .ws-tile.is-active h4{color:var(--plum)}
