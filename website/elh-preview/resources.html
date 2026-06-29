@@ -21,13 +21,13 @@ a{color:inherit;text-decoration:none}
 #hdr{position:sticky;top:0;left:0;right:0;z-index:1000;padding:0 2.5rem;background:var(--deep);transition:background .35s,box-shadow .35s}
 #hdr.scrolled{background:var(--cream);box-shadow:0 1px 0 var(--cream-dark),0 10px 26px rgba(56,27,55,.07)}
 .hdr-in{display:flex;align-items:center;height:74px;gap:2rem}
-.hdr-logo{display:flex;align-items:center;gap:.4rem;flex-shrink:0;margin-right:auto;cursor:pointer;position:relative;top:3px}
-.hdr-logo img.s{height:38px;width:auto;opacity:1}
+.hdr-logo{display:flex;align-items:center;gap:.4rem;flex-shrink:0;margin-right:auto;cursor:pointer}
+.hdr-logo img.s{height:46px;width:auto;opacity:1}
 .hdr-logo .sym-cream{display:block}
 .hdr-logo .sym-plum{display:none}
 #hdr.scrolled .hdr-logo .sym-cream{display:none}
 #hdr.scrolled .hdr-logo .sym-plum{display:block}
-.hdr-wordmark{font-family:var(--ff-d);font-size:1.4rem;font-weight:500;color:var(--cream);line-height:.9;display:flex;flex-direction:column}
+.hdr-wordmark{display:none}
 .hdr-wordmark small{font-size:.42em;letter-spacing:.28em;text-transform:uppercase;font-family:var(--ff-b);font-weight:600;color:var(--gold);margin-top:3px}
 #hdr.scrolled .hdr-wordmark{color:var(--deep)}
 #hdr.scrolled .hdr-wordmark small{color:#9A7E4A}
@@ -198,7 +198,7 @@ p,li,blockquote{text-wrap:pretty}
 <body>
 <header id="hdr">
   <div class="hdr-in">
-    <a class="hdr-logo" href="index.html"><img class="s sym-cream" src="assets/img/elh-sym-cream.png" alt="Eternal Life Hospice infinity mark"><img class="s sym-plum" src="assets/img/elh-sym-plum.png" alt="" aria-hidden="true"><span class="hdr-wordmark">Eternal<small>Life Hospice</small></span></a>
+    <a class="hdr-logo" href="index.html"><img class="s sym-cream" src="assets/img/elh-logo-h-cream.png" alt="Eternal Life Hospice logo"><img class="s sym-plum" src="assets/img/elh-logo-h-plum.png" alt="" aria-hidden="true"><span class="hdr-wordmark">Eternal<small>Life Hospice</small></span></a>
     <nav>
       <div class="nav-group">
         <a href="index.html#standard" class="nav-parent">The Eternal Standard</a>
