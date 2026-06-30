@@ -1,0 +1,56 @@
+ETERNAL LIFE HOSPICE — EMAIL SIGNATURES (how-to)
+=================================================
+A matching HTML email signature so every email looks as polished as the business
+card: the metallic-plum infinity mark, name + title, 24/7 phone, email, website,
+HQ address, and the Medicare-Certified · CDPH-Licensed · ACHC-Accredited line,
+plus "Serving Ventura & Los Angeles County."
+
+THE FILES (in this exports/email/ folder)
+- eternal-life-email-signature-aleksandra-dubina.html  — Aleksandra Dubina, CEO (ready to use)
+- eternal-life-email-signature-TEMPLATE.html           — blank template for any new staff member
+- email-signature-HOW-TO.txt                           — this file
+
+ONE-TIME NOTE ABOUT THE LOGO
+The signature pulls the infinity mark from the live website:
+  https://eternallifehospice.com/assets/logo-eternal-trans.png
+That image goes live the first time the site is published (in Replit: Git -> Sync,
+which auto-deploys to Netlify). If the mark looks broken when you preview, the site
+simply hasn't been synced yet — sync once and the logo appears in every signature.
+
+HOW TO INSTALL A SIGNATURE (Gmail)
+1. Open the staff member's .html file in Google Chrome (double-click it).
+2. Click just before the mark and drag to the end of the address/credentials block
+   to select the whole signature (or click inside it and press Ctrl+A / Cmd+A).
+3. Copy it (Ctrl+C / Cmd+C).
+4. In Gmail: click the gear (top right) -> "See all settings" -> "General" tab.
+5. Scroll to "Signature" -> "Create new", name it, click into the box, and paste
+   (Ctrl+V / Cmd+V). The logo and colors come across automatically.
+6. Set it as the default for "New emails" and "On reply/forward" if you like.
+7. Scroll down and click "Save Changes".
+
+HOW TO INSTALL A SIGNATURE (Outlook — new Outlook / Outlook on the web)
+1. Open the .html file in Chrome, select the whole signature, and copy it (steps 1-3 above).
+2. In Outlook: Settings (gear) -> "Mail" -> "Compose and reply" (Outlook on the web),
+   or "Mail" -> "Signatures" in new Outlook for Windows.
+3. Create a new signature, click into the editing box, and paste (Ctrl+V).
+4. Choose it as the default for new messages / replies, then Save.
+(Classic desktop Outlook strips pasted signatures more aggressively; the web/new
+Outlook signature editor above is the reliable path.)
+
+HOW TO MAKE A SIGNATURE FOR A NEW STAFF MEMBER
+1. Make a copy of eternal-life-email-signature-TEMPLATE.html and rename it
+   eternal-life-email-signature-firstname-lastname.html (keep it in exports/email/).
+2. Open it in a text editor and change these 3 fields:
+   (1) NAME   (2) TITLE / ROLE
+   (3) EMAIL  — change it in TWO places: the mailto: link AND the visible text.
+3. Email convention is firstname@eternallifehospice.com — confirm the mailbox
+   actually exists before handing the signature out.
+4. Install it using the Gmail/Outlook steps above.
+
+BRAND / COMPLIANCE NOTES (keep consistent with the cards)
+- Title is the real role (e.g. "Chief Executive Officer"); do not use "founder-led."
+- Coverage language stays "Serving Ventura & Los Angeles County" — nothing wider.
+- No medical-efficacy or outcome claims anywhere in the signature.
+- Fonts: email clients can't load the brand fonts, so the signature falls back to
+  Georgia (for the name, echoing Fraunces) and Arial (echoing Jost). Colors and the
+  logo carry the brand. Don't restyle — paste as-is so everyone matches.
