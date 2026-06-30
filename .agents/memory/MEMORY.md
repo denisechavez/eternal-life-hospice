@@ -1,3 +1,5 @@
+- [Strategic objective: build to SELL](strategic-objective.md) — true north: $11M+ acquisition-ready; immediate mandate = grow census fast; open reconciliations (pillars/service-area/PR-timing/domains).
+- [Conduit brand architecture](conduit-brand-architecture.md) — locked Eternal Standard = SIX pillars (supersedes four on printed cards); Three Rules; two-track (PR=Track Two, deferred); 45-day Track One build.
 - [ELH site architecture](elh-site-architecture.md) — elh-preview static site: index.html & resources.html are inline-CSS-only; shared-header parity; coverage hub = county page (city pages parked/noindex); split font naming.
 - [Family-guide booklet](family-guide.md) — page-turn duration duplicated in CSS+JS; appended overrides re-break reduced-motion; bootveil blocks screenshots (QA via curl); mobile worksheet restack keeps thead pills; fonts externalized.
 - [Print-ready files](print-files.md) — rack cards/flyers: build temp HTML in elh-preview, 4.25×9.25 (4×9+bleed), chrome print-to-pdf vector, pdfunite, export to repo-root exports/; use logo-eternal-trans.png.
