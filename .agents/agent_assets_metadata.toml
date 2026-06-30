@@ -689,3 +689,9 @@ id = "ljBT8_MEggFoIbnTf62zw"
 uri = "file://exports/eternal-life-rack-card.pdf"
 type = "pdf"
 title = "Eternal Life Hospice — Rack Card (4×9, print-ready)"
+
+[[outputs]]
+id = "OL7YFL58vOV-cRFO4PKLA"
+uri = "file://exports/eternal-life-provider-deck.pdf"
+type = "pdf"
+title = "Eternal Life Hospice — Referral Partner Deck (10 slides, 16:9)"
