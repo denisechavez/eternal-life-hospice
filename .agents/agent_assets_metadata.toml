@@ -701,3 +701,9 @@ id = "s2QJVe-oP6KytAe3_4CdQ"
 uri = "file://exports/strategy/eternal-life-growth-roadmap.pdf"
 type = "pdf"
 title = "Eternal Life Hospice — Growth & Acquisition-Readiness Roadmap (8 pages)"
+
+[[outputs]]
+id = "p7MfhpScOBPyFE-eKRcMw"
+uri = "file://dist/ContainerChiq_Brand_Files.zip"
+type = "unspecified"
+title = "Container Chiq Brand Files (logos, brand docs, story copy)"
