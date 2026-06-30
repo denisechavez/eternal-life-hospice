@@ -13,10 +13,12 @@
  *
  * Optional: AUTOREPLY_FROM (defaults to the verified sending address below).
  *
- * Only forms that collect an email address can receive an email reply:
- *   elh-family, elh-casemanager, elh-careers. The phone-only forms
- *   (elh-physician, elh-coordinator, elh-chat-callback) are skipped — your
- *   team's instant internal alert drives the quick callback for those.
+ * A reply is only sent when a submission includes a valid email, so it degrades
+ * safely. Eligible forms: elh-family, elh-casemanager, elh-careers (collect an
+ * email), and elh-physician (the /refer page adds an OPTIONAL work email — when
+ * provided, the partner gets a PHI-free referral confirmation; the homepage
+ * physician form has no email field and is unaffected). The remaining phone-only
+ * forms (elh-coordinator, elh-chat-callback) are never replied to here.
  */
 
 const PHONE = "805.953.7273";
@@ -25,10 +27,15 @@ const FROM =
   process.env.AUTOREPLY_FROM ||
   "Eternal Life Hospice <" + CONTACT_EMAIL + ">";
 
-// Only these forms collect an email address and should receive an auto-reply.
-// Phone-only forms (elh-physician, elh-coordinator, elh-chat-callback) are
-// never replied to here — their quick callback is driven by the team's alert.
-const ALLOWED_FORMS = ["elh-family", "elh-casemanager", "elh-careers"];
+// Forms eligible for an auto-reply. A reply is only ever sent when the submission
+// also carries a valid email, so a form is safe to list here even when its email
+// field is optional:
+//   elh-family, elh-casemanager, elh-careers — collect an email directly.
+//   elh-physician — the /refer page adds an OPTIONAL work email; when a partner
+//     provides it they get a PHI-free referral confirmation. The homepage
+//     physician form has no email field, so it is never affected.
+// Still phone-only (never replied to): elh-coordinator, elh-chat-callback.
+const ALLOWED_FORMS = ["elh-family", "elh-casemanager", "elh-careers", "elh-physician"];
 
 exports.handler = async function (event) {
   try {
@@ -53,16 +60,27 @@ exports.handler = async function (event) {
       return { statusCode: 200, body: "no valid email on submission; skipped" };
     }
 
-    const first = String(data.first_name || data.name || "").trim();
-    const greeting = first ? "Hi " + escapeText(first) + "," : "Hello,";
+    // Referrer name (a professional, not the patient — never PHI). Greet by first
+    // name only, whichever field the form used.
+    const rawName = String(
+      data.first_name || data.name || data.referrer_name || ""
+    ).trim();
+    const firstName = rawName.split(/\s+/)[0] || "";
+    const greeting = firstName ? "Hi " + escapeText(firstName) + "," : "Hello,";
     const isCareers = formName === "elh-careers";
+    const isReferral = formName === "elh-physician";
 
     const subject = isCareers
       ? "Thank you for your interest — Eternal Life Hospice"
+      : isReferral
+      ? "We received your referral — Eternal Life Hospice"
       : "We received your message — Eternal Life Hospice";
 
+    // Static, PHI-free copy. We never echo the submitted clinical description.
     const lead = isCareers
       ? "Thank you for your interest in joining the Eternal Life Hospice team. We've received your application and a member of our team will review it and be in touch."
+      : isReferral
+      ? "Thank you for referring a patient to Eternal Life Hospice. We've received your referral, and our clinical intake team will reach out shortly to complete the details with you securely by phone. No patient information is ever exchanged by email."
       : "Thank you for reaching out to Eternal Life Hospice. We've received your message, and a member of our team will be in touch with you shortly.";
 
     const text = [
