@@ -86,5 +86,5 @@ gs -q -dBATCH -dNOPAUSE -dSAFER -sDEVICE=pdfwrite \
 Verify: `data.count(b"DeviceRGB")==0`; read back CMYK by decompressing Flate
 streams and regexing `([0-9.]+ ){4}[kK]`. Page size preserved (288×594pts).
 Referral cards: keep RGB masters in `exports/print/`, ship the CMYK copies in
-`exports/print/print-ready-cmyk/` (suffix `-CMYK`). Not every card uses every
+`exports/print/print-ready-cmyk/` (suffix `-CMYK`). The full kit (press-kit folder + 4 pillar cards + old rack card) is also CMYK-converted into `print-ready-cmyk/press-kit/` with a README manifest of files-to-send. Not every card uses every
 brand color (e.g. card-5 minimal has its own plum/cream tints) — that's expected.
