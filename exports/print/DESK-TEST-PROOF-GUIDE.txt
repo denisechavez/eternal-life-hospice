@@ -1,0 +1,65 @@
+ETERNAL LIFE HOSPICE — RACK CARD DESK-TEST PROOF GUIDE
+======================================================
+Goal: print ONE proof of each of the 5 cards on your own printer and check it by
+hand BEFORE paying for the full matte 100 lb run at Moo. This catches color,
+legibility, trim, and QR problems while they're free to fix.
+
+NOTE: This is a physical check — it has to be done by a person with a printer and
+a phone. Everything that can be verified on-screen has already been confirmed
+(see the digital pre-flight section at the bottom).
+
+----------------------------------------------------------------------
+HOW TO PRINT THE PROOF (do this exactly)
+----------------------------------------------------------------------
+Files (in this folder, each is 2 pages = front then back):
+  1. eternal-life-referral-card-1-capability-hero.pdf
+  2. eternal-life-referral-card-2-refer-with-confidence.pdf
+  3. eternal-life-referral-card-3-minimal-premium.pdf
+  4. eternal-life-referral-card-4-credentials-forward.pdf
+  5. eternal-life-referral-card-5-quick-referral-action.pdf
+
+Print settings — THE ONE THAT MATTERS MOST:
+  • Scale / Page Sizing: "Actual size" or "100%"  — NOT "Fit to page."
+    (Fit-to-page shrinks the art and the proof will measure wrong.)
+  • Paper: Letter (8.5 x 11). Each card prints onto one sheet with white around it.
+  • Color: Color printer. Cream/ivory paper if you have it; otherwise plain white
+    is fine for a shape/size/QR test (judge final color at Moo).
+  • Double-sided: if your printer does it, great; if not, just print the fronts
+    (page 1 of each) for the desk test — backs are verified on screen.
+
+After printing, trim each card to the corner crop marks: 3.5" wide x 7.75" tall.
+A ruler confirms it: trimmed card should measure exactly 3.5 x 7.75 inches.
+
+----------------------------------------------------------------------
+WHAT TO CHECK — per card (tick each)
+----------------------------------------------------------------------
+[ ] SIZE: trims cleanly to 3.5 x 7.75 at the crop marks; nothing important is
+        cut off (all text/logo/QR sit comfortably inside the edge).
+[ ] COLOR: plum reads rich (not muddy/purple-pink), gold reads warm (not yellow),
+        cream background is soft (not gray). Note anything that looks off.
+[ ] LEGIBILITY: smallest text (contact block, credentials) is readable at arm's
+        length. The phone number is easy to find fast.
+[ ] QR SCAN: open your phone camera, point at the QR on the printed card.
+        It must pop up https://eternallifehospice.com and open the real site.
+        Test all 5 — a QR that scans on screen can still fail if printed too small
+        or low-contrast.
+[ ] FEEL: hold it like a referral partner would — does it read premium/calm?
+
+----------------------------------------------------------------------
+IF SOMETHING IS WRONG
+----------------------------------------------------------------------
+Tell me exactly what (e.g. "card 3 QR won't scan," "plum prints too dark,"
+"phone number too small on card 1") and I'll adjust the source and re-export that
+card. Then re-proof just the changed card before the Moo order.
+
+----------------------------------------------------------------------
+DIGITAL PRE-FLIGHT — already verified on screen (you don't need to re-check)
+----------------------------------------------------------------------
+• All 5 PDFs are 2 pages (front + back).
+• Page size is exactly 4.0 x 8.25 in (3.5 x 7.75 trim + 0.125 bleed all sides +
+  crop-mark margin) — confirmed with pdfinfo.
+• Corner crop marks present on every page.
+• Full contact block (phone, fax, email, address, 24/7, service area) on every card.
+• QR image decodes to https://eternallifehospice.com (verified at generation).
+• Coverage language limited to Ventura & LA County; integrative therapies framed
+  as comfort (no medical-efficacy claims).
