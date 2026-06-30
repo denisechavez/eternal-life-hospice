@@ -55,4 +55,14 @@ THE 5 DESIGNS
 4. Credentials-Forward    — CMS/CDPH/ACHC/Epic + the four Eternal Standard pillars
 5. Quick-Referral Action  — big 24-7 phone, fax, QR + quick referral-signs checklist
 
-QR CODE: every card's QR resolves to https://eternallifehospice.com (verified).
+QR CODE: every referral card's QR resolves to
+https://eternallifehospice.com/refer — the one-page partner referral form
+(re-decoded after generation; built at error-correction level H so the centered
+ELH infinity logo doesn't break the scan). Short aliases /refer-a-patient,
+/referral and /refer-patient 301-redirect to the same page.
+
+Note: this /refer QR is the REFERRAL collateral only. The website footer QR
+(assets/img/qr-cream.png), the reusable site QR (assets/qr-eternallifehospice.png),
+the business cards and the four "Eternal Standard" pillar rack cards intentionally
+stay pointed at the homepage (https://eternallifehospice.com) — they are general
+brand pieces, not the "scan to refer in one step" call to action.

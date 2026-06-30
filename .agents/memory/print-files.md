@@ -46,10 +46,33 @@ in ONE html w/ `page-break-after:always` → 2-page PDF in one render, no pdfuni
 Escape literal `%` in any CSS passed through Python `%`-formatting (gradients,
 50%, 100%) — easier to token-replace color vars than `%`-format.
 
-**QR asset:** `assets/qr-eternallifehospice.png` (reusable) → https://eternallifehospice.com,
-made with python `qrcode` (ECC Q, version 3). Verify it decodes: `pip install
-opencv-python-headless` then `cv2.QRCodeDetector().detectAndDecode()` (pyzbar/zbar
-not installed). Concept-art QR is decorative — never reuse it.
+**QR asset:** `assets/qr-eternallifehospice.png` (reusable, plain plum-on-white, no
+logo) → https://eternallifehospice.com, made with python `qrcode` (ECC Q, version 3).
+Verify it decodes: `pip install opencv-python-headless` then
+`cv2.QRCodeDetector().detectAndDecode()` (pyzbar/zbar not installed). Concept-art QR
+is decorative — never reuse it.
+
+**Referral-page QR (`/refer`):** `scripts/build-refer-qr.py` generates the two
+masters encoding https://eternallifehospice.com/refer at **ECC level H** (so the
+centered infinity badge survives): `assets/qr-refer.png` (1480px, deep-plum #3C1C3B
+on WHITE, for print on light tiles) + `assets/img/qr-refer-cream.png` (1024px, plum
+#5B2E59 on CREAM #F5F0EB, light-backed variant for dark surfaces, matches the footer
+qr-cream.png look). The infinity glyph (with its metallic gradient) is lifted from
+qr-cream.png's center, not redrawn. Script self-verifies via cv2 decode. The 5
+referral cards carry /refer; the footer QR, the reusable site QR, business cards and
+the 4 pillar rack cards stay on the homepage (general brand, not the referral CTA).
+
+**Swapping a QR inside an already-built card PDF (no source HTML survives):** the 5
+referral-card masters embed the QR as a 1480×1480 FlateDecode ICCBased-RGB bpc8 image
+XObject (same dims as the source QR png). Replace it in place with pikepdf — find the
+Image XObject where Width==Height==1480, then `obj.write(zlib.compress(rgb_bytes),
+filter=pikepdf.Name.FlateDecode)` (pikepdf.write expects data ALREADY encoded for the
+declared filter; raw must be 1480*1480*3 bytes = `Image.convert('RGB').tobytes()`),
+delete any /DecodeParms, keep Width/Height/ColorSpace. Then regenerate the CMYK copies
+from the updated RGB masters with the ghostscript command below. Verify each PDF by
+`pdftoppm -r 200 -png` + cv2 decode → must read the /refer URL; page size stays
+288×594pts. (card5 references the same QR XObject on both pages — replacing once
+updates both.)
 
 **Business cards (double-sided, Moo):** trim **3.5×2.0in**, 0.125 bleed → art
 3.75×2.25; build `@page` at **4.0×2.5in** (pdfinfo = 288×180pt) with the same 8
