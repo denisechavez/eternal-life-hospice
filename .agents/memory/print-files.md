@@ -5,8 +5,10 @@ description: How to produce print-ready PDFs for Eternal Life Hospice from HTML.
 
 # Print-ready files
 
-Deliverables go in repo-root `exports/` (NOT in `website/elh-preview/`, which is
-the deployed site). Build temp `rack-*.html` / `*-print.html` in the elh-preview
+Deliverables go in repo-root `exports/`, filed by type (NOT in
+`website/elh-preview/`, which is the deployed site): `exports/print/` for
+print-ready PDFs (rack cards, flyers, brochures), `exports/decks/` for
+presentations. Keep filing tidy + descriptive filenames (user preference). Build temp `rack-*.html` / `*-print.html` in the elh-preview
 root so they can load the inline brand fonts + assets over localhost:5000, render,
 then **delete the temp HTML** (SEO-locked site must ship no stray pages).
 
