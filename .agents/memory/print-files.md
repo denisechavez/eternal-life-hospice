@@ -50,3 +50,14 @@ Escape literal `%` in any CSS passed through Python `%`-formatting (gradients,
 made with python `qrcode` (ECC Q, version 3). Verify it decodes: `pip install
 opencv-python-headless` then `cv2.QRCodeDetector().detectAndDecode()` (pyzbar/zbar
 not installed). Concept-art QR is decorative — never reuse it.
+
+**Business cards (double-sided, Moo):** trim **3.5×2.0in**, 0.125 bleed → art
+3.75×2.25; build `@page` at **4.0×2.5in** (pdfinfo = 288×180pt) with the same 8
+hand-drawn corner crop ticks + 2 `.page` divs (front/back) → 2-page PDF in one
+render. Front = name/title + logo-eternal-trans lockup + contact + credentials/
+coverage footer; back = logo-cream on plum gradient + tagline + reusable QR.
+Generator: `scripts/build-business-cards.py` (edit CARDS dict, writes HTML into
+elh-preview, render, move PDF to exports/print/, DELETE temp HTML). Editable
+template + specs live in `exports/print/`. Personal emails are drafts
+(firstname@eternallifehospice.com) — flag to confirm before printing. CEO title
+used (not "founder-led", per valuation optics).
