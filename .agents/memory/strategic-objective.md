@@ -18,26 +18,22 @@ Baseline metrics that seed the future sale decks: ADC month-by-month, revenue/P&
 payer mix, ALOS + admits/discharges, referral-source conversion, Medicare cap
 status, operating cost per patient day.
 
-**Open items to reconcile before acting (confirm with user, do not assume):**
-- **Pillar architecture:** the LOCKED Eternal Standard platform has **SIX** pillars
-  (dignity · clinical confidence · family guidance · whole-person comfort ·
-  responsive presence · compliance-conscious care) — canonical, and it SUPERSEDES
-  the older **FOUR**-pillar set on the already-printed press-kit rack cards and in
-  replit.md (Clinical Confidence · Guided Presence · Whole-Person Comfort ·
-  Compliance-Led Care). Printed collateral is now out of sync; confirm before
-  reprint and before editing replit.md. Detail in conduit-brand-architecture.md.
+**Resolved (per Denise):**
+- **Pillars = the FOUR evolved pillars** (Clinical Confidence · Guided Presence ·
+  Whole-Person Comfort · Compliance-Led Care). The six-pillar list in the early
+  briefs is superseded; printed cards + replit.md are correct as-is.
+- **Canonical domain = www.eternallifehospice.com** (the live site);
+  eternalhospice.com / eternallifehospiceinc.com are not the go-forward domain.
+
+**Open items still to reconcile (confirm with user, do not assume):**
 - **Service area:** the Track One brief lists **LA · Ventura · Orange** counties,
   but approved coverage (replit.md + memory) is **Ventura + LA ONLY**. Compliance-
   sensitive — do NOT publish any Orange County coverage claim without explicit
-  confirmation.
+  confirmation. Safe default until told otherwise: Ventura + LA only.
 - **PR timing (her two docs disagree):** the "First Three Months / Conduit-FULL"
   brief runs PR concurrently in months 1–3; the later Track One Branding Brief
   splits PR into a separate **Track Two** that begins only after Track One's
   foundation is stable. Confirm which governs before scheduling any PR work.
-- **Domains:** live site is **eternallifehospice.com**, but the brief also names
-  **eternalhospice.com** (website soft-launch target) and **eternallifehospiceinc.com**,
-  plus a duplicate/"off-brand" site to take down (Gate 1). Confirm the canonical
-  domain before any domain/email/SEO/redirect work.
 - **Container Chiq** = a separate potential partnership, deliberately **tabled** to
   the Month-3 checkpoint; do not act on it.
 
