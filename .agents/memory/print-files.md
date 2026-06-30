@@ -97,6 +97,8 @@ Press fixes if proof is off: deep plum muddy → drop Yellow ~8-12pts; gold flat
 hold Y57, add ≤4K, never add Cyan (→olive). Pantone = closest visual ref only,
 confirm against a Color Bridge book.
 
+**Brand color swatch sheet (`exports/print/eternal-life-brand-color-reference-cmyk.pdf`).** A one-page **Letter** (8.5×11, NOT a rack-card size) CMYK reference to send with every print job: 2×2 grid of the four locked colors as printed patches, each labelled with its CMYK build + HEX + closest Pantone, plus the press-fix notes. Built the same vector way (temp `swatch-sheet.html` in elh-preview → chromium print-to-pdf → ghostscript RGB→CMYK below → delete temp html). Patches are filled with the brand **HEX**; the gs default conversion lands them exactly on the locked CMYK (verified: deep plum→69/90/45/53, plum→65/90/37/28, gold→22/28/57/0, cream→2/4/6/0), so the sheet's swatches and its printed numbers agree. Keep content tight (patch ≤1.2in, ~0.5in page padding) or it spills to a 2nd page — always `pdfinfo | grep Pages` must read **1**. Referenced in referral-rack-cards-PRINT-SPECS.txt.
+
 **Make a press-ready CMYK PDF from an RGB one** (ghostscript installed via
 `installSystemDependencies(["ghostscript"])`; no bundled iccprofiles dir, uses
 gs built-in default CMYK — fine, fully converts vectors AND embedded images):
