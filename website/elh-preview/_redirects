@@ -1,2 +1,7 @@
 /hospice-ventura-county-ca      /hospice-ventura-and-los-angeles-county-ca   301
 /hospice-los-angeles-county-ca  /hospice-ventura-and-los-angeles-county-ca   301
+
+# Short URLs for the partner referral page (print/QR can point at any of these)
+/refer-a-patient   /refer   301
+/referral          /refer   301
+/refer-patient     /refer   301
