@@ -19,14 +19,25 @@ payer mix, ALOS + admits/discharges, referral-source conversion, Medicare cap
 status, operating cost per patient day.
 
 **Open items to reconcile before acting (confirm with user, do not assume):**
-- **Pillar count:** all printed collateral shows **FOUR** pillars (Clinical
-  Confidence · Guided Presence · Whole-Person Comfort · Compliance-Led Care), but
-  the engagement brief references "**five pillars**" once. Confirm before laddering
-  messaging.
+- **Pillar architecture:** the LOCKED Eternal Standard platform has **SIX** pillars
+  (dignity · clinical confidence · family guidance · whole-person comfort ·
+  responsive presence · compliance-conscious care) — canonical, and it SUPERSEDES
+  the older **FOUR**-pillar set on the already-printed press-kit rack cards and in
+  replit.md (Clinical Confidence · Guided Presence · Whole-Person Comfort ·
+  Compliance-Led Care). Printed collateral is now out of sync; confirm before
+  reprint and before editing replit.md. Detail in conduit-brand-architecture.md.
+- **Service area:** the Track One brief lists **LA · Ventura · Orange** counties,
+  but approved coverage (replit.md + memory) is **Ventura + LA ONLY**. Compliance-
+  sensitive — do NOT publish any Orange County coverage claim without explicit
+  confirmation.
+- **PR timing (her two docs disagree):** the "First Three Months / Conduit-FULL"
+  brief runs PR concurrently in months 1–3; the later Track One Branding Brief
+  splits PR into a separate **Track Two** that begins only after Track One's
+  foundation is stable. Confirm which governs before scheduling any PR work.
 - **Domains:** live site is **eternallifehospice.com**, but the brief also names
   **eternalhospice.com** (website soft-launch target) and **eternallifehospiceinc.com**,
-  plus an "off-brand site" to take down. Confirm the canonical domain before any
-  domain/email/SEO/redirect work.
+  plus a duplicate/"off-brand" site to take down (Gate 1). Confirm the canonical
+  domain before any domain/email/SEO/redirect work.
 - **Container Chiq** = a separate potential partnership, deliberately **tabled** to
   the Month-3 checkpoint; do not act on it.
 
