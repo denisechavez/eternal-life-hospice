@@ -1,0 +1,44 @@
+ETERNAL LIFE HOSPICE — BUSINESS CARDS (double-sided)
+====================================================
+Print at: Moo (or any digital printer). Stock: matte, heavy cover (e.g. 16pt+).
+Finish: double-sided (each PDF = 2 pages: front, then back).
+
+SIZE / BLEED (already built into the files)
+- Final trim size: 3.5" wide x 2.0" high (standard US business card)
+- Bleed: 0.125" on all sides (art extends to 3.75" x 2.25")
+- PDF page size: 4.0" x 2.5" (pdfinfo reads 288 x 180 pts) — the extra margin
+  holds the crop marks
+- Crop/trim marks: 8 corner ticks printed — trim to the marks (3.5 x 2.0)
+- Safe zone: all text/logo/QR kept well inside the trim
+- Color: RGB, vector text. Tell the printer: "bleed is included; trim to
+  3.5 x 2.0 at the crop marks."
+
+THE FILES
+- eternal-life-business-card-aleksandra-dubina.pdf  — Aleksandra Dubina, CEO
+- eternal-life-business-card-TEMPLATE.pdf           — blank, for new staff cards
+- eternal-life-business-card-TEMPLATE.html          — editable source template
+
+FRONT: name + title, full "Eternal / Life Hospice" lockup, contact block
+(24/7 line 805.953.7273, fax, email, eternallifehospice.com, HQ address), and a
+credentials + coverage footer (Medicare-Certified · CDPH-Licensed · ACHC-Accredited /
+Serving Ventura & Los Angeles County).
+BACK: cream brand mark, "Care That Honors Life" + "Here in Moments That Matter Most",
+QR (resolves to https://eternallifehospice.com) + credentials.
+
+>>> CONFIRM BEFORE PRINTING <<<
+- Email addresses are drafts using the firstname@eternallifehospice.com convention
+  (e.g. aleksandra@eternallifehospice.com). Confirm the real mailbox exists, or
+  swap in the correct address, before ordering.
+- Add a direct cell line if the cardholder wants one.
+
+HOW TO MAKE MORE STAFF CARDS (quick)
+Option A (template HTML): edit eternal-life-business-card-TEMPLATE.html — change the
+  name, title, and email — copy it into website/elh-preview/, then render:
+    chromium --headless=new --no-sandbox --disable-gpu --no-pdf-header-footer \
+      --print-to-pdf=out.pdf http://localhost:5000/eternal-life-business-card-TEMPLATE.html
+  Move out.pdf into exports/print/ and DELETE the temp HTML from elh-preview
+  (the published site must not ship stray pages).
+Option B (generator): add an entry to the CARDS dict in
+  scripts/build-business-cards.py and re-run it (writes HTML into elh-preview),
+  then render + move + delete as above.
+QR is reusable at website/elh-preview/assets/qr-eternallifehospice.png.
