@@ -4,14 +4,49 @@ Print at: Moo (or any digital printer)
 Stock:    Matte, 100 lb
 Finish:   Double-sided (each PDF = 2 pages: front, then back)
 
+>>> WHICH FILES TO SEND TO MOO <<<
+Send the CMYK files in the  print-ready-cmyk/  subfolder
+(eternal-life-referral-card-1...-CMYK.pdf … -5-...-CMYK.pdf).
+These are already converted to CMYK so the press does NOT auto-convert
+the colors. The plain RGB PDFs in this folder are the design masters —
+keep them for editing, but do not send them to print.
+
 SIZE / BLEED (already built into the files)
 - Final trim size: 3.5" wide x 7.75" high
 - Bleed: 0.125" on all sides (art extends to 3.75" x 8.0")
 - PDF page size: 4.0" x 8.25" (the extra margin holds the crop marks)
 - Crop/trim marks: printed at each corner — trim to the marks (3.5 x 7.75)
 - Safe zone: all text/logo/QR/contact kept >= 0.25" inside the trim
-- Color: RGB, 300 DPI equivalent, vector text. Tell the printer
-  "bleed is included; trim to 3.5 x 7.75 at the crop marks."
+- Tell the printer: "Files are CMYK; bleed is included; trim to
+  3.5 x 7.75 at the crop marks. Do not re-convert or auto-correct color."
+
+COLOR LOCK — BRAND CMYK / PANTONE TARGETS (do not let these shift)
+------------------------------------------------------------------
+The deep plum and gold are the colors most likely to shift on an
+RGB->CMYK auto-conversion (plum goes muddy/blue, gold goes flat). The
+supplied PDFs are already CMYK at the values below. If the press pulls a
+proof, match these exact builds; the Pantone column is the closest
+visual reference (confirm against a Pantone Color Bridge book).
+
+  COLOR        HEX        CMYK (C/M/Y/K)      CLOSEST PANTONE (coated)
+  ----------   --------   -----------------   ------------------------
+  Deep Plum    #3C1C3B    69 / 90 / 45 / 53   PANTONE 5185 C (or 519 C)
+  Plum         #5B2E59    65 / 90 / 37 / 28   PANTONE 518 C
+  Gold         #C9B07E    22 / 28 / 57 / 0    PANTONE 4525 C; metallic
+                                              alt PANTONE 871 C
+  Cream        #F5F0EB     2 /  4 /  6 / 0    near paper-white; PANTONE
+                                              9043 C / natural matte stock
+
+Press notes:
+- Rich black (logo plates / deepest panels) is built rich, not 100K
+  alone, so dark plum reads deep and even.
+- If the deep plum proofs muddy/brown, pull the Yellow down ~8-12 pts
+  (it carries the most muddiness risk in a deep purple).
+- If the gold proofs flat/greenish, hold Yellow at 57 and add up to 4K
+  for depth; do not let the press add Cyan (turns gold olive).
+- Cream is essentially the paper. On a bright-white stock it prints as
+  the light C2/M4/Y6 tint above; on a natural/cream matte stock you can
+  drop the tint and let the stock carry the warmth.
 
 THE 5 DESIGNS
 1. Capability Hero        — same-day admission / transport / 24-7; what to expect

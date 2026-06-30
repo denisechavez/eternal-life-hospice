@@ -61,3 +61,30 @@ elh-preview, render, move PDF to exports/print/, DELETE temp HTML). Editable
 template + specs live in `exports/print/`. Personal emails are drafts
 (firstname@eternallifehospice.com) — flag to confirm before printing. CEO title
 used (not "founder-led", per valuation optics).
+
+**LOCKED brand CMYK / Pantone (for ALL print collateral).** Cards are built in
+RGB then converted; a press auto-converting RGB→CMYK shifts plum (muddy/blue) and
+gold (flat). Lock to these (CMYK = faithful ghostscript SWOP-style conversion of
+the brand RGB, also what the delivered CMYK PDFs contain):
+- Deep plum `#3C1C3B` → C69 M90 Y45 K53 → ~PANTONE 5185 C / 519 C
+- Plum      `#5B2E59` → C65 M90 Y37 K28 → ~PANTONE 518 C
+- Gold      `#C9B07E` → C22 M28 Y57 K0  → ~PANTONE 4525 C (metallic alt 871 C)
+- Cream     `#F5F0EB` → C2 M4 Y6 K0     → ~paper white / PANTONE 9043 C
+Press fixes if proof is off: deep plum muddy → drop Yellow ~8-12pts; gold flat →
+hold Y57, add ≤4K, never add Cyan (→olive). Pantone = closest visual ref only,
+confirm against a Color Bridge book.
+
+**Make a press-ready CMYK PDF from an RGB one** (ghostscript installed via
+`installSystemDependencies(["ghostscript"])`; no bundled iccprofiles dir, uses
+gs built-in default CMYK — fine, fully converts vectors AND embedded images):
+```
+gs -q -dBATCH -dNOPAUSE -dSAFER -sDEVICE=pdfwrite \
+  -dProcessColorModel=/DeviceCMYK -sColorConversionStrategy=CMYK \
+  -dOverrideICC=true -dPDFSETTINGS=/prepress -dAutoRotatePages=/None \
+  -o out-CMYK.pdf in.pdf
+```
+Verify: `data.count(b"DeviceRGB")==0`; read back CMYK by decompressing Flate
+streams and regexing `([0-9.]+ ){4}[kK]`. Page size preserved (288×594pts).
+Referral cards: keep RGB masters in `exports/print/`, ship the CMYK copies in
+`exports/print/print-ready-cmyk/` (suffix `-CMYK`). Not every card uses every
+brand color (e.g. card-5 minimal has its own plum/cream tints) — that's expected.
