@@ -17,10 +17,19 @@ never mark the form submission or the internal team notification as failed.
 courtesy layer on top and must degrade silently.
 
 **Rule: gate sends by an explicit form allowlist**, not by "does an `email` field
-exist." Only `elh-family`, `elh-casemanager`, `elh-careers` collect an email.
-`elh-physician`, `elh-coordinator`, `elh-chat-callback` are phone-only and must be
-skipped (they'd need SMS, which the client doesn't have). **Why:** gating on field
-presence would reply to any future/crafted form carrying an `email` field.
+exist." **Why:** gating on field presence would reply to any future/crafted form
+carrying an `email` field. A reply still only goes out when the submission has a
+valid email, so a form is safe to allowlist even if its email field is optional.
+Allowlisted: `elh-family`, `elh-casemanager`, `elh-careers` (collect email), and
+`elh-physician` (the /refer page added an OPTIONAL work email → PHI-free referral
+confirmation; the homepage physician form has no email field so it's unaffected,
+and that form lives in `index.html` also named `elh-physician`). Still phone-only
+and never replied to: `elh-coordinator`, `elh-chat-callback`.
+
+Content branches by form: careers / referral (`elh-physician`) / generic. The
+referral branch greets by the referrer's first name (a professional, not the
+patient — `referrer_name`/`first_name`/`name`, first token only) and never echoes
+the `situation`/clinical free-text.
 
 **Email provider = Resend.** Key lives in the Netlify dashboard as
 `RESEND_API_KEY` (scope: All / Functions), NOT a Replit integration — Replit
