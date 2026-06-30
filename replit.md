@@ -13,6 +13,11 @@ Medicare-certified hospice serving **Ventura & Los Angeles County, CA**.
 - **Brand:** logo = metallic-plum infinity "Eternal / Life Hospice" lockup;
   palette = deep plum, plum, gold, off-white cream; fonts = Fraunces (serif) +
   Jost (sans). Tagline "Care That Honors Life" / "Here in Moments That Matter Most".
+- **The Eternal Standard — four pillars of care:** Clinical Confidence ·
+  Guided Presence · Whole-Person Comfort · Compliance-Led Care. This is the
+  core brand architecture across all collateral; keep messaging consistent with it.
+- **HQ:** 4165 E Thousand Oaks Blvd, Suite 325B, Westlake Village, CA 91362.
+  Phone 805.953.7273 · Fax 805.953.8530 · info@eternallifehospice.com · 24/7 nurse access.
 - **Compliance posture:** Medicare-Certified · CDPH-Licensed · ACHC-Accredited.
   No medical-efficacy claims for integrative therapies; referral materials stay
   within Anti-Kickback / Stark boundaries (value & quality, never inducements).
@@ -21,6 +26,8 @@ Medicare-certified hospice serving **Ventura & Los Angeles County, CA**.
 - `website/elh-preview/` — the website (the only thing that deploys).
 - `exports/` — finished, downloadable deliverables (NOT published to the site):
   - `exports/print/` — print-ready PDFs (rack cards, flyers, brochures).
+    - `exports/print/press-kit/` — the professionally printed kit (die-cut
+      presentation folder + the 4 "Eternal Standard" pillar rack cards).
   - `exports/decks/` — presentations (e.g. referral-partner deck).
 - New collateral goes in the matching `exports/` subfolder with a clear,
   descriptive filename (e.g. `eternal-life-rack-card.pdf`).
