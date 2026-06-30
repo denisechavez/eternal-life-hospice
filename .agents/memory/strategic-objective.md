@@ -9,6 +9,13 @@ The user is a **fractional CTO** engaged by the founder/CEO to get Eternal Life
 Hospice **acquisition-ready** — i.e. build enterprise value so the agency can be
 sold, not just grow patient volume for its own sake.
 
+**Immediate mandate (overrides everything short-term): GET CENSUS UP FAST.**
+Engagement is a **3-month retainer**; after 3 months they decide on **% equity of
+the sale**. Mutual test phase — early, visible census wins matter most right now.
+Founder runs **two agencies**, but the work here is **focused only on Eternal**.
+Fastest census lever = referral engine + zero-friction intake + working the warm
+network first; community/press are secondary until census is moving.
+
 **Why this matters for every decision:** hospice acquirers pay multiples on
 durable, transferable value — **stable census, durable referral relationships
 (hospitals/SNFs/physicians), clean compliance, and a defensible brand/
