@@ -11,6 +11,14 @@ These are already converted to CMYK so the press does NOT auto-convert
 the colors. The plain RGB PDFs in this folder are the design masters —
 keep them for editing, but do not send them to print.
 
+>>> ALSO SEND THE COLOR SWATCH SHEET (every job) <<<
+Include  eternal-life-brand-color-reference-cmyk.pdf  (one-page CMYK
+swatch sheet in this exports/print/ folder) with ANY Eternal Life print
+order. It shows each brand color as a printed patch with its locked
+CMYK build + closest Pantone, so the printer matches the brand the same
+way every time. The CMYK builds on that sheet are identical to the
+COLOR LOCK table below.
+
 SIZE / BLEED (already built into the files)
 - Final trim size: 3.5" wide x 7.75" high
 - Bleed: 0.125" on all sides (art extends to 3.75" x 8.0")
