@@ -695,3 +695,9 @@ id = "OL7YFL58vOV-cRFO4PKLA"
 uri = "file://exports/eternal-life-provider-deck.pdf"
 type = "pdf"
 title = "Eternal Life Hospice — Referral Partner Deck (10 slides, 16:9)"
+
+[[outputs]]
+id = "s2QJVe-oP6KytAe3_4CdQ"
+uri = "file://exports/strategy/eternal-life-growth-roadmap.pdf"
+type = "pdf"
+title = "Eternal Life Hospice — Growth & Acquisition-Readiness Roadmap (8 pages)"
