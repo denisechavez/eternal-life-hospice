@@ -31,5 +31,22 @@ note that bleed is included. No TrimBox/crop marks are set (Chrome can't); fine
 for online/office shops — just tell them "trim to 4×9, 0.125 bleed included."
 
 **Logo:** use `assets/logo-eternal-trans.png` (661×525, white bg removed → keeps
-metallic sheen, no holes) on cream grounds. `logo-plum.png` is only 360px = too
-low-res for large print. `logo-eternal.png` has an opaque white box (bad on cream).
+metallic sheen, no holes) on cream grounds; `assets/logo-cream.png` (all-cream)
+on dark/plum grounds. `logo-plum.png` is only 360px = too low-res for large
+print. `logo-eternal.png` has an opaque white box (bad on cream).
+
+**Slim referral rack cards (Moo, fits inside presentation folder):** trim
+**3.5×7.75in**, 0.125 bleed → art 3.75×8.0in. Crop marks ARE wanted: build the
+`@page` slightly larger (**4.0×8.25in**, pdfinfo = 288×594pts) and draw the 8
+trim ticks yourself as thin abs-positioned `<div>`s in the .page (Chrome can't
+emit real TrimBox). Layout: `.page`(4.0×8.25) → `.bleed`(abs inset 0.125in,
+3.75×8.0, holds full-bleed bg) → content padded `--safe:0.375in` (=0.25 trim +
+0.25 safe... actually 0.125 trim-inset + 0.25 safe). Put 2 .page divs (front+back)
+in ONE html w/ `page-break-after:always` → 2-page PDF in one render, no pdfunite.
+Escape literal `%` in any CSS passed through Python `%`-formatting (gradients,
+50%, 100%) — easier to token-replace color vars than `%`-format.
+
+**QR asset:** `assets/qr-eternallifehospice.png` (reusable) → https://eternallifehospice.com,
+made with python `qrcode` (ECC Q, version 3). Verify it decodes: `pip install
+opencv-python-headless` then `cv2.QRCodeDetector().detectAndDecode()` (pyzbar/zbar
+not installed). Concept-art QR is decorative — never reuse it.

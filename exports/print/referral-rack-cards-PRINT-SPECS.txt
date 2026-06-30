@@ -1,0 +1,23 @@
+ETERNAL LIFE HOSPICE — REFERRAL RACK CARDS (5 designs, double-sided)
+====================================================================
+Print at: Moo (or any digital printer)
+Stock:    Matte, 100 lb
+Finish:   Double-sided (each PDF = 2 pages: front, then back)
+
+SIZE / BLEED (already built into the files)
+- Final trim size: 3.5" wide x 7.75" high
+- Bleed: 0.125" on all sides (art extends to 3.75" x 8.0")
+- PDF page size: 4.0" x 8.25" (the extra margin holds the crop marks)
+- Crop/trim marks: printed at each corner — trim to the marks (3.5 x 7.75)
+- Safe zone: all text/logo/QR/contact kept >= 0.25" inside the trim
+- Color: RGB, 300 DPI equivalent, vector text. Tell the printer
+  "bleed is included; trim to 3.5 x 7.75 at the crop marks."
+
+THE 5 DESIGNS
+1. Capability Hero        — same-day admission / transport / 24-7; what to expect
+2. Refer with Confidence  — signs it may be time + referral steps + partner block
+3. Minimal Premium        — cream, oversized phone + QR, fast action
+4. Credentials-Forward    — CMS/CDPH/ACHC/Epic + the four Eternal Standard pillars
+5. Quick-Referral Action  — big 24-7 phone, fax, QR + quick referral-signs checklist
+
+QR CODE: every card's QR resolves to https://eternallifehospice.com (verified).
