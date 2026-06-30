@@ -9,15 +9,17 @@ Central platform (NOT a certification — the promise the brand makes):
 "Patients and families deserve dignity, clarity, comfort, and protection during
 one of life's most vulnerable moments."
 
-**SIX pillars** (all messaging ladders to these): dignity · clinical confidence ·
-family guidance · whole-person comfort · responsive presence · compliance-conscious
-care.
+**FOUR pillars — CANONICAL** (confirmed by Denise: "the 4 pillars we evolved"):
+Clinical Confidence · Guided Presence · Whole-Person Comfort · Compliance-Led Care.
+This is the evolved/final set — already correct on the printed press-kit rack cards
+and in replit.md. Ladder all messaging to these four.
 
-> SUPERSEDES the older **FOUR**-pillar set (Clinical Confidence · Guided Presence ·
-> Whole-Person Comfort · Compliance-Led Care) currently on the already-printed
-> press-kit rack cards and in replit.md. Cards are slated for revision "copy first,
-> to bring all six pillars forward." Existing printed collateral is now OUT OF SYNC
-> — flag before any reuse/reprint, and before changing replit.md's brand section.
+> The SIX-pillar list that appears in the early briefs (dignity · clinical confidence
+> · family guidance · whole-person comfort · responsive presence · compliance-conscious
+> care) is SUPERSEDED draft thinking. Do NOT use it. Use the four.
+
+> Canonical domain confirmed: **www.eternallifehospice.com** (the live site).
+> eternalhospice.com / eternallifehospiceinc.com are NOT the go-forward brand domain.
 
 - **Three differentiators (built to travel):** Founder-led · Independent ·
   Integrative (8 modalities).
