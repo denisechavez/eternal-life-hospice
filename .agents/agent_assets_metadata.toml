@@ -809,3 +809,63 @@ id = "bIb78OzCvueNY9FrMxVck"
 uri = "file://attached_assets/J52551_EternalLife_Folder_CX-prf.p2_1782784647102.pdf"
 type = "pdf"
 title = "Uploaded Presentation Folder — Inside"
+
+[[outputs]]
+id = "WlKfyxVzIvgY--ynvuBC-"
+uri = "file://attached_assets/card-previews/rack01-front.jpg"
+type = "image"
+title = "Uploaded Rack Card 01 — Front"
+
+[[outputs]]
+id = "AqMq13eXsBZYFcNgH_Npj"
+uri = "file://attached_assets/card-previews/rack01-back.jpg"
+type = "image"
+title = "Uploaded Rack Card 01 — Back"
+
+[[outputs]]
+id = "dzpa3-_nOTbje53F70Ptw"
+uri = "file://attached_assets/card-previews/rack02-front.jpg"
+type = "image"
+title = "Uploaded Rack Card 02 — Front"
+
+[[outputs]]
+id = "F3J-DVHKqnsQBeBwkVPAq"
+uri = "file://attached_assets/card-previews/rack02-back.jpg"
+type = "image"
+title = "Uploaded Rack Card 02 — Back"
+
+[[outputs]]
+id = "oGPUqkldGd-RlQg9z7Gi4"
+uri = "file://attached_assets/card-previews/rack03-front.jpg"
+type = "image"
+title = "Uploaded Rack Card 03 — Front"
+
+[[outputs]]
+id = "-y8GjOk47KSAL9HtrVfZu"
+uri = "file://attached_assets/card-previews/rack03-back.jpg"
+type = "image"
+title = "Uploaded Rack Card 03 — Back"
+
+[[outputs]]
+id = "LaHTfYbnYtSfPRVa5pA23"
+uri = "file://attached_assets/card-previews/rack04-front.jpg"
+type = "image"
+title = "Uploaded Rack Card 04 — Front"
+
+[[outputs]]
+id = "EgZfzqpSLFjldQ3b7roN3"
+uri = "file://attached_assets/card-previews/rack04-back.jpg"
+type = "image"
+title = "Uploaded Rack Card 04 — Back"
+
+[[outputs]]
+id = "Mg0RtKUJiC_6V9YdVJc9k"
+uri = "file://attached_assets/card-previews/folder-outside.jpg"
+type = "image"
+title = "Uploaded Presentation Folder — Outside"
+
+[[outputs]]
+id = "FZ_ebqLHrOws1UScWBAiL"
+uri = "file://attached_assets/card-previews/folder-inside.jpg"
+type = "image"
+title = "Uploaded Presentation Folder — Inside"
