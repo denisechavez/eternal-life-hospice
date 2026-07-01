@@ -749,3 +749,63 @@ id = "7AlniOf0kWVIo6z-OXzNW"
 uri = "file://exports/print/eternal-life-brand-color-reference-cmyk.pdf"
 type = "pdf"
 title = "Brand Color Match Sheet (send with every print job)"
+
+[[outputs]]
+id = "W8PsdAJD1wUsoXt3jAsVG"
+uri = "file://attached_assets/J52551_RubenA_948_RACK_CARD-01-RA-REV1-FINAL.p1_1782784647101.pdf"
+type = "pdf"
+title = "Uploaded Rack Card 01 — Front"
+
+[[outputs]]
+id = "LeOe6JMhfCt7DG8-Q0vhR"
+uri = "file://attached_assets/J52551_RubenA_948_RACK_CARD-01-RA-REV1-FINAL.p2_1782784647101.pdf"
+type = "pdf"
+title = "Uploaded Rack Card 01 — Back"
+
+[[outputs]]
+id = "1feBp-5zF6yu2j56gXfRy"
+uri = "file://attached_assets/J52551_RubenA_948_RACK_CARD-02-RA-REV1-FINAL.p1_1782784647101.pdf"
+type = "pdf"
+title = "Uploaded Rack Card 02 — Front"
+
+[[outputs]]
+id = "__y_6HRGbcdEYCuWPyUqF"
+uri = "file://attached_assets/J52551_RubenA_948_RACK_CARD-02-RA-REV1-FINAL.p2_1782784647101.pdf"
+type = "pdf"
+title = "Uploaded Rack Card 02 — Back"
+
+[[outputs]]
+id = "hRku4f5ucERRohTW0tNPl"
+uri = "file://attached_assets/J52551_RubenA_948_RACK_CARD-03-RA-REV1-FINAL.p1_1782784647101.pdf"
+type = "pdf"
+title = "Uploaded Rack Card 03 — Front"
+
+[[outputs]]
+id = "z1cVb2mBFX9rFPFWJR8PJ"
+uri = "file://attached_assets/J52551_RubenA_948_RACK_CARD-03-RA-REV1-FINAL.p2_1782784647101.pdf"
+type = "pdf"
+title = "Uploaded Rack Card 03 — Back"
+
+[[outputs]]
+id = "YDsQf2gopPReoN7_l62y6"
+uri = "file://attached_assets/J52551_RubenA_948_RACK_CARD-04-RA-REV1-FINAL.p1_1782784647100.pdf"
+type = "pdf"
+title = "Uploaded Rack Card 04 — Front"
+
+[[outputs]]
+id = "mCKqHyEAqeUEQj7FpAyxY"
+uri = "file://attached_assets/J52551_RubenA_948_RACK_CARD-04-RA-REV1-FINAL.p2_1782784647099.pdf"
+type = "pdf"
+title = "Uploaded Rack Card 04 — Back"
+
+[[outputs]]
+id = "rhUEw7-hv04wd9cC-bRi2"
+uri = "file://attached_assets/J52551_EternalLife_Folder_CX-prf.p1_1782784647102.pdf"
+type = "pdf"
+title = "Uploaded Presentation Folder — Outside"
+
+[[outputs]]
+id = "bIb78OzCvueNY9FrMxVck"
+uri = "file://attached_assets/J52551_EternalLife_Folder_CX-prf.p2_1782784647102.pdf"
+type = "pdf"
+title = "Uploaded Presentation Folder — Inside"
