@@ -893,3 +893,9 @@ id = "wlR49JLO43urGm10RWblF"
 uri = "file://exports/print/press-kit/eternal-life-rackcard-4-compliance-led-care.pdf"
 type = "pdf"
 title = "Pillar Rack Card 4 — Compliance-Led Care"
+
+[[outputs]]
+id = "K5LQV65165p6dNtfwNXdy"
+uri = "file://exports/diagrams/build-and-publish-flow.png"
+type = "image"
+title = "How Your Website Gets Built & Published — Flow Infographic"

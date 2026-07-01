@@ -11,3 +11,4 @@
 - [Strategic objective](strategic-objective.md) — true north = make ELH acquisition-ready (sellable), not just grow volume; referral engine + compliance + differentiation drive the multiple.
 - [OG share card](og-image.md) — assets/og-image.jpg (1200×630) is shared site-wide; regen via temp og-card.html + headless chromium screenshot; 100vw/vh fill avoids white band; share.google is Google's wrapper.
 - [Brand asset library](brand-assets.md) — repo-root brand-assets/ (unpublished): Medical/ = ELH's own logos, ELH-affiliates-and-partners/ = 13 third-party logos; NEVER publish partner logos without a compliance review (Anti-Kickback/false-affiliation).
+- [Build-flow infographic](build-flow-infographic.md) — internal PNG explainer of AI→Replit→GitHub→Netlify→live; tool marks via Simple Icons SVG tinted plum; render pattern.
