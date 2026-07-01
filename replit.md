@@ -29,6 +29,7 @@ Medicare-certified hospice serving **Ventura & Los Angeles County, CA**.
     - `exports/print/press-kit/` — the professionally printed kit (die-cut
       presentation folder + the 4 "Eternal Standard" pillar rack cards).
   - `exports/decks/` — presentations (e.g. referral-partner deck).
+  - `exports/diagrams/` — explainer graphics/infographics (e.g. build-and-publish flow).
 - New collateral goes in the matching `exports/` subfolder with a clear,
   descriptive filename (e.g. `eternal-life-rack-card.pdf`).
 
