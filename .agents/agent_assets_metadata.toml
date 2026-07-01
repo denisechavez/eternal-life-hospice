@@ -869,3 +869,27 @@ id = "FZ_ebqLHrOws1UScWBAiL"
 uri = "file://attached_assets/card-previews/folder-inside.jpg"
 type = "image"
 title = "Uploaded Presentation Folder — Inside"
+
+[[outputs]]
+id = "KzhExgdc70KmoEuwwVZk7"
+uri = "file://exports/print/press-kit/eternal-life-rackcard-1-clinical-confidence.pdf"
+type = "pdf"
+title = "Pillar Rack Card 1 — Clinical Confidence"
+
+[[outputs]]
+id = "f2bwnp6bfrmF64t7W35ds"
+uri = "file://exports/print/press-kit/eternal-life-rackcard-2-guided-presence.pdf"
+type = "pdf"
+title = "Pillar Rack Card 2 — Guided Presence"
+
+[[outputs]]
+id = "GLBzVuCumEzw9eQYTUkTo"
+uri = "file://exports/print/press-kit/eternal-life-rackcard-3-whole-person-comfort.pdf"
+type = "pdf"
+title = "Pillar Rack Card 3 — Whole-Person Comfort"
+
+[[outputs]]
+id = "wlR49JLO43urGm10RWblF"
+uri = "file://exports/print/press-kit/eternal-life-rackcard-4-compliance-led-care.pdf"
+type = "pdf"
+title = "Pillar Rack Card 4 — Compliance-Led Care"
