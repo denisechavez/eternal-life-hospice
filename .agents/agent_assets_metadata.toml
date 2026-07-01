@@ -707,3 +707,45 @@ id = "p7MfhpScOBPyFE-eKRcMw"
 uri = "file://dist/ContainerChiq_Brand_Files.zip"
 type = "unspecified"
 title = "Container Chiq Brand Files (logos, brand docs, story copy)"
+
+[[outputs]]
+id = "pC8LkM5Z4xqlpNjdY1RQp"
+uri = "file://exports/print/eternal-life-business-card-aleksandra-dubina.pdf"
+type = "pdf"
+title = "Business Card — Aleksandra Dubina (CEO)"
+
+[[outputs]]
+id = "paWTWalgX7YvpFmCbpg1n"
+uri = "file://exports/print/eternal-life-referral-card-1-capability-hero.pdf"
+type = "pdf"
+title = "Referral Card 1 — Capability Hero"
+
+[[outputs]]
+id = "NpM4tRRmVzLvKY35YAuHL"
+uri = "file://exports/print/eternal-life-referral-card-2-refer-with-confidence.pdf"
+type = "pdf"
+title = "Referral Card 2 — Refer With Confidence"
+
+[[outputs]]
+id = "qWW62pG2Yay3ZUXCrwiJ8"
+uri = "file://exports/print/eternal-life-referral-card-3-minimal-premium.pdf"
+type = "pdf"
+title = "Referral Card 3 — Minimal Premium"
+
+[[outputs]]
+id = "7x-G_hK55WxuhXzsQdCnh"
+uri = "file://exports/print/eternal-life-referral-card-4-credentials-forward.pdf"
+type = "pdf"
+title = "Referral Card 4 — Credentials Forward"
+
+[[outputs]]
+id = "JctcDaT2AvEk8xWydQpz-"
+uri = "file://exports/print/eternal-life-referral-card-5-quick-referral-action.pdf"
+type = "pdf"
+title = "Referral Card 5 — Quick-Referral Action"
+
+[[outputs]]
+id = "7AlniOf0kWVIo6z-OXzNW"
+uri = "file://exports/print/eternal-life-brand-color-reference-cmyk.pdf"
+type = "pdf"
+title = "Brand Color Match Sheet (send with every print job)"
