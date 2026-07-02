@@ -935,3 +935,15 @@ id = "Oep7hVhR8kGLgEnV8oA0x"
 uri = "file://exports/print/print-ready-cmyk/eternal-life-referral-card-5-quick-referral-action-CMYK.pdf"
 type = "pdf"
 title = "Card 5 CMYK — SEND THIS TO MOO"
+
+[[outputs]]
+id = "OZ3TjhN3GcMwu8BUDv5No"
+uri = "file://exports/print/print-ready-cmyk/eternal-life-referral-card-5-FRONT-CMYK.pdf"
+type = "pdf"
+title = "Card 5 FRONT — CMYK for MOO"
+
+[[outputs]]
+id = "KRKOwNB7FnVFMyTwkRJsm"
+uri = "file://exports/print/print-ready-cmyk/eternal-life-referral-card-5-BACK-CMYK.pdf"
+type = "pdf"
+title = "Card 5 BACK — CMYK for MOO"
