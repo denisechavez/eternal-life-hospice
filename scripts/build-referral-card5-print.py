@@ -71,8 +71,8 @@ FRONT = f"""
     <div style="position:absolute;left:0;bottom:60pt;width:100%;height:56pt;background:{CREAM};
                 display:flex;align-items:center;justify-content:center;gap:17pt">
       <img src="{CMS}" style="max-height:24pt;max-width:64pt">
-      <img src="{CDPH}" style="max-height:38pt">
-      <img src="{ACHC}" style="max-height:24pt">
+      <img src="{CDPH}" style="max-height:44pt">
+      <img src="{ACHC}" style="max-height:34pt">
       <img src="{EPIC}" style="max-height:24pt;max-width:64pt">
     </div>
     <div style="position:absolute;left:0;bottom:0;width:100%;height:60pt;padding-bottom:17pt;
@@ -105,11 +105,11 @@ BACK = f"""
 <div class="page" style="background:#ffffff">
   {crop_marks()}
   <div class="art" style="background:{CREAM}">
-    <div style="padding:20pt 27pt 0;text-align:center">
+    <div style="padding:18pt 27pt 0;text-align:center">
       <div style="font-family:Jost;font-weight:600;font-size:8.5pt;letter-spacing:3pt;color:#A8874F">QUICK&nbsp;REFERRAL&nbsp;GUIDE</div>
       <div style="margin-top:5pt;font-family:Fraunces;font-weight:580;font-size:21pt;color:{PLUM};white-space:nowrap">Signs It May Be Time</div>
     </div>
-    <div style="margin:9pt 25pt 0;background:{PANEL};border-radius:12pt;padding:9pt 14pt;
+    <div style="margin:9pt 25pt 0;background:{PANEL};border-radius:12pt;padding:8pt 14pt;
                 display:flex;flex-direction:column;gap:4pt">
       {check("Repeated hospital stays or ER visits")}
       {check("Weight loss or a drop in appetite")}
@@ -131,15 +131,15 @@ BACK = f"""
         <span style="font-family:Jost;font-weight:600;font-size:8.5pt;color:{GOLD}">&#10022;</span>
         <span style="font-family:Jost;font-weight:500;font-size:9.8pt;color:{CREAM};line-height:1.4">Zero complaints in 11 years of care</span></div>
     </div>
-    <div style="margin:5pt 27pt 0;text-align:center;font-family:Jost;font-weight:500;font-size:8.2pt;
+    <div style="margin:4pt 27pt 0;text-align:center;font-family:Jost;font-weight:500;font-size:8.2pt;
                 letter-spacing:0.4pt;color:{PLUM};line-height:1.5">Same-day admission &middot; Transport &middot; 24/7 nurse<br>Physician-led &middot; Placement &middot; Bereavement</div>
     <div style="margin:5pt 0 0;display:flex;align-items:center;justify-content:center;gap:15pt">
       <img src="{CMS}" style="max-height:22pt;max-width:60pt">
-      <img src="{CDPH}" style="max-height:34pt">
-      <img src="{ACHC}" style="max-height:22pt">
+      <img src="{CDPH}" style="max-height:40pt">
+      <img src="{ACHC}" style="max-height:30pt">
       <img src="{EPIC}" style="max-height:22pt;max-width:60pt">
     </div>
-    <div style="margin:7pt 25pt 0;background:{PANEL};border-radius:12pt;padding:9pt 12pt;
+    <div style="margin:6pt 25pt 0;background:{PANEL};border-radius:12pt;padding:9pt 12pt;
                 display:flex;flex-direction:column;gap:5pt">
       <div style="display:flex;gap:11pt;align-items:center">
         <div style="flex:0 0 auto;background:#ffffff;border-radius:9pt;padding:4.5pt">
