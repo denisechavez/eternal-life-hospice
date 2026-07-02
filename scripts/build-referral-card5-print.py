@@ -77,7 +77,7 @@ FRONT = f"""
       <img src="{ACHC}" style="max-height:34pt">
       <img src="{EPIC}" style="max-height:24pt;max-width:64pt">
     </div>
-    <div style="position:absolute;left:0;bottom:0;width:100%;height:60pt;padding-bottom:17pt;
+    <div style="position:absolute;left:0;bottom:0;width:100%;height:60pt;padding-bottom:9pt;
                 display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2.5pt;text-align:center">
       <div style="font-family:Jost;font-weight:600;font-size:11pt;color:{CREAM}">referral@eternallifehospice.com</div>
       <div style="font-family:Jost;font-weight:400;font-size:8.5pt;color:#D9CBD8">4165 E Thousand Oaks Blvd, Ste 325B, Westlake Village, CA 91362</div>
