@@ -718,7 +718,7 @@ title = "Business Card — Aleksandra Dubina (CEO)"
 id = "paWTWalgX7YvpFmCbpg1n"
 uri = "file://exports/print/eternal-life-referral-card-1-capability-hero.pdf"
 type = "pdf"
-title = "Card 1 — official ACHC seal"
+title = "Card 1 — logos inside the purple header"
 
 [[outputs]]
 id = "NpM4tRRmVzLvKY35YAuHL"
@@ -736,13 +736,13 @@ title = "Card 3 — official ACHC seal"
 id = "7x-G_hK55WxuhXzsQdCnh"
 uri = "file://exports/print/eternal-life-referral-card-4-credentials-forward.pdf"
 type = "pdf"
-title = "Card 4 — official ACHC seal"
+title = "Card 4 — logos below the band, no boxes"
 
 [[outputs]]
 id = "JctcDaT2AvEk8xWydQpz-"
 uri = "file://exports/print/eternal-life-referral-card-5-quick-referral-action.pdf"
 type = "pdf"
-title = "Card 5 — logos front & back + fixed contact panel"
+title = "Card 5 — logos on the purple, no box"
 
 [[outputs]]
 id = "7AlniOf0kWVIo6z-OXzNW"

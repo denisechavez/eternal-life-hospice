@@ -13,7 +13,10 @@ CARD = os.path.join(PRINT, "eternal-life-referral-card-5-quick-referral-action.p
 WORK = tempfile.mkdtemp(prefix="c5fix-")
 for f in ["cms-centers-for-medicare-medicaid-services.png",
           "cdph-california-department-of-public-health.png",
-          "achc-accredited-gold-seal.png", "epic-systems.png"]:
+          "achc-accredited-gold-seal.png", "epic-systems.png",
+          "cms-centers-for-medicare-medicaid-services-white.png",
+          "cdph-california-department-of-public-health-white.png",
+          "epic-systems-white.png"]:
     shutil.copy(os.path.join(LOGOS, f), WORK)
 shutil.copy(os.path.join(FDIR, "JostELH-Medium.woff2"), WORK)
 shutil.copy(os.path.join(FDIR, "JostELH-SemiBold.woff2"), WORK)
@@ -34,15 +37,18 @@ CDPH = "cdph-california-department-of-public-health.png"
 ACHC = "achc-accredited-gold-seal.png"
 EPIC = "epic-systems.png"
 
-# ---------- FRONT: cream credential plaque in the empty plum band ----------
+# ---------- FRONT: white knockout logos directly on the plum band ----------
+CMS_W = "cms-centers-for-medicare-medicaid-services-white.png"
+CDPH_W = "cdph-california-department-of-public-health-white.png"
+EPIC_W = "epic-systems-white.png"
 front = (
-    '<div class="abs" style="left:44pt;top:420pt;width:200pt;height:46pt;'
-    'background:#F5F0EB;border-radius:10pt;display:flex;align-items:center;'
-    'justify-content:center;gap:11pt;padding:0 8pt">'
-    f'<img src="{CMS}" style="max-height:14pt;max-width:42pt">'
-    f'<img src="{CDPH}" style="max-height:21pt">'
-    f'<img src="{ACHC}" style="max-height:28pt">'
-    f'<img src="{EPIC}" style="max-height:15pt;max-width:40pt">'
+    '<div class="abs" style="left:38pt;top:414pt;width:212pt;height:58pt;background:#3C1C3B"></div>'
+    '<div class="abs" style="left:24pt;top:422pt;width:240pt;height:42pt;'
+    'display:flex;align-items:center;justify-content:center;gap:14pt">'
+    f'<img src="{CMS_W}" style="max-height:14pt;max-width:44pt">'
+    f'<img src="{CDPH_W}" style="max-height:22pt">'
+    f'<img src="{ACHC}" style="max-height:30pt">'
+    f'<img src="{EPIC_W}" style="max-height:15pt;max-width:42pt">'
     '</div>')
 
 # ---------- BACK: repaint + rebuild the contact panel, aligned ----------
