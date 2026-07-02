@@ -24,7 +24,7 @@ for f in ["cms-centers-for-medicare-medicaid-services.png",
           "achc-accredited-gold-seal.png", "epic-systems.png"]:
     shutil.copy(os.path.join(LOGOS, f), WORK)
 shutil.copy(os.path.join(ROOT, "brand-assets", "Medical",
-                         "eternal-life-hospice-infinity-cream.png"),
+                         "eternal-life-hospice-infinity-metallic.png"),
             os.path.join(WORK, "infinity-cream.png"))
 shutil.copy(os.path.join(ASSETS, "img", "qr-refer-cream.png"), WORK)
 for f in ["Fraunces-var.woff2", "Fraunces-Italic-var.woff2",
