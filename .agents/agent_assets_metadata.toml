@@ -899,3 +899,33 @@ id = "K5LQV65165p6dNtfwNXdy"
 uri = "file://exports/diagrams/build-and-publish-flow.png"
 type = "image"
 title = "How Your Website Gets Built & Published — Flow Infographic"
+
+[[outputs]]
+id = "S3ZlbSm4wUPWvraPyZIcS"
+uri = "file://exports/print/previews/referral-card-1-front-back.png"
+type = "image"
+title = "Card 1 preview — logos inside the purple header"
+
+[[outputs]]
+id = "Y91mnHz3gIfACoeLJ7JA5"
+uri = "file://exports/print/previews/referral-card-2-front-back.png"
+type = "image"
+title = "Card 2 preview"
+
+[[outputs]]
+id = "x5uptaAuuBUmjGQBoLDB8"
+uri = "file://exports/print/previews/referral-card-3-front-back.png"
+type = "image"
+title = "Card 3 preview"
+
+[[outputs]]
+id = "UFEBAJ7j3PODqSL7DRoLd"
+uri = "file://exports/print/previews/referral-card-4-front-back.png"
+type = "image"
+title = "Card 4 preview — logos below the band, no boxes"
+
+[[outputs]]
+id = "Cs-SFZPqR0g3zoZWphEn4"
+uri = "file://exports/print/previews/referral-card-5-front-back.png"
+type = "image"
+title = "Card 5 preview — logos on the purple, front & back"
