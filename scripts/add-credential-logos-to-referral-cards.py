@@ -68,7 +68,7 @@ overlays = {
         f'<img src="{EPIC}" style="max-height:13pt;max-width:34pt">'
         '</div>'),
     "eternal-life-referral-card-2-refer-with-confidence.pdf": (2,
-        cream_patch(58, 498, 172, 42) + logo_row(505, heights=(15, 21, 23, 16), gap=11)),
+        cream_patch(58, 498, 172, 44) + logo_row(505, heights=(15, 21, 23, 16), gap=11)),
     "eternal-life-referral-card-3-minimal-premium.pdf": (2,
         cream_patch(58, 470, 172, 52) + logo_row(481, heights=(15, 21, 23, 16), gap=11)),
     "eternal-life-referral-card-4-credentials-forward.pdf": (1,
@@ -86,7 +86,10 @@ def run(cmd):
         print("CMD FAILED:", " ".join(cmd), "\n", r.stdout, r.stderr)
         sys.exit(1)
 
+only = sys.argv[1:]
 for card, (page, body) in overlays.items():
+    if only and not any(k in card for k in only):
+        continue
     name = card.replace(".pdf", "")
     html = os.path.join(WORK, name + ".html")
     with open(html, "w") as f:
