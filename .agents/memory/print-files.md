@@ -110,7 +110,10 @@ Regenerate the `-CMYK` copies afterward.
 
 **Credential logos on referral cards (USER DECISION, July 2026):** the 5 referral
 cards now carry the real CMS, CDPH, ACHC gold-seal, and Epic logos (files in
-`brand-assets/credential-logos/`, official sources). Agent advised that CMS/CDPH
+`brand-assets/credential-logos/`, official sources). The canonical ACHC seal is
+the user-supplied flat-gold serrated version (`achc-accredited-gold-seal.png`);
+the shiny metallic one is kept as `-metallic.png` — don't use it on collateral.
+Card 5 carries logos on BOTH sides (cream plaque on the plum front + row on back). Agent advised that CMS/CDPH
 are government seals (endorsement risk) and Epic is a restricted trademark; user
 explicitly chose to proceed. Keep the factual captions (MEDICARE-CERTIFIED etc.)
 with the marks; do not extend these logos to the website without re-flagging.
