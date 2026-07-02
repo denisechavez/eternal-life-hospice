@@ -48,9 +48,9 @@ def cut_guide():
     # top+bottom). User cut line = 7.75in below top trim -> y = 560.88pt.
     # Guide + label live entirely BELOW the cut line (in the discarded strip).
     return (
-      f'<div style="position:absolute;left:0;top:560.88pt;width:100%;height:0;'
+      f'<div style="position:absolute;left:0;top:563.76pt;width:100%;height:0;'
       f'border-top:0.9pt dashed {GOLD};opacity:0.9"></div>'
-      f'<div style="position:absolute;left:0;top:578pt;width:100%;text-align:center;'
+      f'<div style="position:absolute;left:0;top:581pt;width:100%;text-align:center;'
       f'font-family:Jost;font-weight:600;font-size:6.4pt;letter-spacing:1.2pt;'
       f'color:{CREAM};opacity:0.85">&#9986;&nbsp;&nbsp;CUT&nbsp;ALONG&nbsp;DASHED&nbsp;LINE&nbsp;&nbsp;&mdash;&nbsp;&nbsp;FINAL&nbsp;3.67&nbsp;&times;&nbsp;7.75&nbsp;IN</div>')
 
@@ -58,7 +58,7 @@ FRONT = f"""
 <div class="page">
   <div class="art" style="background:{DEEP}">
     <div style="display:flex;flex-direction:column;align-items:center;text-align:center;height:100%">
-      <img src="infinity-cream.png" style="width:95pt;margin-top:12pt">
+      <img src="infinity-cream.png" style="width:95pt;margin-top:15pt">
       <div style="margin-top:2pt;display:inline-block;text-align:center">
         <div style="font-family:Fraunces;font-weight:480;font-size:30pt;color:{CREAM};line-height:1">Eternal</div>
         <div style="margin-top:3pt;width:73%;margin-left:auto;margin-right:auto;display:flex;justify-content:space-between;
@@ -76,14 +76,14 @@ FRONT = f"""
       <div style="margin-top:9pt;font-family:Jost;font-weight:600;font-size:9pt;letter-spacing:2.6pt;color:{GOLD}">SCAN&nbsp;TO&nbsp;REFER&nbsp;ONLINE</div>
     </div>
     <!-- full-bleed cream credential band: spans the whole art/bleed width -->
-    <div style="position:absolute;left:0;top:453.88pt;width:100%;height:56pt;background:{CREAM};
+    <div style="position:absolute;left:0;top:456.76pt;width:100%;height:56pt;background:{CREAM};
                 display:flex;align-items:center;justify-content:center;gap:17pt">
       <img src="{CMS}" style="max-height:24pt;max-width:64pt">
       <img src="{CDPH}" style="max-height:50pt">
       <img src="{ACHC}" style="max-height:34pt">
       <img src="{EPIC}" style="max-height:24pt;max-width:64pt">
     </div>
-    <div style="position:absolute;left:0;top:509.88pt;width:100%;height:51pt;
+    <div style="position:absolute;left:0;top:512.76pt;width:100%;height:51pt;
                 display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2.5pt;text-align:center">
       <div style="font-family:Jost;font-weight:600;font-size:11pt;color:{CREAM}">referral@eternallifehospice.com</div>
       <div style="font-family:Jost;font-weight:400;font-size:8.5pt;color:#D9CBD8">4165 E Thousand Oaks Blvd, Ste 325B, Westlake Village, CA 91362</div>
@@ -113,7 +113,7 @@ def crow(lab, val, vstyle=""):
 BACK = f"""
 <div class="page">
   <div class="art" style="background:{CREAM}">
-    <div style="padding:11pt 27pt 0;text-align:center">
+    <div style="padding:14pt 27pt 0;text-align:center">
       <div style="font-family:Jost;font-weight:600;font-size:8.5pt;letter-spacing:3pt;color:#A8874F">QUICK&nbsp;REFERRAL&nbsp;GUIDE</div>
       <div style="margin-top:5pt;font-family:Fraunces;font-weight:580;font-size:21pt;color:{PLUM};white-space:nowrap">Signs It May Be Time</div>
     </div>
@@ -171,8 +171,8 @@ BACK = f"""
     </div>
     <div style="margin-top:2.5pt;text-align:center;font-family:Jost;font-weight:500;font-size:7.4pt;
                 letter-spacing:1.4pt;color:{PLUM}">SERVING&nbsp;VENTURA&nbsp;&amp;&nbsp;LOS&nbsp;ANGELES&nbsp;COUNTY</div>
-    <div style="position:absolute;left:0;top:523.88pt;width:100%;height:93.88pt;background:{DEEP};
-                display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2.5pt;padding-bottom:55.88pt">
+    <div style="position:absolute;left:0;top:526.76pt;width:100%;height:96.76pt;background:{DEEP};
+                display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2.5pt;padding-bottom:58.76pt">
       <div style="font-family:Jost;font-weight:600;font-size:6.7pt;letter-spacing:1pt;color:{CREAM};white-space:nowrap">MEDICARE-CERTIFIED&nbsp;&middot;&nbsp;CDPH-LICENSED&nbsp;&middot;&nbsp;ACHC-ACCREDITED</div>
       <div style="font-family:FrauncesItalic;font-style:italic;font-weight:540;font-size:12pt;color:{GOLD}">Care That Honors Life</div>
     </div>
@@ -181,16 +181,16 @@ BACK = f"""
 </div>"""
 
 HTML = f"""<!doctype html><html><head><meta charset="utf-8"><style>
-@page {{ size: 3.74in 8.58in; margin: 0; }}
+@page {{ size: 3.83in 8.66in; margin: 0; }}
 * {{ margin:0; padding:0; box-sizing:border-box; -webkit-print-color-adjust:exact; print-color-adjust:exact; }}
 @font-face {{ font-family:'Fraunces'; src:url('Fraunces-var.woff2') format('woff2'); font-weight:100 900; }}
 @font-face {{ font-family:'FrauncesItalic'; src:url('Fraunces-Italic-var.woff2') format('woff2'); font-weight:100 900; font-style:italic; }}
 @font-face {{ font-family:'Jost'; src:url('JostELH-Regular.woff2') format('woff2'); font-weight:400; }}
 @font-face {{ font-family:'Jost'; src:url('JostELH-Medium.woff2') format('woff2'); font-weight:500; }}
 @font-face {{ font-family:'Jost'; src:url('JostELH-SemiBold.woff2') format('woff2'); font-weight:600; }}
-.page {{ position:relative; width:269.28pt; height:617.76pt; overflow:hidden; page-break-after:always; }}
+.page {{ position:relative; width:275.76pt; height:623.52pt; overflow:hidden; page-break-after:always; }}
 .page:last-child {{ page-break-after:auto; }}
-.art {{ position:absolute; left:0; top:0; width:269.28pt; height:617.76pt; overflow:hidden; }}
+.art {{ position:absolute; left:0; top:0; width:275.76pt; height:623.52pt; overflow:hidden; }}
 img {{ display:block; }}
 </style></head><body>{FRONT}{BACK}</body></html>"""
 
@@ -212,7 +212,7 @@ info = subprocess.run(["pdfinfo", os.path.join(WORK, "card5.pdf")],
                       capture_output=True, text=True).stdout
 pages = [l for l in info.splitlines() if l.startswith(("Pages", "Page size"))]
 print(pages)
-assert "Pages:           2" in info and "269.04 x 618" in info, "wrong page count/size"
+assert "Pages:           2" in info and "276 x 624" in info, "wrong page count/size"
 
 shutil.copy(os.path.join(WORK, "card5.pdf"), CARD)
 run(["gs", "-dBATCH", "-dNOPAUSE", "-sDEVICE=pdfwrite",
