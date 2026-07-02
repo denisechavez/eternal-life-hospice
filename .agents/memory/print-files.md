@@ -156,10 +156,11 @@ file has ragged edges and a different lockup — avoid).
 ## Logo lockup for print: use symbol image + vector text (July 2026)
 The raster ELH logo PNGs render "LIFE HOSPICE" soft at print size — no source is
 big enough. Correct pattern (matches the website's own header): infinity symbol
-image (brand-assets/Medical/eternal-life-hospice-infinity-metallic.png — the TRUE
-metallic-plum colors cropped straight from the master; user rejected both a flat
-cream fill ("white blob") and a cream luminance-alpha recolor ("wrong color").
-The real metallic ribbon reads correctly on the deep-plum background) + "Eternal" in Fraunces + "LIFE HOSPICE" in
+image (brand-assets/Medical/eternal-life-hospice-infinity-cream-original.png —
+cropped verbatim from website assets/logo-cream.png, the treatment the user calls
+correct on dark plum). Rejected alternatives for dark backgrounds: flat cream fill
+("white blob"), cream luminance-alpha recolor ("wrong color"), and the metallic-plum
+master ("reverse of the logo" — that gradient version is for LIGHT backgrounds only) + "Eternal" in Fraunces + "LIFE HOSPICE" in
 Jost letterspaced as real text → fully vector, crisp at any size.
 Official lockup proportions (measured from the master, replicate exactly):
 symbol width = 85% of "Eternal"; "LIFE HOSPICE" = 73% of "Eternal", centered
