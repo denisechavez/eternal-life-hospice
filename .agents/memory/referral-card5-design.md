@@ -41,7 +41,8 @@ Source of truth: `scripts/build-referral-card5-print.py` (edit + rerun; asserts 
 ## MOO variant (the size actually ordered)
 MOO's rack card trim is 3.67×8.5in — larger than the 3.5×7.75 design. Variant script
 `scripts/build-referral-card5-moo-print.py` (derived from the main script, keep in sync):
-full-bleed page 3.74×8.58in (chromium emits 269.04×618pt — assert that), NO crop marks
+MOO template spec: bleed 3.83×8.66in / trim 3.67×8.5 / safe 3.5×8.34 (0.08in bleed per
+side). Full-bleed page 3.83×8.66in (chromium emits 276×624pt — assert that), NO crop marks
 (MOO trims), design top-aligned, plum extends through the extra ~0.75in at bottom,
 dashed gold cut guide + label at the 7.75in line sitting entirely in the waste strip
 (user makes ONE bottom cut → final 3.67×7.75; guide is removed by the cut).
