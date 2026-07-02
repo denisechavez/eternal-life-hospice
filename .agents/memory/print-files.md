@@ -152,3 +152,10 @@ Verify with `pdfimages -list` (ppi column) on the CMYK output, not the RGB maste
 Also: highest-res cream ELH lockup = brand-assets/Medical/eternal-life-hospice-logo-cream-hires.png
 (661px, recolored from the metallic-plum transparent master; the 1336px "cream-gold-subtitle"
 file has ragged edges and a different lockup — avoid).
+
+## Logo lockup for print: use symbol image + vector text (July 2026)
+The raster ELH logo PNGs render "LIFE HOSPICE" soft at print size — no source is
+big enough. Correct pattern (matches the website's own header): infinity symbol
+image (brand-assets/Medical/eternal-life-hospice-infinity-cream.png, cropped/
+recolored from the metallic master) + "Eternal" in Fraunces + "LIFE HOSPICE" in
+Jost letterspaced as real text → fully vector, crisp at any size.
