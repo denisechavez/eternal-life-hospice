@@ -61,8 +61,8 @@ FRONT = f"""
       <img src="infinity-cream.png" style="width:95pt;margin-top:18pt">
       <div style="margin-top:2pt;display:inline-block;text-align:center">
         <div style="font-family:Fraunces;font-weight:480;font-size:30pt;color:{CREAM};line-height:1">Eternal</div>
-        <div style="margin-top:3pt;display:flex;justify-content:space-between;font-family:Jost;
-                    font-weight:600;font-size:8.6pt;color:{CREAM}"><span>L</span><span>I</span><span>F</span><span>E</span><span> </span><span>H</span><span>O</span><span>S</span><span>P</span><span>I</span><span>C</span><span>E</span></div>
+        <div style="margin-top:3pt;width:73%;margin-left:auto;margin-right:auto;display:flex;justify-content:space-between;
+                    font-family:Jost;font-weight:600;font-size:8.2pt;color:{CREAM}"><span>L</span><span>I</span><span>F</span><span>E</span><span> </span><span>H</span><span>O</span><span>S</span><span>P</span><span>I</span><span>C</span><span>E</span></div>
       </div>
       <div style="margin-top:13pt;background:{GOLD};color:{DEEP};font-family:Jost;font-weight:600;
                   font-size:8.5pt;letter-spacing:2.2pt;padding:4pt 13pt 3.4pt;border-radius:10pt">SAME-DAY&nbsp;ADMISSION</div>

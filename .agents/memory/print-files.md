@@ -161,3 +161,6 @@ metallic-plum colors cropped straight from the master; user rejected both a flat
 cream fill ("white blob") and a cream luminance-alpha recolor ("wrong color").
 The real metallic ribbon reads correctly on the deep-plum background) + "Eternal" in Fraunces + "LIFE HOSPICE" in
 Jost letterspaced as real text → fully vector, crisp at any size.
+Official lockup proportions (measured from the master, replicate exactly):
+symbol width = 85% of "Eternal"; "LIFE HOSPICE" = 73% of "Eternal", centered
+(letters justified edge-to-edge across that 73% span — never full Eternal width).
