@@ -37,7 +37,7 @@
   --ff-d:'Fraunces',Georgia,serif;--ff-b:'Jost',system-ui,sans-serif;
   --ff-m:'Courier New',monospace;
 }
-html{scroll-behavior:smooth}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;text-size-adjust:100%}
 body{font-family:var(--ff-b);background:var(--cream);color:var(--text-dark);font-size:19px;line-height:1.7;overflow-x:hidden}
 img{display:block;max-width:100%}
 a{text-decoration:none;color:inherit}
@@ -772,7 +772,7 @@ section[id]{scroll-margin-top:84px}#clinical-mobile{scroll-margin-top:84px}#wsDe
 
 /* sticky stack — locked, full-page alternating, hero photo + full copy */
 .pstack{position:relative}
-.pcard{position:sticky;top:var(--hdr-h);min-height:calc(100vh - var(--hdr-h));display:grid;grid-template-columns:1fr 1fr;align-items:stretch;background:var(--cream);box-shadow:0 -8px 40px rgba(56,27,55,.1)}
+.pcard{position:sticky;top:var(--hdr-h);min-height:calc(100vh - var(--hdr-h));min-height:calc(100svh - var(--hdr-h));display:grid;grid-template-columns:1fr 1fr;align-items:stretch;background:var(--cream);box-shadow:0 -8px 40px rgba(56,27,55,.1)}
 .pcard.flip .pcard-photo{order:2}
 .pcard.flip .pcard-copy{order:1}
 .pcard-photo{position:relative;display:flex;align-items:center;justify-content:center;overflow:hidden}
@@ -801,7 +801,7 @@ section[id]{scroll-margin-top:84px}#clinical-mobile{scroll-margin-top:84px}#wsDe
 .pfinal-copy h3 em{font-style:italic;color:var(--gold)}
 .pfinal-copy p{font-size:16px;line-height:1.85;color:rgba(245,240,235,.7);max-width:480px;margin:0 auto}
 @media(max-width:780px){
-  .pcard{grid-template-columns:1fr;grid-template-rows:36vh 1fr;min-height:100vh}
+  .pcard{grid-template-columns:1fr;grid-template-rows:36vh 1fr;min-height:100vh;min-height:100svh}
   .pcard.flip .pcard-photo{order:1}
   .pcard.flip .pcard-copy{order:2}
   .pcard-copy{padding:2.25rem 1.75rem}
