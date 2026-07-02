@@ -117,7 +117,12 @@ Card 5 carries logos on BOTH sides. NO cream plaques anywhere (user directive Ju
 logos go inside the plum header (white knockout `*-white.png` versions of CMS/CDPH/Epic
 + gold ACHC, which reads on plum) or directly on the cream body below the band (full-color,
 no tile boxes). Overlays bake in cumulatively — to undo one, restore the pristine pre-overlay
-card via `git show <commit>:<path>` and re-stamp. Agent advised that CMS/CDPH
+card via `git show <commit>:<path>` and re-stamp.
+
+**Card 5 is now REBUILT from source** (`scripts/build-referral-card5-print.py`,
+July 2026): full HTML rebuild, not an overlay — front has a FULL-BLEED cream band
+with full-color logos, body copy sized up for MOO. Edit that script and rerun;
+the old card-5 overlay scripts are superseded for this card. Agent advised that CMS/CDPH
 are government seals (endorsement risk) and Epic is a restricted trademark; user
 explicitly chose to proceed. Keep the factual captions (MEDICARE-CERTIFIED etc.)
 with the marks; do not extend these logos to the website without re-flagging.

@@ -742,7 +742,7 @@ title = "Card 4 — logos below the band, no boxes"
 id = "JctcDaT2AvEk8xWydQpz-"
 uri = "file://exports/print/eternal-life-referral-card-5-quick-referral-action.pdf"
 type = "pdf"
-title = "Card 5 — logos on the purple, no box"
+title = "Card 5 design master (RGB)"
 
 [[outputs]]
 id = "7AlniOf0kWVIo6z-OXzNW"
@@ -928,4 +928,10 @@ title = "Card 4 preview — logos below the band, no boxes"
 id = "Cs-SFZPqR0g3zoZWphEn4"
 uri = "file://exports/print/previews/referral-card-5-front-back.png"
 type = "image"
-title = "Card 5 preview — logos on the purple, front & back"
+title = "Card 5 preview — view on screen"
+
+[[outputs]]
+id = "Oep7hVhR8kGLgEnV8oA0x"
+uri = "file://exports/print/print-ready-cmyk/eternal-life-referral-card-5-quick-referral-action-CMYK.pdf"
+type = "pdf"
+title = "Card 5 CMYK — SEND THIS TO MOO"
