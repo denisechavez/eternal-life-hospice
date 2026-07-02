@@ -26,11 +26,11 @@ body.lowink{--logomark:url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAWgAAA
 .cover-mark{width:104px;height:78px}
 .contact-mark{width:92px;height:70px;flex:0 0 auto}
 *{box-sizing:border-box}
-html{scroll-behavior:auto}
+html{scroll-behavior:auto;-webkit-text-size-adjust:100%;text-size-adjust:100%}
 html,body{margin:0;padding:0}
 body{font-family:var(--ff-b);color:var(--ink);background:#3a1c39;
   background:radial-gradient(120% 120% at 50% -10%,#6b3a69 0%,#4a2548 45%,#33172f 100%);
-  min-height:100vh;-webkit-font-smoothing:antialiased;font-optical-sizing:auto;text-rendering:optimizeLegibility}
+  min-height:100vh;min-height:100svh;-webkit-font-smoothing:antialiased;font-optical-sizing:auto;text-rendering:optimizeLegibility}
 
 /* ---------- TOOLBAR ---------- */
 .toolbar{position:sticky;top:0;z-index:50;display:flex;align-items:center;gap:14px;
