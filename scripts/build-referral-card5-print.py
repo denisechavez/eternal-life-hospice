@@ -105,12 +105,12 @@ BACK = f"""
 <div class="page" style="background:#ffffff">
   {crop_marks()}
   <div class="art" style="background:{CREAM}">
-    <div style="padding:26pt 27pt 0;text-align:center">
+    <div style="padding:22pt 27pt 0;text-align:center">
       <div style="font-family:Jost;font-weight:600;font-size:8.5pt;letter-spacing:3pt;color:#A8874F">QUICK&nbsp;REFERRAL&nbsp;GUIDE</div>
       <div style="margin-top:5pt;font-family:Fraunces;font-weight:580;font-size:21pt;color:{PLUM};white-space:nowrap">Signs it may be time</div>
     </div>
-    <div style="margin:10pt 25pt 0;background:{PANEL};border-radius:12pt;padding:11pt 14pt;
-                display:flex;flex-direction:column;gap:5.5pt">
+    <div style="margin:9pt 25pt 0;background:{PANEL};border-radius:12pt;padding:9pt 14pt;
+                display:flex;flex-direction:column;gap:4pt">
       {check("Repeated hospital stays or ER visits")}
       {check("Weight loss or a drop in appetite")}
       {check("Recurrent infections")}
@@ -118,37 +118,44 @@ BACK = f"""
       {check("More help needed with daily activities")}
       {check("A shift toward comfort-focused goals")}
     </div>
-    <div style="margin:12pt 25pt 0">
-      <div style="font-family:Jost;font-weight:600;font-size:8.5pt;letter-spacing:3pt;color:#A8874F;text-align:center">WHAT&nbsp;WE&nbsp;PROVIDE</div>
-      <div style="margin-top:7pt;display:flex;flex-wrap:wrap;gap:5pt;justify-content:center">
-        {chip("Same-day admission")}{chip("Transport")}{chip("24/7 nurse")}
-        {chip("Physician-led")}{chip("Placement")}{chip("Comfort therapies")}
-        {chip("Bereavement")}
-      </div>
+    <div style="margin:11pt 25pt 0;background:{DEEP};border-radius:12pt;padding:9pt 13pt;
+                display:flex;flex-direction:column;gap:4pt">
+      <div style="font-family:Jost;font-weight:600;font-size:7.5pt;letter-spacing:2.4pt;color:{GOLD};text-align:center;margin-bottom:2pt">THE&nbsp;ETERNAL&nbsp;DIFFERENCE</div>
+      <div style="display:flex;gap:7pt;align-items:baseline">
+        <span style="font-family:Jost;font-weight:600;font-size:8.5pt;color:{GOLD}">&#10022;</span>
+        <span style="font-family:Jost;font-weight:500;font-size:9.8pt;color:{CREAM};line-height:1.4">A full line of integrative services</span></div>
+      <div style="display:flex;gap:7pt;align-items:baseline">
+        <span style="font-family:Jost;font-weight:600;font-size:8.5pt;color:{GOLD}">&#10022;</span>
+        <span style="font-family:Jost;font-weight:500;font-size:9.8pt;color:{CREAM};line-height:1.4">Clinical &amp; mobile services at no expense to families</span></div>
+      <div style="display:flex;gap:7pt;align-items:baseline">
+        <span style="font-family:Jost;font-weight:600;font-size:8.5pt;color:{GOLD}">&#10022;</span>
+        <span style="font-family:Jost;font-weight:500;font-size:9.8pt;color:{CREAM};line-height:1.4">Zero complaints in 11 years of care</span></div>
     </div>
-    <div style="margin:12pt 0 0;display:flex;align-items:center;justify-content:center;gap:15pt">
+    <div style="margin:7pt 27pt 0;text-align:center;font-family:Jost;font-weight:500;font-size:8.2pt;
+                letter-spacing:0.4pt;color:{PLUM};line-height:1.5">Same-day admission &middot; Transport &middot; 24/7 nurse<br>Physician-led &middot; Placement &middot; Bereavement</div>
+    <div style="margin:8pt 0 0;display:flex;align-items:center;justify-content:center;gap:15pt">
       <img src="{CMS}" style="max-height:17pt;max-width:52pt">
       <img src="{CDPH}" style="max-height:26pt">
       <img src="{ACHC}" style="max-height:34pt">
       <img src="{EPIC}" style="max-height:18pt;max-width:50pt">
     </div>
-    <div style="margin:12pt 25pt 0;background:{PANEL};border-radius:12pt;padding:11pt 12pt;
+    <div style="margin:8pt 25pt 0;background:{PANEL};border-radius:12pt;padding:9pt 12pt;
                 display:flex;gap:11pt;align-items:center">
       <div style="flex:0 0 auto;background:#ffffff;border-radius:9pt;padding:4.5pt">
-        <img src="qr-refer-cream.png" style="width:58pt;display:block;border-radius:5pt"></div>
-      <div style="display:flex;flex-direction:column;gap:4pt;min-width:0">
+        <img src="qr-refer-cream.png" style="width:52pt;display:block;border-radius:5pt"></div>
+      <div style="display:flex;flex-direction:column;gap:3.5pt;min-width:0">
         <div style="font-family:Jost;font-weight:600;font-size:7.5pt;letter-spacing:2.2pt;color:#A8874F">REFER&nbsp;24/7</div>
         {crow("CALL 24/7", "805.953.7273", f"font-weight:600;font-size:9.6pt;color:{PLUM};white-space:nowrap")}
         {crow("FAX", "805.953.8530", "white-space:nowrap")}
         {crow("EMAIL", "info@eternallifehospice.com", "font-size:7.7pt;white-space:nowrap")}
       </div>
     </div>
-    <div style="margin:5pt 25pt 0;padding:0 12pt;display:flex;gap:7pt;align-items:baseline">
+    <div style="margin:4pt 25pt 0;padding:0 12pt;display:flex;gap:7pt;align-items:baseline">
       <span style="flex:0 0 42pt;font-family:Jost;font-weight:600;font-size:6.4pt;
                    letter-spacing:0.9pt;color:{STEEL}">OFFICE</span>
       <span style="font-family:Jost;font-weight:500;font-size:8.2pt;color:#3a2b39;line-height:1.4">4165 E Thousand Oaks Blvd, Ste 325B, Westlake Village, CA 91362</span>
     </div>
-    <div style="margin-top:7pt;text-align:center;font-family:Jost;font-weight:500;font-size:7.4pt;
+    <div style="margin-top:5pt;text-align:center;font-family:Jost;font-weight:500;font-size:7.4pt;
                 letter-spacing:1.4pt;color:{PLUM}">SERVING&nbsp;VENTURA&nbsp;&amp;&nbsp;LOS&nbsp;ANGELES&nbsp;COUNTY</div>
     <div style="position:absolute;left:0;bottom:0;width:100%;height:46pt;background:{DEEP};
                 display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2.5pt;padding-bottom:8pt">

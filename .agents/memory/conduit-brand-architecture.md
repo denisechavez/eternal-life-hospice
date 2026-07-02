@@ -78,3 +78,12 @@ readmission-reduction claims.
 Founder grew census from **2 → 100**. Mandate = grow beyond 100. Reviewed weekly
 from day 29 via CRM. End of Life Option Act is in the service inventory — careful,
 legally-reviewed positioning; never led with.
+
+## Owner-stated differentiators (July 2026, user-supplied — feature on referral collateral)
+1. A full line of integrative services
+2. Clinical & mobile services at no expense to families
+3. Zero complaints in 11 years of care
+**Why:** owner named these as ELH's distinction vs competitors; all are factual
+capability/track-record claims (compliance-safe framing, no medical-efficacy language).
+**How to apply:** surface as "The Eternal Difference" on referral pieces; keep the
+zero-complaints claim owner-substantiated before extending it to new channels.
