@@ -99,6 +99,22 @@ confirm against a Color Bridge book.
 
 **Brand color swatch sheet (`exports/print/eternal-life-brand-color-reference-cmyk.pdf`).** A one-page **Letter** (8.5×11, NOT a rack-card size) CMYK reference to send with every print job: 2×2 grid of the four locked colors as printed patches, each labelled with its CMYK build + HEX + closest Pantone, plus the press-fix notes. Built the same vector way (temp `swatch-sheet.html` in elh-preview → chromium print-to-pdf → ghostscript RGB→CMYK below → delete temp html). Patches are filled with the brand **HEX**; the gs default conversion lands them exactly on the locked CMYK (verified: deep plum→69/90/45/53, plum→65/90/37/28, gold→22/28/57/0, cream→2/4/6/0), so the sheet's swatches and its printed numbers agree. Keep content tight (patch ≤1.2in, ~0.5in page padding) or it spills to a 2nd page — always `pdfinfo | grep Pages` must read **1**. Referenced in referral-rack-cards-PRINT-SPECS.txt.
 
+**Patching a built card PDF with new artwork (no source HTML):** build a
+transparent-background overlay HTML at the exact page size (`@page{size:4in 8.25in;
+margin:0}`, NO body background → chromium print-to-pdf emits a transparent page),
+absolutely position patches/logos in **pt** (72dpi pdftoppm render = 1px:1pt for
+measuring), then `qpdf in.pdf --overlay ov.pdf --to=N -- out.pdf`. Cream patch
+`#F5F0EB` erases old content on flat areas; on gradient areas use an opaque
+rounded panel instead of repainting. Script: `scripts/add-credential-logos-to-referral-cards.py`.
+Regenerate the `-CMYK` copies afterward.
+
+**Credential logos on referral cards (USER DECISION, July 2026):** the 5 referral
+cards now carry the real CMS, CDPH, ACHC gold-seal, and Epic logos (files in
+`brand-assets/credential-logos/`, official sources). Agent advised that CMS/CDPH
+are government seals (endorsement risk) and Epic is a restricted trademark; user
+explicitly chose to proceed. Keep the factual captions (MEDICARE-CERTIFIED etc.)
+with the marks; do not extend these logos to the website without re-flagging.
+
 **Make a press-ready CMYK PDF from an RGB one** (ghostscript installed via
 `installSystemDependencies(["ghostscript"])`; no bundled iccprofiles dir, uses
 gs built-in default CMYK — fine, fully converts vectors AND embedded images):

@@ -718,31 +718,31 @@ title = "Business Card — Aleksandra Dubina (CEO)"
 id = "paWTWalgX7YvpFmCbpg1n"
 uri = "file://exports/print/eternal-life-referral-card-1-capability-hero.pdf"
 type = "pdf"
-title = "Referral Card 1 — Capability Hero"
+title = "Card 1 — Capability Hero (with logos)"
 
 [[outputs]]
 id = "NpM4tRRmVzLvKY35YAuHL"
 uri = "file://exports/print/eternal-life-referral-card-2-refer-with-confidence.pdf"
 type = "pdf"
-title = "Referral Card 2 — Refer With Confidence"
+title = "Card 2 — Refer with Confidence (with logos)"
 
 [[outputs]]
 id = "qWW62pG2Yay3ZUXCrwiJ8"
 uri = "file://exports/print/eternal-life-referral-card-3-minimal-premium.pdf"
 type = "pdf"
-title = "Referral Card 3 — Minimal Premium"
+title = "Card 3 — Minimal Premium (with logos)"
 
 [[outputs]]
 id = "7x-G_hK55WxuhXzsQdCnh"
 uri = "file://exports/print/eternal-life-referral-card-4-credentials-forward.pdf"
 type = "pdf"
-title = "Referral Card 4 — Credentials Forward"
+title = "Card 4 — Credentials-Forward (with logos)"
 
 [[outputs]]
 id = "JctcDaT2AvEk8xWydQpz-"
 uri = "file://exports/print/eternal-life-referral-card-5-quick-referral-action.pdf"
 type = "pdf"
-title = "Referral Card 5 — Quick-Referral Action"
+title = "Card 5 — Quick Referral Action (with logos)"
 
 [[outputs]]
 id = "7AlniOf0kWVIo6z-OXzNW"

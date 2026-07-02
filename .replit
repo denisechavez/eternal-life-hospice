@@ -1,6 +1,7 @@
-modules = ["nodejs-20", "python-3.11"]
+modules = ["nodejs-20", "python-3.11", "python3"]
 [nix]
 channel = "stable-25_05"
+packages = ["freetype", "glibcLocales", "jbig2dec", "mupdf", "qpdf"]
 
 [agent]
 expertMode = true
