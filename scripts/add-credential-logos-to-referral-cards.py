@@ -19,7 +19,10 @@ WORK = tempfile.mkdtemp(prefix="cardlogos-")
 for f in ["cms-centers-for-medicare-medicaid-services.png",
           "cdph-california-department-of-public-health.png",
           "achc-accredited-gold-seal.png",
-          "epic-systems.png"]:
+          "epic-systems.png",
+          "cms-centers-for-medicare-medicaid-services-white.png",
+          "cdph-california-department-of-public-health-white.png",
+          "epic-systems-white.png"]:
     shutil.copy(os.path.join(LOGOS, f), WORK)
 shutil.copy(FONT, os.path.join(WORK, "JostELH-Medium.woff2"))
 
@@ -35,6 +38,10 @@ CMS = "cms-centers-for-medicare-medicaid-services.png"
 CDPH = "cdph-california-department-of-public-health.png"
 ACHC = "achc-accredited-gold-seal.png"
 EPIC = "epic-systems.png"
+CMS_W = "cms-centers-for-medicare-medicaid-services-white.png"
+CDPH_W = "cdph-california-department-of-public-health-white.png"
+EPIC_W = "epic-systems-white.png"
+PLUM = "#3C1C3B"
 
 def logo_row(top_pt, heights=(17, 24, 30, 18), gap=13):
     imgs = "".join(
@@ -49,7 +56,6 @@ def cream_patch(x, y, w, h):
 
 def tile(x, y, src, cap, logo_h):
     return (f'<div class="abs" style="left:{x}pt;top:{y}pt;width:103pt;height:44pt;'
-            f'background:#ffffff;border:0.75pt solid #E3D9CC;border-radius:8pt;'
             f'display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2.5pt">'
             f'<img src="{src}" style="max-height:{logo_h}pt;max-width:84pt">'
             f'<span style="font-family:JostELH;font-size:4.6pt;letter-spacing:0.7pt;'
@@ -58,21 +64,22 @@ def tile(x, y, src, cap, logo_h):
 overlays = {
     # card file -> (page_number, body_html)
     "eternal-life-referral-card-1-capability-hero.pdf": (1,
-        # cream credential plaque replacing the 2x2 gold text pills on the plum header
-        '<div class="abs" style="left:66pt;top:101pt;width:156pt;height:49pt;'
-        'background:#F5F0EB;border-radius:9pt;display:flex;align-items:center;'
-        'justify-content:center;gap:9pt;padding:0 7pt">'
-        f'<img src="{CMS}" style="max-height:12.5pt;max-width:36pt">'
-        f'<img src="{CDPH}" style="max-height:19pt">'
-        f'<img src="{ACHC}" style="max-height:25pt">'
-        f'<img src="{EPIC}" style="max-height:13pt;max-width:34pt">'
+        # white knockout logos directly on the plum header (no plaque)
+        f'<div class="abs" style="left:62pt;top:101.5pt;width:164pt;height:51pt;background:{PLUM}"></div>'
+        '<div class="abs" style="left:24pt;top:106pt;width:240pt;height:40pt;'
+        'display:flex;align-items:center;justify-content:center;gap:15pt">'
+        f'<img src="{CMS_W}" style="max-height:14pt;max-width:44pt">'
+        f'<img src="{CDPH_W}" style="max-height:22pt">'
+        f'<img src="{ACHC}" style="max-height:30pt">'
+        f'<img src="{EPIC_W}" style="max-height:15pt;max-width:42pt">'
         '</div>'),
     "eternal-life-referral-card-2-refer-with-confidence.pdf": (2,
         cream_patch(58, 498, 172, 44) + logo_row(505, heights=(15, 21, 27, 16), gap=11)),
     "eternal-life-referral-card-3-minimal-premium.pdf": (2,
         cream_patch(58, 470, 172, 52) + logo_row(481, heights=(15, 21, 27, 16), gap=11)),
     "eternal-life-referral-card-4-credentials-forward.pdf": (1,
-        tile(36, 146, CMS, "MEDICARE-CERTIFIED", 15)
+        cream_patch(30, 140, 228, 110)
+        + tile(36, 146, CMS, "MEDICARE-CERTIFIED", 15)
         + tile(148, 146, CDPH, "STATE-LICENSED", 20)
         + tile(36, 199, ACHC, "ACCREDITED", 26)
         + tile(148, 199, EPIC, "CONNECTED", 14)),

@@ -113,7 +113,11 @@ cards now carry the real CMS, CDPH, ACHC gold-seal, and Epic logos (files in
 `brand-assets/credential-logos/`, official sources). The canonical ACHC seal is
 the user-supplied flat-gold serrated version (`achc-accredited-gold-seal.png`);
 the shiny metallic one is kept as `-metallic.png` — don't use it on collateral.
-Card 5 carries logos on BOTH sides (cream plaque on the plum front + row on back). Agent advised that CMS/CDPH
+Card 5 carries logos on BOTH sides. NO cream plaques anywhere (user directive July 2026):
+logos go inside the plum header (white knockout `*-white.png` versions of CMS/CDPH/Epic
++ gold ACHC, which reads on plum) or directly on the cream body below the band (full-color,
+no tile boxes). Overlays bake in cumulatively — to undo one, restore the pristine pre-overlay
+card via `git show <commit>:<path>` and re-stamp. Agent advised that CMS/CDPH
 are government seals (endorsement risk) and Epic is a restricted trademark; user
 explicitly chose to proceed. Keep the factual captions (MEDICARE-CERTIFIED etc.)
 with the marks; do not extend these logos to the website without re-flagging.
