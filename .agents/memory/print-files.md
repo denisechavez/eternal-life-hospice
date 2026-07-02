@@ -141,3 +141,14 @@ streams and regexing `([0-9.]+ ){4}[kK]`. Page size preserved (288×594pts).
 Referral cards: keep RGB masters in `exports/print/`, ship the CMYK copies in
 `exports/print/print-ready-cmyk/` (suffix `-CMYK`). The full kit (press-kit folder + 4 pillar cards + old rack card) is also CMYK-converted into `print-ready-cmyk/press-kit/` with a README manifest of files-to-send. Not every card uses every
 brand color (e.g. card-5 minimal has its own plum/cream tints) — that's expected.
+
+## Ghostscript CMYK conversion downsamples images (fixed July 2026)
+`-dPDFSETTINGS=/prepress` silently resamples embedded raster logos to ~300dpi
+and can switch them to lossy JPEG. For logo detail, always append:
+`-dDownsampleColorImages=false -dDownsampleGrayImages=false -dDownsampleMonoImages=false
+-dAutoFilterColorImages=false -dAutoFilterGrayImages=false
+-dColorImageFilter=/FlateEncode -dGrayImageFilter=/FlateEncode`.
+Verify with `pdfimages -list` (ppi column) on the CMYK output, not the RGB master.
+Also: highest-res cream ELH lockup = brand-assets/Medical/eternal-life-hospice-logo-cream-hires.png
+(661px, recolored from the metallic-plum transparent master; the 1336px "cream-gold-subtitle"
+file has ragged edges and a different lockup — avoid).

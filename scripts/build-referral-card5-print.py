@@ -23,7 +23,9 @@ for f in ["cms-centers-for-medicare-medicaid-services.png",
           "cdph-california-department-of-public-health.png",
           "achc-accredited-gold-seal.png", "epic-systems.png"]:
     shutil.copy(os.path.join(LOGOS, f), WORK)
-shutil.copy(os.path.join(ASSETS, "logo-cream.png"), WORK)
+shutil.copy(os.path.join(ROOT, "brand-assets", "Medical",
+                         "eternal-life-hospice-logo-cream-hires.png"),
+            os.path.join(WORK, "logo-cream.png"))
 shutil.copy(os.path.join(ASSETS, "img", "qr-refer-cream.png"), WORK)
 for f in ["Fraunces-var.woff2", "Fraunces-Italic-var.woff2",
           "JostELH-Regular.woff2", "JostELH-Medium.woff2", "JostELH-SemiBold.woff2"]:
@@ -209,7 +211,12 @@ assert "Pages:           2" in info and "288 x 594" in info, "wrong page count/s
 shutil.copy(os.path.join(WORK, "card5.pdf"), CARD)
 run(["gs", "-dBATCH", "-dNOPAUSE", "-sDEVICE=pdfwrite",
      "-sColorConversionStrategy=CMYK", "-dProcessColorModel=/DeviceCMYK",
-     "-dPDFSETTINGS=/prepress", "-sOutputFile=" + CMYK, CARD])
+     "-dPDFSETTINGS=/prepress",
+     "-dDownsampleColorImages=false", "-dDownsampleGrayImages=false",
+     "-dDownsampleMonoImages=false",
+     "-dAutoFilterColorImages=false", "-dAutoFilterGrayImages=false",
+     "-dColorImageFilter=/FlateEncode", "-dGrayImageFilter=/FlateEncode",
+     "-sOutputFile=" + CMYK, CARD])
 rgb = subprocess.run(["bash", "-c",
     f"gs -o /dev/null -sDEVICE=inkcov '{CMYK}' 2>/dev/null | grep -c DeviceRGB || true"],
     capture_output=True, text=True).stdout.strip()
