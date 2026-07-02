@@ -24,8 +24,8 @@ for f in ["cms-centers-for-medicare-medicaid-services.png",
           "achc-accredited-gold-seal.png", "epic-systems.png"]:
     shutil.copy(os.path.join(LOGOS, f), WORK)
 shutil.copy(os.path.join(ROOT, "brand-assets", "Medical",
-                         "eternal-life-hospice-logo-cream-hires.png"),
-            os.path.join(WORK, "logo-cream.png"))
+                         "eternal-life-hospice-infinity-cream.png"),
+            os.path.join(WORK, "infinity-cream.png"))
 shutil.copy(os.path.join(ASSETS, "img", "qr-refer-cream.png"), WORK)
 for f in ["Fraunces-var.woff2", "Fraunces-Italic-var.woff2",
           "JostELH-Regular.woff2", "JostELH-Medium.woff2", "JostELH-SemiBold.woff2"]:
@@ -58,10 +58,13 @@ FRONT = f"""
   {crop_marks()}
   <div class="art" style="background:{DEEP}">
     <div style="display:flex;flex-direction:column;align-items:center;text-align:center;height:100%">
-      <img src="logo-cream.png" style="width:112pt;margin-top:16pt">
+      <img src="infinity-cream.png" style="width:95pt;margin-top:18pt">
+      <div style="margin-top:2pt;font-family:Fraunces;font-weight:480;font-size:30pt;color:{CREAM};line-height:1">Eternal</div>
+      <div style="margin-top:3pt;font-family:Jost;font-weight:600;font-size:8.6pt;letter-spacing:4.6pt;color:{CREAM};text-indent:4.6pt">LIFE&nbsp;HOSPICE</div>
       <div style="margin-top:13pt;background:{GOLD};color:{DEEP};font-family:Jost;font-weight:600;
                   font-size:8.5pt;letter-spacing:2.2pt;padding:4pt 13pt 3.4pt;border-radius:10pt">SAME-DAY&nbsp;ADMISSION</div>
-      <div style="margin-top:9pt;font-family:Fraunces;font-weight:560;font-size:21pt;line-height:1.18;color:{CREAM}">Refer in One Call,<br>Scan, Fax or E-mail</div>
+      <div style="margin-top:9pt;font-family:Fraunces;font-weight:560;font-size:22.5pt;line-height:1;color:{CREAM}">Refer in One Call,</div>
+      <div style="margin-top:4pt;font-family:Fraunces;font-weight:500;font-size:15.5pt;line-height:1;color:{CREAM}">Scan, Fax or E-mail</div>
       <div style="margin-top:5pt;font-family:Jost;font-weight:500;font-size:11pt;letter-spacing:0.6pt;color:#D9CBD8">Answered 24/7 by a hospice nurse</div>
       <div style="margin-top:9pt;font-family:Fraunces;font-weight:620;font-size:33.5pt;letter-spacing:0.5pt;color:{GOLD}">805.953.7273</div>
       <div style="margin-top:6pt;font-family:Jost;font-weight:500;font-size:10.5pt;color:{CREAM}">Fax referrals &middot; 805.953.8530</div>
