@@ -36,7 +36,7 @@ CDPH = "cdph-california-department-of-public-health.png"
 ACHC = "achc-accredited-gold-seal.png"
 EPIC = "epic-systems.png"
 
-def logo_row(top_pt, heights=(17, 24, 26, 18), gap=13):
+def logo_row(top_pt, heights=(17, 24, 30, 18), gap=13):
     imgs = "".join(
         f'<img src="{src}" style="max-height:{h}pt;max-width:52pt">'
         for src, h in zip((CMS, CDPH, ACHC, EPIC), heights))
@@ -64,17 +64,17 @@ overlays = {
         'justify-content:center;gap:9pt;padding:0 7pt">'
         f'<img src="{CMS}" style="max-height:12.5pt;max-width:36pt">'
         f'<img src="{CDPH}" style="max-height:19pt">'
-        f'<img src="{ACHC}" style="max-height:20pt">'
+        f'<img src="{ACHC}" style="max-height:25pt">'
         f'<img src="{EPIC}" style="max-height:13pt;max-width:34pt">'
         '</div>'),
     "eternal-life-referral-card-2-refer-with-confidence.pdf": (2,
-        cream_patch(58, 498, 172, 44) + logo_row(505, heights=(15, 21, 23, 16), gap=11)),
+        cream_patch(58, 498, 172, 44) + logo_row(505, heights=(15, 21, 27, 16), gap=11)),
     "eternal-life-referral-card-3-minimal-premium.pdf": (2,
-        cream_patch(58, 470, 172, 52) + logo_row(481, heights=(15, 21, 23, 16), gap=11)),
+        cream_patch(58, 470, 172, 52) + logo_row(481, heights=(15, 21, 27, 16), gap=11)),
     "eternal-life-referral-card-4-credentials-forward.pdf": (1,
         tile(36, 146, CMS, "MEDICARE-CERTIFIED", 15)
         + tile(148, 146, CDPH, "STATE-LICENSED", 20)
-        + tile(36, 199, ACHC, "ACCREDITED", 21)
+        + tile(36, 199, ACHC, "ACCREDITED", 26)
         + tile(148, 199, EPIC, "CONNECTED", 14)),
     "eternal-life-referral-card-5-quick-referral-action.pdf": (2,
         logo_row(322, heights=(17, 24, 26, 18))),

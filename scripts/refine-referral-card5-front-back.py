@@ -41,7 +41,7 @@ front = (
     'justify-content:center;gap:11pt;padding:0 8pt">'
     f'<img src="{CMS}" style="max-height:14pt;max-width:42pt">'
     f'<img src="{CDPH}" style="max-height:21pt">'
-    f'<img src="{ACHC}" style="max-height:23pt">'
+    f'<img src="{ACHC}" style="max-height:28pt">'
     f'<img src="{EPIC}" style="max-height:15pt;max-width:40pt">'
     '</div>')
 
@@ -58,7 +58,7 @@ logo_row_p2 = (
     'display:flex;align-items:center;justify-content:center;gap:13pt">'
     f'<img src="{CMS}" style="max-height:17pt;max-width:52pt">'
     f'<img src="{CDPH}" style="max-height:24pt">'
-    f'<img src="{ACHC}" style="max-height:26pt">'
+    f'<img src="{ACHC}" style="max-height:30pt">'
     f'<img src="{EPIC}" style="max-height:18pt;max-width:52pt">'
     '</div>')
 
