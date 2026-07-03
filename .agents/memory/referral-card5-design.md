@@ -64,3 +64,9 @@ The front-cover "Eternal" wordmark must be Fraunces weight 455 with font-variati
 **Why:** default rendering (weight 480, auto opsz) was visibly chunkier than the brand logo master; the master uses Fraunces' display cut. Measured width/height ratio of master wordmark = 4.335; 455/58 renders 4.25-4.31 (closest match; opsz 144 too narrow at 3.62, no-opsz too wide/heavy).
 **How to apply:** any HTML re-creation of the logo lockup needs the explicit opsz setting — Chromium does NOT auto-apply a matching optical size. Verify vs brand-assets/Medical/eternal-life-hospice-logo-cream-gold-subtitle.png at equal cap height.
 Brand palette confirmed identical to site: deep #3C1C3B, plum #5B2E59, gold #C9B07E, cream #F5F0EB (CMYK PDF round-trips deep plum exactly).
+
+## July 2026 revision (current state)
+- FRONT cream band: label "CREDENTIALS & CERTIFICATIONS" (6.2pt/1.8ls, #A8874F) above CMS/CDPH/ACHC (22/42/30pt); Epic REMOVED; band height 62pt (bottom edge unchanged 56.5pt).
+- BACK: credential-logo row REMOVED (text line MEDICARE-CERTIFIED · CDPH-LICENSED · ACHC-ACCREDITED remains in footer). New group "COORDINATED SECURE COMMUNICATION" (6.6pt/1.9ls) with 5 referral-platform logos in white chips, 3+2 rows: Aidin 11pt / naviHealth 17pt / WellSky 10.5pt, then AIDA 13pt / Ensocare 17pt.
+- Platform logos live in brand-assets/ELH-affiliates-and-partners/ (aida.svg, aidin.png, navihealth.png, ensocare.png, wellsky.png) — user-supplied.
+- **Compliance caveat (told user):** third-party platform logos on print collateral = nominative use only; user confirmed direction but should only print if ELH actively receives referrals on each platform.
