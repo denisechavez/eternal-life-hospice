@@ -336,7 +336,7 @@
     phoneWrap.appendChild(phoneIn);
 
     var emailWrap = el("div");
-    emailWrap.appendChild(el("label", null, "Email (optional \u2014 we\u2019ll send a confirmation)"));
+    emailWrap.appendChild(el("label", null, "Email (optional)"));
     var emailIn = el("input");
     emailIn.type = "email";
     emailIn.setAttribute("autocomplete", "email");
@@ -448,11 +448,7 @@
         addMsg(
           "Thank you, " +
             data.name.split(" ")[0] +
-            ". Your message has been sent and a member of our team will call you back within the hour." +
-            (data.email
-              ? " We\u2019ve also emailed you a confirmation."
-              : "") +
-            " If anything comes up in the meantime, please feel free to call us anytime at " +
+            ". Your message has been sent and a member of our team will call you back within the hour. If anything comes up in the meantime, please feel free to call us anytime at " +
             PHONE_DISPLAY +
             ". We're here 24/7.",
           "bot"
