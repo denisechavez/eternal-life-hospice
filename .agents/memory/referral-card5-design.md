@@ -70,3 +70,10 @@ Brand palette confirmed identical to site: deep #3C1C3B, plum #5B2E59, gold #C9B
 - BACK: credential-logo row REMOVED (text line MEDICARE-CERTIFIED · CDPH-LICENSED · ACHC-ACCREDITED remains in footer). New group "COORDINATED SECURE COMMUNICATION" (6.6pt/1.9ls) with 5 referral-platform logos in white chips, 3+2 rows: Aidin 11pt / naviHealth 17pt / WellSky 10.5pt, then AIDA 13pt / Ensocare 17pt.
 - Platform logos live in brand-assets/ELH-affiliates-and-partners/ (aida.svg, aidin.png, navihealth.png, ensocare.png, wellsky.png) — user-supplied.
 - **Compliance caveat (told user):** third-party platform logos on print collateral = nominative use only; user confirmed direction but should only print if ELH actively receives referrals on each platform.
+
+## Back copy v3 (current, July 2026)
+- Heading: "When Compassionate Hospice / Care Can Make a Difference" (2 lines).
+- Checklist: decrease in appetite / increased assistance with daily activities / comfort-focused goals of care (all nowrap 10pt — full width needed).
+- Eternal Difference bullets replaced (integrative holistic therapies per clinical assessment / responsive care / whole-person care). "Founded 2020 · Zero complaints" REMOVED.
+- **Fit rule learned:** back column is at capacity — any copy addition must be offset by size trims or content pushes OFFICE/SERVING lines under the absolute footer band silently (overflow is invisible in the PDF; always render 300dpi and confirm SERVING line is visible above footer).
+

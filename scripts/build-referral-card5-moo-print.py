@@ -6,10 +6,13 @@ Page = full bleed, NO crop marks (MOO trims). Content scaled via CSS zoom
 absorbed by larger section gaps; bottom groups anchored to the bleed edge.
 No cutting needed - MOO delivers the finished 3.67x8.5 card.
 
-v2 layout per user direction (July 2026):
-- FRONT: full-bleed cream band holding the four credential logos in FULL COLOR
-  (no white knockouts, no floating plaque), larger logos, larger body copy.
-- BACK: same content as v1 but with body copy sized up throughout.
+v3 layout per user direction (July 2026):
+- FRONT: full-bleed cream band labeled CREDENTIALS & CERTIFICATIONS holding
+  CMS/CDPH/ACHC in full color (Epic removed).
+- BACK: heading "When Compassionate Hospice Care Can Make a Difference";
+  revised checklist + Eternal Difference bullets; COORDINATED SECURE
+  COMMUNICATION group with 5 platform-logo chips (Aidin, naviHealth,
+  WellSky, AIDA, Ensocare); sizes tightened so OFFICE/SERVING clear footer.
 Page 4.0x8.25in (trim 3.5x7.75 + 0.125 bleed + crop marks), chromium
 print-to-pdf (vector), then a CMYK copy for MOO in print-ready-cmyk/.
 """
@@ -95,7 +98,7 @@ FRONT = f"""
 def check(txt):
     return (f'<div style="display:flex;gap:7pt;align-items:baseline">'
             f'<span style="font-family:Jost;font-weight:600;font-size:9.5pt;color:{GOLD.replace("#C9B07E","#A8874F")}">&#10003;</span>'
-            f'<span style="font-family:Jost;font-weight:500;font-size:10.6pt;color:#3a2b39;line-height:1.5">{txt}</span></div>')
+            f'<span style="font-family:Jost;font-weight:500;font-size:10pt;color:#3a2b39;line-height:1.42;white-space:nowrap">{txt}</span></div>')
 
 def chip(txt):
     return (f'<span style="background:#ffffff;border:0.8pt solid {BORDER};border-radius:11pt;'
@@ -112,51 +115,51 @@ def crow(lab, val, vstyle=""):
 BACK = f"""
 <div class="page">
   <div class="art" style="background:{CREAM}">
-    <div style="padding:14pt 27pt 0;text-align:center">
+    <div style="padding:9pt 20pt 0;text-align:center">
       <div style="font-family:Jost;font-weight:600;font-size:8.5pt;letter-spacing:3pt;color:#A8874F">QUICK&nbsp;REFERRAL&nbsp;GUIDE</div>
-      <div style="margin-top:5pt;font-family:Fraunces;font-weight:580;font-size:21pt;color:{PLUM};white-space:nowrap">Signs It May Be Time</div>
+      <div style="margin-top:4pt;font-family:Fraunces;font-weight:580;font-size:13.5pt;line-height:1.15;color:{PLUM}">When Compassionate Hospice<br>Care Can Make a Difference</div>
     </div>
-    <div style="margin:13pt 19pt 0;background:{PANEL};border-radius:12pt;padding:8pt 14pt;
-                display:flex;flex-direction:column;gap:4pt">
+    <div style="margin:8pt 15pt 0;background:{PANEL};border-radius:12pt;padding:6.5pt 12pt;
+                display:flex;flex-direction:column;gap:3pt">
       {check("Repeated hospital stays or ER visits")}
-      {check("Weight loss or a drop in appetite")}
+      {check("Weight loss or a decrease in appetite")}
       {check("Recurrent infections")}
       {check("Decline despite ongoing treatment")}
-      {check("More help needed with daily activities")}
-      {check("A shift toward comfort-focused goals")}
+      {check("Increased assistance with daily activities")}
+      {check("Comfort-focused goals of care")}
     </div>
-    <div style="margin:12pt 25pt 0;background:{DEEP};border-radius:12pt;padding:9pt 13pt;
-                display:flex;flex-direction:column;gap:4pt">
-      <div style="font-family:Jost;font-weight:600;font-size:7.5pt;letter-spacing:2.4pt;color:{GOLD};text-align:center;margin-bottom:2pt">THE&nbsp;ETERNAL&nbsp;DIFFERENCE</div>
+    <div style="margin:9pt 22pt 0;background:{DEEP};border-radius:12pt;padding:8pt 12pt;
+                display:flex;flex-direction:column;gap:3.5pt">
+      <div style="font-family:Jost;font-weight:600;font-size:7.5pt;letter-spacing:2.4pt;color:{GOLD};text-align:center;margin-bottom:1.5pt">THE&nbsp;ETERNAL&nbsp;DIFFERENCE</div>
       <div style="display:flex;gap:7pt;align-items:baseline">
         <span style="font-family:Jost;font-weight:600;font-size:8.5pt;color:{GOLD}">&#10022;</span>
-        <span style="font-family:Jost;font-weight:500;font-size:9.8pt;color:{CREAM};line-height:1.4">A full line of integrative services</span></div>
+        <span style="font-family:Jost;font-weight:500;font-size:9pt;color:{CREAM};line-height:1.28">Integrative holistic therapies provided based on clinical assessment</span></div>
       <div style="display:flex;gap:7pt;align-items:baseline">
         <span style="font-family:Jost;font-weight:600;font-size:8.5pt;color:{GOLD}">&#10022;</span>
-        <span style="font-family:Jost;font-weight:500;font-size:9.8pt;color:{CREAM};line-height:1.4">Clinical &amp; mobile services at no expense to families</span></div>
+        <span style="font-family:Jost;font-weight:500;font-size:9pt;color:{CREAM};line-height:1.28">Responsive care that stays ahead of changing conditions</span></div>
       <div style="display:flex;gap:7pt;align-items:baseline">
         <span style="font-family:Jost;font-weight:600;font-size:8.5pt;color:{GOLD}">&#10022;</span>
-        <span style="font-family:Jost;font-weight:500;font-size:9.3pt;color:{CREAM};line-height:1.4;white-space:nowrap">Founded in 2020 &middot; Zero complaints to date</span></div>
+        <span style="font-family:Jost;font-weight:500;font-size:9pt;color:{CREAM};line-height:1.28">Whole-person care &mdash; medical, emotional, social &amp; spiritual support working together for comfort at every level</span></div>
     </div>
-    <div style="margin:6pt 14pt 0;text-align:center;font-family:Jost;font-weight:500;font-size:8pt;
-                letter-spacing:0.2pt;color:{PLUM};line-height:1.5"><span style="white-space:nowrap">Same-day admission &middot; Transport &middot; Physician-led</span><br><span style="white-space:nowrap">24/7 Hospice Nurse Access &middot; Placement &middot; Bereavement</span></div>
-    <div style="margin:7pt 20pt 0;text-align:center">
+    <div style="margin:4pt 14pt 0;text-align:center;font-family:Jost;font-weight:500;font-size:7.8pt;
+                letter-spacing:0.2pt;color:{PLUM};line-height:1.4"><span style="white-space:nowrap">Same-day admission &middot; Transport &middot; Physician-led</span><br><span style="white-space:nowrap">24/7 Hospice Nurse Access &middot; Placement &middot; Bereavement</span></div>
+    <div style="margin:5pt 20pt 0;text-align:center">
       <div style="font-family:Jost;font-weight:600;font-size:6.6pt;letter-spacing:1.9pt;color:#A8874F;white-space:nowrap">COORDINATED&nbsp;SECURE&nbsp;COMMUNICATION</div>
-      <div style="margin-top:4pt;display:flex;align-items:center;justify-content:center;gap:4.5pt">
+      <div style="margin-top:3.5pt;display:flex;align-items:center;justify-content:center;gap:4.5pt">
         {pchip("aidin.png", 11)}
-        {pchip("navihealth.png", 17)}
+        {pchip("navihealth.png", 15)}
         {pchip("wellsky.png", 10.5)}
       </div>
-      <div style="margin-top:4.5pt;display:flex;align-items:center;justify-content:center;gap:4.5pt">
+      <div style="margin-top:4pt;display:flex;align-items:center;justify-content:center;gap:4.5pt">
         {pchip("aida.svg", 13)}
-        {pchip("ensocare.png", 17)}
+        {pchip("ensocare.png", 15)}
       </div>
     </div>
-    <div style="margin:9pt 25pt 0;background:{PANEL};border-radius:12pt;padding:8pt 12pt;
-                display:flex;flex-direction:column;gap:5pt">
+    <div style="margin:5pt 25pt 0;background:{PANEL};border-radius:12pt;padding:6pt 12pt;
+                display:flex;flex-direction:column;gap:4pt">
       <div style="display:flex;gap:11pt;align-items:center">
         <div style="flex:0 0 auto;background:#ffffff;border-radius:9pt;padding:4.5pt">
-          <img src="qr-refer-cream.png" style="width:52pt;display:block;border-radius:5pt"></div>
+          <img src="qr-refer-cream.png" style="width:44pt;display:block;border-radius:5pt"></div>
         <div style="display:flex;flex-direction:column;gap:3.5pt;min-width:0">
           <div style="font-family:Jost;font-weight:600;font-size:7.5pt;letter-spacing:2.2pt;color:#A8874F">REFER&nbsp;24/7</div>
           {crow("CALL 24/7", "805.953.7273", f"font-weight:600;font-size:9.6pt;color:{PLUM};white-space:nowrap")}
@@ -169,12 +172,12 @@ BACK = f"""
         <span style="font-family:Jost;font-weight:600;font-size:9.4pt;color:{PLUM};white-space:nowrap">referral@eternallifehospice.com</span>
       </div>
     </div>
-    <div style="margin:5pt 22pt 0;padding:0 6pt;display:flex;gap:7pt;align-items:baseline">
+    <div style="margin:4pt 22pt 0;padding:0 6pt;display:flex;gap:7pt;align-items:baseline">
       <span style="flex:0 0 42pt;font-family:Jost;font-weight:600;font-size:6.4pt;
                    letter-spacing:0.9pt;color:{STEEL}">OFFICE</span>
       <span style="font-family:Jost;font-weight:500;font-size:8.2pt;color:#3a2b39;line-height:1.4">4165 E Thousand Oaks Blvd, Ste 325B, Westlake Village, CA 91362</span>
     </div>
-    <div style="margin-top:4.5pt;text-align:center;font-family:Jost;font-weight:500;font-size:7.4pt;
+    <div style="margin-top:3.5pt;text-align:center;font-family:Jost;font-weight:500;font-size:7.4pt;
                 letter-spacing:1.4pt;color:{PLUM}">SERVING&nbsp;VENTURA&nbsp;&amp;&nbsp;LOS&nbsp;ANGELES&nbsp;COUNTY</div>
     <div style="position:absolute;left:0;bottom:0;width:100%;height:42.5pt;background:{DEEP};
                 display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2.5pt;padding-bottom:4.5pt">
