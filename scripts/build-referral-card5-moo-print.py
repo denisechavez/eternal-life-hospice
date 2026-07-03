@@ -23,11 +23,15 @@ CARD = os.path.join(PRINT, "eternal-life-referral-card-5-MOO-rack.pdf")
 CMYK = os.path.join(PRINT, "print-ready-cmyk",
                     "eternal-life-referral-card-5-MOO-rack-CMYK.pdf")
 
+PARTNERS = os.path.join(ROOT, "brand-assets", "ELH-affiliates-and-partners")
+
 WORK = tempfile.mkdtemp(prefix="c5moo-")
 for f in ["cms-centers-for-medicare-medicaid-services.png",
           "cdph-california-department-of-public-health.png",
-          "achc-accredited-gold-seal.png", "epic-systems.png"]:
+          "achc-accredited-gold-seal.png"]:
     shutil.copy(os.path.join(LOGOS, f), WORK)
+for f in ["aida.svg", "aidin.png", "navihealth.png", "ensocare.png", "wellsky.png"]:
+    shutil.copy(os.path.join(PARTNERS, f), WORK)
 shutil.copy(os.path.join(ROOT, "brand-assets", "Medical",
                          "eternal-life-hospice-infinity-cream-hires.png"),
             os.path.join(WORK, "infinity-cream.png"))
@@ -42,7 +46,11 @@ PANEL = "#EDE6DE"; BORDER = "#D8CDBF"; STEEL = "#6793AC"
 CMS = "cms-centers-for-medicare-medicaid-services.png"
 CDPH = "cdph-california-department-of-public-health.png"
 ACHC = "achc-accredited-gold-seal.png"
-EPIC = "epic-systems.png"
+
+def pchip(img, h):
+    return (f'<span style="display:inline-flex;align-items:center;justify-content:center;'
+            f'background:#ffffff;border:0.8pt solid {BORDER};border-radius:8pt;'
+            f'padding:3pt 7pt;"><img src="{img}" style="max-height:{h}pt"></span>')
 
 FRONT = f"""
 <div class="page">
@@ -66,12 +74,14 @@ FRONT = f"""
       <div style="margin-top:11pt;font-family:Jost;font-weight:600;font-size:9pt;letter-spacing:2.6pt;color:{GOLD}">SCAN&nbsp;TO&nbsp;REFER&nbsp;ONLINE</div>
     </div>
     <!-- full-bleed cream credential band: spans the whole art/bleed width -->
-    <div style="position:absolute;left:0;bottom:56.5pt;width:100%;height:56pt;background:{CREAM};
-                display:flex;align-items:center;justify-content:center;gap:11pt">
-      <img src="{CMS}" style="max-height:23pt;max-width:60pt">
-      <img src="{CDPH}" style="max-height:46pt">
-      <img src="{ACHC}" style="max-height:32pt">
-      <img src="{EPIC}" style="max-height:23pt;max-width:60pt">
+    <div style="position:absolute;left:0;bottom:56.5pt;width:100%;height:62pt;background:{CREAM};
+                display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2pt;padding-top:2pt">
+      <div style="font-family:Jost;font-weight:600;font-size:6.2pt;letter-spacing:1.8pt;color:#A8874F">CREDENTIALS&nbsp;&amp;&nbsp;CERTIFICATIONS</div>
+      <div style="display:flex;align-items:center;justify-content:center;gap:12pt">
+        <img src="{CMS}" style="max-height:22pt;max-width:60pt">
+        <img src="{CDPH}" style="max-height:42pt">
+        <img src="{ACHC}" style="max-height:30pt">
+      </div>
     </div>
     <div style="position:absolute;left:0;bottom:0;width:100%;height:56.5pt;padding-bottom:5.5pt;
                 display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2.5pt;text-align:center">
@@ -130,11 +140,17 @@ BACK = f"""
     </div>
     <div style="margin:6pt 14pt 0;text-align:center;font-family:Jost;font-weight:500;font-size:8pt;
                 letter-spacing:0.2pt;color:{PLUM};line-height:1.5"><span style="white-space:nowrap">Same-day admission &middot; Transport &middot; Physician-led</span><br><span style="white-space:nowrap">24/7 Hospice Nurse Access &middot; Placement &middot; Bereavement</span></div>
-    <div style="margin:7pt 0 0;display:flex;align-items:center;justify-content:center;gap:15pt">
-      <img src="{CMS}" style="max-height:22pt;max-width:60pt">
-      <img src="{CDPH}" style="max-height:46pt">
-      <img src="{ACHC}" style="max-height:30pt">
-      <img src="{EPIC}" style="max-height:22pt;max-width:60pt">
+    <div style="margin:7pt 20pt 0;text-align:center">
+      <div style="font-family:Jost;font-weight:600;font-size:6.6pt;letter-spacing:1.9pt;color:#A8874F;white-space:nowrap">COORDINATED&nbsp;SECURE&nbsp;COMMUNICATION</div>
+      <div style="margin-top:4pt;display:flex;align-items:center;justify-content:center;gap:4.5pt">
+        {pchip("aidin.png", 11)}
+        {pchip("navihealth.png", 17)}
+        {pchip("wellsky.png", 10.5)}
+      </div>
+      <div style="margin-top:4.5pt;display:flex;align-items:center;justify-content:center;gap:4.5pt">
+        {pchip("aida.svg", 13)}
+        {pchip("ensocare.png", 17)}
+      </div>
     </div>
     <div style="margin:9pt 25pt 0;background:{PANEL};border-radius:12pt;padding:8pt 12pt;
                 display:flex;flex-direction:column;gap:5pt">
