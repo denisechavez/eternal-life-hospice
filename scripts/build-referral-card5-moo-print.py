@@ -9,7 +9,7 @@ No cutting needed - MOO delivers the finished 3.67x8.5 card.
 v3 layout per user direction (July 2026):
 - FRONT: full-bleed cream band labeled CREDENTIALS & CERTIFICATIONS holding
   CMS/CDPH/ACHC in full color (Epic removed).
-- BACK: heading "When Compassionate Hospice Care Can Make a Difference";
+- BACK: heading "When Comfort Becomes the Priority, Hospice Makes It the Plan of Care.";
   revised checklist + Eternal Difference bullets; COORDINATED SECURE
   COMMUNICATION group with 5 platform-logo chips (Aidin, naviHealth,
   WellSky, AIDA, Ensocare); sizes tightened so OFFICE/SERVING clear footer.
@@ -117,7 +117,7 @@ BACK = f"""
   <div class="art" style="background:{CREAM}">
     <div style="padding:9pt 20pt 0;text-align:center">
       <div style="font-family:Jost;font-weight:600;font-size:8.5pt;letter-spacing:3pt;color:#A8874F">QUICK&nbsp;REFERRAL&nbsp;GUIDE</div>
-      <div style="margin-top:4pt;font-family:Fraunces;font-weight:580;font-size:13.5pt;line-height:1.15;color:{PLUM}">When Compassionate Hospice<br>Care Can Make a Difference</div>
+      <div style="margin-top:4pt;font-family:Fraunces;font-weight:580;font-size:12.2pt;line-height:1.18;color:{PLUM};white-space:nowrap">When Comfort Becomes the Priority,<br>Hospice Makes It the Plan of Care.</div>
     </div>
     <div style="margin:8pt 15pt 0;background:{PANEL};border-radius:12pt;padding:6.5pt 12pt;
                 display:flex;flex-direction:column;gap:3pt">
@@ -126,7 +126,6 @@ BACK = f"""
       {check("Recurrent infections")}
       {check("Decline despite ongoing treatment")}
       {check("Increased assistance with daily activities")}
-      {check("Comfort-focused goals of care")}
     </div>
     <div style="margin:9pt 22pt 0;background:{DEEP};border-radius:12pt;padding:8pt 12pt;
                 display:flex;flex-direction:column;gap:3.5pt">
