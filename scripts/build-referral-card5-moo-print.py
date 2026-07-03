@@ -139,7 +139,7 @@ BACK = f"""
         <span style="font-family:Jost;font-weight:500;font-size:9pt;color:{CREAM};line-height:1.28">Responsive care that stays ahead of changing conditions</span></div>
       <div style="display:flex;gap:7pt;align-items:baseline">
         <span style="font-family:Jost;font-weight:600;font-size:8.5pt;color:{GOLD}">&#10022;</span>
-        <span style="font-family:Jost;font-weight:500;font-size:9pt;color:{CREAM};line-height:1.28">Whole-person care &mdash; medical, emotional, social &amp; spiritual support working together for comfort at every level</span></div>
+        <span style="font-family:Jost;font-weight:500;font-size:9pt;color:{CREAM};line-height:1.28">Whole-person care &mdash; medical, emotional, social &amp; spiritual support working together to provide comfort at every level</span></div>
     </div>
     <div style="margin:4pt 14pt 0;text-align:center;font-family:Jost;font-weight:500;font-size:7.8pt;
                 letter-spacing:0.2pt;color:{PLUM};line-height:1.4"><span style="white-space:nowrap">Same-day admission &middot; Transport &middot; Physician-led</span><br><span style="white-space:nowrap">24/7 Hospice Nurse Access &middot; Placement &middot; Bereavement</span></div>
