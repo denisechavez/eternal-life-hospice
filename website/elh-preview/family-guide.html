@@ -26,7 +26,7 @@ body.lowink{--logomark:url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAWgAAA
 .cover-mark{width:104px;height:78px}
 .contact-mark{width:92px;height:70px;flex:0 0 auto}
 *{box-sizing:border-box}
-html{scroll-behavior:auto;-webkit-text-size-adjust:100%;text-size-adjust:100%}
+html{scroll-behavior:auto;-webkit-text-size-adjust:100%;text-size-adjust:100%;overflow-x:clip}
 html,body{margin:0;padding:0}
 body{font-family:var(--ff-b);color:var(--ink);background:#3a1c39;
   background:radial-gradient(120% 120% at 50% -10%,#6b3a69 0%,#4a2548 45%,#33172f 100%);
@@ -217,7 +217,7 @@ table.ws td.cell{padding:0}
 .resources .res-h{font-family:var(--ff-d);font-weight:600;font-size:19px;color:var(--plum);margin-bottom:12px}
 .res-row{display:flex;justify-content:space-between;gap:18px;align-items:baseline;border-bottom:1px solid var(--cream-dark);padding:11px 0}
 .res-row .rt{font-size:15px;color:var(--ink)}
-.res-row .rl{font-family:var(--ff-b);font-weight:500;font-size:14px;color:var(--slate);white-space:nowrap}
+.res-row .rl{font-family:var(--ff-b);font-weight:500;font-size:14px;color:var(--slate);white-space:nowrap;flex-shrink:0}
 .res-note{font-size:13px;color:var(--ink-light);font-style:italic;margin-top:10px}
 
 .begin{display:inline-flex;align-items:center;gap:11px;margin-top:26px;
@@ -365,6 +365,8 @@ table.ws thead th,.agencyname,.res-row .rl{font-size:15px}
 body.booklet .indicator{display:flex;align-items:center;justify-content:center;gap:14px;padding:2px 0 30px}
 body.booklet .page{transition:transform 1.2s cubic-bezier(.3,.4,.2,1),opacity .55s ease .6s,box-shadow 1.2s ease}
 @media(max-width:640px){
+ .res-row{flex-wrap:wrap}
+ .res-row .rl{white-space:normal;word-break:break-word}
  table.ws{min-width:0;display:block}
  table.ws thead{display:block;margin-bottom:14px}
  table.ws thead tr{display:flex;gap:8px}
