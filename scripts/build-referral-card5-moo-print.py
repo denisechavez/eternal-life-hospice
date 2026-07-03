@@ -152,7 +152,7 @@ BACK = f"""
       <div style="margin-top:4pt;display:flex;align-items:center;justify-content:center;gap:4.5pt">
         {pchip("aida.svg", 15.5)}
         {pchip("ensocare.png", 17.5)}
-        {pchip("epic.png", 15.5)}
+        {pchip("epic.png", 19)}
       </div>
     </div>
     <div style="margin:5pt 25pt 0;background:{PANEL};border-radius:12pt;padding:6pt 12pt;
