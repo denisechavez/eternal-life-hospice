@@ -965,3 +965,9 @@ id = "C8_EFhzjG8zjsbG0CwX69"
 uri = "file://exports/print/print-ready-cmyk/eternal-life-referral-card-5-MOO-rack-BACK-CMYK.pdf"
 type = "pdf"
 title = "MOO BACK — revised wording"
+
+[[outputs]]
+id = "CqWHf3IUC-FxhiqwllWus"
+uri = "file://exports/diagrams/full-circle-of-care.png"
+type = "image"
+title = "Full Circle of Care — Children's Workshop Giving Graphic"
