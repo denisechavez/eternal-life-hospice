@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
-"""Referral card 5 (Quick-Referral Action) sized for MOO's rack card: trim
-3.67x8.5in, full-bleed file 3.74x8.58in (MOO spec, no crop marks - MOO trims).
-Design is anchored to the top; a dashed gold cut guide sits at the 7.75in line
-(inside the waste strip) so the user can make ONE bottom cut for a final
-3.67x7.75in card. The guide is removed by the cut itself.
+"""Referral card 5 (Quick-Referral Action) at MOO's exact rack card scale.
+MOO template spec: bleed 3.83x8.66in / trim 3.67x8.5in / safe 3.5x8.34in.
+Page = full bleed, NO crop marks (MOO trims). Content scaled via CSS zoom
+1.048571 so the locked 3.5in-wide design fills the 3.67in trim; extra height
+absorbed by larger section gaps; bottom groups anchored to the bleed edge.
+No cutting needed - MOO delivers the finished 3.67x8.5 card.
 
 v2 layout per user direction (July 2026):
 - FRONT: full-bleed cream band holding the four credential logos in FULL COLOR
@@ -43,53 +44,41 @@ CDPH = "cdph-california-department-of-public-health.png"
 ACHC = "achc-accredited-gold-seal.png"
 EPIC = "epic-systems.png"
 
-def cut_guide():
-    # MOO page: 269.28x617.76pt, trim 3.67x8.5in (bleed 2.52pt sides / 2.88pt
-    # top+bottom). User cut line = 7.75in below top trim -> y = 560.88pt.
-    # Guide + label live entirely BELOW the cut line (in the discarded strip).
-    return (
-      f'<div style="position:absolute;left:0;top:563.76pt;width:100%;height:0;'
-      f'border-top:0.9pt dashed {GOLD};opacity:0.9"></div>'
-      f'<div style="position:absolute;left:0;top:581pt;width:100%;text-align:center;'
-      f'font-family:Jost;font-weight:600;font-size:6.4pt;letter-spacing:1.2pt;'
-      f'color:{CREAM};opacity:0.85">&#9986;&nbsp;&nbsp;CUT&nbsp;ALONG&nbsp;DASHED&nbsp;LINE&nbsp;&nbsp;&mdash;&nbsp;&nbsp;FINAL&nbsp;3.67&nbsp;&times;&nbsp;7.75&nbsp;IN</div>')
-
 FRONT = f"""
 <div class="page">
   <div class="art" style="background:{DEEP}">
     <div style="display:flex;flex-direction:column;align-items:center;text-align:center;height:100%">
-      <img src="infinity-cream.png" style="width:95pt;margin-top:15pt">
+      <img src="infinity-cream.png" style="width:95pt;margin-top:20pt">
       <div style="margin-top:2pt;display:inline-block;text-align:center">
         <div style="font-family:Fraunces;font-weight:480;font-size:30pt;color:{CREAM};line-height:1">Eternal</div>
         <div style="margin-top:3pt;width:73%;margin-left:auto;margin-right:auto;display:flex;justify-content:space-between;
                     font-family:Jost;font-weight:600;font-size:8.2pt;color:{CREAM}"><span>L</span><span>I</span><span>F</span><span>E</span><span> </span><span>H</span><span>O</span><span>S</span><span>P</span><span>I</span><span>C</span><span>E</span></div>
       </div>
-      <div style="margin-top:13pt;background:{GOLD};color:{DEEP};font-family:Jost;font-weight:600;
+      <div style="margin-top:16pt;background:{GOLD};color:{DEEP};font-family:Jost;font-weight:600;
                   font-size:8.5pt;letter-spacing:2.2pt;padding:4pt 13pt 3.4pt;border-radius:10pt">SAME-DAY&nbsp;ADMISSION</div>
-      <div style="margin-top:9pt;font-family:Fraunces;font-weight:560;font-size:22.5pt;line-height:1;color:{CREAM}">Refer in One Call,</div>
+      <div style="margin-top:12pt;font-family:Fraunces;font-weight:560;font-size:22.5pt;line-height:1;color:{CREAM}">Refer in One Call,</div>
       <div style="margin-top:4pt;font-family:Fraunces;font-weight:500;font-size:15.5pt;line-height:1;color:{CREAM}">Scan, Fax or E-mail</div>
       <div style="margin-top:5pt;font-family:Jost;font-weight:500;font-size:11pt;letter-spacing:0.6pt;color:#D9CBD8">Answered 24/7 by a hospice nurse</div>
-      <div style="margin-top:9pt;font-family:Fraunces;font-weight:620;font-size:33.5pt;letter-spacing:0.5pt;color:{GOLD}">805.953.7273</div>
+      <div style="margin-top:12pt;font-family:Fraunces;font-weight:620;font-size:33.5pt;letter-spacing:0.5pt;color:{GOLD}">805.953.7273</div>
       <div style="margin-top:6pt;font-family:Jost;font-weight:500;font-size:10.5pt;color:{CREAM}">Fax referrals &middot; 805.953.8530</div>
-      <div style="margin-top:12pt;background:{CREAM};border-radius:13pt;padding:6pt">
+      <div style="margin-top:16pt;background:{CREAM};border-radius:13pt;padding:6pt">
         <img src="qr-refer-cream.png" style="width:98pt;display:block;border-radius:8pt"></div>
-      <div style="margin-top:9pt;font-family:Jost;font-weight:600;font-size:9pt;letter-spacing:2.6pt;color:{GOLD}">SCAN&nbsp;TO&nbsp;REFER&nbsp;ONLINE</div>
+      <div style="margin-top:11pt;font-family:Jost;font-weight:600;font-size:9pt;letter-spacing:2.6pt;color:{GOLD}">SCAN&nbsp;TO&nbsp;REFER&nbsp;ONLINE</div>
     </div>
     <!-- full-bleed cream credential band: spans the whole art/bleed width -->
-    <div style="position:absolute;left:0;top:456.76pt;width:100%;height:56pt;background:{CREAM};
+    <div style="position:absolute;left:0;bottom:56.5pt;width:100%;height:56pt;background:{CREAM};
                 display:flex;align-items:center;justify-content:center;gap:17pt">
       <img src="{CMS}" style="max-height:24pt;max-width:64pt">
       <img src="{CDPH}" style="max-height:50pt">
       <img src="{ACHC}" style="max-height:34pt">
       <img src="{EPIC}" style="max-height:24pt;max-width:64pt">
     </div>
-    <div style="position:absolute;left:0;top:512.76pt;width:100%;height:51pt;
+    <div style="position:absolute;left:0;bottom:0;width:100%;height:56.5pt;padding-bottom:5.5pt;
                 display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2.5pt;text-align:center">
       <div style="font-family:Jost;font-weight:600;font-size:11pt;color:{CREAM}">referral@eternallifehospice.com</div>
       <div style="font-family:Jost;font-weight:400;font-size:8.5pt;color:#D9CBD8">4165 E Thousand Oaks Blvd, Ste 325B, Westlake Village, CA 91362</div>
       <div style="font-family:Jost;font-weight:600;font-size:7.5pt;letter-spacing:2pt;color:{GOLD};margin-top:1.5pt">SERVING&nbsp;VENTURA&nbsp;&amp;&nbsp;LOS&nbsp;ANGELES&nbsp;COUNTY</div>
     </div>
-    {cut_guide()}
   </div>
 </div>"""
 
@@ -117,7 +106,7 @@ BACK = f"""
       <div style="font-family:Jost;font-weight:600;font-size:8.5pt;letter-spacing:3pt;color:#A8874F">QUICK&nbsp;REFERRAL&nbsp;GUIDE</div>
       <div style="margin-top:5pt;font-family:Fraunces;font-weight:580;font-size:21pt;color:{PLUM};white-space:nowrap">Signs It May Be Time</div>
     </div>
-    <div style="margin:9pt 22pt 0;background:{PANEL};border-radius:12pt;padding:8pt 14pt;
+    <div style="margin:13pt 19pt 0;background:{PANEL};border-radius:12pt;padding:8pt 14pt;
                 display:flex;flex-direction:column;gap:4pt">
       {check("Repeated hospital stays or ER visits")}
       {check("Weight loss or a drop in appetite")}
@@ -126,7 +115,7 @@ BACK = f"""
       {check("More help needed with daily activities")}
       {check("A shift toward comfort-focused goals")}
     </div>
-    <div style="margin:8pt 25pt 0;background:{DEEP};border-radius:12pt;padding:9pt 13pt;
+    <div style="margin:12pt 25pt 0;background:{DEEP};border-radius:12pt;padding:9pt 13pt;
                 display:flex;flex-direction:column;gap:4pt">
       <div style="font-family:Jost;font-weight:600;font-size:7.5pt;letter-spacing:2.4pt;color:{GOLD};text-align:center;margin-bottom:2pt">THE&nbsp;ETERNAL&nbsp;DIFFERENCE</div>
       <div style="display:flex;gap:7pt;align-items:baseline">
@@ -139,15 +128,15 @@ BACK = f"""
         <span style="font-family:Jost;font-weight:600;font-size:8.5pt;color:{GOLD}">&#10022;</span>
         <span style="font-family:Jost;font-weight:500;font-size:9.8pt;color:{CREAM};line-height:1.4">Zero complaints in 11 years of care</span></div>
     </div>
-    <div style="margin:3pt 27pt 0;text-align:center;font-family:Jost;font-weight:500;font-size:8.2pt;
+    <div style="margin:6pt 27pt 0;text-align:center;font-family:Jost;font-weight:500;font-size:8.2pt;
                 letter-spacing:0.4pt;color:{PLUM};line-height:1.5">Same-day admission &middot; Transport &middot; 24/7 nurse<br>Physician-led &middot; Placement &middot; Bereavement</div>
-    <div style="margin:4pt 0 0;display:flex;align-items:center;justify-content:center;gap:15pt">
+    <div style="margin:7pt 0 0;display:flex;align-items:center;justify-content:center;gap:15pt">
       <img src="{CMS}" style="max-height:22pt;max-width:60pt">
       <img src="{CDPH}" style="max-height:46pt">
       <img src="{ACHC}" style="max-height:30pt">
       <img src="{EPIC}" style="max-height:22pt;max-width:60pt">
     </div>
-    <div style="margin:5pt 25pt 0;background:{PANEL};border-radius:12pt;padding:8pt 12pt;
+    <div style="margin:9pt 25pt 0;background:{PANEL};border-radius:12pt;padding:8pt 12pt;
                 display:flex;flex-direction:column;gap:5pt">
       <div style="display:flex;gap:11pt;align-items:center">
         <div style="flex:0 0 auto;background:#ffffff;border-radius:9pt;padding:4.5pt">
@@ -164,19 +153,18 @@ BACK = f"""
         <span style="font-family:Jost;font-weight:600;font-size:9.4pt;color:{PLUM};white-space:nowrap">referral@eternallifehospice.com</span>
       </div>
     </div>
-    <div style="margin:3pt 25pt 0;padding:0 12pt;display:flex;gap:7pt;align-items:baseline">
+    <div style="margin:5pt 22pt 0;padding:0 6pt;display:flex;gap:7pt;align-items:baseline">
       <span style="flex:0 0 42pt;font-family:Jost;font-weight:600;font-size:6.4pt;
                    letter-spacing:0.9pt;color:{STEEL}">OFFICE</span>
       <span style="font-family:Jost;font-weight:500;font-size:8.2pt;color:#3a2b39;line-height:1.4">4165 E Thousand Oaks Blvd, Ste 325B, Westlake Village, CA 91362</span>
     </div>
-    <div style="margin-top:2.5pt;text-align:center;font-family:Jost;font-weight:500;font-size:7.4pt;
+    <div style="margin-top:4.5pt;text-align:center;font-family:Jost;font-weight:500;font-size:7.4pt;
                 letter-spacing:1.4pt;color:{PLUM}">SERVING&nbsp;VENTURA&nbsp;&amp;&nbsp;LOS&nbsp;ANGELES&nbsp;COUNTY</div>
-    <div style="position:absolute;left:0;top:526.76pt;width:100%;height:96.76pt;background:{DEEP};
-                display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2.5pt;padding-bottom:58.76pt">
+    <div style="position:absolute;left:0;bottom:0;width:100%;height:42.5pt;background:{DEEP};
+                display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2.5pt;padding-bottom:4.5pt">
       <div style="font-family:Jost;font-weight:600;font-size:6.7pt;letter-spacing:1pt;color:{CREAM};white-space:nowrap">MEDICARE-CERTIFIED&nbsp;&middot;&nbsp;CDPH-LICENSED&nbsp;&middot;&nbsp;ACHC-ACCREDITED</div>
       <div style="font-family:FrauncesItalic;font-style:italic;font-weight:540;font-size:12pt;color:{GOLD}">Care That Honors Life</div>
     </div>
-    {cut_guide()}
   </div>
 </div>"""
 
@@ -190,7 +178,7 @@ HTML = f"""<!doctype html><html><head><meta charset="utf-8"><style>
 @font-face {{ font-family:'Jost'; src:url('JostELH-SemiBold.woff2') format('woff2'); font-weight:600; }}
 .page {{ position:relative; width:275.76pt; height:623.52pt; overflow:hidden; page-break-after:always; }}
 .page:last-child {{ page-break-after:auto; }}
-.art {{ position:absolute; left:0; top:0; width:275.76pt; height:623.52pt; overflow:hidden; }}
+.art {{ position:absolute; left:0; top:0; width:263.25pt; height:595.15pt; zoom:1.048571; overflow:hidden; }}
 img {{ display:block; }}
 </style></head><body>{FRONT}{BACK}</body></html>"""
 
