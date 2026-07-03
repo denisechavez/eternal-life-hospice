@@ -335,6 +335,14 @@
     phoneIn.placeholder = "805.000.0000";
     phoneWrap.appendChild(phoneIn);
 
+    var emailWrap = el("div");
+    emailWrap.appendChild(el("label", null, "Email (optional \u2014 we\u2019ll send a confirmation)"));
+    var emailIn = el("input");
+    emailIn.type = "email";
+    emailIn.setAttribute("autocomplete", "email");
+    emailIn.placeholder = "you@example.com";
+    emailWrap.appendChild(emailIn);
+
     var timeWrap = el("div");
     timeWrap.appendChild(el("label", null, "Best time to reach you (optional)"));
     var timeIn = el("input");
@@ -362,6 +370,7 @@
 
     form.appendChild(nameWrap);
     form.appendChild(phoneWrap);
+    form.appendChild(emailWrap);
     form.appendChild(timeWrap);
     form.appendChild(noteWrap);
     form.appendChild(err);
@@ -393,6 +402,12 @@
         phoneIn.focus();
         return;
       }
+      var email = (emailIn.value || "").trim();
+      if (email && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) {
+        err.textContent = "That email doesn\u2019t look quite right \u2014 please check it, or leave it blank.";
+        emailIn.focus();
+        return;
+      }
       err.textContent = "";
       submitBtn.disabled = true;
       submitBtn.textContent = "Sending\u2026";
@@ -400,6 +415,7 @@
         {
           name: name,
           phone: phone,
+          email: email,
           preferred_time: (timeIn.value || "").trim(),
           message: (noteIn.value || "").trim()
         },
@@ -417,6 +433,7 @@
       "bot-field": "",
       name: data.name,
       phone: data.phone,
+      email: data.email,
       preferred_time: data.preferred_time,
       message: data.message
     });
@@ -431,7 +448,11 @@
         addMsg(
           "Thank you, " +
             data.name.split(" ")[0] +
-            ". Your message has been sent and a member of our team will call you back within the hour. If anything comes up in the meantime, please feel free to call us anytime at " +
+            ". Your message has been sent and a member of our team will call you back within the hour." +
+            (data.email
+              ? " We\u2019ve also emailed you a confirmation."
+              : "") +
+            " If anything comes up in the meantime, please feel free to call us anytime at " +
             PHONE_DISPLAY +
             ". We're here 24/7.",
           "bot"
