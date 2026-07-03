@@ -38,17 +38,17 @@ Source of truth: `scripts/build-referral-card5-print.py` (edit + rerun; asserts 
 - QR must decode (opencv) to https://eternallifehospice.com/refer.
 - Preview: pdftoppm -r 120 both pages → side-by-side PNG (gap 40) at exports/print/previews/referral-card-5-front-back.png.
 
-## MOO variant (the size actually ordered)
-MOO's rack card trim is 3.67×8.5in — larger than the 3.5×7.75 design. Variant script
-`scripts/build-referral-card5-moo-print.py` (derived from the main script, keep in sync):
-MOO template spec: bleed 3.83×8.66in / trim 3.67×8.5 / safe 3.5×8.34 (0.08in bleed per
-side). Full-bleed page 3.83×8.66in (chromium emits 276×624pt — assert that), NO crop marks
-(MOO trims), design top-aligned, plum extends through the extra ~0.75in at bottom,
-dashed gold cut guide + label at the 7.75in line sitting entirely in the waste strip
-(user makes ONE bottom cut → final 3.67×7.75; guide is removed by the cut).
-Back checklist margin narrowed 25→22pt so "daily activities" line doesn't wrap.
-Deliverables split with pdfseparate into ...MOO-rack-FRONT/BACK-CMYK.pdf (MOO wants
-one file per side).
+## MOO variant (the size actually ordered — FULL SCALE, no cutting)
+Variant script `scripts/build-referral-card5-moo-print.py` (derived from the main
+script, keep in sync). MOO template spec: bleed 3.83×8.66in / trim 3.67×8.5 /
+safe 3.5×8.34 (0.08in per side). Page = full bleed (chromium emits 276×624pt —
+assert that), NO crop marks (MOO trims). Design fills the ENTIRE card: content
+scaled via CSS zoom 1.048571 on .art (design units: art 263.25×595.15pt, bleed
+≈5.5pt/side), extra height absorbed by enlarged section gaps; bottom groups
+re-anchored bottom:0 to true bleed edge (front footer h56.5 pad-b 5.5; back bar
+h42.5 pad-b 4.5). Wrap fixes at this scale: back checklist margin 19pt, office
+row margin 22pt/padding 6pt. Note zoom divides effective image dpi (~718 floor —
+still fine). Deliverables split with pdfseparate into ...MOO-rack-FRONT/BACK-CMYK.pdf.
 
 **Why:** locked after ~23 iterations with the user; email/logo sizes/lockup proportions all deliberate.
 **How to apply:** future referral cards start from this layout; do not re-explore logo treatments (cream mark on plum, gradient mark only on light backgrounds).
