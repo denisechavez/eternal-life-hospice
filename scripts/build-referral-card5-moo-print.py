@@ -58,7 +58,7 @@ FRONT = f"""
                   font-size:8.5pt;letter-spacing:2.2pt;padding:4pt 13pt 3.4pt;border-radius:10pt">SAME-DAY&nbsp;ADMISSION</div>
       <div style="margin-top:12pt;font-family:Fraunces;font-weight:560;font-size:22.5pt;line-height:1;color:{CREAM}">Refer in One Call,</div>
       <div style="margin-top:4pt;font-family:Fraunces;font-weight:500;font-size:15.5pt;line-height:1;color:{CREAM}">Scan, Fax or E-mail</div>
-      <div style="margin-top:5pt;font-family:Jost;font-weight:500;font-size:11pt;letter-spacing:0.6pt;color:#D9CBD8">Answered 24/7 by a hospice nurse</div>
+      <div style="margin-top:5pt;font-family:Jost;font-weight:500;font-size:11pt;letter-spacing:0.6pt;color:#D9CBD8">Answered 24/7 &middot; Hospice Nurse Access</div>
       <div style="margin-top:12pt;font-family:Fraunces;font-weight:620;font-size:33.5pt;letter-spacing:0.5pt;color:{GOLD}">805.953.7273</div>
       <div style="margin-top:6pt;font-family:Jost;font-weight:500;font-size:10.5pt;color:{CREAM}">Fax referrals &middot; 805.953.8530</div>
       <div style="margin-top:16pt;background:{CREAM};border-radius:13pt;padding:6pt">
@@ -126,10 +126,10 @@ BACK = f"""
         <span style="font-family:Jost;font-weight:500;font-size:9.8pt;color:{CREAM};line-height:1.4">Clinical &amp; mobile services at no expense to families</span></div>
       <div style="display:flex;gap:7pt;align-items:baseline">
         <span style="font-family:Jost;font-weight:600;font-size:8.5pt;color:{GOLD}">&#10022;</span>
-        <span style="font-family:Jost;font-weight:500;font-size:9.8pt;color:{CREAM};line-height:1.4">Zero complaints in 11 years of care</span></div>
+        <span style="font-family:Jost;font-weight:500;font-size:9.3pt;color:{CREAM};line-height:1.4;white-space:nowrap">Founded in 2020 &middot; Zero complaints to date</span></div>
     </div>
-    <div style="margin:6pt 27pt 0;text-align:center;font-family:Jost;font-weight:500;font-size:8.2pt;
-                letter-spacing:0.4pt;color:{PLUM};line-height:1.5">Same-day admission &middot; Transport &middot; 24/7 nurse<br>Physician-led &middot; Placement &middot; Bereavement</div>
+    <div style="margin:6pt 14pt 0;text-align:center;font-family:Jost;font-weight:500;font-size:8pt;
+                letter-spacing:0.2pt;color:{PLUM};line-height:1.5"><span style="white-space:nowrap">Same-day admission &middot; Transport &middot; Physician-led</span><br><span style="white-space:nowrap">24/7 Hospice Nurse Access &middot; Placement &middot; Bereavement</span></div>
     <div style="margin:7pt 0 0;display:flex;align-items:center;justify-content:center;gap:15pt">
       <img src="{CMS}" style="max-height:22pt;max-width:60pt">
       <img src="{CDPH}" style="max-height:46pt">
