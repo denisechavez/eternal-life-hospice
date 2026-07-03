@@ -58,3 +58,9 @@ Rule: at MOO scale (bleed 3.83x8.66 / trim 3.67x8.5 / safe 3.5x8.34), every elem
 **Why:** the original front credential band (gap 17, CMS/Epic 24/64, CDPH 50, ACHC 34) totaled ~260pt and crossed the trim line — logos would be physically cut.
 Locked MOO values: front band gap 11pt, CMS/Epic max 23/60pt, CDPH 46pt, ACHC 32pt; front address 8.2pt; back credential bar 6.4pt/0.9pt letter-spacing; art overfill 263.6x595.5pt (seals right-edge white seam).
 **How to apply:** after any layout edit, render 300dpi and measure content extents vs safe px 50..1100 (trim 24..1126) before delivering.
+
+## Wordmark font spec (July 2026, locked)
+The front-cover "Eternal" wordmark must be Fraunces weight 455 with font-variation-settings 'opsz' 58 (30pt).
+**Why:** default rendering (weight 480, auto opsz) was visibly chunkier than the brand logo master; the master uses Fraunces' display cut. Measured width/height ratio of master wordmark = 4.335; 455/58 renders 4.25-4.31 (closest match; opsz 144 too narrow at 3.62, no-opsz too wide/heavy).
+**How to apply:** any HTML re-creation of the logo lockup needs the explicit opsz setting — Chromium does NOT auto-apply a matching optical size. Verify vs brand-assets/Medical/eternal-life-hospice-logo-cream-gold-subtitle.png at equal cap height.
+Brand palette confirmed identical to site: deep #3C1C3B, plum #5B2E59, gold #C9B07E, cream #F5F0EB (CMYK PDF round-trips deep plum exactly).
