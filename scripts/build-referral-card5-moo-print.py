@@ -33,7 +33,7 @@ for f in ["cms-centers-for-medicare-medicaid-services.png",
           "cdph-california-department-of-public-health.png",
           "achc-accredited-gold-seal.png"]:
     shutil.copy(os.path.join(LOGOS, f), WORK)
-for f in ["aida.svg", "aidin.png", "navihealth.png", "ensocare.png", "wellsky.png"]:
+for f in ["aida.svg", "aidin.png", "navihealth.png", "ensocare.png", "wellsky.png", "epic.png"]:
     shutil.copy(os.path.join(PARTNERS, f), WORK)
 shutil.copy(os.path.join(ROOT, "brand-assets", "Medical",
                          "eternal-life-hospice-infinity-cream-hires.png"),
@@ -153,6 +153,7 @@ BACK = f"""
       <div style="margin-top:4pt;display:flex;align-items:center;justify-content:center;gap:4.5pt">
         {pchip("aida.svg", 13)}
         {pchip("ensocare.png", 15)}
+        {pchip("epic.png", 13)}
       </div>
     </div>
     <div style="margin:5pt 25pt 0;background:{PANEL};border-radius:12pt;padding:6pt 12pt;
