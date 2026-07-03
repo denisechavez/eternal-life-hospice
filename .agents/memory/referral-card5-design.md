@@ -52,3 +52,9 @@ still fine). Deliverables split with pdfseparate into ...MOO-rack-FRONT/BACK-CMY
 
 **Why:** locked after ~23 iterations with the user; email/logo sizes/lockup proportions all deliberate.
 **How to apply:** future referral cards start from this layout; do not re-explore logo treatments (cream mark on plum, gradient mark only on light backgrounds).
+
+## MOO safe-zone fix (July 2026, locked)
+Rule: at MOO scale (bleed 3.83x8.66 / trim 3.67x8.5 / safe 3.5x8.34), every element must fit the SAFE area, which in design units (pre-zoom 1.048571) is ~240pt wide — narrower than the original 252pt trim the layout was designed for.
+**Why:** the original front credential band (gap 17, CMS/Epic 24/64, CDPH 50, ACHC 34) totaled ~260pt and crossed the trim line — logos would be physically cut.
+Locked MOO values: front band gap 11pt, CMS/Epic max 23/60pt, CDPH 46pt, ACHC 32pt; front address 8.2pt; back credential bar 6.4pt/0.9pt letter-spacing; art overfill 263.6x595.5pt (seals right-edge white seam).
+**How to apply:** after any layout edit, render 300dpi and measure content extents vs safe px 50..1100 (trim 24..1126) before delivering.

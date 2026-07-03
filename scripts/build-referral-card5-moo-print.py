@@ -67,16 +67,16 @@ FRONT = f"""
     </div>
     <!-- full-bleed cream credential band: spans the whole art/bleed width -->
     <div style="position:absolute;left:0;bottom:56.5pt;width:100%;height:56pt;background:{CREAM};
-                display:flex;align-items:center;justify-content:center;gap:17pt">
-      <img src="{CMS}" style="max-height:24pt;max-width:64pt">
-      <img src="{CDPH}" style="max-height:50pt">
-      <img src="{ACHC}" style="max-height:34pt">
-      <img src="{EPIC}" style="max-height:24pt;max-width:64pt">
+                display:flex;align-items:center;justify-content:center;gap:11pt">
+      <img src="{CMS}" style="max-height:23pt;max-width:60pt">
+      <img src="{CDPH}" style="max-height:46pt">
+      <img src="{ACHC}" style="max-height:32pt">
+      <img src="{EPIC}" style="max-height:23pt;max-width:60pt">
     </div>
     <div style="position:absolute;left:0;bottom:0;width:100%;height:56.5pt;padding-bottom:5.5pt;
                 display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2.5pt;text-align:center">
       <div style="font-family:Jost;font-weight:600;font-size:11pt;color:{CREAM}">referral@eternallifehospice.com</div>
-      <div style="font-family:Jost;font-weight:400;font-size:8.5pt;color:#D9CBD8">4165 E Thousand Oaks Blvd, Ste 325B, Westlake Village, CA 91362</div>
+      <div style="font-family:Jost;font-weight:400;font-size:8.2pt;color:#D9CBD8">4165 E Thousand Oaks Blvd, Ste 325B, Westlake Village, CA 91362</div>
       <div style="font-family:Jost;font-weight:600;font-size:7.5pt;letter-spacing:2pt;color:{GOLD};margin-top:1.5pt">SERVING&nbsp;VENTURA&nbsp;&amp;&nbsp;LOS&nbsp;ANGELES&nbsp;COUNTY</div>
     </div>
   </div>
@@ -162,7 +162,7 @@ BACK = f"""
                 letter-spacing:1.4pt;color:{PLUM}">SERVING&nbsp;VENTURA&nbsp;&amp;&nbsp;LOS&nbsp;ANGELES&nbsp;COUNTY</div>
     <div style="position:absolute;left:0;bottom:0;width:100%;height:42.5pt;background:{DEEP};
                 display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2.5pt;padding-bottom:4.5pt">
-      <div style="font-family:Jost;font-weight:600;font-size:6.7pt;letter-spacing:1pt;color:{CREAM};white-space:nowrap">MEDICARE-CERTIFIED&nbsp;&middot;&nbsp;CDPH-LICENSED&nbsp;&middot;&nbsp;ACHC-ACCREDITED</div>
+      <div style="font-family:Jost;font-weight:600;font-size:6.4pt;letter-spacing:0.9pt;color:{CREAM};white-space:nowrap">MEDICARE-CERTIFIED&nbsp;&middot;&nbsp;CDPH-LICENSED&nbsp;&middot;&nbsp;ACHC-ACCREDITED</div>
       <div style="font-family:FrauncesItalic;font-style:italic;font-weight:540;font-size:12pt;color:{GOLD}">Care That Honors Life</div>
     </div>
   </div>
@@ -178,7 +178,7 @@ HTML = f"""<!doctype html><html><head><meta charset="utf-8"><style>
 @font-face {{ font-family:'Jost'; src:url('JostELH-SemiBold.woff2') format('woff2'); font-weight:600; }}
 .page {{ position:relative; width:275.76pt; height:623.52pt; overflow:hidden; page-break-after:always; }}
 .page:last-child {{ page-break-after:auto; }}
-.art {{ position:absolute; left:0; top:0; width:263.25pt; height:595.15pt; zoom:1.048571; overflow:hidden; }}
+.art {{ position:absolute; left:0; top:0; width:263.6pt; height:595.5pt; zoom:1.048571; overflow:hidden; }}
 img {{ display:block; }}
 </style></head><body>{FRONT}{BACK}</body></html>"""
 
