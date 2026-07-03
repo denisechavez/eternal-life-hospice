@@ -162,7 +162,7 @@ BACK = f"""
         <div style="flex:0 0 auto;background:#ffffff;border-radius:9pt;padding:4.5pt">
           <img src="qr-refer-cream.png" style="width:44pt;display:block;border-radius:5pt"></div>
         <div style="display:flex;flex-direction:column;gap:3.5pt;min-width:0">
-          <div style="font-family:Jost;font-weight:600;font-size:7.5pt;letter-spacing:2.2pt;color:#A8874F">REFER&nbsp;24/7</div>
+          <div style="font-family:Jost;font-weight:600;font-size:7.5pt;letter-spacing:1.3pt;color:#A8874F;white-space:nowrap">REFER&nbsp;24/7&nbsp;NURSE&nbsp;ACCESS</div>
           {crow("CALL 24/7", "805.953.7273", f"font-weight:600;font-size:9.6pt;color:{PLUM};white-space:nowrap")}
           {crow("FAX", "805.953.8530", f"font-weight:600;font-size:9.6pt;color:{PLUM};white-space:nowrap")}
         </div>
