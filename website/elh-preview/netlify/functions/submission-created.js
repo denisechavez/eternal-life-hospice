@@ -15,14 +15,12 @@
  *
  * A reply is only sent when a submission includes a valid email, so it degrades
  * safely. Eligible forms: elh-family, elh-casemanager, elh-careers (collect an
- * email), elh-physician (the /refer page adds an OPTIONAL work email — when
+ * email), and elh-physician (the /refer page adds an OPTIONAL work email — when
  * provided, the partner gets a PHI-free referral confirmation; the homepage
- * physician form has no email field and is unaffected), and elh-chat-callback
- * (the chat widget's callback form adds an OPTIONAL email — when provided, the
- * requester gets a callback confirmation). Still phone-only, never replied to:
- * elh-coordinator.
+ * physician form has no email field and is unaffected). Never auto-replied to:
+ * elh-coordinator and elh-chat-callback (the chat already confirms on-screen).
  *
- * elh-chat-callback ALSO triggers an internal team notification to
+ * elh-chat-callback instead triggers an internal team notification to
  * referral@eternallifehospice.com with the callback details, so callback
  * requests reach the referral inbox even without Netlify UI notifications.
  */
@@ -41,10 +39,9 @@ const FROM =
 //   elh-physician — the /refer page adds an OPTIONAL work email; when a partner
 //     provides it they get a PHI-free referral confirmation. The homepage
 //     physician form has no email field, so it is never affected.
-//   elh-chat-callback — the chat widget's callback form has an OPTIONAL email;
-//     when provided, the requester gets a callback confirmation. This form also
-//     sends a team notification to the referral inbox (see handler).
-// Still phone-only (never replied to): elh-coordinator.
+//   elh-chat-callback — listed only so the handler runs its referral-inbox
+//     notification; it returns before the auto-reply (chat confirms on-screen).
+// Never auto-replied to: elh-coordinator, elh-chat-callback.
 const ALLOWED_FORMS = [
   "elh-family",
   "elh-casemanager",
@@ -71,9 +68,9 @@ exports.handler = async function (event) {
       return { statusCode: 200, body: "form not eligible for auto-reply; skipped" };
     }
 
-    // Chat callback requests: always notify the referral inbox first, even when
-    // the requester left no email. A notification failure is logged but never
-    // blocks the submission or the requester's auto-reply.
+    // Chat callback requests: notify the referral inbox, then stop — the chat
+    // widget already confirms on the spot, so no auto-reply email is sent.
+    // A notification failure is logged but never blocks the submission.
     if (formName === "elh-chat-callback") {
       try {
         await sendCallbackNotification(apiKey, data);
@@ -82,6 +79,7 @@ exports.handler = async function (event) {
           "Callback team notification failed: " + (e && e.message ? e.message : e)
         );
       }
+      return { statusCode: 200, body: "callback notification handled; no auto-reply" };
     }
 
     const toEmail = String(data.email || "").trim().toLowerCase();
@@ -98,14 +96,11 @@ exports.handler = async function (event) {
     const greeting = firstName ? "Hi " + escapeText(firstName) + "," : "Hello,";
     const isCareers = formName === "elh-careers";
     const isReferral = formName === "elh-physician";
-    const isCallback = formName === "elh-chat-callback";
 
     const subject = isCareers
       ? "Thank you for your interest — Eternal Life Hospice"
       : isReferral
       ? "We received your referral — Eternal Life Hospice"
-      : isCallback
-      ? "We received your callback request — Eternal Life Hospice"
       : "We received your message — Eternal Life Hospice";
 
     // Static, PHI-free copy. We never echo the submitted clinical description.
@@ -113,8 +108,6 @@ exports.handler = async function (event) {
       ? "Thank you for your interest in joining the Eternal Life Hospice team. We've received your application and a member of our team will review it and be in touch."
       : isReferral
       ? "Thank you for referring a patient to Eternal Life Hospice. We've received your referral, and our clinical intake team will reach out shortly to complete the details with you securely by phone. No patient information is ever exchanged by email."
-      : isCallback
-      ? "Thank you for requesting a callback from Eternal Life Hospice. We've received your request, and a member of our team will call you back shortly at the number you provided."
       : "Thank you for reaching out to Eternal Life Hospice. We've received your message, and a member of our team will be in touch with you shortly.";
 
     const text = [

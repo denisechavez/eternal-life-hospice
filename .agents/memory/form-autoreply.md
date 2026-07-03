@@ -20,19 +20,20 @@ courtesy layer on top and must degrade silently.
 exist." **Why:** gating on field presence would reply to any future/crafted form
 carrying an `email` field. A reply still only goes out when the submission has a
 valid email, so a form is safe to allowlist even if its email field is optional.
-Allowlisted: `elh-family`, `elh-casemanager`, `elh-careers` (collect email),
+Allowlisted: `elh-family`, `elh-casemanager`, `elh-careers` (collect email), and
 `elh-physician` (the /refer page added an OPTIONAL work email → PHI-free referral
 confirmation; the homepage physician form has no email field so it's unaffected,
-and that form lives in `index.html` also named `elh-physician`), and
-`elh-chat-callback` (chat widget callback form has an OPTIONAL email → callback
-confirmation). Still phone-only and never replied to: `elh-coordinator`.
+and that form lives in `index.html` also named `elh-physician`). Never
+auto-replied to: `elh-coordinator`, `elh-chat-callback`.
 
-**Chat callback → referral inbox:** `elh-chat-callback` submissions also trigger
-an internal notification email via Resend to referral@eternallifehospice.com
-(code-controlled, independent of Netlify UI notifications). It runs before the
-auto-reply gate so it fires even with no requester email; its failure is logged
-but never blocks the submission or the auto-reply. The internal email may
-include the requester's note; the OUTBOUND auto-reply stays static/PHI-free.
+**Chat callback → referral inbox (no auto-reply):** `elh-chat-callback`
+submissions trigger an internal notification email via Resend to
+referral@eternallifehospice.com (code-controlled, independent of Netlify UI
+notifications), then the handler returns — NO auto-reply to the requester.
+**Why:** user decision (July 2026) — the chat widget already confirms on-screen,
+so an email confirmation is redundant. The form still collects an optional
+`email` field purely as contact info for the team. The internal email may
+include the requester's note; nothing is ever echoed to an outside address.
 
 Content branches by form: careers / referral (`elh-physician`) / generic. The
 referral branch greets by the referrer's first name (a professional, not the
