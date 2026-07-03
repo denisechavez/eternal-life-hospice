@@ -161,7 +161,7 @@ BACK = f"""
         <div style="flex:0 0 auto;background:#ffffff;border-radius:9pt;padding:4.5pt">
           <img src="qr-refer-cream.png" style="width:44pt;display:block;border-radius:5pt"></div>
         <div style="display:flex;flex-direction:column;gap:3.5pt;min-width:0">
-          <div style="font-family:Jost;font-weight:600;font-size:7.5pt;letter-spacing:1.3pt;color:#A8874F;white-space:nowrap">REFER&nbsp;24/7&nbsp;NURSE&nbsp;ACCESS</div>
+          <div style="font-family:Jost;font-weight:600;font-size:7.5pt;letter-spacing:1.3pt;color:#A8874F;white-space:nowrap">24/7&nbsp;NURSE&nbsp;ACCESS</div>
           {crow("CALL 24/7", "805.953.7273", f"font-weight:600;font-size:9.6pt;color:{PLUM};white-space:nowrap")}
           {crow("FAX", "805.953.8530", f"font-weight:600;font-size:9.6pt;color:{PLUM};white-space:nowrap")}
         </div>
@@ -175,7 +175,7 @@ BACK = f"""
     <div style="margin:4pt 22pt 0;padding:0 6pt;display:flex;gap:7pt;align-items:baseline">
       <span style="flex:0 0 42pt;font-family:Jost;font-weight:600;font-size:6.4pt;
                    letter-spacing:0.9pt;color:{STEEL}">OFFICE</span>
-      <span style="font-family:Jost;font-weight:500;font-size:8.2pt;color:#3a2b39;line-height:1.4">4165 E Thousand Oaks Blvd, Ste 325B, Westlake Village, CA 91362</span>
+      <span style="font-family:Jost;font-weight:500;font-size:8.2pt;color:#3a2b39;line-height:1.4">4165 E Thousand Oaks Blvd, Ste 325B Westlake Village, CA 91362</span>
     </div>
     <div style="margin-top:3.5pt;text-align:center;font-family:Jost;font-weight:500;font-size:7.4pt;
                 letter-spacing:1.4pt;color:{PLUM}">SERVING&nbsp;VENTURA&nbsp;&amp;&nbsp;LOS&nbsp;ANGELES&nbsp;COUNTY</div>
