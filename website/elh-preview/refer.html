@@ -29,6 +29,20 @@
   .trust-banner .tb-row--platforms{gap:.55rem}
   .trust-banner .tb-pchip{display:inline-flex;align-items:center;justify-content:center;background:#fff;border-radius:10px;padding:.45rem .8rem}
   .trust-banner .tb-pchip img{display:block;width:auto}
+  .trust-banner .tb-marquee{overflow:hidden;position:relative;max-width:860px;margin:0 auto}
+  .trust-banner .tb-marquee::before,.trust-banner .tb-marquee::after{content:'';position:absolute;top:0;bottom:0;width:70px;z-index:2;pointer-events:none}
+  .trust-banner .tb-marquee::before{left:0;background:linear-gradient(to right,var(--deep),transparent)}
+  .trust-banner .tb-marquee::after{right:0;background:linear-gradient(to left,var(--deep),transparent)}
+  .trust-banner .tb-mtrack{display:flex;width:max-content;animation:tbscroll 28s linear infinite}
+  .trust-banner .tb-mtrack:hover{animation-play-state:paused}
+  .trust-banner .tb-mset{display:flex;align-items:center;gap:.55rem;padding-right:.55rem}
+  .trust-banner .tb-mset .tb-pchip:nth-child(1) img{height:20px}
+  .trust-banner .tb-mset .tb-pchip:nth-child(2) img{height:28px}
+  .trust-banner .tb-mset .tb-pchip:nth-child(3) img{height:19px}
+  .trust-banner .tb-mset .tb-pchip:nth-child(4) img{height:24px}
+  .trust-banner .tb-mset .tb-pchip:nth-child(5) img{height:28px}
+  @keyframes tbscroll{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+  @media(prefers-reduced-motion:reduce){.trust-banner .tb-mtrack{animation:none;flex-wrap:wrap;width:auto;justify-content:center}.trust-banner .tb-mset[aria-hidden]{display:none}.trust-banner .tb-marquee::before,.trust-banner .tb-marquee::after{display:none}}
   .trust-banner .tb-note{max-width:640px;margin:.9rem auto 0;font-size:11px;line-height:1.6;color:rgba(245,240,235,.55)}
   @media(max-width:560px){.refer-call .rc-num{font-size:1.2rem}.trust-banner .tb-chip{width:100%;justify-content:flex-start}.trust-banner .tb-line{letter-spacing:.1em;line-height:2}}
 </style>
@@ -135,12 +149,37 @@
   </div>
   <p class="tb-line">Same-Day Admissions<span class="tb-sep">&#8226;</span>24/7 Hospice Nurse Access<span class="tb-sep">&#8226;</span>Serving Ventura &amp; Los Angeles Counties</p>
   <p class="tb-label tb-label--sub">Coordinated Secure Communication</p>
-  <div class="tb-row tb-row--platforms">
-    <span class="tb-pchip"><img loading="lazy" decoding="async" src="assets/img/platform-aidin.png" alt="Aidin" style="height:20px"></span>
-    <span class="tb-pchip"><img loading="lazy" decoding="async" src="assets/img/platform-navihealth.png" alt="naviHealth" style="height:28px"></span>
-    <span class="tb-pchip"><img loading="lazy" decoding="async" src="assets/img/platform-wellsky.png" alt="WellSky" style="height:19px"></span>
-    <span class="tb-pchip"><img loading="lazy" decoding="async" src="assets/img/platform-aida.svg" alt="AIDA Healthcare" style="height:24px"></span>
-    <span class="tb-pchip"><img loading="lazy" decoding="async" src="assets/img/platform-ensocare.png" alt="Ensocare" style="height:28px"></span>
+  <div class="tb-marquee">
+    <div class="tb-mtrack">
+      <span class="tb-mset">
+        <span class="tb-pchip"><img loading="lazy" decoding="async" src="assets/img/platform-aidin.png" alt="Aidin" style="height:20px"></span>
+        <span class="tb-pchip"><img loading="lazy" decoding="async" src="assets/img/platform-navihealth.png" alt="naviHealth" style="height:28px"></span>
+        <span class="tb-pchip"><img loading="lazy" decoding="async" src="assets/img/platform-wellsky.png" alt="WellSky" style="height:19px"></span>
+        <span class="tb-pchip"><img loading="lazy" decoding="async" src="assets/img/platform-aida.svg" alt="AIDA Healthcare" style="height:24px"></span>
+        <span class="tb-pchip"><img loading="lazy" decoding="async" src="assets/img/platform-ensocare.png" alt="Ensocare" style="height:28px"></span>
+      </span>
+      <span class="tb-mset" aria-hidden="true">
+        <span class="tb-pchip"><img loading="lazy" decoding="async" src="assets/img/platform-aidin.png" alt=""></span>
+        <span class="tb-pchip"><img loading="lazy" decoding="async" src="assets/img/platform-navihealth.png" alt=""></span>
+        <span class="tb-pchip"><img loading="lazy" decoding="async" src="assets/img/platform-wellsky.png" alt=""></span>
+        <span class="tb-pchip"><img loading="lazy" decoding="async" src="assets/img/platform-aida.svg" alt=""></span>
+        <span class="tb-pchip"><img loading="lazy" decoding="async" src="assets/img/platform-ensocare.png" alt=""></span>
+      </span>
+      <span class="tb-mset" aria-hidden="true">
+        <span class="tb-pchip"><img loading="lazy" decoding="async" src="assets/img/platform-aidin.png" alt=""></span>
+        <span class="tb-pchip"><img loading="lazy" decoding="async" src="assets/img/platform-navihealth.png" alt=""></span>
+        <span class="tb-pchip"><img loading="lazy" decoding="async" src="assets/img/platform-wellsky.png" alt=""></span>
+        <span class="tb-pchip"><img loading="lazy" decoding="async" src="assets/img/platform-aida.svg" alt=""></span>
+        <span class="tb-pchip"><img loading="lazy" decoding="async" src="assets/img/platform-ensocare.png" alt=""></span>
+      </span>
+      <span class="tb-mset" aria-hidden="true">
+        <span class="tb-pchip"><img loading="lazy" decoding="async" src="assets/img/platform-aidin.png" alt=""></span>
+        <span class="tb-pchip"><img loading="lazy" decoding="async" src="assets/img/platform-navihealth.png" alt=""></span>
+        <span class="tb-pchip"><img loading="lazy" decoding="async" src="assets/img/platform-wellsky.png" alt=""></span>
+        <span class="tb-pchip"><img loading="lazy" decoding="async" src="assets/img/platform-aida.svg" alt=""></span>
+        <span class="tb-pchip"><img loading="lazy" decoding="async" src="assets/img/platform-ensocare.png" alt=""></span>
+      </span>
+    </div>
   </div>
   <p class="tb-note">Referral platforms our intake team works within, where used by your facility. Logos are trademarks of their respective owners and do not imply endorsement, affiliation or partnership.</p>
 </div>
