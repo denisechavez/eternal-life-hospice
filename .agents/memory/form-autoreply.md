@@ -35,7 +35,10 @@ so an email confirmation is redundant. The form still collects an optional
 `email` field purely as contact info for the team. The internal email may
 include the requester's note; nothing is ever echoed to an outside address.
 
-Content branches by form: careers / referral (`elh-physician`) / generic. The
+Content branches by form: careers / referral (`elh-physician` AND
+`elh-casemanager` — the homepage discharge form is also a professional referral,
+so it gets the same "we received your referral" copy, per user July 2026) /
+generic. The
 referral branch greets by the referrer's first name (a professional, not the
 patient — `referrer_name`/`first_name`/`name`, first token only) and never echoes
 the `situation`/clinical free-text.

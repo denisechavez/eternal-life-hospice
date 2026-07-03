@@ -95,7 +95,11 @@ exports.handler = async function (event) {
     const firstName = rawName.split(/\s+/)[0] || "";
     const greeting = firstName ? "Hi " + escapeText(firstName) + "," : "Hello,";
     const isCareers = formName === "elh-careers";
-    const isReferral = formName === "elh-physician";
+    // Referral confirmations: physician (/refer page) AND the homepage
+    // case-manager discharge form — both are professional referrals, so both
+    // get the same PHI-free "we received your referral" copy.
+    const isReferral =
+      formName === "elh-physician" || formName === "elh-casemanager";
 
     const subject = isCareers
       ? "Thank you for your interest — Eternal Life Hospice"
