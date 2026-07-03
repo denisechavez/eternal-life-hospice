@@ -146,14 +146,14 @@ BACK = f"""
     <div style="margin:5pt 20pt 0;text-align:center">
       <div style="font-family:Jost;font-weight:600;font-size:6.6pt;letter-spacing:1.9pt;color:#A8874F;white-space:nowrap">COORDINATED&nbsp;SECURE&nbsp;COMMUNICATION</div>
       <div style="margin-top:3.5pt;display:flex;align-items:center;justify-content:center;gap:4.5pt">
-        {pchip("aidin.png", 11)}
-        {pchip("navihealth.png", 15)}
-        {pchip("wellsky.png", 10.5)}
+        {pchip("aidin.png", 13)}
+        {pchip("navihealth.png", 17.5)}
+        {pchip("wellsky.png", 12.5)}
       </div>
       <div style="margin-top:4pt;display:flex;align-items:center;justify-content:center;gap:4.5pt">
-        {pchip("aida.svg", 13)}
-        {pchip("ensocare.png", 15)}
-        {pchip("epic.png", 13)}
+        {pchip("aida.svg", 15.5)}
+        {pchip("ensocare.png", 17.5)}
+        {pchip("epic.png", 15.5)}
       </div>
     </div>
     <div style="margin:5pt 25pt 0;background:{PANEL};border-radius:12pt;padding:6pt 12pt;
