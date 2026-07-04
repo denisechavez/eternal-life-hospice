@@ -971,3 +971,9 @@ id = "CqWHf3IUC-FxhiqwllWus"
 uri = "file://exports/diagrams/full-circle-of-care.png"
 type = "image"
 title = "Full Circle of Care — Children's Workshop Giving Graphic"
+
+[[outputs]]
+id = "APCEX5r8IcyGiIlmvtW4h"
+uri = "file://exports/digital/eternal-life-press-kit-digital.pdf"
+type = "pdf"
+title = "Eternal Life Hospice — Digital Press Kit (PDF)"
