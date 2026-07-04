@@ -976,4 +976,10 @@ title = "Full Circle of Care — Children's Workshop Giving Graphic"
 id = "APCEX5r8IcyGiIlmvtW4h"
 uri = "file://exports/digital/eternal-life-press-kit-digital.pdf"
 type = "pdf"
-title = "Eternal Life Hospice — Digital Press Kit (PDF)"
+title = "Digital Press Kit — 11 pages (PDF)"
+
+[[outputs]]
+id = "SmpVeSU6eVlw0CE_QEOsC"
+uri = "file://exports/digital/eternal-life-referral-card-digital.pdf"
+type = "pdf"
+title = "Digital Referral Card — front & back (PDF)"
