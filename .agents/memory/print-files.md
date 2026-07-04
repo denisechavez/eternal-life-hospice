@@ -153,6 +153,26 @@ Also: highest-res cream ELH lockup = brand-assets/Medical/eternal-life-hospice-l
 (661px, recolored from the metallic-plum transparent master; the 1336px "cream-gold-subtitle"
 file has ragged edges and a different lockup — avoid).
 
+## Digital (screen) press kit from print PDFs (July 2026)
+Downloadable screen deliverables go in `exports/digital/` (new home, NOT print).
+To turn the print press kit (die-cut folder + 4 pillar cards, in
+`exports/print/press-kit/`) into one flat digital PDF: `pdftoppm -png -r 200`
+each source, crop the folder's die-cut panels (cover / welcome-coverage / contact),
+then compose each art onto a cream `#F5F0EB` letter canvas (1275×1650@150) with a
+soft plum drop shadow + hairline border via PIL. **Die-cut gotchas:** the folder's
+cover panel has a white pocket band at the bottom (auto-trim by scanning up for the
+last dark/plum row) and the contact panel has an inverted pocket-flap strip at the
+bottom (fixed ~22% bottom trim) plus a white fold strip on the left (luminance
+border-trim). Cards need a ~3.5% edge trim for bleed/registration marks. **Do NOT
+luminance-border-trim the cover** — its top half is a light photo so the scan
+collapses it.
+**PIL CANNOT save PDF here** (`KeyError: 'JPEG'` — Pillow has no JPEG codec, and its
+PDF writer needs it). Assemble instead: save composed pages as PNGs, then
+`magick -density 150 /tmp/pages/*.png -compress JPEG -quality 85 out.pdf`
+(use `magick`, not deprecated `convert`; absolute paths — ImageMagick PDF write works).
+Result is rasterized (no clickable links/live text) — offer a vector/clickable
+version as a follow-up if the user wants tappable phone/email.
+
 ## Logo lockup for print: use symbol image + vector text (July 2026)
 The raster ELH logo PNGs render "LIFE HOSPICE" soft at print size — no source is
 big enough. Correct pattern (matches the website's own header): infinity symbol
