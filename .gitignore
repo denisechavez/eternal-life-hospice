@@ -1,0 +1,3 @@
+# Private, local-only data — never committed to Git, never published.
+# Drop sensitive files (contact lists, exports to clean, etc.) in here.
+_private-data/
