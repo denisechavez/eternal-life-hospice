@@ -14,4 +14,5 @@
 - [Brand asset library](brand-assets.md) — repo-root brand-assets/ (unpublished): Medical/ = ELH's own logos, ELH-affiliates-and-partners/ = 13 third-party logos; NEVER publish partner logos without a compliance review (Anti-Kickback/false-affiliation).
 - [Build-flow infographic](build-flow-infographic.md) — internal PNG explainer of AI→Replit→GitHub→Netlify→live; tool marks via Simple Icons SVG tinted plum; render pattern.
 - [Community-giving collateral](community-giving-collateral.md) — VCCF/Children's Workshop graphic; standard non-affiliation disclosure block required on all philanthropy collateral.
+- [Journal (blog)](blog-journal.md) — /blog "Eternal Journal"; posts mirror resources sub-page template + Article schema; footer-linked sitewide; backdating is cosmetic not SEO; Medicare "no copays" claim is inaccurate—use precise wording.
 - [MarTech stack decisions](martech-stack-decisions.md) — GoDaddy+Google Workspace confirmed; Anthropic key personal→move; AVOID Klaviyo(e-comm/HIPAA); use HubSpot free CRM + MailerLite/Brevo; blog=static $0; defer paid SEO.
