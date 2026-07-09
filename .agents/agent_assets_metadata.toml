@@ -1007,3 +1007,9 @@ id = "cbDzFKPtC0XogSlDt1Nwz"
 uri = "file://exports/newsletter/elh-newsletter-review.pdf"
 type = "pdf"
 title = "ELH Monthly Newsletter — Review Kit (one continuous PDF)"
+
+[[outputs]]
+id = "PAXWadaeiXfWjWwUJGvH7"
+uri = "file://exports/social/elh-hero-care-that-honors-life.png"
+type = "image"
+title = "Hero Image — Care That Honors Life (for Google Business Profile)"
