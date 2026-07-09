@@ -1001,3 +1001,9 @@ id = "BaLOevnRvDAqO87lxKQoL"
 uri = "file://exports/strategy/eternal-life-seo-gbp-analytics-status.pdf"
 type = "pdf"
 title = "Website SEO, Google Business Profile & Analytics — Status & Action Guide"
+
+[[outputs]]
+id = "cbDzFKPtC0XogSlDt1Nwz"
+uri = "file://exports/newsletter/elh-newsletter-review.pdf"
+type = "pdf"
+title = "ELH Monthly Newsletter — Review Kit (single printable PDF)"
