@@ -499,6 +499,49 @@ app.post("/api/extract-card", requireAuth, extractLimiter, async (req, res) => {
   }
 });
 
+// ---- AI: voice note transcription ----
+const transcribeLimiter = rateLimit({
+  max: 40,
+  windowMs: 10 * 60 * 1000,
+  message: "Too many voice notes. Please wait a few minutes and try again.",
+});
+
+app.post("/api/transcribe", requireAuth, transcribeLimiter, async (req, res) => {
+  try {
+    const dataUrl = String(req.body.audio || "");
+    const match = dataUrl.match(
+      /^data:(audio\/(webm|ogg|mp4|mpeg|mp3|wav|x-m4a|m4a))(;codecs=[^;]+)?;base64,(.+)$/
+    );
+    if (!match) return res.status(400).json({ error: "Invalid audio data." });
+    const buffer = Buffer.from(match[4], "base64");
+    if (buffer.length < 512) {
+      return res.status(400).json({ error: "Recording too short. Please try again." });
+    }
+    if (buffer.length > 8 * 1024 * 1024) {
+      return res
+        .status(413)
+        .json({ error: "Recording too long. Please keep voice notes under a few minutes." });
+    }
+    const ext = { "audio/webm": "webm", "audio/ogg": "ogg", "audio/mp4": "mp4",
+      "audio/mpeg": "mp3", "audio/mp3": "mp3", "audio/wav": "wav",
+      "audio/x-m4a": "m4a", "audio/m4a": "m4a" }[match[1]] || "webm";
+    let transcribeAudio;
+    try {
+      ({ transcribeAudio } = require("./ai"));
+    } catch (e) {
+      console.error("ai module load error", e);
+      return res
+        .status(503)
+        .json({ error: "Voice notes aren't available right now. Please type your notes." });
+    }
+    const text = await transcribeAudio(buffer, `note.${ext}`);
+    res.json({ text });
+  } catch (e) {
+    console.error("transcribe error", e);
+    res.status(502).json({ error: "Couldn't transcribe that. Please try again or type your notes." });
+  }
+});
+
 // ---- static frontend ----
 app.use(express.static(path.join(__dirname, "public")));
 
