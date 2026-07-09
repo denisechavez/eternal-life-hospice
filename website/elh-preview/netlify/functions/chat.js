@@ -157,16 +157,18 @@ exports.handler = async function (event) {
   }
 
   // Configured, but the model returned nothing usable.
-  return json(200, {
+  var diag = event.queryStringParameters && event.queryStringParameters.diag === "elh";
+  return json(200, Object.assign({
     reply: "I'm not certain about that one, but our team can help \u2014 please call " + PHONE + ".",
     configured: true
-  });
+  }, diag ? { debug: lastClaudeMeta } : {}));
 };
 
 // Claude (Anthropic) — primary. Warm and personable. Returns reply text or throws.
 async function callClaude(messages) {
   const preferred = process.env.ANTHROPIC_MODEL || "claude-sonnet-4-0";
-  let result = await postClaude(preferred, messages);
+  let model = preferred;
+  let result = await postClaude(model, messages);
 
   // If the configured model is unavailable (retired, renamed, or not enabled on
   // this account), ask Anthropic which models this account CAN use and retry
@@ -178,17 +180,53 @@ async function callClaude(messages) {
       console.error(
         "Anthropic model '" + preferred + "' unavailable; auto-selected '" + fallbackModel + "'."
       );
-      result = await postClaude(fallbackModel, messages);
+      model = fallbackModel;
+      result = await postClaude(model, messages);
     }
   }
 
   if (!result.ok) {
     throw new Error("Anthropic " + result.status + ": " + (result.detail || "").slice(0, 300));
   }
-  const data = result.data;
-  return data && Array.isArray(data.content) && data.content[0] && data.content[0].text
-    ? data.content[0].text.trim()
-    : "";
+
+  // Pull text from ALL content blocks (not just the first) — newer Claude
+  // responses can split the answer across blocks or lead with an empty/non-text
+  // block, which used to make a perfectly good answer look "empty". If the reply
+  // still comes back empty (the model occasionally returns nothing usable),
+  // retry a couple of times before giving up so normal questions don't
+  // dead-end on the "not certain" fallback.
+  let text = extractClaudeText(result.data);
+  let attempts = 1;
+  while (!text && attempts < 3) {
+    result = await postClaude(model, messages);
+    attempts++;
+    if (!result.ok) break;
+    text = extractClaudeText(result.data);
+  }
+  if (!text) {
+    lastClaudeMeta = {
+      attempts: attempts,
+      stop_reason: (result.data && result.data.stop_reason) || null,
+      contentTypes:
+        result.data && Array.isArray(result.data.content)
+          ? result.data.content.map(function (b) { return b && b.type; })
+          : null
+    };
+  }
+  return text;
+}
+
+// For diagnostics only: records why Claude returned an unusable reply.
+let lastClaudeMeta = null;
+
+// Concatenate every text block Claude returns (robust to multi-block replies).
+function extractClaudeText(data) {
+  if (!data || !Array.isArray(data.content)) return "";
+  return data.content
+    .filter(function (b) { return b && b.type === "text" && typeof b.text === "string"; })
+    .map(function (b) { return b.text; })
+    .join("")
+    .trim();
 }
 
 // Single POST to Anthropic's messages API for a given model.
@@ -204,7 +242,7 @@ async function postClaude(model, messages) {
     body: JSON.stringify({
       model: model,
       system: SYSTEM_PROMPT,
-      max_tokens: 320,
+      max_tokens: 500,
       messages: messages
     })
   });
