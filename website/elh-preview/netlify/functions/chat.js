@@ -147,18 +147,13 @@ exports.handler = async function (event) {
   }
 
   if (lastErr) {
-    var diag = event.queryStringParameters && event.queryStringParameters.diag === "elh";
-    return json(502, Object.assign({
+    return json(502, {
       reply: "",
       fallback:
         "I'm having trouble responding right now. Please call us at " +
         PHONE +
         " \u2014 a real person will be glad to help."
-    }, diag ? {
-      debug: (lastErr && lastErr.message) || String(lastErr),
-      hasAnthropic: hasAnthropic,
-      hasOpenAI: hasOpenAI
-    } : {}));
+    });
   }
 
   // Configured, but the model returned nothing usable.
@@ -209,7 +204,6 @@ async function postClaude(model, messages) {
     body: JSON.stringify({
       model: model,
       system: SYSTEM_PROMPT,
-      temperature: 0.8,
       max_tokens: 320,
       messages: messages
     })
