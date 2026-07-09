@@ -41,3 +41,7 @@ timeoutMs = 30000
 [userenv]
 
 [userenv.shared]
+
+[deployment]
+deploymentTarget = "autoscale"
+run = ["bash", "-c", "cd outreach-tracker && npm start"]
