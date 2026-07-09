@@ -1,4 +1,4 @@
-modules = ["nodejs-20", "python-3.11", "python3"]
+modules = ["nodejs-20", "python-3.11", "python3", "postgresql-16"]
 [nix]
 channel = "stable-25_05"
 packages = ["freetype", "glibcLocales", "jbig2dec", "mupdf", "qpdf"]
@@ -16,15 +16,15 @@ author = "agent"
 
 [[workflows.workflow.tasks]]
 task = "workflow.run"
-args = "Preview Site"
+args = "Start application"
 
 [[workflows.workflow]]
-name = "Preview Site"
+name = "Start application"
 author = "agent"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "serve website/elh-preview -p 5000 --no-clipboard"
+args = "cd outreach-tracker && npm start"
 waitForPort = 5000
 
 [workflows.workflow.metadata]
@@ -37,3 +37,8 @@ externalPort = 80
 [postMerge]
 path = "scripts/post-merge.sh"
 timeoutMs = 30000
+
+[userenv]
+
+[userenv.shared]
+REGISTRATION_CODE = "ELH-B0973C"
