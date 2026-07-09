@@ -12,6 +12,7 @@
     "connect-pg-simple": "^9.0.1",
     "express": "^4.19.2",
     "express-session": "^1.18.0",
+    "openai": "^6.46.0",
     "pg": "^8.12.0"
   }
 }
