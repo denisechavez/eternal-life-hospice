@@ -1,0 +1,421 @@
+const path = require("path");
+const express = require("express");
+const session = require("express-session");
+const pgSession = require("connect-pg-simple")(session);
+const bcrypt = require("bcryptjs");
+const { pool, query } = require("./db");
+
+const app = express();
+const PORT = process.env.PORT || 5000;
+const MAX_USERS = 2;
+
+if (!process.env.SESSION_SECRET) {
+  console.error(
+    "FATAL: SESSION_SECRET is not set. Refusing to start with an insecure session secret."
+  );
+  process.exit(1);
+}
+
+app.set("trust proxy", 1);
+app.use(express.json({ limit: "12mb" }));
+app.use(express.urlencoded({ extended: true, limit: "12mb" }));
+
+app.use(
+  session({
+    store: new pgSession({
+      pool,
+      tableName: "session",
+      createTableIfMissing: false,
+    }),
+    name: "elh_outreach_sid",
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: false,
+    rolling: true,
+    cookie: {
+      httpOnly: true,
+      sameSite: "lax",
+      secure: "auto", // secure over HTTPS (Replit proxy), relaxed on plain localhost
+      maxAge: 1000 * 60 * 60 * 24 * 30, // 30 days
+    },
+  })
+);
+
+// ---- simple in-memory brute-force throttle (single instance, 2-user tool) ----
+const rlBuckets = new Map();
+function rateLimit({ max, windowMs, message }) {
+  return (req, res, next) => {
+    const now = Date.now();
+    const key = `${req.path}:${req.ip}`;
+    let rec = rlBuckets.get(key);
+    if (!rec || now - rec.first > windowMs) {
+      rec = { count: 0, first: now };
+      rlBuckets.set(key, rec);
+    }
+    rec.count += 1;
+    if (rec.count > max) {
+      const waitSec = Math.ceil((rec.first + windowMs - now) / 1000);
+      res.setHeader("Retry-After", String(Math.max(waitSec, 1)));
+      return res.status(429).json({ error: message });
+    }
+    next();
+  };
+}
+// occasional cleanup so the map can't grow unbounded
+setInterval(() => {
+  const now = Date.now();
+  for (const [k, v] of rlBuckets) {
+    if (now - v.first > 60 * 60 * 1000) rlBuckets.delete(k);
+  }
+}, 30 * 60 * 1000).unref();
+
+const loginLimiter = rateLimit({
+  max: 15,
+  windowMs: 10 * 60 * 1000,
+  message: "Too many sign-in attempts. Please wait a few minutes and try again.",
+});
+const registerLimiter = rateLimit({
+  max: 8,
+  windowMs: 15 * 60 * 1000,
+  message: "Too many attempts. Please wait a few minutes and try again.",
+});
+
+// ---- helpers ----
+function normalizePhone(raw) {
+  return String(raw || "").replace(/\D/g, "");
+}
+
+function requireAuth(req, res, next) {
+  if (req.session && req.session.userId) return next();
+  return res.status(401).json({ error: "Not signed in." });
+}
+
+const FOLLOWUP_STATUSES = [
+  "brochure_left",
+  "followup_due",
+  "emailed",
+  "responded",
+  "closed",
+];
+
+function safeUser(row) {
+  return { id: row.id, name: row.name, phone: row.phone };
+}
+
+// ---- auth routes ----
+app.get("/api/config", async (req, res) => {
+  try {
+    const { rows } = await query("SELECT COUNT(*)::int AS n FROM users");
+    const count = rows[0].n;
+    res.json({
+      registrationOpen: count < MAX_USERS,
+      requiresCode: Boolean(process.env.REGISTRATION_CODE),
+      signedIn: Boolean(req.session && req.session.userId),
+    });
+  } catch (e) {
+    console.error("config error", e);
+    res.status(500).json({ error: "Server error." });
+  }
+});
+
+app.get("/api/me", requireAuth, async (req, res) => {
+  try {
+    const { rows } = await query("SELECT id, name, phone FROM users WHERE id = $1", [
+      req.session.userId,
+    ]);
+    if (!rows.length) {
+      req.session.destroy(() => {});
+      return res.status(401).json({ error: "Not signed in." });
+    }
+    res.json({ user: safeUser(rows[0]) });
+  } catch (e) {
+    console.error("me error", e);
+    res.status(500).json({ error: "Server error." });
+  }
+});
+
+app.post("/api/register", registerLimiter, async (req, res) => {
+  const name = String(req.body.name || "").trim();
+  const phone = normalizePhone(req.body.phone);
+  const password = String(req.body.password || "");
+  const code = String(req.body.code || "");
+
+  if (!name) return res.status(400).json({ error: "Please enter your name." });
+  if (phone.length < 10)
+    return res.status(400).json({ error: "Please enter a valid phone number." });
+  if (password.length < 8)
+    return res.status(400).json({ error: "Password must be at least 8 characters." });
+
+  if (process.env.REGISTRATION_CODE && code !== process.env.REGISTRATION_CODE) {
+    return res.status(403).json({ error: "Invalid access code." });
+  }
+
+  const hash = await bcrypt.hash(password, 12);
+  const client = await pool.connect();
+  try {
+    await client.query("BEGIN");
+    // serialize all registration attempts so the 2-account cap is enforced atomically
+    await client.query("SELECT pg_advisory_xact_lock($1)", [736251]);
+
+    const countRes = await client.query("SELECT COUNT(*)::int AS n FROM users");
+    if (countRes.rows[0].n >= MAX_USERS) {
+      await client.query("ROLLBACK");
+      return res
+        .status(403)
+        .json({ error: "Sign-up is closed (all accounts are set up)." });
+    }
+    const existing = await client.query("SELECT id FROM users WHERE phone = $1", [phone]);
+    if (existing.rows.length) {
+      await client.query("ROLLBACK");
+      return res
+        .status(409)
+        .json({ error: "An account with that phone number already exists." });
+    }
+    const insert = await client.query(
+      "INSERT INTO users (name, phone, password_hash) VALUES ($1, $2, $3) RETURNING id, name, phone",
+      [name, phone, hash]
+    );
+    await client.query("COMMIT");
+    req.session.userId = insert.rows[0].id;
+    res.json({ user: safeUser(insert.rows[0]) });
+  } catch (e) {
+    try { await client.query("ROLLBACK"); } catch (_) {}
+    console.error("register error", e);
+    res.status(500).json({ error: "Server error." });
+  } finally {
+    client.release();
+  }
+});
+
+app.post("/api/login", loginLimiter, async (req, res) => {
+  try {
+    const phone = normalizePhone(req.body.phone);
+    const password = String(req.body.password || "");
+    if (!phone || !password)
+      return res.status(400).json({ error: "Enter your phone number and password." });
+
+    const { rows } = await query(
+      "SELECT id, name, phone, password_hash FROM users WHERE phone = $1",
+      [phone]
+    );
+    if (!rows.length) {
+      return res.status(401).json({ error: "Incorrect phone number or password." });
+    }
+    const ok = await bcrypt.compare(password, rows[0].password_hash);
+    if (!ok) {
+      return res.status(401).json({ error: "Incorrect phone number or password." });
+    }
+    req.session.userId = rows[0].id;
+    res.json({ user: safeUser(rows[0]) });
+  } catch (e) {
+    console.error("login error", e);
+    res.status(500).json({ error: "Server error." });
+  }
+});
+
+app.post("/api/logout", (req, res) => {
+  req.session.destroy(() => {
+    res.clearCookie("elh_outreach_sid");
+    res.json({ ok: true });
+  });
+});
+
+// ---- visits ----
+app.get("/api/visits", requireAuth, async (req, res) => {
+  try {
+    const status = req.query.status;
+    const search = req.query.q ? `%${req.query.q}%` : null;
+    const clauses = [];
+    const params = [];
+    if (status && FOLLOWUP_STATUSES.includes(status)) {
+      params.push(status);
+      clauses.push(`v.followup_status = $${params.length}`);
+    }
+    if (search) {
+      params.push(search);
+      clauses.push(
+        `(v.company ILIKE $${params.length} OR v.address ILIKE $${params.length} OR v.contact_name ILIKE $${params.length})`
+      );
+    }
+    const where = clauses.length ? `WHERE ${clauses.join(" AND ")}` : "";
+    const sql = `
+      SELECT v.*, u.name AS created_by_name,
+        (SELECT COUNT(*)::int FROM visit_photos p WHERE p.visit_id = v.id) AS photo_count
+      FROM visits v
+      LEFT JOIN users u ON u.id = v.created_by
+      ${where}
+      ORDER BY v.visit_date DESC, v.created_at DESC
+    `;
+    const { rows } = await query(sql, params);
+    res.json({ visits: rows });
+  } catch (e) {
+    console.error("list visits error", e);
+    res.status(500).json({ error: "Server error." });
+  }
+});
+
+app.get("/api/visits/:id", requireAuth, async (req, res) => {
+  try {
+    const id = parseInt(req.params.id, 10);
+    if (!Number.isInteger(id)) return res.status(400).json({ error: "Bad id." });
+    const { rows } = await query(
+      `SELECT v.*, u.name AS created_by_name FROM visits v LEFT JOIN users u ON u.id = v.created_by WHERE v.id = $1`,
+      [id]
+    );
+    if (!rows.length) return res.status(404).json({ error: "Not found." });
+    const photos = await query(
+      "SELECT id, kind, created_at FROM visit_photos WHERE visit_id = $1 ORDER BY created_at ASC",
+      [id]
+    );
+    res.json({ visit: rows[0], photos: photos.rows });
+  } catch (e) {
+    console.error("get visit error", e);
+    res.status(500).json({ error: "Server error." });
+  }
+});
+
+app.post("/api/visits", requireAuth, async (req, res) => {
+  try {
+    const company = String(req.body.company || "").trim();
+    if (!company) return res.status(400).json({ error: "Company/facility name is required." });
+    const address = String(req.body.address || "").trim();
+    const visitDate = req.body.visit_date ? String(req.body.visit_date) : null;
+    const contactName = String(req.body.contact_name || "").trim();
+    const contactEmail = String(req.body.contact_email || "").trim();
+    const contactPhone = String(req.body.contact_phone || "").trim();
+    const notes = String(req.body.notes || "").trim();
+    let status = String(req.body.followup_status || "brochure_left");
+    if (!FOLLOWUP_STATUSES.includes(status)) status = "brochure_left";
+
+    const { rows } = await query(
+      `INSERT INTO visits (company, address, visit_date, contact_name, contact_email, contact_phone, notes, followup_status, created_by)
+       VALUES ($1,$2,COALESCE($3::date, CURRENT_DATE),$4,$5,$6,$7,$8,$9) RETURNING *`,
+      [company, address, visitDate, contactName, contactEmail, contactPhone, notes, status, req.session.userId]
+    );
+    res.json({ visit: rows[0] });
+  } catch (e) {
+    console.error("create visit error", e);
+    res.status(500).json({ error: "Server error." });
+  }
+});
+
+app.patch("/api/visits/:id", requireAuth, async (req, res) => {
+  try {
+    const id = parseInt(req.params.id, 10);
+    if (!Number.isInteger(id)) return res.status(400).json({ error: "Bad id." });
+
+    const allowed = {
+      company: "text",
+      address: "text",
+      visit_date: "date",
+      contact_name: "text",
+      contact_email: "text",
+      contact_phone: "text",
+      notes: "text",
+      followup_status: "status",
+    };
+    const sets = [];
+    const params = [];
+    for (const [key, type] of Object.entries(allowed)) {
+      if (!(key in req.body)) continue;
+      let val = req.body[key];
+      if (type === "status" && !FOLLOWUP_STATUSES.includes(String(val))) continue;
+      if (type === "text") val = String(val || "").trim();
+      params.push(val === "" ? null : val);
+      sets.push(`${key} = $${params.length}`);
+    }
+    if (!sets.length) return res.status(400).json({ error: "Nothing to update." });
+    params.push(id);
+    const { rows } = await query(
+      `UPDATE visits SET ${sets.join(", ")}, updated_at = NOW() WHERE id = $${params.length} RETURNING *`,
+      params
+    );
+    if (!rows.length) return res.status(404).json({ error: "Not found." });
+    res.json({ visit: rows[0] });
+  } catch (e) {
+    console.error("update visit error", e);
+    res.status(500).json({ error: "Server error." });
+  }
+});
+
+app.delete("/api/visits/:id", requireAuth, async (req, res) => {
+  try {
+    const id = parseInt(req.params.id, 10);
+    if (!Number.isInteger(id)) return res.status(400).json({ error: "Bad id." });
+    await query("DELETE FROM visits WHERE id = $1", [id]);
+    res.json({ ok: true });
+  } catch (e) {
+    console.error("delete visit error", e);
+    res.status(500).json({ error: "Server error." });
+  }
+});
+
+// ---- photos ----
+app.post("/api/visits/:id/photos", requireAuth, async (req, res) => {
+  try {
+    const id = parseInt(req.params.id, 10);
+    if (!Number.isInteger(id)) return res.status(400).json({ error: "Bad id." });
+    const visit = await query("SELECT id FROM visits WHERE id = $1", [id]);
+    if (!visit.rows.length) return res.status(404).json({ error: "Visit not found." });
+
+    const dataUrl = String(req.body.image || "");
+    const match = dataUrl.match(/^data:(image\/(png|jpeg|jpg|webp));base64,(.+)$/);
+    if (!match) return res.status(400).json({ error: "Invalid image data." });
+    const mime = match[1];
+    const buffer = Buffer.from(match[3], "base64");
+    if (buffer.length > 8 * 1024 * 1024)
+      return res.status(413).json({ error: "Image too large." });
+    let kind = String(req.body.kind || "visit");
+    if (!["visit", "card"].includes(kind)) kind = "visit";
+
+    const { rows } = await query(
+      "INSERT INTO visit_photos (visit_id, kind, mime_type, data) VALUES ($1,$2,$3,$4) RETURNING id, kind, created_at",
+      [id, kind, mime, buffer]
+    );
+    res.json({ photo: rows[0] });
+  } catch (e) {
+    console.error("upload photo error", e);
+    res.status(500).json({ error: "Server error." });
+  }
+});
+
+app.get("/api/photos/:id", requireAuth, async (req, res) => {
+  try {
+    const id = parseInt(req.params.id, 10);
+    if (!Number.isInteger(id)) return res.status(400).json({ error: "Bad id." });
+    const { rows } = await query(
+      "SELECT mime_type, data FROM visit_photos WHERE id = $1",
+      [id]
+    );
+    if (!rows.length) return res.status(404).json({ error: "Not found." });
+    res.setHeader("Content-Type", rows[0].mime_type);
+    res.setHeader("Cache-Control", "private, max-age=86400");
+    res.send(rows[0].data);
+  } catch (e) {
+    console.error("get photo error", e);
+    res.status(500).json({ error: "Server error." });
+  }
+});
+
+app.delete("/api/photos/:id", requireAuth, async (req, res) => {
+  try {
+    const id = parseInt(req.params.id, 10);
+    if (!Number.isInteger(id)) return res.status(400).json({ error: "Bad id." });
+    await query("DELETE FROM visit_photos WHERE id = $1", [id]);
+    res.json({ ok: true });
+  } catch (e) {
+    console.error("delete photo error", e);
+    res.status(500).json({ error: "Server error." });
+  }
+});
+
+// ---- static frontend ----
+app.use(express.static(path.join(__dirname, "public")));
+
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "index.html"));
+});
+
+app.listen(PORT, "0.0.0.0", () => {
+  console.log(`ELH Outreach Tracker running on port ${PORT}`);
+});

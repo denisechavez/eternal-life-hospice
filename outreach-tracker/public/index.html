@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#3C1C3B" />
+  <title>ELH Field Outreach Tracker</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Jost:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <!-- AUTH SCREEN -->
+  <section id="auth-screen" class="screen auth hidden">
+    <div class="auth-card">
+      <div class="brand">
+        <div class="brand-mark">&#8734;</div>
+        <div>
+          <h1>Eternal Life Hospice</h1>
+          <p class="brand-sub">Field Outreach Tracker</p>
+        </div>
+      </div>
+
+      <div id="auth-tabs" class="auth-tabs">
+        <button type="button" class="auth-tab active" data-mode="login">Sign in</button>
+        <button type="button" class="auth-tab" data-mode="register" id="register-tab">Set up account</button>
+      </div>
+
+      <form id="login-form" class="auth-form">
+        <label>Phone number
+          <input type="tel" name="phone" inputmode="tel" autocomplete="username" placeholder="(805) 555-0123" required />
+        </label>
+        <label>Password
+          <input type="password" name="password" autocomplete="current-password" required />
+        </label>
+        <button type="submit" class="btn btn-primary">Sign in</button>
+      </form>
+
+      <form id="register-form" class="auth-form hidden">
+        <p class="hint">First time here? Set up your account. Your password is yours alone &mdash; no one can see it.</p>
+        <label>Your name
+          <input type="text" name="name" autocomplete="name" placeholder="First & last name" required />
+        </label>
+        <label>Phone number
+          <input type="tel" name="phone" inputmode="tel" autocomplete="username" placeholder="(805) 555-0123" required />
+        </label>
+        <label>Create a password
+          <input type="password" name="password" autocomplete="new-password" placeholder="At least 8 characters" required />
+        </label>
+        <label id="code-label" class="hidden">Access code
+          <input type="text" name="code" placeholder="Provided by your admin" />
+        </label>
+        <button type="submit" class="btn btn-primary">Create account</button>
+      </form>
+
+      <p id="auth-error" class="error hidden"></p>
+    </div>
+    <p class="footer-note">Private internal tool &middot; Ventura &amp; Los Angeles County</p>
+  </section>
+
+  <!-- APP SCREEN -->
+  <section id="app-screen" class="screen app hidden">
+    <header class="topbar">
+      <div class="topbar-brand">
+        <span class="brand-mark small">&#8734;</span>
+        <span>Outreach Tracker</span>
+      </div>
+      <div class="topbar-actions">
+        <span id="whoami" class="whoami"></span>
+        <button id="logout-btn" class="btn btn-ghost btn-sm">Sign out</button>
+      </div>
+    </header>
+
+    <main class="content">
+      <div class="toolbar">
+        <button id="new-visit-btn" class="btn btn-primary">+ Log a visit</button>
+        <input id="search" type="search" placeholder="Search company, address, contact&hellip;" />
+      </div>
+
+      <div class="filters" id="filters"></div>
+
+      <div id="visit-list" class="visit-list"></div>
+      <div id="empty-state" class="empty hidden">
+        <p>No visits yet.</p>
+        <p class="muted">Tap <strong>+ Log a visit</strong> after you drop off brochures.</p>
+      </div>
+    </main>
+  </section>
+
+  <!-- VISIT MODAL -->
+  <div id="visit-modal" class="modal hidden">
+    <div class="modal-card">
+      <div class="modal-head">
+        <h2 id="modal-title">Log a visit</h2>
+        <button class="icon-btn" id="modal-close">&times;</button>
+      </div>
+      <form id="visit-form" class="modal-body">
+        <input type="hidden" name="id" />
+        <label>Company / facility name *
+          <input type="text" name="company" required placeholder="e.g. Westlake Skilled Nursing" />
+        </label>
+        <label>Address
+          <input type="text" name="address" placeholder="Street, city" />
+        </label>
+        <div class="row">
+          <label>Date of visit
+            <input type="date" name="visit_date" />
+          </label>
+          <label>Follow-up status
+            <select name="followup_status">
+              <option value="brochure_left">Brochure left</option>
+              <option value="followup_due">Follow-up due</option>
+              <option value="emailed">Emailed</option>
+              <option value="responded">Responded</option>
+              <option value="closed">Closed</option>
+            </select>
+          </label>
+        </div>
+        <label>Contact person
+          <input type="text" name="contact_name" placeholder="Name / title" />
+        </label>
+        <div class="row">
+          <label>Contact email
+            <input type="email" name="contact_email" placeholder="name@facility.com" />
+          </label>
+          <label>Contact phone
+            <input type="tel" name="contact_phone" placeholder="Phone" />
+          </label>
+        </div>
+        <label>Notes
+          <textarea name="notes" rows="3" placeholder="What you left, who you spoke with, next steps&hellip;"></textarea>
+        </label>
+
+        <div class="photo-area" id="photo-area">
+          <div class="photo-buttons">
+            <label class="btn btn-soft photo-btn">
+              📷 Add visit photo
+              <input type="file" accept="image/*" capture="environment" data-kind="visit" hidden />
+            </label>
+            <label class="btn btn-soft photo-btn">
+              💳 Add business card
+              <input type="file" accept="image/*" capture="environment" data-kind="card" hidden />
+            </label>
+          </div>
+          <div id="photo-grid" class="photo-grid"></div>
+          <p class="hint" id="photo-hint">Photos are saved once you save the visit.</p>
+        </div>
+
+        <div class="modal-actions">
+          <button type="button" id="draft-email-btn" class="btn btn-ghost hidden">✉️ Copy follow-up email</button>
+          <button type="button" id="delete-visit-btn" class="btn btn-danger hidden">Delete</button>
+          <button type="submit" class="btn btn-primary" id="save-visit-btn">Save visit</button>
+        </div>
+        <p id="modal-error" class="error hidden"></p>
+      </form>
+    </div>
+  </div>
+
+  <div id="toast" class="toast hidden"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>
