@@ -56,8 +56,8 @@
           <input type="password" id="re-pass" autocomplete="new-password" placeholder="At least 8 characters">
         </div>
         <div class="field" id="codeWrap">
-          <label for="re-code">Access code</label>
-          <input type="text" id="re-code" autocomplete="off" placeholder="Provided by the owner">
+          <label for="re-code">Admin code</label>
+          <input type="text" id="re-code" autocomplete="off" placeholder="Team admin code">
         </div>
         <button class="btn" type="submit">Create account</button>
         <div class="authswitch">Already set up? <button type="button" id="toLogin">Sign in</button></div>
@@ -142,6 +142,18 @@
     <div class="sec">
       <h2 class="sech">Who you met</h2>
       <p class="secn">One person per visit. Log a second visit if you spoke with two people worth a follow-up.</p>
+      <div class="field">
+        <label>Do you have their business card?</label>
+        <div class="seg" id="hasCard" role="group" aria-label="Business card on hand">
+          <button type="button" class="segbtn on" data-val="no">No card — I'll type it</button>
+          <button type="button" class="segbtn" data-val="yes">Yes — scan it</button>
+        </div>
+      </div>
+      <div class="cardscan hidden" id="cardScan">
+        <button type="button" class="btn ghost" id="scanBtn">Scan business card &amp; auto-fill</button>
+        <p class="secn scanhint">Take a clear photo of the card. We'll read the name, title, email, phone, and address, then you check it. The photo is also saved with the visit.</p>
+      </div>
+      <p class="secn manualhint" id="manualHint">No card on hand — enter the street address above and the contact details below.</p>
       <div class="grid2">
         <div class="field"><label for="cname">Name</label><input type="text" id="cname" autocomplete="off"></div>
         <div class="field"><label for="ctitle">Title</label><input type="text" id="ctitle" placeholder="Director of Case Management" autocomplete="off"></div>

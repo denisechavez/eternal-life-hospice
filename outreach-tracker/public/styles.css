@@ -152,4 +152,16 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--slate);outline-o
 .authswitch button{background:none;border:0;color:var(--plum);font-family:var(--sans);font-size:12.5px;font-weight:500;cursor:pointer;text-decoration:underline}
 .autherr{background:rgba(156,47,63,.08);border-left:3px solid #9c2f3f;color:#9c2f3f;font-size:12.5px;line-height:1.5;padding:10px 13px;border-radius:0 3px 3px 0;margin-bottom:16px}
 
+/* ---------- business card toggle ---------- */
+.seg{display:flex;gap:8px;flex-wrap:wrap}
+.segbtn{flex:1;min-width:150px;padding:12px 13px;background:#fff;border:1px solid var(--line);border-radius:3px;font-family:var(--sans);font-size:13px;color:#5c4a5b;cursor:pointer;transition:.12s}
+.segbtn.on{background:var(--plum);border-color:var(--plum);color:var(--cream)}
+.segbtn:hover{border-color:var(--plum)}
+.segbtn:focus-visible{outline:2px solid var(--slate);outline-offset:1px}
+.cardscan{margin:0 0 14px}
+.cardscan .btn.ghost{width:100%;text-align:center}
+.scanhint{margin-top:9px;margin-bottom:0}
+.scanhint.busy{color:var(--plum)}
+.manualhint{margin-top:-4px}
+
 @media(prefers-reduced-motion:reduce){*{transition:none !important}}

@@ -467,6 +467,38 @@ app.delete("/api/photos/:id", requireAuth, async (req, res) => {
   }
 });
 
+// ---- AI: business card extraction ----
+const extractLimiter = rateLimit({
+  max: 40,
+  windowMs: 10 * 60 * 1000,
+  message: "Too many card scans. Please wait a few minutes and try again.",
+});
+
+app.post("/api/extract-card", requireAuth, extractLimiter, async (req, res) => {
+  try {
+    const dataUrl = String(req.body.image || "");
+    const match = dataUrl.match(/^data:(image\/(png|jpeg|jpg|webp));base64,(.+)$/);
+    if (!match) return res.status(400).json({ error: "Invalid image data." });
+    if (Buffer.from(match[3], "base64").length > 8 * 1024 * 1024) {
+      return res.status(413).json({ error: "Image too large." });
+    }
+    let extractCardContact;
+    try {
+      ({ extractCardContact } = require("./ai"));
+    } catch (e) {
+      console.error("ai module load error", e);
+      return res
+        .status(503)
+        .json({ error: "Card reading isn't available right now. Please enter the details manually." });
+    }
+    const contact = await extractCardContact(dataUrl);
+    res.json({ contact });
+  } catch (e) {
+    console.error("extract-card error", e);
+    res.status(502).json({ error: "Couldn't read the card. Please enter the details manually." });
+  }
+});
+
 // ---- static frontend ----
 app.use(express.static(path.join(__dirname, "public")));
 

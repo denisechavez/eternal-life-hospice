@@ -8,6 +8,9 @@ const OWNER_OPTIONS = ["Aleksandra Dubina", "Denise Chavez", "Unassigned"];
 let me = null;
 let visits = [];
 let photos = { card: null, site: null };
+let hasCard = "no";
+let scanning = false;
+const SCAN_HINT = "Take a clear photo of the card. We'll read the name, title, email, phone, and address, then you check it. The photo is also saved with the visit.";
 
 /* ---------------- api ---------------- */
 async function api(path, opts = {}) {
@@ -182,7 +185,7 @@ function shrink(file, cb) {
   };
   img.src = URL.createObjectURL(file);
 }
-function bindPhoto(inputSel, slot, dropSel) {
+function bindPhoto(inputSel, slot, dropSel, afterSet) {
   $(inputSel).addEventListener("change", (e) => {
     const f = e.target.files[0];
     if (!f) return;
@@ -190,11 +193,54 @@ function bindPhoto(inputSel, slot, dropSel) {
       photos[slot] = d;
       $(dropSel).classList.add("set");
       drawThumbs();
+      if (afterSet) afterSet(d);
     });
   });
 }
-bindPhoto("#fCard", "card", "#dropCard");
+bindPhoto("#fCard", "card", "#dropCard", (d) => { if (hasCard === "yes") extractCard(d); });
 bindPhoto("#fSite", "site", "#dropSite");
+
+/* ----- business card toggle + AI auto-fill ----- */
+function setHasCard(val) {
+  hasCard = val;
+  $$("#hasCard .segbtn").forEach((b) => b.classList.toggle("on", b.dataset.val === val));
+  $("#cardScan").classList.toggle("hidden", val !== "yes");
+  $("#manualHint").classList.toggle("hidden", val !== "no");
+  if (val === "yes") {
+    const h = $(".scanhint");
+    if (h) { h.textContent = SCAN_HINT; h.classList.remove("busy"); }
+  }
+  validate();
+}
+$$("#hasCard .segbtn").forEach((b) => b.addEventListener("click", () => setHasCard(b.dataset.val)));
+$("#scanBtn").addEventListener("click", () => $("#fCard").click());
+
+async function extractCard(dataUrl) {
+  if (scanning) return;
+  scanning = true;
+  const hint = $(".scanhint");
+  if (hint) { hint.textContent = "Reading the card…"; hint.classList.add("busy"); }
+  try {
+    const r = await api("/api/extract-card", { method: "POST", body: JSON.stringify({ image: dataUrl }) });
+    const c = r.contact || {};
+    const fill = (sel, val) => { if (val && !$(sel).value.trim()) $(sel).value = val; };
+    fill("#org", c.company);
+    fill("#addr", c.address);
+    fill("#city", c.city);
+    fill("#cname", c.contact_name);
+    fill("#ctitle", c.contact_title);
+    fill("#cemail", c.contact_email);
+    fill("#cphone", c.contact_phone);
+    if (hint) { hint.textContent = "Card read — please check every detail is right."; hint.classList.remove("busy"); }
+    toast("Card read. Please check the details.");
+    validate();
+  } catch (err) {
+    if (hint) { hint.textContent = "Couldn't read the card. Please type the details by hand."; hint.classList.remove("busy"); }
+    toast(err.message || "Couldn't read the card.", true);
+  } finally {
+    scanning = false;
+  }
+}
 
 function drawThumbs() {
   const labels = { card: "Business card", site: "Materials" };
@@ -218,10 +264,13 @@ function drawThumbs() {
 
 /* ================= VALIDATION ================= */
 function validate() {
-  const ok = $("#org").value.trim() && $("#date").value && $("#attest").checked && !riskCheck();
+  let ok = $("#org").value.trim() && $("#date").value && $("#attest").checked && !riskCheck();
+  if (hasCard === "no") {
+    ok = ok && $("#addr").value.trim() && $("#cname").value.trim();
+  }
   $("#saveBtn").disabled = !ok;
 }
-["#org", "#date", "#notes"].forEach((s) => $(s).addEventListener("input", validate));
+["#org", "#date", "#notes", "#addr", "#cname"].forEach((s) => $(s).addEventListener("input", validate));
 $("#attest").addEventListener("change", validate);
 
 /* ================= CLOCK ================= */
@@ -299,6 +348,7 @@ function clearForm() {
   $("#dropCard").classList.remove("set");
   $("#dropSite").classList.remove("set");
   $("#date").value = new Date().toISOString().slice(0, 10);
+  setHasCard("no");
   drawThumbs();
   riskCheck();
   validate();
