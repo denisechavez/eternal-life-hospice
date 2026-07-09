@@ -35,5 +35,10 @@ public marketing site.
 - **PHI guardrail:** a regex set scans the notes textarea live; a match turns the guard box red and blocks Save. Never let patient info into this log.
 - **Required attestation:** "I confirm these notes contain no patient information" checkbox is required to save; enforced **server-side too** (POST rejects `attested !== true`) and stored on the row.
 
+## Business-card AI auto-fill
+- A "Do you have their business card?" Yes/No toggle drives contact entry. **No** → user must type street address + contact name (client `validate()` enforces). **Yes** → snapping the card photo calls the extract endpoint and auto-fills contact fields **fill-only-if-empty** (never clobbers what the user typed); the toggle is UI-only, not persisted.
+- **Vision extraction uses the Replit OpenAI AI integration (gateway), not a personal key** — client built from `AI_INTEGRATIONS_OPENAI_*` env vars; model is a gpt-5.x vision model via chat-completions with `response_format: json_object`. **Why:** avoids user API-key friction; usage bills Replit credits. gpt-5 models forbid `temperature` and `max_tokens` (use `max_completion_tokens`).
+- Extract endpoint is auth-gated + rate-limited, validates the data URL and caps decoded size, and **lazy-requires the AI module returning 503 if absent** so the app still boots without AI. Enforcement of the No-card required fields is client-side only (acceptable: 2 trusted users; server can't see the toggle).
+
 ## Deferred
 - **Automated follow-up email sending is intentionally NOT built** — user was still choosing an email platform/CRM. Wiring real sending (e.g. Resend, already used by the site) is the natural next step.
