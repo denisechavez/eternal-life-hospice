@@ -34,6 +34,12 @@ request, to present an active journal from day one.
 that search engines record their own first-crawl date, so backdating does not
 change how Google dates the content for ranking — it is cosmetic, not an SEO lever.
 
+## Newest / featured post
+The blog index (`blog.html`) features the single newest post in the `.blog-featured`
+hero-overlap card; older posts fall into the `.rgrid` below. When adding a newer
+post, move the prior featured post down into the grid and promote the new one.
+The resources-page Journal grid holds 3 recent posts (swap the oldest when adding).
+
 ## Compliance guardrails (healthcare)
 - Integrative-therapy posts (e.g. music) must frame everything as **comfort/quality
   of life, never treatment or cure** — include an explicit "not intended to diagnose,
