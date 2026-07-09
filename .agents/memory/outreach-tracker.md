@@ -24,5 +24,16 @@ public marketing site.
 ## Storage decision
 - Photos are **resized client-side (canvas, ~1280px JPEG) and stored as Postgres BYTEA**, served via `/api/photos/:id`. Chose this over Replit Object Storage to avoid the blueprint's confirmation friction and keep the tool self-contained. **If photo volume grows, migrate to object storage.**
 
+## Design = the "Eternal Field Log" prototype (user-preferred)
+- The user supplied an HTML prototype (`attached_assets/ELH_Field_Log_Prototype*.html`) and said "I prefer what claud built." The frontend was **rebuilt to match that prototype** and wired to the real backend (auth + Postgres + photo storage) instead of the prototype's local `window.storage`.
+- Editorial masthead ("Eternal Field Log"), 3 tabs: **Log a visit / Follow-up (count) / Export**. Signature visit cards with a colored left rail + a "clock" showing days-out / due / days-late / done, computed client-side from `follow_up_due`.
+- **Data model is richer than the first build:** company(org), category, address, city, county, visit_date, contact_name/title/email/phone, `materials` (JSONB array of chips = pocket folder + the 4 Eternal Standard pillars + full kit), notes, owner, `follow_up_due` (date), `followup_status`, `attested`. Photo kinds are **`card` + `site`** (business card + materials-in-place).
+- Follow-up `status` values are the prototype's set: **Not started / Email sent / Replied / Meeting booked / Closed / No interest** (stored in `followup_status`; old brochure_left/etc. set is gone).
+- Export tab = live stats + client-side CSV download (photos excluded, "travel separately"). The prototype's destructive "Clear all visits" reset was **replaced** with per-card Delete (safer for real data).
+
+## Compliance features kept from the prototype (valuable for a hospice)
+- **PHI guardrail:** a regex set scans the notes textarea live; a match turns the guard box red and blocks Save. Never let patient info into this log.
+- **Required attestation:** "I confirm these notes contain no patient information" checkbox is required to save; enforced **server-side too** (POST rejects `attested !== true`) and stored on the row.
+
 ## Deferred
-- **Automated follow-up email sending is intentionally NOT built** — user was still choosing an email platform/CRM. App only tracks follow-up status + offers a copyable branded email draft. Wiring real sending (e.g. Resend, already used by the site) is the natural next step.
+- **Automated follow-up email sending is intentionally NOT built** — user was still choosing an email platform/CRM. Wiring real sending (e.g. Resend, already used by the site) is the natural next step.

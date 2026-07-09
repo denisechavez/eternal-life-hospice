@@ -1,164 +1,250 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <meta name="theme-color" content="#3C1C3B" />
-  <title>ELH Field Outreach Tracker</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Jost:wght@400;500;600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css" />
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#3C1C3B">
+<meta name="robots" content="noindex, nofollow">
+<title>Eternal Field Log</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,600&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <!-- AUTH SCREEN -->
-  <section id="auth-screen" class="screen auth hidden">
-    <div class="auth-card">
-      <div class="brand">
-        <div class="brand-mark">&#8734;</div>
-        <div>
-          <h1>Eternal Life Hospice</h1>
-          <p class="brand-sub">Field Outreach Tracker</p>
-        </div>
-      </div>
 
-      <div id="auth-tabs" class="auth-tabs">
-        <button type="button" class="auth-tab active" data-mode="login">Sign in</button>
-        <button type="button" class="auth-tab" data-mode="register" id="register-tab">Set up account</button>
-      </div>
-
-      <form id="login-form" class="auth-form">
-        <label>Phone number
-          <input type="tel" name="phone" inputmode="tel" autocomplete="username" placeholder="(805) 555-0123" required />
-        </label>
-        <label>Password
-          <input type="password" name="password" autocomplete="current-password" required />
-        </label>
-        <button type="submit" class="btn btn-primary">Sign in</button>
-      </form>
-
-      <form id="register-form" class="auth-form hidden">
-        <p class="hint">First time here? Set up your account. Your password is yours alone &mdash; no one can see it.</p>
-        <label>Your name
-          <input type="text" name="name" autocomplete="name" placeholder="First & last name" required />
-        </label>
-        <label>Phone number
-          <input type="tel" name="phone" inputmode="tel" autocomplete="username" placeholder="(805) 555-0123" required />
-        </label>
-        <label>Create a password
-          <input type="password" name="password" autocomplete="new-password" placeholder="At least 8 characters" required />
-        </label>
-        <label id="code-label" class="hidden">Access code
-          <input type="text" name="code" placeholder="Provided by your admin" />
-        </label>
-        <button type="submit" class="btn btn-primary">Create account</button>
-      </form>
-
-      <p id="auth-error" class="error hidden"></p>
+<!-- ================= AUTH ================= -->
+<div id="auth" class="auth hidden">
+  <div class="authcard">
+    <div class="authhead">
+      <div class="brand"><em>Eternal</em> Field Log</div>
+      <div class="subline">Referral Outreach · Visit Capture</div>
     </div>
-    <p class="footer-note">Private internal tool &middot; Ventura &amp; Los Angeles County</p>
-  </section>
+    <div class="authbody">
+      <div id="autherr" class="autherr hidden"></div>
 
-  <!-- APP SCREEN -->
-  <section id="app-screen" class="screen app hidden">
-    <header class="topbar">
-      <div class="topbar-brand">
-        <span class="brand-mark small">&#8734;</span>
-        <span>Outreach Tracker</span>
-      </div>
-      <div class="topbar-actions">
-        <span id="whoami" class="whoami"></span>
-        <button id="logout-btn" class="btn btn-ghost btn-sm">Sign out</button>
-      </div>
-    </header>
-
-    <main class="content">
-      <div class="toolbar">
-        <button id="new-visit-btn" class="btn btn-primary">+ Log a visit</button>
-        <input id="search" type="search" placeholder="Search company, address, contact&hellip;" />
-      </div>
-
-      <div class="filters" id="filters"></div>
-
-      <div id="visit-list" class="visit-list"></div>
-      <div id="empty-state" class="empty hidden">
-        <p>No visits yet.</p>
-        <p class="muted">Tap <strong>+ Log a visit</strong> after you drop off brochures.</p>
-      </div>
-    </main>
-  </section>
-
-  <!-- VISIT MODAL -->
-  <div id="visit-modal" class="modal hidden">
-    <div class="modal-card">
-      <div class="modal-head">
-        <h2 id="modal-title">Log a visit</h2>
-        <button class="icon-btn" id="modal-close">&times;</button>
-      </div>
-      <form id="visit-form" class="modal-body">
-        <input type="hidden" name="id" />
-        <label>Company / facility name *
-          <input type="text" name="company" required placeholder="e.g. Westlake Skilled Nursing" />
-        </label>
-        <label>Address
-          <input type="text" name="address" placeholder="Street, city" />
-        </label>
-        <div class="row">
-          <label>Date of visit
-            <input type="date" name="visit_date" />
-          </label>
-          <label>Follow-up status
-            <select name="followup_status">
-              <option value="brochure_left">Brochure left</option>
-              <option value="followup_due">Follow-up due</option>
-              <option value="emailed">Emailed</option>
-              <option value="responded">Responded</option>
-              <option value="closed">Closed</option>
-            </select>
-          </label>
+      <!-- sign in -->
+      <form id="loginForm">
+        <h2>Sign in</h2>
+        <p class="lede">For the Eternal Life Hospice outreach team.</p>
+        <div class="field">
+          <label for="li-phone">Phone number</label>
+          <input type="tel" id="li-phone" autocomplete="username" inputmode="tel" placeholder="805 953 7273">
         </div>
-        <label>Contact person
-          <input type="text" name="contact_name" placeholder="Name / title" />
-        </label>
-        <div class="row">
-          <label>Contact email
-            <input type="email" name="contact_email" placeholder="name@facility.com" />
-          </label>
-          <label>Contact phone
-            <input type="tel" name="contact_phone" placeholder="Phone" />
-          </label>
+        <div class="field">
+          <label for="li-pass">Password</label>
+          <input type="password" id="li-pass" autocomplete="current-password">
         </div>
-        <label>Notes
-          <textarea name="notes" rows="3" placeholder="What you left, who you spoke with, next steps&hellip;"></textarea>
-        </label>
-
-        <div class="photo-area" id="photo-area">
-          <div class="photo-buttons">
-            <label class="btn btn-soft photo-btn">
-              📷 Add visit photo
-              <input type="file" accept="image/*" capture="environment" data-kind="visit" hidden />
-            </label>
-            <label class="btn btn-soft photo-btn">
-              💳 Add business card
-              <input type="file" accept="image/*" capture="environment" data-kind="card" hidden />
-            </label>
-          </div>
-          <div id="photo-grid" class="photo-grid"></div>
-          <p class="hint" id="photo-hint">Photos are saved once you save the visit.</p>
-        </div>
-
-        <div class="modal-actions">
-          <button type="button" id="draft-email-btn" class="btn btn-ghost hidden">✉️ Copy follow-up email</button>
-          <button type="button" id="delete-visit-btn" class="btn btn-danger hidden">Delete</button>
-          <button type="submit" class="btn btn-primary" id="save-visit-btn">Save visit</button>
-        </div>
-        <p id="modal-error" class="error hidden"></p>
+        <button class="btn" type="submit">Sign in</button>
+        <div class="authswitch">First time here? <button type="button" id="toReg">Set up your account</button></div>
       </form>
+
+      <!-- register -->
+      <form id="regForm" class="hidden">
+        <h2>Set up your account</h2>
+        <p class="lede">Two accounts total. Choose your own password — no one else can see it.</p>
+        <div class="field">
+          <label for="re-name">Your name</label>
+          <input type="text" id="re-name" autocomplete="name" placeholder="Aleksandra Dubina">
+        </div>
+        <div class="field">
+          <label for="re-phone">Phone number</label>
+          <input type="tel" id="re-phone" autocomplete="username" inputmode="tel">
+        </div>
+        <div class="field">
+          <label for="re-pass">Create a password</label>
+          <input type="password" id="re-pass" autocomplete="new-password" placeholder="At least 8 characters">
+        </div>
+        <div class="field" id="codeWrap">
+          <label for="re-code">Access code</label>
+          <input type="text" id="re-code" autocomplete="off" placeholder="Provided by the owner">
+        </div>
+        <button class="btn" type="submit">Create account</button>
+        <div class="authswitch">Already set up? <button type="button" id="toLogin">Sign in</button></div>
+      </form>
+
+      <div id="regClosed" class="hidden">
+        <h2>Sign-up is closed</h2>
+        <p class="lede">Both accounts are already set up. Sign in with your phone number and password.</p>
+        <button class="btn" type="button" id="toLogin2">Go to sign in</button>
+      </div>
     </div>
   </div>
+</div>
 
-  <div id="toast" class="toast hidden"></div>
+<!-- ================= APP ================= -->
+<div id="app" class="hidden">
+<div class="wrap">
 
-  <script src="app.js"></script>
+  <header class="mast">
+    <div class="brandrow">
+      <div class="brand"><em>Eternal</em> Field Log</div>
+      <div class="tagpill">Live</div>
+    </div>
+    <div class="subline">Referral Outreach · Visit Capture</div>
+    <div class="entity">
+      <span class="lock">Eternal Life Hospice</span>
+      <span class="note">Ventura &amp; Los Angeles County. Every visit logged here belongs to the company record.</span>
+    </div>
+    <div class="whoami">
+      Signed in as <b id="meName">—</b>
+      <button class="out" id="logoutBtn">Sign out</button>
+    </div>
+  </header>
+
+  <nav class="tabs" role="tablist">
+    <button class="tab" role="tab" aria-selected="true" data-view="log">Log a visit</button>
+    <button class="tab" role="tab" aria-selected="false" data-view="queue">Follow-up <span class="count" id="qcount">0</span></button>
+    <button class="tab" role="tab" aria-selected="false" data-view="export">Export</button>
+  </nav>
+
+  <!-- ================= LOG ================= -->
+  <section id="view-log">
+    <div class="sec">
+      <h2 class="sech">Where you were</h2>
+      <p class="secn">Fill this in the car before you drive away. Two minutes now saves the reconstruction later.</p>
+      <div class="field">
+        <label for="org">Organization</label>
+        <input type="text" id="org" placeholder="Los Robles Regional Medical Center" autocomplete="off">
+      </div>
+      <div class="grid2">
+        <div class="field">
+          <label for="cat">Category</label>
+          <select id="cat">
+            <option>Hospital</option><option>Skilled nursing facility</option>
+            <option>Assisted living</option><option>Memory care</option>
+            <option>Physician office</option><option>Home care agency</option>
+            <option>Placement agency</option><option>Dialysis center</option>
+            <option>Faith community</option><option>Community organization</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="date">Date of visit</label>
+          <input type="date" id="date">
+        </div>
+      </div>
+      <div class="field">
+        <label for="addr">Street address</label>
+        <input type="text" id="addr" placeholder="215 W Janss Rd" autocomplete="off">
+      </div>
+      <div class="grid2">
+        <div class="field">
+          <label for="city">City</label>
+          <input type="text" id="city" placeholder="Thousand Oaks" autocomplete="off">
+        </div>
+        <div class="field">
+          <label for="county">County</label>
+          <select id="county"><option>Ventura</option><option>Los Angeles</option></select>
+        </div>
+      </div>
+    </div>
+
+    <div class="sec">
+      <h2 class="sech">Who you met</h2>
+      <p class="secn">One person per visit. Log a second visit if you spoke with two people worth a follow-up.</p>
+      <div class="grid2">
+        <div class="field"><label for="cname">Name</label><input type="text" id="cname" autocomplete="off"></div>
+        <div class="field"><label for="ctitle">Title</label><input type="text" id="ctitle" placeholder="Director of Case Management" autocomplete="off"></div>
+      </div>
+      <div class="grid2">
+        <div class="field"><label for="cemail">Email</label><input type="email" id="cemail" autocomplete="off"></div>
+        <div class="field"><label for="cphone">Direct line</label><input type="tel" id="cphone" autocomplete="off"></div>
+      </div>
+    </div>
+
+    <div class="sec">
+      <h2 class="sech">What you left</h2>
+      <p class="secn">Collateral only. Anything of value beyond printed materials goes through compliance, never through this log.</p>
+      <div class="chips" id="mats">
+        <label class="chip"><input type="checkbox" value="Pocket folder"><span>Pocket folder</span></label>
+        <label class="chip"><input type="checkbox" value="Clinical Confidence"><span>Clinical Confidence</span></label>
+        <label class="chip"><input type="checkbox" value="Guided Presence"><span>Guided Presence</span></label>
+        <label class="chip"><input type="checkbox" value="Whole-Person Comfort"><span>Whole-Person Comfort</span></label>
+        <label class="chip"><input type="checkbox" value="Compliance-Led Care"><span>Compliance-Led Care</span></label>
+        <label class="chip"><input type="checkbox" value="Full kit"><span>Full kit</span></label>
+      </div>
+    </div>
+
+    <div class="sec">
+      <h2 class="sech">What you captured</h2>
+      <p class="secn">Photograph the business card and the materials in place. Photograph nothing else.</p>
+      <div class="cap">
+        <label class="drop" id="dropCard">
+          <input type="file" accept="image/*" capture="environment" id="fCard">
+          <span class="k">Business card</span>
+          <span class="h">Front of the card. Kept with this visit.</span>
+        </label>
+        <label class="drop" id="dropSite">
+          <input type="file" accept="image/*" capture="environment" id="fSite">
+          <span class="k">Materials in place</span>
+          <span class="h">Rack, front desk, or building exterior.</span>
+        </label>
+      </div>
+      <div class="thumbs" id="thumbs"></div>
+    </div>
+
+    <div class="sec">
+      <h2 class="sech">What was said</h2>
+      <div class="guard" id="guard">
+        <b>This log holds no patient information</b>
+        <p>Write what the contact said about referring, their process, and their timing. Never a patient name, initials, room number, diagnosis, or age. A single patient detail turns this into a regulated system that no field tool is licensed to hold.</p>
+      </div>
+      <div class="field">
+        <textarea id="notes" placeholder="She sends about six referrals a month and decides on Fridays. Asked whether we take patients on the west side. Wants the physician-led piece explained to her team."></textarea>
+      </div>
+      <label class="attest"><input type="checkbox" id="attest"><span>I confirm these notes contain no patient information.</span></label>
+    </div>
+
+    <div class="sec">
+      <h2 class="sech">What happens next</h2>
+      <div class="grid2">
+        <div class="field">
+          <label for="owner">Follow-up owner</label>
+          <select id="owner"></select>
+        </div>
+        <div class="field">
+          <label for="due">Follow-up due</label>
+          <select id="due"><option value="2">In 2 days</option><option value="5" selected>In 5 days</option><option value="10">In 10 days</option><option value="0">Nothing needed</option></select>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= QUEUE ================= -->
+  <section id="view-queue" class="hidden">
+    <div id="queue"></div>
+  </section>
+
+  <!-- ================= EXPORT ================= -->
+  <section id="view-export" class="hidden">
+    <div class="expbox">
+      <h3>Referral activity record</h3>
+      <p>Every visit, every contact, every outcome, with dates. This is the file a buyer's diligence team asks for when they want to know whether the referral relationships belong to the company or to the founder.</p>
+      <div class="stat">
+        <div><div class="n" id="sVisits">0</div><div class="l">Visits</div></div>
+        <div><div class="n" id="sOrgs">0</div><div class="l">Organizations</div></div>
+        <div><div class="n" id="sOpen">0</div><div class="l">Open</div></div>
+        <div><div class="n" id="sWon">0</div><div class="l">Meetings</div></div>
+      </div>
+    </div>
+    <div class="expbox">
+      <h3>Download</h3>
+      <p>CSV opens in Excel or imports into the master directory. Photographs stay in the record and travel separately.</p>
+      <button class="btn" id="csv" style="max-width:260px">Download CSV</button>
+    </div>
+  </section>
+</div>
+
+<div class="bar" id="bar">
+  <div class="barin">
+    <button class="btn ghost" id="clearBtn">Clear</button>
+    <button class="btn" id="saveBtn" disabled>Save visit</button>
+  </div>
+</div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="app.js"></script>
 </body>
 </html>

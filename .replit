@@ -41,4 +41,3 @@ timeoutMs = 30000
 [userenv]
 
 [userenv.shared]
-REGISTRATION_CODE = "ELH-B0973C"

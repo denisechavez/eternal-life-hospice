@@ -85,18 +85,29 @@ function normalizePhone(raw) {
   return String(raw || "").replace(/\D/g, "");
 }
 
+// Accepts empty/null (→ stored as null) or a real YYYY-MM-DD calendar date.
+function isValidDate(s) {
+  if (s === null || s === undefined || s === "") return true;
+  const str = String(s).slice(0, 10);
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(str)) return false;
+  const d = new Date(str + "T00:00:00Z");
+  return !Number.isNaN(d.getTime()) && str === d.toISOString().slice(0, 10);
+}
+
 function requireAuth(req, res, next) {
   if (req.session && req.session.userId) return next();
   return res.status(401).json({ error: "Not signed in." });
 }
 
 const FOLLOWUP_STATUSES = [
-  "brochure_left",
-  "followup_due",
-  "emailed",
-  "responded",
-  "closed",
+  "Not started",
+  "Email sent",
+  "Replied",
+  "Meeting booked",
+  "Closed",
+  "No interest",
 ];
+const PHOTO_KINDS = ["card", "site"];
 
 function safeUser(row) {
   return { id: row.id, name: row.name, phone: row.phone };
@@ -221,32 +232,30 @@ app.post("/api/logout", (req, res) => {
 });
 
 // ---- visits ----
+const VISIT_SELECT = `
+  SELECT v.*, u.name AS created_by_name,
+    COALESCE(
+      (SELECT json_agg(json_build_object('id', p.id, 'kind', p.kind) ORDER BY p.created_at)
+       FROM visit_photos p WHERE p.visit_id = v.id),
+      '[]'
+    ) AS photos
+  FROM visits v
+  LEFT JOIN users u ON u.id = v.created_by
+`;
+
+function cleanMaterials(raw) {
+  if (!Array.isArray(raw)) return [];
+  return raw
+    .map((m) => String(m).trim())
+    .filter(Boolean)
+    .slice(0, 20);
+}
+
 app.get("/api/visits", requireAuth, async (req, res) => {
   try {
-    const status = req.query.status;
-    const search = req.query.q ? `%${req.query.q}%` : null;
-    const clauses = [];
-    const params = [];
-    if (status && FOLLOWUP_STATUSES.includes(status)) {
-      params.push(status);
-      clauses.push(`v.followup_status = $${params.length}`);
-    }
-    if (search) {
-      params.push(search);
-      clauses.push(
-        `(v.company ILIKE $${params.length} OR v.address ILIKE $${params.length} OR v.contact_name ILIKE $${params.length})`
-      );
-    }
-    const where = clauses.length ? `WHERE ${clauses.join(" AND ")}` : "";
-    const sql = `
-      SELECT v.*, u.name AS created_by_name,
-        (SELECT COUNT(*)::int FROM visit_photos p WHERE p.visit_id = v.id) AS photo_count
-      FROM visits v
-      LEFT JOIN users u ON u.id = v.created_by
-      ${where}
-      ORDER BY v.visit_date DESC, v.created_at DESC
-    `;
-    const { rows } = await query(sql, params);
+    const { rows } = await query(
+      `${VISIT_SELECT} ORDER BY v.created_at DESC`
+    );
     res.json({ visits: rows });
   } catch (e) {
     console.error("list visits error", e);
@@ -258,16 +267,9 @@ app.get("/api/visits/:id", requireAuth, async (req, res) => {
   try {
     const id = parseInt(req.params.id, 10);
     if (!Number.isInteger(id)) return res.status(400).json({ error: "Bad id." });
-    const { rows } = await query(
-      `SELECT v.*, u.name AS created_by_name FROM visits v LEFT JOIN users u ON u.id = v.created_by WHERE v.id = $1`,
-      [id]
-    );
+    const { rows } = await query(`${VISIT_SELECT} WHERE v.id = $1`, [id]);
     if (!rows.length) return res.status(404).json({ error: "Not found." });
-    const photos = await query(
-      "SELECT id, kind, created_at FROM visit_photos WHERE visit_id = $1 ORDER BY created_at ASC",
-      [id]
-    );
-    res.json({ visit: rows[0], photos: photos.rows });
+    res.json({ visit: rows[0] });
   } catch (e) {
     console.error("get visit error", e);
     res.status(500).json({ error: "Server error." });
@@ -276,23 +278,56 @@ app.get("/api/visits/:id", requireAuth, async (req, res) => {
 
 app.post("/api/visits", requireAuth, async (req, res) => {
   try {
-    const company = String(req.body.company || "").trim();
-    if (!company) return res.status(400).json({ error: "Company/facility name is required." });
-    const address = String(req.body.address || "").trim();
-    const visitDate = req.body.visit_date ? String(req.body.visit_date) : null;
-    const contactName = String(req.body.contact_name || "").trim();
-    const contactEmail = String(req.body.contact_email || "").trim();
-    const contactPhone = String(req.body.contact_phone || "").trim();
-    const notes = String(req.body.notes || "").trim();
-    let status = String(req.body.followup_status || "brochure_left");
-    if (!FOLLOWUP_STATUSES.includes(status)) status = "brochure_left";
+    const b = req.body || {};
+    const company = String(b.company || "").trim();
+    if (!company) return res.status(400).json({ error: "Organization name is required." });
+    if (b.attested !== true) {
+      return res
+        .status(400)
+        .json({ error: "You must confirm the notes contain no patient information." });
+    }
+
+    const visitDate = b.visit_date ? String(b.visit_date) : null;
+    const followUpDue = b.follow_up_due ? String(b.follow_up_due) : null;
+    if (!isValidDate(visitDate) || !isValidDate(followUpDue)) {
+      return res.status(400).json({ error: "Please provide a valid date (YYYY-MM-DD)." });
+    }
+    let status = String(b.followup_status || "Not started");
+    if (!FOLLOWUP_STATUSES.includes(status)) status = "Not started";
+    const materials = JSON.stringify(cleanMaterials(b.materials));
+    const t = (k) => String(b[k] || "").trim() || null;
 
     const { rows } = await query(
-      `INSERT INTO visits (company, address, visit_date, contact_name, contact_email, contact_phone, notes, followup_status, created_by)
-       VALUES ($1,$2,COALESCE($3::date, CURRENT_DATE),$4,$5,$6,$7,$8,$9) RETURNING *`,
-      [company, address, visitDate, contactName, contactEmail, contactPhone, notes, status, req.session.userId]
+      `INSERT INTO visits
+        (company, category, address, city, county, visit_date,
+         contact_name, contact_title, contact_email, contact_phone,
+         materials, notes, owner, follow_up_due, followup_status, attested, created_by)
+       VALUES
+        ($1,$2,$3,$4,$5,COALESCE($6::date, CURRENT_DATE),
+         $7,$8,$9,$10,
+         $11::jsonb,$12,$13,$14::date,$15,$16,$17)
+       RETURNING *`,
+      [
+        company,
+        t("category"),
+        t("address"),
+        t("city"),
+        t("county"),
+        visitDate,
+        t("contact_name"),
+        t("contact_title"),
+        t("contact_email"),
+        t("contact_phone"),
+        materials,
+        t("notes"),
+        t("owner"),
+        followUpDue,
+        status,
+        true,
+        req.session.userId,
+      ]
     );
-    res.json({ visit: rows[0] });
+    res.json({ visit: { ...rows[0], photos: [] } });
   } catch (e) {
     console.error("create visit error", e);
     res.status(500).json({ error: "Server error." });
@@ -306,32 +341,55 @@ app.patch("/api/visits/:id", requireAuth, async (req, res) => {
 
     const allowed = {
       company: "text",
+      category: "text",
       address: "text",
+      city: "text",
+      county: "text",
       visit_date: "date",
       contact_name: "text",
+      contact_title: "text",
       contact_email: "text",
       contact_phone: "text",
       notes: "text",
+      owner: "text",
+      follow_up_due: "date",
       followup_status: "status",
+      materials: "materials",
     };
     const sets = [];
     const params = [];
     for (const [key, type] of Object.entries(allowed)) {
       if (!(key in req.body)) continue;
       let val = req.body[key];
-      if (type === "status" && !FOLLOWUP_STATUSES.includes(String(val))) continue;
-      if (type === "text") val = String(val || "").trim();
-      params.push(val === "" ? null : val);
-      sets.push(`${key} = $${params.length}`);
+      if (type === "status") {
+        if (!FOLLOWUP_STATUSES.includes(String(val))) continue;
+        params.push(val);
+        sets.push(`${key} = $${params.length}`);
+      } else if (type === "materials") {
+        params.push(JSON.stringify(cleanMaterials(val)));
+        sets.push(`${key} = $${params.length}::jsonb`);
+      } else if (type === "date") {
+        const dv = val ? String(val) : null;
+        if (!isValidDate(dv)) {
+          return res.status(400).json({ error: "Please provide a valid date (YYYY-MM-DD)." });
+        }
+        params.push(dv);
+        sets.push(`${key} = $${params.length}::date`);
+      } else {
+        val = String(val || "").trim();
+        params.push(val === "" ? null : val);
+        sets.push(`${key} = $${params.length}`);
+      }
     }
     if (!sets.length) return res.status(400).json({ error: "Nothing to update." });
     params.push(id);
     const { rows } = await query(
-      `UPDATE visits SET ${sets.join(", ")}, updated_at = NOW() WHERE id = $${params.length} RETURNING *`,
+      `UPDATE visits SET ${sets.join(", ")}, updated_at = NOW() WHERE id = $${params.length} RETURNING id`,
       params
     );
     if (!rows.length) return res.status(404).json({ error: "Not found." });
-    res.json({ visit: rows[0] });
+    const full = await query(`${VISIT_SELECT} WHERE v.id = $1`, [id]);
+    res.json({ visit: full.rows[0] });
   } catch (e) {
     console.error("update visit error", e);
     res.status(500).json({ error: "Server error." });
@@ -365,8 +423,8 @@ app.post("/api/visits/:id/photos", requireAuth, async (req, res) => {
     const buffer = Buffer.from(match[3], "base64");
     if (buffer.length > 8 * 1024 * 1024)
       return res.status(413).json({ error: "Image too large." });
-    let kind = String(req.body.kind || "visit");
-    if (!["visit", "card"].includes(kind)) kind = "visit";
+    let kind = String(req.body.kind || "site");
+    if (!PHOTO_KINDS.includes(kind)) kind = "site";
 
     const { rows } = await query(
       "INSERT INTO visit_photos (visit_id, kind, mime_type, data) VALUES ($1,$2,$3,$4) RETURNING id, kind, created_at",
