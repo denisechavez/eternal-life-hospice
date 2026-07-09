@@ -995,3 +995,9 @@ id = "4G93tYntOGCgkQGfsKZDV"
 uri = "file://exports/newsletter/elh-newsletter-review-kit.zip"
 type = "unspecified"
 title = "ELH Newsletter Review Kit (print-ready ZIP)"
+
+[[outputs]]
+id = "BaLOevnRvDAqO87lxKQoL"
+uri = "file://exports/strategy/eternal-life-seo-gbp-analytics-status.pdf"
+type = "pdf"
+title = "Website SEO, Google Business Profile & Analytics — Status & Action Guide"
