@@ -989,3 +989,9 @@ id = "Sgi9n8Oz0X85XB0I2z2OV"
 uri = "file://exports/ops/eternal-life-website-costs-and-roadmap.xlsx"
 type = "table"
 title = "ELH Website — Costs & Roadmap (for Aleksandra)"
+
+[[outputs]]
+id = "4G93tYntOGCgkQGfsKZDV"
+uri = "file://exports/newsletter/elh-newsletter-review-kit.zip"
+type = "unspecified"
+title = "ELH Newsletter Review Kit (print-ready ZIP)"

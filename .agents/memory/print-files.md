@@ -173,6 +173,14 @@ PDF writer needs it). Assemble instead: save composed pages as PNGs, then
 Result is rasterized (no clickable links/live text) — offer a vector/clickable
 version as a follow-up if the user wants tappable phone/email.
 
+## Chromium print-to-pdf stamps date/URL header/footer — kill with @page margin:0
+The nix chromium build (v138) draws the browser's date/title/URL header+footer inside
+the page margin on `--print-to-pdf`, even with `--headless=new` (the `--no-pdf-header-footer`
+flag is NOT honored). Fix: set **`@page{margin:0}`** — with no margin there's nowhere for
+the stamp to render, so it disappears. For full-bleed pieces (newsletter cards) this is
+ideal (color header/footer bleed to edge); for document PDFs, move the whitespace into
+element padding (`.page{padding:14mm 13mm}` in `@media print`) so text isn't edge-to-edge.
+
 ## Logo lockup for print: use symbol image + vector text (July 2026)
 The raster ELH logo PNGs render "LIFE HOSPICE" soft at print size — no source is
 big enough. Correct pattern (matches the website's own header): infinity symbol
