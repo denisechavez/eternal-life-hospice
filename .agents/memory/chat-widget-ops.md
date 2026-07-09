@@ -12,3 +12,9 @@ The chat widget is a serverless **Netlify Function** (`website/elh-preview/netli
 
 **Why the function self-heals:** to avoid chasing model renames forever, `callClaude` retries via `pickAvailableClaudeModel()` which calls `GET /v1/models` and picks newest Sonnet → newest Haiku → anything. `ANTHROPIC_MODEL` env var can still pin a specific model.
 **How to apply:** if chat falls back to the "having trouble" message, check function-log Duration first (fast = no key), then the `Anthropic <code>` line (404 = model, 401 = bad key, 400/403 = credits).
+
+**Anthropic param deprecation = 400, NOT 404 (so self-heal does NOT catch it):**
+- Symptom: live function returns HTTP 502 + generic fallback, but timing is ~1–1.8s (a real upstream call happened), NOT the 4–5ms "no key" tell. Confirmed via the gated diag flag: `Anthropic 400: "temperature is deprecated for this model."`
+- Cause: newer Claude models reject the `temperature` param that `postClaude` was sending. `pickAvailableClaudeModel()` only retries on **404** (model name), so a 400 param error is never self-healed — it throws straight to the 502 fallback.
+- Fix applied: removed `temperature` from the Claude request body entirely (tone is carried by SYSTEM_PROMPT; default sampling is fine). Do NOT re-add `temperature` to the Claude call. OpenAI (gpt-4o) still accepts temperature — leave callOpenAI as-is.
+- **Debugging pattern that worked:** Netlify function logs aren't reachable from Replit and secret VALUES can't be read (viewEnvVars = existence only). To see the real provider error, temporarily surface `lastErr.message` in the 502 JSON gated behind `?diag=elh` (query param), Git→Sync to deploy, curl `POST /.netlify/functions/chat?diag=elh`, read it, then REMOVE the diag block. The detail string carries no secret (it's the API error body, truncated 300 chars).
