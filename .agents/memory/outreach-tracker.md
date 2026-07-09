@@ -17,7 +17,7 @@ public marketing site.
 ## Auth / security decisions
 - Custom **phone-number + password** auth (bcryptjs, express-session in Postgres via connect-pg-simple). Two users only; each sets their own password on first sign-in.
 - **`MAX_USERS = 2`**, enforced atomically with `pg_advisory_xact_lock` inside a txn (not a bare COUNT).
-- Registration gated by **`REGISTRATION_CODE`** env var (share the value with the user out-of-band; it's a signup gate, not a secret password).
+- Registration gated by **`REGISTRATION_CODE`** env var (share the value with the user out-of-band; it's a signup gate, not a secret password). **Keep it in Replit Secrets, never in `.replit` `[userenv.shared]`** (that file is committed → exposed). Gotcha: a key present in shared env AND showing as a "secret" was the *same single entry* — `deleteEnvVars({environment:"shared"})` removed it entirely, ungating registration (`requiresCode` went false). Restore via `requestEnvVar({requestType:"secret"})`, then restart.
 - **`SESSION_SECRET` is required** — the server `process.exit(1)`s if it's missing (already exists as a Replit secret). Cookie `secure: "auto"` so it works on both localhost (http) and the HTTPS proxy.
 - In-memory rate limiting on `/api/login` and `/api/register` (single instance is fine for 2 users).
 
