@@ -147,13 +147,18 @@ exports.handler = async function (event) {
   }
 
   if (lastErr) {
-    return json(502, {
+    var diag = event.queryStringParameters && event.queryStringParameters.diag === "elh";
+    return json(502, Object.assign({
       reply: "",
       fallback:
         "I'm having trouble responding right now. Please call us at " +
         PHONE +
         " \u2014 a real person will be glad to help."
-    });
+    }, diag ? {
+      debug: (lastErr && lastErr.message) || String(lastErr),
+      hasAnthropic: hasAnthropic,
+      hasOpenAI: hasOpenAI
+    } : {}));
   }
 
   // Configured, but the model returned nothing usable.
