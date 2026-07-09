@@ -983,3 +983,9 @@ id = "SmpVeSU6eVlw0CE_QEOsC"
 uri = "file://exports/digital/eternal-life-referral-card-digital.pdf"
 type = "pdf"
 title = "Digital Referral Card — front & back (PDF)"
+
+[[outputs]]
+id = "Sgi9n8Oz0X85XB0I2z2OV"
+uri = "file://exports/ops/eternal-life-website-costs-and-roadmap.xlsx"
+type = "table"
+title = "ELH Website — Costs & Roadmap (for Aleksandra)"
