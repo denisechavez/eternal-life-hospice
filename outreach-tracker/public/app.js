@@ -242,6 +242,138 @@ async function extractCard(dataUrl) {
   }
 }
 
+/* ----- voice notes: record → transcribe → append ----- */
+let mediaRecorder = null;
+let recChunks = [];
+let recStream = null;
+let recState = "idle"; // idle | recording | working
+
+function pickAudioType() {
+  const prefs = ["audio/webm;codecs=opus", "audio/webm", "audio/mp4", "audio/ogg;codecs=opus", "audio/ogg"];
+  if (window.MediaRecorder && MediaRecorder.isTypeSupported) {
+    for (const t of prefs) if (MediaRecorder.isTypeSupported(t)) return t;
+  }
+  return "";
+}
+
+function setRecHint(msg, isErr) {
+  const h = $("#recHint");
+  if (!h) return;
+  h.textContent = msg;
+  h.classList.toggle("err", !!isErr);
+}
+const REC_HINT_DEFAULT =
+  "Talk through the visit and we'll type it up for you. Review it before saving. The recording is deleted the moment it's turned into text — nothing is stored.";
+
+function setRecState(state) {
+  recState = state;
+  const btn = $("#recBtn");
+  const label = btn.querySelector(".reclabel");
+  btn.classList.toggle("recording", state === "recording");
+  btn.classList.toggle("working", state === "working");
+  btn.disabled = state === "working";
+  if (state === "recording") label.textContent = "Stop recording";
+  else if (state === "working") label.textContent = "Transcribing…";
+  else label.textContent = "Record instead of typing";
+}
+
+function stopStream() {
+  if (recStream) {
+    recStream.getTracks().forEach((t) => t.stop());
+    recStream = null;
+  }
+}
+
+async function startRecording() {
+  if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia || !window.MediaRecorder) {
+    setRecHint("This browser can't record audio. Please type your notes.", true);
+    return;
+  }
+  try {
+    recStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+  } catch (err) {
+    setRecHint(
+      "Microphone access is blocked. Allow the mic in your browser settings, or type your notes.",
+      true
+    );
+    return;
+  }
+  const mimeType = pickAudioType();
+  try {
+    mediaRecorder = mimeType ? new MediaRecorder(recStream, { mimeType }) : new MediaRecorder(recStream);
+  } catch (_) {
+    mediaRecorder = new MediaRecorder(recStream);
+  }
+  recChunks = [];
+  mediaRecorder.addEventListener("dataavailable", (e) => {
+    if (e.data && e.data.size > 0) recChunks.push(e.data);
+  });
+  mediaRecorder.addEventListener("stop", onRecordingStop);
+  mediaRecorder.start();
+  setRecHint("Recording… tap Stop when you're done.");
+  setRecState("recording");
+}
+
+function stopRecording() {
+  if (mediaRecorder && mediaRecorder.state !== "inactive") {
+    mediaRecorder.stop();
+  }
+}
+
+async function onRecordingStop() {
+  stopStream();
+  const type = (mediaRecorder && mediaRecorder.mimeType) || (recChunks[0] && recChunks[0].type) || "audio/webm";
+  const blob = new Blob(recChunks, { type });
+  recChunks = [];
+  mediaRecorder = null;
+  if (!blob.size) {
+    setRecState("idle");
+    setRecHint("Nothing was recorded. Please try again.", true);
+    return;
+  }
+  setRecState("working");
+  setRecHint("Transcribing your note…");
+  try {
+    const dataUrl = await blobToDataUrl(blob);
+    const r = await api("/api/transcribe", { method: "POST", body: JSON.stringify({ audio: dataUrl }) });
+    const text = (r.text || "").trim();
+    if (!text) {
+      setRecHint("We couldn't make out any words. Try again in a quieter spot, or type your notes.", true);
+    } else {
+      appendNotes(text);
+      setRecHint("Added below — please read it over and edit before saving.");
+      toast("Voice note added. Please review it.");
+    }
+  } catch (err) {
+    setRecHint(err.message || "Couldn't transcribe that. Please try again or type your notes.", true);
+    toast(err.message || "Couldn't transcribe that.", true);
+  } finally {
+    setRecState("idle");
+  }
+}
+
+function appendNotes(text) {
+  const ta = $("#notes");
+  const existing = ta.value.trim();
+  ta.value = existing ? existing + "\n\n" + text : text;
+  riskCheck();
+  validate();
+}
+
+function blobToDataUrl(blob) {
+  return new Promise((resolve, reject) => {
+    const fr = new FileReader();
+    fr.onload = () => resolve(fr.result);
+    fr.onerror = () => reject(new Error("Couldn't read the recording."));
+    fr.readAsDataURL(blob);
+  });
+}
+
+$("#recBtn").addEventListener("click", () => {
+  if (recState === "recording") stopRecording();
+  else if (recState === "idle") { setRecHint(REC_HINT_DEFAULT); startRecording(); }
+});
+
 function drawThumbs() {
   const labels = { card: "Business card", site: "Materials" };
   $("#thumbs").innerHTML = Object.entries(photos)

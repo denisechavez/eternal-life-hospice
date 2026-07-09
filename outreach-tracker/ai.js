@@ -57,4 +57,16 @@ async function extractCardContact(dataUrl) {
   return out;
 }
 
-module.exports = { extractCardContact };
+async function transcribeAudio(buffer, filename) {
+  const client = getClient();
+  const file = await OpenAI.toFile(buffer, filename || "note.webm");
+  const resp = await client.audio.transcriptions.create({
+    file,
+    model: "gpt-4o-transcribe",
+    prompt:
+      "Field notes from a hospice referral outreach visit. Plain business English about referrals, timing, and next steps.",
+  });
+  return String(resp.text || "").trim();
+}
+
+module.exports = { extractCardContact, transcribeAudio };
