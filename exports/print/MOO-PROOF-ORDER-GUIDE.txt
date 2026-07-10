@@ -1,0 +1,86 @@
+ETERNAL LIFE HOSPICE — MOO PROOF ORDER GUIDE (Referral Card 5)
+=============================================================
+Goal: order ONE physical proof of the referral rack card from MOO and check it by
+hand before committing to the full print run. This confirms that on-screen color,
+spacing, bleed/trim, and legibility all match the printed piece.
+
+NOTE: Ordering and the hands-on review must be done by a person — it means logging
+into the MOO account, uploading the file, paying for a single card, waiting for it
+to arrive, and inspecting it. Everything that can be checked on-screen has already
+been verified (see the DIGITAL PRE-FLIGHT section at the bottom).
+
+----------------------------------------------------------------------
+WHICH FILE TO UPLOAD
+----------------------------------------------------------------------
+Send the CMYK, MOO-scale file:
+
+  exports/print/print-ready-cmyk/eternal-life-referral-card-5-MOO-rack-CMYK.pdf
+
+  • 2 pages: page 1 = FRONT, page 2 = BACK
+  • Already CMYK — do NOT let MOO re-convert from RGB
+  • Full-bleed, NO crop marks (MOO trims to the finished size for you)
+
+If MOO's uploader wants front and back as two separate files, use:
+  eternal-life-referral-card-5-MOO-rack-FRONT-CMYK.pdf   (page 1)
+  eternal-life-referral-card-5-MOO-rack-BACK-CMYK.pdf    (page 2)
+
+Optional but recommended: also have the color swatch sheet on hand for reference —
+  exports/print/eternal-life-brand-color-reference-cmyk.pdf
+
+----------------------------------------------------------------------
+HOW TO ORDER THE PROOF (do this exactly)
+----------------------------------------------------------------------
+1. Log into moo.com with the Eternal Life account.
+2. Choose Rack Cards (the file is built to MOO's rack card template:
+   bleed 3.83 x 8.66 in / trim 3.67 x 8.5 in / safe 3.5 x 8.34 in).
+3. Stock / finish: Matte, heaviest weight offered (the specs call for matte,
+   ~100 lb). Match whatever you intend to use for the full run so the proof is
+   representative.
+4. Printed both sides. Upload the CMYK PDF above (front = page 1, back = page 2).
+5. Quantity: the smallest MOO allows (this is a single proof, not the run).
+6. On any "color" or "file" option, keep it as "print my file as supplied."
+   Do NOT enable any auto-enhance / auto-color / RGB conversion.
+7. In notes to the printer (if a field exists): "Files are CMYK, bleed included,
+   trim to the MOO rack-card size. Do not re-convert or auto-correct color."
+8. Place the order and wait for delivery.
+
+----------------------------------------------------------------------
+WHAT TO CHECK ON THE PRINTED PROOF (tick each — front AND back)
+----------------------------------------------------------------------
+[ ] TRIM / BLEED: card is cut cleanly to size; no white slivers at any edge;
+        the full-bleed plum (front) and cream/plum panels (back) run right to
+        the paper edge with nothing important cut off.
+[ ] SAFE ZONE: all text, the logo, the QR and the contact blocks sit comfortably
+        inside the edge — nothing looks crowded against the trim.
+[ ] COLOR: deep plum reads rich (not muddy/brown or blue-purple); gold reads warm
+        and metallic-ish (not flat yellow or greenish); cream is soft (not gray).
+        Compare against the swatch sheet if you brought it.
+[ ] SPACING: the layout matches the on-screen design — section gaps look even,
+        the credential band and footer sit where expected, nothing overlaps.
+[ ] LEGIBILITY: the smallest text (address, credentials line, secure-comms labels)
+        is readable at arm's length; the 24/7 phone number is easy to find fast.
+[ ] QR SCAN: point your phone camera at BOTH QR codes (front + back). Each must
+        open https://eternallifehospice.com/refer (the partner referral form).
+        A QR that scans on screen can still fail if printed too small/low-contrast.
+[ ] FEEL: hold it like a referral partner would — does it read premium and calm?
+
+----------------------------------------------------------------------
+IF SOMETHING IS WRONG
+----------------------------------------------------------------------
+Tell me exactly what (e.g. "plum prints too dark," "back QR won't scan," "footer
+too close to the bottom edge," "gold looks greenish") and I'll adjust the source
+(scripts/build-referral-card5-moo-print.py) and re-export the CMYK file. Then
+re-proof only the changed card before the full MOO run.
+
+----------------------------------------------------------------------
+DIGITAL PRE-FLIGHT — already verified on screen (you don't need to re-check)
+----------------------------------------------------------------------
+• File is 2 pages (front + back) — confirmed with pdfinfo.
+• Page size is 276 x 624 pts = 3.83 x 8.66 in, MOO's full-bleed rack-card size
+  (trim 3.67 x 8.5 + bleed) — confirmed with pdfinfo. No crop marks (MOO trims).
+• File is CMYK (converted via Ghostscript /prepress; images not downsampled).
+• Full contact block on both sides (phone, fax, email, address, 24/7, service area).
+• QR resolves to https://eternallifehospice.com/refer (verified at generation).
+• Coverage language limited to Ventura & LA County; integrative therapies framed
+  as comfort (no medical-efficacy claims); credentials line accurate
+  (Medicare-Certified · CDPH-Licensed · ACHC-Accredited).
