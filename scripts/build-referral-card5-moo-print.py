@@ -132,13 +132,13 @@ BACK = f"""
       <div style="font-family:Jost;font-weight:600;font-size:7.5pt;letter-spacing:2.4pt;color:{GOLD};text-align:center;margin-bottom:1.5pt">THE&nbsp;ETERNAL&nbsp;DIFFERENCE</div>
       <div style="display:flex;gap:7pt;align-items:baseline">
         <span style="font-family:Jost;font-weight:600;font-size:8.5pt;color:{GOLD}">&#10022;</span>
-        <span style="font-family:Jost;font-weight:500;font-size:9pt;color:{CREAM};line-height:1.28">Integrative holistic therapies provided based on clinical assessment</span></div>
+        <span style="font-family:Jost;font-weight:500;font-size:9pt;color:{CREAM};line-height:1.28">Integrative therapies guided by clinical assessment</span></div>
       <div style="display:flex;gap:7pt;align-items:baseline">
         <span style="font-family:Jost;font-weight:600;font-size:8.5pt;color:{GOLD}">&#10022;</span>
-        <span style="font-family:Jost;font-weight:500;font-size:9pt;color:{CREAM};line-height:1.28">Responsive care that stays ahead of changing conditions</span></div>
+        <span style="font-family:Jost;font-weight:500;font-size:9pt;color:{CREAM};line-height:1.28">Responsive care that adapts as conditions change</span></div>
       <div style="display:flex;gap:7pt;align-items:baseline">
         <span style="font-family:Jost;font-weight:600;font-size:8.5pt;color:{GOLD}">&#10022;</span>
-        <span style="font-family:Jost;font-weight:500;font-size:9pt;color:{CREAM};line-height:1.28">Whole-person care &mdash; medical, emotional, social &amp; spiritual support working together to provide comfort at every level</span></div>
+        <span style="font-family:Jost;font-weight:500;font-size:9pt;color:{CREAM};line-height:1.28">Coordinated medical, emotional, social and spiritual comfort</span></div>
     </div>
     <div style="margin:4pt 14pt 0;text-align:center;font-family:Jost;font-weight:500;font-size:7.8pt;
                 letter-spacing:0.2pt;color:{PLUM};line-height:1.4"><span style="white-space:nowrap">Same-day admission &middot; Transport &middot; Physician-led</span><br><span style="white-space:nowrap">24/7 Hospice Nurse Access &middot; Placement &middot; Bereavement</span></div>
@@ -172,12 +172,12 @@ BACK = f"""
         <span style="font-family:Jost;font-weight:600;font-size:9.4pt;color:{PLUM};white-space:nowrap">referral@eternallifehospice.com</span>
       </div>
     </div>
-    <div style="margin:4pt 22pt 0;padding:0 6pt;display:flex;gap:7pt;align-items:baseline">
+    <div style="margin:6pt 22pt 0;padding:0 6pt;display:flex;gap:7pt;align-items:baseline">
       <span style="flex:0 0 42pt;font-family:Jost;font-weight:600;font-size:6.4pt;
                    letter-spacing:0.9pt;color:{STEEL}">OFFICE</span>
       <span style="font-family:Jost;font-weight:500;font-size:8.2pt;color:#3a2b39;line-height:1.4">4165 E Thousand Oaks Blvd, Ste 325B Westlake Village, CA 91362</span>
     </div>
-    <div style="margin-top:9pt;text-align:center;font-family:Jost;font-weight:500;font-size:7.4pt;
+    <div style="margin:15pt 0 15pt;text-align:center;font-family:Jost;font-weight:500;font-size:7.4pt;
                 letter-spacing:1.4pt;color:{PLUM}">SERVING&nbsp;VENTURA&nbsp;&amp;&nbsp;LOS&nbsp;ANGELES&nbsp;COUNTY</div>
     <div style="position:absolute;left:0;bottom:0;width:100%;height:42.5pt;background:{DEEP};
                 display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2.5pt;padding-bottom:4.5pt">
