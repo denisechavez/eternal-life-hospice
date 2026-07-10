@@ -6,6 +6,7 @@
 - [Email signatures](email-signatures.md) — exports/email/ HTML sigs mirror the card; table+inline+web-safe fonts; logo via live URL only resolves after Git→Sync (trans mark was 404 at build).
 - [Referral Card 5 locked design](referral-card5-design.md) — approved flagship rack-card layout front+back; replicate for future referral cards; includes print-readiness checks.
 - [Print-ready files](print-files.md) — rack cards/flyers: build temp HTML in elh-preview, 4.25×9.25 (4×9+bleed), chrome print-to-pdf vector, pdfunite, export to repo-root exports/; use logo-eternal-trans.png.
+- [Crop-mark press coords](cropmark-press-coords.md) — crop marks use SHEET coords, in-`.bleed` children use bleed-LOCAL (sheet-MARGIN); mixing shifts card past trim. Cards rasterized→fixed `<img>` so they can't reflow.
 - [Sound Bath page](soundbath-page.md) — sound-bath.html: Web Audio engine + player CSS duplicated from index.html (update both); strict compliance framing (no efficacy claims, Medicare-not-covered, WebPage schema not Medical).
 - [Canvas image ops](canvas-image-ops.md) — image shapes need `.canvas/assets/` on port 5904; create uses `shape` + clean URL, update uses `updates`+`shapeType`+`?v=`; presentArtifact only works for iframes.
 - [Chat widget ops](chat-widget-ops.md) — Netlify Function chat.js: fast 4-5ms reply = missing key (scope=All+redeploy); Anthropic 404=model retired not credits; function self-heals via /v1/models.

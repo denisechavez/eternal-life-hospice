@@ -25,8 +25,11 @@ size, zero distortion) and the remaining ~0.045in bleed ring is filled by
 edge-clamp: for each of the 4 sides and 4 corners a 1pt slice of the card's own
 edge is stretched outward to the bleed edge. Because the card edges are solid
 color fields, this reproduces the true edge color deterministically. Everything
-outside the 1:1 card is bleed that the printer trims off. Vector print-to-pdf via
-chromium, then a CMYK copy in print-ready-cmyk/.
+outside the 1:1 card is bleed that the printer trims off. Each locked card is
+first rasterized (chromium print-to-pdf of the exact standalone layout, then
+pdftoppm at 600 DPI) and placed as a fixed <img>, so nested-container reflow can
+never shift content past the trim. Assembled sheet is print-to-pdf'd via chromium,
+then a CMYK copy is written to print-ready-cmyk/.
 """
 import os, shutil, subprocess, importlib.util
 
@@ -72,6 +75,42 @@ BE_R, BE_B = MARGIN + BW, MARGIN + BH                    # 300.24, 648
 ML = 12.0   # crop mark length
 GAP = 3.0   # gap between a crop mark and the bleed edge
 
+# The card + bleed pieces live INSIDE .bleed (itself offset by MARGIN), so they
+# must use bleed-LOCAL coordinates = sheet coord - MARGIN. Crop marks live in
+# .sheet and keep sheet coordinates above.
+FL, FT = FGL - MARGIN, FGT - MARGIN                      # 3.24, 3.24  card top-left
+FR, FB = FGR - MARGIN, FGB - MARGIN                      # 279.0, 626.76 card bottom-right
+BL, BT = 0.0, 0.0                                        # bleed box top-left (local)
+
+# --- rasterize each locked card to a high-DPI PNG (pixel-identical to the MOO
+# artwork) so the crop-mark sheet can place it as a FIXED <img> that cannot
+# reflow. Rendering the card in a nested/absolutely-positioned container caused
+# its content to shift vs. the standalone layout, which pushed the bottom tagline
+# past the trim line. A raster of the exact standalone render eliminates that
+# entirely and keeps the trim/safe-area precisely where the locked layout intends. ---
+RASTER_DPI = 600
+
+
+def rasterize(card, name):
+    html = (f'<!doctype html><html><head><meta charset="utf-8"><style>'
+            f'@page {{ size:{CW}pt {CH}pt; margin:0; }}'
+            f'*{{margin:0;padding:0;box-sizing:border-box;'
+            f'-webkit-print-color-adjust:exact;print-color-adjust:exact;}}'
+            f'{moo.CARD_CSS}</style></head><body>{card}</body></html>')
+    with open(os.path.join(WORK, name + ".html"), "w") as fh:
+        fh.write(html)
+    moo.run(["chromium", "--headless=new", "--no-sandbox", "--disable-gpu",
+             "--force-color-profile=srgb", "--no-pdf-header-footer",
+             "--print-to-pdf=" + os.path.join(WORK, name + ".pdf"), name + ".html"])
+    subprocess.run(["pdftoppm", "-png", "-r", str(RASTER_DPI), "-singlefile",
+                    os.path.join(WORK, name + ".pdf"),
+                    os.path.join(WORK, name)], check=True)
+    return name + ".png"
+
+
+FRONT_PNG = rasterize(moo.FRONT, "cardfront")
+BACK_PNG = rasterize(moo.BACK, "cardback")
+
 
 def vmark(x, top):
     return (f'<div class="cm" style="left:{x - 0.25:.2f}pt;top:{top:.2f}pt;'
@@ -91,43 +130,45 @@ marks = "".join([
 ])
 
 
-def clamp(clip_style, pg_style, card):
+def clamp(clip_style, pg_style, png):
     """A clipped, single/dual-axis-stretched copy of the card that replicates
     one edge (or corner) outward into the bleed ring."""
     return (f'<div class="clip" style="{clip_style}">'
-            f'<div class="pg" style="{pg_style}">{card}</div></div>')
+            f'<img class="pg" src="{png}" '
+            f'style="width:{CW}pt;height:{CH}pt;{pg_style}"></div>')
 
 
-def sheet(card):
+def sheet(png):
     # Edge-clamp bleed pieces: 4 sides + 4 corners, each stretching a 1pt slice
     # of the card's edge across the RING gap out to the bleed edge.
     pieces = [
         # left side
-        clamp(f"left:{BE_L}pt;top:{FGT}pt;width:{RING}pt;height:{CH}pt",
-              f"left:0;top:0;transform-origin:left top;transform:scaleX({SC})", card),
+        clamp(f"left:{BL}pt;top:{FT}pt;width:{RING}pt;height:{CH}pt",
+              f"left:0;top:0;transform-origin:left top;transform:scaleX({SC})", png),
         # right side
-        clamp(f"left:{FGR}pt;top:{FGT}pt;width:{RING}pt;height:{CH}pt",
-              f"right:0;top:0;transform-origin:right top;transform:scaleX({SC})", card),
+        clamp(f"left:{FR}pt;top:{FT}pt;width:{RING}pt;height:{CH}pt",
+              f"right:0;top:0;transform-origin:right top;transform:scaleX({SC})", png),
         # top side
-        clamp(f"left:{FGL}pt;top:{BE_T}pt;width:{CW}pt;height:{RING}pt",
-              f"left:0;top:0;transform-origin:left top;transform:scaleY({SC})", card),
+        clamp(f"left:{FL}pt;top:{BT}pt;width:{CW}pt;height:{RING}pt",
+              f"left:0;top:0;transform-origin:left top;transform:scaleY({SC})", png),
         # bottom side
-        clamp(f"left:{FGL}pt;top:{FGB}pt;width:{CW}pt;height:{RING}pt",
-              f"left:0;bottom:0;transform-origin:left bottom;transform:scaleY({SC})", card),
+        clamp(f"left:{FL}pt;top:{FB}pt;width:{CW}pt;height:{RING}pt",
+              f"left:0;bottom:0;transform-origin:left bottom;transform:scaleY({SC})", png),
         # top-left corner
-        clamp(f"left:{BE_L}pt;top:{BE_T}pt;width:{RING}pt;height:{RING}pt",
-              f"left:0;top:0;transform-origin:left top;transform:scale({SC},{SC})", card),
+        clamp(f"left:{BL}pt;top:{BT}pt;width:{RING}pt;height:{RING}pt",
+              f"left:0;top:0;transform-origin:left top;transform:scale({SC},{SC})", png),
         # top-right corner
-        clamp(f"left:{FGR}pt;top:{BE_T}pt;width:{RING}pt;height:{RING}pt",
-              f"right:0;top:0;transform-origin:right top;transform:scale({SC},{SC})", card),
+        clamp(f"left:{FR}pt;top:{BT}pt;width:{RING}pt;height:{RING}pt",
+              f"right:0;top:0;transform-origin:right top;transform:scale({SC},{SC})", png),
         # bottom-left corner
-        clamp(f"left:{BE_L}pt;top:{FGB}pt;width:{RING}pt;height:{RING}pt",
-              f"left:0;bottom:0;transform-origin:left bottom;transform:scale({SC},{SC})", card),
+        clamp(f"left:{BL}pt;top:{FB}pt;width:{RING}pt;height:{RING}pt",
+              f"left:0;bottom:0;transform-origin:left bottom;transform:scale({SC},{SC})", png),
         # bottom-right corner
-        clamp(f"left:{FGR}pt;top:{FGB}pt;width:{RING}pt;height:{RING}pt",
-              f"right:0;bottom:0;transform-origin:right bottom;transform:scale({SC},{SC})", card),
+        clamp(f"left:{FR}pt;top:{FB}pt;width:{RING}pt;height:{RING}pt",
+              f"right:0;bottom:0;transform-origin:right bottom;transform:scale({SC},{SC})", png),
     ]
-    fg = f'<div class="cardfg" style="left:{FGL}pt;top:{FGT}pt">{card}</div>'
+    fg = (f'<img class="cardfg" src="{png}" '
+          f'style="left:{FL}pt;top:{FT}pt;width:{CW}pt;height:{CH}pt">')
     return (f'<div class="sheet">{marks}'
             f'<div class="bleed">{"".join(pieces)}{fg}</div></div>')
 
@@ -135,16 +176,15 @@ def sheet(card):
 HTML = f"""<!doctype html><html><head><meta charset="utf-8"><style>
 @page {{ size: {SW}pt {SH}pt; margin: 0; }}
 * {{ margin:0; padding:0; box-sizing:border-box; -webkit-print-color-adjust:exact; print-color-adjust:exact; }}
-{moo.CARD_CSS}
+img {{ display:block; }}
 .sheet {{ position:relative; width:{SW}pt; height:{SH}pt; overflow:hidden; background:#ffffff; page-break-after:always; }}
 .sheet:last-child {{ page-break-after:auto; }}
 .bleed {{ position:absolute; left:{MARGIN}pt; top:{MARGIN}pt; width:{BW}pt; height:{BH}pt; overflow:hidden; }}
 .clip {{ position:absolute; overflow:hidden; }}
 .clip .pg {{ position:absolute; }}
 .cardfg {{ position:absolute; }}
-.bleed .page {{ page-break-after:auto !important; }}
 .cm {{ position:absolute; background:#000000; }}
-</style></head><body>{sheet(moo.FRONT)}{sheet(moo.BACK)}</body></html>"""
+</style></head><body>{sheet(FRONT_PNG)}{sheet(BACK_PNG)}</body></html>"""
 
 with open(os.path.join(WORK, "cropcard5.html"), "w") as fh:
     fh.write(HTML)
