@@ -18,7 +18,7 @@ Baseline metrics that seed the future sale decks: ADC month-by-month, revenue/P&
 payer mix, ALOS + admits/discharges, referral-source conversion, Medicare cap
 status, operating cost per patient day.
 
-**Resolved (per Denise):**
+**Resolved (per the Conduit lead):**
 - **Pillars = the FOUR evolved pillars** (Clinical Confidence · Guided Presence ·
   Whole-Person Comfort · Compliance-Led Care). The six-pillar list in the early
   briefs is superseded; printed cards + replit.md are correct as-is.

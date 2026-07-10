@@ -28,7 +28,7 @@ attack**:
   provider"). For partner content keep it quality/integrity, never inducements (Anti-Kickback).
 
 ## Ongoing ops
-Monthly cadence, fixed send day; Aleksandra = compliance sign-off + final approval.
+Monthly cadence, fixed send day; the owner = compliance sign-off + final approval.
 ESP = MailerLite/Brevo (NOT Klaviyo — e-comm/HIPAA). Two segments: Families/Community vs
 Referral Partners. No PHI ever. Templates carry placeholder `href="#"` unsubscribe —
 must be swapped for real ESP merge tags before any live send (they are review drafts).

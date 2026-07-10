@@ -1,4 +1,5 @@
-# SEO & AI-Search Audit — Implementation Report
+# SEO & AI-Search 
+Audit — Implementation Report
 **Site:** Eternal Life Hospice — `website/elh-preview/`
 **Primary domain:** https://eternallifehospice.com
 **Date:** July 10, 2026

@@ -14,7 +14,7 @@ description: Which CRM, email, newsletter, and analytics tools ELH uses and why 
 
 **Live third-party on the site (all free):** Google Analytics (G-JRLYCRC48G), Microsoft Clarity, Google Fonts, Resend (form auto-replies, free tier). Hosting = Netlify free tier.
 
-**Platform recommendations (given to Aleksandra in exports/ops/eternal-life-website-costs-and-roadmap.xlsx):**
+**Platform recommendations (given to the owner in exports/ops/eternal-life-website-costs-and-roadmap.xlsx):**
 - **Klaviyo: AVOID** for ELH. It's e-commerce-focused, priced by contact count, and NOT a HIPAA/BAA fit. Wrong tool for a hospice referral model. **Why:** cost scales badly + compliance risk.
 - **CRM: HubSpot Free CRM** ($0) — referral-partner/enquiry tracking, no lock-in.
 - **Newsletter/email marketing: MailerLite** (free ≤1,000 subs) or **Brevo** (free, bundles light CRM+email).
