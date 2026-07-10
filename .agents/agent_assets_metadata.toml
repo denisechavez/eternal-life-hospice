@@ -1019,3 +1019,45 @@ id = "Lm_ETkHowyVDkA7dUa9wH"
 uri = "file://SEO_AUDIT_IMPLEMENTATION.md"
 type = "text"
 title = "SEO & AI-Search Audit — Implementation Report"
+
+[[outputs]]
+id = "t1fYQ8To9XRG0O-ImVoJH"
+uri = "file://exports/print/print-ready-cmyk/eternal-life-rack-card-CMYK.pdf"
+type = "pdf"
+title = "Main Rack Card (CMYK, print-ready)"
+
+[[outputs]]
+id = "B90uMUUYK6S-sLh0zj096"
+uri = "file://exports/print/print-ready-cmyk/press-kit/eternal-life-rackcard-1-clinical-confidence-CMYK.pdf"
+type = "pdf"
+title = "Pillar 1 — Clinical Confidence (CMYK)"
+
+[[outputs]]
+id = "oHqHkbn-PIojEBjm6sb61"
+uri = "file://exports/print/print-ready-cmyk/press-kit/eternal-life-rackcard-2-guided-presence-CMYK.pdf"
+type = "pdf"
+title = "Pillar 2 — Guided Presence (CMYK)"
+
+[[outputs]]
+id = "nb0BqFJtOGCeR1byfCmNM"
+uri = "file://exports/print/print-ready-cmyk/press-kit/eternal-life-rackcard-3-whole-person-comfort-CMYK.pdf"
+type = "pdf"
+title = "Pillar 3 — Whole-Person Comfort (CMYK)"
+
+[[outputs]]
+id = "l1tV6ukMW_p_QOzZHwxtZ"
+uri = "file://exports/print/print-ready-cmyk/press-kit/eternal-life-rackcard-4-compliance-led-care-CMYK.pdf"
+type = "pdf"
+title = "Pillar 4 — Compliance-Led Care (CMYK)"
+
+[[outputs]]
+id = "wqfEgtSwtaOeBIe5oMFHa"
+uri = "file://exports/print/print-ready-cmyk/eternal-life-referral-card-5-MOO-rack-CMYK.pdf"
+type = "pdf"
+title = "Referral Rack Card 5 — MOO (CMYK)"
+
+[[outputs]]
+id = "nKHxT1VnhtvTI7rwvbHGX"
+uri = "file://exports/print/eternal-life-referral-card-5-MOO-rack.pdf"
+type = "pdf"
+title = "Eternal Life Referral Card 5 — MOO Rack (current version)"
