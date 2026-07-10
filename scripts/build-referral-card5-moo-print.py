@@ -187,9 +187,11 @@ BACK = f"""
   </div>
 </div>"""
 
-HTML = f"""<!doctype html><html><head><meta charset="utf-8"><style>
-@page {{ size: 3.83in 8.66in; margin: 0; }}
-* {{ margin:0; padding:0; box-sizing:border-box; -webkit-print-color-adjust:exact; print-color-adjust:exact; }}
+# Card art CSS (fonts + page/art geometry) shared by this MOO build and the
+# crop-mark press build (scripts/build-referral-card5-cropmarks-press.py), which
+# imports FRONT/BACK/CARD_CSS from this module. Single source of truth for the
+# locked artwork so the two print files never drift.
+CARD_CSS = f"""
 @font-face {{ font-family:'Fraunces'; src:url('Fraunces-var.woff2') format('woff2'); font-weight:100 900; }}
 @font-face {{ font-family:'FrauncesItalic'; src:url('Fraunces-Italic-var.woff2') format('woff2'); font-weight:100 900; font-style:italic; }}
 @font-face {{ font-family:'Jost'; src:url('JostELH-Regular.woff2') format('woff2'); font-weight:400; }}
@@ -199,10 +201,13 @@ HTML = f"""<!doctype html><html><head><meta charset="utf-8"><style>
 .page:last-child {{ page-break-after:auto; }}
 .art {{ position:absolute; left:0; top:0; width:263.6pt; height:595.5pt; zoom:1.048571; overflow:hidden; }}
 img {{ display:block; }}
-</style></head><body>{FRONT}{BACK}</body></html>"""
+"""
 
-with open(os.path.join(WORK, "card5.html"), "w") as fh:
-    fh.write(HTML)
+HTML = f"""<!doctype html><html><head><meta charset="utf-8"><style>
+@page {{ size: 3.83in 8.66in; margin: 0; }}
+* {{ margin:0; padding:0; box-sizing:border-box; -webkit-print-color-adjust:exact; print-color-adjust:exact; }}
+{CARD_CSS}</style></head><body>{FRONT}{BACK}</body></html>"""
+
 
 def run(cmd):
     r = subprocess.run(cmd, capture_output=True, text=True, cwd=WORK)
@@ -211,26 +216,35 @@ def run(cmd):
         sys.exit(1)
     return r
 
-run(["chromium", "--headless=new", "--no-sandbox", "--disable-gpu",
-     "--force-color-profile=srgb", "--no-pdf-header-footer",
-     "--print-to-pdf=" + os.path.join(WORK, "card5.pdf"), "card5.html"])
 
-info = subprocess.run(["pdfinfo", os.path.join(WORK, "card5.pdf")],
-                      capture_output=True, text=True).stdout
-pages = [l for l in info.splitlines() if l.startswith(("Pages", "Page size"))]
-print(pages)
-assert "Pages:           2" in info and "276 x 624" in info, "wrong page count/size"
+def main():
+    with open(os.path.join(WORK, "card5.html"), "w") as fh:
+        fh.write(HTML)
 
-shutil.copy(os.path.join(WORK, "card5.pdf"), CARD)
-run(["gs", "-dBATCH", "-dNOPAUSE", "-sDEVICE=pdfwrite",
-     "-sColorConversionStrategy=CMYK", "-dProcessColorModel=/DeviceCMYK",
-     "-dPDFSETTINGS=/prepress",
-     "-dDownsampleColorImages=false", "-dDownsampleGrayImages=false",
-     "-dDownsampleMonoImages=false",
-     "-dAutoFilterColorImages=false", "-dAutoFilterGrayImages=false",
-     "-dColorImageFilter=/FlateEncode", "-dGrayImageFilter=/FlateEncode",
-     "-sOutputFile=" + CMYK, CARD])
-rgb = subprocess.run(["bash", "-c",
-    f"gs -o /dev/null -sDEVICE=inkcov '{CMYK}' 2>/dev/null | grep -c DeviceRGB || true"],
-    capture_output=True, text=True).stdout.strip()
-print("OK", CARD, "| CMYK done | DeviceRGB refs:", rgb)
+    run(["chromium", "--headless=new", "--no-sandbox", "--disable-gpu",
+         "--force-color-profile=srgb", "--no-pdf-header-footer",
+         "--print-to-pdf=" + os.path.join(WORK, "card5.pdf"), "card5.html"])
+
+    info = subprocess.run(["pdfinfo", os.path.join(WORK, "card5.pdf")],
+                          capture_output=True, text=True).stdout
+    pages = [l for l in info.splitlines() if l.startswith(("Pages", "Page size"))]
+    print(pages)
+    assert "Pages:           2" in info and "276 x 624" in info, "wrong page count/size"
+
+    shutil.copy(os.path.join(WORK, "card5.pdf"), CARD)
+    run(["gs", "-dBATCH", "-dNOPAUSE", "-sDEVICE=pdfwrite",
+         "-sColorConversionStrategy=CMYK", "-dProcessColorModel=/DeviceCMYK",
+         "-dPDFSETTINGS=/prepress",
+         "-dDownsampleColorImages=false", "-dDownsampleGrayImages=false",
+         "-dDownsampleMonoImages=false",
+         "-dAutoFilterColorImages=false", "-dAutoFilterGrayImages=false",
+         "-dColorImageFilter=/FlateEncode", "-dGrayImageFilter=/FlateEncode",
+         "-sOutputFile=" + CMYK, CARD])
+    rgb = subprocess.run(["bash", "-c",
+        f"gs -o /dev/null -sDEVICE=inkcov '{CMYK}' 2>/dev/null | grep -c DeviceRGB || true"],
+        capture_output=True, text=True).stdout.strip()
+    print("OK", CARD, "| CMYK done | DeviceRGB refs:", rgb)
+
+
+if __name__ == "__main__":
+    main()
