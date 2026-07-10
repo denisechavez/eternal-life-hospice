@@ -1,6 +1,6 @@
 ---
 name: Conduit brand architecture & Track One plan
-description: The locked Eternal Life Hospice brand platform (Denise/Conduit) and the 45-day Track One rebrand/marketing plan — the canonical messaging framework all collateral must ladder to.
+description: The locked Eternal Life Hospice brand platform (Conduit lead) and the 45-day Track One rebrand/marketing plan — the canonical messaging framework all collateral must ladder to.
 ---
 
 # The Eternal Standard — locked brand platform (canonical)
@@ -9,7 +9,7 @@ Central platform (NOT a certification — the promise the brand makes):
 "Patients and families deserve dignity, clarity, comfort, and protection during
 one of life's most vulnerable moments."
 
-**FOUR pillars — CANONICAL** (confirmed by Denise: "the 4 pillars we evolved"):
+**FOUR pillars — CANONICAL** (confirmed by the Conduit lead: "the 4 pillars we evolved"):
 Clinical Confidence · Guided Presence · Whole-Person Comfort · Compliance-Led Care.
 This is the evolved/final set — already correct on the printed press-kit rack cards
 and in replit.md. Ladder all messaging to these four.
@@ -38,10 +38,10 @@ and in replit.md. Ladder all messaging to these four.
    on brand surfaces (founder dependency depresses valuation); portrait small,
    contextual, never >2.5in on print. In the FIELD she remains the face (dual-surface
    principle).
-2. **Aleksandra = standard-bearer** — never victim/fighter/hero; quiet authority.
+2. **the owner = standard-bearer** — never victim/fighter/hero; quiet authority.
 3. **Two agency stories, one bridge** — Westlake Village Hospice = anchor agency,
    restrained/legal-reviewed regulatory story; Eternal Life = forward-facing brand;
-   Aleksandra bridges both.
+   the owner bridges both.
 
 > SENSITIVE: Westlake Village Hospice (the anchor agency) is affected by a broader
 > **payment suspension**. Keep any reference factual, quiet, and legal-reviewed;

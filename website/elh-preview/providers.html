@@ -10,16 +10,94 @@
   "@context": "https://schema.org",
   "@type": "WebPage",
   "name": "For Referring Providers | Eternal Life Hospice",
-  "description": "Referral information for physicians, discharge planners and case managers working with Eternal Life Hospice across Ventura and Los Angeles counties.",
+  "description": "Referral information for physicians, hospitals, discharge planners, case managers, skilled nursing facilities and assisted living communities working with Eternal Life Hospice across Ventura and Los Angeles counties.",
   "url": "https://eternallifehospice.com/providers",
+  "breadcrumb": {
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://eternallifehospice.com"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "For Referring Providers",
+        "item": "https://eternallifehospice.com/providers"
+      }
+    ]
+  },
   "mainEntity": {
     "@type": "MedicalBusiness",
     "name": "Eternal Life Hospice, Inc.",
     "url": "https://eternallifehospice.com",
     "telephone": "+1-805-953-7273",
+    "faxNumber": "+1-805-953-8530",
     "email": "info@eternallifehospice.com",
-    "areaServed": "Ventura County and Los Angeles County, California",
+    "areaServed": ["Ventura County, California", "Los Angeles County, California"],
     "hasCredential": ["Medicare Certified", "CDPH Licensed", "ACHC Accredited"]
+  }
+}</script>
+<script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "Service",
+  "serviceType": "Hospice care",
+  "name": "Physician-Led Hospice Care for Referring Providers",
+  "description": "Medicare-certified, ACHC-accredited hospice care with same-day admissions when clinically appropriate, 24/7 nurse availability, and whole-person comfort delivered in the home, assisted living, RCFE and skilled nursing settings across Ventura and Los Angeles counties.",
+  "provider": {
+    "@type": "MedicalBusiness",
+    "name": "Eternal Life Hospice, Inc.",
+    "url": "https://eternallifehospice.com",
+    "telephone": "+1-805-953-7273"
+  },
+  "areaServed": ["Ventura County, California", "Los Angeles County, California"],
+  "hasOfferCatalog": {
+    "@type": "OfferCatalog",
+    "name": "Whole-Person Hospice Services",
+    "itemListElement": [
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "MedicalTherapy",
+          "name": "Physician-Led Hospice Care",
+          "description": "Physician-directed, nurse-coordinated end-of-life care with same-day admissions when clinically appropriate and 24/7 on-call nursing."
+        }
+      },
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "MedicalTherapy",
+          "name": "Pain and Symptom Management",
+          "description": "Expert management of pain and distressing symptoms to keep patients comfortable and present."
+        }
+      },
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "MedicalTherapy",
+          "name": "Emotional and Spiritual Support",
+          "description": "Social work, chaplaincy and counseling support for the patient and the whole family."
+        }
+      },
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "MedicalTherapy",
+          "name": "Integrative Comfort Therapies",
+          "description": "Optional, comfort-focused integrative support including music, massage, aromatherapy, Reiki, and sound bath or singing bowl support, offered for patient comfort and wellbeing as part of a whole-person approach."
+        }
+      },
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "MedicalTherapy",
+          "name": "Bereavement and Grief Support",
+          "description": "Ongoing grief and bereavement support for families following the death of a loved one."
+        }
+      }
+    ]
   }
 }</script>
 <script type="application/ld+json">{
@@ -31,7 +109,15 @@
       "name": "How do I refer a patient to Eternal Life Hospice?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Call us at 805.953.7273, submit the online referral request, or coordinate a secure fax. Share the patient's demographics, diagnosis and contact information and our intake team confirms eligibility and arranges admission, often the same day."
+        "text": "Call us at 805.953.7273, submit the online referral request, or coordinate a secure fax to 805.953.8530. Share the patient's demographics, diagnosis and contact information and our intake team confirms eligibility and arranges admission, often the same day."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Who can refer a patient to hospice?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Anyone can start a referral \u2014 physicians, hospital discharge planners, case managers, skilled nursing facilities, assisted living and RCFE communities, home health agencies, and families. A physician certification of a terminal prognosis is required for admission, and our team helps coordinate it."
       }
     },
     {
@@ -47,7 +133,31 @@
       "name": "How quickly can Eternal Life Hospice admit a patient?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "We offer same-day admissions with 24/7 on-call nursing. Once eligibility is confirmed, we move quickly so your patient is supported without delay."
+        "text": "We offer same-day admissions when clinically appropriate, backed by 24/7 on-call nursing. Once eligibility is confirmed, we move quickly so your patient is supported without delay."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "In what settings does Eternal Life Hospice provide care?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "We bring hospice care to wherever the patient calls home \u2014 private residences, assisted living communities, residential care facilities for the elderly (RCFE) and skilled nursing facilities \u2014 across Ventura and Los Angeles counties."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is hospice covered by Medicare?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. For eligible patients, the Medicare Part A hospice benefit covers hospice services, including the care team, medications related to the terminal diagnosis, and medical equipment, with no deductibles or copays for the hospice benefit. We verify coverage as part of intake."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What integrative comfort therapies are available?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "As part of a whole-person approach, we offer optional, comfort-focused integrative support such as music, massage, aromatherapy, Reiki, and sound bath or singing bowl support. These are provided for patient comfort and wellbeing and are not intended to diagnose, treat or cure any condition."
       }
     },
     {
@@ -135,69 +245,77 @@
 <section class="hero hero--photo hero--tall" style="background-image:url('assets/img/providers-hero.jpg')">
   <div class="eyebrow">For Referring Providers &middot; Ventura &amp; Los Angeles Counties</div>
   <h1>Refer With Confidence</h1>
-  <p>When you refer a patient to Eternal Life Hospice, you are referring to a partner that handles eligibility, documentation and certification with discipline and care. Clinical rigor comes first, so the referral is well-supported and your patient is cared for without delay.</p>
+  <p>A referral partner built for physicians, hospitals, discharge planners, case managers, skilled nursing facilities and assisted living communities. We confirm eligibility, handle the documentation, and admit &mdash; often the same day when clinically appropriate &mdash; so your patient is supported without delay.</p>
   <div class="hero-btns" style="justify-content:center;margin-top:1.7rem">
-    <a class="btn-gold" href="/refer">Client Referral &#8594;</a>
+    <a class="btn-gold" href="/refer">Refer a Patient &#8594;</a>
     <a class="btn-ghost" href="tel:18059537273">Call 805.953.7273</a>
   </div>
 </section>
 
 <section class="sec wrap">
-  <h2>A compliance-led referral partner</h2>
-  <p class="lede">Referring physicians, discharge planners and case managers carry real responsibility for every hand-off. Eternal Life Hospice is built to make that hand-off clean: a nationally accredited, Medicare-certified agency that confirms appropriateness, documents thoroughly and keeps you informed.</p>
-  <p>We pair the regulatory discipline you need with the human, integrative care your patients deserve &mdash; but the rigor comes first, because that is what protects you and your patient.</p>
-</section>
-
-<section class="sec wrap" style="padding-top:0">
-  <h2>Credentials you can stand behind</h2>
-  <p>Every referral to Eternal Life Hospice is backed by current, verifiable credentials &mdash; the same standards your surveyors and your patients expect.</p>
-  <div class="roles">
-    <div class="role"><h3>Medicare-Certified</h3><p>Certified by the Centers for Medicare &amp; Medicaid Services, so the hospice benefit is delivered to federal standards &mdash; with no deductibles or copays for eligible patients.</p></div>
-    <div class="role"><h3>CDPH-Licensed</h3><p>Licensed by the California Department of Public Health and accountable to state oversight, inspection and reporting requirements.</p></div>
-    <div class="role"><h3>ACHC-Accredited</h3><p>Accredited by the Accreditation Commission for Health Care &mdash; an independent, nationally recognized seal of clinical and operational quality.</p></div>
+  <div class="note-panel">
+    <b>Referral at a glance.</b> Physician-led, Medicare-certified hospice care across Ventura &amp; Los Angeles counties. Three ways to refer &mdash; <a href="tel:18059537273">call 805.953.7273</a>, submit the <a href="/refer">online referral</a>, or secure-fax <b>805.953.8530</b>. Send patient demographics, diagnosis and contact details; our clinical team confirms eligibility and coordinates admission. Same-day admissions when clinically appropriate, with 24/7 on-call nursing.
   </div>
 </section>
 
 <section class="sec wrap" style="padding-top:0">
-  <h2>Eligibility, confirmed correctly</h2>
-  <p>A patient may be appropriate for the Medicare hospice benefit when a physician certifies a terminal prognosis of six months or less if the illness runs its normal course, and the goals of care shift from cure to comfort. We help you make that determination with confidence.</p>
-  <div class="note-panel"><b>We confirm appropriateness before admission.</b> Our clinical team reviews the diagnosis and prognosis with you so the referral is sound and well-documented &mdash; helping reduce the risk of an inappropriate or delayed admission.</div>
-</section>
-
-<section class="sec wrap" style="padding-top:0">
-  <h2>Documentation and face-to-face, handled</h2>
-  <p>The paperwork that protects you is our responsibility too. We manage the regulatory record end to end and return what you need on time.</p>
+  <h2>Why refer to Eternal Life Hospice</h2>
+  <p class="lede">Every hand-off carries real responsibility. Eternal Life Hospice is built to make it clean and dependable &mdash; a nationally accredited, Medicare-certified agency that confirms appropriateness, documents thoroughly and keeps you informed at every step.</p>
   <div class="roles">
-    <div class="role"><h3>Certification of Terminal Illness</h3><p>Accurate, timely certification and recertification handled in coordination with the attending and hospice physician.</p></div>
-    <div class="role"><h3>Face-to-Face encounters</h3><p>Required F2F encounters completed within regulatory windows so eligibility stays compliant through every benefit period.</p></div>
-    <div class="role"><h3>Records back to you</h3><p>Timely notes and updates flow back to the referring provider, keeping you informed and your chart audit-ready.</p></div>
-    <div class="role"><h3>HIPAA-secure exchange</h3><p>Patient information is shared through secure, compliant channels &mdash; secure fax and protected online intake.</p></div>
+    <div class="role"><h3>Physician-led care</h3><p>A physician-directed clinical model with nurse-coordinated plans of care &mdash; the clinical rigor that protects both you and your patient.</p></div>
+    <div class="role"><h3>Same-day admissions</h3><p>When clinically appropriate, we admit the same day, with 24/7 on-call nursing supporting your patient from the first hour.</p></div>
+    <div class="role"><h3>Clean documentation</h3><p>Certification, recertification and required face-to-face encounters handled within regulatory windows, with records returned so your chart stays audit-ready.</p></div>
+    <div class="role"><h3>Medicare-covered</h3><p>For eligible patients, the Medicare Part A hospice benefit covers care with no deductibles or copays for the hospice benefit &mdash; we verify coverage during intake.</p></div>
+    <div class="role"><h3>Nationally accredited</h3><p>Medicare-certified, CDPH-licensed and ACHC-accredited &mdash; the same standards your surveyors and your patients expect.</p></div>
+    <div class="role"><h3>Care wherever home is</h3><p>We deliver hospice in the home, assisted living, RCFE and skilled nursing settings &mdash; meeting your patient where they already are.</p></div>
   </div>
 </section>
 
 <section class="sec wrap" style="padding-top:0">
-  <h2>Referring is simple</h2>
-  <p>The process is fast and personal. You make one connection; we handle the rest.</p>
+  <h2>Whole-person comfort, layered into every plan</h2>
+  <p>With compliance handled, what your patient experiences is what sets us apart: whole-person comfort that attends to the <b>physical, emotional and spiritual</b> together. Expert pain and symptom management from the clinical team, social work and chaplaincy for the patient and family, and grief support that continues into bereavement.</p>
+  <p>As part of that whole-person approach, we also offer optional, comfort-focused <b>integrative support</b> &mdash; music, massage and aromatherapy, along with Reiki and sound bath or singing bowl support &mdash; provided for comfort and wellbeing, never as a medical treatment or a promise of a particular outcome. <a href="/#modalities">See our integrative therapies &#8594;</a></p>
+  <div class="note-panel">These integrative modalities are complementary and entirely optional. They are offered for patient comfort and are not intended to diagnose, treat, cure or prevent any medical condition.</div>
+</section>
+
+<section class="sec wrap" style="padding-top:0">
+  <h2>Referring is simple &mdash; three steps</h2>
+  <p>You make one connection; we handle the rest.</p>
   <div class="steps">
-    <div class="step"><h3>Reach out</h3><p>Call, submit the online referral, or coordinate a secure fax with the patient's demographics, diagnosis and contact details.</p></div>
-    <div class="step"><h3>We confirm eligibility</h3><p>Our clinical team verifies appropriateness with you and prepares the certification and documentation.</p></div>
-    <div class="step"><h3>Same-day admission</h3><p>Once confirmed, we admit quickly &mdash; often the same day &mdash; with 24/7 on-call nursing from the first hour.</p></div>
-    <div class="step"><h3>Records flow back</h3><p>You receive timely updates and documentation so you stay informed throughout your patient's care.</p></div>
+    <div class="step"><h3>1 &middot; Reach out</h3><p>Call 805.953.7273, submit the online referral, or secure-fax the patient's demographics, diagnosis and contact details.</p></div>
+    <div class="step"><h3>2 &middot; We confirm &amp; document</h3><p>Our clinical team verifies appropriateness with you and prepares the certification, face-to-face and required documentation.</p></div>
+    <div class="step"><h3>3 &middot; Same-day admission</h3><p>Once confirmed, we admit &mdash; often the same day when clinically appropriate &mdash; with 24/7 nursing, then send updates and records back to you.</p></div>
   </div>
 </section>
 
 <section class="sec wrap" style="padding-top:0">
-  <h2>Then, the care itself</h2>
-  <p>With compliance handled, what your patient actually experiences is what sets us apart: a physician-led clinical model within an independent and integrative agency, with whole-person therapies &mdash; music, massage, sound bath and more &mdash; layered into every plan of care at no added cost. <a href="/#modalities">See our integrative therapies &#8594;</a></p>
+  <h2>Where we serve</h2>
+  <p>Eternal Life Hospice provides care throughout <b>Ventura County</b> and <b>Los Angeles County</b>, wherever your patient calls home. <a href="hospice-ventura-and-los-angeles-county-ca">See the full service area &#8594;</a></p>
+  <div class="roles">
+    <div class="role"><h3>Ventura County</h3><p><a href="hospice-ventura-ca">Ventura</a> &middot; <a href="hospice-oxnard-ca">Oxnard</a> &middot; <a href="hospice-camarillo-ca">Camarillo</a> &middot; <a href="hospice-thousand-oaks-ca">Thousand Oaks</a> &middot; <a href="hospice-newbury-park-ca">Newbury Park</a> &middot; <a href="hospice-westlake-village-ca">Westlake Village</a> &middot; <a href="hospice-simi-valley-ca">Simi Valley</a> &middot; <a href="hospice-moorpark-ca">Moorpark</a></p></div>
+    <div class="role"><h3>Los Angeles County</h3><p><a href="hospice-agoura-hills-ca">Agoura Hills</a> &middot; <a href="hospice-calabasas-ca">Calabasas</a> &middot; <a href="hospice-woodland-hills-ca">Woodland Hills</a> &middot; <a href="hospice-tarzana-ca">Tarzana</a> &middot; <a href="hospice-encino-ca">Encino</a> &middot; <a href="hospice-sherman-oaks-ca">Sherman Oaks</a> &middot; <a href="hospice-beverly-hills-ca">Beverly Hills</a> &middot; <a href="hospice-santa-monica-ca">Santa Monica</a> &middot; <a href="hospice-malibu-ca">Malibu</a></p></div>
+  </div>
+</section>
+
+<section class="sec wrap lfaq" style="padding-top:0">
+  <h2>Provider FAQ</h2>
+  <details class="faq-item" open><summary>How do I refer a patient to Eternal Life Hospice?</summary><p>Call us at 805.953.7273, submit the <a href="/refer">online referral request</a>, or coordinate a secure fax to 805.953.8530. Share the patient's demographics, diagnosis and contact information, and our intake team confirms eligibility and arranges admission &mdash; often the same day.</p></details>
+  <details class="faq-item"><summary>Who can refer a patient to hospice?</summary><p>Anyone can start a referral &mdash; physicians, hospital discharge planners, case managers, skilled nursing facilities, assisted living and RCFE communities, home health agencies, and families. A physician certification of a terminal prognosis is required for admission, and our team helps coordinate it.</p></details>
+  <details class="faq-item"><summary>When is a patient eligible for hospice?</summary><p>A patient may be eligible for the Medicare hospice benefit when a physician certifies a terminal prognosis of six months or less if the illness runs its normal course, and the goals of care shift from cure to comfort. Our team confirms appropriateness with you before admission.</p></details>
+  <details class="faq-item"><summary>How quickly can you admit a patient?</summary><p>We offer same-day admissions when clinically appropriate, backed by 24/7 on-call nursing. Once eligibility is confirmed, we move quickly so your patient is supported without delay.</p></details>
+  <details class="faq-item"><summary>In what settings do you provide care?</summary><p>We bring hospice care to wherever the patient calls home &mdash; private residences, assisted living communities, residential care facilities for the elderly (RCFE) and skilled nursing facilities &mdash; across Ventura and Los Angeles counties.</p></details>
+  <details class="faq-item"><summary>Is hospice covered by Medicare?</summary><p>Yes. For eligible patients, the Medicare Part A hospice benefit covers hospice services, including the care team, medications related to the terminal diagnosis, and related medical equipment, with no deductibles or copays for the hospice benefit. We verify coverage as part of intake.</p></details>
+  <details class="faq-item"><summary>What integrative comfort therapies are available?</summary><p>As part of a whole-person approach, we offer optional, comfort-focused integrative support such as music, massage, aromatherapy, Reiki, and sound bath or singing bowl support. These are provided for patient comfort and wellbeing and are not intended to diagnose, treat or cure any condition.</p></details>
+  <details class="faq-item"><summary>Will I receive updates after I refer a patient?</summary><p>Yes. Referring providers receive timely documentation and updates so you remain informed and your records stay audit-ready throughout the patient's care.</p></details>
 </section>
 
 <div class="creds">Medicare-Certified <span class="cd-sep" aria-hidden="true">&#8226;</span> CDPH-Licensed <span class="cd-sep" aria-hidden="true">&#8226;</span> ACHC-Accredited <span class="cd-sep" aria-hidden="true">&#8226;</span> 24/7 Availability</div>
 
 <section class="cta">
   <h2>Refer a patient today</h2>
-  <p>Confirmed eligibility, clean documentation and same-day admission &mdash; across Ventura and Los Angeles counties. We will guide you from the first call.</p>
+  <p>Confirmed eligibility, clean documentation and same-day admission when clinically appropriate &mdash; across Ventura and Los Angeles counties. We will guide you from the first call.</p>
   <div class="btns">
-    <a class="btn-gold" href="/refer">Client Referral &#8594;</a>
+    <a class="btn-gold" href="/refer">Refer a Patient &#8594;</a>
     <a class="btn-ghost" href="tel:18059537273">Call 805.953.7273</a>
   </div>
 </section>
