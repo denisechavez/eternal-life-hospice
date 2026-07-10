@@ -1,10 +1,17 @@
-# Netlify configuration (repo root) for Eternal Life Hospice
+# Netlify configuration for Eternal Life Hospice.
 # The static site lives in website/elh-preview/. No build step.
+#
+# We set `base` to the site folder so Netlify runs entirely inside it. This
+# isolates the deploy from the repo-root package.json (which belongs to the
+# internal Outreach Tracker, not the website). Without this, Netlify would try
+# to `npm install` those root dependencies during Initializing and the deploy
+# would fail before it ever publishes the site.
 [build]
-  publish = "website/elh-preview"
+  base = "website/elh-preview"
+  publish = "."
 
 [functions]
-  directory = "website/elh-preview/netlify/functions"
+  directory = "netlify/functions"
   node_bundler = "esbuild"
 
 # Pretty URLs (serving /page from page.html) are enabled by default.
