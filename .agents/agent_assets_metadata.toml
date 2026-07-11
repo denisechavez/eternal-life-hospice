@@ -1078,10 +1078,10 @@ title = "Referral Card 5 — Crop-Mark Press File (CMYK — send THIS to the pri
 id = "Il-Y4x2zUtZAmx0vF7Dvd"
 uri = "file://screenshots/footer-desktop.jpg"
 type = "image"
-title = "Social icons above the disclaimer — desktop"
+title = "\"Visit us here\" label with the social icons — desktop"
 
 [[outputs]]
 id = "C0yTynTmAQvoMupcGKAPM"
 uri = "file://screenshots/footer-mobile.jpg"
 type = "image"
-title = "Social icons above the disclaimer — mobile"
+title = "\"Visit us here\" label with the social icons — mobile"

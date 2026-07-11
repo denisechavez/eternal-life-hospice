@@ -48,16 +48,16 @@ waitForPort = 3000
 outputType = "console"
 
 [[ports]]
+localPort = 3000
+externalPort = 3000
+
+[[ports]]
 localPort = 5000
 externalPort = 80
 
 [[ports]]
 localPort = 8099
 externalPort = 8099
-
-[[ports]]
-localPort = 3000
-externalPort = 3000
 
 [postMerge]
 path = "scripts/post-merge.sh"

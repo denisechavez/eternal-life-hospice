@@ -324,6 +324,7 @@ p,li,blockquote{text-wrap:pretty}
   #site-footer .foot-social a{display:inline-flex;color:rgba(245,240,235,.5);padding:2px;transition:color .25s}
   #site-footer .foot-social a:hover{color:var(--gold)}
   #site-footer .foot-social svg{width:17px;height:17px;display:block}
+  #site-footer .foot-social .fs-label{font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#B7A89D;margin-right:.35rem}
   @media(max-width:860px){#site-footer .foot-grid{grid-template-columns:1fr 1fr}#site-footer .foot-bottom{flex-direction:column}#site-footer .foot-bottom>span{text-align:center!important}}
   @media(max-width:560px){#site-footer .foot-grid{grid-template-columns:1fr}}
   
