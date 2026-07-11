@@ -12,7 +12,7 @@ public marketing site.
 ## Two deploy targets now live in ONE repo
 - **Marketing site** = `website/elh-preview/` → publishes to Netlify via Git→Sync (unchanged).
 - **Tracker** = `outreach-tracker/` (Express + Replit Postgres) → deployed via **Replit Deployments**, NOT Netlify. Netlify only ever builds `website/elh-preview`.
-- **Preview-pane swap (July 2026): "Start application" now serves the marketing site again** (`python3 -m http.server 5000` in `website/elh-preview`) — the user found the tracker hijacking the preview confusing. The tracker's dev workflow is gone but its **Replit Deployment (production) keeps running independently**; field staff use the deployed URL. To work on tracker code again, temporarily reconfigure a workflow (`cd outreach-tracker && npm start`, port 5000).
+- **Preview setup (July 2026), user-approved:** "Start application" = marketing site on port 5000 webview (front-facing default; `python3 -m http.server` in `website/elh-preview`); "Outreach Tracker (internal)" = `PORT=3000 npm start`, console — user flips between them with the preview-pane port toggle. Keep the WEBSITE on 5000 so front-facing work always previews by default. Tracker's Replit Deployment (production) runs independently; field staff use the deployed URL.
 - **User wants the tracker moved to its own Replit App** (consistent with the one-App-per-concern convention in replit.md). Blocker to plan for: the tracker's data (visits + BYTEA photos) lives in THIS project's Postgres — a move needs a DB export/import plus re-creating secrets (SESSION_SECRET, REGISTRATION_CODE) and a fresh deployment in the new App.
 
 ## Auth / security decisions

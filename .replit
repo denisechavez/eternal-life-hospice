@@ -19,6 +19,10 @@ author = "agent"
 task = "workflow.run"
 args = "Start application"
 
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "Outreach Tracker (internal)"
+
 [[workflows.workflow]]
 name = "Start application"
 author = "agent"
@@ -31,6 +35,18 @@ task = "shell.exec"
 args = "cd website/elh-preview && python3 -m http.server 5000 --bind 0.0.0.0"
 waitForPort = 5000
 
+[[workflows.workflow]]
+name = "Outreach Tracker (internal)"
+author = "agent"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "cd outreach-tracker && PORT=3000 npm start"
+waitForPort = 3000
+
+[workflows.workflow.metadata]
+outputType = "console"
+
 [[ports]]
 localPort = 5000
 externalPort = 80
@@ -38,6 +54,10 @@ externalPort = 80
 [[ports]]
 localPort = 8099
 externalPort = 8099
+
+[[ports]]
+localPort = 3000
+externalPort = 3000
 
 [postMerge]
 path = "scripts/post-merge.sh"
