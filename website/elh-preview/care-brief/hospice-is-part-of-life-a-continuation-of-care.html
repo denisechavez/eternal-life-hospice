@@ -75,14 +75,59 @@
   </div>
 </header>
 
-<section class="hero hero--photo" style="background-image:url('../assets/img/inline-cdca7d25f7.jpg')">
-  <div class="kicker">The Eternal Care Brief &middot; Issue One &middot; July 2026</div>
-  <h1>Hospice Is Part of Life &mdash; A Continuation of Care</h1>
-  <p>A living care publication from Eternal Life Hospice, created to inform, support, and connect care teams and families.</p>
+<section class="cb-hero">
+  <div class="cb-hero-band">
+    <img src="../assets/img/elh-logo-cream-g.png" alt="Eternal Life Hospice logo">
+    <div class="cb-hero-issue">Issue One</div>
+    <div class="cb-hero-date">July 2026</div>
+    <div class="cb-hero-rule"></div>
+    <span class="cb-hero-pill">Clinical Guidance + Family Support</span>
+  </div>
+  <div class="cb-hero-main">
+    <div class="cb-hero-eyebrow">The Eternal Care Brief Library</div>
+    <h1>Hospice Is Part of Life &mdash; A&nbsp;Continuation of Care</h1>
+    <p>A living care publication from Eternal Life Hospice, created to inform, support, and connect care teams and families.</p>
+    <div class="cb-hero-ctas"><a class="btn-gold" href="/refer">Refer a Patient &#8594;</a><a class="btn-ghost cb-btn-plum" href="#" onclick="window.print();return false">Download / Print This Issue</a></div>
+  </div>
 </section>
 
+<nav class="cb-rail" aria-label="Sections of this issue">
+  <a href="#founder-note"><span class="n">01</span><span class="t">Founder Note</span></a>
+  <a href="#lead-article"><span class="n">02</span><span class="t">Lead Article</span></a>
+  <a href="#care-team-spotlight"><span class="n">03</span><span class="t">Care Team Spotlight</span></a>
+  <a href="#whole-person-comfort"><span class="n">04</span><span class="t">Whole-Person Comfort</span></a>
+  <a href="#eternal-standard"><span class="n">05</span><span class="t">The Eternal Standard</span></a>
+  <a href="#care-conversation"><span class="n">06</span><span class="t">Care Conversation</span></a>
+  <a href="#family-section"><span class="n">07</span><span class="t">Family Section</span></a>
+  <a href="#resources"><span class="n">08</span><span class="t">Resources</span></a>
+</nav>
+
 <style>
-.cb-head{display:flex;align-items:baseline;gap:14px;margin:64px 0 6px}
+.cb-hero{display:grid;grid-template-columns:minmax(300px,420px) 1fr;background:#F5F0EB;border-bottom:1px solid rgba(110,74,110,.18)}
+.cb-hero-band{background:#3E1F3E;color:#F5F0EB;padding:64px 44px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:6px}
+.cb-hero-band img{width:150px;margin-bottom:22px}
+.cb-hero-issue{font-size:13px;letter-spacing:.28em;text-transform:uppercase;color:#D9C08A}
+.cb-hero-date{font-family:Fraunces,serif;font-size:20px}
+.cb-hero-rule{width:56px;height:1px;background:rgba(245,240,235,.4);margin:16px 0}
+.cb-hero-pill{border:1px solid rgba(245,240,235,.45);border-radius:999px;padding:7px 16px;font-size:11px;letter-spacing:.14em;text-transform:uppercase}
+.cb-hero-main{padding:64px 56px;max-width:760px}
+.cb-hero-eyebrow{font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:#B08D3E;font-weight:600;border-bottom:1px solid #B08D3E;display:inline-block;padding-bottom:8px;margin-bottom:22px}
+.cb-hero-main h1{font-family:Fraunces,serif;font-weight:500;font-size:clamp(30px,4vw,48px);line-height:1.12;color:#3E1F3E;margin:0 0 18px}
+.cb-hero-main p{font-size:18px;line-height:1.6;color:#5c4a5c;max-width:56ch;margin:0 0 26px}
+.cb-hero-ctas{display:flex;gap:14px;flex-wrap:wrap}
+.cb-btn-plum{border-color:#3E1F3E!important;color:#3E1F3E!important}
+.cb-rail{position:fixed;left:0;top:50%;transform:translateY(-50%) translateX(-14px);z-index:40;background:#F5F0EB;border:1px solid rgba(110,74,110,.18);border-left:none;border-radius:0 14px 14px 0;padding:10px 0;box-shadow:0 8px 30px rgba(62,31,62,.10);opacity:0;visibility:hidden;pointer-events:none;transition:opacity .35s ease,transform .35s ease,visibility 0s .35s}
+.cb-rail.show{opacity:1;visibility:visible;pointer-events:auto;transform:translateY(-50%) translateX(0);transition:opacity .35s ease,transform .35s ease,visibility 0s}
+.cb-rail a:focus-visible{outline:2px solid #B08D3E;outline-offset:-2px;background:#fff}
+.cb-rail a{display:block;padding:9px 16px 9px 14px;text-decoration:none;border-left:3px solid transparent;max-width:150px}
+.cb-rail .n{display:block;font-family:Fraunces,serif;font-size:17px;color:#a08aa0;line-height:1}
+.cb-rail .t{display:block;font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:#8a7a8a;margin-top:3px;line-height:1.3}
+.cb-rail a.on{border-left-color:#B08D3E;background:#fff}
+.cb-rail a.on .n{color:#B08D3E}
+.cb-rail a.on .t{color:#3E1F3E;font-weight:600}
+@media(max-width:1279px){.cb-rail{display:none}}
+@media(max-width:860px){.cb-hero{grid-template-columns:1fr}.cb-hero-band{padding:44px 24px}.cb-hero-main{padding:40px 24px 48px}}
+.cb-head{display:flex;align-items:baseline;gap:14px;margin:64px 0 6px;scroll-margin-top:96px}
 .cb-head:first-of-type{margin-top:28px}
 .cb-num{font-family:Fraunces,serif;font-size:26px;color:#B08D3E;font-weight:500}
 .cb-lab{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#6E4A6E;font-weight:600}
@@ -99,7 +144,7 @@
 .cb-steps li::before{content:counter(cbstep,decimal-leading-zero);position:absolute;left:18px;top:14px;font-family:Fraunces,serif;font-size:19px;color:#B08D3E}
 .cb-ctas{display:flex;gap:14px;flex-wrap:wrap;margin:24px 0 8px}
 @media(max-width:680px){.cb-founder{grid-template-columns:1fr}.cb-founder img{max-width:280px}}
-@media print{#hdr,#site-footer,.cta,.related,.backlink,.cb-ctas{display:none!important}}
+@media print{#hdr,#site-footer,.cta,.related,.backlink,.cb-ctas,.cb-rail,.cb-hero-ctas{display:none!important}.cb-hero{grid-template-columns:1fr}.cb-hero-band{padding:24px}}
 </style>
 
 <article class="article sec wrap">
@@ -220,6 +265,38 @@
   <div class="foot-disclaimer"><strong style="color:rgba(245,240,235,.5)">Disclaimer:</strong> Eternal Life Hospice Inc. is a licensed and Medicare-certified hospice care provider. We do not sell, prescribe, dispense or ship prescription medications, and we do not operate an online pharmacy or telemedicine prescribing service. All hospice services are provided in person by licensed healthcare professionals. Any references to Medicare coverage, medication support or medical coordination relate solely to patient care delivered under physician direction and do not constitute prescription drug sales or online medical services. The integrative modalities described are complementary care offered for patient comfort and wellbeing; they are not intended to diagnose, treat, cure or prevent any medical condition. Medicare coverage details are subject to change; confirm current eligibility with your care team or call <a href="tel:18006334227" style="color:inherit;text-decoration:none">1.800.MEDICARE</a>.</div>
   <div class="foot-bottom"><span>© 2026 Eternal Life Hospice Inc. All rights reserved. · A <a href="https://conduitint.com" target="_blank" rel="noopener" style="color:inherit;text-decoration:none">Conduit International</a> build</span><span><a href="/" style="color:inherit">eternallifehospice.com</a></span></div>
 </footer>
+<script>
+(function(){
+  var rail=document.querySelector('.cb-rail');
+  var hero=document.querySelector('.cb-hero');
+  if(rail&&hero){
+    var toggle=function(){
+      if(window.scrollY>hero.offsetTop+hero.offsetHeight-120){rail.classList.add('show');}
+      else{rail.classList.remove('show');}
+    };
+    window.addEventListener('scroll',toggle,{passive:true});
+    toggle();
+  }
+  var links=document.querySelectorAll('.cb-rail a');
+  if(!links.length||!('IntersectionObserver' in window))return;
+  var map={};
+  links.forEach(function(a){map[a.getAttribute('href').slice(1)]=a;});
+  var current=null;
+  var obs=new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){
+        if(current)current.classList.remove('on');
+        current=map[e.target.id];
+        if(current)current.classList.add('on');
+      }
+    });
+  },{rootMargin:'-20% 0px -70% 0px'});
+  Object.keys(map).forEach(function(id){
+    var el=document.getElementById(id);
+    if(el)obs.observe(el);
+  });
+})();
+</script>
 <script src="../assets/header.js" defer></script>
 <script src="/assets/chat.js" defer></script>
 </body></html>

@@ -13,3 +13,4 @@ description: Bi-monthly care publication library on the site; rebuilt from user'
 - Cadence decision: brief = bi-monthly on-site; weekly email lives in MailerLite/Brevo (not on the site). First intro email (table-based HTML, like exports/email/) still TO DO after user finishes content edits.
 - Founder portrait `assets/img/aleksandra-dubina-founder.jpg` + `care-brief-sound.jpg` came from the Base44 CDN (may go away — local copies are canonical).
 - Admin workflow decided: admin drafts/sends email in the ESP; bi-monthly site issues get added via a thread in this App.
+- Issue-page "publication" chrome (user-approved, Axios-AM-inspired — keep for every issue): split hero (plum band left = cream logo/issue/date/pill; cream right = title+CTAs) + fixed left numbered rail 01–08 with IntersectionObserver scrollspy. Rail fades in only after scrolling past the hero and must stay `visibility:hidden` while hidden (keyboard a11y), hidden <1280px and in print.
