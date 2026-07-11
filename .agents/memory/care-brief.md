@@ -18,3 +18,5 @@ description: Bi-monthly care publication library on the site; rebuilt from user'
 - Dev preview parity: the static site is served by `website/devserver.py` (outside the publish folder) which mimics Netlify pretty URLs (extensionless → .html). Plain `python -m http.server` breaks clean internal links and shows directory listings — don't revert to it. Trailing-slash dirs (blog/, care-brief/, resources/) have noindex redirect stubs.
 
 - Fresh-first navigation (user decision): sitewide footer "Care Brief" link points to the NEWEST issue directly, not the library page. Library (/care-brief) stays as archive/SEO hub, reachable via the issue page backlink. Publish-an-issue checklist: repoint footer link sitewide + sitemap + read time in hero meta ("N sections · N min read") and byline.
+
+- Portrait treatment (user: circle looked "cookie cutter"): introducer portraits use an editorial ARCH shape (border-radius:999px 999px 18px/12px, thin offset gold keyline via outline+outline-offset, no solid border). Applied on issue hero band + landing voice block; use for all future introducers.
