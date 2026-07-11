@@ -19,4 +19,4 @@ description: Bi-monthly care publication library on the site; rebuilt from user'
 
 - Fresh-first navigation (user decision): sitewide footer "Care Brief" link points to the NEWEST issue directly, not the library page. Library (/care-brief) stays as archive/SEO hub, reachable via the issue page backlink. Publish-an-issue checklist: repoint footer link sitewide + sitemap + read time in hero meta ("N sections · N min read"), byline, AND per-section "N min read" spans in each .cb-head (compute at ~210 wpm; total = sum of section times so numbers agree).
 
-- Portrait treatment (user: circle looked "cookie cutter"): introducer portraits use an editorial ARCH shape (border-radius:999px 999px 18px/12px, thin offset gold keyline via outline+outline-offset, no solid border). Applied on issue hero band + landing voice block; use for all future introducers.
+- Portrait treatment (user iterated: circle="cookie cutter", arch="church setting"): introducer portraits use a FEATHERED VIGNETTE — CSS mask-image radial-gradient ellipse fade (no border/keyline/shadow), photo melts into background. Applied on issue hero band + landing voice block; standard for all future introducers.
