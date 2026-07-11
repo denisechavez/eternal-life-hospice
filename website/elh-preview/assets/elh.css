@@ -320,11 +320,11 @@ p,li,blockquote{text-wrap:pretty}
   #site-footer .foot-bottom a:hover{color:var(--gold)}
   #site-footer .foot-bottom>span:first-child{flex:1 1 0;text-align:left}
   #site-footer .foot-bottom>span:last-child{flex:1 1 0;text-align:right}
-  #site-footer .foot-social{max-width:1140px;margin:2.4rem auto 0;display:flex;align-items:center;justify-content:center;gap:1.5rem}
+  #site-footer .foot-social{max-width:1140px;margin:2.4rem auto 0;display:flex;align-items:flex-end;justify-content:center;gap:1.5rem}
   #site-footer .foot-social a{display:inline-flex;color:rgba(245,240,235,.5);padding:2px;transition:color .25s}
   #site-footer .foot-social a:hover{color:var(--gold)}
   #site-footer .foot-social svg{width:17px;height:17px;display:block}
-  #site-footer .foot-social .fs-label{font-size:13px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;color:#B7A89D;margin-right:.35rem}
+  #site-footer .foot-social .fs-label{font-size:13px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;line-height:1;color:#B7A89D;margin-right:.35rem}
   @media(max-width:860px){#site-footer .foot-grid{grid-template-columns:1fr 1fr}#site-footer .foot-bottom{flex-direction:column}#site-footer .foot-bottom>span{text-align:center!important}}
   @media(max-width:560px){#site-footer .foot-grid{grid-template-columns:1fr}}
   
