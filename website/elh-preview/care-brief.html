@@ -78,12 +78,22 @@
 </section>
 
 <style>
+.hero.hero--photo{padding:3rem 1.6rem 2.8rem}
+.blog-featured{grid-template-columns:.85fr 1.15fr}
+.blog-featured .bf-img{min-height:220px}
 .cbl-topics{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:10px 0 0}
-.cbl-topic{background:#faf6f0;border:1px solid rgba(110,74,110,.14);border-radius:12px;padding:20px 18px}
+a.cbl-topic{display:block;background:#faf6f0;border:1px solid rgba(110,74,110,.14);border-radius:12px;padding:20px 18px;text-decoration:none;transition:border-color .2s ease,transform .2s ease,box-shadow .2s ease}
+a.cbl-topic:hover{border-color:#B08D3E;transform:translateY(-2px);box-shadow:0 10px 26px rgba(60,28,59,.10)}
+a.cbl-topic:focus-visible{outline:2px solid #B08D3E;outline-offset:2px}
 .cbl-topic h3{font-family:Fraunces,serif;font-size:19px;color:#4A2A4A;margin:0 0 6px;font-weight:500}
 .cbl-topic p{font-size:13px;color:#7a6a7a;margin:0}
+.cbl-voice{display:flex;gap:22px;align-items:center;background:#faf6f0;border:1px solid rgba(110,74,110,.14);border-radius:14px;padding:22px 24px;margin-top:22px;max-width:760px}
+.cbl-voice img{width:78px;height:78px;border-radius:50%;object-fit:cover;object-position:top;border:2px solid #B08D3E;flex:none}
+.cbl-voice h3{font-family:Fraunces,serif;font-size:19px;color:#4A2A4A;margin:0 0 6px;font-weight:500}
+.cbl-voice p{font-size:14px;color:#7a6a7a;margin:0 0 8px;line-height:1.55}
+.cbl-voice a{font-size:14px;font-weight:600;color:#4A2A4A}
 @media(max-width:900px){.cbl-topics{grid-template-columns:repeat(2,1fr)}}
-@media(max-width:520px){.cbl-topics{grid-template-columns:1fr}}
+@media(max-width:520px){.cbl-topics{grid-template-columns:1fr}.cbl-voice{flex-direction:column;align-items:flex-start}}
 </style>
 
 <div class="blog-featured">
@@ -100,16 +110,24 @@
 <section class="sec wrap">
   <div class="sec-head"><div class="eyebrow">Browse by Topic</div></div>
   <div class="cbl-topics">
-    <div class="cbl-topic"><h3>Clinical Guidance</h3><p>Eligibility, timely referral, and what care teams can expect. <b>1 issue</b></p></div>
-    <div class="cbl-topic"><h3>Family Support</h3><p>Plain-language guidance for families beginning the hospice conversation. <b>1 issue</b></p></div>
-    <div class="cbl-topic"><h3>Whole-Person Comfort</h3><p>Integrative comfort, offered responsibly &mdash; never as a cure. <b>1 issue</b></p></div>
-    <div class="cbl-topic"><h3>Program Integrity</h3><p>Responsible admissions and compliance-led care. <b>1 issue</b></p></div>
+    <a class="cbl-topic" href="care-brief/hospice-is-part-of-life-a-continuation-of-care#lead-article"><h3>Clinical Guidance</h3><p>Eligibility, timely referral, and what care teams can expect. <b>1 issue</b></p></a>
+    <a class="cbl-topic" href="care-brief/hospice-is-part-of-life-a-continuation-of-care#family-section"><h3>Family Support</h3><p>Plain-language guidance for families beginning the hospice conversation. <b>1 issue</b></p></a>
+    <a class="cbl-topic" href="care-brief/hospice-is-part-of-life-a-continuation-of-care#whole-person-comfort"><h3>Whole-Person Comfort</h3><p>Integrative comfort, offered responsibly &mdash; never as a cure. <b>1 issue</b></p></a>
+    <a class="cbl-topic" href="care-brief/hospice-is-part-of-life-a-continuation-of-care#eternal-standard"><h3>Program Integrity</h3><p>Responsible admissions and compliance-led care. <b>1 issue</b></p></a>
   </div>
 </section>
 
 <section class="sec wrap">
   <div class="sec-head"><div class="eyebrow">About This Publication</div></div>
-  <p style="max-width:760px">The Eternal Care Brief is published every other month by Eternal Life Hospice for the physicians, discharge planners, case managers, and social workers we work alongside &mdash; and for the families they serve. Each issue follows the same eight-section format: a founder note, a lead article, a care team spotlight, a whole-person comfort spotlight, an Eternal Standard spotlight, a current care conversation, a family section, and resources. It is written to inform and support &mdash; never to pressure.</p>
+  <p style="max-width:760px">The Eternal Care Brief is published every other month by Eternal Life Hospice &mdash; education, guidance, and support for the physicians, discharge planners, case managers, and social workers we work alongside, and for the families they serve. Every issue follows the same eight-section format, and is written to inform and support &mdash; never to pressure.</p>
+  <div class="cbl-voice">
+    <img src="assets/img/aleksandra-dubina-founder.jpg" alt="Aleksandra Dubina, Founder of Eternal Life Hospice" loading="lazy">
+    <div>
+      <h3>Every issue opens with a professional voice</h3>
+      <p>Issue One is introduced by Aleksandra Dubina, founder of Eternal Life Hospice. If you are a physician, nurse, case manager, social worker, or chaplain who would like to introduce a future issue, we would welcome your voice.</p>
+      <a href="mailto:info@eternallifehospice.com?subject=The%20Eternal%20Care%20Brief%20%E2%80%94%20Professional%20Voice">Introduce a future issue &#8594;</a>
+    </div>
+  </div>
 </section>
 
 <section class="cta">
