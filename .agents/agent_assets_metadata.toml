@@ -1073,3 +1073,15 @@ id = "CBhnA4mgsG14CVJuBts4l"
 uri = "file://exports/print/print-ready-cmyk/eternal-life-referral-card-5-crop-marks-press-CMYK.pdf"
 type = "pdf"
 title = "Referral Card 5 — Crop-Mark Press File (CMYK — send THIS to the printer)"
+
+[[outputs]]
+id = "Il-Y4x2zUtZAmx0vF7Dvd"
+uri = "file://screenshots/footer-desktop.jpg"
+type = "image"
+title = "New footer with social icons — desktop"
+
+[[outputs]]
+id = "C0yTynTmAQvoMupcGKAPM"
+uri = "file://screenshots/footer-mobile.jpg"
+type = "image"
+title = "New footer with social icons — mobile"
