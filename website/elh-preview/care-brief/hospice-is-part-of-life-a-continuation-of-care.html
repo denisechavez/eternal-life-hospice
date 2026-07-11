@@ -88,11 +88,13 @@
     <span class="cb-hero-pill">Clinical Guidance + Family Support</span>
   </div>
   <div class="cb-hero-main">
-    <div class="cb-hero-eyebrow">The Eternal Care Brief Library</div>
+    <a class="cb-hero-save" href="#" onclick="window.print();return false"><span class="s1">Keep a copy &#10515;</span><span class="s2">Prints as a clean handout &mdash; easy to share with your team or a family</span></a>
+    <div class="cb-hero-eyebrow">The Eternal Care Brief &middot; Issue One</div>
     <h1>Hospice Is Part of Life &mdash; A&nbsp;Continuation of Care</h1>
     <p>A living care publication from Eternal Life Hospice, created to inform, support, and connect care teams and families.</p>
     <div class="cb-hero-meta">8 sections &middot; 9 min read</div>
-    <div class="cb-hero-ctas"><a class="btn-gold" href="/refer">Refer a Patient &#8594;</a><a class="btn-ghost cb-btn-plum" href="#" onclick="window.print();return false">Download / Print This Issue</a></div>
+    <div class="cb-hero-ctas"><a class="btn-gold" href="/refer">Refer a Patient &#8594;</a></div>
+    <a class="cb-scroll" href="#founder-note">Begin reading<span class="ar">&#8595;</span></a>
   </div>
 </section>
 
@@ -120,7 +122,17 @@
 .cb-hero-name{font-family:Fraunces,serif;font-size:22px;margin-top:5px}
 .cb-hero-role{font-size:12.5px;color:rgba(245,240,235,.75);margin-bottom:18px}
 .cb-hero-pill{border:1px solid rgba(245,240,235,.45);border-radius:999px;padding:7px 16px;font-size:11px;letter-spacing:.14em;text-transform:uppercase}
-.cb-hero-main{padding:64px 56px;max-width:760px}
+.cb-hero-main{padding:64px 56px;max-width:760px;position:relative}
+.cb-hero-save{position:absolute;top:26px;right:36px;max-width:230px;text-align:right;text-decoration:none;color:#6E4A6E;opacity:.85;transition:opacity .25s ease}
+.cb-hero-save:hover{opacity:1}
+.cb-hero-save .s1{display:block;font-size:12.5px;letter-spacing:.1em;text-transform:uppercase;font-weight:600;color:#4A2A4A}
+.cb-hero-save .s2{display:block;font-size:11.5px;line-height:1.45;color:#8a7a8a;margin-top:4px}
+.cb-scroll{display:inline-flex;align-items:center;gap:9px;margin-top:34px;text-decoration:none;font-size:12.5px;letter-spacing:.16em;text-transform:uppercase;color:#8a7a8a;transition:color .25s ease}
+.cb-scroll:hover{color:#4A2A4A}
+.cb-scroll .ar{font-size:15px;color:#B08D3E;animation:cbDrift 2.4s ease-in-out infinite}
+@keyframes cbDrift{0%,100%{transform:translateY(0)}50%{transform:translateY(5px)}}
+@media(prefers-reduced-motion:reduce){.cb-scroll .ar{animation:none}}
+@media(max-width:1100px){.cb-hero-save{position:static;display:block;max-width:none;text-align:left;margin-bottom:22px}}
 .cb-hero-eyebrow{font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:#B08D3E;font-weight:600;border-bottom:1px solid #B08D3E;display:inline-block;padding-bottom:8px;margin-bottom:22px}
 .cb-hero-main h1{font-family:Fraunces,serif;font-weight:500;font-size:clamp(30px,4vw,48px);line-height:1.12;color:#3E1F3E;margin:0 0 18px}
 .cb-hero-main p{font-size:18px;line-height:1.6;color:#5c4a5c;max-width:56ch;margin:0 0 26px}
@@ -156,7 +168,7 @@
 .cb-steps li::before{content:counter(cbstep,decimal-leading-zero);position:absolute;left:18px;top:14px;font-family:Fraunces,serif;font-size:19px;color:#B08D3E}
 .cb-ctas{display:flex;gap:14px;flex-wrap:wrap;margin:24px 0 8px}
 @media(max-width:680px){.cb-founder{grid-template-columns:1fr}.cb-founder img{max-width:280px}}
-@media print{#hdr,#site-footer,.cta,.related,.backlink,.cb-ctas,.cb-rail,.cb-hero-ctas{display:none!important}.cb-hero{grid-template-columns:1fr}.cb-hero-band{padding:24px}}
+@media print{#hdr,#site-footer,.cta,.related,.backlink,.cb-ctas,.cb-rail,.cb-hero-ctas,.cb-hero-save,.cb-scroll{display:none!important}.cb-hero{grid-template-columns:1fr}.cb-hero-band{padding:24px}}
 </style>
 
 <article class="article sec wrap">
