@@ -16,8 +16,9 @@ BEFORE YOU SEND — 2 THINGS TO DO
    not synced the site since the Care Brief was built, those links will show
    "page not found." In Replit click Git -> Sync, wait a couple of minutes,
    then open https://eternallifehospice.com/care-brief in your browser to
-   confirm it loads. (The logo and photo in the email also load from the
-   live site, so this same sync makes sure everything displays.)
+   confirm it loads. (The logo and the animated photo in the email also
+   load from the live site, so this same sync makes sure everything
+   displays — the moving image will show as broken until you sync.)
 2. REPLACE THE UNSUBSCRIBE PLACEHOLDER.
    The footer "Unsubscribe" link is a placeholder and does nothing yet.
    Every email service requires a real unsubscribe link. After you paste
