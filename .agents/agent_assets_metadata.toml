@@ -1085,3 +1085,15 @@ id = "C0yTynTmAQvoMupcGKAPM"
 uri = "file://screenshots/footer-mobile.jpg"
 type = "image"
 title = "\"Visit us here\" label with the social icons — mobile"
+
+[[outputs]]
+id = "d8jRrsK7FRWjPQhvaC-BE"
+uri = "file://exports/email/care-brief-introduction-email.zip"
+type = "unspecified"
+title = "Care Brief Introduction Email (HTML + how-to guide)"
+
+[[outputs]]
+id = "S2jE65GtwpDI_8D09nlQu"
+uri = "file://exports/email/eternal-care-brief-introduction-email-HOW-TO.txt"
+type = "text"
+title = "How to load and send it (plain-language steps)"
