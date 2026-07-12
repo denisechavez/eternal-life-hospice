@@ -14,7 +14,7 @@ home-page modalities card.
   mkBin, mkStrike, SB_TRACKS[3], window.toggleSound, progress/timer) is duplicated from
   index.html into an inline `<script>` on sound-bath.html. Player markup uses ids
   playerEl-0..2 / btn- / prog- / timer-. Previews are 30s (DUR=30).
-- **If the engine changes, update ALL copies: index.html, sound-bath.html, AND the Care Brief issue page** (care-brief/hospice-is-part-of-life…, compact single-track `.cb-sound` player in section 04, DUR=60, stops on tab hide, hidden in print) — they are independent copies.
+- **If the engine changes, update ALL copies: index.html, sound-bath.html, AND the Care Brief issue page** — they are independent copies. On the Care Brief the user rejected a large plum card ("much more subtle"): approved form = ripple rings overlaid on the section photo + a compact player row matching the site's player-card style.
 - Player CSS (.players/.player/.fpill/.progress-track etc.) is inline in index.html lines ~368-392
   and was copied inline into sound-bath.html (NOT in elh.css). Same for the page's own .sb-* CSS.
 
