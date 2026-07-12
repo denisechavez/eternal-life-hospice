@@ -45,6 +45,28 @@ HOW TO LOAD IT INTO BREVO
 3. Preview, fix the unsubscribe link (step 2 above), send a test email,
    click every link, then schedule or send.
 
+TEST-SEND CHECKLIST (do this before sending to the list)
+1. Confirm the moving image is live: open
+   https://eternallifehospice.com/assets/img/care-brief-sound.gif
+   in your browser. You should see the candle flicker and soft ripples
+   from the singing bowl (about a 2.6-second loop that repeats forever).
+   If you see "page not found," click Git -> Sync in Replit and wait a
+   couple of minutes.
+2. In MailerLite/Brevo, use "Send a test email" and send it to yourself —
+   ideally one Gmail address AND one Outlook/Hotmail address, since they
+   display email differently.
+3. In each inbox, check:
+   - The animation plays (Gmail, Apple Mail, and Outlook on the web all
+     play it; older Outlook on Windows shows only the first frame — that
+     frame is designed to look like a clean still photo, so it's fine).
+   - The logo shows in the plum masthead.
+   - Click every link: the photo, "Read Issue One," "Refer a Patient,"
+     "Open the Family Guide," and the footer website link — each should
+     open the right live page.
+   - The Unsubscribe link is real (not the placeholder) — see step 2 in
+     "BEFORE YOU SEND" above.
+4. Only after all of that looks right, schedule or send to the list.
+
 SUBJECT LINE + PREVIEW TEXT SUGGESTIONS (pick one pair)
 Option A (recommended)
   Subject:  Introducing The Eternal Care Brief — Issue One is here
