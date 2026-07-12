@@ -170,6 +170,22 @@ table.ws td.cell{padding:0}
   color:var(--cream);font-family:var(--ff-b);font-weight:500;font-size:14px;text-align:center;padding:3px}
 .agencyname::placeholder{color:rgba(245,240,235,.7)}
 .agencyname:focus{outline:0;border-bottom-color:var(--gold)}
+.cw{display:flex;align-items:stretch}
+.cw .cellbox{flex:1;min-width:0}
+.scorebox{flex:0 0 56px;width:56px;border:0;border-left:1.4px dashed var(--cream-dark);background:rgba(201,176,126,.08);font-family:var(--ff-b);font-weight:600;font-size:15px;color:var(--gold-deep);text-align:center;padding:11px 4px;-moz-appearance:textfield;appearance:textfield}
+.scorebox::-webkit-outer-spin-button,.scorebox::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+.scorebox:focus{outline:0;background:rgba(201,176,126,.2)}
+.scorebox::placeholder{color:var(--taupe);font-weight:400;font-size:12px}
+.ws-scorehint{font-size:13.5px;color:var(--ink-mid);margin:10px 2px 0}
+.ws-totals{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-top:18px}
+.ws-total{position:relative;background:var(--cream);border:1px solid var(--cream-dark);border-radius:12px;padding:16px 14px 13px;text-align:center}
+.ws-total .wt-name{font-family:var(--ff-b);font-weight:600;font-size:12.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-mid);margin-bottom:4px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ws-total .wt-score{font-family:var(--ff-d);font-weight:600;font-size:29px;color:var(--deep);line-height:1.1}
+.ws-total .wt-score small{font-family:var(--ff-b);font-weight:400;font-size:13px;color:var(--ink-mid)}
+.ws-total .wt-badge{display:none;position:absolute;top:-10px;left:50%;transform:translateX(-50%);background:var(--gold-deep);color:#fff;font-family:var(--ff-b);font-weight:600;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;border-radius:20px;padding:3px 12px;white-space:nowrap}
+.ws-total.lead-agency{border-color:var(--gold-deep);box-shadow:0 6px 18px rgba(176,141,62,.2)}
+.ws-total.lead-agency .wt-badge{display:block}
+.ws-total.lead-agency .wt-score{color:var(--gold-deep)}
 
 /* checklist */
 .checklist{margin-top:26px;background:var(--cream);border:1px solid var(--cream-dark);border-radius:12px;padding:22px 24px}
@@ -343,6 +359,11 @@ body.lowink .cover-foot{border-top-color:var(--cream-dark)}
   .callout,.sig.good,.sig.watch,.checklist,.howto{background:#fff!important;border:1px solid #ccc}
   .cellbox,.fill,.agencyname{color:#000!important}
   .agencyname{border-bottom:1px solid #999}
+  .scorebox{color:#000!important;background:#fff!important;border-left-color:#ccc}
+  .ws-totals{break-inside:avoid}
+  .ws-total{background:#fff!important;border:1px solid #ccc}
+  .ws-total.lead-agency{border:1.5px solid var(--gold-deep)}
+  .ws-total .wt-score{color:#000!important}
 }
 /* JS-driven print: scale each booklet leaf to fit one physical sheet (measured on-screen via this class so it matches the print layout) */
 body.printing{background:#fff}
@@ -382,6 +403,8 @@ body.booklet .page{transition:transform 1.2s cubic-bezier(.3,.4,.2,1),opacity .5
  table.ws tbody td.cell:nth-of-type(3)::before{content:"Agency 2"}
  table.ws tbody td.cell:nth-of-type(4)::before{content:"Agency 3"}
  .cellbox{padding:6px 12px 11px}
+ .scorebox{flex-basis:64px;width:64px;padding:6px 4px 11px}
+ .ws-totals{grid-template-columns:1fr;margin-top:12px}
 }
 @media(prefers-reduced-motion:reduce){body.booklet .page{transition:opacity .3s ease}}
 </style>
@@ -574,7 +597,7 @@ body.booklet .page{transition:transform 1.2s cubic-bezier(.3,.4,.2,1),opacity .5
     <section class="page">
       <div class="eyebrow">Step Seven &middot; The worksheet</div>
       <h2 class="section-title">Your notes, side by side</h2>
-      <p class="lead">Keep this open as you speak with each hospice. Type what you learn, then save or print it to keep everything in one place.</p>
+      <p class="lead">Keep this open as you speak with each hospice. Type what you learn and give each answer a score from 1 to 10 &mdash; the guide adds them up below, so your strongest match stands out.</p>
       <div class="ws-meta">
         <label>These notes belong to the <input class="fill" type="text" placeholder="your" data-field> family</label>
         <label>Date <input class="fill" type="text" placeholder="" data-field style="min-width:120px"></label>
@@ -593,6 +616,12 @@ body.booklet .page{transition:transform 1.2s cubic-bezier(.3,.4,.2,1),opacity .5
             <!--ROWS-->
           </tbody>
         </table>
+      </div>
+      <p class="ws-scorehint">In the small gold box, score each answer from <b>1</b> (poor) to <b>10</b> (excellent). The totals below add up as you go &mdash; the highest score is your strongest match.</p>
+      <div class="ws-totals" id="wsTotals" aria-live="polite">
+        <div class="ws-total"><div class="wt-badge">Top choice</div><div class="wt-name">Agency 1</div><div class="wt-score">&ndash;<small> / 110</small></div></div>
+        <div class="ws-total"><div class="wt-badge">Top choice</div><div class="wt-name">Agency 2</div><div class="wt-score">&ndash;<small> / 110</small></div></div>
+        <div class="ws-total"><div class="wt-badge">Top choice</div><div class="wt-name">Agency 3</div><div class="wt-score">&ndash;<small> / 110</small></div></div>
       </div>
 
       <div class="checklist">
@@ -681,13 +710,46 @@ body.booklet .page{transition:transform 1.2s cubic-bezier(.3,.4,.2,1),opacity .5
     "How the first conversation felt"
   ];
   var tb=document.querySelector('table.ws tbody'); var html='';
+  function wsCell(agency){
+    return '<td class="cell"><div class="cw"><input class="cellbox" data-field type="text">'+
+      '<input class="scorebox" data-field type="number" min="1" max="10" step="1" inputmode="numeric" placeholder="1\u201310" aria-label="Score from 1 to 10 for agency '+agency+'"></div></td>';
+  }
   for(var i=0;i<ROWS.length;i++){
-    html+='<tr><td class="q">'+ROWS[i]+'</td>'+
-      '<td class="cell"><input class="cellbox" data-field type="text"></td>'+
-      '<td class="cell"><input class="cellbox" data-field type="text"></td>'+
-      '<td class="cell"><input class="cellbox" data-field type="text"></td></tr>';
+    html+='<tr><td class="q">'+ROWS[i]+'</td>'+wsCell(1)+wsCell(2)+wsCell(3)+'</tr>';
   }
   tb.innerHTML=html;
+
+  var wsTotals=document.querySelectorAll('#wsTotals .ws-total');
+  var wsNames=document.querySelectorAll('table.ws thead .agencyname');
+  var WS_MAX=ROWS.length*10;
+  function updScores(){
+    var sums=[0,0,0],has=[false,false,false];
+    Array.prototype.forEach.call(tb.querySelectorAll('tr'),function(tr){
+      Array.prototype.forEach.call(tr.querySelectorAll('.scorebox'),function(sb,i){
+        var v=parseFloat(sb.value);
+        if(!isNaN(v)){ v=Math.min(10,Math.max(1,v)); sums[i]+=v; has[i]=true; }
+      });
+    });
+    var best=-1,bestIdx=-1,tie=false;
+    sums.forEach(function(s,i){ if(!has[i])return; if(s>best){best=s;bestIdx=i;tie=false;} else if(s===best){tie=true;} });
+    Array.prototype.forEach.call(wsTotals,function(t,i){
+      var nm=(wsNames[i]&&wsNames[i].value.replace(/^\s+|\s+$/g,''))||('Agency '+(i+1));
+      t.querySelector('.wt-name').textContent=nm;
+      t.querySelector('.wt-score').innerHTML=(has[i]?sums[i]:'&ndash;')+'<small> / '+WS_MAX+'</small>';
+      var isLead=(i===bestIdx)&&!tie&&has[i];
+      t.classList.toggle('lead-agency',isLead);
+    });
+  }
+  window._wsUpd=updScores;
+  tb.addEventListener('input',function(e){
+    if(e.target.classList.contains('scorebox')){
+      var v=e.target.value;
+      if(v!==''){ var n=parseFloat(v); if(n>10){e.target.value=10;} else if(n<=0){e.target.value='';} }
+    }
+    updScores();
+  });
+  Array.prototype.forEach.call(wsNames,function(n){ n.addEventListener('input',updScores); });
+  updScores();
 
   var pages=Array.prototype.slice.call(document.querySelectorAll('.page'));
   var N=pages.length, cur=0, animTimer=null;
@@ -820,6 +882,7 @@ body.booklet .page{transition:transform 1.2s cubic-bezier(.3,.4,.2,1),opacity .5
   document.getElementById('resetBtn').onclick=function(){
     if(!confirm('Clear everything you have typed and checked?'))return;
     document.querySelectorAll('[data-field]').forEach(function(f){ if(f.type==='checkbox')f.checked=false; else f.value=''; });
+    if(window._wsUpd)window._wsUpd();
   };
   window.addEventListener('resize',setHeight);
   window.addEventListener('load',setHeight);

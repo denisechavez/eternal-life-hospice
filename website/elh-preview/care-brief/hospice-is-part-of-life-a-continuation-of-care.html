@@ -68,7 +68,7 @@
           <a href="../volunteer">Volunteer</a>
         </div>
       </div>
-      <div class="nav-group"><a href="../providers" class="nav-parent">For Providers</a><div class="nav-sub"><a href="/refer">Refer a Patient</a><a href="../providers">Refer With Confidence</a></div></div>
+      <div class="nav-group"><a href="/refer" class="nav-parent">For Providers</a><div class="nav-sub"><a href="/refer">Refer With Confidence</a><a href="/?lead=coordinator#leadcap">Schedule an Educational Session</a></div></div>
     </nav>
     <div class="hdr-cta-wrap"><span class="hdr-cta-note">Here in Moments That Matter Most</span><a href="tel:18059537273" class="hdr-cta">805.953.7273</a></div>
     <button class="menu-btn" aria-label="Menu" aria-expanded="false"><svg width="22" height="16" viewBox="0 0 22 16"><line x1="0" y1="2" x2="22" y2="2" stroke="#F5F0EB" stroke-width="2" stroke-linecap="round"/><line x1="0" y1="8" x2="22" y2="8" stroke="#F5F0EB" stroke-width="2" stroke-linecap="round"/><line x1="0" y1="14" x2="22" y2="14" stroke="#F5F0EB" stroke-width="2" stroke-linecap="round"/></svg></button>
@@ -185,6 +185,16 @@
 .cb-ctas .btn-ghost{color:#5B2E59;border-color:rgba(91,46,89,.5);transition:border-color .25s ease,background .25s ease}
 .cb-ctas .btn-ghost:hover{border-color:#5B2E59;background:rgba(91,46,89,.06)}
 @media(max-width:680px){.cb-founder{grid-template-columns:1fr}.cb-founder img{max-width:280px}}
+.cb-meet{margin-top:18px;max-width:360px}
+.cb-meet summary{list-style:none;cursor:pointer;display:inline-flex;align-items:center;gap:8px;font-family:Fraunces,serif;font-size:15.5px;color:#5B2E59;border-bottom:1px solid rgba(176,141,62,.55);padding-bottom:3px;transition:color .2s ease,border-color .2s ease}
+.cb-meet summary:hover{color:#4A2548;border-bottom-color:#B08D3E}
+.cb-meet summary::-webkit-details-marker{display:none}
+.cb-meet summary .chv{font-size:11px;color:#B08D3E;transition:transform .25s ease}
+.cb-meet[open] summary .chv{transform:rotate(180deg);display:inline-block}
+.cb-meet-opts{display:flex;flex-direction:column;gap:8px;margin-top:12px}
+.cb-meet-opts a{display:flex;align-items:center;justify-content:space-between;gap:10px;text-decoration:none;font-size:14.5px;color:#4A2A4A;background:#faf6f0;border:1px solid rgba(110,74,110,.16);border-radius:10px;padding:10px 14px;transition:border-color .2s ease,background .2s ease}
+.cb-meet-opts a:hover{border-color:#5B2E59;background:#fff}
+.cb-meet-opts a .arr{color:#B08D3E}
 .cb-fig-media{display:block;position:relative;border-radius:14px;overflow:hidden}
 .cb-fig-rings{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none}
 .cb-fig-rings span{position:absolute;width:110px;height:110px;border-radius:50%;border:1px solid rgba(217,192,138,.32);animation:cbspulse 8s ease-out infinite}
@@ -220,7 +230,7 @@
 @media(max-width:680px){.cb-player{right:8px;top:8px;width:auto;max-width:calc(100% - 16px);padding:6px 10px 6px 6px;gap:8px}.cb-player-desc,.cb-fpills{display:none}}
 @page{margin:0}
 @media print{
-#hdr,#site-footer,.cta,.related,.backlink,.cb-ctas,.cb-rail,.cb-hero-quiet,.cb-hero-save,.cb-hero-meta,.cb-player,.cb-fig-rings,.cb-fig-cta{display:none!important}
+#hdr,#site-footer,.cta,.related,.backlink,.cb-ctas,.cb-rail,.cb-hero-quiet,.cb-hero-save,.cb-hero-meta,.cb-player,.cb-fig-rings,.cb-fig-cta,.cb-meet{display:none!important}
 body{-webkit-print-color-adjust:exact;print-color-adjust:exact}
 .cb-hero{grid-template-columns:1fr}
 .cb-hero-band{padding:14mm 24px 24px}
@@ -243,6 +253,13 @@ body{-webkit-print-color-adjust:exact;print-color-adjust:exact}
     <p>This Care Brief is our way of sharing that conviction with the professional care teams and families we serve. Each issue is written to educate and support both the care professionals we work alongside and the families they serve &mdash; honoring sacred care in the continuum of life. We believe that knowledge shared between clinicians, care teams, and families makes every transition gentler and every decision clearer.</p>
     <p>Thank you for reading, and for the trust you place in the people you serve.</p>
     <div class="cb-sig">&mdash; Aleksandra Dubina</div>
+    <details class="cb-meet">
+      <summary>Let&rsquo;s meet <span class="chv">&#9662;</span></summary>
+      <div class="cb-meet-opts">
+        <a href="/?lead=coordinator#leadcap">Schedule a Meeting <span class="arr">&#8594;</span></a>
+        <a href="/?lead=coordinator#leadcap">Schedule an Educational Session <span class="arr">&#8594;</span></a>
+      </div>
+    </details>
   </div>
 </div>
 
@@ -255,7 +272,7 @@ body{-webkit-print-color-adjust:exact;print-color-adjust:exact}
 <p>The earlier this referral happens, the more the hospice team can do. Patients referred within the first weeks of eligibility benefit from longer symptom stabilization, more time to build trust with their care team, and greater opportunity to participate in care decisions. Families referred early report lower rates of complicated bereavement and greater confidence in the care their loved one receives.</p>
 <p>This is the clinical case for timely, appropriate hospice referral &mdash; not as a last resort, but as a deliberate, informed transition in the continuum of care.</p>
 <p>At Eternal Life Hospice, we are available to discuss eligibility, conduct evaluations, and collaborate with referring teams at any point in a patient&rsquo;s illness trajectory. The conversation does not commit anyone to enrollment. It begins with a question, and it begins with care.</p>
-<div class="cb-ctas"><a class="btn-gold" href="/refer">Refer a Patient &#8594;</a><a class="btn-ghost" href="../providers">Visit the Provider Page</a></div>
+<div class="cb-ctas"><a class="btn-gold" href="/refer">Refer a Patient &#8594;</a><a class="btn-ghost" href="/?lead=coordinator#leadcap">Schedule an Educational Session</a></div>
 
 <div class="cb-head" id="care-team-spotlight"><span class="cb-num">03</span><span class="cb-lab">Care Team Spotlight</span><span class="cb-time">1 min read</span></div>
 <h2>The First 48 Hours &mdash; What Care Teams and Families Can Expect</h2>
@@ -265,7 +282,7 @@ body{-webkit-print-color-adjust:exact;print-color-adjust:exact}
 <p>The nurse coordinates with the attending physician or the hospice medical director to establish the initial plan of care. Medical equipment, medications, and supplies related to the hospice diagnosis are ordered and delivered &mdash; typically within the first 24 to 48 hours.</p>
 <p>A social worker and chaplain are introduced to the patient and family within the first several days, addressing emotional, spiritual, and practical needs.</p>
 <p><b>For referring care teams:</b> we maintain open communication throughout this transition. We provide status updates, share assessment findings, and remain available for collaborative decision-making. The referral does not end your relationship with your patient &mdash; it adds a specialized team to the care you have already been providing.</p>
-<div class="cb-ctas"><a class="btn-ghost" href="mailto:info@eternallifehospice.com?subject=Educational%20Session%20Request">Schedule an Educational Session</a></div>
+<div class="cb-ctas"><a class="btn-ghost" href="/?lead=coordinator#leadcap">Schedule an Educational Session</a></div>
 
 <div class="cb-head" id="whole-person-comfort"><span class="cb-num">04</span><span class="cb-lab">Whole-Person Comfort Spotlight</span><span class="cb-time">1 min read</span></div>
 <h2>Sound and Stillness &mdash; An Introduction to Sound-Based Comfort in Hospice Care</h2>
@@ -297,7 +314,7 @@ body{-webkit-print-color-adjust:exact;print-color-adjust:exact}
 <li>We communicate eligibility findings transparently with referring physicians, including when a patient does not meet criteria.</li>
 <li>Documentation supporting each admission decision is available for review by the referring care team.</li>
 </ol>
-<div class="cb-ctas"><a class="btn-ghost" href="../providers">Visit the Provider Page</a></div>
+<div class="cb-ctas"><a class="btn-ghost" href="/refer">Refer With Confidence &#8594;</a></div>
 
 <div class="cb-head" id="care-conversation"><span class="cb-num">06</span><span class="cb-lab">Current Care Conversation</span><span class="cb-time">1 min read</span></div>
 <h2>Responsible Admissions and the Integrity of Hospice Care</h2>
@@ -341,7 +358,7 @@ body{-webkit-print-color-adjust:exact;print-color-adjust:exact}
 <li><a href="../resources">The Resource Library</a> &mdash; plain-language articles on choosing a hospice, timing, caregiving, and more.</li>
 <li><a href="../blog">The Eternal Journal</a> &mdash; reflections and gentle company for families walking the hospice road.</li>
 </ol>
-<div class="cb-ctas"><a class="btn-gold" href="/refer">Refer a Patient &#8594;</a><a class="btn-ghost" href="../providers">Visit the Provider Page</a></div>
+<div class="cb-ctas"><a class="btn-gold" href="/refer">Refer a Patient &#8594;</a><a class="btn-ghost" href="/?lead=coordinator#leadcap">Schedule an Educational Session</a></div>
 <a class="cb-hero-save cb-save-end" href="#" onclick="window.print();return false"><span class="s1">Save a copy &#10515;</span><span class="s2">Prints as a clean handout &mdash; easy to share with your team or a family</span></a>
 </article>
 
@@ -357,7 +374,7 @@ body{-webkit-print-color-adjust:exact;print-color-adjust:exact}
 <footer id="site-footer">
   <div class="foot-grid">
     <div><div class="foot-logo"><a href="/" aria-label="Eternal Life Hospice — home"><img loading="lazy" decoding="async" src="../assets/img/elh-logo-cream-g.png" alt="Eternal Life Hospice logo"></a></div><p class="foot-tag">Care That Honors Life.</p><p class="foot-legal">Medicare-Certified · CDPH-Licensed · ACHC-Accredited. Serving families across Ventura and Los Angeles Counties.</p><div class="foot-qr"><img src="../assets/img/qr-cream.png" alt="Scan to visit eternallifehospice.com" width="96" height="96" loading="lazy"><span>Scan to visit<br>on your phone</span></div></div>
-    <div class="foot-col"><h4>For Families</h4><a href="../family-guide">Family Guide</a><a href="../resources">Resources</a><a href="../blog">Journal</a><a href="../volunteer">Volunteer</a><a href="../careers">Careers</a></div><div class="foot-col"><h4>For Providers</h4><a href="/refer">Refer a Patient</a><a href="../providers">Refer With Confidence</a><a href="/care-brief/hospice-is-part-of-life-a-continuation-of-care">Care Brief</a><a href="../family-guide">Family Guide</a><a href="/#coverage">Coverage Area</a></div>
+    <div class="foot-col"><h4>For Families</h4><a href="../family-guide">Family Guide</a><a href="../resources">Resources</a><a href="../blog">Journal</a><a href="../volunteer">Volunteer</a><a href="../careers">Careers</a></div><div class="foot-col"><h4>For Providers</h4><a href="/refer">Refer With Confidence</a><a href="/?lead=coordinator#leadcap">Schedule an Educational Session</a><a href="/care-brief/hospice-is-part-of-life-a-continuation-of-care">Care Brief</a><a href="../family-guide">Family Guide</a><a href="/#coverage">Coverage Area</a></div>
     <div class="foot-col"><h4>Our Care</h4><a href="/#standard">The Eternal Standard</a><a href="/#first48">The First 48 Hours</a><a href="/#modalities">Integrative Therapies</a><a href="/#clinical-mobile">Clinical &amp; Mobile Services</a><a href="/#medicare">Insurance &amp; Medicare</a></div>
     <div class="foot-col"><h4>Contact</h4><a class="fc-line" href="tel:18059537273"><svg class="fci" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg><span>805.953.7273</span></a><a class="fc-line" href="tel:18187989303"><svg class="fci" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg><span>818.798.9303</span></a><span class="fc-line fc-fax"><svg class="fci" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg><span>805.953.8530 fax</span></span><a class="fc-line" href="mailto:info@eternallifehospice.com"><svg class="fci" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"/><polyline points="22,6 12,13 2,6"/></svg><span>info@eternallifehospice.com</span></a><a class="fc-line fc-addr" href="https://maps.google.com/?cid=9771388271577679785" target="_blank" rel="noopener"><svg class="fci" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg><span>4165 E Thousand Oaks Blvd, Suite 325B<br>Westlake Village, CA 91362</span></a></div>
   </div>
