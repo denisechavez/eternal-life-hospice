@@ -1,0 +1,96 @@
+THE ETERNAL CARE BRIEF — "NEW ISSUE" EMAIL TEMPLATE (how-to)
+=============================================================
+A reusable HTML email for announcing EACH new issue of The Eternal Care
+Brief (published every other month). The one-time introduction email has
+already gone out; from now on, use THIS template every cycle — you only
+swap six things and send.
+
+THE FILES (in this exports/email/ folder)
+- eternal-care-brief-new-issue-template.html          — the reusable template
+- eternal-care-brief-new-issue-template-HOW-TO.txt    — this file
+(The one-time intro email and its HOW-TO also live here for reference.)
+
+EVERY NEW ISSUE — THE 6 SWAPS
+Open the template in a text editor (right-click -> Open With ->
+TextEdit/Notepad) and use Find (Ctrl/Cmd+F) to search for "SWAP-ME".
+There are 6 numbered fields:
+
+  SWAP-ME 1 — PREHEADER (hidden preview sentence)
+    One warm sentence about this issue. It shows next to the subject line
+    in the inbox. Replace the whole placeholder sentence.
+
+  SWAP-ME 2 — ISSUE NUMBER + MONTH/YEAR (appears in TWO places)
+    Example: "Issue Two · September 2026"
+    Place 1: the gold kicker line at the top ("A New Issue of The Eternal
+    Care Brief · ..."). Place 2: the small gold line inside the photo card.
+    Make both match.
+
+  SWAP-ME 3 — THE ISSUE LINK (appears in THREE places)
+    The web address of the new issue's page, e.g.
+    https://eternallifehospice.com/care-brief/your-new-issue-title
+    Replace it in all three: the photo link, the title link, and the gold
+    "Read the New Issue" button. Use the SAME address for all three.
+
+  SWAP-ME 4 — HERO PHOTO
+    The full live-site address of this issue's photo, e.g.
+    https://eternallifehospice.com/assets/img/your-photo.jpg
+    IMPORTANT: it must be a live https://eternallifehospice.com/... address
+    (email programs can't show files from your computer). If the photo is
+    new, sync the site first so the address actually works.
+
+  SWAP-ME 5 — ISSUE TITLE (appears in TWO places)
+    Place 1: the big plum headline inside the card. Place 2: the photo's
+    alt text (the description that shows if the image doesn't load).
+    You can also update the <title> tag near the top — it only affects
+    the browser tab, not the inbox.
+
+  SWAP-ME 6 — SUMMARY + READ-TIME LINE
+    The one-paragraph summary (2–4 sentences: what care teams will find,
+    and what's written for families), plus the small gray line underneath
+    ("X sections · X min read · prints as a clean handout").
+
+Everything else — masthead, gold band, "Browse every Care Brief" link,
+the two Refer/Family Guide cards, 24/7 nurse line, and the footer — stays
+exactly the same every time. Don't restyle.
+
+BEFORE YOU SEND — 2 CHECKS, EVERY TIME
+1. PUBLISH THE NEW ISSUE PAGE FIRST.
+   The email links to the new issue on eternallifehospice.com. In Replit
+   click Git -> Sync, wait a couple of minutes, then open the issue's
+   address in your browser to confirm it loads (this also makes sure the
+   photo displays).
+2. REPLACE THE UNSUBSCRIBE PLACEHOLDER.
+   The footer "Unsubscribe" link is a placeholder. After pasting into
+   MailerLite or Brevo, swap it:
+   - MailerLite: change the link to  {$unsubscribe}
+   - Brevo:      change the link to  {{ unsubscribe }}
+   Do NOT send until this is done — it's legally required (CAN-SPAM).
+
+HOW TO LOAD IT INTO MAILERLITE
+1. Make the 6 swaps, then select all the HTML and copy.
+2. MailerLite: Campaigns -> Create campaign -> "Custom HTML editor".
+3. Paste, Preview, fix the unsubscribe link, send yourself a test,
+   click every link in the test, then schedule or send.
+
+HOW TO LOAD IT INTO BREVO
+1. Copy the full swapped HTML the same way.
+2. Brevo: Campaigns -> Create an email campaign -> at the design step
+   choose "Code your own" / "Paste your code" -> paste.
+3. Preview, fix the unsubscribe link, send a test, click every link,
+   then schedule or send.
+
+SUBJECT LINE PATTERNS (swap in your issue details)
+  A:  The Eternal Care Brief, Issue [Number] — [Issue Title]
+  B:  [Issue Title] — the new Care Brief is here
+  C:  New from Eternal Life Hospice: [Issue Title]
+Preview text: reuse your SWAP-ME 1 sentence in the ESP's "preview text" /
+"preheader" field.
+
+BRAND / COMPLIANCE NOTES (same rules as always)
+- Fonts: headings fall back to Georgia, body to Arial (email clients
+  can't load Fraunces/Jost). Colors + logo carry the brand; don't restyle.
+- Terminology: "professional care teams" and "families" only — never
+  "referral partner" or "care partner."
+- No medical-efficacy claims and no patient information (PHI) in the
+  summary or anywhere else — ever.
+- Coverage language stays "Serving Ventura & Los Angeles County."
