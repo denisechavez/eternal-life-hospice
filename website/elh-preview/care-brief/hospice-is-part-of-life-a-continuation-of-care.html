@@ -183,7 +183,7 @@
 #cbSound.playing .cb-fig-rings span:nth-child(3){animation-delay:2.5s}
 #cbSound.playing .cb-fig-rings span:nth-child(4){animation-delay:3.75s}
 @media(prefers-reduced-motion:reduce){.cb-fig-rings span,#cbSound.playing .cb-fig-rings span{animation:none;opacity:.2}.cb-fig-rings span:nth-child(1){transform:scale(1.6)}.cb-fig-rings span:nth-child(2){transform:scale(2.9)}.cb-fig-rings span:nth-child(3){transform:scale(4.2)}.cb-fig-rings span:nth-child(4){transform:scale(5.5)}}
-.cb-player{display:flex;align-items:center;gap:14px;margin:14px 0 6px;padding:12px 16px;background:#faf6f0;border:1px solid rgba(110,74,110,.14);border-radius:12px}
+.cb-player{position:absolute;left:12px;right:12px;bottom:12px;display:flex;align-items:center;gap:14px;padding:10px 16px;background:rgba(250,246,240,.9);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);border:1px solid rgba(110,74,110,.14);border-radius:12px}
 .cb-play-btn{width:42px;height:42px;border:0;padding:0;cursor:pointer;border-radius:50%;background:#5B2E59;color:#F5F0EB;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:background .2s}
 .cb-play-btn:hover{background:#4A2548}
 .cb-play-btn.playing{background:#C9B07E;color:#3a1c39}
@@ -193,6 +193,7 @@
 .cb-player-name{font-family:Fraunces,serif;font-size:16.5px;color:#4A2A4A;line-height:1.25}
 .cb-player-desc{font-size:12.5px;color:#7a6a7a;line-height:1.5;margin-top:2px}
 .cb-player-timer{font-size:12.5px;color:#7a6a7a;font-variant-numeric:tabular-nums;flex-shrink:0}
+@media(max-width:560px){.cb-player{left:8px;right:8px;bottom:8px;padding:8px 12px;gap:10px}.cb-player-desc{display:none}.cb-play-btn{width:36px;height:36px}}
 @page{margin:0}
 @media print{
 #hdr,#site-footer,.cta,.related,.backlink,.cb-ctas,.cb-rail,.cb-hero-quiet,.cb-hero-save,.cb-hero-meta,.cb-player,.cb-fig-rings{display:none!important}
@@ -244,15 +245,14 @@ body{-webkit-print-color-adjust:exact;print-color-adjust:exact}
 
 <div class="cb-head" id="whole-person-comfort"><span class="cb-num">04</span><span class="cb-lab">Whole-Person Comfort Spotlight</span><span class="cb-time">1 min read</span></div>
 <h2>Sound and Stillness &mdash; An Introduction to Sound-Based Comfort in Hospice Care</h2>
-<div class="cb-fig" id="cbSound"><span class="cb-fig-media"><img src="../assets/img/care-brief-sound.jpg" alt="Singing bowl, orchid, candle, and tingsha cymbals arranged on dark wood" loading="lazy"><span class="cb-fig-rings" aria-hidden="true"><span></span><span></span><span></span><span></span></span></span><div class="cb-cap">Singing bowls, tingsha cymbals, and candlelight &mdash; the instruments of sound-based comfort, arranged with intention.</div></div>
-<div class="cb-player">
+<div class="cb-fig" id="cbSound"><span class="cb-fig-media"><img src="../assets/img/care-brief-sound.jpg" alt="Singing bowl, orchid, candle, and tingsha cymbals arranged on dark wood" loading="lazy"><span class="cb-fig-rings" aria-hidden="true"><span></span><span></span><span></span><span></span></span><div class="cb-player">
   <button class="cb-play-btn" id="cbSoundBtn" aria-pressed="false" aria-label="Play a one-minute moment of gentle tones"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></button>
   <div class="cb-player-info">
     <div class="cb-player-name">Love &amp; Transformation</div>
     <div class="cb-player-desc">Warm, heart-opening tones for peace and connection</div>
   </div>
   <div class="cb-player-timer" id="cbSoundTimer">0:00</div>
-</div>
+</div></span><div class="cb-cap">Singing bowls, tingsha cymbals, and candlelight &mdash; the instruments of sound-based comfort, arranged with intention.</div></div>
 <p>Comfort in hospice care extends beyond pharmacological symptom management. For some patients, sound-based comfort modalities &mdash; including gentle tonal instruments, guided sound experiences, or curated ambient listening &mdash; may offer a complementary layer of support during a time when the nervous system is often under significant strain.</p>
 <p>Sound-based comfort is not a treatment for disease. It does not replace medication, clinical intervention, or the plan of care established by the interdisciplinary team. When appropriate, and based on patient preference and clinical condition, it may support a sense of calm &mdash; a reduction in perceived anxiety, an easing of restlessness, and a shift toward stillness that some patients and families find meaningful during difficult hours.</p>
 <p>At Eternal Life Hospice, we approach integrative comfort with the same clinical responsibility that governs every aspect of our care. Any comfort modality is considered within the context of the patient&rsquo;s overall plan, discussed with the interdisciplinary team, and offered only when it aligns with the patient&rsquo;s preferences and clinical condition.</p>
