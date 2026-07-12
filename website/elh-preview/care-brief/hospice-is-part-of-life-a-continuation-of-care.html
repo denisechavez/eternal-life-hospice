@@ -88,7 +88,7 @@
     <span class="cb-hero-pill">Clinical Guidance + Family Support</span>
   </div>
   <div class="cb-hero-main">
-    <a class="cb-hero-save" href="#" onclick="window.print();return false"><span class="s1">Keep a copy &#10515;</span><span class="s2">Prints as a clean handout &mdash; easy to share with your team or a family</span></a>
+    <a class="cb-hero-save" href="#" onclick="window.print();return false"><span class="s1">Save a copy &#10515;</span><span class="s2">Prints as a clean handout &mdash; easy to share with your team or a family</span></a>
     <div class="cb-hero-eyebrow">The Eternal Care Brief &middot; Issue One</div>
     <h1>Hospice Is Part of Life &mdash; A&nbsp;Continuation of Care</h1>
     <p>A living care publication from Eternal Life Hospice, created to inform, support, and connect care teams and families.</p>
@@ -171,7 +171,15 @@
 .cb-steps li::before{content:counter(cbstep,decimal-leading-zero);position:absolute;left:18px;top:14px;font-family:Fraunces,serif;font-size:19px;color:#B08D3E}
 .cb-ctas{display:flex;gap:14px;flex-wrap:wrap;margin:24px 0 8px}
 @media(max-width:680px){.cb-founder{grid-template-columns:1fr}.cb-founder img{max-width:280px}}
-@media print{#hdr,#site-footer,.cta,.related,.backlink,.cb-ctas,.cb-rail,.cb-hero-quiet,.cb-hero-save{display:none!important}.cb-hero{grid-template-columns:1fr}.cb-hero-band{padding:24px}}
+@page{margin:0}
+@media print{
+#hdr,#site-footer,.cta,.related,.backlink,.cb-ctas,.cb-rail,.cb-hero-quiet,.cb-hero-save,.cb-hero-meta{display:none!important}
+body{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.cb-hero{grid-template-columns:1fr}
+.cb-hero-band{padding:14mm 24px 24px}
+.cb-hero-main{padding:32px 14mm 14mm}
+.article.sec.wrap{padding-left:14mm!important;padding-right:14mm!important;padding-bottom:14mm!important}
+}
 </style>
 
 <article class="article sec wrap">
