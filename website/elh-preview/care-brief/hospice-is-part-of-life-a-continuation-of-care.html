@@ -93,8 +93,7 @@
     <h1>Hospice Is Part of Life &mdash; A&nbsp;Continuation of Care</h1>
     <p>A living care publication from Eternal Life Hospice, created to inform, support, and connect care teams and families.</p>
     <div class="cb-hero-meta">8 sections &middot; 9 min read</div>
-    <div class="cb-hero-ctas"><a class="btn-gold" href="/refer">Refer a Patient &#8594;</a></div>
-    <a class="cb-scroll" href="#founder-note">Begin reading<span class="ar">&#8595;</span></a>
+    <div class="cb-hero-quiet"><a class="cb-scroll" href="#founder-note">Begin reading<span class="ar">&#8595;</span></a><span class="cb-qdot">&middot;</span><a class="cb-refer-quiet" href="/refer">Refer a patient &#8594;</a></div>
   </div>
 </section>
 
@@ -127,7 +126,11 @@
 .cb-hero-save:hover{opacity:1}
 .cb-hero-save .s1{display:block;font-size:12.5px;letter-spacing:.1em;text-transform:uppercase;font-weight:600;color:#4A2A4A}
 .cb-hero-save .s2{display:block;font-size:11.5px;line-height:1.45;color:#8a7a8a;margin-top:4px}
-.cb-scroll{display:inline-flex;align-items:center;gap:9px;margin-top:34px;text-decoration:none;font-size:12.5px;letter-spacing:.16em;text-transform:uppercase;color:#8a7a8a;transition:color .25s ease}
+.cb-hero-quiet{display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin-top:10px}
+.cb-qdot{color:#c9bac9}
+.cb-refer-quiet{text-decoration:none;font-size:12.5px;letter-spacing:.16em;text-transform:uppercase;color:#6E4A6E;border-bottom:1px solid rgba(110,74,110,.35);padding-bottom:2px;transition:color .25s ease,border-color .25s ease}
+.cb-refer-quiet:hover{color:#3E1F3E;border-color:#B08D3E}
+.cb-scroll{display:inline-flex;align-items:center;gap:9px;text-decoration:none;font-size:12.5px;letter-spacing:.16em;text-transform:uppercase;color:#8a7a8a;transition:color .25s ease}
 .cb-scroll:hover{color:#4A2A4A}
 .cb-scroll .ar{font-size:15px;color:#B08D3E;animation:cbDrift 2.4s ease-in-out infinite}
 @keyframes cbDrift{0%,100%{transform:translateY(0)}50%{transform:translateY(5px)}}
@@ -168,7 +171,7 @@
 .cb-steps li::before{content:counter(cbstep,decimal-leading-zero);position:absolute;left:18px;top:14px;font-family:Fraunces,serif;font-size:19px;color:#B08D3E}
 .cb-ctas{display:flex;gap:14px;flex-wrap:wrap;margin:24px 0 8px}
 @media(max-width:680px){.cb-founder{grid-template-columns:1fr}.cb-founder img{max-width:280px}}
-@media print{#hdr,#site-footer,.cta,.related,.backlink,.cb-ctas,.cb-rail,.cb-hero-ctas,.cb-hero-save,.cb-scroll{display:none!important}.cb-hero{grid-template-columns:1fr}.cb-hero-band{padding:24px}}
+@media print{#hdr,#site-footer,.cta,.related,.backlink,.cb-ctas,.cb-rail,.cb-hero-quiet,.cb-hero-save{display:none!important}.cb-hero{grid-template-columns:1fr}.cb-hero-band{padding:24px}}
 </style>
 
 <article class="article sec wrap">
