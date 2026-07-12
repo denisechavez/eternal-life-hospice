@@ -1,0 +1,87 @@
+THE ETERNAL CARE BRIEF — INTRODUCTION EMAIL (how-to)
+=====================================================
+One ready-to-send HTML email that introduces The Eternal Care Brief (the new
+bi-monthly care publication at eternallifehospice.com/care-brief) and its
+first issue, "Hospice Is Part of Life — A Continuation of Care."
+It's written to work for the whole list at once — professional care teams
+and families alike.
+
+THE FILE (in this exports/email/ folder)
+- eternal-care-brief-introduction-email.html          — the email itself
+- eternal-care-brief-introduction-email-HOW-TO.txt    — this file
+
+BEFORE YOU SEND — 2 THINGS TO DO
+1. PUBLISH THE CARE BRIEF PAGES FIRST.
+   The email links to eternallifehospice.com/care-brief pages. If you have
+   not synced the site since the Care Brief was built, those links will show
+   "page not found." In Replit click Git -> Sync, wait a couple of minutes,
+   then open https://eternallifehospice.com/care-brief in your browser to
+   confirm it loads. (The logo and photo in the email also load from the
+   live site, so this same sync makes sure everything displays.)
+2. REPLACE THE UNSUBSCRIBE PLACEHOLDER.
+   The footer "Unsubscribe" link is a placeholder and does nothing yet.
+   Every email service requires a real unsubscribe link. After you paste
+   the email into MailerLite or Brevo, swap the placeholder:
+   - MailerLite: change the link to  {$unsubscribe}
+   - Brevo:      change the link to  {{ unsubscribe }}
+   (In both editors: click the "Unsubscribe" text in the footer, edit the
+   link/URL, and paste the tag above as the URL.)
+   Do NOT send until this is done — it's legally required (CAN-SPAM).
+
+HOW TO LOAD IT INTO MAILERLITE
+1. Open eternal-care-brief-introduction-email.html in a text editor
+   (right-click -> Open With -> TextEdit/Notepad), select all, copy.
+2. In MailerLite: Campaigns -> Create campaign -> choose the
+   "Custom HTML editor" (sometimes under "Start from scratch").
+3. Paste the HTML, then use Preview to check it.
+4. Fix the unsubscribe link (step 2 above), send yourself a test email,
+   click every link in the test, then schedule or send.
+
+HOW TO LOAD IT INTO BREVO
+1. Copy the full HTML the same way (steps above).
+2. In Brevo: Campaigns -> Create an email campaign -> at the design step
+   choose "Code your own" / "Paste your code" -> paste the HTML.
+3. Preview, fix the unsubscribe link (step 2 above), send a test email,
+   click every link, then schedule or send.
+
+SUBJECT LINE + PREVIEW TEXT SUGGESTIONS (pick one pair)
+Option A (recommended)
+  Subject:  Introducing The Eternal Care Brief — Issue One is here
+  Preview:  A new bi-monthly care publication for care teams and families.
+
+Option B
+  Subject:  Hospice Is Part of Life — read Issue One
+  Preview:  Our new Care Brief: clinical guidance for care teams, warm
+            support for families.
+
+Option C
+  Subject:  A new resource from Eternal Life Hospice
+  Preview:  The Eternal Care Brief — created to inform, support, and
+            connect care teams and families.
+
+(Set the preview text in the ESP's "preview text" / "preheader" field; the
+email also carries a hidden preheader as a fallback.)
+
+WHAT'S IN THE EMAIL (so you can sanity-check it)
+- Masthead: Eternal Life logo (loaded from the live site) + "The Eternal
+  Care Brief" label, gold band, brand plum/gold/cream palette.
+- Intro: what the Care Brief is — a living publication, every other month,
+  to inform, support, and connect professional care teams and families.
+- Issue One feature card: photo, title, one-paragraph summary, and the
+  gold "Read Issue One" button.
+- "In every issue" — the four topic areas (clinical guidance, family
+  support, whole-person comfort, program integrity).
+- Two side-by-side cards: "Refer a Patient" (for professional care teams)
+  and "Open the Family Guide" (for families).
+- 24/7 nurse line, then the plum footer with credentials, HQ address,
+  phone, email, coverage line, and the unsubscribe placeholder.
+
+BRAND / COMPLIANCE NOTES
+- Fonts: email clients can't load Fraunces/Jost, so headings fall back to
+  Georgia and body text to Arial — same approach as the email signatures.
+  Colors and the logo carry the brand; don't restyle.
+- Terminology: "professional care teams" and "families" only — never
+  "referral partner" or "care partner." Keep this if you edit copy.
+- No medical-efficacy claims and no patient information (PHI) — keep it
+  that way in any edits, and never include patient details in a send.
+- Coverage language stays "Serving Ventura & Los Angeles County."
