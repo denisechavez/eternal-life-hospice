@@ -160,10 +160,10 @@
         Serving Ventura &amp; Los Angeles County
       </div>
       <div style="font-family:Arial,Helvetica,sans-serif;font-size:11px;line-height:1.7;color:#a892a6;padding-top:14px;">
-        You are receiving this because you asked to hear from Eternal Life Hospice.<br>
+        This educational communication is sent to subscribers of Eternal Life Hospice updates.<br>Manage your preferences or 
         <!-- PLACEHOLDER: replace href with your ESP's unsubscribe merge tag before sending.
              MailerLite: {$unsubscribe}   Brevo: {{ unsubscribe }} -->
-        <a href="#UNSUBSCRIBE-PLACEHOLDER" style="color:#a892a6;">Unsubscribe</a>
+        <a href="#UNSUBSCRIBE-PLACEHOLDER" style="color:#a892a6;">unsubscribe</a> at any time.
       </div>
     </td></tr>
 
