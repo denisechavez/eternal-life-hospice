@@ -58,6 +58,8 @@ body.booklet:not(.guideready) .pages{visibility:hidden}
 .btn:hover{background:rgba(201,176,126,.16)}
 .btn.primary{background:var(--gold);border-color:var(--gold);color:var(--deep);font-weight:600}
 .btn.primary:hover{background:#d8c08f}
+.fg-toast{position:fixed;left:50%;bottom:34px;transform:translateX(-50%) translateY(16px);background:var(--deep);color:#F5F0EB;font-size:14px;padding:12px 22px;border-radius:10px;box-shadow:0 10px 30px rgba(60,28,59,.35);opacity:0;visibility:hidden;transition:opacity .3s ease,transform .3s ease,visibility 0s .3s;z-index:200}
+.fg-toast.show{opacity:1;visibility:visible;transform:translateX(-50%) translateY(0);transition:opacity .3s ease,transform .3s ease,visibility 0s}
 
 /* ---------- STAGE / BOOKLET ---------- */
 .stage{display:flex;align-items:flex-start;justify-content:center;gap:14px;padding:30px 16px 18px}
@@ -330,7 +332,7 @@ body.lowink .cover-foot{border-top-color:var(--cream-dark)}
   .page{position:relative!important;transform:none!important;opacity:1!important}
   .page::after{display:none!important}
   .contact .cname{color:var(--deep)!important}
-  .toolbar,.indicator,.navbtn,.begin{display:none!important}
+  .toolbar,.indicator,.navbtn,.begin,.fg-toast{display:none!important}
   .elhc-dock,.elhc-panel{display:none!important}
   .stage{padding:0;display:block}
   .pages{max-width:none}
@@ -457,10 +459,11 @@ body.booklet .page{transition:transform 1.2s cubic-bezier(.3,.4,.2,1),opacity .5
   </div>
   <div class="tb-act">
     <button class="btn" id="resetBtn">Reset</button>
-    <a class="btn" id="dlPdfBtn" href="ELH_Family_Guide.pdf" download>Download PDF</a>
-    <button class="btn primary" id="printBtn">Save / Print</button>
+    <button class="btn" id="shareBtn"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align:-2px;margin-right:6px"><path d="M4 4h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>Share</button>
+    <button class="btn primary" id="printBtn">Download / Print</button>
   </div>
 </div>
+<div class="fg-toast" id="fgToast" role="status" aria-live="polite">Link copied &mdash; ready to paste anywhere</div>
 
 <div class="stage">
   <button class="navbtn" id="prevBtn" aria-label="Previous page">&#8249;</button>
@@ -879,6 +882,14 @@ body.booklet .page{transition:transform 1.2s cubic-bezier(.3,.4,.2,1),opacity .5
     if(mqP.addEventListener){mqP.addEventListener('change',onMq);} else if(mqP.addListener){mqP.addListener(onMq);}
   }
   document.getElementById('printBtn').onclick=function(){ startPrint(); setTimeout(function(){ window.print(); },90); };
+  document.getElementById('shareBtn').onclick=function(){
+    var url='https://eternallifehospice.com/family-guide';
+    var data={title:'The Family Guide \u2014 Eternal Life Hospice',text:'A gentle, practical guide for families beginning hospice care, from Eternal Life Hospice.',url:url};
+    function toast(){ var t=document.getElementById('fgToast'); if(!t)return; t.classList.add('show'); clearTimeout(t._tid); t._tid=setTimeout(function(){t.classList.remove('show');},2600); }
+    function copyLink(){ if(navigator.clipboard&&navigator.clipboard.writeText){ navigator.clipboard.writeText(url).then(toast).catch(function(){ window.prompt('Copy this link:',url); }); } else{ window.prompt('Copy this link:',url); } }
+    if(navigator.share){ navigator.share(data).catch(function(err){ if(!err||err.name!=='AbortError') copyLink(); }); return; }
+    copyLink();
+  };
   document.getElementById('resetBtn').onclick=function(){
     if(!confirm('Clear everything you have typed and checked?'))return;
     document.querySelectorAll('[data-field]').forEach(function(f){ if(f.type==='checkbox')f.checked=false; else f.value=''; });
