@@ -47,7 +47,8 @@ const ALLOWED_FORMS = [
   "elh-casemanager",
   "elh-careers",
   "elh-physician",
-  "elh-chat-callback"
+  "elh-chat-callback",
+  "elh-care-brief-signup"
 ];
 
 exports.handler = async function (event) {
@@ -95,20 +96,25 @@ exports.handler = async function (event) {
     const firstName = rawName.split(/\s+/)[0] || "";
     const greeting = firstName ? "Hi " + escapeText(firstName) + "," : "Hello,";
     const isCareers = formName === "elh-careers";
+    const isSignup = formName === "elh-care-brief-signup";
     // Referral confirmations: physician (/refer page) AND the homepage
     // case-manager discharge form — both are professional referrals, so both
     // get the same PHI-free "we received your referral" copy.
     const isReferral =
       formName === "elh-physician" || formName === "elh-casemanager";
 
-    const subject = isCareers
+    const subject = isSignup
+      ? "You're on the list — The Eternal Care Brief"
+      : isCareers
       ? "Thank you for your interest — Eternal Life Hospice"
       : isReferral
       ? "We received your referral — Eternal Life Hospice"
       : "We received your message — Eternal Life Hospice";
 
     // Static, PHI-free copy. We never echo the submitted clinical description.
-    const lead = isCareers
+    const lead = isSignup
+      ? "Thank you for signing up for The Eternal Care Brief. You're on the list — each new issue brings clinical guidance for care professionals and plain-language support for families, published every other month. You can unsubscribe at any time by replying to any issue."
+      : isCareers
       ? "Thank you for your interest in joining the Eternal Life Hospice team. We've received your application and a member of our team will review it and be in touch."
       : isReferral
       ? "Thank you for referring a patient to Eternal Life Hospice. We've received your referral, and our clinical intake team will reach out shortly to complete the details with you securely by phone. No patient information is ever exchanged by email."
