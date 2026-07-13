@@ -49,7 +49,7 @@ TEST-SEND CHECKLIST (do this before sending to the list)
 1. Confirm the moving image is live: open
    https://eternallifehospice.com/assets/img/care-brief-sound.gif
    in your browser. You should see the candle flicker and soft ripples
-   from the singing bowl (about a 2.6-second loop that repeats forever).
+   from the singing bowl (about a 4-second loop that repeats forever).
    If you see "page not found," click Git -> Sync in Replit and wait a
    couple of minutes.
 2. In MailerLite/Brevo, use "Send a test email" and send it to yourself —
