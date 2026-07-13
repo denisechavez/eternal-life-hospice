@@ -1,0 +1,175 @@
+<!doctype html>
+<!--
+  ETERNAL LIFE HOSPICE — "INTRODUCING THE ETERNAL CARE BRIEF" EMAIL
+  ==================================================================
+  One-time introduction email announcing The Eternal Care Brief and Issue One.
+  Built for MailerLite / Brevo: table layout, all CSS inline, web-safe fonts
+  (Georgia echoes Fraunces, Arial echoes Jost), images by live https URL only.
+
+  BEFORE SENDING — two things to swap (see the HOW-TO file in this folder):
+  1. UNSUBSCRIBE: the footer link below is a PLACEHOLDER (href="#UNSUBSCRIBE-PLACEHOLDER").
+     Replace it with your ESP's real unsubscribe merge tag:
+       MailerLite: {$unsubscribe}     Brevo: {{ unsubscribe }}
+  2. SYNC FIRST: the Care Brief pages must be live before sending —
+     in Replit click Git -> Sync once, then confirm
+     https://eternallifehospice.com/care-brief loads.
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title>Introducing The Eternal Care Brief | Eternal Life Hospice</title>
+</head>
+<body style="margin:0;padding:0;background-color:#EDE6DE;">
+
+<!-- Preheader (hidden preview text) -->
+<div style="display:none;max-height:0;overflow:hidden;mso-hide:all;font-size:1px;line-height:1px;color:#EDE6DE;">
+  A new bi-monthly care publication for professional care teams and families &mdash; Issue One is ready to read.&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;
+</div>
+
+<table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="background-color:#EDE6DE;">
+<tr><td align="center" style="padding:24px 12px;">
+
+  <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="640" style="width:640px;max-width:100%;background-color:#ffffff;">
+
+    <!-- Masthead -->
+    <tr><td style="background-color:#3C1C3B;padding:24px 34px;">
+      <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">
+        <tr>
+          <td style="vertical-align:middle;">
+            <a href="https://eternallifehospice.com" style="text-decoration:none;">
+              <img src="https://eternallifehospice.com/assets/img/elh-logo-cream-g.png" alt="Eternal Life Hospice — Care That Honors Life" width="150" style="display:block;border:0;outline:none;width:150px;height:auto;">
+            </a>
+          </td>
+          <td align="right" style="vertical-align:middle;font-family:Arial,Helvetica,sans-serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#C9B07E;line-height:1.6;">
+            The Eternal<br>Care Brief
+          </td>
+        </tr>
+      </table>
+    </td></tr>
+
+    <!-- Gold band -->
+    <tr><td style="background-color:#C9B07E;font-size:0;line-height:0;height:4px;">&nbsp;</td></tr>
+
+    <!-- Intro -->
+    <tr><td style="padding:38px 40px 8px;">
+      <div style="font-family:Arial,Helvetica,sans-serif;font-size:11px;font-weight:bold;letter-spacing:2.5px;text-transform:uppercase;color:#A07C36;padding-bottom:10px;">A New Publication From Eternal Life Hospice</div>
+      <div style="font-family:Georgia,'Times New Roman',serif;font-size:32px;line-height:1.15;color:#3C1C3B;padding-bottom:18px;">Introducing The Eternal Care&nbsp;Brief</div>
+      <div style="font-family:Arial,Helvetica,sans-serif;font-size:15.5px;line-height:1.65;color:#5A4057;padding-bottom:14px;">
+        The Eternal Care Brief is a living care publication, published every other month &mdash; created to inform, support, and connect the professional care teams we work alongside and the families they serve.
+      </div>
+      <div style="font-family:Arial,Helvetica,sans-serif;font-size:15.5px;line-height:1.65;color:#5A4057;padding-bottom:6px;">
+        Each issue brings together clinical guidance for physicians, discharge planners, case managers, and social workers &mdash; and warm, plain-language support written just for families. One publication, shared with everyone who cares.
+      </div>
+    </td></tr>
+
+    <!-- Issue One feature -->
+    <tr><td style="padding:20px 40px 0;">
+      <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="background-color:#F5F0EB;border:1px solid #D8CDBF;">
+        <tr><td>
+          <a href="https://eternallifehospice.com/care-brief/hospice-is-part-of-life-a-continuation-of-care" style="text-decoration:none;">
+            <img src="https://eternallifehospice.com/assets/img/care-brief-sound.gif" alt="Whole-Person Comfort — a singing bowl, orchid and candlelight, part of the comfort-focused care explored in Issue One" width="558" style="display:block;border:0;outline:none;width:100%;height:auto;">
+          </a>
+        </td></tr>
+        <tr><td style="padding:14px 28px 0;">
+          <div style="font-family:Arial,Helvetica,sans-serif;font-size:12px;letter-spacing:1.5px;text-transform:uppercase;color:#A07C36;font-weight:bold;padding-bottom:4px;">Whole-Person Comfort</div>
+          <div style="font-family:Georgia,'Times New Roman',serif;font-size:14px;font-style:italic;line-height:1.55;color:#5A4057;">Sound, stillness and presence &mdash; comfort-focused care offered alongside expert medical support, explored inside Issue One.</div>
+        </td></tr>
+        <tr><td style="padding:20px 28px 28px;">
+          <div style="font-family:Arial,Helvetica,sans-serif;font-size:11px;font-weight:bold;letter-spacing:2px;text-transform:uppercase;color:#A07C36;padding-bottom:8px;">Issue One &middot; July 2026</div>
+          <div style="font-family:Georgia,'Times New Roman',serif;font-size:24px;line-height:1.2;color:#5B2E59;padding-bottom:12px;">
+            <a href="https://eternallifehospice.com/care-brief/hospice-is-part-of-life-a-continuation-of-care" style="color:#5B2E59;text-decoration:none;">Hospice Is Part of Life &mdash; A Continuation of Care</a>
+          </div>
+          <div style="font-family:Arial,Helvetica,sans-serif;font-size:14.5px;line-height:1.65;color:#5A4057;padding-bottom:10px;">
+            Introduced by Aleksandra Dubina, Founder &amp; CEO and Certified Hospice Administrator, Issue One reframes hospice as a continuation of care &mdash; not its end. Inside: the clinical case for timely referral, what the first 48 hours look like, sound-based comfort, compliance-led admissions, and a section written just for families.
+          </div>
+          <div style="font-family:Arial,Helvetica,sans-serif;font-size:12px;letter-spacing:1px;text-transform:uppercase;color:#8a7a8a;padding-bottom:20px;">5 sections &middot; 7 min read &middot; prints as a clean handout</div>
+          <!-- Primary button -->
+          <table role="presentation" cellpadding="0" cellspacing="0" border="0">
+            <tr><td style="background-color:#C9B07E;border-radius:28px;">
+              <a href="https://eternallifehospice.com/care-brief/hospice-is-part-of-life-a-continuation-of-care" style="display:inline-block;padding:14px 32px;font-family:Arial,Helvetica,sans-serif;font-size:15px;font-weight:bold;color:#3C1C3B;text-decoration:none;border-radius:28px;">Read Issue One &rarr;</a>
+            </td></tr>
+          </table>
+        </td></tr>
+      </table>
+    </td></tr>
+
+    <!-- What to expect -->
+    <tr><td style="padding:32px 40px 8px;">
+      <div style="font-family:Arial,Helvetica,sans-serif;font-size:12px;font-weight:bold;letter-spacing:1.5px;text-transform:uppercase;color:#5B2E59;padding-bottom:12px;">In every issue</div>
+      <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">
+        <tr>
+          <td style="padding:0 0 10px;font-family:Arial,Helvetica,sans-serif;font-size:14.5px;line-height:1.6;color:#5A4057;"><span style="color:#A07C36;font-weight:bold;">&#8226;&nbsp;&nbsp;</span><b style="color:#3C1C3B;">Clinical guidance</b> &mdash; eligibility, timely referral, and what professional care teams can expect.</td>
+        </tr>
+        <tr>
+          <td style="padding:0 0 10px;font-family:Arial,Helvetica,sans-serif;font-size:14.5px;line-height:1.6;color:#5A4057;"><span style="color:#A07C36;font-weight:bold;">&#8226;&nbsp;&nbsp;</span><b style="color:#3C1C3B;">Family support</b> &mdash; plain-language guidance for families beginning the hospice conversation.</td>
+        </tr>
+        <tr>
+          <td style="padding:0 0 10px;font-family:Arial,Helvetica,sans-serif;font-size:14.5px;line-height:1.6;color:#5A4057;"><span style="color:#A07C36;font-weight:bold;">&#8226;&nbsp;&nbsp;</span><b style="color:#3C1C3B;">Whole-person comfort</b> &mdash; integrative comfort, offered responsibly alongside medical care.</td>
+        </tr>
+        <tr>
+          <td style="padding:0;font-family:Arial,Helvetica,sans-serif;font-size:14.5px;line-height:1.6;color:#5A4057;"><span style="color:#A07C36;font-weight:bold;">&#8226;&nbsp;&nbsp;</span><b style="color:#3C1C3B;">Program integrity</b> &mdash; responsible admissions and compliance-led care, every time.</td>
+        </tr>
+      </table>
+    </td></tr>
+
+    <!-- Divider -->
+    <tr><td style="padding:28px 40px 0;"><table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%"><tr><td style="border-top:2px solid #C9B07E;font-size:0;line-height:0;">&nbsp;</td></tr></table></td></tr>
+
+    <!-- Secondary CTAs -->
+    <tr><td style="padding:24px 40px 8px;">
+      <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">
+        <tr>
+          <td width="50%" style="padding:0 8px 0 0;vertical-align:top;">
+            <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="background-color:#F5F0EB;border:1px solid #D8CDBF;">
+              <tr><td style="padding:20px 22px;">
+                <div style="font-family:Georgia,'Times New Roman',serif;font-size:18px;color:#5B2E59;padding-bottom:8px;">For professional care&nbsp;teams</div>
+                <div style="font-family:Arial,Helvetica,sans-serif;font-size:13.5px;line-height:1.6;color:#5A4057;padding-bottom:14px;">When a patient may be ready for hospice, our team responds quickly and admits responsibly.</div>
+                <a href="https://eternallifehospice.com/refer" style="font-family:Arial,Helvetica,sans-serif;font-size:14px;font-weight:bold;color:#5B2E59;text-decoration:none;border-bottom:2px solid #C9B07E;padding-bottom:2px;">Refer a Patient &rarr;</a>
+              </td></tr>
+            </table>
+          </td>
+          <td width="50%" style="padding:0 0 0 8px;vertical-align:top;">
+            <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="background-color:#F5F0EB;border:1px solid #D8CDBF;">
+              <tr><td style="padding:20px 22px;">
+                <div style="font-family:Georgia,'Times New Roman',serif;font-size:18px;color:#5B2E59;padding-bottom:8px;">For families</div>
+                <div style="font-family:Arial,Helvetica,sans-serif;font-size:13.5px;line-height:1.6;color:#5A4057;padding-bottom:14px;">The Family Guide walks gently through what hospice is, what to expect, and how to begin.</div>
+                <a href="https://eternallifehospice.com/family-guide" style="font-family:Arial,Helvetica,sans-serif;font-size:14px;font-weight:bold;color:#5B2E59;text-decoration:none;border-bottom:2px solid #C9B07E;padding-bottom:2px;">Open the Family Guide &rarr;</a>
+              </td></tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+    </td></tr>
+
+    <!-- 24/7 line -->
+    <tr><td align="center" style="padding:24px 40px 36px;">
+      <div style="font-family:Georgia,'Times New Roman',serif;font-style:italic;font-size:16px;color:#6b5d68;">
+        Questions? A nurse is available 24/7 &middot; <a href="tel:18059537273" style="color:#5B2E59;text-decoration:none;font-weight:bold;">805.953.7273</a>
+      </div>
+    </td></tr>
+
+    <!-- Footer -->
+    <tr><td style="background-color:#3C1C3B;padding:28px 40px;">
+      <div style="font-family:Georgia,'Times New Roman',serif;font-style:italic;font-size:17px;color:#C9B07E;padding-bottom:8px;">Care That Honors Life.</div>
+      <div style="font-family:Arial,Helvetica,sans-serif;font-size:10.5px;font-weight:bold;letter-spacing:1.5px;text-transform:uppercase;color:#C9B07E;padding-bottom:10px;">Medicare-Certified &middot; CDPH-Licensed &middot; ACHC-Accredited</div>
+      <div style="font-family:Arial,Helvetica,sans-serif;font-size:12px;line-height:1.7;color:#d8ccd8;">
+        Eternal Life Hospice, Inc. &middot; 4165 E Thousand Oaks Blvd, Suite 325B, Westlake Village, CA 91362<br>
+        <a href="tel:18059537273" style="color:#d8ccd8;text-decoration:none;">805.953.7273</a> &middot; <a href="mailto:info@eternallifehospice.com" style="color:#d8ccd8;text-decoration:none;">info@eternallifehospice.com</a> &middot; <a href="https://eternallifehospice.com" style="color:#d8ccd8;text-decoration:none;">eternallifehospice.com</a><br>
+        Serving Ventura &amp; Los Angeles County
+      </div>
+      <div style="font-family:Arial,Helvetica,sans-serif;font-size:11px;line-height:1.7;color:#a892a6;padding-top:14px;">
+        You are receiving this because you asked to hear from Eternal Life Hospice.<br>
+        <!-- PLACEHOLDER: replace href with your ESP's unsubscribe merge tag before sending.
+             MailerLite: {$unsubscribe}   Brevo: {{ unsubscribe }} -->
+        <a href="#UNSUBSCRIBE-PLACEHOLDER" style="color:#a892a6;">Unsubscribe</a>
+      </div>
+    </td></tr>
+
+  </table>
+
+</td></tr>
+</table>
+</body>
+</html>

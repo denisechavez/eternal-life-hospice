@@ -1097,3 +1097,9 @@ id = "S2jE65GtwpDI_8D09nlQu"
 uri = "file://exports/email/eternal-care-brief-introduction-email-HOW-TO.txt"
 type = "text"
 title = "How to load and send it (plain-language steps)"
+
+[[outputs]]
+id = "nuQYgJcq9nUT54vcJxGSV"
+uri = "file://exports/email/care-brief-email-code.txt"
+type = "text"
+title = "Care Brief Email — HTML code (open, select all, copy)"
