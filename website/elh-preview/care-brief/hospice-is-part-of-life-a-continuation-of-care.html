@@ -29,50 +29,6 @@
   ]
 }</script>
 </head><body>
-<header id="hdr">
-  <div class="hdr-in">
-    <a class="hdr-logo" href="/"><img class="s sym-cream" src="../assets/img/elh-logo-h2-cream.png" alt="Eternal Life Hospice logo"><img class="s sym-plum" src="../assets/img/elh-logo-h2-plum.png" alt="" aria-hidden="true"><span class="hdr-wordmark">Eternal<small>Life Hospice</small></span></a>
-    <nav>
-      <div class="nav-group">
-        <a href="/#standard" class="nav-parent">The Eternal Standard</a>
-        <div class="nav-sub">
-          <a href="/#standard">Four Pillars : One Standard</a>
-        </div>
-      </div>
-      <div class="nav-group">
-        <a href="/#first48" class="nav-parent">The First 48 Hours</a>
-        <div class="nav-sub">
-          <a href="/#faq">Common Questions Answered</a>
-          <a href="../family-guide">The Family Guide</a>
-        </div>
-      </div>
-      <div class="nav-group">
-        <a href="/#modalities" class="nav-parent">Integrative Therapies</a>
-        <div class="nav-sub">
-          <a href="/#clinical-mobile">Clinical &amp; Mobile Services</a>
-        </div>
-      </div>
-      <a href="/#medicare">Insurance &amp; Medicare</a>
-      <div class="nav-group">
-        <a href="/#coverage" class="nav-parent">Coverage Area</a>
-        <div class="nav-sub">
-          <a href="/#settings">Care Wherever Home Is</a>
-        </div>
-      </div>
-      <div class="nav-group">
-        <a href="/#founder" class="nav-parent">About Eternal</a>
-        <div class="nav-sub">
-          <a href="/#founder-welcome">A Founder&rsquo;s Welcome</a>
-          <a href="/#amethyst">Our Origin</a>
-          <a href="../resources">Resources</a>
-          <a href="../volunteer">Volunteer</a>
-        </div>
-      </div>
-      <div class="nav-group"><a href="/refer" class="nav-parent">For Providers</a><div class="nav-sub"><a href="/refer">Refer With Confidence</a><a href="/?lead=coordinator#leadcap">Schedule an Educational Session</a></div></div>
-    </nav>
-    <div class="hdr-cta-wrap"><span class="hdr-cta-note">Here in Moments That Matter Most</span><a href="tel:18059537273" class="hdr-cta">805.953.7273</a></div>
-  </div>
-</header>
 
 <div class="cb-topbar">
   <div class="cb-topbar-in">
@@ -87,6 +43,7 @@
       </details>
       <a class="cb-share" href="#" onclick="shareBrief();return false"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>Share Brief</a>
       <a class="cb-dl" href="#" onclick="window.print();return false">Download / Print</a>
+      <a class="cb-phone" href="tel:18059537273">805.953.7273</a>
     </div>
   </div>
 </div>
@@ -94,11 +51,12 @@
 
 <section class="cb-hero">
   <div class="cb-hero-band">
-    <img src="../assets/img/elh-logo-cream-g.png" alt="Eternal Life Hospice logo">
+    <a class="cb-hero-homelink" href="/"><img src="../assets/img/elh-logo-cream-g.png" alt="Eternal Life Hospice — back to home"></a>
     <div class="cb-hero-issue">Issue One</div>
     <div class="cb-hero-date">July 2026</div>
     <div class="cb-hero-rule"></div>
-    <span class="cb-hero-halo"><img class="cb-hero-face" src="../assets/img/aleksandra-dubina-founder.jpg" alt="Aleksandra Dubina, Founder of Eternal Life Hospice"></span>
+    <span class="cb-hero-halo"><img class="cb-hero-face" src="../assets/img/care-brief-sound.jpg" alt="A singing bowl, orchid and candlelight — whole-person comfort, featured in Issue One"></span>
+    <div class="cb-hero-feature">In this issue &middot; Whole-Person Comfort</div>
     <div class="cb-hero-introby">Introduced by</div>
     <div class="cb-hero-name">Aleksandra Dubina</div>
     <div class="cb-hero-role">Founder &amp; CEO, Eternal Life Hospice<br>Certified Hospice Administrator</div>
@@ -125,18 +83,20 @@
 
 <style>
 .cb-hero{display:grid;grid-template-columns:minmax(300px,420px) 1fr;background:#F5F0EB;border-bottom:1px solid rgba(110,74,110,.18)}
-.cb-hero-band{background:#3E1F3E;color:#F5F0EB;padding:64px 44px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:6px}
-.cb-hero-band img{width:150px;margin-bottom:22px}
+.cb-hero-band{background:#3E1F3E;color:#F5F0EB;padding:48px 44px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:6px}
+.cb-hero-band img{width:140px;margin-bottom:18px}
+.cb-hero-homelink{display:block;line-height:0}
 .cb-hero-issue{font-size:13px;letter-spacing:.28em;text-transform:uppercase;color:#D9C08A}
 .cb-hero-date{font-family:'Fraunces ELH',Georgia,serif;font-size:20px}
 .cb-hero-rule{width:56px;height:1px;background:rgba(245,240,235,.4);margin:16px 0}
-.cb-hero-halo{display:block;padding:20px 26px;margin:-8px 0 -4px;background:radial-gradient(ellipse 58% 56% at 50% 47%,rgba(217,192,138,.26) 32%,rgba(217,192,138,.10) 56%,transparent 76%)}
-.cb-hero-band img.cb-hero-face{width:164px;height:190px;object-fit:cover;object-position:top;border:none;margin:0;display:block;border-radius:12px}
+.cb-hero-halo{display:block;padding:18px 24px;margin:-4px 0 0;background:radial-gradient(ellipse 58% 56% at 50% 47%,rgba(217,192,138,.26) 32%,rgba(217,192,138,.10) 56%,transparent 76%)}
+.cb-hero-band img.cb-hero-face{width:212px;height:140px;object-fit:cover;object-position:center;border:none;margin:0;display:block;border-radius:12px}
+.cb-hero-feature{font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:rgba(245,240,235,.65);margin:2px 0 18px}
 .cb-hero-introby{font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:#D9C08A}
 .cb-hero-name{font-family:'Fraunces ELH',Georgia,serif;font-size:22px;margin-top:5px}
 .cb-hero-role{font-size:12.5px;color:rgba(245,240,235,.75);margin-bottom:18px}
 .cb-hero-pill{border:1px solid rgba(245,240,235,.45);border-radius:999px;padding:7px 16px;font-size:11px;letter-spacing:.14em;text-transform:uppercase}
-.cb-hero-main{padding:64px 56px;max-width:760px;position:relative}
+.cb-hero-main{padding:52px 56px 56px;max-width:760px;position:relative}
 .cb-hero-save{position:absolute;top:26px;right:36px;max-width:230px;text-align:right;text-decoration:none;color:#6E4A6E;opacity:.85;transition:opacity .25s ease}
 .cb-hero-save:hover{opacity:1}
 .cb-hero-save .s1{display:block;font-size:12.5px;letter-spacing:.1em;text-transform:uppercase;font-weight:600;color:#4A2A4A}
@@ -182,9 +142,11 @@
 .cb-share svg{flex-shrink:0}
 .cb-dl{text-decoration:none;background:#F5F0EB;color:#3E1F3E;font-size:12.5px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;padding:8px 18px;border-radius:8px;transition:background .2s ease}
 .cb-dl:hover{background:#D9C08A}
+.cb-phone{text-decoration:none;border:1px solid rgba(217,192,138,.55);color:#F5F0EB;font-size:12.5px;font-weight:600;letter-spacing:.06em;padding:7px 16px;border-radius:999px;transition:background .2s ease,color .2s ease}
+.cb-phone:hover{background:#D9C08A;color:#3E1F3E;border-color:#D9C08A}
 .cb-toast{position:fixed;left:50%;bottom:34px;transform:translateX(-50%) translateY(16px);background:#3E1F3E;color:#F5F0EB;font-size:14px;padding:12px 22px;border-radius:10px;box-shadow:0 10px 30px rgba(62,31,62,.35);opacity:0;visibility:hidden;transition:opacity .3s ease,transform .3s ease,visibility 0s .3s;z-index:200}
 .cb-toast.show{opacity:1;visibility:visible;transform:translateX(-50%) translateY(0);transition:opacity .3s ease,transform .3s ease,visibility 0s}
-@media(max-width:640px){.cb-topbar-title{display:none}.cb-topbar-in{justify-content:center}}
+@media(max-width:640px){.cb-topbar-title{display:none}.cb-topbar-in{justify-content:center;padding:10px 12px}.cb-topbar-acts{justify-content:center;gap:10px 12px;width:100%}.cb-dl,.cb-phone{padding:6px 12px;font-size:11px;letter-spacing:.04em}.cb-archive summary,.cb-share{font-size:11.5px;letter-spacing:.05em}}
 .cb-rail{position:fixed;left:0;top:50%;transform:translateY(-50%) translateX(-14px);z-index:40;background:#F5F0EB;border:1px solid rgba(110,74,110,.18);border-left:none;border-radius:0 14px 14px 0;padding:10px 0;box-shadow:0 8px 30px rgba(62,31,62,.10);opacity:0;visibility:hidden;pointer-events:none;transition:opacity .35s ease,transform .35s ease,visibility 0s .35s}
 .cb-rail.show{opacity:1;visibility:visible;pointer-events:auto;transform:translateY(-50%) translateX(0);transition:opacity .35s ease,transform .35s ease,visibility 0s}
 .cb-rail a:focus-visible{outline:2px solid #B08D3E;outline-offset:-2px;background:#fff}
@@ -440,5 +402,4 @@ document.addEventListener('click',function(e){
   });
 })();
 </script>
-<script src="../assets/header.js" defer></script>
 </body></html>
