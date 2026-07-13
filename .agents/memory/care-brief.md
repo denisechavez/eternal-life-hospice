@@ -30,3 +30,11 @@ description: Bi-monthly care publication library on the site; rebuilt from user'
 ## Headless-Chromium mobile QA trap
 Headless Chromium (`--window-size`) clamps window width to a 500px minimum. A "320px screenshot" is really a 500px viewport cropped to 320 — content looks off-center/clipped when it isn't.
 **How to apply:** for true phone-width QA, embed the page in a temp wrapper HTML with fixed-width iframes (e.g. 390px/320px) and screenshot the wrapper.
+
+## Headless-Chromium window height includes ~87px browser UI
+New headless mode counts browser chrome in `--window-size` height, so `--window-size=560,420` yields a ~560×333 viewport and screenshots come out with a white band at the bottom.
+**How to apply:** when capturing exact-size frames (e.g. GIF builds), set the window taller than needed and crop to the target size with PIL afterwards; verify with a "count white rows" check.
+
+## Email hero GIF (care-brief-sound.gif) rebuild recipe
+Rings must match the site's idle animation exactly: 4 spans, `cbspulse 8s ease-out infinite` (0% scale1/op0 → 12% op.55 → 100% scale5.5/op0), delays 0/2/4/6s, 1px rgba(217,192,138,.32).
+**How to apply:** temp HTML with rings `animation-play-state:paused` + per-frame negative `animation-delay` = `-(((t-stagger)%8+8)%8)`; photo as `background:center/cover` (an `<img>` misrendered); 32 frames @250ms, shared 192-color palette, no dither, `magick -layers OptimizeTransparency` (~870KB). Campaign 1 now points at a Brevo-hosted copy (img.mailinblue.com) so sends don't depend on Git→Sync; repo copy in elh-preview/assets/img/ stays the canonical source for the live-site URL.
