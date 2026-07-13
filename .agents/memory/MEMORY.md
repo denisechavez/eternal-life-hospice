@@ -19,4 +19,5 @@
 - [Google Business Profile](google-business-profile.md) — canonical Maps listing = CID 9771388271577679785 ("Eternal Life Hospice"); an old "Inc" duplicate listing lingers — never link its place_id; site links via hasMap+sameAs+footer address.
 - [Monthly newsletter kit](newsletter-kit.md) — exports/newsletter/ 3 layouts+3 outlines+ops; fraud "trust" angle = consumer-ed only (CA State Auditor 2022 + license pause, never name a competitor); unsub placeholders need ESP tags.
 - [Journal (blog)](blog-journal.md) — /blog "Eternal Journal"; posts mirror resources sub-page template + Article schema; footer-linked sitewide; backdating is cosmetic not SEO; Medicare "no copays" claim is inaccurate—use precise wording.
+- [Email list hygiene](email-list-hygiene.md) — NeverBounce→Brevo pipeline; Brevo list 8=Master Verified, 9=Catch-All holding; NB totals count rows not unique emails; consent flags are boilerplate.
 - [MarTech stack decisions](martech-stack-decisions.md) — GoDaddy+Google Workspace confirmed; Anthropic key personal→move; AVOID Klaviyo(e-comm/HIPAA); use HubSpot free CRM + MailerLite/Brevo; blog=static $0; defer paid SEO.
