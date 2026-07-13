@@ -309,9 +309,9 @@ p,li,blockquote{text-wrap:pretty}
   #site-footer .foot-qr{display:flex;align-items:center;gap:.7rem;margin-top:1.15rem}
   #site-footer .foot-qr img{width:96px;height:96px;border-radius:12px;display:block;background:var(--cream)}
   #site-footer .foot-qr span{font-size:12.5px;line-height:1.55;color:rgba(245,240,235,.6)}
-  #site-footer .fc-line{display:flex;align-items:center;gap:.72rem;font-size:14px;color:rgba(245,240,235,.6);line-height:2.5;text-decoration:none}
+  #site-footer .fc-line,#site-footer .foot-col a.fc-line{display:flex;align-items:center;gap:.72rem;font-size:14px;color:rgba(245,240,235,.6);line-height:2.5;text-decoration:none}
   #site-footer .fc-line .fci{width:15px;height:15px;flex-shrink:0;opacity:.85}
-  #site-footer .fc-line.fc-addr{align-items:flex-start;font-size:12px;line-height:1.55}
+  #site-footer .fc-line.fc-addr,#site-footer .foot-col a.fc-addr{align-items:flex-start;font-size:12px;line-height:1.55}
   #site-footer .fc-addr span{white-space:nowrap}
   #site-footer .fc-addr .fci{margin-top:4px}
   #site-footer .fc-fax{cursor:default}

@@ -4,7 +4,7 @@
 <meta name="description" content="Issue One of The Eternal Care Brief: hospice as a continuation of care, the first 48 hours, sound-based comfort, and compliance-led admissions. For care teams and families in Ventura and Los Angeles counties.">
 <link rel="canonical" href="https://eternallifehospice.com/care-brief/hospice-is-part-of-life-a-continuation-of-care">
 <meta property="og:type" content="article"><meta property="og:title" content="Hospice Is Part of Life — A Continuation of Care | The Eternal Care Brief"><meta property="og:description" content="Issue One of The Eternal Care Brief: hospice as a continuation of care, the first 48 hours, sound-based comfort, and compliance-led admissions. For care teams and families in Ventura and Los Angeles counties."><meta property="og:url" content="https://eternallifehospice.com/care-brief/hospice-is-part-of-life-a-continuation-of-care"><meta property="og:image" content="https://eternallifehospice.com/assets/img/inline-cdca7d25f7.jpg"><meta property="og:site_name" content="Eternal Life Hospice"><meta name="twitter:card" content="summary_large_image"><link rel="icon" type="image/png" href="../assets/favicon.png">
-<link rel="stylesheet" href="../assets/elh.css?v=20260713">
+<link rel="stylesheet" href="../assets/elh.css?v=20260713b">
 <script type="application/ld+json">{
   "@context": "https://schema.org",
   "@type": "Article",
@@ -74,6 +74,24 @@
   </div>
 </header>
 
+<div class="cb-topbar">
+  <div class="cb-topbar-in">
+    <span class="cb-topbar-title">The Eternal Care Brief</span>
+    <div class="cb-topbar-acts">
+      <details class="cb-archive">
+        <summary>Issue Archive <span class="chv">&#9662;</span></summary>
+        <div class="cb-archive-menu">
+          <span class="cb-arch-cur">Issue One &mdash; Hospice Is Part of Life <em>(you are here)</em></span>
+          <span class="cb-arch-soon">Issue Two &mdash; coming soon</span>
+        </div>
+      </details>
+      <a class="cb-share" href="#" onclick="shareBrief();return false"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>Share Brief</a>
+      <a class="cb-dl" href="#" onclick="window.print();return false">Download / Print</a>
+    </div>
+  </div>
+</div>
+<div class="cb-toast" id="cbToast" role="status" aria-live="polite">Link copied &mdash; ready to paste anywhere</div>
+
 <section class="cb-hero">
   <div class="cb-hero-band">
     <img src="../assets/img/elh-logo-cream-g.png" alt="Eternal Life Hospice logo">
@@ -87,12 +105,13 @@
     <span class="cb-hero-pill">Clinical Guidance + Family Support</span>
   </div>
   <div class="cb-hero-main">
-    <a class="cb-hero-save" href="#" onclick="window.print();return false"><span class="s1">Save a copy &#10515;</span><span class="s2">Prints as a clean handout &mdash; easy to share with your team or a family</span></a>
     <div class="cb-hero-eyebrow">The Eternal Care Brief &middot; Issue One</div>
     <h1>Hospice Is Part of Life &mdash; A&nbsp;Continuation of Care</h1>
     <p>A living care publication from Eternal Life Hospice, created to inform, support, and connect care teams and families.</p>
     <div class="cb-hero-meta">5 sections &middot; 6 min read</div>
-    <div class="cb-hero-quiet"><a class="cb-scroll" href="#founder-note">Begin reading<span class="ar">&#8595;</span></a><span class="cb-qdot">&middot;</span><a class="cb-refer-quiet" href="/refer">Refer a patient &#8594;</a></div>
+    <div class="cb-hero-ctas"><a class="btn-gold" href="/refer">Refer a Patient &#8594;</a><a class="btn-ghost cb-btn-plum" href="#" onclick="window.print();return false">Download / Print This Issue</a></div>
+    <div class="cb-print-hint">Prints as a clean handout &mdash; easy to share with your team or a family.</div>
+    <div class="cb-hero-quiet"><a class="cb-scroll" href="#founder-note">Begin reading<span class="ar">&#8595;</span></a><span class="cb-qdot">&middot;</span><a class="cb-refer-quiet" href="#" onclick="shareBrief();return false">Share this brief</a></div>
   </div>
 </section>
 
@@ -112,7 +131,7 @@
 .cb-hero-date{font-family:Fraunces,serif;font-size:20px}
 .cb-hero-rule{width:56px;height:1px;background:rgba(245,240,235,.4);margin:16px 0}
 .cb-hero-halo{display:block;padding:20px 26px;margin:-8px 0 -4px;background:radial-gradient(ellipse 58% 56% at 50% 47%,rgba(217,192,138,.26) 32%,rgba(217,192,138,.10) 56%,transparent 76%)}
-.cb-hero-band img.cb-hero-face{width:164px;height:190px;object-fit:cover;object-position:top;border:none;margin:0;display:block;-webkit-mask-image:radial-gradient(ellipse 50% 50% at 50% 46%,#000 76%,transparent 91%);mask-image:radial-gradient(ellipse 50% 50% at 50% 46%,#000 76%,transparent 91%)}
+.cb-hero-band img.cb-hero-face{width:164px;height:190px;object-fit:cover;object-position:top;border:none;margin:0;display:block;border-radius:12px}
 .cb-hero-introby{font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:#D9C08A}
 .cb-hero-name{font-family:Fraunces,serif;font-size:22px;margin-top:5px}
 .cb-hero-role{font-size:12.5px;color:rgba(245,240,235,.75);margin-bottom:18px}
@@ -143,6 +162,29 @@
 .cb-hero-meta{font-size:13.5px;letter-spacing:.06em;text-transform:uppercase;color:#8a7a8a;margin:-8px 0 24px}
 .cb-hero-ctas{display:flex;gap:14px;flex-wrap:wrap}
 .cb-btn-plum{border-color:#3E1F3E!important;color:#3E1F3E!important}
+.cb-print-hint{font-size:12.5px;color:#8a7a8a;margin:12px 0 20px}
+.cb-topbar{background:#3E1F3E;color:#F5F0EB;border-bottom:1px solid rgba(217,192,138,.25)}
+.cb-topbar-in{max-width:1180px;margin:0 auto;padding:10px 24px;display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap}
+.cb-topbar-title{font-family:Fraunces,serif;font-size:15px;letter-spacing:.02em;color:rgba(245,240,235,.9)}
+.cb-topbar-acts{display:flex;align-items:center;gap:22px;flex-wrap:wrap}
+.cb-archive{position:relative}
+.cb-archive summary{list-style:none;cursor:pointer;font-size:12.5px;letter-spacing:.08em;text-transform:uppercase;color:rgba(245,240,235,.8);display:inline-flex;align-items:center;gap:6px;transition:color .2s ease}
+.cb-archive summary::-webkit-details-marker{display:none}
+.cb-archive summary:hover{color:#D9C08A}
+.cb-archive .chv{font-size:11px;color:#D9C08A}
+.cb-archive-menu{position:absolute;top:calc(100% + 10px);left:50%;transform:translateX(-50%);background:#F5F0EB;color:#3E1F3E;border:1px solid rgba(110,74,110,.2);border-radius:10px;box-shadow:0 10px 32px rgba(62,31,62,.22);padding:10px 0;min-width:300px;z-index:60}
+.cb-arch-cur,.cb-arch-soon{display:block;padding:9px 18px;font-size:13.5px;line-height:1.45}
+.cb-arch-cur{color:#3E1F3E;font-weight:600;background:rgba(217,192,138,.16)}
+.cb-arch-cur em{font-style:normal;font-weight:400;font-size:12px;color:#B08D3E}
+.cb-arch-soon{color:#8a7a8a}
+.cb-share{display:inline-flex;align-items:center;gap:8px;text-decoration:none;font-size:12.5px;letter-spacing:.08em;text-transform:uppercase;color:rgba(245,240,235,.8);transition:color .2s ease}
+.cb-share:hover{color:#D9C08A}
+.cb-share svg{flex-shrink:0}
+.cb-dl{text-decoration:none;background:#F5F0EB;color:#3E1F3E;font-size:12.5px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;padding:8px 18px;border-radius:8px;transition:background .2s ease}
+.cb-dl:hover{background:#D9C08A}
+.cb-toast{position:fixed;left:50%;bottom:34px;transform:translateX(-50%) translateY(16px);background:#3E1F3E;color:#F5F0EB;font-size:14px;padding:12px 22px;border-radius:10px;box-shadow:0 10px 30px rgba(62,31,62,.35);opacity:0;visibility:hidden;transition:opacity .3s ease,transform .3s ease,visibility 0s .3s;z-index:200}
+.cb-toast.show{opacity:1;visibility:visible;transform:translateX(-50%) translateY(0);transition:opacity .3s ease,transform .3s ease,visibility 0s}
+@media(max-width:640px){.cb-topbar-title{display:none}.cb-topbar-in{justify-content:center}}
 .cb-rail{position:fixed;left:0;top:50%;transform:translateY(-50%) translateX(-14px);z-index:40;background:#F5F0EB;border:1px solid rgba(110,74,110,.18);border-left:none;border-radius:0 14px 14px 0;padding:10px 0;box-shadow:0 8px 30px rgba(62,31,62,.10);opacity:0;visibility:hidden;pointer-events:none;transition:opacity .35s ease,transform .35s ease,visibility 0s .35s}
 .cb-rail.show{opacity:1;visibility:visible;pointer-events:auto;transform:translateY(-50%) translateX(0);transition:opacity .35s ease,transform .35s ease,visibility 0s}
 .cb-rail a:focus-visible{outline:2px solid #B08D3E;outline-offset:-2px;background:#fff}
@@ -228,7 +270,7 @@
 @media(max-width:680px){.cb-player{right:8px;top:8px;width:auto;max-width:calc(100% - 16px);padding:6px 10px 6px 6px;gap:8px}.cb-player-desc,.cb-fpills{display:none}}
 @page{margin:0}
 @media print{
-#hdr,#site-footer,.cta,.related,.backlink,.cb-ctas,.cb-rail,.cb-hero-quiet,.cb-hero-save,.cb-hero-meta,.cb-player,.cb-fig-rings,.cb-fig-cta,.cb-meet{display:none!important}
+#hdr,#site-footer,.cta,.related,.backlink,.cb-ctas,.cb-rail,.cb-hero-quiet,.cb-hero-save,.cb-hero-meta,.cb-hero-ctas,.cb-print-hint,.cb-topbar,.cb-toast,.cb-player,.cb-fig-rings,.cb-fig-cta,.cb-meet{display:none!important}
 body{-webkit-print-color-adjust:exact;print-color-adjust:exact}
 .cb-hero{grid-template-columns:1fr}
 .cb-hero-band{padding:14mm 24px 24px}
@@ -339,6 +381,18 @@ body{-webkit-print-color-adjust:exact;print-color-adjust:exact}
   <div class="foot-bottom"><span>© 2026 Eternal Life Hospice Inc. All rights reserved. · A <a href="https://conduitint.com" target="_blank" rel="noopener" style="color:inherit;text-decoration:none">Conduit International</a> build</span><span><a href="/" style="color:inherit">eternallifehospice.com</a></span></div>
 </footer>
 <script>
+function shareBrief(){
+  var url='https://eternallifehospice.com/care-brief/hospice-is-part-of-life-a-continuation-of-care';
+  var data={title:'The Eternal Care Brief \u2014 Issue One',text:'Hospice Is Part of Life \u2014 A Continuation of Care. A care publication from Eternal Life Hospice.',url:url};
+  function toast(){ var t=document.getElementById('cbToast'); if(!t)return; t.classList.add('show'); clearTimeout(t._tid); t._tid=setTimeout(function(){t.classList.remove('show');},2600); }
+  function copyLink(){ if(navigator.clipboard&&navigator.clipboard.writeText){ navigator.clipboard.writeText(url).then(toast).catch(function(){ window.prompt('Copy this link:',url); }); } else{ window.prompt('Copy this link:',url); } }
+  if(navigator.share){ navigator.share(data).catch(function(err){ if(!err||err.name!=='AbortError') copyLink(); }); return; }
+  copyLink();
+}
+document.addEventListener('click',function(e){
+  var d=document.querySelector('.cb-archive');
+  if(d&&d.open&&!d.contains(e.target)) d.open=false;
+});
 (function(){
   var actx=null,masterGain=null,activeNodes=null,playing=false,timerId=null,startTs=0,DUR=60;
   var card=document.getElementById('cbSound'),btn=document.getElementById('cbSoundBtn'),timerEl=document.getElementById('cbSoundTimer');
