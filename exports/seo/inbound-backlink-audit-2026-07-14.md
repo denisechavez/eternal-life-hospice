@@ -88,6 +88,13 @@ general listings. *Spam/toxic* = none found.
 
 ## 2. The "three websites" problem (highest priority)
 
+> **STATUS UPDATE (verified same day):** This has since been checked live and is
+> **resolved at the domain level** — both `eternalhospice.com` and
+> `eternallifehospiceinc.com` now permanently (301) redirect to
+> `https://eternallifehospice.com/`. See `domain-consolidation-2026-07-14.md` for
+> the verification evidence and the two minor optional polish items that remain.
+> The recommendation below is preserved as the original finding.
+
 Two other live websites are copies of ours:
 
 - **`eternalhospice.com`**
