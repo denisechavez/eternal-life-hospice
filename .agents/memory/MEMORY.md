@@ -25,3 +25,4 @@
 - [Email newsletter QA & Brevo send](email-newsletter-qa.md) — headless Chromium can't eval email media queries (unwrap+force width to QA, or send real preview); editing HTML file does NOT update a queued campaign—must PUT htmlContent.
 - [Media Kit page](media-kit-page.md) — /media-kit is booklet-only (closed folder→turnable pages), referral card removed; "Open the Kit" CTA is viewport-fixed not on-cover; page JPGs drive both viewer & PDFs; downloads must live in elh-preview/.
 - [Site analytics coverage](analytics-coverage.md) — GA4+Clarity load via shared /assets/analytics.js on every real page (Netlify does NOT inject); keep index single-sourced (no inline dupe); 3 redirect stubs excluded.
+- [Accreditations & Affiliations section](accreditations-affiliations.md) — homepage #accreditations trust block: list only HELD creds (Medicare/CDPH/ACHC), no unheld-membership badges; verify-links point to official PORTALS (Care Compare per-org deep-link errors).

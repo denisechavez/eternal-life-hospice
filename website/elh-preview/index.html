@@ -1604,6 +1604,58 @@ p,li,blockquote{text-wrap:pretty}
     </div>
   </div>
 </section>
+<!-- ACCREDITATIONS & AFFILIATIONS -->
+<style>
+.accred{background:var(--cream);border-top:1px solid var(--cream-dark);border-bottom:1px solid var(--cream-dark)}
+.accred .sec-head{text-align:center;max-width:760px;margin:0 auto 2.4rem}
+.accred .sec-head p{color:var(--text-mid);max-width:640px;margin:.9rem auto 0}
+.accred-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;max-width:1000px;margin:0 auto}
+.accred-card{background:#fff;border:1px solid var(--cream-dark);border-radius:16px;padding:1.9rem 1.6rem;display:flex;flex-direction:column;align-items:center;text-align:center;box-shadow:0 2px 10px rgba(60,28,59,.05);transition:transform .18s,box-shadow .18s}
+.accred-card:hover{transform:translateY(-3px);box-shadow:0 10px 26px rgba(60,28,59,.10)}
+.accred-card .ac-badge{height:66px;display:flex;align-items:center;justify-content:center;margin-bottom:1.1rem}
+.accred-card .ac-badge img{max-height:66px;max-width:150px;object-fit:contain}
+.accred-card h3{font-family:var(--ff-d);font-size:1.18rem;color:var(--deep);margin:0 0 .3rem}
+.accred-card .ac-body{font-size:.9rem;color:var(--text-mid);margin:0 0 .55rem}
+.accred-card .ac-status{font-size:.82rem;font-weight:600;color:var(--plum);margin:0 0 1.1rem}
+.accred-card .ac-verify{margin-top:auto;font-size:.82rem;font-weight:600;letter-spacing:.02em;color:var(--gold);text-decoration:none;border:1px solid var(--cream-dark);border-radius:999px;padding:.5rem 1.1rem;transition:background .18s,color .18s,border-color .18s}
+.accred-card .ac-verify:hover{background:var(--plum);color:#fff;border-color:var(--plum)}
+.accred-note{max-width:760px;margin:2.2rem auto 0;text-align:center;font-size:.82rem;color:var(--text-light);line-height:1.55}
+@media(max-width:800px){.accred-grid{grid-template-columns:1fr;max-width:420px}}
+</style>
+<section class="accred section-pad" id="accreditations">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div class="eyebrow" style="text-align:center">Verified &amp; Accountable</div>
+      <h2 style="color:var(--deep)">Accreditations &amp; Affiliations</h2>
+      <p>Eternal Life Hospice holds the certifications and licensure that govern quality and safety in hospice care. Confirm each credential directly with the issuing authority.</p>
+    </div>
+    <div class="accred-grid reveal">
+      <div class="accred-card">
+        <div class="ac-badge"><img loading="lazy" decoding="async" src="assets/img/cred-cms.png" alt="Medicare-certified by the Centers for Medicare &amp; Medicaid Services"></div>
+        <h3>Medicare-Certified</h3>
+        <p class="ac-body">Centers for Medicare &amp; Medicaid Services</p>
+        <p class="ac-status">Certified provider · CCN B31709</p>
+        <a class="ac-verify" href="https://www.medicare.gov/care-compare/?providerType=Hospice" target="_blank" rel="noopener">Verify on Medicare Care Compare &#8599;</a>
+      </div>
+      <div class="accred-card">
+        <div class="ac-badge"><img loading="lazy" decoding="async" src="assets/img/cred-cdph.png" alt="Licensed by the California Department of Public Health"></div>
+        <h3>CDPH-Licensed</h3>
+        <p class="ac-body">California Department of Public Health</p>
+        <p class="ac-status">Licensed California hospice</p>
+        <a class="ac-verify" href="https://www.cdph.ca.gov/Programs/CHCQ/LCP/CalHealthFind/pages/home.aspx" target="_blank" rel="noopener">Verify on Cal Health Find &#8599;</a>
+      </div>
+      <div class="accred-card">
+        <div class="ac-badge"><img loading="lazy" decoding="async" src="assets/img/cred-achc.png" alt="Accredited by the Accreditation Commission for Health Care"></div>
+        <h3>ACHC-Accredited</h3>
+        <p class="ac-body">Accreditation Commission for Health Care</p>
+        <p class="ac-status">Nationally accredited agency</p>
+        <a class="ac-verify" href="https://achc.org/search-facilities/" target="_blank" rel="noopener">Verify in the ACHC directory &#8599;</a>
+      </div>
+      <!-- Association memberships (e.g. CHAPCA, National Alliance for Care at Home) go here once ELH has joined and each listing is live — add an .accred-card linking to the member-directory profile. Do not add badges for memberships not yet held. -->
+    </div>
+    <p class="accred-note">We list only the credentials Eternal Life Hospice currently holds, and we do not claim affiliations or endorsements we have not earned.</p>
+  </div>
+</section>
 <!-- LEAD CAPTURE -->
 <section class="leadcap tan-seam" id="leadcap">
   <div class="sec-head reveal">
