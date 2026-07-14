@@ -80,31 +80,55 @@ body:not(.kitready) .stage,body:not(.kitready) .kit-hero{visibility:hidden}
   cursor:pointer;transition:.18s;display:flex;align-items:center;justify-content:center}
 .navbtn:hover{background:var(--gold);color:var(--deep);border-color:var(--gold)}
 .navbtn:disabled{opacity:.25;cursor:default}
-.pages{width:100%;max-width:560px;position:relative;perspective:2600px;perspective-origin:50% 42%;transition:height .5s cubic-bezier(.4,.2,.2,1)}
-.page{background:var(--paper);border-radius:14px;overflow:hidden;box-shadow:0 18px 50px rgba(20,8,22,.5)}
-.page img{display:block;width:100%;height:auto}
-/* booklet thickness — a series of stacked page edges behind the current leaf */
-body.booklet .pages::after{content:"";position:absolute;inset:0;border-radius:14px;z-index:0;pointer-events:none;background:var(--paper);
-  box-shadow:3px 4px 0 -1px #ece3d6,6px 8px 0 -2px #e2d7c6,9px 12px 0 -3px #d7cab6,12px 16px 0 -4px #ccbca4,15px 20px 0 -5px #c1b199,0 26px 60px rgba(20,8,22,.55)}
-body.scroll .pages::after{display:none}
-body.booklet .page{position:absolute;top:0;left:0;width:100%;z-index:1;
-  transform-origin:left center;backface-visibility:hidden;-webkit-backface-visibility:hidden;
-  transition:transform 1.15s cubic-bezier(.32,.36,.2,1),box-shadow 1.15s ease}
-body.booklet .page.is-turned{transform:rotateY(-180deg)}
-body.booklet .page.is-current{transform:rotateY(0deg)}
-body.booklet .page.is-under{transform:rotateY(0deg)}
-body.booklet .page::after{content:"";position:absolute;inset:0;border-radius:14px;pointer-events:none;
-  background:linear-gradient(90deg,rgba(40,18,40,.28) 0%,rgba(40,18,40,0) 22%);
-  opacity:0;transition:opacity .5s ease}
-body.booklet .page.is-turned::after{opacity:1;transition:opacity .8s ease}
-body.scroll .pages{height:auto!important;perspective:none;max-width:560px}
-body.scroll .page{position:relative;transform:none!important;opacity:1!important;margin:0 auto 26px;backface-visibility:visible;cursor:zoom-in}
-body.scroll .page::after{display:none}
+/* ---------- BOOK (two-page open-book spread) ---------- */
+.book{position:relative;display:flex;justify-content:center;align-items:flex-start;width:100%;max-width:1040px;margin:0 auto;perspective:2800px;perspective-origin:50% 40%}
+.book .side{position:relative;width:50%;min-width:0;cursor:zoom-in}
+.sheet{position:relative;width:100%;aspect-ratio:1620 / 2500;background:var(--paper);overflow:hidden;box-shadow:0 18px 50px rgba(20,8,22,.5)}
+.side.left .sheet{border-radius:14px 0 0 14px}
+.side.right .sheet{border-radius:0 14px 14px 0}
+.sheet>img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;object-position:center;display:block}
+/* spine shading on the inner edges */
+.side .sheet::after{content:"";position:absolute;top:0;bottom:0;width:38px;pointer-events:none;z-index:2}
+.side.left .sheet::after{right:0;background:linear-gradient(90deg,rgba(40,18,40,0),rgba(40,18,40,.22))}
+.side.right .sheet::after{left:0;background:linear-gradient(270deg,rgba(40,18,40,0),rgba(40,18,40,.22))}
+/* single-page states (cover / back cover, centered) */
+.book.single{max-width:520px}
+.book.single .side.right{display:none}
+.book.single .side.left{width:100%}
+.book.single .side.left .sheet{border-radius:14px}
+.book.single .side.left .sheet::after{display:none}
+/* transient turning leaf — only present during a turn, so resting pages carry NO transform/backface (pixel-sharp) */
+.leaf{position:absolute;top:0;width:50%;height:100%;z-index:40;transform-style:preserve-3d;pointer-events:none;display:none}
+.leaf.on{display:block}
+.leaf .face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden}
+.leaf .face .sheet{width:100%;height:100%;box-shadow:0 18px 50px rgba(20,8,22,.5)}
+.leaf.fwd{right:0;transform-origin:left center;transform:rotateY(0deg)}
+.leaf.bwd{left:0;transform-origin:right center;transform:rotateY(0deg)}
+.leaf.anim{transition:transform 1s cubic-bezier(.2,.55,.3,1)}
+.leaf.fwd.go{transform:rotateY(-180deg)}
+.leaf.bwd.go{transform:rotateY(180deg)}
+.leaf .face.back{transform:rotateY(180deg)}
+.leaf.fwd .face.front .sheet{border-radius:0 14px 14px 0}
+.leaf.fwd .face.back .sheet{border-radius:14px 0 0 14px}
+.leaf.bwd .face.front .sheet{border-radius:14px 0 0 14px}
+.leaf.bwd .face.back .sheet{border-radius:0 14px 14px 0}
+/* soft shadow that sweeps across the turning leaf */
+.leaf .face::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(90deg,rgba(40,18,40,.30),rgba(40,18,40,0) 32%);opacity:0;transition:opacity .5s ease}
+.leaf.go .face::after{opacity:1}
+/* cover open / close cross-fade */
+.book.fading .side{transition:opacity .42s ease}
+.book.fade-out .side{opacity:0}
+/* ---------- GALLERY (scroll) mode ---------- */
+.pages{width:100%;max-width:560px;position:relative;margin:0 auto}
+.pages .page{position:relative;background:var(--paper);border-radius:14px;overflow:hidden;box-shadow:0 18px 50px rgba(20,8,22,.5);margin:0 auto 26px;cursor:zoom-in}
+.pages .page img{display:block;width:100%;height:auto}
+body.booklet .pages{display:none}
+body.scroll .book{display:none}
 body.scroll .navbtn,body.scroll .indicator{display:none}
 @media(prefers-reduced-motion:reduce){
-  /* page-turn is a user-initiated, essential interaction — keep a real (but quicker, gentler) book flip rather than a plain crossfade */
-  body.booklet .page{transition:transform .55s ease,box-shadow .55s ease}
-  body.booklet .page.is-turned::after{transition:opacity .45s ease}
+  /* page-turn is user-initiated & essential; keep a quicker, gentler turn (not a fade) */
+  .leaf.anim{transition:transform .55s ease}
+  .book.fading .side{transition:opacity .3s ease}
 }
 /* page footer folio */
 .pfoot{position:absolute;left:0;right:0;bottom:0;display:flex;justify-content:space-between;
@@ -131,7 +155,7 @@ body.booklet.closed .openkit{display:inline-flex;align-items:center;gap:9px;posi
 .openkit svg{width:18px;height:18px}
 @keyframes okpulse{0%,100%{box-shadow:0 12px 30px rgba(20,8,22,.55),0 0 0 6px rgba(201,176,126,.16)}50%{box-shadow:0 14px 34px rgba(20,8,22,.6),0 0 0 13px rgba(201,176,126,.04)}}
 body.closed .navbtn,body.closed .indicator,body.closed .scroll-hint{visibility:hidden}
-body.booklet.closed .pages{cursor:pointer}
+body.booklet.closed .book .side{cursor:pointer}
 @media(prefers-reduced-motion:reduce){.openkit{animation:none}}
 
 /* ---------- SHARE STRIP ---------- */
@@ -224,6 +248,14 @@ body.booklet.closed .pages{cursor:pointer}
 
 <div class="stage">
   <button class="navbtn" id="prevBtn" aria-label="Previous page">&#8249;</button>
+  <div class="book" id="book">
+    <div class="side left"><div class="sheet"><img id="pgL" alt="" decoding="async"></div></div>
+    <div class="side right"><div class="sheet"><img id="pgR" alt="" decoding="async"></div></div>
+    <div class="leaf" id="leaf" aria-hidden="true">
+      <div class="face front"><div class="sheet"><img id="lfF" alt="" decoding="async"></div></div>
+      <div class="face back"><div class="sheet"><img id="lfB" alt="" decoding="async"></div></div>
+    </div>
+  </div>
   <div class="pages" id="pages">
     <section class="page is-current"><img src="assets/kit/01-front-cover.png?v=20260714c" width="1616" height="2484" alt="Press kit front cover — Care That Honors Life"></section>
     <section class="page"><img src="assets/kit/02-welcome.png?v=20260714c" width="1620" height="2500" alt="A welcome letter from founder Aleksandra Dubina, with Medicare, CDPH and ACHC credentials" loading="lazy"></section>
@@ -273,73 +305,115 @@ body.booklet.closed .pages{cursor:pointer}
 
 <script>
 (function(){
-  var pages=Array.prototype.slice.call(document.querySelectorAll('#pages .page'));
-  var N=pages.length, cur=0, animTimer=null;
+  var pageEls=Array.prototype.slice.call(document.querySelectorAll('#pages .page'));
+  // page data single-sourced from the gallery markup (keeps URLs/cache-busters in one place)
+  var PAGES=pageEls.map(function(p){var im=p.querySelector('img');return {src:im.getAttribute('src'),alt:im.getAttribute('alt')||''};});
+
+  // Spread model — mirrors the physical book / PDF order. {one} = single centered page.
+  var SPREADS=[
+    {one:0},     // 0  front cover
+    {l:1,r:2},   // 1  welcome | Clinical Confidence (front)
+    {l:3,r:4},   // 2  Clinical (back) | Guided Presence (front)
+    {l:5,r:6},   // 3  Guided (back) | Whole-Person Comfort (front)
+    {l:7,r:8},   // 4  Comfort (back) | Compliance-Led Care (front)
+    {l:9,r:10},  // 5  Compliance (back) | coverage
+    {one:11}     // 6  back cover
+  ];
+  var NS=SPREADS.length, cur=0, busy=false;
+
+  var book=document.getElementById('book');
+  var pgL=document.getElementById('pgL'), pgR=document.getElementById('pgR');
+  var leaf=document.getElementById('leaf'), lfF=document.getElementById('lfF'), lfB=document.getElementById('lfB');
+  var sideL=book.querySelector('.side.left'), sideR=book.querySelector('.side.right');
   var lbl=document.getElementById('pageLbl');
   var prevBtn=document.getElementById('prevBtn'), nextBtn=document.getElementById('nextBtn');
-  var pagesEl=document.getElementById('pages');
-  var dotsWrap=document.getElementById('dots');
-  for(var d=0;d<N;d++){var dt=document.createElement('div');dt.className='dot'+(d===0?' on':'');dt.setAttribute('data-i',d);dotsWrap.appendChild(dt);}
-  var dots=Array.prototype.slice.call(dotsWrap.children);
 
-  // page folios (skip cover)
-  pages.forEach(function(p,idx){
+  // dots — one per spread
+  var dotsWrap=document.getElementById('dots'), dots=[];
+  for(var d=0;d<NS;d++){var dt=document.createElement('div');dt.className='dot'+(d===0?' on':'');dt.setAttribute('data-i',d);dotsWrap.appendChild(dt);dots.push(dt);}
+
+  // gallery folios (skip cover) — gallery still shows every page stacked
+  pageEls.forEach(function(p,idx){
     if(idx===0) return;
     var f=document.createElement('div'); f.className='pfoot';
-    f.innerHTML='<span class="pf-l">Eternal Life Hospice &middot; Care That Honors Life</span><span class="pf-r">'+idx+' / '+(N-1)+'</span>';
+    f.innerHTML='<span class="pf-l">Eternal Life Hospice &middot; Care That Honors Life</span><span class="pf-r">'+idx+' / '+(PAGES.length-1)+'</span>';
     p.appendChild(f);
   });
 
-  function easeInOut(t){return t<0.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;}
-  function smoothTo(targetY,dur){
-    var startY=window.pageYOffset||document.documentElement.scrollTop, dy=targetY-startY, t0=null;
-    if(Math.abs(dy)<2)return;
-    function step(ts){ if(t0===null)t0=ts; var p=Math.min((ts-t0)/dur,1); window.scrollTo(0,startY+dy*easeInOut(p)); if(p<1)requestAnimationFrame(step); }
-    requestAnimationFrame(step);
-  }
-  function setHeight(){ if(document.body.classList.contains('booklet')){ pagesEl.style.height=pages[cur].offsetHeight+'px'; } }
-  function restingZ(){ pages.forEach(function(p,idx){ p.style.zIndex = (idx<cur)?idx : (idx===cur?100:100-(idx-cur)); }); }
-  function layout(){
-    pages.forEach(function(p,idx){
-      p.classList.remove('is-turned','is-current','is-under');
-      p.classList.add(idx<cur?'is-turned':(idx===cur?'is-current':'is-under'));
-    });
-    restingZ(); setHeight();
+  function setImg(el,i){ if(i==null){el.removeAttribute('src');el.alt='';return;} el.src=PAGES[i].src; el.alt=PAGES[i].alt; }
+  function isSingle(i){ return SPREADS[i].one!=null; }
+
+  // paint a spread with NO transforms -> pages are pixel-sharp at rest
+  function renderStatic(i){
+    var s=SPREADS[i];
+    if(s.one!=null){ book.classList.add('single'); setImg(pgL,s.one); setImg(pgR,null); }
+    else{ book.classList.remove('single'); setImg(pgL,s.l); setImg(pgR,s.r); }
   }
   function chrome(){
     dots.forEach(function(dt){dt.classList.toggle('on',+dt.getAttribute('data-i')===cur);});
-    lbl.textContent=(cur===0)?'Cover':(cur+' / '+(N-1));
-    prevBtn.disabled=(cur===0); nextBtn.disabled=(cur===N-1);
+    lbl.textContent=(cur===0)?'Cover':(cur===NS-1)?'Back cover':('Spread '+cur+' of '+(NS-2));
+    prevBtn.disabled=(cur===0); nextBtn.disabled=(cur===NS-1);
   }
+
+  function finishLeaf(target){ leaf.className='leaf'; renderStatic(target); cur=target; busy=false; chrome(); }
+
+  // classic open-book leaf turn between two interior spreads
+  function leafTurn(target){
+    var fwd=target>cur, s=SPREADS[cur], t=SPREADS[target];
+    if(fwd){ setImg(pgL,s.l); setImg(pgR,t.r); }   // left stays; next right revealed under the leaf
+    else   { setImg(pgR,s.r); setImg(pgL,t.l); }   // right stays; prev left revealed under the leaf
+    if(fwd){ setImg(lfF,s.r); setImg(lfB,t.l); }   // leaf front = current right, back = next left
+    else   { setImg(lfF,s.l); setImg(lfB,t.r); }   // leaf front = current left, back = prev right
+    book.classList.remove('single');
+    leaf.className='leaf on '+(fwd?'fwd':'bwd');
+    void leaf.offsetWidth;                          // commit start state before animating
+    leaf.classList.add('anim','go');
+    var done=false;
+    // only the leaf's own transform transition ends the turn — ignore the .face::after opacity
+    // transitionend (~.5s) that bubbles up, or it would snap the flip shut halfway
+    function end(e){ if(e && (e.target!==leaf || e.propertyName!=='transform'))return; if(done)return; done=true; leaf.removeEventListener('transitionend',end); finishLeaf(target); }
+    leaf.addEventListener('transitionend',end);
+    setTimeout(end,1300);                           // safety net if transitionend is missed
+  }
+
+  // gentle cross-fade for the cover open/close and the back cover (single <-> spread)
+  function crossFade(target){
+    book.classList.add('fading'); void book.offsetWidth; book.classList.add('fade-out');
+    setTimeout(function(){
+      renderStatic(target); cur=target; chrome(); void book.offsetWidth;
+      book.classList.remove('fade-out');
+      setTimeout(function(){ book.classList.remove('fading'); busy=false; },440);
+    },430);
+  }
+
   function go(target){
-    if(target<0)target=0; if(target>N-1)target=N-1;
+    if(target<0)target=0; if(target>NS-1)target=NS-1;
     if(document.body.classList.contains('closed') && target>0){document.body.classList.remove('closed');}
-    if(target===cur)return;
-    var moving=(target>cur)?cur:target;
-    cur=target; layout(); chrome();
-    pages[moving].style.zIndex=300;
-    clearTimeout(animTimer); animTimer=setTimeout(restingZ,1600);
-    if(document.body.classList.contains('booklet')){smoothTo(0,750);}
+    if(target===cur||busy)return;
+    if(!document.body.classList.contains('booklet')){ cur=target; renderStatic(target); chrome(); return; }
+    busy=true;
+    if(!isSingle(cur) && !isSingle(target) && Math.abs(target-cur)===1){ leafTurn(target); }
+    else{ crossFade(target); }
   }
-  function relayout(){ layout(); chrome(); }
 
   prevBtn.onclick=function(){go(cur-1);};
   nextBtn.onclick=function(){go(cur+1);};
   dots.forEach(function(dt){dt.onclick=function(){go(+dt.getAttribute('data-i'));};});
+
   document.addEventListener('keydown',function(e){
     if(document.getElementById('lightbox').classList.contains('open')){ if(e.key==='Escape')closeLb(); return; }
     if(document.activeElement && /INPUT|TEXTAREA/.test(document.activeElement.tagName))return;
     if(e.key==='ArrowRight')go(cur+1); if(e.key==='ArrowLeft')go(cur-1);
   });
   var x0=null;
-  pagesEl.addEventListener('touchstart',function(e){x0=e.touches[0].clientX;},{passive:true});
-  pagesEl.addEventListener('touchend',function(e){
+  book.addEventListener('touchstart',function(e){x0=e.touches[0].clientX;},{passive:true});
+  book.addEventListener('touchend',function(e){
     if(x0===null)return; var dx=e.changedTouches[0].clientX-x0;
-    if(Math.abs(dx)>55 && document.body.classList.contains('booklet')){go(cur+(dx<0?1:-1));}
+    if(Math.abs(dx)>55){go(cur+(dx<0?1:-1));}
     x0=null;
   },{passive:true});
 
-  // view toggle
+  // view toggle (Flipbook <-> Gallery)
   document.querySelectorAll('#viewSeg button').forEach(function(b){
     b.onclick=function(){
       document.querySelectorAll('#viewSeg button').forEach(function(x){x.classList.remove('on');}); b.classList.add('on');
@@ -347,26 +421,28 @@ body.booklet.closed .pages{cursor:pointer}
       document.body.classList.remove('closed');
       document.body.classList.toggle('scroll',v==='scroll');
       document.body.classList.toggle('booklet',v==='booklet');
-      if(v==='booklet'){relayout();} else {pagesEl.style.height='auto';}
+      if(v==='booklet'){ renderStatic(cur); chrome(); }
     };
   });
 
-  // open the kit (closed folder cover -> first inner page)
+  // open the kit (closed cover -> first spread)
   var openBtn=document.getElementById('openKit');
   function openKit(){ document.body.classList.remove('closed'); if(cur===0){go(1);} }
   if(openBtn)openBtn.onclick=openKit;
 
-  // lightbox (gallery/scroll mode: tap to enlarge)
+  // lightbox (tap any page to enlarge — gallery pages and the open book)
   var lb=document.getElementById('lightbox'), lbImg=document.getElementById('lbImg');
-  function openLb(src,alt){ lbImg.src=src; lbImg.alt=alt||'Enlarged press kit page'; lb.classList.add('open'); }
+  function openLb(src,alt){ if(!src)return; lbImg.src=src; lbImg.alt=alt||'Enlarged press kit page'; lb.classList.add('open'); }
   function closeLb(){ lb.classList.remove('open'); lbImg.src=''; }
-  pages.forEach(function(p){
+  pageEls.forEach(function(p){
     var img=p.querySelector('img');
     p.addEventListener('click',function(){
       if(document.body.classList.contains('closed')){ openKit(); return; }
       if(document.body.classList.contains('scroll')){ openLb(img.getAttribute('src'),img.getAttribute('alt')); }
     });
   });
+  sideL.addEventListener('click',function(){ if(document.body.classList.contains('closed')){ openKit(); return; } if(!busy)openLb(pgL.getAttribute('src'),pgL.alt); });
+  sideR.addEventListener('click',function(){ if(!busy)openLb(pgR.getAttribute('src'),pgR.alt); });
   document.getElementById('lbClose').onclick=closeLb;
   lb.addEventListener('click',function(e){ if(e.target===lb)closeLb(); });
 
@@ -382,15 +458,11 @@ body.booklet.closed .pages{cursor:pointer}
   document.getElementById('shareBtn').onclick=share;
   var sb2=document.getElementById('shareBtn2'); if(sb2)sb2.onclick=share;
 
-  window.addEventListener('resize',setHeight);
-  window.addEventListener('load',setHeight);
-  if(document.fonts && document.fonts.ready){document.fonts.ready.then(setHeight);}
-  pages.forEach(function(p){ var img=p.querySelector('img'); if(img){ img.addEventListener('load',function(){ if(p.classList.contains('is-current'))setHeight(); }); } });
+  // initial paint
+  renderStatic(0); chrome();
 
-  relayout();
-
-  // reveal
-  function reveal(){ if(document.body.classList.contains('kitready'))return; document.body.classList.add('kitready'); setHeight(); var v=document.getElementById('bootveil'); if(v){v.classList.add('gone'); setTimeout(function(){ if(v&&v.parentNode){v.parentNode.removeChild(v);} },650);} }
+  // reveal (boot veil)
+  function reveal(){ if(document.body.classList.contains('kitready'))return; document.body.classList.add('kitready'); var v=document.getElementById('bootveil'); if(v){v.classList.add('gone'); setTimeout(function(){ if(v&&v.parentNode){v.parentNode.removeChild(v);} },650);} }
   var fontsReady=(document.fonts&&document.fonts.ready)?document.fonts.ready:Promise.resolve();
   var loaded=new Promise(function(res){ if(document.readyState==='complete')res(); else window.addEventListener('load',res); });
   Promise.all([fontsReady,loaded]).then(function(){ requestAnimationFrame(function(){ requestAnimationFrame(reveal); }); });
