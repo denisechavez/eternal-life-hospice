@@ -53,6 +53,14 @@ h1{font-size:clamp(2.6rem,6vw,4.2rem);text-wrap:balance}
 h2{font-size:clamp(1.9rem,4vw,2.9rem)}
 h3{font-size:clamp(1.2rem,2.2vw,1.5rem)}
 .pull{font-family:var(--ff-d);font-style:italic;font-size:1.2rem;line-height:1.55;color:var(--plum);border-left:3px solid var(--gold);padding-left:1.1rem;margin:1.5rem 0}
+.founder-connect{margin-top:1.9rem}
+.founder-connect .fc-label{display:block;font-family:var(--ff-b);font-weight:600;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--plum);margin-bottom:.6rem}
+.founder-connect .fc-row{display:flex;flex-wrap:wrap;gap:.7rem;align-items:stretch}
+.founder-connect .fc-select{flex:1 1 260px;min-width:0;font-family:var(--ff-b);font-size:15px;color:var(--ink);background:#fff;border:1px solid var(--cream-dark);border-radius:10px;padding:.72rem .9rem;cursor:pointer;transition:border-color .25s,box-shadow .25s}
+.founder-connect .fc-select:focus{outline:none;border-color:var(--gold);box-shadow:0 0 0 3px rgba(201,176,126,.25)}
+.founder-connect .fc-go{flex:0 0 auto;font-family:var(--ff-b);font-weight:600;font-size:14px;letter-spacing:.02em;color:var(--cream);background:var(--plum);border:none;border-radius:10px;padding:.72rem 1.4rem;cursor:pointer;transition:background .25s,transform .25s}
+.founder-connect .fc-go:hover{background:var(--deep);transform:translateY(-1px)}
+@media(max-width:520px){.founder-connect .fc-go{flex:1 1 100%}}
 .lead{font-size:19px;line-height:1.7;color:var(--text-mid)}
 .section-pad{padding:6rem 2rem}
 .tan-seam{border-top:1px solid transparent;border-image:linear-gradient(90deg,transparent,rgba(201,176,126,.6) 50%,transparent) 1}
@@ -1565,6 +1573,21 @@ p,li,blockquote{text-wrap:pretty}
     <p class="pl-body">As a young child, Aleksandra underwent open-heart surgery, brought to the United States for advanced care. Having once been the patient — wholly dependent on the skill and compassion of others — she leads with a rare understanding of what it means to be on the receiving end of care.</p>
     <p class="pl-body">With more than two decades in healthcare — eleven of those years in hospice — and credentials as an ACHC Certified Consultant, she remains a hands-on administrator who knows every patient by name.</p>
     <div class="pull">"My mission is that every patient is treated with dignity, every family feels supported and every moment of care reflects the standard I would want for my own."</div>
+    <div class="founder-connect">
+      <label class="fc-label" for="founderConnect">Schedule a Time to Connect</label>
+      <div class="fc-row">
+        <select id="founderConnect" class="fc-select" aria-label="Schedule a time to connect — choose a reason">
+          <option value="">Select…</option>
+          <option>Share my voice in The Eternal Care Brief</option>
+          <option>Be featured in a future issue</option>
+          <option>Schedule an educational session for my team</option>
+          <option>Schedule a speaking engagement with Aleksandra</option>
+          <option>Set up a time to connect</option>
+          <option>All of the above</option>
+        </select>
+        <button type="button" class="fc-go" id="founderConnectGo">Continue &#8594;</button>
+      </div>
+    </div>
   </div>
 </section>
 <!-- LEAD CAPTURE -->
@@ -1675,11 +1698,30 @@ p,li,blockquote{text-wrap:pretty}
       var n=t.dataset.pillar;
       var target = document.getElementById('stack-'+n);
       if(target){
-        var y = target.getBoundingClientRect().top + window.scrollY - 90;
-        window.scrollTo({top:y, behavior:'smooth'});
+        // .pcard is position:sticky, so getBoundingClientRect() reports the pinned
+        // position once stuck. Sum offsetTop up the chain for the true flow offset.
+        var y=0, el=target;
+        while(el){ y+=el.offsetTop; el=el.offsetParent; }
+        var hdr=parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--hdr-h'))||74;
+        window.scrollTo({top:y - hdr, behavior:'smooth'});
       }
     });
   });
+
+  // founder "Schedule a Time to Connect" → route to the Share Your Voice lead form
+  (function(){
+    var sel=document.getElementById('founderConnect'), go=document.getElementById('founderConnectGo');
+    if(!sel||!go) return;
+    go.addEventListener('click', function(){
+      var v=sel.value;
+      var interest=document.querySelector('.lead-form[data-form="voice"] select[name="interest"]');
+      if(interest && v) interest.value=v;
+      var vb=document.querySelector('.lead-cat[data-cat="voice"]');
+      if(vb) vb.click();
+      var lc=document.getElementById('leadcap');
+      if(lc) lc.scrollIntoView({behavior:'smooth',block:'start'});
+    });
+  })();
 
   // First 48 Hours — scroll-activated movement
   var tl=document.querySelector('.tl'), tlItems=document.querySelectorAll('.tl-item');

@@ -23,3 +23,11 @@ the amethyst gem sidebar rely on this. If sticky "stops working" after an unrela
 tweak, check the `html`/`body` overflow pair first — not the sticky element itself. The
 CSS on the sticky element is almost always fine; the ancestor overflow chain is the
 culprit.
+
+## Scrolling to a position:sticky target
+`getBoundingClientRect().top` on a *stuck* sticky element returns its pinned
+(painted) position, not its flow position — so `rect.top + scrollY` collapses to
+~the current scroll and a smooth-scroll "goes nowhere." For scroll targets in a
+sticky-stack (e.g. index.html Four Pillars `.pcard`s / `#stack-N`), sum
+`offsetTop` up the `offsetParent` chain for the true flow offset, then subtract
+the header height (`--hdr-h`). `scrollIntoView()` has the same stuck-position bug.
