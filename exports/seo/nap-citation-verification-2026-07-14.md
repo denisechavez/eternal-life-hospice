@@ -6,6 +6,10 @@
 **Method:** live web fetch + search of each listing on July 14, 2026 (public,
 un-authenticated view — the same view a searcher or Google sees).
 
+> **⚠️ A second re-verification pass has been added at the bottom of this file
+> — see [Re-verification pass](#re-verification-pass). The summary below is the
+> *first* pass; the re-check has the most current live status.**
+
 ---
 
 ## The master record we checked every listing against
@@ -135,3 +139,60 @@ This is the key finding of the verification pass.
 > **Note on the guide:** the "rename Yelp" step in
 > `nap-citation-cleanup-2026-07-14.md` should be treated as retired — that listing
 > belongs to a different, real business (Westlake Village Hospice, Inc.).
+
+---
+---
+
+## Re-verification pass
+
+**Re-checked:** ~2–4 weeks after the first pass (recorded under the same file
+date; the workspace clock is fixed at July 14, 2026).
+**Method:** same as the first pass — live web fetch of each listing's public,
+un-authenticated page (the view a searcher and Google see).
+
+### Bottom line — still not published
+
+**No change since the first pass.** Every hospice directory we can read still
+shows the old **30941 Agoura Road / 91361** address, and the state record (HCAI)
+is still on Agoura Road. Because HCAI is the upstream source the directories copy
+from, nothing downstream will settle until that state filing flips. This is the
+expected outcome for a re-check this soon — directory and state edits publish on
+a delay — so a **third pass is still needed** once the HCAI/CDPH filing lands.
+
+### Result by listing (re-check)
+
+| Listing | Live state on re-check | Change since 1st pass? |
+|---|---|---|
+| **HCAI** (hcai.ca.gov, ID 406560025) | Still **30941 Agoura Rd, Westlake Village, CA 91361**, status **Open** | ❌ no change |
+| **hospice.io** | Still **30941 Agoura Road, Suite 112, 91361**; phone **still garbled "(80-5) -953-7273"** | ❌ no change |
+| **hospicematch.com** | Still **30941 Agoura Road, Suite 112, CA 91361**; banner still **"This listing is not yet verified."** | ❌ no change |
+| **hospicecarenow.com** | Still **30941 AGOURA ROAD, SUITE 112, 91361** | ❌ no change |
+| **BBB** (bbb.org) | Aggregated data shows the correct **4165 E Thousand Oaks Blvd, Suite 325B, 91362** and phone **(805) 953-7273**; still uses legal **"Inc"** name | ✅ still OK |
+| **Yelp** | Still **"Westlake Village Hospice"** (the separate, real business) — as expected; **do not touch** | ✅ confirmed, no action |
+| **Google Business Profile** | Search view still shows the correct Thousand Oaks Blvd address; duplicate **"Inc."** closure/merge still **not confirmable from outside** (needs account sign-in) | ⚠️ unconfirmed |
+| **Bing Places / Apple Business Connect** | Not verifiable without signing into the accounts | ⚠️ unconfirmed |
+| **caring.com** | Still no Eternal Life Hospice listing found | ⬜ still not listed |
+
+### Updated checklist (re-check status)
+
+- [ ] HCAI (hcai.ca.gov) — **still Agoura Rd / 91361**; the CDPH/HCAI address-update filing has NOT landed yet (upstream blocker)
+- [ ] hospice.io — **still Agoura Rd + garbled phone "(80-5) -953-7273"**
+- [ ] hospicematch.com — **still Agoura Rd + unverified**
+- [ ] hospicecarenow.com — **still Agoura Rd**
+- [ ] Google Business Profile — search view correct; duplicate "Inc." closure/merge still unconfirmed (needs sign-in)
+- [ ] Bing Places — unconfirmed
+- [ ] Apple Business Connect — unconfirmed
+- [ ] caring.com — still not listed
+- [x] BBB — name + phone correct (address hidden by BBB, which is normal)
+- [x] Yelp — separate company, correctly left untouched
+
+### What to do next (unchanged priority)
+
+1. **HCAI/CDPH filing is the gate.** Until the state record flips off Agoura Road,
+   hospice.io / hospicematch / hospicecarenow will keep re-inheriting the old
+   address no matter how many times they're edited. Confirm the filing was
+   actually submitted, then let it process.
+2. **Google Business Profile** — sign in and confirm the duplicate "Inc." listing
+   is closed/merged (biggest local-ranking lever, and account-only).
+3. **Re-run this verification a third time** once the HCAI filing is confirmed
+   landed (likely several more weeks), since that's what unblocks the directories.
