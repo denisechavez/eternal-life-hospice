@@ -1,0 +1,37 @@
+# Google Disavow File — Eternal Life Hospice (eternallifehospice.com)
+#
+# STATUS: TEMPLATE ONLY — DO NOT SUBMIT.
+# As of the July 14, 2026 backlink audit, NO toxic or spammy referring
+# domains were found. A disavow file is NOT needed at this time.
+#
+# Google's own guidance: only use this tool if you have (a) a manual
+# spam action in Search Console, OR (b) a clear pattern of paid/spammy
+# links you cannot get removed. Disavowing unnecessarily can strip out
+# GOOD links by mistake and hurt rankings.
+#
+# ---------------------------------------------------------------------
+# HOW TO USE THIS FILE (only if a real spam problem ever appears):
+#   1. In Google Search Console, review Links -> "Top linking sites".
+#   2. Identify domains that are clearly spam/link-farm/irrelevant AND
+#      that you could not get removed by contacting the site.
+#   3. Add them below (see format). Prefer "domain:" to block a whole
+#      site rather than listing individual pages.
+#   4. Save this file as plain-text (.txt), one entry per line.
+#   5. Upload at: https://search.google.com/search-console/disavow-links
+#      (select the eternallifehospice.com property).
+#
+# DO NOT list these — they are NOT spam:
+#   - eternalhospice.com          (owned duplicate site -> REDIRECT instead)
+#   - eternallifehospiceinc.com   (owned duplicate site -> REDIRECT instead)
+#   - hcai.ca.gov, cms.gov, medicare.gov, achc.org  (authoritative gov/accreditation)
+#   - bbb.org, yelp.com, hospice.io, hospicematch.com, hospicecarenow.com (legit directories)
+#
+# FORMAT EXAMPLES (remove the leading "# " to activate a real entry):
+#   # Block an entire spam domain:
+#   # domain:example-spam-site.com
+#   #
+#   # Block a single spam URL:
+#   # https://example-spam-site.com/bad-page.html
+#
+# ---------------------------------------------------------------------
+# ACTIVE ENTRIES (none — intentionally empty):
