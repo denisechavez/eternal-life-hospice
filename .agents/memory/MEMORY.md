@@ -23,3 +23,4 @@
 - [MarTech stack decisions](martech-stack-decisions.md) — GoDaddy+Google Workspace confirmed; Anthropic key personal→move; AVOID Klaviyo(e-comm/HIPAA); use HubSpot free CRM + MailerLite/Brevo; blog=static $0; defer paid SEO.
 - [Email newsletter QA & Brevo send](email-newsletter-qa.md) — headless Chromium can't eval email media queries (unwrap+force width to QA, or send real preview); editing HTML file does NOT update a queued campaign—must PUT htmlContent.
 - [Media Kit page](media-kit-page.md) — /media-kit is booklet-only (closed folder→turnable pages), referral card removed; "Open the Kit" CTA is viewport-fixed not on-cover; page JPGs drive both viewer & PDFs; downloads must live in elh-preview/.
+- [Site analytics coverage](analytics-coverage.md) — GA4+Clarity load via shared /assets/analytics.js on every real page (Netlify does NOT inject); keep index single-sourced (no inline dupe); 3 redirect stubs excluded.
