@@ -14,11 +14,12 @@
  * Optional: AUTOREPLY_FROM (defaults to the verified sending address below).
  *
  * A reply is only sent when a submission includes a valid email, so it degrades
- * safely. Eligible forms: elh-family, elh-casemanager, elh-careers (collect an
- * email), and elh-physician (the /refer page adds an OPTIONAL work email — when
- * provided, the partner gets a PHI-free referral confirmation; the homepage
- * physician form has no email field and is unaffected). Never auto-replied to:
- * elh-coordinator and elh-chat-callback (the chat already confirms on-screen).
+ * safely. Eligible forms: elh-family, elh-casemanager, elh-careers,
+ * elh-care-brief-signup, elh-voice (collect an email), and elh-physician (the
+ * /refer page adds an OPTIONAL work email — when provided, the partner gets a
+ * PHI-free referral confirmation; the homepage physician form has no email
+ * field and is unaffected). Never auto-replied to: elh-coordinator and
+ * elh-chat-callback (the chat already confirms on-screen).
  *
  * elh-chat-callback instead triggers an internal team notification to
  * referral@eternallifehospice.com with the callback details, so callback
@@ -35,7 +36,8 @@ const FROM =
 // Forms eligible for an auto-reply. A reply is only ever sent when the submission
 // also carries a valid email, so a form is safe to list here even when its email
 // field is optional:
-//   elh-family, elh-casemanager, elh-careers — collect an email directly.
+//   elh-family, elh-casemanager, elh-careers, elh-care-brief-signup,
+//     elh-voice — collect an email directly.
 //   elh-physician — the /refer page adds an OPTIONAL work email; when a partner
 //     provides it they get a PHI-free referral confirmation. The homepage
 //     physician form has no email field, so it is never affected.
@@ -48,7 +50,8 @@ const ALLOWED_FORMS = [
   "elh-careers",
   "elh-physician",
   "elh-chat-callback",
-  "elh-care-brief-signup"
+  "elh-care-brief-signup",
+  "elh-voice"
 ];
 
 exports.handler = async function (event) {
@@ -97,13 +100,16 @@ exports.handler = async function (event) {
     const greeting = firstName ? "Hi " + escapeText(firstName) + "," : "Hello,";
     const isCareers = formName === "elh-careers";
     const isSignup = formName === "elh-care-brief-signup";
+    const isVoice = formName === "elh-voice";
     // Referral confirmations: physician (/refer page) AND the homepage
     // case-manager discharge form — both are professional referrals, so both
     // get the same PHI-free "we received your referral" copy.
     const isReferral =
       formName === "elh-physician" || formName === "elh-casemanager";
 
-    const subject = isSignup
+    const subject = isVoice
+      ? "Thank you for raising your hand — The Eternal Care Brief"
+      : isSignup
       ? "You're on the list — The Eternal Care Brief"
       : isCareers
       ? "Thank you for your interest — Eternal Life Hospice"
@@ -112,7 +118,9 @@ exports.handler = async function (event) {
       : "We received your message — Eternal Life Hospice";
 
     // Static, PHI-free copy. We never echo the submitted clinical description.
-    const lead = isSignup
+    const lead = isVoice
+      ? "Thank you for offering your voice. The Eternal Care Brief is built on the experience of professionals like you, and we're grateful you raised your hand. A member of our team will reach out shortly to talk about being featured, scheduling an educational session, or simply finding a good time to connect."
+      : isSignup
       ? "Thank you for signing up for The Eternal Care Brief. You're on the list — each new issue brings clinical guidance for care professionals and plain-language support for families, published every other month. You can unsubscribe at any time by replying to any issue."
       : isCareers
       ? "Thank you for your interest in joining the Eternal Life Hospice team. We've received your application and a member of our team will review it and be in touch."
