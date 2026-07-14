@@ -1080,6 +1080,20 @@ p,li,blockquote{text-wrap:pretty}
     }
   ]
 }</script>
+<style>
+/* Print / PDF: clean handout — drop nav, footer, chat; keep content from splitting */
+@media print{
+  @page{margin:14mm}
+  *{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}
+  #hdr,#site-footer,.menu-btn,.elhc-dock,.elhc-launch,.elhc-teaser,.share-row,.share-toast,.to-top,.skip-link{display:none!important}
+  #hdr{position:static!important}
+  html,body{background:#fff!important;overflow:visible!important}
+  img,svg,picture,video,figure,table,blockquote,li,.mod,.card,.pcard,.pillars,.mod-grid{break-inside:avoid;page-break-inside:avoid}
+  img,picture,video{max-width:100%!important;height:auto!important}
+  h1,h2,h3,h4{break-after:avoid;page-break-after:avoid}
+  p,li,blockquote{orphans:3;widows:3}
+}
+</style>
 </head>
 <body>
 <!-- ANNOTATION TOGGLE -->

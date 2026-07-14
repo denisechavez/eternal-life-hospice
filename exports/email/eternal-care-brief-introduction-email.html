@@ -28,6 +28,7 @@
     .mh-left{padding-bottom:22px!important;text-align:left!important;}
     .mh-div{display:none!important;}
     .mh-01{font-size:66px!important;}
+    .mh-01cell{height:auto!important;}
   }
 </style>
 </head>
@@ -54,9 +55,15 @@
       <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">
         <tr>
           <!-- Left: big 01 + date -->
-          <td width="210" valign="middle" class="mh-cell mh-left" style="width:210px;vertical-align:middle;padding-left:22px;padding-right:12px;text-align:right;">
-            <div class="mh-01" style="font-family:Georgia,'Times New Roman',serif;font-size:82px;line-height:0.9;color:#3C1C3B;">01</div>
-            <div style="font-family:Arial,Helvetica,sans-serif;font-size:11px;font-weight:bold;letter-spacing:3px;text-transform:uppercase;color:#8A6F30;padding-top:14px;">July 2026</div>
+          <td width="210" valign="top" class="mh-cell mh-left" style="width:210px;vertical-align:top;padding-left:22px;padding-right:12px;text-align:right;">
+            <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">
+              <tr><td height="119" class="mh-01cell" valign="bottom" style="height:119px;vertical-align:bottom;">
+                <div class="mh-01" style="font-family:Georgia,'Times New Roman',serif;font-size:82px;line-height:0.9;color:#3C1C3B;">01</div>
+              </td></tr>
+              <tr><td valign="top" style="vertical-align:top;padding-top:18px;">
+                <div style="font-family:Arial,Helvetica,sans-serif;font-size:11px;font-weight:bold;letter-spacing:3px;text-transform:uppercase;color:#8A6F30;">July 2026</div>
+              </td></tr>
+            </table>
           </td>
           <!-- Vertical divider -->
           <td width="1" class="mh-div" style="width:1px;background-color:#D8CDBF;font-size:0;line-height:0;"><div style="width:1px;height:150px;font-size:0;line-height:0;">&nbsp;</div></td>

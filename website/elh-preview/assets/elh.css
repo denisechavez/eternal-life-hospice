@@ -5,6 +5,7 @@
 @font-face{font-family:'Jost ELH';font-weight:400;font-display:swap;src:url(fonts/JostELH-Regular.woff2) format('woff2')}
 @font-face{font-family:'Jost ELH';font-weight:500;font-display:swap;src:url(fonts/JostELH-Medium.woff2) format('woff2')}
 @font-face{font-family:'Jost ELH';font-weight:600;font-display:swap;src:url(fonts/JostELH-SemiBold.woff2) format('woff2')}
+@font-face{font-family:'Alex Brush ELH';font-weight:400;font-style:normal;font-display:swap;src:url(fonts/alex-brush.woff2) format('woff2')}
 :root{--plum:#5B2E59;--deep:#3C1C3B;--slate:#6793AC;--gold:#C9B07E;--cream:#F5F0EB;--cream-dark:#D8CDBF;--cream-mid:#EDE6DE;--ink:#3a2b39;--ink-soft:#6b5d68;--text-mid:#5A4057;--ff-d:'Fraunces ELH',Georgia,serif;--ff-b:'Jost ELH',system-ui,sans-serif;--hdr-h:74px}
 *{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;text-size-adjust:100%;overflow-x:clip}
@@ -454,4 +455,18 @@ details.cqn-col:not([open])>summary.cqn-county{margin-bottom:0;padding-bottom:0;
 .share-native[hidden]{display:none}
 .share-toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%) translateY(12px);background:#3E1F3E;color:#F5F0EB;font-family:Arial,Helvetica,sans-serif;font-size:13px;letter-spacing:.03em;padding:10px 20px;border-radius:22px;box-shadow:0 8px 26px rgba(42,15,40,.35);opacity:0;pointer-events:none;transition:opacity .25s ease,transform .25s ease;z-index:9000}
 .share-toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
-@media print{.share-row,.share-toast{display:none!important}}
+/* ---- Print / PDF: clean handouts sitewide (page-specific @media print may override) ---- */
+@media print{
+  @page{margin:14mm}
+  /* honor brand colors so light-on-dark sections stay legible on paper */
+  *{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}
+  /* drop non-content chrome (nav, footer, chat, share, floating buttons) */
+  #hdr,#site-footer,.menu-btn,.elhc-dock,.elhc-panel,.share-row,.share-toast,.to-top,.back-to-top,.skip-link{display:none!important}
+  #hdr{position:static!important}
+  html,body{background:#fff!important;overflow:visible!important}
+  /* keep media & grouped blocks from splitting across pages */
+  img,svg,picture,video,figure,table,blockquote,li,.mod,.card,.pcard,.pillars,.mod-grid,.cb-fns>*,.cb-stats>*,.tgrid>*,.rgrid>*{break-inside:avoid;page-break-inside:avoid}
+  img,picture,video{max-width:100%!important;height:auto!important}
+  h1,h2,h3,h4{break-after:avoid;page-break-after:avoid}
+  p,li,blockquote{orphans:3;widows:3}
+}
