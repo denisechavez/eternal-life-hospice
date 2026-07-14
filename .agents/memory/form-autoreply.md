@@ -20,11 +20,12 @@ courtesy layer on top and must degrade silently.
 exist." **Why:** gating on field presence would reply to any future/crafted form
 carrying an `email` field. A reply still only goes out when the submission has a
 valid email, so a form is safe to allowlist even if its email field is optional.
-Allowlisted: `elh-family`, `elh-casemanager`, `elh-careers` (collect email), and
-`elh-physician` (the /refer page added an OPTIONAL work email → PHI-free referral
-confirmation; the homepage physician form has no email field so it's unaffected,
-and that form lives in `index.html` also named `elh-physician`). Never
-auto-replied to: `elh-coordinator`, `elh-chat-callback`.
+Allowlisted: `elh-family`, `elh-casemanager`, `elh-careers`,
+`elh-care-brief-signup`, `elh-voice` (collect email), and `elh-physician` (the
+/refer page added an OPTIONAL work email → PHI-free referral confirmation; the
+homepage physician form has no email field so it's unaffected, and that form
+lives in `index.html` also named `elh-physician`). Never auto-replied to:
+`elh-coordinator`, `elh-chat-callback`.
 
 **Chat callback → referral inbox (no auto-reply):** `elh-chat-callback`
 submissions trigger an internal notification email via Resend to
@@ -35,10 +36,14 @@ so an email confirmation is redundant. The form still collects an optional
 `email` field purely as contact info for the team. The internal email may
 include the requester's note; nothing is ever echoed to an outside address.
 
-Content branches by form: careers / referral (`elh-physician` AND
-`elh-casemanager` — the homepage discharge form is also a professional referral,
-so it gets the same "we received your referral" copy, per user July 2026) /
-generic. The
+Content branches by form: Care Brief signup (`elh-care-brief-signup` gets a
+BRANDED welcome email via `renderSignupHtml` — logo header, latest-issue/library
+buttons, Family Guide PDF download, share-by-mailto block; all links/assets use
+the LIVE site URL, so they only resolve after Git→Sync) / voice
+(`elh-voice`, "thank you for offering your voice") / careers / referral
+(`elh-physician` AND `elh-casemanager` — the homepage discharge form is also a
+professional referral, so it gets the same "we received your referral" copy, per
+user July 2026) / generic. The
 referral branch greets by the referrer's first name (a professional, not the
 patient — `referrer_name`/`first_name`/`name`, first token only) and never echoes
 the `situation`/clinical free-text.

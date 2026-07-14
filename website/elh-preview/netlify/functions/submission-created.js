@@ -27,6 +27,7 @@
  */
 
 const PHONE = "805.953.7273";
+const SITE = "https://eternallifehospice.com";
 const CONTACT_EMAIL = "info@eternallifehospice.com";
 const CALLBACK_TEAM_EMAIL = "referral@eternallifehospice.com";
 const FROM =
@@ -128,21 +129,41 @@ exports.handler = async function (event) {
       ? "Thank you for referring a patient to Eternal Life Hospice. We've received your referral, and our clinical intake team will reach out shortly to complete the details with you securely by phone. No patient information is ever exchanged by email."
       : "Thank you for reaching out to Eternal Life Hospice. We've received your message, and a member of our team will be in touch with you shortly.";
 
-    const text = [
-      greeting,
-      "",
-      lead,
-      "",
-      "If you'd like to speak with someone right away, please call us at " +
-        PHONE + " — we're here for you.",
-      "",
-      "With care,",
-      "Eternal Life Hospice",
-      PHONE,
-      CONTACT_EMAIL
-    ].join("\n");
+    const text = isSignup
+      ? [
+          greeting,
+          "",
+          lead,
+          "",
+          "Read the latest issue: " + SITE + "/care-brief/hospice-is-part-of-life-a-continuation-of-care",
+          "Explore the Care Brief library: " + SITE + "/care-brief",
+          "",
+          "Download the Family Guide (free PDF): " + SITE + "/ELH_Family_Guide.pdf",
+          "",
+          "Know a colleague or a family who would find this helpful? Forward this email, or share the Care Brief: " + SITE + "/care-brief",
+          "",
+          "We're here for you — call us anytime at " + PHONE + ".",
+          "",
+          "With care,",
+          "Eternal Life Hospice",
+          PHONE,
+          CONTACT_EMAIL
+        ].join("\n")
+      : [
+          greeting,
+          "",
+          lead,
+          "",
+          "If you'd like to speak with someone right away, please call us at " +
+            PHONE + " — we're here for you.",
+          "",
+          "With care,",
+          "Eternal Life Hospice",
+          PHONE,
+          CONTACT_EMAIL
+        ].join("\n");
 
-    const html = renderHtml(greeting, lead);
+    const html = isSignup ? renderSignupHtml(greeting, lead) : renderHtml(greeting, lead);
 
     const resp = await fetch("https://api.resend.com/emails", {
       method: "POST",
@@ -220,7 +241,7 @@ async function sendCallbackNotification(apiKey, data) {
     .join("");
 
   const html = [
-    '<!doctype html><html><body style="margin:0;padding:0;background:#F5F0EB;">',
+    '<!doctype html><html><head><meta charset="utf-8"></head><body style="margin:0;padding:0;background:#F5F0EB;">',
     '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#F5F0EB;padding:32px 0;">',
     '<tr><td align="center">',
     '<table role="presentation" width="520" cellpadding="0" cellspacing="0" style="max-width:520px;width:100%;background:#ffffff;border-radius:14px;overflow:hidden;border:1px solid #D8CDBF;">',
@@ -257,9 +278,77 @@ async function sendCallbackNotification(apiKey, data) {
   }
 }
 
+/**
+ * Branded welcome email for The Eternal Care Brief signup — richer than the
+ * generic confirmation: latest-issue + library buttons, a Family Guide
+ * download, and a share-with-a-colleague block. All links point at the live
+ * site; the Family Guide PDF and logo are confirmed live assets.
+ */
+function renderSignupHtml(greeting, lead) {
+  const btn = function (href, label, solid) {
+    return (
+      '<a href="' + href + '" style="display:inline-block;background:' +
+      (solid ? "#5B2E59" : "#ffffff") +
+      ";color:" + (solid ? "#F5F0EB" : "#5B2E59") +
+      ";border:1.5px solid #5B2E59;border-radius:999px;padding:11px 22px;font-family:Georgia,'Times New Roman',serif;font-size:15px;text-decoration:none;\">" +
+      label + "</a>"
+    );
+  };
+  const shareMailto =
+    "mailto:?subject=" +
+    encodeURIComponent("Worth a read — The Eternal Care Brief") +
+    "&body=" +
+    encodeURIComponent(
+      "I thought of you when I read this. The Eternal Care Brief shares clinical guidance for care professionals and plain-language support for families, from Eternal Life Hospice:\n\n" +
+        SITE + "/care-brief\n\nYou can sign up there to receive each new issue."
+    );
+  return [
+    '<!doctype html><html><head><meta charset="utf-8"></head><body style="margin:0;padding:0;background:#F5F0EB;">',
+    '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#F5F0EB;padding:32px 0;">',
+    '<tr><td align="center">',
+    '<table role="presentation" width="560" cellpadding="0" cellspacing="0" style="max-width:560px;width:100%;background:#ffffff;border-radius:14px;overflow:hidden;border:1px solid #D8CDBF;">',
+    // Header
+    '<tr><td align="center" style="background:#3C1C3B;padding:34px 32px 30px;">',
+    '<img src="' + SITE + '/assets/logo-cream.png" alt="Eternal Life Hospice" width="170" style="display:block;margin:0 auto 18px;max-width:170px;height:auto;">',
+    '<div style="font-family:Georgia,\'Times New Roman\',serif;color:#F5F0EB;font-size:24px;letter-spacing:.3px;">Welcome to <span style="color:#C9B07E;">The Eternal Care Brief</span></div>',
+    "</td></tr>",
+    // Body
+    '<tr><td style="padding:32px 36px 8px;font-family:Georgia,\'Times New Roman\',serif;color:#3C1C3B;font-size:16px;line-height:1.7;">',
+    '<p style="margin:0 0 14px;">' + greeting + "</p>",
+    '<p style="margin:0 0 22px;">' + lead + "</p>",
+    '<table role="presentation" align="center" cellpadding="0" cellspacing="0" style="margin:0 auto 10px;"><tr>',
+    '<td style="padding:0 6px 12px;">' + btn(SITE + "/care-brief/hospice-is-part-of-life-a-continuation-of-care", "Read the Latest Issue &#8594;", true) + "</td>",
+    '<td style="padding:0 6px 12px;">' + btn(SITE + "/care-brief", "Explore the Library", false) + "</td>",
+    "</tr></table>",
+    "</td></tr>",
+    // Family Guide block
+    '<tr><td style="padding:10px 36px;">',
+    '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#F5F0EB;border:1px solid #E4DACB;border-radius:12px;"><tr>',
+    '<td style="padding:22px 26px;font-family:Georgia,\'Times New Roman\',serif;">',
+    '<div style="color:#3C1C3B;font-size:17px;margin:0 0 6px;">A gift for the families you serve</div>',
+    '<p style="margin:0 0 14px;color:#6b5f57;font-size:14px;line-height:1.65;">Our Family Guide walks families through hospice in plain language — what to expect, who visits, and how to prepare. Keep a copy, or pass it along.</p>',
+    btn(SITE + "/ELH_Family_Guide.pdf", "Download the Family Guide", true),
+    "</td></tr></table>",
+    "</td></tr>",
+    // Share block
+    '<tr><td align="center" style="padding:22px 36px 6px;font-family:Georgia,\'Times New Roman\',serif;">',
+    '<div style="height:1px;background:#EDE6DE;margin:0 0 22px;"></div>',
+    '<p style="margin:0 0 12px;color:#3C1C3B;font-size:15px;line-height:1.6;">Know a colleague or a family who would find this helpful?</p>',
+    btn(shareMailto, "Share the Care Brief &#8594;", false),
+    "</td></tr>",
+    // Here for you footer
+    '<tr><td align="center" style="background:#5B2E59;padding:26px 32px;margin-top:24px;">',
+    '<div style="font-family:Georgia,\'Times New Roman\',serif;color:#F5F0EB;font-size:17px;margin:0 0 8px;">Here for You</div>',
+    '<p style="margin:0;font-family:Georgia,\'Times New Roman\',serif;color:#E9DFEA;font-size:14px;line-height:1.7;">A nurse is reachable 24/7. Call <a href="tel:8059537273" style="color:#C9B07E;font-weight:bold;text-decoration:none;">' + PHONE + '</a> or email <a href="mailto:' + CONTACT_EMAIL + '" style="color:#C9B07E;text-decoration:none;">' + CONTACT_EMAIL + "</a>.</p>",
+    "</td></tr>",
+    '<tr><td align="center" style="padding:18px 32px;font-family:Georgia,\'Times New Roman\',serif;color:#9b8f85;font-size:12px;line-height:1.6;">Eternal Life Hospice &middot; 4165 E Thousand Oaks Blvd, Suite 325B, Westlake Village, CA 91362<br>Serving Ventura &amp; Los Angeles County &middot; Medicare-Certified &middot; CDPH-Licensed &middot; ACHC-Accredited<br>You can unsubscribe at any time by replying to any issue.</td></tr>',
+    "</table></td></tr></table></body></html>"
+  ].join("");
+}
+
 function renderHtml(greeting, lead) {
   return [
-    '<!doctype html><html><body style="margin:0;padding:0;background:#F5F0EB;">',
+    '<!doctype html><html><head><meta charset="utf-8"></head><body style="margin:0;padding:0;background:#F5F0EB;">',
     '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#F5F0EB;padding:32px 0;">',
     '<tr><td align="center">',
     '<table role="presentation" width="520" cellpadding="0" cellspacing="0" style="max-width:520px;width:100%;background:#ffffff;border-radius:14px;overflow:hidden;border:1px solid #D8CDBF;">',
