@@ -437,6 +437,8 @@ details.cqn-col:not([open])>summary.cqn-county{margin-bottom:0;padding-bottom:0;
   #site-footer .foot-social{position:relative}
   #site-footer .foot-social .foot-signup{position:absolute;right:0;top:50%;transform:translateY(-50%);display:inline-block;padding:.48rem 1.1rem;border-radius:22px;background:#C9B07E;color:#2A0F28;font-size:13px;font-weight:700;letter-spacing:.02em;line-height:1.4}
   #site-footer .foot-social .foot-signup:hover{background:#D9C08A;color:#2A0F28}
+  #site-footer .foot-social .fs-invite{position:absolute;right:158px;top:50%;transform:translateY(-50%);font-style:italic;font-size:12.5px;letter-spacing:.01em;color:#B7A89D;white-space:nowrap}
+  @media(max-width:1219px){#site-footer .foot-social .fs-invite{display:none}}
   @media(max-width:860px){
     #site-footer .foot-social{flex-wrap:wrap;row-gap:.9rem;gap:1rem;row-gap:.9rem}
     #site-footer .foot-social .foot-signup{position:static;transform:none;flex-basis:100%;max-width:max-content;margin:0 auto}
