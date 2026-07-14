@@ -277,13 +277,15 @@ claims for integrative therapies.
 To turn this partial (but real) picture into a *complete* backlink report, we need
 **Google Search Console** verified for the site. It's free and takes ~10 minutes.
 
-**Step 1 — Verify the site in Google Search Console. ✅ IN PROGRESS (HTML tag method).**
-- The **HTML tag verification meta** has been installed on the home page
+**Step 1 — Verify the site in Google Search Console. ✅ DONE (HTML tag method, verified July 14, 2026).**
+- The **HTML tag verification meta** was installed on the home page
   (`website/elh-preview/index.html`, in the `<head>`), for the **URL-prefix**
-  property `https://eternallifehospice.com/`.
-- **Remaining steps for you:** (1) click **Git → Sync** in Replit so Netlify
-  publishes the tag to the live site, then (2) return to Search Console and click
-  **Verify**. Once Google sees the tag on the live page, the property is verified.
+  property `https://eternallifehospice.com/`, published live via Git → Sync.
+- Google confirmed **"Ownership auto verified"** by the HTML-tag method. The
+  property is now verified.
+- **Keep it verified:** do **not** remove the meta tag from the home page. For
+  extra safety you *may* add a second verification method later (Search Console →
+  Settings → Ownership verification), e.g. the DNS/GoDaddy TXT record — optional.
 - *(Alternative not used: the DNS/GoDaddy "Domain" property TXT method would verify
   the whole domain including subdomains — either works.)*
 
