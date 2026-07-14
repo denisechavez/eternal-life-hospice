@@ -1103,3 +1103,15 @@ id = "nuQYgJcq9nUT54vcJxGSV"
 uri = "file://exports/email/care-brief-email-code.txt"
 type = "text"
 title = "Care Brief Intro Email — HTML code (copy-paste ready)"
+
+[[outputs]]
+id = "2ghMmXCGggjuLSyiP0MkP"
+uri = "file://website/elh-preview/assets/downloads/eternal-life-press-kit-digital.pdf"
+type = "pdf"
+title = "Digital Press Kit (13 pages — welcome letter, coverage, 24/7 line, 4 pillar cards front+back)"
+
+[[outputs]]
+id = "JeCqsAWM2tCKcWnlC_jKc"
+uri = "file://website/elh-preview/assets/downloads/eternal-life-referral-card-digital.pdf"
+type = "pdf"
+title = "Referral Card (front + back)"
