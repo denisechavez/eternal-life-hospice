@@ -55,6 +55,7 @@ description: Which pages use shared elh.css vs inline-only CSS in the elh-previe
 
 ## Trust bar (credential marquee) — now sitewide
 - Animated `.cred-strip > .cred-track` marquee (CMS/CDPH/ACHC cards + 2 SVG info cards, content duplicated for the `cscroll` translateX(-50%) loop). Lives under the header on the homepage AND all inner pages.
+- **EXCEPTION — /refer (refer.html) had the marquee REMOVED (July 2026):** it duplicated the page's own `.trust-banner` credentials below the hero and read as "crowded/messy." /refer now shows credentials ONCE, inside a translucent frosted `.tb-inner` panel (rgba-white chips, soft borders/shadows, more breathing room). The shared `.cred-strip` CSS in elh.css stays (other pages still use it) — only refer.html's markup was removed. **Why:** premium-polish request; don't reinstate the marquee on /refer.
 - Homepage embeds the 3 accreditation logos as inline base64; inner pages reference extracted file copies `assets/img/cred-{cms,cdph,achc}.png` (reuse those, don't re-extract). Shared CSS + `@keyframes cscroll` + `--cream-mid` var live in `assets/elh.css`.
 - **Why margin-top differs:** homepage inline `.cred-strip{margin-top:74px}` (fixed header needs the offset); elh.css version uses `margin-top:0` (inner headers are sticky and already occupy space). Any element placed right after `</header>` must follow this same fixed-vs-sticky rule.
 - Inner pages still keep their mid-page static `.creds` text line (separate element, left in place).

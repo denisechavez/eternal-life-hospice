@@ -768,6 +768,7 @@ section[id]{scroll-margin-top:84px}#clinical-mobile{scroll-margin-top:84px}#wsDe
 
 /* sticky stack — locked, full-page alternating, hero photo + full copy */
 .pstack{position:relative}
+#stack-1,#stack-2,#stack-3,#stack-4{scroll-margin-top:var(--hdr-h)}
 .pcard{position:sticky;top:var(--hdr-h);min-height:calc(100vh - var(--hdr-h));min-height:calc(100svh - var(--hdr-h));display:grid;grid-template-columns:1fr 1fr;align-items:stretch;background:var(--cream);box-shadow:0 -8px 40px rgba(56,27,55,.1)}
 .pcard.flip .pcard-photo{order:2}
 .pcard.flip .pcard-copy{order:1}
@@ -797,8 +798,12 @@ section[id]{scroll-margin-top:84px}#clinical-mobile{scroll-margin-top:84px}#wsDe
 .pfinal-copy h3 em{font-style:italic;color:var(--gold)}
 .pfinal-copy p{font-size:16px;line-height:1.85;color:rgba(245,240,235,.7);max-width:480px;margin:0 auto}
 .pfinal-pillars{list-style:none;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:.55rem .7rem;width:100%;max-width:470px;margin:1.5rem auto 1.5rem;padding:0;text-align:left}
-.pfinal-pillars li{display:flex;align-items:center;gap:.6rem;min-width:0;border:1px solid rgba(201,176,126,.32);border-radius:11px;padding:.62rem .9rem;font-size:13.5px;font-weight:600;letter-spacing:.02em;color:var(--cream);background:rgba(245,240,235,.04)}
-.pfinal-pillars b{font-family:var(--ff-d);font-weight:400;font-size:.95rem;color:var(--gold)}
+.pfinal-pillars li{display:flex;min-width:0}
+.pfinal-pillars a{display:flex;align-items:center;gap:.6rem;width:100%;min-width:0;border:1px solid rgba(201,176,126,.32);border-radius:11px;padding:.62rem .9rem;font-size:13.5px;font-weight:600;letter-spacing:.02em;color:var(--cream);background:rgba(245,240,235,.04);text-decoration:none;transition:transform .22s ease,border-color .22s ease,background .22s ease,box-shadow .22s ease}
+.pfinal-pillars a:hover,.pfinal-pillars a:focus-visible{transform:translateY(-3px);border-color:var(--gold);background:rgba(201,176,126,.14);box-shadow:0 10px 24px rgba(0,0,0,.28)}
+.pfinal-pillars a:hover b,.pfinal-pillars a:focus-visible b{color:var(--cream)}
+.pfinal-pillars b{font-family:var(--ff-d);font-weight:400;font-size:.95rem;color:var(--gold);transition:color .22s ease}
+@media(prefers-reduced-motion:reduce){.pfinal-pillars a{transition:border-color .22s ease,background .22s ease}.pfinal-pillars a:hover,.pfinal-pillars a:focus-visible{transform:none}}
 @media(max-width:780px){
   .pcard{grid-template-columns:1fr;grid-template-rows:36vh 1fr;min-height:100vh;min-height:100svh}
   .pcard.flip .pcard-photo{order:1}
@@ -810,7 +815,7 @@ section[id]{scroll-margin-top:84px}#clinical-mobile{scroll-margin-top:84px}#wsDe
   .pfinal{padding:2.5rem 1.25rem;gap:1.3rem}
   .pfinal-gem{width:clamp(96px,26vw,140px)}
   .pfinal-pillars{gap:.45rem .5rem;margin:1.15rem auto}
-  .pfinal-pillars li{font-size:12px;padding:.5rem .65rem}
+  .pfinal-pillars a{font-size:12px;padding:.5rem .65rem}
   .pfinal-copy p{font-size:14.5px}
 }
 @media(max-width:400px){.pfinal-pillars{grid-template-columns:1fr;max-width:300px}}
@@ -1340,12 +1345,12 @@ p,li,blockquote{text-wrap:pretty}
           <div class="eyebrow gold-c">The Eternal Standard</div>
           <h3>Four Pillars<br><em>One Standard of Care</em></h3>
           <ul class="pfinal-pillars" aria-label="The four pillars of The Eternal Standard">
-            <li><b>01</b>Clinical Confidence</li>
-            <li><b>02</b>Guided Presence</li>
-            <li><b>03</b>Whole-Person Comfort</li>
-            <li><b>04</b>Compliance-Led Care</li>
+            <li><a href="#stack-1"><b>01</b>Clinical Confidence</a></li>
+            <li><a href="#stack-2"><b>02</b>Guided Presence</a></li>
+            <li><a href="#stack-3"><b>03</b>Whole-Person Comfort</a></li>
+            <li><a href="#stack-4"><b>04</b>Compliance-Led Care</a></li>
           </ul>
-          <p>Clinical confidence, guided presence, whole-person comfort and compliance-led care — each essential, together complete. Like the stone we are named for, what forms slowly and with care<br>holds the most light.</p>
+          <p>Each Pillar — each essential, together complete. Like the stone we are named for, what forms slowly and with<br>care holds the most light.</p>
         </div>
       </div>
     </div>

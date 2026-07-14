@@ -15,26 +15,27 @@
   .refer-call .rc-sub{font-size:13px;color:var(--text-light);width:100%}
   .af-field .af-help{font-size:12.5px;font-weight:400;letter-spacing:0;text-transform:none;color:var(--text-light);margin:.3rem 0 0;line-height:1.55}
   .refer-mini{font-size:12.5px;color:var(--text-light);line-height:1.6;margin:.9rem 0 0}
-  .trust-banner{background:var(--deep);padding:1.6rem 1.6rem 1.8rem;text-align:center}
-  .trust-banner .tb-label{font-size:11.5px;font-weight:600;letter-spacing:.28em;text-transform:uppercase;color:var(--gold);margin:0 0 1rem}
-  .trust-banner .tb-row{display:flex;flex-wrap:wrap;justify-content:center;align-items:stretch;gap:.7rem;max-width:860px;margin:0 auto}
-  .trust-banner .tb-chip{display:flex;align-items:center;gap:.7rem;background:#fff;border-radius:12px;padding:.6rem .95rem;text-align:left}
-  .trust-banner .tb-chip img{height:34px;width:auto;display:block}
+  .trust-banner{background:var(--deep);padding:3.4rem 1.6rem 3.6rem;text-align:center}
+  .trust-banner .tb-inner{max-width:1000px;margin:0 auto;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);border-radius:22px;padding:2.8rem 2.2rem 2.4rem;-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+  .trust-banner .tb-label{font-size:11.5px;font-weight:600;letter-spacing:.28em;text-transform:uppercase;color:var(--gold);margin:0 0 1.4rem}
+  .trust-banner .tb-row{display:flex;flex-wrap:wrap;justify-content:center;align-items:stretch;gap:1rem;max-width:880px;margin:0 auto}
+  .trust-banner .tb-chip{display:flex;align-items:center;gap:.85rem;background:rgba(255,255,255,.97);border:1px solid rgba(255,255,255,.55);border-radius:14px;padding:.85rem 1.2rem;text-align:left;box-shadow:0 8px 22px rgba(0,0,0,.2)}
+  .trust-banner .tb-chip img{height:36px;width:auto;display:block}
   .trust-banner .tb-chip .tc-t{display:flex;flex-direction:column;line-height:1.25}
   .trust-banner .tb-chip .tc-l{font-size:13px;font-weight:700;color:var(--deep)}
   .trust-banner .tb-chip .tc-s{font-size:11px;color:var(--text-light)}
-  .trust-banner .tb-line{margin:1.1rem 0 0;font-size:12.5px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:rgba(245,240,235,.85)}
+  .trust-banner .tb-line{margin:1.8rem 0 0;font-size:12.5px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:rgba(245,240,235,.82)}
   .trust-banner .tb-line .tb-sep{color:var(--gold);margin:0 .5em}
-  .trust-banner .tb-label--sub{margin:1.5rem 0 .8rem;padding-top:1.4rem;border-top:1px solid rgba(245,240,235,.14)}
-  .trust-banner .tb-row--platforms{gap:.55rem}
-  .trust-banner .tb-pchip{display:inline-flex;align-items:center;justify-content:center;background:#fff;border-radius:10px;padding:.45rem .8rem}
+  .trust-banner .tb-label--sub{margin:2.2rem 0 1.2rem;padding-top:2rem;border-top:1px solid rgba(245,240,235,.14)}
+  .trust-banner .tb-row--platforms{gap:.9rem}
+  .trust-banner .tb-pchip{display:inline-flex;align-items:center;justify-content:center;min-height:54px;min-width:104px;background:rgba(255,255,255,.97);border:1px solid rgba(255,255,255,.55);border-radius:12px;padding:.5rem 1.1rem;box-shadow:0 8px 22px rgba(0,0,0,.2)}
   .trust-banner .tb-pchip img{display:block;width:auto}
   .trust-banner a.tb-chip,.trust-banner a.tb-pchip{text-decoration:none;transition:transform .22s ease,box-shadow .22s ease}
-  .trust-banner a.tb-chip:hover,.trust-banner a.tb-chip:focus-visible{transform:translateY(-4px);box-shadow:0 10px 24px rgba(0,0,0,.3)}
-  .trust-banner a.tb-pchip:hover,.trust-banner a.tb-pchip:focus-visible{transform:translateY(-4px) scale(1.05);box-shadow:0 10px 24px rgba(0,0,0,.3)}
+  .trust-banner a.tb-chip:hover,.trust-banner a.tb-chip:focus-visible{transform:translateY(-4px);box-shadow:0 14px 30px rgba(0,0,0,.32)}
+  .trust-banner a.tb-pchip:hover,.trust-banner a.tb-pchip:focus-visible{transform:translateY(-4px) scale(1.05);box-shadow:0 14px 30px rgba(0,0,0,.32)}
   @media(prefers-reduced-motion:reduce){.trust-banner a.tb-chip,.trust-banner a.tb-pchip{transition:none}.trust-banner a.tb-chip:hover,.trust-banner a.tb-pchip:hover,.trust-banner a.tb-chip:focus-visible,.trust-banner a.tb-pchip:focus-visible{transform:none}}
-  .trust-banner .tb-note{max-width:640px;margin:.9rem auto 0;font-size:11px;line-height:1.6;color:rgba(245,240,235,.55)}
-  @media(max-width:560px){.refer-call .rc-num{font-size:1.2rem}.trust-banner .tb-chip{width:100%;justify-content:flex-start}.trust-banner .tb-line{letter-spacing:.1em;line-height:2}}
+  .trust-banner .tb-note{max-width:640px;margin:1.5rem auto 0;font-size:11px;line-height:1.6;color:rgba(245,240,235,.55)}
+  @media(max-width:560px){.refer-call .rc-num{font-size:1.2rem}.trust-banner{padding:2.2rem 1rem}.trust-banner .tb-inner{padding:1.8rem 1.1rem}.trust-banner .tb-chip{width:100%;justify-content:flex-start}.trust-banner .tb-line{letter-spacing:.1em;line-height:2}}
 </style>
 
 <script type="application/ld+json">{
@@ -263,43 +264,19 @@
     <button class="menu-btn" aria-label="Menu" aria-expanded="false"><svg width="22" height="16" viewBox="0 0 22 16"><line x1="0" y1="2" x2="22" y2="2" stroke="#F5F0EB" stroke-width="2" stroke-linecap="round"/><line x1="0" y1="8" x2="22" y2="8" stroke="#F5F0EB" stroke-width="2" stroke-linecap="round"/><line x1="0" y1="14" x2="22" y2="14" stroke="#F5F0EB" stroke-width="2" stroke-linecap="round"/></svg></button>
   </div>
 </header>
-<div class="cred-strip">
-  <div class="cred-track">
-    <a class="lc cms" href="https://www.cms.gov" target="_blank" rel="noopener"><img loading="lazy" decoding="async" src="assets/img/cred-cms.png" alt="CMS Medicare Certified"><div class="ct"><span class="cl">Medicare Certified</span><span class="csub">Centers for Medicare &amp; Medicaid Services</span><span class="ext">cms.gov ↗</span></div></a>
-    <div class="csep"></div>
-    <a class="lc cdph" href="https://www.cdph.ca.gov" target="_blank" rel="noopener"><img loading="lazy" decoding="async" src="assets/img/cred-cdph.png" alt="CDPH Licensed"><div class="ct"><span class="cl">CDPH Licensed</span><span class="csub">California Dept. of Public Health</span><span class="ext">cdph.ca.gov ↗</span></div></a>
-    <div class="csep"></div>
-    <a class="lc achc" href="https://www.achc.org" target="_blank" rel="noopener"><img loading="lazy" decoding="async" src="assets/img/cred-achc.png" alt="ACHC Accredited"><div class="ct"><span class="cl">ACHC Accredited</span><span class="csub">Accreditation Commission for Health Care</span><span class="ext">achc.org ↗</span></div></a>
-    <div class="csep"></div>
-    <a class="ic" href="/#first48"><svg viewBox="0 0 48 48" width="44" height="44" fill="none"><circle cx="24" cy="24" r="15" stroke="#D8CDBF" stroke-width="1.5"/><line x1="24" y1="12" x2="24" y2="24" stroke="#5B2E59" stroke-width="2.5" stroke-linecap="round"/><line x1="24" y1="24" x2="33" y2="24" stroke="#C9B07E" stroke-width="2.5" stroke-linecap="round"/><circle cx="24" cy="24" r="2.5" fill="#5B2E59"/></svg><div class="ct"><span class="cl">Same-Day Admissions</span><span class="csub">24/7 On-Call Nursing</span></div></a>
-    <div class="csep"></div>
-    <a class="ic" href="/#medicare"><svg viewBox="0 0 48 48" width="44" height="44" fill="none"><circle cx="24" cy="24" r="15" stroke="#5B2E59" stroke-width="1.5"/><text x="24" y="22" text-anchor="middle" fill="#5B2E59" font-size="9" font-family="Arial" font-weight="700">NO</text><text x="24" y="32" text-anchor="middle" fill="#C9B07E" font-size="8" font-family="Arial" font-weight="600">COPAY</text></svg><div class="ct"><span class="cl">No Deductibles · No Copays</span><span class="csub">Medicare Part A &amp; Medi-Cal</span></div></a>
-    <div class="csep"></div>
-    <a class="lc cms" href="https://www.cms.gov" target="_blank" rel="noopener"><img loading="lazy" decoding="async" src="assets/img/cred-cms.png" alt="CMS Medicare Certified"><div class="ct"><span class="cl">Medicare Certified</span><span class="csub">Centers for Medicare &amp; Medicaid Services</span><span class="ext">cms.gov ↗</span></div></a>
-    <div class="csep"></div>
-    <a class="lc cdph" href="https://www.cdph.ca.gov" target="_blank" rel="noopener"><img loading="lazy" decoding="async" src="assets/img/cred-cdph.png" alt="CDPH Licensed"><div class="ct"><span class="cl">CDPH Licensed</span><span class="csub">California Dept. of Public Health</span><span class="ext">cdph.ca.gov ↗</span></div></a>
-    <div class="csep"></div>
-    <a class="lc achc" href="https://www.achc.org" target="_blank" rel="noopener"><img loading="lazy" decoding="async" src="assets/img/cred-achc.png" alt="ACHC Accredited"><div class="ct"><span class="cl">ACHC Accredited</span><span class="csub">Accreditation Commission for Health Care</span><span class="ext">achc.org ↗</span></div></a>
-    <div class="csep"></div>
-    <a class="ic" href="/#first48"><svg viewBox="0 0 48 48" width="44" height="44" fill="none"><circle cx="24" cy="24" r="15" stroke="#D8CDBF" stroke-width="1.5"/><line x1="24" y1="12" x2="24" y2="24" stroke="#5B2E59" stroke-width="2.5" stroke-linecap="round"/><line x1="24" y1="24" x2="33" y2="24" stroke="#C9B07E" stroke-width="2.5" stroke-linecap="round"/><circle cx="24" cy="24" r="2.5" fill="#5B2E59"/></svg><div class="ct"><span class="cl">Same-Day Admissions</span><span class="csub">24/7 On-Call Nursing</span></div></a>
-    <div class="csep"></div>
-    <a class="ic" href="/#medicare"><svg viewBox="0 0 48 48" width="44" height="44" fill="none"><circle cx="24" cy="24" r="15" stroke="#5B2E59" stroke-width="1.5"/><text x="24" y="22" text-anchor="middle" fill="#5B2E59" font-size="9" font-family="Arial" font-weight="700">NO</text><text x="24" y="32" text-anchor="middle" fill="#C9B07E" font-size="8" font-family="Arial" font-weight="600">COPAY</text></svg><div class="ct"><span class="cl">No Deductibles · No Copays</span><span class="csub">Medicare Part A &amp; Medi-Cal</span></div></a>
-    <div class="csep"></div>
-  </div>
-</div>
-
 
 <section class="hero hero--photo hero--tall" style="background-image:url('assets/img/providers-hero.jpg')">
   <div class="eyebrow">For Referring Providers &middot; Ventura &amp; Los Angeles Counties</div>
   <h1>Refer With Confidence</h1>
   <p>One short form &mdash; or one call &mdash; and our clinical intake team takes it from there. Built for physicians, hospitals, discharge planners, case managers, skilled nursing facilities and assisted living communities who need a referral handled today.</p>
   <div class="hero-btns" style="justify-content:center;margin-top:1.7rem">
-    <a class="btn-gold" href="#referral-form">Send a Referral &#8594;</a>
+    <a class="btn-gold" href="family-guide">Open the Family Guide &#8594;</a>
     <a class="btn-ghost" href="tel:18059537273">Call 805.953.7273</a>
   </div>
 </section>
 
 <div class="trust-banner" aria-label="Credentials and certifications">
+  <div class="tb-inner">
   <p class="tb-label">Credentials &amp; Certifications</p>
   <div class="tb-row">
     <a class="tb-chip" href="https://www.cms.gov" target="_blank" rel="noopener"><img loading="lazy" decoding="async" src="assets/img/cred-cms.png" alt="CMS — Medicare Certified"><span class="tc-t"><span class="tc-l">Medicare-Certified</span><span class="tc-s">Centers for Medicare &amp; Medicaid Services</span></span></a>
@@ -316,6 +293,7 @@
     <span class="tb-pchip"><img loading="lazy" decoding="async" src="assets/img/platform-ensocare.png" alt="Ensocare" style="height:28px"></span>
   </div>
   <p class="tb-note">Referral platforms our intake team works within, where used by your facility. Logos are trademarks of their respective owners and do not imply endorsement, affiliation or partnership.</p>
+  </div>
 </div>
 
 <section class="sec wrap" id="referral-form">
@@ -470,7 +448,7 @@
   <h2>Refer a patient today</h2>
   <p>Confirmed eligibility, clean documentation and same-day admission when clinically appropriate &mdash; across Ventura and Los Angeles counties. We will guide you from the first call.</p>
   <div class="btns">
-    <a class="btn-gold" href="#referral-form">Send a Referral &#8594;</a>
+    <a class="btn-gold" href="family-guide">Open the Family Guide &#8594;</a>
     <a class="btn-ghost" href="tel:18059537273">Call 805.953.7273</a>
   </div>
 </section>
