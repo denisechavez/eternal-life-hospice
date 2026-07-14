@@ -23,7 +23,7 @@ EXPORT_PDF = os.path.join(ROOT, "exports", "digital",
 # Order = the physical book/folder reading order (matches the flipbook DOM order).
 PAGES = [
     "01-front-cover.png",     # front cover
-    "02-welcome.png",         # inside front cover (welcome letter)
+    "02-welcome.jpg",         # inside front cover (welcome letter)
     "05-clinical-front.jpg",  # pillar 1 — Clinical Confidence (front)
     "06-clinical-back.jpg",   # pillar 1 (back)
     "07-guided-front.jpg",    # pillar 2 — Guided Presence (front)
