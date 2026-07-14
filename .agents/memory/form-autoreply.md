@@ -22,7 +22,7 @@ carrying an `email` field. A reply still only goes out when the submission has a
 valid email, so a form is safe to allowlist even if its email field is optional.
 Allowlisted: `elh-family`, `elh-casemanager`, `elh-careers`,
 `elh-care-brief-signup`, `elh-voice` (collect email), and `elh-physician` (the
-/refer page added an OPTIONAL work email → PHI-free referral confirmation; the
+/refer page now REQUIRES a work email → PHI-free referral confirmation; the
 homepage physician form has no email field so it's unaffected, and that form
 lives in `index.html` also named `elh-physician`). Never auto-replied to:
 `elh-coordinator`, `elh-chat-callback`.

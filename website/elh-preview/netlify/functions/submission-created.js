@@ -16,9 +16,9 @@
  * A reply is only sent when a submission includes a valid email, so it degrades
  * safely. Eligible forms: elh-family, elh-casemanager, elh-careers,
  * elh-care-brief-signup, elh-voice (collect an email), and elh-physician (the
- * /refer page adds an OPTIONAL work email — when provided, the partner gets a
- * PHI-free referral confirmation; the homepage physician form has no email
- * field and is unaffected). Never auto-replied to: elh-coordinator and
+ * /refer page now REQUIRES a work email — the partner always gets a PHI-free
+ * referral confirmation; the homepage physician form has no email field and is
+ * unaffected). Never auto-replied to: elh-coordinator and
  * elh-chat-callback (the chat already confirms on-screen).
  *
  * elh-chat-callback instead triggers an internal team notification to
@@ -39,9 +39,9 @@ const FROM =
 // field is optional:
 //   elh-family, elh-casemanager, elh-careers, elh-care-brief-signup,
 //     elh-voice — collect an email directly.
-//   elh-physician — the /refer page adds an OPTIONAL work email; when a partner
-//     provides it they get a PHI-free referral confirmation. The homepage
-//     physician form has no email field, so it is never affected.
+//   elh-physician — the /refer page now REQUIRES a work email, so the partner
+//     always gets a PHI-free referral confirmation. The homepage physician form
+//     has no email field, so it is never affected.
 //   elh-chat-callback — listed only so the handler runs its referral-inbox
 //     notification; it returns before the auto-reply (chat confirms on-screen).
 // Never auto-replied to: elh-coordinator, elh-chat-callback.
