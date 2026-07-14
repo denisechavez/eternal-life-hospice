@@ -18,4 +18,6 @@ description: NeverBounce verification → Brevo master list flow, list IDs, and 
 
 **Deliverability decision (user-directed, July 2026):** advised keeping cold scraped contacts OUT of an already-scheduled blast (7x volume spike of never-emailed addresses = spam/reputation risk); user chose to fold valid ones in anyway but as a SEPARATE list (SYMPLR Network #10) sent alongside Master Verified. **Why:** growth mandate outranks warm-up caution for this user — offer the safe path, but they decide.
 
+**Update (July 14, 2026) — user reversed toward caution:** directs a slow, phased rollout. Send **Master Verified (#8, `result=valid` only, deduped) FIRST**; **hold catch-all (#9) and every unknown/questionable address** (incl. SYMPLR unknowns) until later. Do NOT fire any bulk/Care Brief send to #9 or unknowns without an explicit fresh go-ahead. **Why:** warm up sender reputation/deliverability on the cleanest addresses before touching riskier ones. **How to apply:** every send now starts with #8 valids only; "we will take it slowly."
+
 **Routine:** each new list → NeverBounce job → valids into the target list (dedupe against ALL existing Brevo emails first, not just one list), catchalls into list 9, never import invalid/unknown/bad-syntax.
