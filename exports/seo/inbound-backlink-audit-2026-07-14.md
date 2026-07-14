@@ -63,7 +63,7 @@ confirmed without inspecting the live tag or Search Console — we're not guessi
 | Referring domain | What it is | Relevance / Quality | NAP it shows | Link type |
 |---|---|---|---|---|
 | **hcai.ca.gov** | CA Dept. of Health Care Access & Information — official state facility record (HCAI ID 406560025) | **Healthcare — authoritative (.gov)** | 30941 Agoura Rd, WLV 91361 | Reference (gov) |
-| **medicare.gov / cms.gov** (Care Compare) | Federal Medicare hospice directory | **Healthcare — authoritative (.gov)** | *CCN not yet confirmed — see note* | Reference (gov) |
+| **medicare.gov / cms.gov** (Care Compare) | Federal Medicare hospice directory | **Healthcare — authoritative (.gov)** | **CCN B31709** (confirmed — see note) | Reference (gov) |
 | **achc.org** | Our accreditation body | **Healthcare — authoritative** | — | Unknown |
 | **bbb.org** | Better Business Bureau profile | Citation / trust directory | Phone matches; address not shown | Nofollow (typical) |
 | **hospice.io** | Hospice comparison directory | Healthcare directory | 30941 Agoura Rd, Ste 112, 91361 | Unknown |
@@ -76,8 +76,19 @@ confirmed without inspecting the live tag or Search Console — we're not guessi
 **Important correction (why verifying matters):** an early search result pointed
 to Medicare Care Compare hospice **#551534** — on inspection that record is
 **"Silverado Hospice — Los Angeles," a different company**, so we did **not**
-record it as ours. The correct Medicare CCN for Eternal Life Hospice must be
-confirmed from the official CMS record before we cite it anywhere.
+record it as ours. **The correct Medicare CCN for Eternal Life Hospice, Inc. has
+now been confirmed as `B31709`.** This was verified against the CMS-sourced
+provider directories (hospice.io, hospicematch) and the CMS FY2026 Hospice APU
+list, all of which tie `B31709` to Eternal Life Hospice, Inc. at the Agoura Road
+address. Two look-alike records were explicitly ruled out: `B51632` is **"Eternal
+Hope Hospice Inc," 7416 Foothill Blvd, Tujunga** (a different company, confirmed
+directly on medicare.gov), and `#551534` is Silverado. **Note:** because Eternal
+Life is a recently-certified hospice, `B31709` does not yet appear in the public
+Care Compare *quality* dataset (the May-2025 CMS General Information file predates
+its certification), so the medicare.gov detail page currently shows no quality
+scores — this is expected for a new provider and confirms nothing is wrong. Cite
+`B31709` as the CCN; the quality page will populate once CMS publishes the next
+dataset refresh.
 
 **Classification legend:** *Healthcare-relevant / authoritative* = the strongest,
 most trusted references (government and accreditation). *Citation/directory* =
@@ -266,17 +277,15 @@ claims for integrative therapies.
 To turn this partial (but real) picture into a *complete* backlink report, we need
 **Google Search Console** verified for the site. It's free and takes ~10 minutes.
 
-**Step 1 — Verify the site in Google Search Console.**
-- Go to search.google.com/search-console and add the property
-  **`eternallifehospice.com`** (choose the "Domain" property if you have DNS/GoDaddy
-  access — it's the most complete; otherwise "URL prefix").
-- Google will give you a verification code. Two easy ways to use it:
-  - **DNS method (best):** add the TXT record Google gives you in GoDaddy. This
-    verifies the *whole domain* including subdomains.
-  - **HTML tag method:** send us the `<meta name="google-site-verification" …>`
-    code and we'll drop it into the site's home page (a placeholder is already
-    waiting in the code), then you click **Git → Sync** to publish and hit
-    "Verify."
+**Step 1 — Verify the site in Google Search Console. ✅ IN PROGRESS (HTML tag method).**
+- The **HTML tag verification meta** has been installed on the home page
+  (`website/elh-preview/index.html`, in the `<head>`), for the **URL-prefix**
+  property `https://eternallifehospice.com/`.
+- **Remaining steps for you:** (1) click **Git → Sync** in Replit so Netlify
+  publishes the tag to the live site, then (2) return to Search Console and click
+  **Verify**. Once Google sees the tag on the live page, the property is verified.
+- *(Alternative not used: the DNS/GoDaddy "Domain" property TXT method would verify
+  the whole domain including subdomains — either works.)*
 
 **Step 2 — Export two reports and send them to us:**
 - **Links → "Top linking sites"** (referring domains) — export as CSV.
