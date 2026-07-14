@@ -25,9 +25,21 @@ CSS on the sticky element is almost always fine; the ancestor overflow chain is 
 culprit.
 
 ## Scrolling to a position:sticky target
-`getBoundingClientRect().top` on a *stuck* sticky element returns its pinned
-(painted) position, not its flow position — so `rect.top + scrollY` collapses to
-~the current scroll and a smooth-scroll "goes nowhere." For scroll targets in a
-sticky-stack (e.g. index.html Four Pillars `.pcard`s / `#stack-N`), sum
-`offsetTop` up the `offsetParent` chain for the true flow offset, then subtract
-the header height (`--hdr-h`). `scrollIntoView()` has the same stuck-position bug.
+Both `getBoundingClientRect().top` AND `offsetTop` are contaminated once a sticky
+element is stuck: they report the pinned/shifted position, not the flow position.
+`offsetTop` in particular clamps toward the containing block's bottom, so summing
+the *target's* offsetTop collapses every card in a stack to ~the same value when
+you scroll-to from *below* the stack (e.g. clicking a pillar link inside the final
+`.pc-final` card). Verified empirically in headless Chromium 138.
+
+**Correct pattern for a sticky-stack scroll target** (index.html Four Pillars
+`.pcard`s / `#stack-N`): anchor to a NON-sticky ancestor whose offset chain is
+clean — here `.pstack` (`position:relative`) — then add the `offsetHeight` of each
+preceding card (`offsetHeight` is unaffected by sticky, and per-card summing also
+handles unequal card heights), then subtract the header (`--hdr-h`):
+`y = offsetChain(.pstack) + Σ offsetHeight(cards before target) − hdr`.
+
+**Why:** stuck elements' own position getters are unreliable; only a non-sticky
+base plus box heights survives. `scrollIntoView()` and native `#hash` anchor jumps
+have the same stuck-position bug, so intercept those links with `preventDefault()`
+and drive the scroll yourself with the math above.
