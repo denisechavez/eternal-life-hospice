@@ -1,6 +1,6 @@
 ---
 name: media-kit page
-description: Durable lessons for the /media-kit digital press+referral kit and the ELH print source files
+description: Durable lessons for the /media-kit digital press kit (interactive booklet, referral-free) and the ELH print source files
 ---
 
 - [Pillar rack cards are genuinely DOUBLE-SIDED with DISTINCT backs](#) — the 4 "Eternal Standard" rack cards (source `J52551_RubenA_948_RACK_CARD-0{1..4}...p1/p2`) each have a front (p1 = the pillar) AND a back (p2). The backs SHARE the "The Eternal Standard / four-pillar rail" left column but the right column is different per card (card1=What Clinical Confidence Means, card2=First 48 Hours + What Families Can Expect, card3=Comfort Is More Than Medication + Holistic Modalities, card4=Compliance-Led Care). **Why:** a digital "reading order" of the physical kit must interleave front→back for all four cards (not just show 4 fronts + one back) or it silently drops 3 pages of real content. **How to apply:** full reading order = folder cover, welcome, coverage, 24/7 nurse flap, then card1 front/back … card4 front/back, then back cover (13 pages).
@@ -14,3 +14,7 @@ description: Durable lessons for the /media-kit digital press+referral kit and t
 - [Downloads must live INSIDE website/elh-preview/ to publish](#) — only that folder deploys to Netlify. Website download buttons point at `assets/downloads/*.pdf`; `exports/` copies are repo deliverables only and are NOT reachable by the live site.
 
 - [Flipbook engine mirrors family-guide](#) — same bootveil + booklet/scroll toggle + page-turn timing; see `family-guide.md` for the shared gotchas (timing duplicated in CSS+JS, reduced-motion last-in-source-wins, and screenshots only capture the cover so QA via curl/asset-200s). Page count is derived at runtime from the DOM, so adding/removing pages needs no JS change. On-brand QR built by `scripts/build-media-kit-qr.py` (adapted from `build-refer-qr.py`).
+
+- [Media kit is booklet-only; referral card was removed](#) — /media-kit is FRONT-FACING marketing (closed folder cover → turnable stacked pages, front+back copy). The referral card is INTERNAL care-ally collateral and was pulled out entirely (its PDF/JPGs remain on disk but unreferenced by this page). **Why:** mixing an internal referral tool into a public media kit blurred the audience. **How to apply:** keep the kit referral-free; the sitewide nav/footer label is plain "Media Kit" (root-absolute `/media-kit`), and all page metadata/schema/share text dropped "& Referral".
+
+- ["Open the Kit" CTA is fixed to the viewport, not overlaid on the cover](#) — the page loads as a closed folder (`body.booklet.closed`, stacked-edge box-shadows on `.pages::after` for thickness); the open affordance is a fixed bottom-center pulsing gold button, and the whole cover is also click-to-open. **Why:** the tall hero pushes any on-cover button below the fold, and the cover's upper half is the logo, so an overlaid button either scrolls out of view or collides with branding. **How to apply:** keep the open control viewport-fixed; `closed` is only ever removed (every nav/toggle path strips it) so there's no stuck-closed state.
