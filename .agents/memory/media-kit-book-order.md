@@ -29,3 +29,8 @@ placed at position 3 (right after the inside front cover) and the user flagged i
 cover → inside front cover → interior → inside back cover → back cover. Don't sort
 by asset filename number (03 is intentionally near the end). The same DOM order
 also drives the Gallery/scroll view, so it stays consistent automatically.
+
+The **downloadable PDF** must stay in the same order — rebuild it with
+`scripts/build-media-kit-pdf.py` (its `PAGES` list mirrors this order and must be
+kept in sync with the flipbook DOM). That script writes both the live-site copy
+and the `exports/digital/` mirror in one run.
