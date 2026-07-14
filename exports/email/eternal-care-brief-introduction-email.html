@@ -22,13 +22,16 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <title>Introducing The Eternal Care Brief | Eternal Life Hospice</title>
 <style>
-  /* Masthead stacks on narrow mobile clients; Outlook desktop ignores this and keeps the two-column cover at full width. */
+  /* Masthead keeps the two-column magazine cover on mobile (matches desktop), scaled down to fit narrow screens. */
   @media only screen and (max-width:480px){
-    .mh-cell{display:block!important;width:100%!important;padding-left:0!important;padding-right:0!important;}
-    .mh-left{padding-bottom:22px!important;text-align:left!important;}
-    .mh-div{display:none!important;}
-    .mh-01{font-size:66px!important;}
+    .mh-band{padding:26px 16px 22px!important;}
+    .mh-left{width:38%!important;padding-left:0!important;padding-right:16px!important;text-align:right!important;}
+    .mh-right{padding-left:16px!important;}
+    .mh-01{font-size:52px!important;}
     .mh-01cell{height:auto!important;}
+    .mh-logo{width:104px!important;}
+    .mh-title{font-size:20px!important;line-height:1.18!important;}
+    .mh-divline{height:120px!important;}
   }
 </style>
 </head>
@@ -51,11 +54,11 @@
     </td></tr>
 
     <!-- Light masthead: 01 / date  |  logo / issue title -->
-    <tr><td style="background-color:#F5F0EB;padding:38px 34px 28px;">
+    <tr><td class="mh-band" style="background-color:#F5F0EB;padding:38px 34px 28px;">
       <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">
         <tr>
           <!-- Left: big 01 + date -->
-          <td width="210" valign="top" class="mh-cell mh-left" style="width:210px;vertical-align:top;padding-left:22px;padding-right:12px;text-align:right;">
+          <td width="210" valign="top" class="mh-left" style="width:210px;vertical-align:top;padding-left:22px;padding-right:24px;text-align:right;">
             <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">
               <tr><td height="119" class="mh-01cell" valign="bottom" style="height:119px;vertical-align:bottom;">
                 <div class="mh-01" style="font-family:Georgia,'Times New Roman',serif;font-size:82px;line-height:0.9;color:#3C1C3B;">01</div>
@@ -66,14 +69,14 @@
             </table>
           </td>
           <!-- Vertical divider -->
-          <td width="1" class="mh-div" style="width:1px;background-color:#D8CDBF;font-size:0;line-height:0;"><div style="width:1px;height:150px;font-size:0;line-height:0;">&nbsp;</div></td>
+          <td width="1" class="mh-div" style="width:1px;background-color:#D8CDBF;font-size:0;line-height:0;"><div class="mh-divline" style="width:1px;height:150px;font-size:0;line-height:0;">&nbsp;</div></td>
           <!-- Right: logo + issue title -->
-          <td valign="middle" class="mh-cell mh-right" style="vertical-align:middle;padding-left:26px;">
+          <td valign="middle" class="mh-right" style="vertical-align:middle;padding-left:24px;">
             <a href="https://eternallifehospice.com/care-brief/hospice-is-part-of-life-a-continuation-of-care" style="text-decoration:none;">
-              <img src="https://eternallifehospice.com/assets/logo-eternal-trans.png" alt="Eternal Life Hospice — Care That Honors Life" width="150" style="display:block;border:0;outline:none;width:150px;height:auto;padding-bottom:18px;">
+              <img src="https://eternallifehospice.com/assets/logo-eternal-trans.png" alt="Eternal Life Hospice — Care That Honors Life" width="150" class="mh-logo" style="display:block;border:0;outline:none;width:150px;height:auto;padding-bottom:18px;">
             </a>
             <div style="font-family:Arial,Helvetica,sans-serif;font-size:11px;font-weight:bold;letter-spacing:2.5px;text-transform:uppercase;color:#A07C36;padding-bottom:9px;">Issue One</div>
-            <div style="font-family:Georgia,'Times New Roman',serif;font-size:29px;line-height:1.15;color:#3C1C3B;">
+            <div class="mh-title" style="font-family:Georgia,'Times New Roman',serif;font-size:29px;line-height:1.15;color:#3C1C3B;">
               <a href="https://eternallifehospice.com/care-brief/hospice-is-part-of-life-a-continuation-of-care" style="color:#3C1C3B;text-decoration:none;">Hospice Is Part of Life</a>
             </div>
           </td>
