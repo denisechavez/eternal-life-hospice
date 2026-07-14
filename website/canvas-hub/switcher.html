@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ELH Command Center</title>
+<meta name="robots" content="noindex,nofollow">
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;font-family:'Jost','Segoe UI',Arial,sans-serif;background:#F5F0EB}
+.bar{background:#3E1F3E;display:flex;align-items:center;gap:6px;padding:10px 14px;flex-wrap:wrap}
+.brand{color:#F5F0EB;font-family:Georgia,'Times New Roman',serif;font-size:15px;letter-spacing:.04em;margin-right:14px;white-space:nowrap}
+.brand b{color:#C9B07E;font-weight:600}
+.tab{appearance:none;border:1px solid rgba(245,240,235,.25);background:transparent;color:rgba(245,240,235,.85);
+  font:600 13px 'Jost','Segoe UI',Arial,sans-serif;letter-spacing:.03em;padding:7px 16px;border-radius:20px;cursor:pointer;transition:all .2s}
+.tab:hover{border-color:#C9B07E;color:#fff}
+.tab.on{background:#C9B07E;border-color:#C9B07E;color:#2A0F28}
+.sub{background:#4A2A4A;display:none;align-items:center;gap:6px;padding:7px 14px;flex-wrap:wrap}
+.sub.show{display:flex}
+.sub button{appearance:none;border:none;background:transparent;color:rgba(245,240,235,.75);
+  font:500 12.5px 'Jost','Segoe UI',Arial,sans-serif;padding:5px 12px;border-radius:14px;cursor:pointer;transition:all .2s}
+.sub button:hover{color:#fff;background:rgba(245,240,235,.12)}
+.sub button.on{background:#F5F0EB;color:#3E1F3E;font-weight:600}
+.stage{position:absolute;inset:0;top:var(--top,52px);border:none}
+#frame{width:100%;height:100%;border:none;background:#fff;display:block}
+.hint{color:rgba(245,240,235,.55);font-size:11.5px;margin-left:auto;white-space:nowrap}
+</style>
+</head>
+<body>
+<div class="bar" id="bar">
+  <span class="brand">Eternal Life <b>Command Center</b></span>
+  <button class="tab on" data-tab="website">Website</button>
+  <button class="tab" data-tab="tracker">Outreach Tracker</button>
+  <button class="tab" data-tab="pubs">Publications</button>
+  <button class="tab" data-tab="emails">Emails</button>
+  <span class="hint">Internal preview — not part of the public site</span>
+</div>
+<div class="sub" id="sub-pubs">
+  <button data-url="/care-brief/hospice-is-part-of-life-a-continuation-of-care">Care Brief — Issue One</button>
+  <button data-url="/care-brief">Care Brief Library</button>
+  <button data-url="/family-guide">Family Guide</button>
+  <button data-url="/blog">Eternal Journal</button>
+</div>
+<div class="sub" id="sub-emails">
+  <button data-url="/canvas-hub/emails/eternal-care-brief-introduction-email.html">Intro Email (Campaign 1)</button>
+  <button data-url="/canvas-hub/emails/eternal-care-brief-new-issue-template.html">New-Issue Template</button>
+  <button data-url="/canvas-hub/emails/eternal-life-email-signature-aleksandra-dubina.html">Signature — Aleksandra</button>
+  <button data-url="/canvas-hub/emails/eternal-life-email-signature-TEMPLATE.html">Signature — Template</button>
+</div>
+<div class="stage" id="stage"><iframe id="frame" title="Selected view" src="/"></iframe></div>
+<script>
+(function(){
+  var TRACKER = location.protocol + "//" + location.hostname + ":3000/";
+  var frame = document.getElementById('frame');
+  var stage = document.getElementById('stage');
+  var tabs = document.querySelectorAll('.tab');
+  var subs = {pubs: document.getElementById('sub-pubs'), emails: document.getElementById('sub-emails')};
+
+  function layout(){
+    var h = document.getElementById('bar').offsetHeight;
+    var openSub = document.querySelector('.sub.show');
+    if(openSub) h += openSub.offsetHeight;
+    stage.style.top = h + 'px';
+  }
+
+  function pickSub(sub, btn){
+    sub.querySelectorAll('button').forEach(function(b){b.classList.toggle('on', b===btn);});
+    frame.src = btn.getAttribute('data-url');
+  }
+
+  tabs.forEach(function(t){
+    t.addEventListener('click', function(){
+      tabs.forEach(function(x){x.classList.toggle('on', x===t);});
+      Object.keys(subs).forEach(function(k){subs[k].classList.remove('show');});
+      var tab = t.getAttribute('data-tab');
+      if(tab === 'website'){ frame.src = '/'; }
+      else if(tab === 'tracker'){ frame.src = TRACKER; }
+      else { var sub = subs[tab]; sub.classList.add('show'); pickSub(sub, sub.querySelector('button')); }
+      layout();
+    });
+  });
+  Object.keys(subs).forEach(function(k){
+    subs[k].querySelectorAll('button').forEach(function(b){
+      b.addEventListener('click', function(){ pickSub(subs[k], b); });
+    });
+  });
+  window.addEventListener('resize', layout);
+  layout();
+})();
+</script>
+</body>
+</html>
