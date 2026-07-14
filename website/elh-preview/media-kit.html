@@ -102,9 +102,9 @@ body.scroll .page{position:relative;transform:none!important;opacity:1!important
 body.scroll .page::after{display:none}
 body.scroll .navbtn,body.scroll .indicator{display:none}
 @media(prefers-reduced-motion:reduce){
-  body.booklet .page{transition:opacity .3s ease}
-  body.booklet .page.is-turned{transform:none;opacity:0}
-  body.booklet .page::after{display:none}
+  /* page-turn is a user-initiated, essential interaction — keep a real (but quicker, gentler) book flip rather than a plain crossfade */
+  body.booklet .page{transition:transform .55s ease,box-shadow .55s ease}
+  body.booklet .page.is-turned::after{transition:opacity .45s ease}
 }
 /* page footer folio */
 .pfoot{position:absolute;left:0;right:0;bottom:0;display:flex;justify-content:space-between;
