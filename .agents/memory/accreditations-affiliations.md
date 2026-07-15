@@ -36,3 +36,9 @@ to the accreditor homepages, this section links to verification portals).
 - **How to apply:** if a stable per-org verified profile is later confirmed in a
   real browser, swap the portal link for it; never trust a curl/webFetch 200 on
   Care Compare (it's an SPA that returns 200 + welcome shell for bad ids).
+
+## Link re-verification log
+- **2026-07-15**: All three portal URLs confirmed live via real-browser screenshot.
+  Medicare Care Compare loads Hospice search ✅; CDPH Cal Health Find loads
+  database home ✅; ACHC Search Facilities loads facility grid ✅. No URL changes
+  needed. Next re-check recommended: ~October 2026.
