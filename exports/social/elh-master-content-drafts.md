@@ -4958,3 +4958,105 @@ The treatment is present. The image is still the image. The brand arrives throug
 
 The eye should land on the subject first. Then feel the brand in the color that surrounds it.
 
+
+---
+
+# PART TWENTY: THE FIVE — Visual Brand System
+
+*Five AI-generated images. Five words. A complete creative system built across the Care Brief monthly series.*
+
+---
+
+## The Five — Named Elements
+
+| Image | Label | Subject | Feeling |
+|---|---|---|---|
+| elh-amethyst.png | **The Stone** | Raw amethyst geode, violet crystal catching window light | Grounding. What doesn't move. |
+| elh-bowl.png | **The Energy** | Bronze singing bowl on cream linen, warm light | Vibration in a room. Resonance long after it stops. |
+| elh-pen.png | **The Word** | Gold-nib fountain pen on handwritten script | The care plan. The note. The call returned. |
+| elh-eye.png | **The Touch** | Macro amber iris, warm catchlight | Being looked at and not looked away from. |
+| elh-stillness.png | **Stillness.** | Single candle flame in absolute darkness | A state, not a thing. Arrives last. No "The." |
+
+**The distinction that must be preserved:** The first four carry "The" — they are acts, objects, forces. *Stillness* stands alone. It is a state. That difference in form is intentional and should never be corrected.
+
+---
+
+## The Mosaic Progression — Care Brief Monthly Schedule
+
+One image posted every other Care Brief month. Each month a new image stitches in, the mosaic grows.
+
+| Care Brief Month | Post Layout | What Appears |
+|---|---|---|
+| Month 1 | Single image, full frame | The Stone — amethyst alone, spare |
+| Month 3 | Two images, gold seam | + The Energy — first stitch |
+| Month 5 | Three images, asymmetric | + The Word — amethyst tall left, bowl+pen stacked right |
+| Month 7 | 2×2 grid | + The Touch — all four, gold crosshair seam, diamond at center |
+| Month 9 | 2×2 + wide bottom strip | + Stillness — candle spans full width below the four |
+
+---
+
+## Visual Design Specifications
+
+**Frame:** 1:1 square (1080×1080) for Instagram. 2:3 portrait tall pin for Pinterest.
+**Border:** 1.5px solid gold (#C9B07E) around full frame.
+**Header band:** Cream (#F5F0EB) — "ETERNAL CARE BRIEF" spaced caps left, italic gold month name right.
+**Footer band:** Deep plum (#2A0F28) — "Eternal Life Hospice" Fraunces left, "Care That Honors Life" Jost right.
+**Stitch lines:** 2px solid gold (#C9B07E) between images.
+**Stitch intersection (Month 7+):** Small gold diamond (10px, rotated 45°) at crosshair center.
+**Cell labels:** Jost 400, spaced caps, cream at 78% opacity, text-shadow for legibility — bottom-left of each cell.
+**Stillness label (Month 9):** Fraunces italic, large, centered in the candle strip — not bottom-left, centered.
+
+---
+
+## Source Files
+
+All files live in `website/elh-preview/assets/social/` (not published to the live site):
+
+| File | Description |
+|---|---|
+| elh-amethyst.png | The Stone image |
+| elh-bowl.png | The Energy image |
+| elh-pen.png | The Word image |
+| elh-eye.png | The Touch image |
+| elh-stillness.png | Stillness image |
+| mosaic-m1.html | Month 1 post card |
+| mosaic-m3.html | Month 3 post card |
+| mosaic-m5.html | Month 5 post card |
+| mosaic-m7.html | Month 7 post card |
+| mosaic-m9.html | Month 9 post card |
+| mosaic-pinterest.html | Pinterest tall pin — all five stacked |
+| amethyst-duotone.html | The Stone with duotone treatment |
+| bowl-wash.html | The Energy with plum color wash |
+| pen-graphic-pop.html | The Word with graphic pop |
+| eye-split.html | The Touch with color split |
+| stillness-card.html | Stillness standalone card |
+
+---
+
+## The Five as a Content System
+
+These five phrases live beyond the mosaic. Use them as:
+
+- **Caption openers:** *"The Stone. Some things hold."*
+- **Reel end cards:** white text on deep plum, one phrase centered
+- **Care Brief section headers:** in the email body, above each content block
+- **Story frames:** one word or phrase per frame, 5-frame Story sequence
+- **Pull quotes:** *"The Touch is not always a hand."*
+- **Website section dividers:** italic Fraunces, gold rule beneath
+
+---
+
+## The Full Series Caption (Month 9 post)
+
+> Five things we bring into every room.
+>
+> The Stone. The Energy. The Word. The Touch.
+>
+> And then — when everything else has been said and done —
+>
+> Stillness.
+>
+> This is what The Eternal Standard looks like from the inside.
+>
+> — Eternal Life Hospice
+
