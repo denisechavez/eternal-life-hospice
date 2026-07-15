@@ -196,3 +196,65 @@ a delay — so a **third pass is still needed** once the HCAI/CDPH filing lands.
    is closed/merged (biggest local-ranking lever, and account-only).
 3. **Re-run this verification a third time** once the HCAI filing is confirmed
    landed (likely several more weeks), since that's what unblocks the directories.
+
+---
+---
+
+## Third verification pass
+
+**Re-checked:** July 15, 2026 (live web fetch, same method as prior passes).
+**Pages fetched directly:** hcai.ca.gov facility page · hospice.io listing ·
+hospicematch.com listing · hospicecarenow.com listing.
+
+### Bottom line — HCAI filing has not landed; all directories unchanged
+
+**No change since the second pass.** The HCAI state record still shows the old
+Agoura Road address, which confirms the address-update filing with HCAI/CDPH
+has **not yet been processed**. Because the three hospice directories (hospice.io,
+hospicematch, hospicecarenow) pull from that state record, they all still show
+Agoura Road too — exactly as expected while the upstream filing is pending.
+
+A **fourth check is needed once the HCAI/CDPH filing is confirmed received and
+processed** by the state (can take several additional weeks after submission).
+
+### Result by listing (third check — live fetches, July 15, 2026)
+
+| Listing | Live state | Change since 2nd pass? |
+|---|---|---|
+| **HCAI** (hcai.ca.gov, ID 406560025) | Still **30941 Agoura Rd, Westlake Village, CA 91361**, status **Open** | ❌ no change — filing not yet processed |
+| **hospice.io** | Still **30941 Agoura Road, Suite 112, Westlake Village, CA 91361**; phone still garbled **"(80-5) -953-7273"** | ❌ no change |
+| **hospicematch.com** | Still **30941 Agoura Road, Suite 112, Westlake Village, CA 91361**; banner still **"This listing is not yet verified."** | ❌ no change |
+| **hospicecarenow.com** | Still **30941 AGOURA ROAD, SUITE 112, Westlake Village, CA 91361** | ❌ no change |
+| **BBB** (bbb.org) | Not re-fetched this pass; previously confirmed correct | ✅ carry-forward |
+| **Yelp** | Separate company — not touched, as confirmed in pass 1 | ✅ no action |
+| **Google Business Profile** | Not verifiable from outside; search view was correct in prior passes | ⚠️ unconfirmed (needs sign-in) |
+| **Bing Places / Apple Business Connect** | Not verifiable without signing into the accounts | ⚠️ unconfirmed |
+| **caring.com** | Not re-fetched this pass; still not listed as of pass 2 | ⬜ still not listed |
+
+> **hospice.io listing URL confirmed:** https://hospice.io/care/eternal-life-hospice-inc-westlake-village-ca/
+> (the city-level URL used in prior passes returned a 404; the provider-level URL above is the live, correct page).
+
+### Updated checklist (third-check status)
+
+- [ ] HCAI (hcai.ca.gov) — **still Agoura Rd / 91361**; CDPH/HCAI address-update filing has NOT processed yet (upstream blocker)
+- [ ] hospice.io — **still Agoura Rd + garbled phone "(80-5) -953-7273"**; listing URL: hospice.io/care/eternal-life-hospice-inc-westlake-village-ca/
+- [ ] hospicematch.com — **still Agoura Rd + unverified**
+- [ ] hospicecarenow.com — **still Agoura Rd**
+- [ ] Google Business Profile — search view was correct; duplicate "Inc." closure/merge still unconfirmed (needs sign-in)
+- [ ] Bing Places — unconfirmed (needs sign-in)
+- [ ] Apple Business Connect — unconfirmed (needs sign-in)
+- [ ] caring.com — still not listed
+- [x] BBB — name + phone correct (address hidden by BBB, which is normal)
+- [x] Yelp — separate company, correctly left untouched
+
+### What to do next
+
+1. **HCAI/CDPH filing status** — confirm with your licensing/compliance contact
+   that the address-update filing was actually submitted, and ask for the
+   expected processing timeline. Nothing downstream (hospice.io, hospicematch,
+   hospicecarenow) will self-correct until that state record flips.
+2. **Google Business Profile** — sign in and confirm the duplicate **"Eternal
+   Life Hospice, Inc."** listing is closed or merged (the single action with
+   the biggest local-ranking impact, and the one that can't be done from outside).
+3. **Run a fourth pass** once the HCAI filing is confirmed processed — that is
+   when the directories are expected to update.
