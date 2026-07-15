@@ -1115,3 +1115,9 @@ id = "JeCqsAWM2tCKcWnlC_jKc"
 uri = "file://website/elh-preview/assets/downloads/eternal-life-referral-card-digital.pdf"
 type = "pdf"
 title = "Referral Card (front + back)"
+
+[[outputs]]
+id = "R0NZgFtISKTqg_PABNhUQ"
+uri = "file://exports/social/elh-master-content-drafts.md"
+type = "text"
+title = "ELH Master Content Drafts — Complete Library"
