@@ -175,9 +175,10 @@ nav a:hover{color:var(--gold)}
 .hero-inner{max-width:620px}
 .hero h1{color:var(--cream);margin-bottom:1.5rem;text-wrap:balance}
 .hero h1 em{font-style:italic;color:var(--gold)}
+.hero-tagline{font-family:var(--serif);font-weight:300;font-size:clamp(2.6rem,6vw,4.2rem);line-height:1.15;text-wrap:balance;color:var(--cream);margin-bottom:1.5rem}
+.hero-tagline em{font-style:italic;color:var(--gold)}
 .hero-lead{font-size:20px;line-height:1.8;color:rgba(245,240,235,.8);margin-bottom:1rem;max-width:480px}
 .hero-sub{font-size:17px;color:rgba(245,240,235,.6);margin-bottom:2rem;max-width:460px;line-height:1.7}
-.hero-tagline{font-family:var(--ff-d);font-style:italic;font-size:1.15rem;color:var(--gold);margin-bottom:2rem}
 .hero-btns{display:flex;gap:1rem;flex-wrap:wrap;margin-bottom:2.25rem}
 .hero-pills{display:flex;gap:.6rem;flex-wrap:wrap}
 .hpill{border:1px solid rgba(255,255,255,.18);border-radius:20px;padding:.32rem 1rem;font-size:12.5px;font-weight:600;color:rgba(255,255,255,.65)}
@@ -924,7 +925,7 @@ p,li,blockquote{text-wrap:pretty}
     "https://x.com/eternallifehosp",
     "https://maps.google.com/?cid=9771388271577679785"
   ],
-  "medicalSpecialty": "http://schema.org/Hospice",
+  "medicalSpecialty": "https://schema.org/Hospice",
   "isAccreditedBy": [
     {
       "@type": "Organization",
@@ -1008,15 +1009,7 @@ p,li,blockquote{text-wrap:pretty}
   "@context": "https://schema.org",
   "@type": "WebSite",
   "name": "Eternal Life Hospice",
-  "url": "https://eternallifehospice.com",
-  "potentialAction": {
-    "@type": "SearchAction",
-    "target": {
-      "@type": "EntryPoint",
-      "urlTemplate": "https://eternallifehospice.com/?s={search_term_string}"
-    },
-    "query-input": "required name=search_term_string"
-  }
+  "url": "https://eternallifehospice.com"
 }</script>
 <script type="application/ld+json">{
   "@context": "https://schema.org",
@@ -1180,8 +1173,8 @@ p,li,blockquote{text-wrap:pretty}
   <div class="hero-overlay"></div>
     <div class="hero-content">
     <div class="hero-inner">
-      <div class="eyebrow gold-c">Hospice Care · Ventura &amp; Los Angeles Counties</div>
-      <h1>Care That<br><em>Honors Life</em></h1>
+      <h1 class="eyebrow gold-c">Hospice Care · Ventura &amp; Los Angeles County, CA</h1>
+      <p class="hero-tagline">Care That<br><em>Honors Life</em></p>
       <p class="hero-lead">Physician-led, independent hospice care with whole-person comfort for patients and families — at home and in care settings.</p>
       <p class="hero-sub">Independent, physician-led, Medicare-certified and ACHC-accredited across Ventura and Los Angeles Counties — with same-day admissions when clinically appropriate, 24/7 on-call support, and integrative therapies included in every care plan at no additional expense.</p>
 
