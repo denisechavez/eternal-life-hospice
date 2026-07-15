@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,400;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<title>Stillness</title>
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 100vw; height: 100vh; overflow: hidden; background: #0d0408; }
+
+  .card {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+  }
+
+  .photo {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    filter: brightness(0.88) contrast(1.1) saturate(0.85);
+  }
+
+  /* Deep vignette — pulls focus to the flame */
+  .vignette {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 50% 48%, transparent 22%, rgba(10,3,10,0.55) 55%, rgba(10,3,10,0.88) 100%);
+  }
+
+  /* Bottom fade for text */
+  .fade {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 45%;
+    background: linear-gradient(transparent, rgba(10,3,10,0.85));
+  }
+
+  /* Text — very spare */
+  .content {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    padding: 5vh 7vw 6.5vh;
+    display: flex;
+    flex-direction: column;
+    gap: 1.4vh;
+  }
+
+  .word {
+    font-family: 'Fraunces', serif;
+    font-weight: 300;
+    font-style: italic;
+    font-size: 9vw;
+    line-height: 1;
+    color: #F5F0EB;
+    letter-spacing: -0.01em;
+  }
+
+  .rule {
+    width: 4vw;
+    height: 1.5px;
+    background: #C9B07E;
+    margin-top: 0.4vh;
+  }
+
+  .sub {
+    font-family: 'Jost', sans-serif;
+    font-weight: 300;
+    font-size: 1.7vw;
+    color: rgba(201,176,126,0.7);
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+
+  /* Logo — top left, very quiet */
+  .logo {
+    position: absolute;
+    top: 5vh;
+    left: 7vw;
+    font-family: 'Fraunces', serif;
+    font-weight: 300;
+    font-size: 1.9vw;
+    color: rgba(245,240,235,0.45);
+    letter-spacing: 0.06em;
+  }
+</style>
+</head>
+<body>
+<div class="card">
+  <img class="photo" src="elh-stillness.png" alt="Candle flame">
+  <div class="vignette"></div>
+  <div class="fade"></div>
+  <div class="logo">Eternal Life Hospice</div>
+  <div class="content">
+    <h1 class="word">Stillness.</h1>
+    <div class="rule"></div>
+    <p class="sub">The Eternal Standard</p>
+  </div>
+</div>
+</body>
+</html>

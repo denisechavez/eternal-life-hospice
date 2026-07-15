@@ -132,6 +132,12 @@ uri = "file://artifacts/mockup-sandbox/public/images/elh-eye.png"
 type = "image"
 title = "eye iris macro warm light"
 
+[[generated]]
+id = "0J5PsCaf9t6vLoTJDBTki"
+uri = "file://artifacts/mockup-sandbox/public/images/elh-stillness.png"
+type = "image"
+title = "candle flame stillness dark warm"
+
 [[outputs]]
 id = "qLfrLYeW6vnnXMfZ4rxbP"
 uri = "file://attached_assets/ELH-QR_eternallifehospice_cream.png"
