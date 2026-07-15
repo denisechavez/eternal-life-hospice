@@ -6,9 +6,9 @@
 **Method:** live web fetch + search of each listing on July 14, 2026 (public,
 un-authenticated view — the same view a searcher or Google sees).
 
-> **⚠️ A second re-verification pass has been added at the bottom of this file
-> — see [Re-verification pass](#re-verification-pass). The summary below is the
-> *first* pass; the re-check has the most current live status.**
+> **⚠️ Four verification passes have been completed. The [Fourth verification
+> pass](#fourth-verification-pass) section at the bottom has the most current
+> live status. The summary immediately below is the *first* pass only.**
 
 ---
 
@@ -258,3 +258,75 @@ processed** by the state (can take several additional weeks after submission).
    the biggest local-ranking impact, and the one that can't be done from outside).
 3. **Run a fourth pass** once the HCAI filing is confirmed processed — that is
    when the directories are expected to update.
+
+---
+---
+
+## Fourth verification pass
+
+**Re-checked:** July 15, 2026 (live web fetch, same method as prior passes).
+**Pages fetched directly:** hcai.ca.gov facility page · hospice.io listing ·
+hospicematch.com listing · hospicecarenow.com listing.
+
+> **URL updates noted this pass:** Several directory URLs changed since the
+> third pass. Correct current URLs are recorded in the results table below and
+> should be used for all future checks.
+
+### Bottom line — HCAI filing still has not landed; directories unchanged
+
+**No change since the third pass.** The HCAI state record still shows the old
+**30941 Agoura Road / 91361** address, confirming the address-update filing with
+HCAI/CDPH has **not yet been processed**. Because the three hospice directories
+(hospice.io, hospicematch, hospicecarenow) pull their data from that state
+record, all three still show the old address as well — exactly as expected while
+the upstream filing is pending.
+
+Since HCAI has not yet flipped, manual edits directly on the directories would
+be premature — they would simply be overwritten the next time those sites
+re-sync from the state record. **The HCAI filing remains the gate.** No manual
+directory work is unblocked until the state record shows the Thousand Oaks Blvd
+address.
+
+### Result by listing (fourth check — live fetches, July 15, 2026)
+
+| Listing | Current URL | Live state | Change since 3rd pass? |
+|---|---|---|---|
+| **HCAI** (hcai.ca.gov, ID 406560025) | https://hcai.ca.gov/facility/eternal-life-hospice-inc/ | Still **30941 Agoura Rd, Westlake Village, CA 91361**, Facility Status: **Open** | ❌ no change — filing not yet processed |
+| **hospice.io** | https://hospice.io/care/eternal-life-hospice-inc-westlake-village-ca/ | Still **30941 Agoura Road, Suite 112, Westlake Village, CA 91361**; phone still garbled **"(80-5) -953-7273"** | ❌ no change |
+| **hospicematch.com** | https://www.hospicematch.com/hospices/eternal-life-hospice-inc *(URL changed from prior pass)* | Still **30941 Agoura Road, Suite 112, Westlake Village, CA 91361**; banner still **"This listing is not yet verified."** | ❌ no change (URL updated) |
+| **hospicecarenow.com** | https://www.hospicecarenow.com/united-states/california/westlake-village/eternal-life-hospice *(URL changed from prior pass)* | Still **30941 AGOURA ROAD, SUITE 112, Westlake Village, CA 91361** | ❌ no change (URL updated) |
+| **BBB** (bbb.org) | Not re-fetched this pass; previously confirmed correct | ✅ carry-forward |  |
+| **Yelp** | Separate company — not touched, as confirmed in pass 1 | ✅ no action |  |
+| **Google Business Profile** | Not verifiable from outside; search view was correct in prior passes | ⚠️ unconfirmed (needs sign-in) |  |
+| **Bing Places / Apple Business Connect** | Not verifiable without signing into the accounts | ⚠️ unconfirmed |  |
+| **caring.com** | Not re-fetched this pass; still not listed as of pass 2 | ⬜ still not listed |  |
+
+### Updated checklist (fourth-check status)
+
+- [ ] HCAI (hcai.ca.gov) — **still Agoura Rd / 91361**; CDPH/HCAI address-update filing has NOT processed yet *(upstream blocker — nothing below unblocks until this flips)*
+- [ ] hospice.io — **still Agoura Rd + garbled phone "(80-5) -953-7273"**; manual edit unblocked only after HCAI flips
+- [ ] hospicematch.com — **still Agoura Rd + unverified**; manual claim/edit unblocked only after HCAI flips
+- [ ] hospicecarenow.com — **still Agoura Rd**; manual correction unblocked only after HCAI flips
+- [ ] Google Business Profile — search view was correct; duplicate "Inc." closure/merge still unconfirmed (needs sign-in)
+- [ ] Bing Places — unconfirmed (needs sign-in)
+- [ ] Apple Business Connect — unconfirmed (needs sign-in)
+- [ ] caring.com — still not listed
+- [x] BBB — name + phone correct (address hidden by BBB, which is normal)
+- [x] Yelp — separate company, correctly left untouched
+
+### What to do next
+
+1. **HCAI/CDPH filing is the gate.** Confirm with your licensing/compliance
+   contact that the address-update filing was actually submitted. Until the
+   state record at hcai.ca.gov/facility/eternal-life-hospice-inc/ shows
+   4165 E Thousand Oaks Blvd, Suite 325B, Westlake Village, CA 91362,
+   none of the three hospice directories will self-correct.
+2. **Once HCAI flips** — immediately claim/edit the three directories manually:
+   - **hospice.io** — edit address and fix the garbled phone format
+   - **hospicematch.com** — claim the listing (still unverified) and update address
+   - **hospicecarenow.com** — correct the address
+3. **Google Business Profile** — sign in and confirm the duplicate **"Eternal
+   Life Hospice, Inc."** listing is closed or merged (account-only action with
+   the biggest local-ranking impact; does not depend on HCAI).
+4. **Run a fifth pass** after the HCAI flip and after manual directory edits
+   are submitted, to confirm the corrected addresses have published.
