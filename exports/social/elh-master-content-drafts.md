@@ -3449,3 +3449,212 @@ Founder & CEO, Eternal Life Hospice
 *24 posts. 8 weeks. 3 per week. Every post is ready to copy, paste, add a photo, and publish.*
 *After Week 8, cycle back through with seasonal adjustments or rotate new topics from the "Did You Know" library in Part 9.*
 
+
+---
+
+# PART TWELVE: ACQUISITION-READY CONTENT STRATEGY — Voice-Led, Brand-Centered
+
+*Strategic note: This section supersedes the on-camera production approach in Parts 1–10. All video content shifts to voiceover narration over still image overlays. Aleksandra's voice is the brand anchor — not her face. The brand survives any ownership transition.*
+
+---
+
+## Why This Matters for the Sale
+
+A 12–18 month acquisition timeline requires one thing above all else in marketing: **transferable brand equity**.
+
+If the brand is "Aleksandra Dubina," the brand does not transfer. A buyer assumes she leaves. The audience dissipates. The value disappears. The EBITDA multiple gets discounted or the deal requires her earnout at the keyboard for three years.
+
+If the brand is **Eternal Life Hospice** — its voice, its standard, its credentials, its content library — it is an asset. A buyer acquires a functioning marketing engine with a recognizable institutional identity. That engine continues producing leads, referrals, and census growth after close.
+
+**The pivot:**
+- Aleksandra's voice = the narration. It is warm, authoritative, and recognizable.
+- Aleksandra's face = not on screen. The brand is not a person.
+- The Eternal Standard, the four pillars, the credentials = transferable institutional identity.
+- The team members (nurse, social worker, chaplain, etc.) = still on camera. They humanize the care without creating key-person dependency.
+- After the sale, a buyer can re-record voiceover with a new narrator and nothing structural changes.
+
+---
+
+## The Production Format — Voice + Still Overlays
+
+### What this looks like:
+- Aleksandra (or a professional voiceover artist) records audio narration
+- CapCut layers the audio over still images, brand graphics, and slow-motion text overlays
+- No face on camera. No talking head. No dependency on anyone's appearance.
+- The result looks and feels like a premium documentary or editorial brand — not a personal vlog
+
+### Why this works better than on-camera, strategically:
+1. **No key-person signal** — social channels don't feel like a personal brand
+2. **Easier to produce** — no filming days, no lighting setup, no makeup, no retakes
+3. **Scales without her** — any team member can record a script; voiceover artists can be hired
+4. **Higher perceived production value** — still + voice + text overlays look editorial, not amateur
+5. **Platform-native** — this is how the best brand accounts (hospitals, institutions, publications) operate on Instagram and LinkedIn
+
+---
+
+## Production Workflow — CapCut Voiceover + Still Overlay
+
+### Step 1: Record the voiceover
+- Voice memo on iPhone, quiet room, door closed
+- Read the script once slowly (the pace feels too slow in the room; it is correct on video)
+- No intro. Start with the first real sentence.
+- Save as .m4a or .mp3
+
+### Step 2: Build in CapCut
+1. New project → add a black or brand-plum background as the base
+2. Import voiceover audio as the primary audio track
+3. Add still images from the site photo library, one per paragraph or thought
+   - Set each still to "Ken Burns" (slow zoom/pan) — makes stills feel alive
+   - 4–8 seconds per image is typical
+4. Add text overlays: key phrases from the script appear on screen as they are spoken
+   - Font: Fraunces for headlines, Jost for body text
+   - Color: cream #F5F0EB on plum background, or plum text on cream
+5. Add the logo as a watermark: bottom right, 20% opacity
+6. Add the lower-third text at the end: "Eternal Life Hospice · 805.953.7273 · eternallifehospice.com"
+7. Export at 1080×1920 (vertical/Reels) or 1920×1080 (horizontal/LinkedIn/YouTube)
+
+### Step 3: Canva for the text overlay slides
+- Create 3–5 "title card" slides in Canva (brand colors, Fraunces headline, short phrase)
+- Export as .png and drop into CapCut between still photos
+- These act as visual chapter markers through the video
+
+### Step 4: Caption + post
+- Caption is pre-written in this document
+- Add hashtags, tag location (Westlake Village, CA), publish
+
+---
+
+## Which Scripts Work As-Is for Voiceover
+
+Every script in Parts 1–10 was written in first-person narration. They all work as voiceover — no rewrites needed. The only instruction change: **"Aleksandra on camera"** becomes **"Aleksandra voiceover."**
+
+Below is a production note for each script block:
+
+---
+
+### Part 1 — Aleksandra Video Scripts (Scripts 1–12)
+**Production note:** All 12 scripts work as voiceover over still overlays.
+- Scripts 1, 4, 5 → pair with: back-to-the-earth-hero.jpg, the-circle-around-you.jpg (nature, warmth)
+- Scripts 3, 9 → pair with: first-48-hours.jpg, comfort-therapies.jpg (process, care)
+- Scripts 7, 8 → pair with: music-therapy.jpg, volunteer.jpg (specific modalities)
+- Scripts 2, 10 → pair with: talking-with-children.jpg, when-is-it-time.jpg (family, decision)
+- Scripts 6, 11 → pair with: the-circle-around-you.jpg, end-of-life-doula.jpg (caregiver, meaning)
+- Script 12 → pair with: comfort-therapies.jpg + any detail photo (detail, precision)
+
+---
+
+### Part 8 — Industry Differentiation (Scripts 17–22)
+**Production note:** These are the strongest acquisition-period content. Institutional, not personal. Voice over brand graphics.
+- Scripts 17, 20 → credential graphics (dark plum background, gold text, ACHC seal)
+- Scripts 18, 19 → text-heavy overlays (the questions appearing on screen as spoken)
+- Script 21 → four-pillar graphic sequence (one pillar per slide, voiceover moves through each)
+- Script 22 → clean, minimal — voiceover only with the ELH logo and "Medicare-Certified · CDPH-Licensed · ACHC-Accredited" holding on screen
+
+---
+
+### Part 9 — Character Library (Team Members)
+**Production note:** Team members (nurse, social worker, chaplain, aide, music therapist, doula, volunteer, intake) appear on camera. They are NOT the owner. They create no key-person dependency. These are the most acquisition-safe video assets in the library — they humanize the brand while keeping it institutional.
+
+**Keep all team character content on-camera.**
+The "Did You Know" scripts in Part 9 can be delivered by team members or as voiceover.
+
+---
+
+### Part 10 — Founder Credentials (Scripts 23–26)
+**Strategic adjustment:** These scripts are still valuable — but reframe delivery.
+
+| Script | Original | Acquisition-safe version |
+|---|---|---|
+| Script 23 — "Why I Stayed" | Aleksandra on camera | Aleksandra voiceover over nature/care imagery |
+| Script 24 — "Physician-Led" | Aleksandra on camera | Voiceover over credential graphics + physician in the background (non-identified) |
+| Script 25 — "Female-Owned" | Aleksandra on camera | Voiceover over brand graphic with "Independent · Female-Owned · Physician-Led" on screen |
+| Script 26 — "Two Decades" | Aleksandra on camera | Voiceover over care imagery — the voice carries the authority; no face needed |
+
+**Credential-forward approach:** Post credentials visually. Let the voice narrate. The brand is the standard, not the founder.
+
+---
+
+## The Institutional Voice Style Guide
+
+**Who is speaking in every video:**
+Not "Aleksandra, founder." The institutional voice of Eternal Life Hospice.
+
+Even when Aleksandra records the narration, the framing is:
+> "At Eternal Life Hospice, we..."
+> "Here is what our team does..."
+> "Families who work with us tell us..."
+
+Not:
+> "I started this because..." (use sparingly — only in the founder-origin context)
+> "My team..." (use "our team")
+> "When I..."  (minimize first-person singular wherever possible)
+
+This is not about hiding who built it. It is about building an institution that exists beyond the person who founded it.
+
+---
+
+## The "Eternal Voice" — Narration Style
+
+Whether Aleksandra records or a professional voiceover artist is used later:
+
+- **Pace:** Slower than feels natural. Let sentences breathe.
+- **Tone:** Warm, measured, authoritative. Not clinical. Not corporate. The voice of someone who has been in this work for eleven years and is not afraid of it.
+- **No filler:** No "um," no "so," no "you know." Record multiple takes if needed.
+- **The pause:** Allow a 1-second pause at the end of key statements before continuing. The pause is intentional — it lets the sentence land.
+- **Emotional register:** Calm grief is welcome. Sentimentality is not. This is sacred work, not sad work.
+
+---
+
+## Team-On-Camera Content — The Safe Roster
+
+These team members appear on camera with zero acquisition risk:
+
+| Character | Why they're safe |
+|---|---|
+| Registered Nurse | Clinical employee — transitions with the agency |
+| Social Worker | Clinical employee — transitions with the agency |
+| Chaplain | Clinical employee — transitions with the agency |
+| Hospice Aide | Clinical employee — transitions with the agency |
+| Music Therapist | Clinical employee — transitions with the agency |
+| End-of-Life Doula | Clinical employee — transitions with the agency |
+| Volunteer | Community member — no dependency |
+| Intake Coordinator | Administrative employee — transitions |
+
+**The team is the face of the care. The founder is the voice of the standard.**
+
+---
+
+## GBP, LinkedIn, and Long-Form Content — No Change
+
+Google Business Profile posts, LinkedIn written posts, and The Eternal Care Brief are institution-branded from day one. No adjustments needed — they already carry the brand, not a person.
+
+---
+
+## Content Architecture Summary — Acquisition-Ready
+
+| Content type | Format | Brand signal |
+|---|---|---|
+| Short-form video (TikTok, Reels) | Voiceover + stills + text overlay | Eternal Life Hospice |
+| Long-form video (YouTube, LinkedIn) | Voiceover + stills OR team on camera | Eternal Life Hospice |
+| Team interviews | On-camera (team members) | The care team, not the founder |
+| Written posts (LinkedIn, Facebook) | Institution-branded, first-person "we" | Eternal Life Hospice |
+| GBP posts | Institution-branded | Eternal Life Hospice |
+| The Care Brief | Publication — institution-branded | Eternal Life Hospice |
+| Instagram Stories | Brand graphics + voiceover | Eternal Life Hospice |
+
+---
+
+## The 12–18 Month Marketing Objective, Restated
+
+Every piece of content produced in this window serves two goals simultaneously:
+
+**Goal 1 — Census growth.** More referrals. More families who call. More patients admitted. Higher revenue. Better EBITDA. A stronger acquisition multiple.
+
+**Goal 2 — Brand equity transfer.** Every post, every video, every GBP update builds equity in "Eternal Life Hospice" — not in a person. By the time of sale, a buyer acquires a recognized, trusted, independently-branded hospice with a content engine that continues producing without any one person at the center.
+
+**The voice is the bridge.** Aleksandra's narration builds the brand now. The brand outlasts the narrator.
+
+---
+
+*All content in Parts 1–11 remains valid. Apply the voiceover production format throughout. Team members stay on camera. The brand is the institution.*
+
