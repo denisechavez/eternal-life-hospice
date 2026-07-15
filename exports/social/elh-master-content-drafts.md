@@ -4149,3 +4149,307 @@ This is the work. This is the hospice journey. This is what the amethyst means.
 
 *The amethyst is the origin. Everything else — the Eternal Standard, the four pillars, the full modality stack, the credentials — flows from this: the conviction that the hardest hours deserve the steadiest care. Say it carefully. Let it land.*
 
+
+---
+
+# PART FIFTEEN: THE VISUAL & EMOTIONAL BRAND STANDARD — Premium, Relatable, Safe, Protected, Loved
+
+*Every image posted under the Eternal Life Hospice name must make someone feel something before they read a single word. The feeling comes first. The words confirm it. This is the standard.*
+
+---
+
+## The Five-Word Emotional Brief
+
+Every photograph, every video still, every graphic must pass through five filters before it posts:
+
+**Safe.** Does this image feel like a place where nothing unexpected will happen to you? Where someone knows what they are doing and will not leave?
+
+**Protected.** Does this convey clinical confidence — not cold, but steady? The feeling that experts are present and accountable?
+
+**Loved.** Not professionally served. Actually loved. Seen. Known. Cared for in the specific, particular way that only happens when someone pays real attention.
+
+**Premium.** Is the quality — the light, the composition, the color — worthy of a family's trust at the most significant moment of their lives?
+
+**Relatable.** Does it feel real? Not staged. Not stock. Not a brochure. Does it feel like it was made by someone who has actually been in this room?
+
+*If an image passes all five: post it. If it fails any one of them: do not.*
+
+---
+
+## What Premium Looks Like — Without Feeling Cold
+
+Premium in healthcare often means clinical. White. Sterile. Distance. That is not this.
+
+Premium at Eternal Life Hospice means:
+
+- **Light that is warm, not white.** Golden hour. Window light. The soft diffusion of natural light through a curtain — not overhead fluorescent, not flash, not overexposed.
+- **Color that is intentional.** Deep plum. Warm gold. Off-white cream. These colors should appear in the image itself — in a blanket, a notebook, a piece of furniture — not just in the graphic overlay.
+- **Composition that is close.** The detail over the panorama. Hands over a wide room shot. The singular object over the cluttered surface. Premium feels curated — like someone chose exactly this, and only this, to show.
+- **No stock photography.** Ever. Stock imagery reads as distrust. A family in a hospice moment does not look like a Getty image. Real photographs of real spaces, real hands, real objects — always.
+- **Negative space is allowed.** A photo does not need to fill every pixel. A hand against a soft background. A stone on a plain surface. Empty space communicates calm — and calm is what a family in this season needs to feel.
+
+---
+
+## What Relatable Looks Like — Without Feeling Amateur
+
+Relatable does not mean low quality. It means genuine.
+
+- **Real imperfection is welcome.** A slightly warm color cast. A soft focus on the background. Natural variation in light. These signal: a real person made this.
+- **Specific details, not generic ones.** Not "a bouquet of flowers." A specific amethyst stone on a specific desk. Not "a person in a hospital bed." A hand resting on a blanket that has a pattern someone chose.
+- **Human signals in every image.** Hands. A pen. A worn notebook. A cup of tea. An open book. These say: a real person is here. You will not be alone.
+- **The POV signal.** Images taken from a human vantage point — not from above, not from a distance, but from the height of someone sitting beside you — feel intimate and relatable automatically.
+
+---
+
+## Color Temperature Standard — For Every Platform
+
+**The ELH palette in photographs:**
+
+| Element | What it looks like in an image |
+|---|---|
+| Deep plum (#2A0F28) | Dark backgrounds, shadows, the amethyst stone itself |
+| Plum (#5B2E59) | Warm mid-tones, fabric, soft color accents |
+| Gold (#C9B07E) | Warm light source, golden hour, candle, lamp |
+| Cream (#F5F0EB) | Skin tones (warm), paper, linen, soft surfaces |
+| Warm shadow | Never cool-gray shadows — always warm, slightly purple-brown |
+
+**Editing direction (Lightroom / CapCut / VSCO):**
+- Raise the warmth 10–15 points from default
+- Bring highlights down slightly (keeps skin tones from blowing out)
+- Lift shadows slightly (removes harshness, adds softness)
+- Add a very slight purple tint to the shadows (honors the plum palette)
+- Reduce clarity slightly (softens texture without losing sharpness)
+- No desaturation — the colors should feel rich, not faded
+- No filters that cool the image
+
+**The feeling of the color grade:** Warm. Amber. The light in a room at late afternoon. The glow of a lamp in the evening. Comfort. Not clinical. Not cold.
+
+---
+
+## Platform-by-Platform Visual Standards
+
+### INSTAGRAM FEED — The Gallery
+*Every post is a painting. The grid is a collection.*
+
+**The standard:** When someone lands on the account, the grid should feel like walking into a quiet room — warm, coherent, intentional. Nothing jarring. Nothing cold.
+
+**Grid visual rules:**
+- Alternate between: photo posts / text-on-color posts / close-up detail shots
+- Every third post: the deep plum background with gold or cream text (the amethyst color)
+- Never two consecutive white-background posts
+- Never two consecutive clinical/process posts — always break with warmth
+
+**Photo selection for feed:**
+Every feed photo should have at least one of these:
+- A warm light source visible or implied (window, lamp, golden hour)
+- The plum or gold palette present in the image itself (not only in the overlay)
+- A human signal (hands, an object, a texture that implies presence)
+- Negative space — room to breathe
+
+**The feeling:** This is a gallery curated by someone with taste, care, and years of experience. You feel safe here.
+
+---
+
+### INSTAGRAM STORIES — The Window
+*Stories are the inside view. Less polished than the feed. More immediate. More real.*
+
+**The standard:** Stories should feel like Aleksandra (or a team member) is speaking directly to you. Not broadcasting. Talking.
+
+**Visual rules for Stories:**
+- Use the brand template (deep plum or cream background, Fraunces headline, Jost body)
+- Polls, questions, and sliders — always brand-colored, never the default Instagram colors
+- Behind-the-scenes footage: handheld is fine. Slightly imperfect is fine. Too dark is not.
+- Close-ups of the amethyst, the desk, the hands — these work perfectly in Stories format
+- Text-only Stories in brand colors are often the most powerful
+
+**The feeling:** You are seeing something real. You are trusted with the inside view.
+
+---
+
+### TIKTOK & REELS — The Voice That Moves
+*Short. Immediate. The voice carries the weight — the visuals carry the warmth.*
+
+**The standard:** Each video must hook visually in the first half-second — before the voice begins. The first frame must be beautiful or striking enough to stop a scroll.
+
+**First-frame options:**
+- The amethyst stone in golden light
+- Close-up hands on paper, pen about to write
+- A comfort therapy in progress (singing bowl, hands in massage position)
+- Deep plum gradient with a single line of gold text
+- A window with warm light flooding a quiet room
+
+**Visual pacing:**
+- Still image: 4–6 seconds each (Ken Burns slow zoom keeps them alive)
+- Text appearing: sync to the voice — words appear as they are spoken
+- Maximum 3–4 different images per 60-second video (more feels restless)
+- End frame: always the logo + phone number on deep plum
+
+**The feeling:** Premium editorial. Like a documentary about something important.
+
+---
+
+### LINKEDIN — The Publication
+*LinkedIn is where healthcare professionals encounter this brand. It must feel like reading something worth their time.*
+
+**The standard:** LinkedIn posts should feel like an excerpt from a serious, thoughtful publication — The Eternal Care Brief itself. Clinical authority delivered with human warmth.
+
+**Visual rules:**
+- The featured image for every post: horizontal, high resolution, brand-colored
+- Document posts (carousel PDFs): plum background, gold headline, cream body text — every slide
+- Video thumbnails: always the amethyst gradient or a specific warm photo from the library — never a freeze-frame of a hand mid-gesture
+- The Aleksandra credential card (her bio block in brand colors) appears at the end of every founder-voice post
+
+**The feeling:** This person knows what they are talking about. I trust this organization with my patients.
+
+---
+
+### FACEBOOK — The Community Room
+*Facebook reaches families directly — not just professionals. It must feel like a trusted community voice.*
+
+**The standard:** Facebook posts should feel like they were written by someone who has sat in the room with families like yours. Warm. Knowledgeable. Not clinical. Not marketing.
+
+**Visual rules:**
+- Photos should feel family-adjacent — the circle-around-you, talking-with-children, volunteer
+- Avoid anything that looks overly professional or corporate
+- The comfort therapy photos (music, pet, massage) work especially well for Facebook
+- Text overlays on photos: keep them short — one line maximum on the photo itself
+- Color grade: the warmest of all platforms — cream-forward, plum as accent only
+
+**The feeling:** Someone who has been through this, or someone who helps families through it, is speaking to you. You are not alone.
+
+---
+
+### YOUTUBE — The Documentary
+*YouTube is long-form. Every video should feel like it was made with intention — not uploaded.*
+
+**The standard:** YouTube thumbnails and video intros must earn the click. They should feel like the opening frame of something worth an hour of someone's life.
+
+**Thumbnail rules:**
+- Deep plum background with gold text headline — always
+- A warm, high-quality still from the video itself — or the amethyst geode
+- Never a face (acquisition-safe; also forces stronger visual composition)
+- Font: Fraunces for the headline word, Jost for the subhead
+- One image + one headline + the ELH logo. Nothing else.
+
+**Video visual standard:**
+- Opening 5 seconds: hold on one beautiful still — no motion, no text — just the image and silence before the voice begins
+- This is the premium signal. Silence at the start. The image earns attention.
+
+**The feeling:** This is a serious organization. What follows is worth your time.
+
+---
+
+### PINTEREST — The Visual Archive
+*Pinterest is the emotional mood board for the brand — and a discovery engine for families searching for comfort and guidance.*
+
+**The standard:** Every pin should feel like something worth saving — something that speaks to the experience of caring for a loved one, navigating the end of life, or understanding what excellent care looks like.
+
+**Visual rules:**
+- Vertical format (2:3 ratio) — always
+- The warm, editorial color grade pushed slightly further than other platforms
+- Nature imagery (back-to-the-earth-hero.jpg) works especially well for Pinterest
+- Quote cards in brand colors — one strong line, Fraunces font, deep plum or cream background
+- Comfort therapy photos: close-up, soft, warm — these perform very well on Pinterest
+
+**Pin categories:**
+- "Hospice Education" — the Did You Know facts in pin format
+- "Care for Caregivers" — practical support content
+- "End-of-Life Guidance" — the how-to-choose framework
+- "Comfort & Presence" — the modality photos
+- "The Eternal Standard" — the brand philosophy in visual form
+
+**The feeling:** Someone saved this because it helped them. That is the goal.
+
+---
+
+## The Existing Photo Library — Emotional Direction for Each Image
+
+*All photos are in `website/elh-preview/assets/img/`*
+
+| Photo | The emotion it carries | Best platforms |
+|---|---|---|
+| `aleksandra-dubina-founder.jpg` | Leadership with warmth — someone specific is accountable | LinkedIn, GBP |
+| `comfort-therapies.jpg` | Wholeness — the full picture of care | Instagram, Facebook |
+| `music-therapy.jpg` | Connection — wonder breaking through illness | All platforms, especially TikTok/Reels |
+| `pet-therapy.jpg` | Unconditional love — the purest form | Facebook, Instagram, Pinterest |
+| `singing-bowl.jpg` | Sacred quiet — peace that asks nothing of you | Instagram, Pinterest, YouTube intro |
+| `volunteer.jpg` | Generosity without agenda — pure presence | Facebook, Instagram |
+| `the-circle-around-you.jpg` | Family held together — no one alone | Facebook, Instagram, Pinterest |
+| `talking-with-children.jpg` | Tenderness under difficulty — honesty as love | Instagram, Facebook, Pinterest |
+| `back-to-the-earth-hero.jpg` | Release — permission to let go beautifully | Pinterest, Instagram, YouTube |
+| `end-of-life-doula.jpg` | Accompanied — guided through the unknown | Instagram, LinkedIn, Pinterest |
+| `reiki.jpg` | Rest without demand — complete permission to receive | Instagram, Pinterest |
+| `aromatherapy.jpg` | Sensory comfort — care through the senses | Instagram, Pinterest |
+| `massage.jpg` | Dignity in physical care — tender expertise | Instagram, Pinterest |
+| `first-48-hours.jpg` | Confidence — the process is clear and held | LinkedIn, GBP, Instagram |
+| `when-is-it-time.jpg` | The decision — honoring the gravity of choosing | Facebook, Instagram |
+| `audiology-support.jpg` | Specificity — we thought of every detail | LinkedIn, Instagram |
+| `holistic-medicine.jpg` | Integration — the whole person, not just the diagnosis | LinkedIn, Instagram |
+| `how-to-choose-a-hospice.jpg` | Empowerment — we give families the tools | LinkedIn, Facebook |
+
+---
+
+## New Photos to Take — The Priority Shot List
+
+*These do not currently exist in the library but would significantly elevate all platforms.*
+
+**Priority 1 — The Amethyst Stone**
+A real amethyst geode, placed on a dark surface in warm natural window light. Close up. The crystal interior visible. This is the single most important new photo to take. It becomes the brand's visual signature — usable across every platform, every format, indefinitely.
+
+**Priority 2 — Hands at the Desk**
+Aleksandra's hands only (no face) on her desk: writing in a notebook, holding a pen over a care plan, resting beside a coffee cup. Warm window light from the left. The desk surface should be clean, warm-toned, intentional. Shoot 10–15 variations in one session. This library lasts a year.
+
+**Priority 3 — The Morning Setup**
+The desk before the day begins: coffee, notebook, the amethyst stone, a pen. No hands. No face. Just the scene. Shot from slightly above (looking down at the desk). This is the opening image for "From Aleksandra's Desk" series.
+
+**Priority 4 — Handwriting Close-Up**
+A specific sentence being written by hand — close up enough to read the words, wide enough to see the pen and the page. Write the brand's words: "Care That Honors Life." "What is tended gently shines the longest." "Clear and steady."
+
+**Priority 5 — The Team in Motion**
+The nurse reviewing a chart (face not required — over-the-shoulder works). The social worker on the phone. The intake coordinator at their desk. Hands, motion, work — not posed portraits.
+
+**Priority 6 — Window Light Portrait**
+A team member (any team member) seated near a window, warm natural light on their face, looking slightly off-camera. Not a headshot. Not a posed portrait. A moment. This is the premium relatable image: a real person, beautifully lit, not performing for the camera.
+
+---
+
+## What to NEVER Post
+
+- **Any photo with a patient** — ever, without explicit written consent and compliance review
+- **Stock photography** — the hollow posed-diversity imagery that appears on every hospital website
+- **Overexposed or cool-toned images** — white, clinical, fluorescent-lit
+- **Cluttered backgrounds** — a messy desk, an unorganized supply room, a hallway with visible carts
+- **Graphics with too many elements** — one headline, one image, one CTA; never a collage
+- **Anything that feels like a brochure** — bullet-pointed lists on a blue or green background
+- **Automatic Instagram filters** — they destroy the color temperature standard
+- **Any image that reads "corporate"** — group photos in front of a sign, people in matching polos posed in a lobby
+
+---
+
+## The One-Sentence Test
+
+Before posting any image, ask:
+
+> *"If someone's mother just received a terminal diagnosis and they found this on their phone — would it make them feel like they found the right place?"*
+
+If yes: post it.
+If not: reconsider.
+
+That is the standard. That is the family this content is for.
+
+---
+
+## The Caption-to-Image Relationship
+
+The image creates a feeling. The caption names it — or deepens it.
+
+**Never explain the image.** If the photo shows a singing bowl in warm light, the caption does not say "we offer sound bath therapy." The caption says something the image alone cannot say: the meaning behind it, the story inside it, the invitation forward from it.
+
+**The sequence:**
+1. Image: creates the emotional atmosphere
+2. First line of caption: earns the stop (the hook)
+3. Body of caption: delivers the substance
+4. Final line: the invitation — to call, to learn, to feel less alone
+
+*Premium and relatable is not a contradiction. It is what happens when expertise meets warmth. When quality meets honesty. When care is both excellent and human. That is Eternal Life Hospice. Every image should say so.*
+
