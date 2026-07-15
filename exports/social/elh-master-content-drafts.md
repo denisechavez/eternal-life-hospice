@@ -4453,3 +4453,138 @@ The image creates a feeling. The caption names it — or deepens it.
 
 *Premium and relatable is not a contradiction. It is what happens when expertise meets warmth. When quality meets honesty. When care is both excellent and human. That is Eternal Life Hospice. Every image should say so.*
 
+
+---
+
+# PART SIXTEEN: PHOTOGRAPHY EXCELLENCE — What "Beautiful" Means Here
+
+*A face is not the problem. A mediocre photo is. The standard is this: every image — whether it is a stone, a hand, or a person looking directly into the lens — must be warm, grounded, and aesthetically beautiful. Excellence in the image itself is the rule.*
+
+*Note on Aleksandra's face specifically: the acquisition strategy in Part 12 avoids building the brand IDENTITY around her face — not her face itself. A beautifully lit, emotionally resonant photo of Aleksandra absolutely belongs in the content library. The distinction is: her face is not the brand logo. The Eternal Standard is. Her face, used well, deepens the brand.*
+
+---
+
+## What "Excellent" Means in a Raw Photo
+
+Excellent does not require a professional photographer or a studio. It requires three things:
+
+**1. The right light.**
+Natural window light is the most flattering, most premium, most emotionally warm light available — and it costs nothing. The subject faces the window. The light falls across the face or object from the side (not flat-on, not behind). The result is a soft shadow on one side, warmth on the other. This is the light of Vermeer. It is the light that makes a face feel safe and loved.
+
+Never: overhead light. Never: flash. Never: direct midday sun. Never: a ring light that flattens everything.
+
+**2. The right expression.**
+Not a smile for the camera. Not a posed expression. The expression that exists in the half-second before someone knows the photo is being taken — or the expression that comes from being asked a real question and answering it honestly.
+
+Warmth without performance. Presence without posing. The face of someone who has been in this work for eleven years and is not afraid of it.
+
+**3. The right moment.**
+A photo taken at rest is almost always more powerful than a photo taken while someone is performing for the lens. The moment of listening. The moment of writing. The moment of looking at something with care. The hands-on-the-table moment before speaking.
+
+This is what "raw" means here — not unedited, not low quality. It means caught in a real moment. The camera found the person, not the other way around.
+
+---
+
+## The Face Photography Standard
+
+When a team member or Aleksandra appears on camera — whether for a still or a video — these are the non-negotiable standards:
+
+### Light
+- Face toward the window. Window to their left or right, never behind them.
+- The light should be soft — a thin curtain diffuses harsh direct sun perfectly.
+- Warm tone is essential. If the room light is cool, turn it off and rely only on window.
+- Golden hour (first hour after sunrise, last hour before sunset) is the ideal — but not required.
+- Overcast days produce beautiful, even, diffused light that requires no adjustment.
+
+### Background
+- Clean. Simple. Out of focus (shallow depth of field — portrait mode on iPhone achieves this).
+- The background color should complement the palette: cream walls, wood tones, plum accents, warm neutrals.
+- Nothing clinical. Nothing branded (no logos on the wall behind them).
+- A bookshelf, a window, a plain wall with warm light — any of these work.
+
+### Framing
+- Eyes in the upper third of the frame (the rule of thirds — the face is not centered, it is slightly high).
+- Space in the frame in the direction the subject is looking.
+- Close enough to see the expression clearly. Not so close the face fills the entire frame.
+- Slightly off-axis is more intimate than full-frontal: subject turned 10–15 degrees from the camera, then looking back to lens.
+
+### Expression
+- Direct eye contact with the lens: authoritative, warm, trustworthy.
+- Slightly off-camera: reflective, thoughtful, honest.
+- Never mid-word or mid-blink (take many, keep the best).
+- A slight downward look with the chin: humble, gentle, human.
+- The expression to pursue: *the face of someone who has seen difficult things and is not afraid of them — and who genuinely cares about the person watching.*
+
+### Editing (CapCut / Lightroom / iPhone editing)
+- Warmth: +10 to +15
+- Highlights: -10 (prevents face from blowing out)
+- Shadows: +10 (lifts, removes harshness)
+- Vibrance: +5 (enriches without oversaturating)
+- Clarity: -5 (slight softening — removes harshness without removing sharpness)
+- Skin tones: never de-saturate, never add artificial smoothing or beautify filters
+- The goal: the person looks like themselves, in the best light they've ever been in.
+
+---
+
+## The Team Face — On Camera for Video
+
+When a team member speaks to camera — nurse, social worker, chaplain, aide, music therapist, doula, intake coordinator — the visual standard is the same as above, with one addition:
+
+**The camera should be at eye level.** Not below (looking up creates power imbalance, can feel confrontational). Not above (looking down creates diminishment). At eye level, the subject and the viewer are equals. That is the feeling.
+
+**They should speak to the lens, not to someone off-camera**, unless the format is an interview (in which case the eye-line is 15–20 degrees off-lens — Errol Morris style — and it reads as a conversation being overheard, which is also intimate).
+
+**Do not stop them if they pause.** The pause is the most human moment in the video. A team member who pauses to find the right word is showing that they are thinking carefully. That is the brand.
+
+---
+
+## The "Raw Face" That Earns the Post
+
+A raw photo of a face earns its place in the feed when it passes this test:
+
+> *Does this face make me feel like, if I called this person at 2 AM because I was frightened, they would answer — and I would feel safer for having heard their voice?*
+
+If yes: the photo belongs in the library. It is premium, relatable, safe, protected, and loved — all five filters, passed by a face in good light with a real expression.
+
+That is the standard. It is achievable with a phone, a window, and someone willing to be genuinely present for thirty seconds.
+
+---
+
+## The One-Session Photo Day
+
+All of this can happen in a single afternoon:
+
+**Hour 1 — The Amethyst and Objects**
+- The stone in window light (10 shots, various angles)
+- The desk setup: stone, notebook, pen, coffee (5–8 shots)
+- Handwriting close-ups: 3–4 phrases written slowly, photographed in motion
+
+**Hour 2 — Hands**
+- Aleksandra's hands at the desk: writing, resting, reviewing a page (10–15 shots)
+- Hands holding the amethyst stone
+- Hands on a phone, on a keyboard, opening a notebook
+
+**Hour 3 — Team Faces**
+- Each willing team member: 10 minutes at the window seat
+- Two setups: direct camera, and slightly off-axis looking slightly off-lens
+- Ask a real question, photograph while they answer
+- No posing. Catch the thinking face, the honest face, the warm face.
+
+**Output from one afternoon:** A photo library sufficient for 6–12 months of content across all platforms.
+
+---
+
+## The Editing Non-Negotiables
+
+Regardless of platform, regardless of subject — these are fixed:
+
+✓ Warm color temperature — always
+✓ Soft shadows — no harsh contrasts
+✓ Faces look like themselves, never filtered
+✓ No beautify, smooth, or AI-enhanced skin tools
+✓ No cool tones, desaturation, or faded presets
+✓ No overlays that obscure the subject's face or expression
+✓ No stock — ever
+
+The standard is: the most beautiful version of the real thing. Not a different thing. The real thing, in its best light.
+
