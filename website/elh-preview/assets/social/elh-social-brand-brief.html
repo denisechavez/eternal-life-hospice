@@ -1,0 +1,1030 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<title>Eternal Life Hospice — Social Brand Brief</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Jost', sans-serif;
+    font-weight: 300;
+    font-size: 10.5pt;
+    line-height: 1.7;
+    color: #1a0a18;
+    background: #F5F0EB;
+  }
+
+  /* ── COVER ── */
+  .cover {
+    width: 100%;
+    min-height: 100vh;
+    background: #2A0F28;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 80px 90px;
+    page-break-after: always;
+    position: relative;
+  }
+
+  .cover::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 4px;
+    background: #C9B07E;
+  }
+
+  .cover-eyebrow {
+    font-family: 'Jost', sans-serif;
+    font-weight: 400;
+    font-size: 8.5pt;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: #C9B07E;
+    margin-bottom: 36px;
+  }
+
+  .cover-title {
+    font-family: 'Fraunces', serif;
+    font-weight: 300;
+    font-size: 44pt;
+    line-height: 1.12;
+    color: #F5F0EB;
+    margin-bottom: 24px;
+    max-width: 680px;
+  }
+
+  .cover-title em {
+    font-style: italic;
+    color: #C9B07E;
+  }
+
+  .cover-sub {
+    font-family: 'Jost', sans-serif;
+    font-weight: 300;
+    font-size: 12pt;
+    color: rgba(245,240,235,0.6);
+    margin-bottom: 60px;
+    max-width: 540px;
+    line-height: 1.6;
+  }
+
+  .cover-meta {
+    border-top: 1px solid rgba(201,176,126,0.3);
+    padding-top: 28px;
+    width: 100%;
+    display: flex;
+    gap: 48px;
+    flex-wrap: wrap;
+  }
+
+  .cover-meta-item {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .cover-meta-label {
+    font-size: 7.5pt;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: rgba(201,176,126,0.6);
+  }
+
+  .cover-meta-value {
+    font-size: 9pt;
+    color: #F5F0EB;
+    font-weight: 400;
+  }
+
+  /* ── PAGE LAYOUT ── */
+  .page {
+    padding: 60px 72px 56px;
+    page-break-after: always;
+    max-width: 100%;
+    min-height: 100vh;
+    position: relative;
+  }
+
+  .page-last { page-break-after: auto; }
+
+  /* ── PAGE HEADER ── */
+  .page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #C9B07E;
+    padding-bottom: 12px;
+    margin-bottom: 36px;
+  }
+
+  .section-number {
+    font-size: 7.5pt;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: #C9B07E;
+  }
+
+  .section-brand {
+    font-size: 7.5pt;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: rgba(42,15,40,0.35);
+  }
+
+  /* ── SECTION TITLES ── */
+  h1 {
+    font-family: 'Fraunces', serif;
+    font-weight: 300;
+    font-size: 28pt;
+    line-height: 1.15;
+    color: #2A0F28;
+    margin-bottom: 8px;
+  }
+
+  h1 em { color: #5B2E59; font-style: italic; }
+
+  .section-tagline {
+    font-family: 'Jost', sans-serif;
+    font-weight: 300;
+    font-size: 10pt;
+    color: rgba(42,15,40,0.5);
+    letter-spacing: 0.06em;
+    margin-bottom: 32px;
+    font-style: italic;
+  }
+
+  h2 {
+    font-family: 'Fraunces', serif;
+    font-weight: 400;
+    font-size: 14pt;
+    color: #2A0F28;
+    margin-top: 32px;
+    margin-bottom: 10px;
+  }
+
+  h3 {
+    font-family: 'Jost', sans-serif;
+    font-weight: 600;
+    font-size: 8pt;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: #5B2E59;
+    margin-top: 24px;
+    margin-bottom: 8px;
+  }
+
+  p { margin-bottom: 12px; }
+
+  strong { font-weight: 500; }
+
+  em { font-style: italic; }
+
+  /* ── DIVIDER ── */
+  .rule {
+    height: 1px;
+    background: rgba(91,46,89,0.14);
+    margin: 28px 0;
+  }
+
+  /* ── CALLOUT BLOCK ── */
+  .callout {
+    background: #2A0F28;
+    color: #F5F0EB;
+    padding: 20px 24px;
+    margin: 20px 0;
+    border-left: 3px solid #C9B07E;
+  }
+
+  .callout p { margin-bottom: 6px; color: rgba(245,240,235,0.85); font-size: 10pt; }
+  .callout p:last-child { margin-bottom: 0; }
+  .callout strong { color: #C9B07E; }
+
+  /* ── GOLD CALLOUT ── */
+  .callout-gold {
+    border: 1.5px solid #C9B07E;
+    padding: 16px 22px;
+    margin: 16px 0;
+    background: rgba(201,176,126,0.07);
+  }
+
+  .callout-gold p { margin-bottom: 4px; font-size: 10pt; }
+  .callout-gold p:last-child { margin-bottom: 0; }
+
+  /* ── TWO COLUMN ── */
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+    margin: 16px 0;
+  }
+
+  /* ── TABLE ── */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 16px 0;
+    font-size: 9.5pt;
+  }
+
+  th {
+    font-family: 'Jost', sans-serif;
+    font-weight: 500;
+    font-size: 7.5pt;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: #C9B07E;
+    padding: 8px 12px;
+    background: #2A0F28;
+    text-align: left;
+  }
+
+  td {
+    padding: 9px 12px;
+    border-bottom: 1px solid rgba(91,46,89,0.1);
+    vertical-align: top;
+    line-height: 1.55;
+  }
+
+  tr:nth-child(even) td { background: rgba(91,46,89,0.04); }
+
+  /* ── PILL TAG ── */
+  .tag {
+    display: inline-block;
+    background: #5B2E59;
+    color: #F5F0EB;
+    font-size: 7.5pt;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    padding: 3px 9px;
+    margin: 2px 3px 2px 0;
+  }
+
+  .tag-gold {
+    background: transparent;
+    border: 1px solid #C9B07E;
+    color: #2A0F28;
+  }
+
+  /* ── PILLAR CARDS ── */
+  .pillar-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin: 20px 0;
+  }
+
+  .pillar-card {
+    background: #2A0F28;
+    padding: 18px 16px;
+    border-bottom: 2px solid #C9B07E;
+  }
+
+  .pillar-num {
+    font-size: 7pt;
+    letter-spacing: 0.2em;
+    color: rgba(201,176,126,0.5);
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+
+  .pillar-name {
+    font-family: 'Fraunces', serif;
+    font-size: 11pt;
+    font-weight: 400;
+    color: #F5F0EB;
+    line-height: 1.3;
+    margin-bottom: 8px;
+  }
+
+  .pillar-desc {
+    font-size: 8pt;
+    color: rgba(245,240,235,0.55);
+    line-height: 1.5;
+  }
+
+  /* ── THE FIVE ── */
+  .five-row {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 10px;
+    margin: 20px 0;
+  }
+
+  .five-card {
+    border: 1px solid #C9B07E;
+    overflow: hidden;
+  }
+
+  .five-color {
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .five-body {
+    padding: 10px 10px 12px;
+    background: #2A0F28;
+  }
+
+  .five-label {
+    font-family: 'Fraunces', serif;
+    font-size: 9.5pt;
+    font-style: italic;
+    color: #F5F0EB;
+    margin-bottom: 4px;
+    display: block;
+  }
+
+  .five-desc {
+    font-size: 7.5pt;
+    color: rgba(245,240,235,0.5);
+    line-height: 1.4;
+  }
+
+  /* ── BANNED TABLE ── */
+  .banned td:first-child {
+    font-weight: 500;
+    color: #5B2E59;
+    white-space: nowrap;
+  }
+
+  /* ── PLATFORM BLOCK ── */
+  .platform {
+    border-left: 3px solid #C9B07E;
+    padding: 10px 16px;
+    margin: 10px 0;
+  }
+
+  .platform-name {
+    font-family: 'Jost', sans-serif;
+    font-weight: 600;
+    font-size: 8pt;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: #5B2E59;
+    margin-bottom: 4px;
+  }
+
+  .platform-desc { font-size: 9.5pt; }
+
+  /* ── FOOTER ── */
+  .page-footer {
+    position: absolute;
+    bottom: 28px;
+    left: 72px;
+    right: 72px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid rgba(201,176,126,0.25);
+    padding-top: 10px;
+  }
+
+  .footer-brand {
+    font-size: 7.5pt;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: rgba(42,15,40,0.3);
+  }
+
+  .footer-note {
+    font-size: 7.5pt;
+    color: rgba(42,15,40,0.25);
+  }
+
+  @media print {
+    body { background: white; }
+    .cover { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .callout, .pillar-card, .five-body, th { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════════════════ -->
+<!-- COVER -->
+<!-- ══════════════════════════════════════════════════════ -->
+<div class="cover">
+  <div class="cover-eyebrow">Internal Brand Reference · Not for Distribution</div>
+  <div class="cover-title">Eternal Life Hospice<br><em>Social Brand Brief</em></div>
+  <div class="cover-sub">The complete content strategy, visual system, voice standard, and writing rules for all social media channels — in one document you can hand to any tool or collaborator.</div>
+  <div class="cover-meta">
+    <div class="cover-meta-item">
+      <span class="cover-meta-label">Organization</span>
+      <span class="cover-meta-value">Eternal Life Hospice, Inc.</span>
+    </div>
+    <div class="cover-meta-item">
+      <span class="cover-meta-label">Service Area</span>
+      <span class="cover-meta-value">Ventura &amp; Los Angeles County, CA</span>
+    </div>
+    <div class="cover-meta-item">
+      <span class="cover-meta-label">Certifications</span>
+      <span class="cover-meta-value">Medicare-Certified · CDPH-Licensed · ACHC-Accredited</span>
+    </div>
+    <div class="cover-meta-item">
+      <span class="cover-meta-label">Strategic Goal</span>
+      <span class="cover-meta-value">Census growth + acquisition-ready brand ($11M+ target)</span>
+    </div>
+    <div class="cover-meta-item">
+      <span class="cover-meta-label">Platforms</span>
+      <span class="cover-meta-value">Instagram · TikTok · Facebook · LinkedIn · YouTube · Pinterest · GBP</span>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════ -->
+<!-- SECTION 1: WHO WE ARE -->
+<!-- ══════════════════════════════════════════════════════ -->
+<div class="page">
+  <div class="page-header">
+    <span class="section-number">01 · Who We Are</span>
+    <span class="section-brand">Eternal Life Hospice · Social Brand Brief</span>
+  </div>
+
+  <h1>The Organization</h1>
+  <div class="section-tagline">What every piece of content must reflect accurately</div>
+
+  <div class="two-col">
+    <div>
+      <h3>The Facts</h3>
+      <p><strong>Eternal Life Hospice, Inc.</strong> is an independent, Medicare-certified hospice serving <strong>Ventura County and Los Angeles County, California.</strong></p>
+      <p><strong>Headquarters:</strong> 4165 E Thousand Oaks Blvd, Suite 325B, Westlake Village, CA 91362</p>
+      <p><strong>Phone:</strong> 805.953.7273 &nbsp;·&nbsp; <strong>Fax:</strong> 805.953.8530<br>
+      <strong>Email:</strong> info@eternallifehospice.com<br>
+      <strong>Web:</strong> eternallifehospice.com</p>
+      <p>24/7 nurse access. Physician-led. Independent. Female-owned. 11+ years hospice experience. 20+ years in healthcare.</p>
+    </div>
+    <div>
+      <h3>Credentials</h3>
+      <p><span class="tag">Medicare-Certified</span> <span class="tag">CDPH-Licensed</span> <span class="tag">ACHC-Accredited</span></p>
+      <p style="margin-top:14px;"><strong>Taglines in use:</strong></p>
+      <div class="callout-gold">
+        <p><em>"Care That Honors Life"</em></p>
+        <p><em>"Here in Moments That Matter Most"</em></p>
+      </div>
+      <p style="margin-top:12px;"><strong>Coverage rule:</strong> Ventura + Los Angeles County only. Never imply broader geographic coverage.</p>
+    </div>
+  </div>
+
+  <div class="rule"></div>
+
+  <h2>The Eternal Standard — Four Pillars of Care</h2>
+  <p>This is the core brand architecture. All content, at some level, maps back to one of these four pillars. Use them as organizing principles for captions, videos, stories, and written posts.</p>
+
+  <div class="pillar-row">
+    <div class="pillar-card">
+      <div class="pillar-num">Pillar 01</div>
+      <div class="pillar-name">Clinical Confidence</div>
+      <div class="pillar-desc">The nurse who answers at 2 AM. Evidence-based protocols. ACHC accreditation. The plan of care that families trust.</div>
+    </div>
+    <div class="pillar-card">
+      <div class="pillar-num">Pillar 02</div>
+      <div class="pillar-name">Guided Presence</div>
+      <div class="pillar-desc">Being with. Not disappearing after discharge. The social worker, the chaplain, the coordinator who stays.</div>
+    </div>
+    <div class="pillar-card">
+      <div class="pillar-num">Pillar 03</div>
+      <div class="pillar-name">Whole-Person Comfort</div>
+      <div class="pillar-desc">Music therapy. Massage. Reiki. Aromatherapy. Pet therapy. Sound baths. The full integrative program — at no additional expense to families.</div>
+    </div>
+    <div class="pillar-card">
+      <div class="pillar-num">Pillar 04</div>
+      <div class="pillar-name">Compliance-Led Care</div>
+      <div class="pillar-desc">Medicare-certified. CDPH-licensed. ACHC-accredited. Every decision made within the rules — so families never have to worry about what they're getting into.</div>
+    </div>
+  </div>
+
+  <div class="rule"></div>
+
+  <h3>Compliance Hard Rules — Must Follow in All Content</h3>
+  <table>
+    <tr>
+      <th>Rule</th>
+      <th>What It Means for Content</th>
+    </tr>
+    <tr>
+      <td><strong>No medical-efficacy claims for integrative therapies</strong></td>
+      <td>Never say music therapy "treats" or "heals." Say it provides comfort, supports the experience, or is offered as part of whole-person care. These therapies are not covered by Medicare as a core benefit — they are offered by Eternal at no additional expense to families.</td>
+    </tr>
+    <tr>
+      <td><strong>No inducements</strong></td>
+      <td>Referral content must stay within Anti-Kickback / Stark boundaries. Highlight value and quality of care — never offer gifts, incentives, or payments to referral sources as content themes.</td>
+    </tr>
+    <tr>
+      <td><strong>No Medicare "no copay" claim</strong></td>
+      <td>Say "covered under the Medicare Hospice Benefit" or "no out-of-pocket cost for eligible patients." Do not say "free" or "no cost" without qualification.</td>
+    </tr>
+    <tr>
+      <td><strong>No unheld credentials</strong></td>
+      <td>Only list: Medicare-Certified, CDPH-Licensed, ACHC-Accredited. Do not list association memberships not currently held.</td>
+    </tr>
+  </table>
+
+  <div class="page-footer">
+    <span class="footer-brand">Eternal Life Hospice · Social Brand Brief</span>
+    <span class="footer-note">Section 01 · Who We Are</span>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════ -->
+<!-- SECTION 2: STRATEGY -->
+<!-- ══════════════════════════════════════════════════════ -->
+<div class="page">
+  <div class="page-header">
+    <span class="section-number">02 · Content Strategy</span>
+    <span class="section-brand">Eternal Life Hospice · Social Brand Brief</span>
+  </div>
+
+  <h1>Acquisition-Ready,<br><em>Voice-Led</em></h1>
+  <div class="section-tagline">Every post serves two goals simultaneously: census growth and transferable brand equity</div>
+
+  <div class="callout">
+    <p><strong>The fundamental rule:</strong> The brand is Eternal Life Hospice — not the founder. The founder's voice is the anchor. The founder's face is not on screen. The team humanizes the care. The institution holds the equity.</p>
+    <p>A buyer acquiring this organization in 12–18 months gets a content engine, a recognized brand, and an audience — not a person who needs to stay.</p>
+  </div>
+
+  <div class="two-col" style="margin-top:24px;">
+    <div>
+      <h3>The Production Format</h3>
+      <p><strong>Voice + still image overlays.</strong> The founder (or a voiceover artist) records narration. CapCut layers it over still images, brand graphics, and text overlays. No talking head. No face. The result feels like premium documentary or editorial — not a personal vlog.</p>
+
+      <h3 style="margin-top:20px;">The Narration Voice</h3>
+      <p><strong>Pace:</strong> Slower than feels natural. Let sentences breathe.<br>
+      <strong>Tone:</strong> Warm, measured, authoritative. Not clinical. Not corporate.<br>
+      <strong>No filler:</strong> No "um," no "so," no "you know."<br>
+      <strong>The pause:</strong> 1 second after key statements. It lets the sentence land.<br>
+      <strong>Emotional register:</strong> Calm grief is welcome. Sentimentality is not. This is sacred work, not sad work.</p>
+    </div>
+    <div>
+      <h3>Who Is On Camera</h3>
+      <table style="margin-top:4px;">
+        <tr><th>Who</th><th>Format</th></tr>
+        <tr><td>Registered Nurse</td><td>On camera — safe</td></tr>
+        <tr><td>Social Worker</td><td>On camera — safe</td></tr>
+        <tr><td>Chaplain</td><td>On camera — safe</td></tr>
+        <tr><td>Hospice Aide</td><td>On camera — safe</td></tr>
+        <tr><td>Music Therapist</td><td>On camera — safe</td></tr>
+        <tr><td>End-of-Life Doula</td><td>On camera — safe</td></tr>
+        <tr><td>Volunteer</td><td>On camera — safe</td></tr>
+        <tr><td><strong>Founder</strong></td><td><strong>Voiceover only</strong></td></tr>
+      </table>
+      <p style="margin-top:8px;font-size:9pt;color:rgba(42,15,40,0.5);">The team is the face of the care. The founder is the voice of the standard.</p>
+    </div>
+  </div>
+
+  <div class="rule"></div>
+
+  <h2>The Institutional Voice</h2>
+  <p>Even when the founder records the narration, the framing is always institutional:</p>
+
+  <div class="two-col">
+    <div class="callout-gold">
+      <h3 style="margin-top:0;color:#2A0F28;">Write This</h3>
+      <p>"At Eternal Life Hospice, we…"</p>
+      <p>"Here is what our team does…"</p>
+      <p>"Families who work with us tell us…"</p>
+      <p>"She has been in hospice for eleven years. She could have practiced anywhere. She stayed."</p>
+    </div>
+    <div style="border:1.5px solid rgba(91,46,89,0.2);padding:16px 20px;background:rgba(91,46,89,0.04);">
+      <h3 style="margin-top:0;">Avoid This</h3>
+      <p style="color:rgba(42,15,40,0.55);">"I started this because…" <em style="font-size:8.5pt;">(use sparingly)</em></p>
+      <p style="color:rgba(42,15,40,0.55);">"My team…" <em style="font-size:8.5pt;">(use "our team")</em></p>
+      <p style="color:rgba(42,15,40,0.55);">"When I…" <em style="font-size:8.5pt;">(minimize first-person singular)</em></p>
+    </div>
+  </div>
+
+  <div class="rule"></div>
+
+  <h2>Content by Platform — Format Summary</h2>
+  <table>
+    <tr>
+      <th>Platform</th>
+      <th>Format</th>
+      <th>Brand Signal</th>
+      <th>Audience</th>
+    </tr>
+    <tr>
+      <td><strong>TikTok / Reels</strong></td>
+      <td>Voiceover + stills + text overlay</td>
+      <td>Eternal Life Hospice institution</td>
+      <td>Families, general public</td>
+    </tr>
+    <tr>
+      <td><strong>YouTube</strong></td>
+      <td>Voiceover + stills OR team on camera</td>
+      <td>Eternal Life Hospice institution</td>
+      <td>Families, professionals</td>
+    </tr>
+    <tr>
+      <td><strong>LinkedIn</strong></td>
+      <td>Written posts + document carousels</td>
+      <td>Institutional, publication-grade</td>
+      <td>Healthcare professionals, referral sources</td>
+    </tr>
+    <tr>
+      <td><strong>Instagram Feed</strong></td>
+      <td>Curated photo + graphic + text posts</td>
+      <td>The gallery — warm, coherent, intentional</td>
+      <td>Families, community</td>
+    </tr>
+    <tr>
+      <td><strong>Instagram Stories</strong></td>
+      <td>Brand templates + behind-the-scenes</td>
+      <td>The inside view — less polished, more real</td>
+      <td>Existing followers</td>
+    </tr>
+    <tr>
+      <td><strong>Facebook</strong></td>
+      <td>Warm written posts + comfort imagery</td>
+      <td>Community voice, family-adjacent</td>
+      <td>Families, community directly</td>
+    </tr>
+    <tr>
+      <td><strong>Pinterest</strong></td>
+      <td>Tall pins (2:3), editorial, warm</td>
+      <td>Visual archive — worth saving</td>
+      <td>Families researching, caregivers</td>
+    </tr>
+    <tr>
+      <td><strong>Google Business Profile</strong></td>
+      <td>Short posts 2–3× per week</td>
+      <td>Local authority signal</td>
+      <td>Local search traffic</td>
+    </tr>
+  </table>
+
+  <div class="page-footer">
+    <span class="footer-brand">Eternal Life Hospice · Social Brand Brief</span>
+    <span class="footer-note">Section 02 · Content Strategy</span>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════ -->
+<!-- SECTION 3: THE FIVE -->
+<!-- ══════════════════════════════════════════════════════ -->
+<div class="page">
+  <div class="page-header">
+    <span class="section-number">03 · The Five — Visual Brand System</span>
+    <span class="section-brand">Eternal Life Hospice · Social Brand Brief</span>
+  </div>
+
+  <h1>The Five<br><em>Visual System</em></h1>
+  <div class="section-tagline">Five AI-generated images. Five words. A content system that builds across nine months.</div>
+
+  <div class="callout">
+    <p><strong>Critical naming rule:</strong> The first four elements carry "The" — they are acts, objects, forces. <strong>Stillness</strong> has no "The" — it is a state, not a thing. This distinction is intentional and must never be corrected.</p>
+    <p><em>The Stone · The Energy · The Word · The Touch · Stillness.</em></p>
+  </div>
+
+  <div class="five-row" style="margin-top:20px;">
+    <div class="five-card">
+      <div class="five-color" style="background:linear-gradient(135deg,#2A0F28,#5B2E59);"></div>
+      <div class="five-body">
+        <span class="five-label">The Stone</span>
+        <div class="five-desc">Raw amethyst geode. Violet crystal catching window light. Grounding. What doesn't move.</div>
+      </div>
+    </div>
+    <div class="five-card">
+      <div class="five-color" style="background:linear-gradient(135deg,#5B2E59,#8B5E4A);"></div>
+      <div class="five-body">
+        <span class="five-label">The Energy</span>
+        <div class="five-desc">Bronze singing bowl on cream linen, warm light. Vibration in a room. Resonance long after it stops.</div>
+      </div>
+    </div>
+    <div class="five-card">
+      <div class="five-color" style="background:linear-gradient(135deg,#C9B07E,#8B7355);"></div>
+      <div class="five-body">
+        <span class="five-label">The Word</span>
+        <div class="five-desc">Gold-nib fountain pen on handwritten script. The care plan. The note. The call returned.</div>
+      </div>
+    </div>
+    <div class="five-card">
+      <div class="five-color" style="background:linear-gradient(135deg,#8B5E2A,#C9B07E);"></div>
+      <div class="five-body">
+        <span class="five-label">The Touch</span>
+        <div class="five-desc">Macro amber iris, warm catchlight. Being looked at and not looked away from.</div>
+      </div>
+    </div>
+    <div class="five-card">
+      <div class="five-color" style="background:#0a0008;"></div>
+      <div class="five-body">
+        <span class="five-label">Stillness.</span>
+        <div class="five-desc">Single candle flame in absolute darkness. A state, not a thing. Arrives last. No "The."</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="rule"></div>
+
+  <h2>The Mosaic Progression — Care Brief Monthly Schedule</h2>
+  <p>One element is introduced every other Care Brief month. Each issue, a new image stitches into a growing mosaic — so by Month 9, all five are complete.</p>
+
+  <table>
+    <tr>
+      <th>Care Brief Month</th>
+      <th>Post Layout</th>
+      <th>What Appears</th>
+    </tr>
+    <tr>
+      <td><strong>Month 1</strong></td>
+      <td>Single image, full frame</td>
+      <td>The Stone — amethyst alone, spare, arresting. The introduction.</td>
+    </tr>
+    <tr>
+      <td><strong>Month 3</strong></td>
+      <td>Two images, gold seam</td>
+      <td>+ The Energy — first stitch. Something is being built.</td>
+    </tr>
+    <tr>
+      <td><strong>Month 5</strong></td>
+      <td>Three images, asymmetric</td>
+      <td>+ The Word — amethyst tall-left, bowl + pen stacked right.</td>
+    </tr>
+    <tr>
+      <td><strong>Month 7</strong></td>
+      <td>2×2 grid with gold crosshair</td>
+      <td>+ The Touch — all four, gold seam intersection, diamond at center.</td>
+    </tr>
+    <tr>
+      <td><strong>Month 9</strong></td>
+      <td>2×2 + wide bottom strip</td>
+      <td>+ Stillness — candle spans full width below the four. Complete.</td>
+    </tr>
+  </table>
+
+  <div class="rule"></div>
+
+  <h2>How The Five Extends Beyond the Mosaic</h2>
+  <p>These five phrases are a content system — not just a posting series. Use them as:</p>
+
+  <div class="two-col">
+    <div>
+      <p><span class="tag-gold tag">Caption openers</span><br>
+      <em style="font-size:9.5pt;">"The Stone. Some things hold."</em></p>
+      <p><span class="tag-gold tag">Reel end cards</span><br>
+      <em style="font-size:9.5pt;">White text on deep plum, one phrase centered</em></p>
+      <p><span class="tag-gold tag">Story frames</span><br>
+      <em style="font-size:9.5pt;">One word per frame, 5-frame Story sequence</em></p>
+    </div>
+    <div>
+      <p><span class="tag-gold tag">Care Brief headers</span><br>
+      <em style="font-size:9.5pt;">Above each content block in the email body</em></p>
+      <p><span class="tag-gold tag">Pull quotes</span><br>
+      <em style="font-size:9.5pt;">"The Touch is not always a hand."</em></p>
+      <p><span class="tag-gold tag">Website section dividers</span><br>
+      <em style="font-size:9.5pt;">Italic Fraunces, gold rule beneath</em></p>
+    </div>
+  </div>
+
+  <div class="callout" style="margin-top:20px;">
+    <p><strong>The Month 9 caption (ready to post):</strong></p>
+    <p><em>Five things we bring into every room.</em></p>
+    <p><em>The Stone. The Energy. The Word. The Touch.</em></p>
+    <p><em>And then — when everything else has been said and done —</em></p>
+    <p><em>Stillness.</em></p>
+    <p><em>This is what The Eternal Standard looks like from the inside.</em></p>
+    <p style="margin-top:8px;font-size:8.5pt;color:rgba(245,240,235,0.4);">— Eternal Life Hospice</p>
+  </div>
+
+  <div class="page-footer">
+    <span class="footer-brand">Eternal Life Hospice · Social Brand Brief</span>
+    <span class="footer-note">Section 03 · The Five Visual System</span>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════ -->
+<!-- SECTION 4: VISUAL STANDARD -->
+<!-- ══════════════════════════════════════════════════════ -->
+<div class="page">
+  <div class="page-header">
+    <span class="section-number">04 · Visual &amp; Design Standard</span>
+    <span class="section-brand">Eternal Life Hospice · Social Brand Brief</span>
+  </div>
+
+  <h1>The Visual<br><em>Standard</em></h1>
+  <div class="section-tagline">Every image must make someone feel something before they read a single word</div>
+
+  <div class="two-col">
+    <div>
+      <h3>Brand Palette</h3>
+      <table>
+        <tr><th>Name</th><th>Hex</th><th>When to Use</th></tr>
+        <tr><td><strong>Deep Plum</strong></td><td>#2A0F28</td><td>Backgrounds, headers, dark elements</td></tr>
+        <tr><td><strong>Plum</strong></td><td>#5B2E59</td><td>Mid-tones, accents, secondary backgrounds</td></tr>
+        <tr><td><strong>Gold</strong></td><td>#C9B07E</td><td>Headlines, borders, decorative elements, warmth</td></tr>
+        <tr><td><strong>Cream</strong></td><td>#F5F0EB</td><td>Body text on dark, light backgrounds</td></tr>
+      </table>
+
+      <h3 style="margin-top:20px;">Typography</h3>
+      <p><strong>Fraunces</strong> (serif) — headlines, pull quotes, the "voice" of the brand<br>
+      <strong>Jost</strong> (sans-serif) — body text, labels, navigation, data</p>
+      <p style="font-size:9pt;color:rgba(42,15,40,0.5);">Both are Google Fonts — free to use in Canva, CapCut, and all design tools.</p>
+    </div>
+    <div>
+      <h3>The Five-Filter Test</h3>
+      <p>Every photograph must pass all five before posting:</p>
+      <div class="callout-gold" style="margin-top:8px;">
+        <p><strong>Safe.</strong> Feels like someone knows what they're doing and won't leave.</p>
+        <p><strong>Protected.</strong> Clinical confidence — steady, not cold.</p>
+        <p><strong>Loved.</strong> Not professionally served. Actually known.</p>
+        <p><strong>Premium.</strong> Quality worthy of trust at the most significant moment.</p>
+        <p><strong>Relatable.</strong> Real. Not staged. Not stock.</p>
+      </div>
+      <p style="font-size:9pt;color:rgba(42,15,40,0.5);margin-top:8px;">If an image passes all five: post it. If it fails any one of them: do not.</p>
+    </div>
+  </div>
+
+  <div class="rule"></div>
+
+  <h2>The Four Color Treatments</h2>
+  <p>Applied to photographs to make the brand unmistakable — even before the logo appears.</p>
+
+  <table>
+    <tr>
+      <th>Treatment</th>
+      <th>What It Is</th>
+      <th>Best For</th>
+      <th>Canva How-To</th>
+    </tr>
+    <tr>
+      <td><strong>The Duotone</strong></td>
+      <td>Photo rendered in two brand colors. Shadows → deep plum. Highlights → gold or cream.</td>
+      <td>Faces, hands, the amethyst, any high-contrast subject</td>
+      <td>Photo → Edit Image → Duotone · Shadow: #2A0F28 · Highlight: #C9B07E · Intensity: 60–80%</td>
+    </tr>
+    <tr>
+      <td><strong>The Color Wash</strong></td>
+      <td>Semi-transparent brand color at 20–40% opacity over the photo. Warmth intact; now tinted.</td>
+      <td>Hero images, carousel backgrounds, images with text overlay</td>
+      <td>Rectangle over photo → fill brand color → transparency 70–75%</td>
+    </tr>
+    <tr>
+      <td><strong>The Graphic Pop</strong></td>
+      <td>Photo stays natural. Brand-colored graphic elements appear over it: gold underline, plum block, cream panel, gold border.</td>
+      <td>Quote cards, caption images, carousel slides</td>
+      <td>Natural photo + gold underline (#C9B07E, 6–8px) or plum text panel (80% opacity)</td>
+    </tr>
+    <tr>
+      <td><strong>The Split</strong></td>
+      <td>Half frame = natural photo. Half frame = solid brand color. Subject in photo half; text in color half.</td>
+      <td>LinkedIn carousels, Pinterest pins, Instagram carousels</td>
+      <td>Photo left or top · Deep plum right or bottom · Gold headline in the color half</td>
+    </tr>
+  </table>
+
+  <div class="rule"></div>
+
+  <h2>Black &amp; White Photography</h2>
+  <p>B&amp;W is punctuation, not prose. Use it selectively — for the images that should be <em>felt</em> rather than merely seen.</p>
+
+  <div class="two-col">
+    <div>
+      <h3>Where B&amp;W Works</h3>
+      <p><strong>Faces</strong> — honest, unmediated, powerful. A nurse with eleven years in her face, B&amp;W, side window light.</p>
+      <p><strong>Hands</strong> — the oldest visual language of care. Writing, resting, holding.</p>
+      <p><strong>The amethyst in high contrast</strong> — dark exterior, luminous interior. The brand metaphor made visible.</p>
+      <p><strong>The quiet aftermath</strong> — the empty chair, the folded blanket, the desk at end of day.</p>
+    </div>
+    <div>
+      <h3>Where B&amp;W Undercuts the Brand</h3>
+      <p><strong>Comfort therapy images</strong> — music, pet, singing bowl. Their warmth is the point. B&amp;W makes them somber.</p>
+      <p><strong>Nature imagery</strong> — golden hour light reads as peace. In B&amp;W it becomes absence.</p>
+      <p><strong>Any welcoming image</strong> — if the purpose is to invite, use color.</p>
+
+      <h3 style="margin-top:16px;">Feed Rhythm (Instagram, every 9)</h3>
+      <p style="font-size:9pt;">Warm · Warm · Text-on-plum · Warm · <strong>B&amp;W</strong> · Warm · Close-up · Warm · <strong>B&amp;W</strong> → repeat</p>
+    </div>
+  </div>
+
+  <div class="page-footer">
+    <span class="footer-brand">Eternal Life Hospice · Social Brand Brief</span>
+    <span class="footer-note">Section 04 · Visual &amp; Design Standard</span>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════ -->
+<!-- SECTION 5: WRITING STANDARDS -->
+<!-- ══════════════════════════════════════════════════════ -->
+<div class="page page-last">
+  <div class="page-header">
+    <span class="section-number">05 · Writing Standards</span>
+    <span class="section-brand">Eternal Life Hospice · Social Brand Brief</span>
+  </div>
+
+  <h1>The Writing<br><em>Standard</em></h1>
+  <div class="section-tagline">Show, don't claim. The specific is always more powerful than the general.</div>
+
+  <h2>Banned Words &amp; Phrases</h2>
+  <p>These words have been overused in hospice marketing until they mean nothing. They are banned from this content library.</p>
+
+  <table class="banned">
+    <tr>
+      <th>Banned Word / Phrase</th>
+      <th>Why It Fails</th>
+      <th>Write This Instead</th>
+    </tr>
+    <tr>
+      <td>Compassionate / compassion</td>
+      <td>Every hospice uses it. Registers nothing — or distrust.</td>
+      <td>Show the 2 AM nurse answering. Show the handwritten note. The reader feels it or they don't.</td>
+    </tr>
+    <tr>
+      <td>Caring / caring team</td>
+      <td>Circular. A care organization calling itself caring is not information.</td>
+      <td>Describe the specific act. The consistency. The presence. What actually happened.</td>
+    </tr>
+    <tr>
+      <td>Passionate</td>
+      <td>Applies equally to hospice and pizza. Meaningless.</td>
+      <td>Name what drives the specific person — what they came from, what they stayed for.</td>
+    </tr>
+    <tr>
+      <td>Holistic approach</td>
+      <td>Medical jargon co-opted by marketing.</td>
+      <td>Name the specific therapies. Name the person they help. "Music therapy. Massage. Reiki. Aromatherapy."</td>
+    </tr>
+    <tr>
+      <td>Journey</td>
+      <td>"Your journey." "Their journey." Hollow.</td>
+      <td>Name the actual thing: the season, the passage, the final chapter. Or simply: <em>this.</em></td>
+    </tr>
+    <tr>
+      <td>Dignity (as a claim)</td>
+      <td>"We provide care with dignity." Everyone says this.</td>
+      <td>Show the aide who knows exactly how a patient likes their hair. Dignity is demonstrated, not announced.</td>
+    </tr>
+    <tr>
+      <td>Seamless</td>
+      <td>Corporate. Means nothing.</td>
+      <td>Describe what actually happens: same-day admission, one phone call, the medication arrives before the family asks.</td>
+    </tr>
+    <tr>
+      <td>World-class</td>
+      <td>Claim without evidence.</td>
+      <td>Name the credential (ACHC). Name the specific service. Name the specific outcome.</td>
+    </tr>
+    <tr>
+      <td>Loved ones</td>
+      <td>Overused across all of hospice. Slightly hollow.</td>
+      <td>The family. The daughter. The husband. The people in that room.</td>
+    </tr>
+  </table>
+
+  <div class="callout-gold" style="margin-top:20px;">
+    <p><strong>The rule:</strong> If the sentence could appear on any healthcare organization's website in America — rewrite it until it couldn't.</p>
+  </div>
+
+  <div class="rule"></div>
+
+  <h2>Show, Don't Claim — Examples</h2>
+
+  <div class="two-col">
+    <div style="border-left:3px solid rgba(91,46,89,0.2);padding-left:14px;">
+      <h3 style="color:rgba(42,15,40,0.4);">Don't Write</h3>
+      <p style="color:rgba(42,15,40,0.55);font-size:9.5pt;">"We provide compassionate care."</p>
+      <p style="color:rgba(42,15,40,0.55);font-size:9.5pt;">"We treat every patient with dignity."</p>
+      <p style="color:rgba(42,15,40,0.55);font-size:9.5pt;">"We are passionate about end-of-life care."</p>
+      <p style="color:rgba(42,15,40,0.55);font-size:9.5pt;">"We offer a holistic approach."</p>
+    </div>
+    <div style="border-left:3px solid #C9B07E;padding-left:14px;">
+      <h3>Write This</h3>
+      <p style="font-size:9.5pt;">"When a family calls at 2 in the morning, a nurse answers. Not a service. A person who can assess and act. Right then."</p>
+      <p style="font-size:9.5pt;">"Our aide knows exactly how this patient likes their hair. She has known for three weeks. She asks every time anyway — because the asking is part of the care."</p>
+      <p style="font-size:9.5pt;">"She has been in hospice for eleven years. She could have practiced anywhere. She stayed."</p>
+      <p style="font-size:9.5pt;">"Music therapy. Massage. Reiki. Aromatherapy. Pet therapy. Sound baths. A board-certified music therapist who knows your father's favorite song from 1967 and plays it at the bedside."</p>
+    </div>
+  </div>
+
+  <div class="rule"></div>
+
+  <h2>Platform-by-Platform Feeling</h2>
+
+  <div class="platform"><div class="platform-name">Instagram Feed</div><div class="platform-desc">A gallery curated by someone with taste. Warm, coherent, intentional. You feel safe here.</div></div>
+  <div class="platform"><div class="platform-name">Instagram Stories</div><div class="platform-desc">The inside view. You are trusted with what others don't see. Less polished; more real.</div></div>
+  <div class="platform"><div class="platform-name">TikTok &amp; Reels</div><div class="platform-desc">Premium editorial. Like a documentary about something important. Hook in the first half-second.</div></div>
+  <div class="platform"><div class="platform-name">LinkedIn</div><div class="platform-desc">An excerpt from a serious, thoughtful publication. This person knows what they are talking about. I trust this organization with my patients.</div></div>
+  <div class="platform"><div class="platform-name">Facebook</div><div class="platform-desc">Written by someone who has sat in the room with families like yours. Warm. Knowledgeable. You are not alone.</div></div>
+  <div class="platform"><div class="platform-name">YouTube</div><div class="platform-desc">This is a serious organization. Opening 5 seconds: one beautiful still, silence, before the voice begins. What follows is worth your time.</div></div>
+  <div class="platform"><div class="platform-name">Pinterest</div><div class="platform-desc">Something worth saving. Worth returning to. The emotional mood board for the brand.</div></div>
+
+  <div class="callout" style="margin-top:24px;">
+    <p><strong>The brand in one sentence:</strong></p>
+    <p><em>Eternal Life Hospice brings clinical confidence, guided presence, whole-person comfort, and compliance-led care to every patient and family — and builds it into an institution worthy of trust, and of transfer.</em></p>
+  </div>
+
+  <div class="page-footer">
+    <span class="footer-brand">Eternal Life Hospice · Social Brand Brief</span>
+    <span class="footer-note">Section 05 · Writing Standards · eternallifehospice.com</span>
+  </div>
+</div>
+
+</body>
+</html>

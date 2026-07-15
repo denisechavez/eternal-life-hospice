@@ -1151,3 +1151,9 @@ id = "R0NZgFtISKTqg_PABNhUQ"
 uri = "file://exports/social/elh-master-content-drafts.md"
 type = "text"
 title = "ELH Master Content Drafts — Complete Library"
+
+[[outputs]]
+id = "HNNhGb3uhpWaMUihgRK_9"
+uri = "file://exports/social/elh-social-brand-brief.pdf"
+type = "pdf"
+title = "ELH Social Brand Brief — PDF"
