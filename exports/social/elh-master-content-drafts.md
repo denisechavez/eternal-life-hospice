@@ -2861,3 +2861,591 @@ Founder & CEO, Eternal Life Hospice
 
 *These credentials are not modifiers. They are the story. Say them plainly, in every room, on every platform. They are rare — and they are true.*
 
+
+---
+
+# PART ELEVEN: GOOGLE BUSINESS PROFILE — 8-Week Post Library (2–3×/Week)
+
+*GBP posts appear directly in Google Search and Maps when someone looks up Eternal Life Hospice or searches "hospice Ventura County." Posting 2–3×/week signals freshness to Google's local algorithm and keeps the listing active for families and referral partners who land there.*
+
+**Posting rules for GBP:**
+- Keep each post 150–300 words (max 1,500 characters but shorter performs better)
+- Always end with one clear CTA — "Call us," "Learn more," or "Visit our website"
+- Use a photo every time — pull from the existing image library or take a simple office photo
+- Post Monday + Wednesday + Friday, or Tuesday + Thursday + Saturday
+- Rotate topic types so the listing feels dynamic, not repetitive
+
+**CTA button to select for each post:**
+- Educational posts → **Learn More** (link to relevant page on site)
+- Service posts → **Call Now** (links to 805.953.7273)
+- Care Brief posts → **Learn More** (link to /care-brief)
+- Team posts → **Learn More** (link to /about or /team)
+
+---
+
+## WEEK 1
+
+### Post 1-A — Monday
+**Topic:** What Medicare Actually Covers
+**Photo:** first-48-hours.jpg or comfort-therapies.jpg
+**CTA:** Learn More → eternallifehospice.com/resources/understanding-medicare-and-hospice
+
+> One of the most common questions families ask us: "Can we really afford this?"
+>
+> The answer, in almost every case, is yes.
+>
+> Medicare Part A covers the hospice benefit completely. No deductible. No copay. No bill for nursing visits, aide support, social work, chaplaincy, medications, or medical equipment related to the terminal diagnosis.
+>
+> The benefit was designed to remove the financial barrier from end-of-life care entirely. Our admissions team verifies eligibility, coordinates directly with Medicare, and ensures your family never receives a surprise bill.
+>
+> If your loved one has Medicare Part A and a physician's prognosis of six months or less, they are very likely eligible — at no cost to you.
+>
+> Call us with any question about coverage: 805.953.7273. We are here to answer plainly, without pressure.
+>
+> Eternal Life Hospice serves Ventura and Los Angeles County, California.
+> Medicare-Certified · CDPH-Licensed · ACHC-Accredited
+
+---
+
+### Post 1-B — Wednesday
+**Topic:** The First 48 Hours
+**Photo:** first-48-hours.jpg
+**CTA:** Learn More → eternallifehospice.com/first-48-hours
+
+> The first 48 hours of hospice care set everything that follows.
+>
+> Here is what that looks like at Eternal Life Hospice:
+>
+> Within hours of admission, the interdisciplinary team is established — physician oversight, nursing, social work, spiritual care, and aide support. Medications and equipment are coordinated and delivered to the home.
+>
+> A registered nurse completes an initial assessment — not just clinical, but human. Who is this person? What are they afraid of? What does comfort mean, specifically, to them? What does the family need to feel held?
+>
+> A care plan is built around those answers. Not a template. A plan for this person.
+>
+> We aim to have everything in place within 24 hours, not 48.
+>
+> When a family needs care now, we move.
+>
+> Learn more about the admission process: eternallifehospice.com/first-48-hours
+>
+> 805.953.7273 · Serving Ventura & Los Angeles County
+
+---
+
+### Post 1-C — Friday
+**Topic:** ACHC Accreditation
+**Photo:** Use office exterior or team photo
+**CTA:** Learn More → eternallifehospice.com
+
+> Eternal Life Hospice holds three credentials — and we want every family who considers us to understand what each one means.
+>
+> **Medicare certification** is required by law. Every legitimate hospice has it.
+>
+> **CDPH licensure** is required by the State of California. Every California hospice that operates legally holds it.
+>
+> **ACHC accreditation** is different. It is voluntary.
+>
+> The Accreditation Commission for Health Care is an independent body that reviews clinical care, operational quality, patient rights, and organizational accountability — against standards that go significantly beyond what the law requires.
+>
+> A minority of hospices nationally hold ACHC accreditation. We do — because we wanted to be evaluated by someone outside our organization, not just by ourselves.
+>
+> Ask any hospice you're considering to show you all three credentials in writing.
+>
+> We will show you ours before you make any decision.
+>
+> 805.953.7273 · eternallifehospice.com
+> Westlake Village · Serving Ventura & Los Angeles County
+
+---
+
+## WEEK 2
+
+### Post 2-A — Monday
+**Topic:** Consistent Team
+**Photo:** volunteer.jpg or team setting
+**CTA:** Call Now → 805.953.7273
+
+> At Eternal Life Hospice, the same nurse and aide visit your family — not a rotating schedule of different faces.
+>
+> This matters more than it might seem.
+>
+> Consistency is how a care team learns what a patient needs before they have to ask. It is how trust is built. It is how a nurse notices that something has shifted today that wasn't there last week — and acts on it immediately.
+>
+> In hospice, familiarity is not a preference. It is a clinical advantage.
+>
+> We build our teams to stay with a patient through the full course of care. Your family deserves people who know your loved one — by name, by history, by the details that make them who they are.
+>
+> That is what Guided Presence means. And it is part of every care plan we build.
+>
+> 805.953.7273 · Serving Ventura & Los Angeles County
+> Eternal Life Hospice · eternallifehospice.com
+
+---
+
+### Post 2-B — Wednesday
+**Topic:** Music Therapy
+**Photo:** music-therapy.jpg
+**CTA:** Learn More → eternallifehospice.com/comfort-therapies/music-therapy
+
+> Music therapy in hospice is not background music.
+>
+> Our board-certified music therapist is a licensed clinician — trained, credentialed, and practicing evidence-based interventions at the bedside.
+>
+> Studies show that music therapy in end-of-life care reduces anxiety, eases the perception of pain, decreases the need for PRN medications, and — for patients with dementia — can reach emotional and cognitive responses that verbal communication no longer can.
+>
+> A board certification in music therapy requires a degree, supervised clinical training, and a national board examination. Our therapist holds it.
+>
+> This is not a volunteer with a guitar. This is clinical care that sounds different from other clinical care — and that is exactly the point.
+>
+> Included in every care plan that calls for it. $0 additional expense to families.
+>
+> Learn more: eternallifehospice.com/comfort-therapies/music-therapy
+> 805.953.7273 · Eternal Life Hospice · Ventura & LA County
+
+---
+
+### Post 2-C — Friday
+**Topic:** Calling at 2 AM
+**Photo:** Any warm, calm indoor photo
+**CTA:** Call Now → 805.953.7273
+
+> When a family calls Eternal Life Hospice at 2 in the morning, a nurse answers.
+>
+> Not a voicemail. Not an answering service that takes a message and pages someone. A registered nurse — who can assess what is happening, advise the family, and dispatch help if it is needed. Right then.
+>
+> Round-the-clock availability is required by Medicare for every certified hospice. What is not required is who picks up.
+>
+> The difference between a nurse and an answering service is the difference between clinical assessment and a callback at 6 AM.
+>
+> In the middle of the night, when a caregiver is frightened and unsure whether what they are seeing is normal — that difference is everything.
+>
+> Our nurses are reachable every hour. Every night. Including tonight.
+>
+> 805.953.7273
+> Eternal Life Hospice · Westlake Village, CA
+> Serving Ventura & Los Angeles County
+
+---
+
+## WEEK 3
+
+### Post 3-A — Monday
+**Topic:** Hospice Is Not Just for Cancer
+**Photo:** the-circle-around-you.jpg or talking-with-children.jpg
+**CTA:** Learn More → eternallifehospice.com
+
+> One of the most common misconceptions about hospice: that it is only for cancer patients.
+>
+> It is not.
+>
+> The Medicare hospice benefit is available to anyone with a terminal diagnosis and a physician's prognosis of six months or less — regardless of the diagnosis.
+>
+> Heart failure. COPD. Renal disease. Dementia. ALS. Parkinson's disease. Stroke. Liver disease.
+>
+> These diagnoses — and many others — qualify for full hospice coverage under Medicare. The criterion is prognosis, not diagnosis.
+>
+> Many families wait too long to call because they don't know their loved one qualifies. Our admissions team evaluates eligibility the same day we receive a referral or a family inquiry — and answers the question plainly.
+>
+> If you are wondering whether a loved one might qualify, the answer is a single call away.
+>
+> 805.953.7273
+> Eternal Life Hospice · Serving Ventura & Los Angeles County
+> eternallifehospice.com
+
+---
+
+### Post 3-B — Wednesday
+**Topic:** The End-of-Life Doula
+**Photo:** comfort-therapies.jpg or aromatherapy.jpg
+**CTA:** Learn More → eternallifehospice.com
+
+> Most hospices don't include an end-of-life doula.
+>
+> We do.
+>
+> A doula — in this context — is a trained companion for the dying process. Not clinical (that is the nurse and physician). Not spiritual (that is the chaplain). Human.
+>
+> Our doula helps patients and families understand what to expect. She guides legacy conversations — the letter to a grandchild, the recorded message, the things a person has always meant to say. She helps families learn how to be present for what is coming without being afraid of it.
+>
+> Dying is not a medical event. It is a human one. And it deserves to be accompanied as such.
+>
+> End-of-life doula support is part of every care plan that calls for it. Assessed individually. At no additional expense to families.
+>
+> 805.953.7273 · eternallifehospice.com
+> Eternal Life Hospice · Ventura & Los Angeles County
+
+---
+
+### Post 3-C — Friday
+**Topic:** Same-Day Admissions
+**Photo:** first-48-hours.jpg
+**CTA:** Call Now → 805.953.7273
+
+> When a family calls Eternal Life Hospice, we do not ask them to wait.
+>
+> We admit patients the same day a referral is received — when clinically appropriate. From the moment the call comes in, our admissions team begins. Not a callback queue. Not a 48-hour processing window. The same day.
+>
+> For physicians and discharge planners: we accept referrals directly and move immediately. If a patient is ready for hospice today, we are ready to receive them today.
+>
+> For families: if you are calling for yourself or for a loved one and you're not sure what the first step looks like, call us. We will walk you through it — without paperwork first, without pressure to decide, and without making you wait.
+>
+> 805.953.7273
+> Eternal Life Hospice · Westlake Village, CA
+> Serving Ventura & Los Angeles County · eternallifehospice.com
+
+---
+
+## WEEK 4
+
+### Post 4-A — Monday
+**Topic:** Aleksandra — Founder Credentials
+**Photo:** aleksandra-dubina-founder.jpg
+**CTA:** Learn More → eternallifehospice.com/about
+
+> Eternal Life Hospice was founded by Aleksandra Dubina — and she answers for every patient we serve.
+>
+> Aleksandra brings more than 20 years of experience in healthcare and over 11 years specifically in hospice. She has worked across acute care, post-acute settings, clinical coordination, compliance, and administration — and she built this organization with a full understanding of what the healthcare system does well, and where it falls short.
+>
+> Eternal Life Hospice is independent and female-owned. There is no corporate parent. No private equity. No national brand standard that dictates how care is delivered.
+>
+> Every decision about services, staffing, and quality is made here — by people accountable to families, not to shareholders.
+>
+> That is the structural reality of independent, founder-led care. And it is the standard Aleksandra holds this organization to — personally, by name.
+>
+> 805.953.7273 · eternallifehospice.com
+> Physician-Led · Independent · Female-Owned
+> Serving Ventura & Los Angeles County
+
+---
+
+### Post 4-B — Wednesday
+**Topic:** Pet Therapy
+**Photo:** pet-therapy.jpg
+**CTA:** Learn More → eternallifehospice.com/comfort-therapies/pet-therapy
+
+> Few things reach through the fog of advanced illness the way an animal does.
+>
+> Certified therapy animals visit patients at home as part of the Eternal Life Hospice care plan. These are not casual visits — the animals are trained, certified, and matched thoughtfully to each patient.
+>
+> Families tell us that pet therapy visits are among the most requested experiences they ask us to continue. A dog settling at the foot of a bed. The instinctive, uncomplicated presence of an animal that asks for nothing in return.
+>
+> Pet therapy is assessed individually and offered as part of the care plan where it is clinically and personally appropriate. It is included in the care plan at no additional expense to families.
+>
+> Because comfort has many forms — and some of the most powerful ones have four legs.
+>
+> 805.953.7273 · eternallifehospice.com
+> Eternal Life Hospice · Ventura & Los Angeles County
+
+---
+
+### Post 4-C — Friday
+**Topic:** The Volunteer Program
+**Photo:** volunteer.jpg
+**CTA:** Learn More → eternallifehospice.com/volunteer
+
+> Volunteers are a required part of the Medicare hospice benefit — but what they actually do varies widely.
+>
+> At Eternal Life Hospice, our volunteers provide something that the clinical team, as skilled as they are, cannot always offer: time with no agenda.
+>
+> They sit with patients. Read aloud. Watch a game. Hold a hand. And they give caregivers permission to step away for an hour — to rest, to breathe, to do the grocery run they've been putting off for days.
+>
+> That respite is not a small thing. For a caregiver in this season, it is often everything.
+>
+> If you are a caregiver in Ventura or Los Angeles County and you could use support: this is available to you, at no cost, as part of the hospice benefit.
+>
+> If you feel called to give this kind of time: we would be honored to talk with you about volunteering.
+>
+> 805.953.7273 · eternallifehospice.com/volunteer
+> Eternal Life Hospice · Westlake Village, CA
+
+---
+
+## WEEK 5
+
+### Post 5-A — Monday
+**Topic:** Caregiver Support
+**Photo:** the-circle-around-you.jpg
+**CTA:** Call Now → 805.953.7273
+
+> Hospice is for the whole family — not only the patient.
+>
+> The person in the bed is the center of clinical care. But the spouse sitting beside them, the adult child driving in from an hour away, the family member who hasn't slept well in weeks — they are part of the care plan too.
+>
+> Our social worker meets with families from the first week. Our chaplain is available to everyone in that room, regardless of faith or the absence of it. Our volunteers give caregivers respite. And our bereavement team stays in contact with the family for 13 months after the patient passes — through the first holidays, the first anniversary, the first year of grief.
+>
+> If you are caring for someone at the end of life and you feel like you are doing it alone: you do not have to be.
+>
+> Call us. Even if you're not sure you're ready. That's what this number is for.
+>
+> 805.953.7273 · Eternal Life Hospice
+> Serving Ventura & Los Angeles County
+
+---
+
+### Post 5-B — Wednesday
+**Topic:** Mobile Clinical Services
+**Photo:** comfort-therapies.jpg
+**CTA:** Learn More → eternallifehospice.com
+
+> When a patient chooses to spend their final season at home, they should be able to stay there — without sacrificing care.
+>
+> Eternal Life Hospice coordinates a full range of mobile clinical services brought directly to the patient. Physical therapy. Occupational therapy. Speech therapy. Dietitian support. Mobile podiatry. Mobile optometry. In-home lab testing. Mobile dialysis coordination. A licensed gerontologist.
+>
+> These are not additional costs. They are assessed individually and included in the care plan as clinically appropriate — at no additional expense to families.
+>
+> Most hospices offer the core Medicare team. We build everything else around it.
+>
+> If you are a physician or discharge planner considering a hospice referral: ask any agency you consider what they offer beyond the Medicare minimum. Then ask what it costs the family.
+>
+> Our answers are plain: everything listed above, and $0 additional.
+>
+> 805.953.7273 · eternallifehospice.com
+> Physician-Led · ACHC-Accredited · Ventura & LA County
+
+---
+
+### Post 5-C — Friday
+**Topic:** Referring Providers — For Physicians & Case Managers
+**Photo:** aleksandra-dubina-founder.jpg or team photo
+**CTA:** Call Now → 805.953.7273
+
+> For physicians, discharge planners, and case managers in Ventura and Los Angeles County:
+>
+> When you refer to Eternal Life Hospice, here is what your patients and families receive:
+>
+> A same-day response to every referral. Physician-led care with active medical direction — not oversight by proxy. A consistent team: same nurse, same aide, visit after visit. Full integrative therapy and mobile clinical services at no additional cost to families. A nurse who answers every after-hours call directly. ACHC accreditation — independent, third-party verification of our clinical and operational standards.
+>
+> We also publish The Eternal Care Brief — a bi-monthly clinical publication for healthcare professionals. Practical. Evidence-based. Free.
+>
+> We welcome referrals from hospitals, skilled nursing facilities, physician offices, and community social workers across both counties.
+>
+> To refer a patient or to learn more about our services: 805.953.7273 or info@eternallifehospice.com
+>
+> eternallifehospice.com · Westlake Village, CA
+
+---
+
+## WEEK 6
+
+### Post 6-A — Monday
+**Topic:** Reiki
+**Photo:** reiki.jpg
+**CTA:** Learn More → eternallifehospice.com
+
+> Reiki is one of the quietest therapies we offer — and one of the most requested.
+>
+> A gentle, non-invasive practice offered for relaxation and comfort, Reiki sessions give patients time to rest without demand. No movement required. No conversation necessary. A calm presence and an unhurried hour.
+>
+> Reiki is not offered as a medical treatment and makes no clinical efficacy claims. It is offered as a comfort practice — one that many patients describe as the most restful part of their week.
+>
+> It is assessed individually and included in the care plan where appropriate. $0 additional expense to families.
+>
+> At Eternal Life Hospice, comfort comes in many forms. We find the ones that fit each person.
+>
+> 805.953.7273 · eternallifehospice.com
+> Serving Ventura & Los Angeles County · ACHC-Accredited
+
+---
+
+### Post 6-B — Wednesday
+**Topic:** 13 Months of Bereavement Support
+**Photo:** talking-with-children.jpg or back-to-the-earth-hero.jpg
+**CTA:** Learn More → eternallifehospice.com
+
+> Hospice care does not end when a patient passes.
+>
+> The Medicare hospice benefit includes 13 months of bereavement support for the family — through the first full year of grief. Our social worker and bereavement team stay in contact through the milestones that grief makes hard: the first Thanksgiving, the first birthday without them, the first anniversary.
+>
+> Grief has a long tail. And the people who were closest to a patient often experience the full weight of loss after the immediate support of family and friends has pulled back — weeks or months after the funeral.
+>
+> We walk that season with families because we believe care for a person does not end at the moment of death. It extends to everyone who loved them.
+>
+> This support is included in the hospice benefit at no additional cost.
+>
+> If you are a family who has recently lost someone and you need support: 805.953.7273.
+>
+> Eternal Life Hospice · Ventura & Los Angeles County
+
+---
+
+### Post 6-C — Friday
+**Topic:** What Choosing Hospice Is Not
+**Photo:** when-is-it-time.jpg
+**CTA:** Learn More → eternallifehospice.com/resources/understanding-medicare-and-hospice
+
+> Choosing hospice is not giving up.
+>
+> It is a decision to redirect the energy that has been going into fighting a disease — and put it toward the quality of the time that remains. Toward comfort. Toward presence. Toward the people who matter most.
+>
+> It does not mean stopping all medical care. Conditions unrelated to the terminal diagnosis continue to be managed through Medicare Part B, exactly as before. The hospice team works alongside a patient's existing physicians, not instead of them.
+>
+> It does not mean losing hope. Hope changes shape — from hope for a cure, to hope for a good day, to hope for a peaceful passage surrounded by love.
+>
+> And it does not mean being alone. It means having a full team — clinical, spiritual, emotional — alongside the patient and family for every step of what follows.
+>
+> If someone you love is facing a serious illness: we would be honored to have that conversation with you.
+>
+> 805.953.7273 · eternallifehospice.com
+
+---
+
+## WEEK 7
+
+### Post 7-A — Monday
+**Topic:** Sound Bath
+**Photo:** singing-bowl.jpg
+**CTA:** Learn More → eternallifehospice.com/sound-bath
+
+> Sound bath sessions — offered with Tibetan and crystal singing bowls — are among the most distinctive therapies we provide.
+>
+> The sustained, resonant tones of the bowls create a gentle auditory environment that many patients describe as deeply settling. Sessions are offered at the patient's own pace, in their own space, without any physical demand.
+>
+> Like all integrative therapies we offer, sound bath sessions are assessed individually and included in the care plan where clinically and personally appropriate. They are offered for relaxation and comfort — not as a medical treatment.
+>
+> Comfort takes many forms. We find the one that fits each person.
+>
+> Learn more about our full comfort therapy program: eternallifehospice.com/sound-bath
+>
+> 805.953.7273 · Eternal Life Hospice
+> Serving Ventura & Los Angeles County · ACHC-Accredited
+
+---
+
+### Post 7-B — Wednesday
+**Topic:** You Can Revoke Hospice
+**Photo:** the-circle-around-you.jpg
+**CTA:** Call Now → 805.953.7273
+
+> Choosing hospice is not a permanent, one-way decision.
+>
+> The Medicare hospice benefit can be revoked at any time — without penalty. If a patient or family decides they want to pursue curative treatment after entering hospice, they return to standard Medicare coverage immediately. There is no waiting period, no financial consequence, and no loss of future hospice eligibility.
+>
+> Hospice is also not a fixed length of care. The benefit covers as many 90-day and 60-day periods as are clinically appropriate, with no lifetime limit. If a patient's condition stabilizes, they may graduate from hospice and return when needed.
+>
+> Many families delay calling because they believe they are making a permanent, irreversible choice. They are not.
+>
+> The first call costs nothing. We answer questions before we ask anything of you.
+>
+> 805.953.7273 · eternallifehospice.com
+> Eternal Life Hospice · Ventura & Los Angeles County
+
+---
+
+### Post 7-C — Friday
+**Topic:** The Eternal Care Brief — For Professionals
+**Photo:** aleksandra-dubina-founder.jpg or office setting
+**CTA:** Learn More → eternallifehospice.com/care-brief
+
+> Eternal Life Hospice publishes The Eternal Care Brief — a bi-monthly clinical publication for healthcare professionals across Ventura and Los Angeles County.
+>
+> Designed for physicians, discharge planners, case managers, and social workers, each issue covers topics that matter at the intersection of clinical care, patient advocacy, and end-of-life transitions.
+>
+> Practical. Evidence-based. Written without marketing language. Free.
+>
+> The Care Brief is one way we stay in conversation with the healthcare professionals our patients come through — not just at the point of referral, but throughout the care relationship.
+>
+> If you work in healthcare in Ventura or LA County and you would like to receive The Eternal Care Brief: visit eternallifehospice.com/care-brief to subscribe.
+>
+> 805.953.7273 · info@eternallifehospice.com
+> Eternal Life Hospice · Westlake Village, CA
+
+---
+
+## WEEK 8
+
+### Post 8-A — Monday
+**Topic:** Aromatherapy
+**Photo:** aromatherapy.jpg
+**CTA:** Learn More → eternallifehospice.com
+
+> Aromatherapy at Eternal Life Hospice begins with an assessment — not a selection of scents.
+>
+> Our practitioners review each patient's current medications for contraindications. They consider sensitivities, preferences, and the specific symptoms being addressed: nausea, anxiety, sleep disruption, agitation.
+>
+> Carefully selected botanical essences are then integrated into the care environment with the patient's preferences as the guide.
+>
+> This is not ambient fragrance. It is a therapeutic practice, personalized to each patient and delivered with clinical intention.
+>
+> Aromatherapy is assessed individually and included in the care plan where appropriate. $0 additional expense to families.
+>
+> Every comfort therapy we offer begins with one question: what does this specific person need to feel more at ease today?
+>
+> 805.953.7273 · eternallifehospice.com
+> Eternal Life Hospice · Ventura & Los Angeles County
+
+---
+
+### Post 8-B — Wednesday
+**Topic:** The Eternal Standard
+**Photo:** aleksandra-dubina-founder.jpg or office photo
+**CTA:** Learn More → eternallifehospice.com
+
+> At Eternal Life Hospice, care is built around four pillars — The Eternal Standard.
+>
+> **Clinical Confidence.** Physician-led care. Advanced symptom management. Hospital-grade clinical expertise brought to the home.
+>
+> **Guided Presence.** A consistent team. Every visit accompanied by someone who knows this patient, this family, and what has changed since the last time they were here.
+>
+> **Whole-Person Comfort.** Music therapy. Massage. Reiki. Aromatherapy. Pet therapy. Sound baths. Audiology. End-of-life doula support. PT, OT, speech, dietitian, podiatry, optometry, dialysis, in-home labs. All assessed individually. All included. All $0 additional.
+>
+> **Compliance-Led Care.** CMS Conditions of Participation. ACHC accreditation. Billing that is transparent and verifiable. No surprise bills. Ever.
+>
+> Four pillars. Every patient. Every time.
+>
+> This is what we built. And it is what we are accountable for.
+>
+> 805.953.7273 · eternallifehospice.com
+> Medicare-Certified · CDPH-Licensed · ACHC-Accredited
+
+---
+
+### Post 8-C — Friday
+**Topic:** Call to Action — General Inquiry
+**Photo:** aleksandra-dubina-founder.jpg
+**CTA:** Call Now → 805.953.7273
+
+> If you have a question about hospice — for yourself, for a loved one, or for a patient in your care — we would be glad to answer it.
+>
+> No pressure to decide. No paperwork first. Just a conversation with someone who knows this work and will give you a straight answer.
+>
+> Eternal Life Hospice serves Ventura and Los Angeles County, California. We are independent, physician-led, and female-owned — founded by Aleksandra Dubina with over 20 years in healthcare and more than 11 years specifically in hospice.
+>
+> We hold Medicare certification, CDPH licensure, and ACHC accreditation.
+>
+> We admit same-day when clinically appropriate. A nurse answers every call, including after hours.
+>
+> That's who we are. We'd be honored to talk with you.
+>
+> 805.953.7273 · info@eternallifehospice.com
+> eternallifehospice.com · Westlake Village, CA 91362
+
+---
+
+## GBP QUICK REFERENCE — Photo Pairings
+
+| Topic | Best photo to use |
+|---|---|
+| Medicare / Coverage | first-48-hours.jpg |
+| Music therapy | music-therapy.jpg |
+| Pet therapy | pet-therapy.jpg |
+| Reiki | reiki.jpg |
+| Aromatherapy | aromatherapy.jpg |
+| Sound bath | singing-bowl.jpg |
+| Aleksandra / Founder | aleksandra-dubina-founder.jpg |
+| Caregiver / Family | the-circle-around-you.jpg or talking-with-children.jpg |
+| Volunteer | volunteer.jpg |
+| General comfort | comfort-therapies.jpg |
+| End-of-life / Nature | back-to-the-earth-hero.jpg |
+| Audiology | audiology-support.jpg |
+| Massage | massage.jpg |
+| When is it time? | when-is-it-time.jpg |
+| First 48 hours | first-48-hours.jpg |
+| Doula / Presence | end-of-life-doula.jpg |
+
+*All photos are in: website/elh-preview/assets/img/*
+
+---
+
+*24 posts. 8 weeks. 3 per week. Every post is ready to copy, paste, add a photo, and publish.*
+*After Week 8, cycle back through with seasonal adjustments or rotate new topics from the "Did You Know" library in Part 9.*
+
