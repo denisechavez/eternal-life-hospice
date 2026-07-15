@@ -6,7 +6,8 @@ HQ address, and the Medicare-Certified · CDPH-Licensed · ACHC-Accredited line,
 plus "Serving Ventura & Los Angeles County."
 
 THE FILES (in this exports/email/ folder)
-- eternal-life-email-signature-aleksandra-dubina.html  — Aleksandra Dubina, CEO (ready to use)
+- eternal-life-email-signature-aleksandra-dubina.html  — Aleksandra Dubina, Founder & CEO · Certified Hospice Administrator
+- eternal-life-email-signature-denise-chavez.html      — Denise Chavez, VP Integrative Holistic Modalities
 - eternal-life-email-signature-TEMPLATE.html           — blank template for any new staff member
 - email-signature-HOW-TO.txt                           — this file
 
@@ -17,40 +18,98 @@ That image goes live the first time the site is published (in Replit: Git -> Syn
 which auto-deploys to Netlify). If the mark looks broken when you preview, the site
 simply hasn't been synced yet — sync once and the logo appears in every signature.
 
-HOW TO INSTALL A SIGNATURE (Gmail)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+HOW TO INSTALL A SIGNATURE — GMAIL (PC or Mac)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 1. Open the staff member's .html file in Google Chrome (double-click it).
-2. Click just before the mark and drag to the end of the address/credentials block
-   to select the whole signature (or click inside it and press Ctrl+A / Cmd+A).
-3. Copy it (Ctrl+C / Cmd+C).
+2. Click inside the signature area, then press Ctrl+A (PC) or Cmd+A (Mac) to
+   select everything.
+3. Copy it: Ctrl+C (PC) or Cmd+C (Mac).
 4. In Gmail: click the gear (top right) -> "See all settings" -> "General" tab.
-5. Scroll to "Signature" -> "Create new", name it, click into the box, and paste
-   (Ctrl+V / Cmd+V). The logo and colors come across automatically.
-6. Set it as the default for "New emails" and "On reply/forward" if you like.
-7. Scroll down and click "Save Changes".
+5. Scroll to "Signature" -> "Create new", name it (e.g. "ELH"), click into the
+   white signature box, and paste: Ctrl+V (PC) or Cmd+V (Mac).
+   The logo and colors come across automatically.
+6. Set it as the default for "New emails" and "On reply/forward."
+7. Scroll down and click "Save Changes."
 
-HOW TO INSTALL A SIGNATURE (Outlook — new Outlook / Outlook on the web)
-1. Open the .html file in Chrome, select the whole signature, and copy it (steps 1-3 above).
-2. In Outlook: Settings (gear) -> "Mail" -> "Compose and reply" (Outlook on the web),
-   or "Mail" -> "Signatures" in new Outlook for Windows.
-3. Create a new signature, click into the editing box, and paste (Ctrl+V).
-4. Choose it as the default for new messages / replies, then Save.
-(Classic desktop Outlook strips pasted signatures more aggressively; the web/new
-Outlook signature editor above is the reliable path.)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+HOW TO INSTALL A SIGNATURE — OUTLOOK (PC or Mac)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Best path: use Outlook on the web (outlook.com or your Microsoft 365 webmail) —
+it preserves the HTML logo and colors perfectly.
 
+  OUTLOOK ON THE WEB / NEW OUTLOOK FOR WINDOWS:
+  1. Open the .html file in Chrome, select all (Ctrl+A / Cmd+A), copy (Ctrl+C / Cmd+C).
+  2. In Outlook: Settings (gear) -> Mail -> "Compose and reply."
+  3. Click "+ New signature," name it, click into the editing box, paste (Ctrl+V).
+  4. Set as default for new messages and replies, then Save.
+
+  CLASSIC DESKTOP OUTLOOK (Windows):
+  Classic Outlook strips pasted HTML aggressively. Use the web/new Outlook path
+  above, or open Outlook and go to File -> Options -> Mail -> Signatures ->
+  New, then paste (Ctrl+V). If the logo breaks, right-click the broken image
+  in the signature editor -> Change Picture -> paste the logo URL:
+    https://eternallifehospice.com/assets/logo-eternal-trans.png
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+HOW TO INSTALL A SIGNATURE — APPLE MAIL (iPhone / iPad)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Apple Mail on iPhone/iPad does NOT support HTML signatures directly. Use this
+workaround — it takes about 2 minutes and preserves the logo and colors:
+
+  1. On your iPhone or iPad, open Safari (not Chrome) and navigate to the
+     .html file. The easiest way: email the file to yourself, open the email,
+     tap the attachment, then tap the Share icon -> "Open in Safari."
+  2. Tap and hold anywhere on the signature until the selection handles appear,
+     then tap "Select All."
+  3. Tap "Copy."
+  4. Go to Settings -> Mail -> Signature.
+  5. Tap inside the signature field, select all existing text, and paste (tap
+     and hold -> Paste). The logo and colors will appear.
+  6. Tap back to save. Every new email you compose will now include the signature.
+
+  NOTE: Apple Mail on iPhone sends the logo as an embedded image (not a link),
+  which means it shows up correctly even without an internet connection.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+HOW TO INSTALL A SIGNATURE — APPLE MAIL (Mac desktop)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  1. Open the .html file in Safari on your Mac (double-click the file;
+     if it opens in another browser, right-click -> Open With -> Safari).
+  2. Press Cmd+A to select all, then Cmd+C to copy.
+  3. Open Apple Mail -> Mail menu (top left) -> Settings -> Signatures.
+  4. Select your email account on the left, click the "+" button to create a
+     new signature, name it.
+  5. Click into the signature preview area on the right and paste: Cmd+V.
+     The logo and styling should appear immediately.
+  6. Drag the new signature name under "Choose Signature" to set it as default.
+  7. Close Settings — done.
+
+  TIP: If the logo shows as a broken image in Apple Mail on Mac, it means the
+  live site image hasn't loaded yet. Make sure your Mac is online, then close
+  and reopen the Signatures pane and paste again. Once the live URL is cached
+  it stays.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 HOW TO MAKE A SIGNATURE FOR A NEW STAFF MEMBER
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 1. Make a copy of eternal-life-email-signature-TEMPLATE.html and rename it
    eternal-life-email-signature-firstname-lastname.html (keep it in exports/email/).
 2. Open it in a text editor and change these 3 fields:
    (1) NAME   (2) TITLE / ROLE
    (3) EMAIL  — change it in TWO places: the mailto: link AND the visible text.
-3. Email convention is firstname@eternallifehospice.com — confirm the mailbox
+3. If the staff member has a direct cell number, add it after the 24/7 line
+   following the same pattern as Denise Chavez's signature.
+4. Email convention is firstname@eternallifehospice.com — confirm the mailbox
    actually exists before handing the signature out.
-4. Install it using the Gmail/Outlook steps above.
+5. Install it using the steps above for whichever email client they use.
 
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 BRAND / COMPLIANCE NOTES (keep consistent with the cards)
-- Title is the real role (e.g. "Chief Executive Officer"); do not use "founder-led."
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+- Title is the real role; keep it consistent with business cards and collateral.
 - Coverage language stays "Serving Ventura & Los Angeles County" — nothing wider.
 - No medical-efficacy or outcome claims anywhere in the signature.
 - Fonts: email clients can't load the brand fonts, so the signature falls back to
-  Georgia (for the name, echoing Fraunces) and Arial (echoing Jost). Colors and the
-  logo carry the brand. Don't restyle — paste as-is so everyone matches.
+  Georgia (for the name, echoing Fraunces) and Arial (echoing Jost). Colors and
+  the logo carry the brand. Don't restyle — paste as-is so everyone matches.

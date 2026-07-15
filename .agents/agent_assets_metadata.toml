@@ -1157,3 +1157,9 @@ id = "HNNhGb3uhpWaMUihgRK_9"
 uri = "file://exports/social/elh-social-brand-brief.pdf"
 type = "pdf"
 title = "ELH Social Brand Brief — PDF"
+
+[[outputs]]
+id = "WUsVxzfyDgVn9px1Ic2YF"
+uri = "file://exports/email/email-signatures.zip"
+type = "unspecified"
+title = "Email Signatures — Aleksandra & Denise (+ install instructions)"

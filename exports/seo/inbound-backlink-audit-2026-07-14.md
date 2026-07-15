@@ -277,22 +277,22 @@ claims for integrative therapies.
 To turn this partial (but real) picture into a *complete* backlink report, we need
 **Google Search Console** verified for the site. It's free and takes ~10 minutes.
 
-**Step 1 — Verify the site in Google Search Console. ✅ DONE (HTML tag method, verified July 14, 2026).**
-- The **HTML tag verification meta** was installed on the home page
-  (`website/elh-preview/index.html`, in the `<head>`), for the **URL-prefix**
-  property `https://eternallifehospice.com/`, published live via Git → Sync.
-- Google confirmed **"Ownership auto verified"** by the HTML-tag method. The
-  property is now verified.
-- **Keep it verified:** do **not** remove the meta tag from the home page. For
-  extra safety you *may* add a second verification method later (Search Console →
-  Settings → Ownership verification), e.g. the DNS/GoDaddy TXT record — optional.
-- *(Alternative not used: the DNS/GoDaddy "Domain" property TXT method would verify
-  the whole domain including subdomains — either works.)*
+**Step 1 — Verify the site in Google Search Console. ✅ COMPLETE.**
+- The HTML tag verification meta is live on the home page.
+- Both properties verified July 15, 2026:
+  - `https://eternallifehospice.com/` (no-www — canonical, **use this one for Links data**)
+  - `https://www.eternallifehospice.com/` (www — also verified; 301-redirects to no-www)
+- The no-www property is the correct one to monitor: the canonical site, all indexed
+  URLs, and all inbound links resolve to the no-www domain.
+- **Keep it verified:** do **not** remove the meta tag from the home page.
 
-**Step 2 — Export two reports and send them to us:**
+**Step 2 — Export three reports and send them to us (⏳ PENDING — GSC collecting data):**
 - **Links → "Top linking sites"** (referring domains) — export as CSV.
 - **Links → "Top linked pages"** (which of our pages get linked) — export as CSV.
-- (Optional) **Links → "Top linking text"** (anchor text) — export as CSV.
+- **Links → "Top linking text"** (anchor text) — export as CSV.
+- The Links report populates within days to weeks of verification. Check the
+  Links section (bottom of the left menu in Search Console) and export once it
+  shows real entries. Upload all three CSVs and the full report will be completed.
 
 **Step 3 (optional but ideal) — access to the two extra domains' hosting** (or
 whoever manages `eternalhospice.com` and `eternallifehospiceinc.com`) so the
