@@ -108,6 +108,30 @@ uri = "file://attached_assets/generated_images/walking-figure.png"
 type = "image"
 title = "walking office figure"
 
+[[generated]]
+id = "DZeYvxB0CA1bFWknFxWMD"
+uri = "file://artifacts/mockup-sandbox/public/images/elh-amethyst.png"
+type = "image"
+title = "amethyst crystal window light"
+
+[[generated]]
+id = "t_rDhY_RWJNA3H8Zq71Ei"
+uri = "file://artifacts/mockup-sandbox/public/images/elh-bowl.png"
+type = "image"
+title = "singing bowl linen warm light"
+
+[[generated]]
+id = "vRYqCu6G1jA-YL3qgz-fx"
+uri = "file://artifacts/mockup-sandbox/public/images/elh-pen.png"
+type = "image"
+title = "fountain pen gold nib paper"
+
+[[generated]]
+id = "gFsfasVmBfaCaevWhJ1B7"
+uri = "file://artifacts/mockup-sandbox/public/images/elh-eye.png"
+type = "image"
+title = "eye iris macro warm light"
+
 [[outputs]]
 id = "qLfrLYeW6vnnXMfZ4rxbP"
 uri = "file://attached_assets/ELH-QR_eternallifehospice_cream.png"

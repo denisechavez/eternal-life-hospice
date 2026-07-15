@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,400;0,700;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<title>Amethyst — Duotone</title>
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 100vw; height: 100vh; overflow: hidden; background: #2A0F28; }
+
+  .card {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+  }
+
+  .photo {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    filter: grayscale(100%) contrast(1.15) brightness(0.85);
+  }
+
+  /* Duotone: color blend layer — shadows = deep plum, highlights = gold */
+  .duotone-shadow {
+    position: absolute;
+    inset: 0;
+    background: #2A0F28;
+    mix-blend-mode: multiply;
+  }
+
+  .duotone-highlight {
+    position: absolute;
+    inset: 0;
+    background: #C9B07E;
+    mix-blend-mode: screen;
+    opacity: 0.45;
+  }
+
+  /* Bottom gradient for text legibility */
+  .gradient {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 55%;
+    background: linear-gradient(transparent, rgba(20, 5, 20, 0.82));
+  }
+
+  .content {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 6vh 7vw;
+    display: flex;
+    flex-direction: column;
+    gap: 1.4vh;
+  }
+
+  .eyebrow {
+    font-family: 'Jost', sans-serif;
+    font-weight: 400;
+    font-size: 1.8vw;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: #C9B07E;
+  }
+
+  .headline {
+    font-family: 'Fraunces', serif;
+    font-weight: 300;
+    font-style: italic;
+    font-size: 5.8vw;
+    line-height: 1.1;
+    color: #F5F0EB;
+  }
+
+  .rule {
+    width: 6vw;
+    height: 1.5px;
+    background: #C9B07E;
+    margin-top: 0.6vh;
+  }
+
+  .logo-mark {
+    position: absolute;
+    top: 5vh;
+    left: 7vw;
+    font-family: 'Fraunces', serif;
+    font-weight: 300;
+    font-size: 2.1vw;
+    color: #F5F0EB;
+    letter-spacing: 0.06em;
+    opacity: 0.9;
+  }
+
+  .tag {
+    font-family: 'Jost', sans-serif;
+    font-weight: 300;
+    font-size: 1.7vw;
+    color: rgba(245,240,235,0.65);
+    letter-spacing: 0.04em;
+  }
+</style>
+</head>
+<body>
+<div class="card">
+  <img class="photo" src="elh-amethyst.png" alt="Amethyst crystal">
+  <div class="duotone-shadow"></div>
+  <div class="duotone-highlight"></div>
+  <div class="gradient"></div>
+
+  <div class="logo-mark">Eternal Life Hospice</div>
+
+  <div class="content">
+    <span class="eyebrow">The Amethyst</span>
+    <h1 class="headline">Formed in<br>darkness.<br>Made luminous.</h1>
+    <div class="rule"></div>
+    <p class="tag">Care That Honors Life</p>
+  </div>
+</div>
+</body>
+</html>

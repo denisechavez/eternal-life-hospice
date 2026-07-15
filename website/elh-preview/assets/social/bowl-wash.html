@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,400;0,700;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<title>Singing Bowl — Color Wash</title>
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 100vw; height: 100vh; overflow: hidden; background: #2A0F28; }
+
+  .card {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+  }
+
+  .photo {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center top;
+    filter: brightness(1.05) saturate(0.88) warmth(1.1);
+  }
+
+  /* Plum color wash — 28% opacity */
+  .wash {
+    position: absolute;
+    inset: 0;
+    background: #5B2E59;
+    opacity: 0.28;
+  }
+
+  /* Strong top fade for the logo */
+  .top-fade {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 28%;
+    background: linear-gradient(rgba(42,15,40,0.55), transparent);
+  }
+
+  /* Bottom text panel */
+  .bottom-panel {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(42,15,40,0.78);
+    padding: 5vh 7vw 6vh;
+    display: flex;
+    flex-direction: column;
+    gap: 1.2vh;
+    backdrop-filter: blur(2px);
+  }
+
+  .label {
+    font-family: 'Jost', sans-serif;
+    font-weight: 400;
+    font-size: 1.6vw;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: #C9B07E;
+  }
+
+  .headline {
+    font-family: 'Fraunces', serif;
+    font-weight: 300;
+    font-size: 5vw;
+    line-height: 1.18;
+    color: #F5F0EB;
+  }
+
+  .body {
+    font-family: 'Jost', sans-serif;
+    font-weight: 300;
+    font-size: 1.9vw;
+    line-height: 1.55;
+    color: rgba(245,240,235,0.68);
+    margin-top: 0.4vh;
+  }
+
+  .gold-line {
+    width: 5vw;
+    height: 1.5px;
+    background: #C9B07E;
+    margin-bottom: 0.4vh;
+  }
+
+  .logo-mark {
+    position: absolute;
+    top: 5vh;
+    left: 7vw;
+    font-family: 'Fraunces', serif;
+    font-weight: 300;
+    font-size: 2.1vw;
+    color: #F5F0EB;
+    letter-spacing: 0.06em;
+    opacity: 0.88;
+  }
+</style>
+</head>
+<body>
+<div class="card">
+  <img class="photo" src="elh-bowl.png" alt="Singing bowl">
+  <div class="wash"></div>
+  <div class="top-fade"></div>
+
+  <div class="logo-mark">Eternal Life Hospice</div>
+
+  <div class="bottom-panel">
+    <span class="label">Sound & Presence</span>
+    <div class="gold-line"></div>
+    <h1 class="headline">Some comfort<br>arrives in sound.</h1>
+    <p class="body">Whole-Person Comfort — The Eternal Standard</p>
+  </div>
+</div>
+</body>
+</html>

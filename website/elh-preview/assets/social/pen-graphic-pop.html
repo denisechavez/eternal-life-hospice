@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,400;0,700;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<title>Writing Pen — Graphic Pop</title>
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 100vw; height: 100vh; overflow: hidden; background: #F5F0EB; }
+
+  .card {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+  }
+
+  .photo {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    /* Natural warm — no filter, this is the "graphic pop" treatment: photo stays real */
+    filter: brightness(1.04) saturate(0.95);
+  }
+
+  /* Top bar — thin gold accent line */
+  .gold-bar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: #C9B07E;
+  }
+
+  /* Logo area — upper left */
+  .logo-mark {
+    position: absolute;
+    top: 5.5vh;
+    left: 7vw;
+    font-family: 'Fraunces', serif;
+    font-weight: 400;
+    font-size: 2vw;
+    color: #2A0F28;
+    letter-spacing: 0.06em;
+    text-shadow: 0 1px 8px rgba(245,240,235,0.8);
+  }
+
+  /* Bottom cream panel — the graphic pop */
+  .panel {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: #F5F0EB;
+    padding: 4vh 7vw 5.5vh;
+    display: flex;
+    flex-direction: column;
+    gap: 0.9vh;
+  }
+
+  .dot-label {
+    display: flex;
+    align-items: center;
+    gap: 1.2vw;
+    font-family: 'Jost', sans-serif;
+    font-weight: 400;
+    font-size: 1.5vw;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: #5B2E59;
+  }
+
+  .dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #C9B07E;
+    flex-shrink: 0;
+  }
+
+  .headline {
+    font-family: 'Fraunces', serif;
+    font-weight: 300;
+    font-style: italic;
+    font-size: 4.8vw;
+    line-height: 1.15;
+    color: #2A0F28;
+  }
+
+  /* The pop: gold underline under headline */
+  .gold-underline {
+    width: 100%;
+    height: 2px;
+    background: #C9B07E;
+    margin-top: 0.4vh;
+    margin-bottom: 0.2vh;
+  }
+
+  .sub {
+    font-family: 'Jost', sans-serif;
+    font-weight: 300;
+    font-size: 1.75vw;
+    color: rgba(42,15,40,0.6);
+    letter-spacing: 0.04em;
+  }
+</style>
+</head>
+<body>
+<div class="card">
+  <img class="photo" src="elh-pen.png" alt="Writing pen">
+  <div class="gold-bar"></div>
+
+  <div class="logo-mark">Eternal Life Hospice</div>
+
+  <div class="panel">
+    <div class="dot-label"><span class="dot"></span>Clinical Confidence</div>
+    <h1 class="headline">Every word<br>written with care.</h1>
+    <div class="gold-underline"></div>
+    <p class="sub">The care plan. The note. The follow-up call.</p>
+  </div>
+</div>
+</body>
+</html>

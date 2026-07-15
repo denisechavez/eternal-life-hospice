@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,400;0,700;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<title>Eye — Color Pop Split</title>
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 100vw; height: 100vh; overflow: hidden; background: #2A0F28; }
+
+  .card {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+  }
+
+  /* Left: full-bleed photo half */
+  .photo-half {
+    position: relative;
+    width: 56%;
+    height: 100%;
+    flex-shrink: 0;
+    overflow: hidden;
+  }
+
+  .photo {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center center;
+    filter: brightness(1.06) saturate(1.05) contrast(1.05);
+  }
+
+  /* Diagonal clip on the right edge of the photo */
+  .photo-half::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: -1px;
+    bottom: 0;
+    width: 12vw;
+    background: #2A0F28;
+    clip-path: polygon(100% 0, 100% 100%, 0 100%);
+  }
+
+  /* Right: deep plum text half */
+  .text-half {
+    flex: 1;
+    background: #2A0F28;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 6vh 6vw 6vh 4vw;
+    gap: 2.2vh;
+  }
+
+  .eyebrow {
+    font-family: 'Jost', sans-serif;
+    font-weight: 400;
+    font-size: 1.5vw;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: #C9B07E;
+  }
+
+  .gold-rule {
+    width: 4vw;
+    height: 1.5px;
+    background: #C9B07E;
+  }
+
+  .headline {
+    font-family: 'Fraunces', serif;
+    font-weight: 300;
+    font-style: italic;
+    font-size: 5.2vw;
+    line-height: 1.18;
+    color: #F5F0EB;
+  }
+
+  .body {
+    font-family: 'Jost', sans-serif;
+    font-weight: 300;
+    font-size: 1.65vw;
+    line-height: 1.6;
+    color: rgba(245,240,235,0.6);
+    margin-top: 0.4vh;
+  }
+
+  /* Bottom logo */
+  .logo-mark {
+    position: absolute;
+    bottom: 5.5vh;
+    right: 6vw;
+    font-family: 'Fraunces', serif;
+    font-weight: 300;
+    font-size: 1.7vw;
+    color: rgba(245,240,235,0.42);
+    letter-spacing: 0.06em;
+  }
+
+  /* Gold border accent — left edge of plum half */
+  .gold-edge {
+    position: absolute;
+    left: 56%;
+    top: 8vh;
+    bottom: 8vh;
+    width: 2px;
+    background: linear-gradient(transparent, #C9B07E 30%, #C9B07E 70%, transparent);
+    opacity: 0.5;
+  }
+
+  /* Color pop circle — amethyst accent */
+  .color-pop {
+    width: 1.4vw;
+    height: 1.4vw;
+    border-radius: 50%;
+    background: #C9B07E;
+    margin-bottom: 0.4vh;
+  }
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="photo-half">
+    <img class="photo" src="elh-eye.png" alt="Eye close-up">
+  </div>
+
+  <div class="gold-edge"></div>
+
+  <div class="text-half">
+    <div class="color-pop"></div>
+    <span class="eyebrow">Guided Presence</span>
+    <div class="gold-rule"></div>
+    <h1 class="headline">She sees<br>what you<br>need.</h1>
+    <p class="body">Before you say it.<br>Before you ask.<br>That is the work.</p>
+  </div>
+
+  <div class="logo-mark">Eternal Life Hospice</div>
+</div>
+</body>
+</html>
