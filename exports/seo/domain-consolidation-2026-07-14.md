@@ -62,7 +62,7 @@ They're minor tidy-ups for whoever manages the two extra domains in GoDaddy.
 > That guide walks through both fixes (wildcard forwarding + single-hop cleanup)
 > in plain language with screenshots-friendly descriptions and verification steps.
 
-1. **Deep links go to "Page Not Found" instead of forwarding.** *(Priority fix)*
+1. **Deep links go to "Page Not Found" instead of forwarding.** *(Priority fix)* — ❌ still pending as of July 15, 2026
    The homepage of each extra domain forwards perfectly. But a *specific inner
    page* — e.g. `eternalhospice.com/resources` — currently shows a 404 rather than
    forwarding to `eternallifehospice.com/resources`. The fix is a single checkbox
@@ -71,13 +71,41 @@ They're minor tidy-ups for whoever manages the two extra domains in GoDaddy.
    current interface). Once enabled, any old link lands on the matching page.
    *Fix location: GoDaddy domain forwarding settings — not this project.*
 
-2. **`eternalhospice.com` takes an extra hop.** *(Nice-to-have)*
+2. **`eternalhospice.com` takes an extra hop.** *(Nice-to-have)* — ❌ still pending as of July 15, 2026
    It forwards to `www.eternallifehospice.com` first, then to
    `eternallifehospice.com`. It still ends up in the right place with permanent
    redirects, so Google handles it fine; pointing it **straight** at
    `https://eternallifehospice.com/` in one hop is marginally cleaner and slightly
    faster. `eternallifehospiceinc.com` already does the clean single hop.
    *Fix: change "Forward to" field in GoDaddy to remove the `www` prefix.*
+
+---
+
+## Re-verification — July 15, 2026
+
+Live tests run after the GoDaddy guide was written confirm the fixes **have not yet been applied** in GoDaddy. The table below is the current state — everything is the same as the initial July 14 audit.
+
+### Homepage forwarding — ✅ still working
+
+| Domain tested | HTTP code | Redirects to | Permanent (301)? |
+|---|---|---|---|
+| `eternalhospice.com/` | 301 | `https://www.eternallifehospice.com` (extra hop) | ✅ Yes |
+| `eternallifehospiceinc.com/` | 301 | `https://eternallifehospice.com` (clean) | ✅ Yes |
+
+### Deep-path forwarding — ❌ still not working
+
+| URL tested | HTTP code | Result |
+|---|---|---|
+| `eternalhospice.com/resources` | 404 | Page Not Found — path not forwarded |
+| `eternalhospice.com/blog` | 404 | Page Not Found — path not forwarded |
+| `eternallifehospiceinc.com/resources` | 404 | Page Not Found — path not forwarded |
+| `eternallifehospiceinc.com/media-kit` | 404 | Page Not Found — path not forwarded |
+
+**Action needed:** Log in to GoDaddy and follow the guide at
+`exports/seo/godaddy-wildcard-redirect-guide-2026-07-15.md` to enable
+"Forward with Path" on both domains. This is a ~10-minute task entirely inside
+the GoDaddy control panel — nothing in this project needs to change.
+Once done, re-test the four deep-path URLs above and update this section to ✅.
 
 ---
 
