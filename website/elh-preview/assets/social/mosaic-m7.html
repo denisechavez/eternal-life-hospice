@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,400;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<title>Month 7 — Full Mosaic</title>
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 100vw; height: 100vh; overflow: hidden; background: #F5F0EB; }
+
+  .card {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    border: 1.5px solid #C9B07E;
+  }
+
+  .header {
+    background: #F5F0EB;
+    padding: 3vh 5vw 2.2vh;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    flex-shrink: 0;
+  }
+
+  .series-label {
+    font-family: 'Jost', sans-serif;
+    font-weight: 400;
+    font-size: 1.6vw;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: #5B2E59;
+  }
+
+  .month-tag {
+    font-family: 'Fraunces', serif;
+    font-weight: 300;
+    font-style: italic;
+    font-size: 1.9vw;
+    color: #C9B07E;
+  }
+
+  /* 2×2 grid — all four images */
+  .image-grid {
+    flex: 1;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    position: relative;
+    overflow: hidden;
+    gap: 0;
+  }
+
+  .cell {
+    overflow: hidden;
+    position: relative;
+  }
+
+  .cell img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: brightness(1.02) saturate(0.9);
+  }
+
+  .cell:nth-child(1) img { object-position: center center; }
+  .cell:nth-child(2) img { object-position: center 30%; filter: brightness(0.98) saturate(0.85); }
+  .cell:nth-child(3) img { object-position: center 40%; filter: brightness(1.03) saturate(0.88); }
+  .cell:nth-child(4) img { object-position: center center; filter: brightness(1.05) saturate(1.0) contrast(1.04); }
+
+  /* Gold stitch lines — the signature seams */
+  .stitch-h {
+    position: absolute;
+    top: 50%;
+    left: 0; right: 0;
+    height: 2px;
+    background: #C9B07E;
+    z-index: 3;
+    transform: translateY(-50%);
+  }
+
+  .stitch-v {
+    position: absolute;
+    left: 50%;
+    top: 0; bottom: 0;
+    width: 2px;
+    background: #C9B07E;
+    z-index: 3;
+    transform: translateX(-50%);
+  }
+
+  /* Center intersection: gold diamond accent */
+  .stitch-center {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 10px;
+    height: 10px;
+    background: #C9B07E;
+    rotate: 45deg;
+    z-index: 4;
+  }
+
+  /* Outer border stitches */
+  .stitch-top    { position: absolute; top: 0; left: 0; right: 0; height: 1.5px; background: #C9B07E; z-index: 3; }
+  .stitch-bottom { position: absolute; bottom: 0; left: 0; right: 0; height: 1.5px; background: #C9B07E; z-index: 3; }
+
+  /* Very subtle global plum tint */
+  .image-grid::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: #3A1438;
+    mix-blend-mode: multiply;
+    opacity: 0.08;
+    pointer-events: none;
+    z-index: 2;
+  }
+
+  /* Pillar labels on each cell */
+  .cell-label {
+    position: absolute;
+    bottom: 1.6vh;
+    left: 1.5vw;
+    font-family: 'Jost', sans-serif;
+    font-weight: 400;
+    font-size: 1.1vw;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: rgba(245,240,235,0.82);
+    text-shadow: 0 1px 6px rgba(0,0,0,0.5);
+    z-index: 3;
+  }
+
+  .footer {
+    background: #2A0F28;
+    padding: 2.5vh 5vw;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-shrink: 0;
+  }
+
+  .brand {
+    font-family: 'Fraunces', serif;
+    font-weight: 300;
+    font-size: 1.9vw;
+    color: #F5F0EB;
+    letter-spacing: 0.06em;
+  }
+
+  .caption {
+    font-family: 'Jost', sans-serif;
+    font-weight: 300;
+    font-size: 1.4vw;
+    color: #C9B07E;
+    letter-spacing: 0.04em;
+  }
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="header">
+    <span class="series-label">Eternal Care Brief</span>
+    <span class="month-tag">Month Seven</span>
+  </div>
+
+  <div class="image-grid">
+    <div class="stitch-top"></div>
+    <div class="stitch-bottom"></div>
+    <div class="stitch-h"></div>
+    <div class="stitch-v"></div>
+    <div class="stitch-center"></div>
+
+    <div class="cell">
+      <img src="elh-amethyst.png" alt="Amethyst">
+      <span class="cell-label">The Stone</span>
+    </div>
+    <div class="cell">
+      <img src="elh-bowl.png" alt="Singing bowl">
+      <span class="cell-label">Sound</span>
+    </div>
+    <div class="cell">
+      <img src="elh-pen.png" alt="Writing pen">
+      <span class="cell-label">The Word</span>
+    </div>
+    <div class="cell">
+      <img src="elh-eye.png" alt="Eye">
+      <span class="cell-label">Presence</span>
+    </div>
+  </div>
+
+  <div class="footer">
+    <span class="brand">Eternal Life Hospice</span>
+    <span class="caption">Care That Honors Life</span>
+  </div>
+</div>
+</body>
+</html>

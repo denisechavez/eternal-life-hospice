@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,400;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<title>Month 1 — The Introduction</title>
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 100vw; height: 100vh; overflow: hidden; background: #F5F0EB; }
+
+  .card {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    border: 1.5px solid #C9B07E;
+  }
+
+  /* Header band */
+  .header {
+    background: #F5F0EB;
+    padding: 3.5vh 5vw 2.5vh;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    flex-shrink: 0;
+  }
+
+  .series-label {
+    font-family: 'Jost', sans-serif;
+    font-weight: 400;
+    font-size: 1.7vw;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: #5B2E59;
+  }
+
+  .month-tag {
+    font-family: 'Fraunces', serif;
+    font-weight: 300;
+    font-style: italic;
+    font-size: 2vw;
+    color: #C9B07E;
+  }
+
+  /* Single image — takes most of the card */
+  .image-frame {
+    position: relative;
+    flex: 1;
+    overflow: hidden;
+  }
+
+  .image-frame img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    filter: brightness(1.03) saturate(0.92);
+  }
+
+  /* Duotone treatment on the single hero image */
+  .image-frame::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: #2A0F28;
+    mix-blend-mode: multiply;
+    opacity: 0.18;
+    z-index: 1;
+  }
+
+  /* Footer band */
+  .footer {
+    background: #2A0F28;
+    padding: 2.8vh 5vw;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-shrink: 0;
+  }
+
+  .brand {
+    font-family: 'Fraunces', serif;
+    font-weight: 300;
+    font-size: 2vw;
+    color: #F5F0EB;
+    letter-spacing: 0.06em;
+  }
+
+  .caption {
+    font-family: 'Jost', sans-serif;
+    font-weight: 300;
+    font-size: 1.5vw;
+    color: #C9B07E;
+    letter-spacing: 0.04em;
+  }
+
+  /* Gold stitch line at top of image frame */
+  .stitch-top {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1.5px;
+    background: #C9B07E;
+    z-index: 2;
+  }
+
+  .stitch-bottom {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 1.5px;
+    background: #C9B07E;
+    z-index: 2;
+  }
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="header">
+    <span class="series-label">Eternal Care Brief</span>
+    <span class="month-tag">Month One</span>
+  </div>
+
+  <div class="image-frame">
+    <div class="stitch-top"></div>
+    <img src="elh-amethyst.png" alt="Amethyst crystal">
+    <div class="stitch-bottom"></div>
+  </div>
+
+  <div class="footer">
+    <span class="brand">Eternal Life Hospice</span>
+    <span class="caption">Care That Honors Life</span>
+  </div>
+</div>
+</body>
+</html>
