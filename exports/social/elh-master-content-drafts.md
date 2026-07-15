@@ -2057,7 +2057,7 @@ A: Corporate hospices are owned by for-profit chains or publicly traded companie
 | **Aleksandra** | Everyone — founders build trust | Vision, accountability, warmth |
 | **The Hospice Physician** | Referring providers, families who want clinical authority | Precision, gravity, calm |
 | **The Registered Nurse** | Families in the middle of it, caregivers | Competence, steadiness, warmth |
-| **The Social Worker** | Family navigators, caregivers | Human complexity, practical compassion |
+| **The Social Worker** | Family navigators, caregivers | Human complexity, the art of opening a room |
 | **The Chaplain** | Families wrestling with meaning, skeptics | Presence, openness, non-judgment |
 | **The Hospice Aide** | Families unsure about personal care | Dignity, intimacy, deep care |
 | **The Music Therapist** | General public, families of dementia patients | Wonder, expertise, beauty |
@@ -3938,7 +3938,7 @@ These are the most personal things available in the entire content library. They
 Her grandmother passed on hospice. The experience of watching someone she loved receive attentive, dignified end-of-life care became the reason she entered this field. This is not abstract professional motivation. It is personal grief transformed into vocation.
 
 **Origin Moment 2 — Her own surgery as a child.**
-As a young child, Aleksandra underwent open-heart surgery — brought to the United States for advanced care. She knows what it means to be wholly dependent on the skill and compassion of others. She leads with the knowledge of what care feels like from the inside.
+As a young child, Aleksandra underwent open-heart surgery — brought to the United States for care she could not have received elsewhere. She knows what it means to be wholly on the receiving end of another person's skill and presence. She leads with the knowledge of what care feels like from the inside.
 
 *Together these two moments create a complete origin: she has been the patient. She has watched someone she loved receive the care. She built the organization she wished had existed for both of them.*
 
@@ -3965,7 +3965,7 @@ That what is tended gently, with patience, through the hardest hours — is ofte
 
 My grandmother passed on hospice. I was there. I watched what it meant for a family to have a team that showed up — truly showed up — with clinical skill and human presence together. That experience became the reason I entered this work. And the standard I set for every person on this team.
 
-I also know what it is to be on the other side. I underwent open-heart surgery as a young child. I know what it feels like to be wholly on the receiving end of someone else's care. To be entirely dependent on the skill and the compassion of people you are trusting with your life.
+I also know what it is to be on the other side. I underwent open-heart surgery as a young child. I know what it feels like to be wholly on the receiving end of someone else's care. To be entirely dependent on the steadiness and skill of people you are trusting with your life.
 
 Both of those experiences live in how I built this organization.
 
@@ -3992,7 +3992,7 @@ This organization was built from two personal experiences.
 
 My grandmother passed on hospice. I was present. I watched what it meant for a family to have a team that arrived with both clinical precision and genuine human presence. That experience became the reason I entered this field, and the standard I hold every member of this team to.
 
-I also underwent open-heart surgery as a child — brought to the United States for care I could not have received elsewhere. I know what it feels like to be entirely on the receiving end of someone else's compassion and skill. That knowledge shapes how I lead.
+I also underwent open-heart surgery as a child — brought to the United States for care I could not have received elsewhere. I know what it feels like to be entirely dependent on the presence and skill of people you are trusting with everything. That knowledge shapes how I lead.
 
 The amethyst is a promise: something older than any of us, meant to endure.
 
@@ -4048,7 +4048,7 @@ That became the reason I entered this field. And the standard I have held to for
 
 But there is something else.
 
-I underwent open-heart surgery as a child. I was brought to the United States for care I couldn't have received anywhere else. And I know — from the inside — what it means to be wholly dependent on the compassion and skill of people you are trusting with everything.
+I underwent open-heart surgery as a child. I was brought to the United States for care I couldn't have received anywhere else. And I know — from the inside — what it means to be wholly dependent on the steadiness and skill of people you are trusting with everything.
 
 I know what the receiving end of care feels like.
 
@@ -4067,7 +4067,7 @@ My grandmother passed on hospice. I was present. I watched what it meant for a f
 
 That experience is the reason I entered this field.
 
-I also know what it is to be on the receiving end of care. As a young child, I underwent open-heart surgery — brought to the United States for treatment I couldn't have received elsewhere. I know what it means to be entirely dependent on the skill and compassion of others.
+I also know what it is to be on the receiving end of care. As a young child, I underwent open-heart surgery — brought to the United States for treatment I couldn't have received elsewhere. I know what it means to be entirely dependent on the skill and the steady presence of people who show up fully.
 
 Both of those experiences are woven into how I built Eternal Life Hospice. Into every care plan, every standard, every decision about what this team offers and how.
 
@@ -4587,4 +4587,200 @@ Regardless of platform, regardless of subject — these are fixed:
 ✓ No stock — ever
 
 The standard is: the most beautiful version of the real thing. Not a different thing. The real thing, in its best light.
+
+
+---
+
+# PART SEVENTEEN: THE ANTI-STOCK RULE — Human, Not Staged
+
+*Stock photography is not a budget problem. It is a trust problem. A family navigating the end of a loved one's life will feel, immediately and viscerally, the difference between an image that was lived and an image that was arranged. The human image earns trust. The staged image destroys it.*
+
+---
+
+## What Makes a Photo Look Stock — Kill Every One of These
+
+**The posed handshake.** Two people shaking hands, both looking at the camera, smiling. This image appears on every hospice, hospital, and healthcare website on the internet. Never.
+
+**The group in front of the sign.** Five people in a row, arms around each other, logo behind them. Immediately reads as "corporate communications." Never.
+
+**The pointing-at-the-screen moment.** Someone gesturing at a laptop or tablet while a colleague looks on with exaggerated interest. Never.
+
+**The matching attire.** Everyone in the same color scrubs, same pose, same height arrangement. Staged. Never.
+
+**The symmetrical frame.** Perfect centering, perfect light on both sides, perfect background. This level of precision reads as constructed. Real moments are not perfectly symmetrical.
+
+**The held expression.** A smile held for the camera — held just long enough to look right, not long enough to feel real. The jaw is slightly tight. The eyes are slightly performing. The camera catches it. The audience feels it. Never hold an expression for the shot.
+
+**The borrowed prop.** A stethoscope placed decoratively. A clipboard held at an angle. Medical equipment arranged for visual effect rather than in actual use. The props of healthcare without the work of healthcare. Never.
+
+**The generic warmth stock.** An elderly person's hands held by younger hands — shot from above, warm filter, no context. This image has been used so many thousands of times it has become meaningless. If it could belong to any hospice, it belongs to none of them.
+
+---
+
+## What Creates the Human Feeling — Do Every One of These
+
+**Photograph work, not the performance of work.**
+The nurse actually reviewing a chart — not looking at a chart while looking up for the camera. The social worker genuinely on the phone. The aide folding a blanket. The intake coordinator listening. The work itself, uninterrupted.
+
+**Catch the transition.**
+The moment between tasks is often the most human. The pause after a call is finished. The exhale. The hand resting on a desk. The look out the window. These are not performative. They are real.
+
+**Shoot more than you need.**
+Take 30 photos to get 3 good ones. The good ones are almost never the ones taken when the subject is "ready." They are the ones taken at shot 22, when the person forgot they were being photographed.
+
+**Use the environment as it is.**
+A worn notebook is better than a new one. A coffee cup with a ring on it is more human than a clean mug. A window with dust motes in the light is more beautiful than a window cleaned for the shoot. Do not clean up the humanity of a space before photographing it.
+
+**Let motion blur happen.**
+A slightly soft image of someone in motion — turning, reaching, writing — reads as caught. As real. It is often more powerful than a perfectly sharp posed image.
+
+**The un-self-conscious expression is the only expression.**
+Give the subject something real to think about — a genuine question, a real task — and photograph them doing it. "Think about the last patient you admitted and what that first conversation felt like." Then take the photo while they're thinking. That expression cannot be staged. It is always the best one.
+
+**Imperfect backgrounds signal reality.**
+A bookshelf slightly out of focus in the background. A plant. A window with the world outside it. These are the backgrounds of a real place where real people work. A plain wall is sometimes right — but never a backdrop.
+
+**Natural light over perfect light.**
+A face lit unevenly by window light — brighter on one side, soft shadow on the other — is more beautiful and more human than a face lit evenly by professional equipment. Imperfect light is real light.
+
+---
+
+## The Practical Test — Two Versions of Every Shot
+
+Before settling for a photo, take two versions:
+
+**Version A — the subject knows they're being photographed.**
+They're ready. They're looking at the lens. They're composed. This is the photo they would approve of.
+
+**Version B — the subject just finished doing something real.**
+You asked them to do the task (write this sentence, review this page, make this call) and you caught them at the end of it, or in the middle of it, before they "switched back."
+
+Version B is almost always better. Use Version B.
+
+---
+
+## The Seven Human Signals
+
+Every image that feels human has at least one of these:
+
+1. **Evidence of use** — a pen that has been written with, a page that has been turned, a cup that has been drunk from
+2. **An imperfect moment** — mid-blink caught well, mid-breath, the face settling from an expression rather than holding one
+3. **Depth** — something out of focus in the background that tells you this is a real place
+4. **Asymmetry** — the subject is not centered, or the light is stronger on one side, or the composition has tension in it
+5. **Motion** — even slight, even implied — a hand caught in the act of moving, clothing with natural movement
+6. **A real expression** — not performed warmth, but warmth that arrived because something real was happening
+7. **Specific context** — you can tell, from the image alone, where this was taken and roughly what was happening
+
+---
+
+## One Rule for the Whole Library
+
+> *If this photo could appear on any healthcare website in America — it should not appear on ours.*
+
+Eternal Life Hospice is specific. The work is specific. The people are specific. The images must be specific.
+
+A photo of a singing bowl resting on a wool blanket in warm afternoon light, in a room you can almost smell — that belongs here.
+
+A photo of "a medical professional providing comfort care" that was taken in a rented studio in Phoenix — does not.
+
+Specificity is the human signal. Specificity is the brand.
+
+
+---
+
+# PART EIGHTEEN: WRITING STANDARDS & BLACK AND WHITE PHOTOGRAPHY
+
+---
+
+## The Word Standard — Show, Don't Claim
+
+The words that are overused in hospice and healthcare marketing have lost their meaning entirely through repetition. When a reader encounters them, they register nothing — or worse, they register distrust.
+
+**Words that are banned from this content library:**
+
+| Banned word / phrase | Why | What to write instead |
+|---|---|---|
+| Compassionate / compassion | Every hospice uses it. It means nothing. | Show the 2 AM nurse answering. Show the handwritten note. Show the doula sitting in the quiet. The reader feels it — or they don't. |
+| Caring / caring team | Circular. A care organization calling itself caring is not information. | Describe the specific act of care. The consistency. The presence. What actually happened. |
+| Passionate | Generic to the point of meaninglessness. Applies to everything from hospice to pizza. | Name what drives the specific person. What they came from. What they stayed for. |
+| Holistic approach | Medical jargon that has been co-opted by marketing. | Name the specific therapies. Name the specific person they help. |
+| Journey | "Your journey." "Their journey." "This journey." Hollow. | Name the actual thing: the season, the passage, the final chapter. Or simply: this. |
+| Dignity (as a claim) | "We provide care with dignity." Every organization says this. | Show the aide who knows exactly how a patient likes their hair. Show the 2 AM call. Dignity is demonstrated, not announced. |
+| Seamless | Corporate. Means nothing. | Describe what actually happens: same-day admission, one phone call, the medication arrives before the family has to ask. |
+| World-class | Claim without evidence. | Name the credential (ACHC). Name the specific service. Name the specific outcome. |
+| Loved ones | Slightly hollow — overused across all of hospice. | The family. The daughter. The husband. Or: the people in that room. |
+
+**The rule:** If the sentence could appear on any healthcare organization's website in America — rewrite it until it couldn't.
+
+---
+
+## The Show-Don't-Tell Standard
+
+Every emotion this brand wants a reader to feel must be *created by the writing* — not named by it.
+
+**Don't write:** "We provide compassionate care."
+**Write:** "When a family calls at 2 in the morning, a nurse answers. Not a service. A person who can assess and act. Right then."
+
+**Don't write:** "We treat every patient with dignity."
+**Write:** "Our aide knows exactly how this patient likes their hair. She has known for three weeks. She asks every time anyway — because the asking is part of the care."
+
+**Don't write:** "We are passionate about end-of-life care."
+**Write:** "She has been in hospice for eleven years. She could have practiced anywhere. She stayed."
+
+**Don't write:** "We offer a holistic approach."
+**Write:** "Music therapy. Massage. Reiki. Aromatherapy. Pet therapy. Sound baths. A board-certified music therapist who knows your father's favorite song from 1967 and plays it at the bedside. That is what holistic means here."
+
+The emotion is in the specific. The specific is always more powerful than the claim.
+
+---
+
+## Black and White Photography — The Standard
+
+B&W is punctuation, not prose. Used selectively, it is one of the most powerful visual tools available to this brand. Used broadly, it erodes the warmth that is the foundation of everything else.
+
+### Where B&W earns its place
+
+**Faces — the most powerful B&W subject.**
+Color carries warmth that can soften expression. B&W removes that buffer and leaves the expression itself — unmediated. A hospice nurse with eleven years of this work in her face, photographed in B&W with window light from the side, is a more powerful image than any branded color photograph. The viewer cannot look away from a face that honest.
+
+**The amethyst stone in high-contrast B&W.**
+The brand metaphor — formed in darkness, becomes luminous — is more legible in B&W than in color. The dark exterior, the crystalline interior catching light: high-contrast monochrome makes the metaphor visible in a way that color sometimes softens.
+
+**Hands — the oldest visual language of care.**
+B&W hands speak across a century of photography. They say: this work is real, physical, human, and old. A close-up of hands in B&W — writing, resting, holding — carries the weight of every person who has done this work before.
+
+**The quiet aftermath.**
+The folded blanket. The empty chair by the window. The desk at end of day. B&W removes the sentimentality that color can add to these scenes and leaves only the weight of the moment. These are the images that stop a scroll not with beauty but with truth.
+
+### Where B&W would undercut the brand
+
+**Comfort therapy images** — music-therapy.jpg, pet-therapy.jpg, singing-bowl.jpg. These depend on their color warmth to feel safe and inviting. In B&W they risk reading as somber.
+
+**Nature imagery** — back-to-the-earth needs its golden light to read as peace. In B&W it becomes absence.
+
+**Any image intended to feel warm and welcoming** — if the purpose is to invite, use color. If the purpose is to make the viewer stop and feel the weight of something true, B&W may be right.
+
+### The feed rhythm — how B&W fits
+
+**Instagram grid (every 9 posts):**
+Warm color · Warm color · Text-on-plum · Warm color · **B&W face or hands** · Warm color · Close-up detail · Warm color · **B&W amethyst or quiet scene** → repeat
+
+The B&W post stops the eye in a warm-color feed. That pause — the half-second where the viewer registers the shift — is the most valuable moment in the scroll. Use it for the images that most deserve to be felt rather than merely seen.
+
+**LinkedIn:** B&W works for the gravitas posts — the credential posts, the founder story, the industry positioning. It signals: this is serious. Read this.
+
+**Pinterest:** A B&W pin stands out in an overwhelmingly color feed. Use for the quote cards and portrait pins — the ones that should be saved rather than scrolled past.
+
+**TikTok/Reels:** Open the video with a B&W still before the voiceover begins. Hold it for 3 seconds of silence. Then the first warm-color image arrives as the voice starts. This is the cinematic opening — it signals: what follows is worth watching.
+
+### The B&W editing standard
+
+When converting to B&W:
+- **High contrast** — the brand lives in the tension between dark and light. Don't flatten it.
+- **Luminous highlights** — faces and the amethyst interior should glow slightly. Pull highlights up.
+- **Rich blacks** — the deep plum of the brand translates to deep black. Don't lift the blacks to gray.
+- **Grain is acceptable** — a slight film grain reads as intentional and human. Not noise. Grain.
+- **Sharp on the subject, soft on the background** — depth of field matters more in B&W because color no longer separates the subject from the environment.
+
+The feeling of a well-executed B&W image in this library: timeless. As if it could have been taken in 1965 or today. As if the work it depicts has always been done and always will be.
 
