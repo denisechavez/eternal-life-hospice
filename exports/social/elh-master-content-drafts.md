@@ -2041,3 +2041,527 @@ A: Corporate hospices are owned by for-profit chains or publicly traded companie
 
 *This is your industry positioning library. Use it consistently across all platforms, all conversations, and all referral relationships. The standard you've built is real. Say it clearly.*
 
+
+---
+
+# PART NINE: CHARACTER LIBRARY — Interviews, Short Clips, Did You Know, How We Operate
+
+*You can film anyone. Every person on this team is a story. Here is exactly what to ask, what to film, and what to caption.*
+
+---
+
+## THE CAST
+
+| Character | Who they reach | Their emotional register |
+|---|---|---|
+| **Aleksandra** | Everyone — founders build trust | Vision, accountability, warmth |
+| **The Hospice Physician** | Referring providers, families who want clinical authority | Precision, gravity, calm |
+| **The Registered Nurse** | Families in the middle of it, caregivers | Competence, steadiness, warmth |
+| **The Social Worker** | Family navigators, caregivers | Human complexity, practical compassion |
+| **The Chaplain** | Families wrestling with meaning, skeptics | Presence, openness, non-judgment |
+| **The Hospice Aide** | Families unsure about personal care | Dignity, intimacy, deep care |
+| **The Music Therapist** | General public, families of dementia patients | Wonder, expertise, beauty |
+| **The End-of-Life Doula** | Curious general public, death-positive community | Depth, sacredness, calm |
+| **The Volunteer** | Community members, aspiring volunteers | Generosity, simplicity, meaning |
+| **The Intake Coordinator** | Families about to call, referring providers | Reassurance, clarity, speed |
+| **Grieving family member** | Every family watching (with their written consent) | Authenticity, catharsis, trust |
+
+---
+
+## CHARACTER 1 — THE HOSPICE PHYSICIAN / MEDICAL DIRECTOR
+
+**What they bring to camera:** Clinical authority delivered humanely. The physician who chose hospice — who turned away from acute care and toward end of life — is a rare and compelling figure. Their presence tells families: the best medical minds are in this room.
+
+**How to film:** Office setting, white coat optional. Seated, natural light. Warm but professional. Speak to camera or to Aleksandra asking questions off-camera.
+
+**The opening question (the one that unlocks them):**
+> "Why hospice? You could have practiced anywhere. What brought you here?"
+
+**Three interview prompts:**
+1. "What does good symptom management look like at the end of life — and how is it different from what most people imagine?"
+2. "What's the most important thing you wish referring physicians understood about the hospice benefit?"
+3. "Tell me about a moment in this work that reminded you why you chose it."
+
+---
+
+**"Did You Know" script — Physician:**
+> "Did you know hospice care is physician-led? Not just physician-supervised — there is a board-certified physician directing every care plan, coordinating with the patient's own doctor, and available when clinical decisions need to be made. You don't leave your medical care at the door when you choose hospice. You gain a specialized team around it."
+
+*Format: Physician on camera, 20 seconds. Or Aleksandra delivering it as a fact over B-roll of the physician reviewing a chart.*
+
+---
+
+**Short clip concept — "Two Physicians, One Patient":**
+> *Film the hospice physician on the phone with a referring physician, coordinating care. Then turn camera to the hospice physician:*
+> "This is one of the most important calls I make — making sure the family's existing doctor stays in the picture. Hospice doesn't replace the physician who knows this patient. It works alongside them."
+
+**Caption:**
+> Hospice doesn't replace your loved one's doctor. It builds a specialized team around them.
+>
+> Our physician-led care model means two doctors coordinating — the one who knows your family's history and the one who specializes in comfort and end-of-life care. Together.
+>
+> That is what Clinical Confidence looks like.
+
+---
+
+## CHARACTER 2 — THE REGISTERED NURSE
+
+**What they bring to camera:** The person who answers the phone at 2 AM. The clinical anchor. The one who walks into a home for the first time and makes a family feel like someone finally has this. A hospice nurse is one of the most compelling human beings in American healthcare — and almost no one knows their story.
+
+**How to film:** In the office, or outside a patient home (no patient visible). Scrubs or professional clothes. Warm, direct. High trust.
+
+**The opening question:**
+> "Tell me about 2 AM. What actually happens when a family calls in the middle of the night?"
+
+**Three interview prompts:**
+1. "What's the hardest part of this work — and what keeps you coming back?"
+2. "What do families most often say they wish they'd known before they called hospice?"
+3. "What does a first visit look like — what are you actually doing, and what are you trying to understand?"
+
+---
+
+**"Did You Know" script — Nurse:**
+> "Did you know that when you call Eternal Life Hospice at 2 in the morning, a nurse answers? Not a voicemail. Not an answering service that pages someone. A nurse — someone who can assess what's happening, give guidance, and dispatch help if it's needed. Right then. Every time."
+
+*Format: Nurse on camera, 20 seconds. Dead-eye to camera for the first line.*
+
+---
+
+**Short clip concept — "The First Visit":**
+> *Nurse walks through what they do in the first two hours at a patient's home — assessment, medication review, family education — in plain, calm language.*
+> "I'm not just taking vitals on that first visit. I'm learning who this person is. What matters to them. What they're afraid of. Everything after that first conversation is built on that."
+
+**Caption:**
+> The first hospice visit is not a medical assessment.
+>
+> It is a conversation. One that shapes everything that follows.
+>
+> What does this person love? What do they fear? What does comfort mean, specifically, to them?
+>
+> The clinical data matters. The human being matters more.
+
+---
+
+## CHARACTER 3 — THE SOCIAL WORKER
+
+**What they bring to camera:** The navigator. The person who deals with what medicine can't touch — family conflict, financial anxiety, isolation, grief that predates the illness by years. Social workers are the most underappreciated member of the hospice team. Give them a camera.
+
+**How to film:** Office or neutral setting. Conversational. They tend to speak in stories — let them.
+
+**The opening question:**
+> "What does your job actually look like on a Tuesday afternoon?"
+
+**Three interview prompts:**
+1. "What do families most often not realize they need — until you show up and they realize it?"
+2. "What's the conversation most families are avoiding — and how do you open it?"
+3. "What does the 13 months of bereavement support that hospice provides actually look like in practice?"
+
+---
+
+**"Did You Know" script — Social Worker:**
+> "Did you know that the hospice benefit includes 13 months of bereavement support for the family — after the patient passes? A social worker stays in contact with the family through the first year of grief. Not once. Regularly. Because grief doesn't end at the funeral, and neither does our care."
+
+*Format: Social worker on camera, 25 seconds.*
+
+---
+
+**Short clip concept — "The Conversation Nobody's Having":**
+> "The thing I see most often is a family where everyone is protecting everyone else. The patient isn't saying how afraid they are because they don't want to worry the family. The family isn't saying how afraid they are because they don't want to upset the patient. And nobody is saying what they actually need — because nobody wants to be the one who makes it real."
+>
+> "My job is to be the person who opens that room up. Gently. So that the things that need to be said have a chance to be said."
+
+**Caption:**
+> In hospice, the most important conversations are often the ones nobody is having.
+>
+> Our social worker's job is to open the room — gently, without agenda — so that families can say the things that matter before time runs out.
+>
+> That is part of what hospice care includes. And it is part of what we mean by Guided Presence.
+
+---
+
+## CHARACTER 4 — THE CHAPLAIN
+
+**What they bring to camera:** The most misunderstood member of the team — and potentially the most powerful on camera. A chaplain who can speak clearly about serving any faith, any doubt, any silence will stop a secular audience cold. This is the content nobody expects from a hospice.
+
+**How to film:** Quiet setting. Soft light. Let pauses happen. Don't rush this one.
+
+**The opening question:**
+> "Tell me about someone you sat with who wasn't religious at all. What did that look like?"
+
+**Three interview prompts:**
+1. "What do you bring to a room when there are no words left?"
+2. "How do you support someone whose faith is shaken — or someone who has no faith at all?"
+3. "What's the question people ask you most that they'd never ask anyone else?"
+
+---
+
+**"Did You Know" script — Chaplain:**
+> "Did you know that hospice chaplaincy has nothing to do with religion? Our chaplain doesn't arrive with a faith to offer. She arrives with the capacity to hold whatever is already there — or to sit comfortably with none. She is trained in spiritual care, which is not the same as religious practice. It is the capacity to be present with the deepest human questions — including the question of what this life meant."
+
+*Format: Chaplain on camera or Aleksandra delivering it. 25 seconds.*
+
+---
+
+**Short clip concept — "What I Hold":**
+> Chaplain, direct to camera, unhurried:
+> "People ask me questions in this work that they've never asked anyone else. About what happens after. About whether they did enough. About whether they are forgiven. About whether any of this meant something.
+>
+> I don't always have answers. But I've learned that what most people need isn't an answer. They need to know that someone can hear the question without flinching.
+>
+> I don't flinch. That's the whole job."
+
+**Caption:**
+> Our chaplain doesn't arrive with a religion.
+>
+> She arrives with the capacity to hold whatever is already there — faith, doubt, anger, wonder, silence.
+>
+> She holds the questions without answers. The grief that predates the illness by decades. The things people have never said to anyone else.
+>
+> That is spiritual care. And it is part of every care plan.
+
+---
+
+## CHARACTER 5 — THE HOSPICE AIDE
+
+**What they bring to camera:** Radical dignity. The aide performs the most intimate care — bathing, grooming, dressing — and does so with a precision of tenderness that most people have never witnessed. This is also the most underleveraged story in all of hospice. Film it.
+
+**How to film:** Office setting for the interview. Genuine, grounded. These are often the most naturally compelling people on the team — they've seen everything and carry it with grace.
+
+**The opening question:**
+> "What does it feel like to do this work every day?"
+
+**Three interview prompts:**
+1. "What do you want families to understand about the care you provide?"
+2. "Tell me about a moment in this work that you carry with you."
+3. "What does dignity mean to you — specifically, in the work of bathing and caring for someone?"
+
+---
+
+**"Did You Know" script — Aide:**
+> "Did you know that the hospice aide's visit is often the part of the week a patient looks forward to most? Not for the clinical care — but for the connection. A familiar face. Someone who knows exactly how they like their hair. Who talks to them like a person, not a patient. That consistency, that gentleness — that is what our aides bring. Every visit."
+
+*Format: Aide on camera or Aleksandra delivering. 25 seconds.*
+
+---
+
+**Short clip concept — "The Whole Job":**
+> "People think the aide's job is bathing and grooming. And it is — but that's not the whole job.
+>
+> The whole job is making sure that every time I leave, that person feels like they were cared for. Not just cleaned up. Cared for. Like they matter. Like today was worth it.
+>
+> That's the whole job."
+
+**Caption:**
+> The hospice aide's job is not hygiene. It is dignity.
+>
+> The same face, visit after visit. The knowledge of exactly how someone takes their coffee, how they like their hair, what makes them laugh.
+>
+> That intimacy is not incidental. It is the care.
+
+---
+
+## CHARACTER 6 — THE BOARD-CERTIFIED MUSIC THERAPIST
+
+**What they bring to camera:** Credentialed wonder. A board-certified music therapist is not a musician who visits patients. They are a clinician who uses music as a therapeutic intervention — and the outcomes they describe on camera are remarkable. This content will reach far beyond the hospice audience.
+
+**How to film:** With an instrument if natural. Or seated, clinical setting. Can demonstrate — a few bars of a patient's requested song — if they're comfortable.
+
+**The opening question:**
+> "Tell me about a patient where music reached something nothing else could."
+
+**Three interview prompts:**
+1. "What's the clinical difference between music therapy and just playing someone's favorite songs?"
+2. "How does music therapy work with patients who have advanced dementia?"
+3. "What do families experience in the room when you're working with a patient?"
+
+---
+
+**"Did You Know" script — Music Therapist:**
+> "Did you know that music therapy in hospice is provided by a board-certified clinician — not a volunteer with a guitar? Board certification in music therapy requires a degree, clinical training, and a national examination. The interventions are evidence-based. Studies show that music therapy reduces anxiety and pain perception, decreases the need for PRN medications, and — in dementia patients — can reach cognitive and emotional responses that verbal communication cannot. This is clinical care. It just sounds different."
+
+*Format: Music therapist on camera. 30 seconds. Confident, matter-of-fact.*
+
+---
+
+**Short clip concept — "A Song from Forty Years Ago":**
+> *Music therapist plays the opening bars of a patient-requested song — something from the 1960s or 70s — then looks up.*
+> "This was her song. She hasn't spoken a full sentence in six months. But when I play this, something in her face changes. Her daughter told me it was the first time in weeks she'd seen her mother look like herself.
+>
+> That's what music does. It goes somewhere medicine can't."
+
+**Caption:**
+> There is a reason a certain song can return us, in an instant, to a kitchen from forty years ago.
+>
+> Music lives close to memory. Our board-certified music therapist uses that closeness as a clinical tool — reducing anxiety, easing pain perception, reaching patients with dementia when nothing else can.
+>
+> This is not background music. This is therapy.
+>
+> Included in every care plan that calls for it. $0 additional.
+
+---
+
+## CHARACTER 7 — THE END-OF-LIFE DOULA
+
+**What they bring to camera:** The most powerful and least-known member of the team. An end-of-life doula is trained to accompany a patient and family through the dying process — not medically, not spiritually (that's the chaplain), but as a guide through the practical, emotional, and sacred dimensions of the final passage. This content will reach the death-positive community, the general public, and healthcare professionals who have never heard of this role.
+
+**How to film:** Quiet, intimate setting. This person should speak slowly. Let the weight of what they do come through.
+
+**The opening question:**
+> "How do you describe what you do — to someone who has never heard of an end-of-life doula?"
+
+**Three interview prompts:**
+1. "What is the difference between what you offer and what the chaplain or social worker offers?"
+2. "What does legacy work look like — how do you help someone leave something behind?"
+3. "What has this work taught you about life?"
+
+---
+
+**"Did You Know" script — End-of-Life Doula:**
+> "Did you know that Eternal Life Hospice includes an end-of-life doula as part of care? Most people have never heard of this role. A doula — in this context — is a trained companion for the dying process. They help patients and families understand what is happening, create meaningful rituals, engage in legacy conversations, and navigate the final passage with intention. They are not a nurse. Not a chaplain. They are a guide — for the patient AND the family — through something medicine alone cannot fully accompany."
+
+*Format: Doula on camera, 30 seconds. Or Aleksandra delivering over B-roll of the doula in conversation with a family (no patients visible).*
+
+---
+
+**Short clip concept — "What a Doula Holds":**
+> "I help people decide what they want to leave behind. A letter to a grandchild. A recipe written in their handwriting. A recording of their voice saying the thing they've always meant to say.
+>
+> I also help families know what to expect — what the process looks like, what the body does, how to be present for it without being afraid of it.
+>
+> Dying is not a medical event. It is a human one. And it deserves to be accompanied as such."
+
+**Caption:**
+> Most people have never heard of an end-of-life doula.
+>
+> They are a guide — for the patient and the family — through the final passage. Not clinical. Not religious. Human.
+>
+> Legacy conversations. Meaningful rituals. The knowledge of what to expect, so that presence replaces fear.
+>
+> This is part of what we include. Assessed individually. At no additional expense.
+>
+> Because dying deserves to be accompanied.
+
+---
+
+## CHARACTER 8 — THE VOLUNTEER
+
+**What they bring to camera:** Proof that this work calls to people outside the clinical world. A volunteer — retired nurse, neighbor, student, someone who walked this road with their own family — is the most relatable character in the cast. They speak to anyone who has ever wanted to do something meaningful and didn't know how to start.
+
+**How to film:** Natural setting. Comfortable clothes. Let them tell a story.
+
+**The opening question:**
+> "What made you decide to do this?"
+
+**Three interview prompts:**
+1. "What does a volunteer visit actually look like? Walk me through one."
+2. "What did you expect before you started — and what surprised you?"
+3. "What would you say to someone who is thinking about volunteering but hasn't made the call yet?"
+
+---
+
+**"Did You Know" script — Volunteer:**
+> "Did you know that hospice volunteers are a required part of the Medicare hospice benefit? Every certified hospice must have a volunteer program. But what volunteers actually do — sitting with patients, giving caregivers respite, reading aloud, holding a hand — that is not required to be meaningful. Ours is. If you've ever thought about giving your time to something that matters, we'd be glad to tell you more."
+
+*Format: Volunteer on camera. 25 seconds. Warm, genuine.*
+
+---
+
+**Short clip concept — "Just Being":**
+> "I don't do much when I visit. That's the honest answer.
+>
+> I sit. I listen. Sometimes I read out loud. Sometimes we just have the TV on and I'm there.
+>
+> But the caregiver — the daughter, the husband, whoever it is — they get to leave for an hour. To go to the grocery store. To sit in their car and breathe.
+>
+> That's what I do. I let them take a break. And somehow that turns out to be everything."
+
+**Caption:**
+> Hospice volunteers don't arrive with a clipboard.
+>
+> They arrive with time. And presence. And no agenda.
+>
+> They sit. They listen. They hold a hand. They give the caregiver permission to rest for an hour.
+>
+> That is not a small thing. For a family in this season, it is everything.
+>
+> If you feel called to give this kind of time: eternallifehospice.com/volunteer
+
+---
+
+## CHARACTER 9 — THE INTAKE COORDINATOR
+
+**What they bring to camera:** Reassurance at the moment of highest anxiety. The intake coordinator is the first voice a family or referring provider hears. Making this person visible — showing their face, hearing their warmth — reduces the fear of that first call more than any caption can.
+
+**How to film:** At their desk, phone nearby. Real work setting. Approachable.
+
+**The opening question:**
+> "What does the first call from a family sound like — what are they carrying when they dial?"
+
+**Three interview prompts:**
+1. "What happens in the first hour after a referral comes in?"
+2. "What do you wish families knew before they called — what would make that call easier for them?"
+3. "Tell me about a family you remember from the first call."
+
+---
+
+**"Did You Know" script — Intake:**
+> "Did you know that Eternal Life Hospice can admit a patient the same day a referral is received — when clinically appropriate? From the moment a call comes in, our admissions team begins the intake process immediately. No waiting lists. No long queues. When a family needs care now, we move."
+
+*Format: Intake coordinator on camera. 20 seconds. Clear, confident.*
+
+---
+
+**Short clip concept — "What the First Call Costs":**
+> "That first call is hard to make. I know that. By the time a family is calling us, they've usually been through a lot. They're scared. They're exhausted. Some of them are apologizing for calling.
+>
+> You never have to apologize for calling. That's what this number is for. We're here. You can ask anything."
+
+**Caption:**
+> The first call is the hardest one.
+>
+> By the time a family calls, they've usually been carrying this for a while. Scared. Exhausted. Sometimes not sure if they're "ready enough" to call.
+>
+> You don't have to be ready. You just have to call.
+>
+> 805.953.7273 — answered by a person, every time.
+
+---
+
+## THE "DID YOU KNOW" FACT SERIES — 20 Scripts
+
+*Each one is 15–30 seconds. One person on camera, direct to lens. No graphics needed. Fast, educational, shareable.*
+
+---
+
+**Fact 1 — Medicare**
+> "Did you know Medicare covers hospice care 100%? No deductible. No copay. No bill for medications, equipment, nursing, social work, chaplaincy, or aide visits. It is a benefit you've already paid into. Most families don't know this until someone tells them."
+
+**Fact 2 — ACHC**
+> "Did you know ACHC accreditation is voluntary? Most hospices don't have it. We do — because we wanted to be held to standards beyond what the law requires. An outside body reviews our care. Independently. That's what the seal means."
+
+**Fact 3 — Same-Day Admissions**
+> "Did you know Eternal Life Hospice can admit a patient the same day a referral is received? When a family needs care now, we don't ask them to wait."
+
+**Fact 4 — 24/7 Nurse**
+> "Did you know that when you call us at 3 in the morning, a nurse answers? Not a voicemail. Not a service that pages someone. A nurse — who can assess, advise, and dispatch. Right then. Every time."
+
+**Fact 5 — 13 Months of Bereavement**
+> "Did you know hospice includes 13 months of bereavement support for the family — after the patient passes? Our social worker stays in contact through the first year of grief. Because grief doesn't end at the funeral."
+
+**Fact 6 — Not Just for Cancer**
+> "Did you know hospice isn't just for cancer? Heart failure, COPD, renal disease, dementia, ALS, Parkinson's, stroke, liver disease — any terminal diagnosis with a prognosis of six months or less qualifies. The criterion is prognosis, not diagnosis."
+
+**Fact 7 — You Can Revoke**
+> "Did you know you can stop hospice at any time? The Medicare hospice benefit can be revoked without penalty. If someone decides they want to pursue curative treatment, they return to standard Medicare coverage immediately. Hospice is not a one-way door."
+
+**Fact 8 — The Volunteer Requirement**
+> "Did you know that volunteers are a required part of the Medicare hospice benefit? Every certified hospice must have a volunteer program. Ours is one of the most meaningful things we offer — and it costs families nothing."
+
+**Fact 9 — The Music Therapist**
+> "Did you know our music therapist is board-certified? That means a degree, clinical training, and a national exam. Music therapy in hospice is not a nice visit — it is a clinical intervention with documented outcomes. It reduces anxiety. It reaches dementia patients when nothing else can."
+
+**Fact 10 — The End-of-Life Doula**
+> "Did you know most hospices don't include an end-of-life doula? We do. A doula guides patients and families through the dying process — legacy conversations, rituals, presence. Not clinical. Not religious. Human. And included in every care plan that calls for it."
+
+**Fact 11 — Mobile Optometry**
+> "Did you know we bring an optometrist to the home? When someone is in hospice, every unnecessary trip is a burden. Vision care, podiatry, audiology, dialysis — all brought to the patient. Because if someone has chosen to spend this season at home, they should be able to stay there."
+
+**Fact 12 — In-Home Lab Testing**
+> "Did you know lab work can happen in the home? No drive. No facility. No waiting room. We bring in-home lab testing to patients as part of their care — results coordinated with the medical team, same day."
+
+**Fact 13 — Consistent Team**
+> "Did you know that at Eternal Life Hospice, you get the same nurse and aide visit after visit? Not a rotating schedule of strangers. The same people — who know this patient, who have built trust with this family. Consistency is not a luxury in hospice. It is how care works."
+
+**Fact 14 — Physician-Led**
+> "Did you know hospice care is physician-led? There is a board-certified physician directing every care plan — working alongside the patient's own doctor, available when clinical decisions need to be made. You don't lose medical oversight when you choose hospice. You gain a specialist in comfort care."
+
+**Fact 15 — Mobile Dialysis**
+> "Did you know we coordinate mobile dialysis for patients who need it? Choosing hospice doesn't mean giving up care that's already part of someone's life. It means receiving it in a better place — at home, surrounded by family."
+
+**Fact 16 — The Care Brief**
+> "Did you know Eternal Life Hospice publishes a clinical care publication? The Eternal Care Brief is a bi-monthly publication for physicians, discharge planners, case managers, and social workers. Clinical, honest, free. Issue One is live at eternallifehospice.com/care-brief."
+
+**Fact 17 — CDPH**
+> "Did you know California has its own hospice licensing requirement, separate from Medicare certification? The California Department of Public Health issues this license. We hold it. Ask any hospice you're considering to show you their CDPH license in writing."
+
+**Fact 18 — The First 48 Hours**
+> "Did you know that within 48 hours of a hospice admission, the full interdisciplinary team should be in place? Physician oversight, nursing, social work, spiritual care, aide support — all established. Medications and equipment delivered. At Eternal Life Hospice, we aim for 24 hours, not 48."
+
+**Fact 19 — Grief Is Family**
+> "Did you know hospice is for the whole family — not just the patient? The social worker, the chaplain, the volunteers — they support the people in that room, not only the person in the bed. Caregiver support is not an extra. It is part of the design."
+
+**Fact 20 — Aromatherapy Is Assessed**
+> "Did you know the aromatherapy we offer in hospice goes through a clinical assessment? We screen for contraindications with current medications. We review sensitivities. We select oils based on the patient's specific symptoms — nausea, anxiety, sleep disruption. This is not a candle. It is a therapeutic practice, delivered with intention."
+
+---
+
+## THE "HOW WE OPERATE" SERIES — 6 Mini-Documentary Clips
+
+*Each one is 60–90 seconds. Real footage. Real process. Real people.*
+
+---
+
+**Clip 1 — The Morning Huddle**
+*What to film: The team gathered, Aleksandra or charge nurse leading, whiteboard with initials visible (no names).*
+> Open with wide shot of the team. Then close in on whoever is speaking. Cut to Aleksandra:
+> "Every morning, before anything else, every patient is reviewed by name. What happened overnight. What they need today. What the family asked last time.
+>
+> Not because it's required. Because it's the only way to care for someone — knowing what's changed since yesterday."
+
+---
+
+**Clip 2 — The Intake Call**
+*What to film: Intake coordinator on the phone, listening, writing. Then look up to camera:*
+> "When that call comes in, the clock starts. We are not taking a message and calling back. We are beginning. The intake. The coordination. The care plan. It all starts in that conversation."
+
+---
+
+**Clip 3 — The Equipment Delivery**
+*What to film: Hospital bed, oxygen, supplies being organized and loaded. Caption from Aleksandra:*
+> "By the time a family calls for the second time, the equipment should already be on its way to their door. This is what 'fast' means when someone's loved one is waiting. Everything confirmed. Everything moving."
+
+---
+
+**Clip 4 — The Care Plan Meeting**
+*What to film: Two or three team members around a table — nurse, social worker, possibly Aleksandra — reviewing a chart (no PHI visible). One person speaks to camera:*
+> "This care plan is not a template. Every section of it was written for one specific person. Their diagnosis. Their preferences. Their fears. Their family situation. Their goals.
+>
+> We review it and update it every time something changes. Which in hospice means regularly."
+
+---
+
+**Clip 5 — The Night Shift**
+*What to film: The on-call setup — a desk, a phone, a person ready. Aleksandra or the on-call nurse:*
+> "This is what 24/7 looks like at 2 in the morning. Someone is here. Someone is awake. Someone will pick up before you finish dialing.
+>
+> We don't outsource this. We don't forward to a service. A nurse answers. That's the promise."
+
+---
+
+**Clip 6 — After the Patient Passes**
+*What to film: Aleksandra, quiet, reflective. This one is slow.*
+> "After a patient passes, our care doesn't end. The social worker calls the family. The chaplain follows up. The bereavement team stays in contact for thirteen months — through the first Thanksgiving without them, the first birthday, the first year.
+>
+> Grief has a long tail. And we walk it with families."
+
+---
+
+## FILMING CHEAT SHEET — For Anyone Holding the Phone
+
+**Every clip should have:**
+- [ ] Window light on the speaker's face (face toward the window)
+- [ ] Phone at eye level — never looking up from below
+- [ ] Clean background — a desk, a wall, outdoors — not clutter
+- [ ] No intro ("Hi I'm...") — start with the first real sentence
+- [ ] A pause at the end before stopping the recording
+- [ ] Horizontal for YouTube/LinkedIn — vertical for TikTok/Reels/Stories
+
+**The one question that unlocks every interview:**
+> "Tell me about a moment in this work that you carry with you."
+
+You don't need a script after that. You need to keep the camera rolling.
+
+---
+
+*This is your ensemble. Every person on this team is a story. The most powerful thing you can do is point a camera at them and let them speak.*
+
