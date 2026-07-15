@@ -25,20 +25,26 @@ to its destination. The evidence is below.
 
 ---
 
-## What we verified (live test, July 14, 2026)
+## What we verified (live test, July 14–15, 2026)
 
-| Domain tested | What happens | Final destination | Permanent (301)? |
+### Homepage forwarding — ✅ working
+
+| Domain tested | HTTP code | Redirects to | Permanent (301)? |
 |---|---|---|---|
-| `eternalhospice.com` | Forwards (via a `www` hop) | `https://eternallifehospice.com/` | ✅ Yes |
-| `www.eternalhospice.com` | Forwards (via a `www` hop) | `https://eternallifehospice.com/` | ✅ Yes |
-| `eternallifehospiceinc.com` | Forwards directly | `https://eternallifehospice.com/` | ✅ Yes |
-| `www.eternallifehospiceinc.com` | Forwards directly | `https://eternallifehospice.com/` | ✅ Yes |
-| `eternallifehospice.com` (the real one) | Loads the site | — | — (this is home) |
+| `eternalhospice.com/` | 301 | `https://www.eternallifehospice.com/` (then → real site) | ✅ Yes |
+| `eternallifehospiceinc.com/` | 301 | `https://eternallifehospice.com/` | ✅ Yes |
 
-**Bottom line:** every version of both extra domains lands on
-`https://eternallifehospice.com/`, and every hop along the way is a permanent 301.
-The "three websites" problem flagged as the #1 finding in the backlink audit is
-**resolved at the domain level**.
+### Deep-path forwarding — ❌ not yet working (action needed)
+
+| URL tested | HTTP code | Result |
+|---|---|---|
+| `eternalhospice.com/resources` | 404 | Page Not Found — path not forwarded |
+| `eternallifehospiceinc.com/resources` | 404 | Page Not Found — path not forwarded |
+
+**Bottom line:** the homepage redirect is solid and search authority is consolidating.
+The remaining gap is that GoDaddy's forwarding is configured as root-only, so any
+deep link to the old domains returns a 404 instead of forwarding to the matching page.
+Fix is one checkbox in GoDaddy — see the guide below.
 
 > Note: this redirect lives on **the extra domains' own hosting**, not in this
 > project. That's correct and expected — the audit specifically said it could not
@@ -47,28 +53,31 @@ The "three websites" problem flagged as the #1 finding in the backlink audit is
 
 ---
 
-## Two small, optional polish items (not blockers)
+## Two small, optional polish items — action available
 
 These do **not** affect the core result — authority is already consolidating.
-They're minor tidy-ups for whoever manages the two extra domains, if/when it's
-convenient:
+They're minor tidy-ups for whoever manages the two extra domains in GoDaddy.
 
-1. **Deep links go to "Page Not Found" instead of forwarding.**
+> **Step-by-step instructions:** `exports/seo/godaddy-wildcard-redirect-guide-2026-07-15.md`
+> That guide walks through both fixes (wildcard forwarding + single-hop cleanup)
+> in plain language with screenshots-friendly descriptions and verification steps.
+
+1. **Deep links go to "Page Not Found" instead of forwarding.** *(Priority fix)*
    The homepage of each extra domain forwards perfectly. But a *specific inner
    page* — e.g. `eternalhospice.com/resources` — currently shows a 404 rather than
-   forwarding to `eternallifehospice.com/resources`. In practice this matters very
-   little (almost nobody links to inner pages of the old mirror sites), but the
-   cleanest setup is a **"forward every path" (wildcard) 301** so any old link
-   lands on the matching page. *Fix location: the extra domains' hosting/DNS —
-   not this project.*
+   forwarding to `eternallifehospice.com/resources`. The fix is a single checkbox
+   in GoDaddy's forwarding settings: **"Forward with Path"** (also called
+   "Forward all paths" or "Include path and query string" depending on GoDaddy's
+   current interface). Once enabled, any old link lands on the matching page.
+   *Fix location: GoDaddy domain forwarding settings — not this project.*
 
-2. **`eternalhospice.com` takes an extra hop.**
+2. **`eternalhospice.com` takes an extra hop.** *(Nice-to-have)*
    It forwards to `www.eternallifehospice.com` first, then to
    `eternallifehospice.com`. It still ends up in the right place with permanent
    redirects, so Google handles it fine; pointing it **straight** at
    `https://eternallifehospice.com/` in one hop is marginally cleaner and slightly
    faster. `eternallifehospiceinc.com` already does the clean single hop.
-   *Fix location: the extra domains' hosting/DNS — not this project.*
+   *Fix: change "Forward to" field in GoDaddy to remove the `www` prefix.*
 
 ---
 
