@@ -4784,3 +4784,177 @@ When converting to B&W:
 
 The feeling of a well-executed B&W image in this library: timeless. As if it could have been taken in 1965 or today. As if the work it depicts has always been done and always will be.
 
+
+---
+
+# PART NINETEEN: COLOR TREATMENTS — Pops of Color Over Imagery
+
+*The visual language of Eternal Life Hospice has four registers: warm natural photography, color-treated photography, text on solid brand color, and black and white. The color treatment is the one that makes the brand unmistakable — even before the logo appears.*
+
+---
+
+## What "Color Treatment" Means Here
+
+A color treatment is not a filter. It is a deliberate application of brand color to a photograph — transforming the image from beautiful to branded, from warm to *distinctly ours*.
+
+**Four treatment types — from subtle to bold:**
+
+### Treatment 1 — The Duotone
+The photograph is rendered in two brand colors. Shadows become deep plum (#2A0F28). Highlights become gold (#C9B07E) or cream (#F5F0EB).
+
+The result: an image that is unmistakably ELH even without a logo. Premium. Editorial. The look of an organization that knows exactly who it is.
+
+**Best for:** Faces, hands, the amethyst stone, any high-contrast subject.
+**In Canva:** Photo → Edit Image → Duotone → set Shadow color to #2A0F28, Highlight color to #C9B07E → adjust intensity 60–80%.
+**The feeling:** A Spotify campaign. A high-end publication cover. Timeless.
+
+---
+
+### Treatment 2 — The Color Wash
+A semi-transparent layer of brand color placed over the photograph at 20–40% opacity. The photo shows through — its warmth and detail intact — but now tinted with the brand palette.
+
+**Two wash options:**
+- **Plum wash** (#5B2E59 at 25–30% opacity): deepens the image, adds gravity, makes gold text pop dramatically on top
+- **Cream wash** (#F5F0EB at 20–25% opacity): softens the image, adds warmth, feels like morning light through linen
+
+**Best for:** Hero images, carousel backgrounds, any image where text will be placed over the photo.
+**In Canva:** Add a rectangle over the full image → fill with brand color → set transparency to 70–75% (making the layer 25–30% opaque) → place text on top in contrasting color.
+**The feeling:** Warm, intentional, premium. The photo is still there — and so is the brand.
+
+---
+
+### Treatment 3 — The Graphic Pop
+The photograph stays natural — full color, warm, unaltered. Brand-colored graphic elements appear over it: a gold underline beneath key text, a plum color block anchoring one corner, a cream text panel floating over one section of the image, a thin gold border framing the entire image.
+
+The "pop" is the graphic element — bold, intentional, brand-colored — against the natural warmth of the photograph.
+
+**Best for:** Quote cards, caption images, carousel slides, any image with text overlay.
+**Elements to use:**
+- A thick gold (#C9B07E) underline beneath a headline — 6–8px, full width of the text
+- A deep plum (#2A0F28) rounded rectangle as a text background — 80% opacity, corners fully rounded
+- A cream (#F5F0EB) text panel, bottom third of the image, with plum text inside
+- A single gold dot (●) before a key line of text — draws the eye, signals importance
+- A thin gold border (2–3px) around the entire image frame
+
+**The feeling:** The image is real and human. The brand is unmistakably present. Both at once.
+
+---
+
+### Treatment 4 — The Split
+Half the frame is a natural photograph. Half is a solid brand color. The subject (a face, the amethyst, hands) lives in the photo half. The text lives in the color half.
+
+**Split options:**
+- **Vertical split:** Photo left, deep plum right, gold headline in the plum half
+- **Horizontal split:** Photo top (full bleed), cream panel bottom with plum text
+- **Diagonal split:** A diagonal line separates photo and color — more dynamic, more editorial
+- **Organic edge:** The split follows an organic shape — a curve, a wave — rather than a straight line
+
+**Best for:** LinkedIn document posts, Pinterest pins, Instagram carousel slides.
+**The feeling:** Magazine. Art-directed. The kind of image a brand with real identity makes.
+
+---
+
+## The Pops of Color — Specifically
+
+When the user says "pops of color," these are the moments:
+
+**Gold on plum** — the highest-contrast pop in the palette. A gold headline against deep plum background. A gold underline under white text on a photo. A gold circle as a bullet point. Gold reads as warmth, value, and authority.
+
+**Cream on plum** — softer than gold. Cream text on plum background is the body copy register. Still a pop — but a quieter one.
+
+**Plum on cream** — text-forward. The most readable combination. Used when the content is the priority and the design should support it, not compete.
+
+**A single pop element** — one gold dot, one plum stripe, one cream band. The power of a pop comes from its singularity. One element says: intentional. Three elements say: busy.
+
+---
+
+## Canva Workflow — Building a Treated Image
+
+**For a duotone post:**
+1. Upload photo → place on canvas at full size
+2. Photo → Edit Image → Duotone
+3. Shadow: #2A0F28 · Highlight: #C9B07E
+4. Intensity: 70 (start here, adjust to taste)
+5. Add text in cream (#F5F0EB) — Fraunces for headline, Jost for body
+6. Add ELH logo (cream version) bottom right
+7. Export at 1080×1080 (feed) or 1080×1920 (Stories/Reels)
+
+**For a color wash with text:**
+1. Upload photo → full canvas
+2. Add rectangle → same size as canvas → fill #5B2E59 → transparency 70%
+3. Add text in cream or gold on top of the rectangle
+4. Headline in Fraunces · Body in Jost
+5. Add a gold (#C9B07E) underline beneath the headline: Insert → Line → color gold → weight 4px
+6. ELH logo bottom right (cream version) or bottom center
+
+**For a graphic pop card:**
+1. Upload photo → full canvas, natural (no filter)
+2. Add a deep plum rounded rectangle → position bottom 30% of frame → transparency 15% (barely visible but anchors the text)
+3. Text in cream over the rectangle · Headline in Fraunces
+4. One gold underline under the headline
+5. One gold dot (●) before the body copy line
+6. ELH logo in cream, bottom right
+
+---
+
+## CapCut Workflow — Treatments on Video Stills
+
+For video content, the color treatment appears as a still frame that holds while the voiceover plays:
+
+1. Import the photo as a clip → set duration to match voiceover segment
+2. Add color overlay: Overlay → add solid color fill → choose brand color → set blend mode to "Multiply" (for plum wash) or "Screen" (for cream/gold wash)
+3. Add text: brand color, Fraunces font equivalent, timed to appear as the voiceover speaks the line
+4. Add the gold underline as a shape element beneath the key text line
+5. Ken Burns slow zoom on the photo (even under a color overlay — the movement keeps the image alive)
+
+---
+
+## The Four-Register Feed Rhythm
+
+With all four visual registers — natural, treated, text-on-color, B&W — the Instagram grid has a rhythm that feels dynamic and intentional without ever feeling chaotic.
+
+**The 9-post grid template:**
+
+| Position | Register | Example |
+|---|---|---|
+| 1 | Natural warm photo | music-therapy.jpg, full color, no treatment |
+| 2 | Text on plum | Gold headline, cream body, ELH logo |
+| 3 | Color-treated photo | Duotone face — plum-to-gold |
+| 4 | Natural warm photo | pet-therapy.jpg |
+| 5 | Graphic pop card | Photo with cream panel + gold underline |
+| 6 | Text on cream | Plum text, quote card |
+| 7 | B&W | Hands or amethyst, high contrast |
+| 8 | Color wash | The amethyst stone with plum overlay, white text |
+| 9 | Natural warm photo | volunteer.jpg or the-circle-around-you.jpg |
+
+Repeat. The eye never sees the same thing twice in a row. The palette anchors every register. The brand is unmistakable across all nine.
+
+---
+
+## Treatment Pairings — Which Treatment for Which Content
+
+| Content type | Treatment | Reason |
+|---|---|---|
+| A face (nurse, chaplain, aide) | Duotone: plum-to-gold | Strips the image to pure expression + brand |
+| The amethyst stone | Duotone OR B&W high contrast | Both serve the brand metaphor |
+| A comfort therapy moment | Color wash (light plum, 25%) + text | Preserves warmth, adds brand anchor |
+| A quote or one-liner | Text on solid plum with gold headline | The text IS the content — frame it boldly |
+| The 2 AM nurse post | Graphic pop: dark plum overlay + cream text | Gravity. Seriousness. The night. |
+| The morning desk | Natural OR soft cream wash | Morning light preserved or softened |
+| Aleksandra's voice (no face) | Full plum background + gold/cream text | The voice posts need no image at all |
+| The amethyst one-liners | Split: photo left, plum right, gold text | Editorial. Unmistakably branded. |
+| Team character posts | Natural warm photo + thin gold border | Warmth first — the border says: we chose this |
+| The Eternal Standard posts | Four-panel split, one pillar per panel | Each pillar in its own color treatment |
+
+---
+
+## The One Rule for Treatments
+
+> Every treatment must serve the image — not compete with it.
+
+A duotone that makes a face unreadable is wrong. A color wash so heavy the photo disappears is wrong. A graphic pop that crowds the subject is wrong.
+
+The treatment is present. The image is still the image. The brand arrives through the treatment — not instead of the image.
+
+The eye should land on the subject first. Then feel the brand in the color that surrounds it.
+
