@@ -1186,52 +1186,52 @@ title = "PIH Health Follow-Up Letters — For Aleksandra’s Review"
 id = "T1BFIFjr4WAF6F1f-m_Zr"
 uri = "file://exports/email/PIH-Health-all-8-letters-FOR-REVIEW.pdf"
 type = "pdf"
-title = "PIH Health Letters — All 8 for Review"
+title = "All 8 Letters Combined"
 
 [[outputs]]
 id = "zQ9bKMB6EC-4ETyP_hrpp"
 uri = "file://exports/email/pih-letters/cristy-hernandez.pdf"
 type = "pdf"
-title = "1. Cristy Hernandez — RN, Infection Prevention"
+title = "1. Cristy Hernandez"
 
 [[outputs]]
 id = "7Cn28aAjDZ5Vg8hdqa4GB"
 uri = "file://exports/email/pih-letters/melissa-perez.pdf"
 type = "pdf"
-title = "2. Melissa Perez — Quality Reporting"
+title = "2. Melissa Perez"
 
 [[outputs]]
 id = "KljwoQAukZ8NG7Ryk7yGc"
 uri = "file://exports/email/pih-letters/brent-melton.pdf"
 type = "pdf"
-title = "3. Brent Melton — VP Support Services"
+title = "3. Brent Melton"
 
 [[outputs]]
 id = "Y-zegINIexqWoWKA7B9fB"
 uri = "file://exports/email/pih-letters/jeanette-wehrberg.pdf"
 type = "pdf"
-title = "4. Jeanette Wehrberg — Clinical Education"
+title = "4. Jeanette Wehrberg"
 
 [[outputs]]
 id = "h58ngfJKLWR_NemzP7t1j"
 uri = "file://exports/email/pih-letters/noel-coppinger.pdf"
 type = "pdf"
-title = "5. Noel Coppinger — VP Revenue Cycle"
+title = "5. Noel Coppinger"
 
 [[outputs]]
 id = "pSuEVUIjNM0C_qWKqPwsr"
 uri = "file://exports/email/pih-letters/scott-bremer.pdf"
 type = "pdf"
-title = "6. Scott Bremer — Director, Compensation & HRIS"
+title = "6. Scott Bremer"
 
 [[outputs]]
 id = "zDutIp0F2t6S65ACvid7I"
 uri = "file://exports/email/pih-letters/jeanette-abundis.pdf"
 type = "pdf"
-title = "7. Jeanette Abundis — Sr. Director, Emergency & Critical Care"
+title = "7. Jeanette Abundis"
 
 [[outputs]]
 id = "OiN0pzrtFuVS-Jquk2Emj"
 uri = "file://exports/email/pih-letters/stephanie-jones.pdf"
 type = "pdf"
-title = "8. Stephanie Jones — Director, Surgical Services"
+title = "8. Stephanie Jones"
