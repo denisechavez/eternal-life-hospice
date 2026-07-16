@@ -1235,3 +1235,9 @@ id = "OiN0pzrtFuVS-Jquk2Emj"
 uri = "file://exports/email/pih-letters/stephanie-jones.pdf"
 type = "pdf"
 title = "8. Stephanie Jones"
+
+[[outputs]]
+id = "m6_M-UaL6j8TgH67BKmCT"
+uri = "file://exports/email/PIH-Health-letters.zip"
+type = "unspecified"
+title = "PIH Health Letters — All 8 (ZIP)"
