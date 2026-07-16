@@ -2,6 +2,11 @@
 
 **Status: AWAITING ALEKSANDRA'S APPROVAL — nothing has been sent**
 
+## Format
+Each letter is a single page on the ELH letterhead (logo top-left with
+"Care That Honors Life" tagline, compact header, handwritten signature,
+centered footer address bar).
+
 ## Files in this folder
 One PDF per recipient, on ELH letterhead with Aleksandra's signature:
 - `cristy-hernandez.pdf` — RN, Infection Prevention, PIH Health Downey
