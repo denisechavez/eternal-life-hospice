@@ -11,9 +11,9 @@ description: The amethyst is ELH's core brand symbol — name, color source, ori
 - Tagline anchor: "something older than any of us, and meant to endure"
 - Section on homepage: `/#amethyst` labeled "Our Origin" — real amethyst geode photo as background
 
-## The Two Founder Origin Moments (most personal content available)
-1. **Her grandmother** — passed on hospice; Aleksandra was present; the relief of attentive, dignified care became the reason she entered this field
-2. **Her own open-heart surgery as a child** — brought to the US for advanced care; she knows what it means to be wholly on the receiving end of someone else's skill and compassion
+## The Two Founder Origin Moments
+1. **Her grandmother** — passed on hospice; she was present; the relief of attentive, dignified care became the reason she entered this field
+2. **Her own serious childhood illness** — brought to the US for advanced care; she knows what it means to be wholly on the receiving end of someone else's skill and compassion
 
 These two moments together explain 11 years in hospice by choice. Use in voiceover, never require a face.
 

@@ -43,6 +43,7 @@
   ]
 }</script>
   <script async src="/assets/analytics.js"></script>
+<script src="assets/header.js" defer></script>
 </head><body>
   <header id="hdr">
   <div class="hdr-in">
@@ -57,6 +58,7 @@
       <div class="nav-group"><a href="/refer" class="nav-parent">For Providers</a><div class="nav-sub"><a href="/refer">Refer With Confidence</a><a href="/?lead=voice#leadcap">Schedule an Educational Session</a></div></div>
     </nav>
     <div class="hdr-cta-wrap"><span class="hdr-cta-note">Here in Moments That Matter Most</span><a href="tel:18059537273" class="hdr-cta">805.953.7273</a></div>
+    <button class="search-btn" id="searchBtn" aria-label="Search"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="9" cy="9" r="7"/><line x1="15" y1="15" x2="19" y2="19"/></svg></button>
     <button class="menu-btn" aria-label="Menu" aria-expanded="false"><svg width="22" height="16" viewBox="0 0 22 16"><line x1="0" y1="2" x2="22" y2="2" stroke="#F5F0EB" stroke-width="2" stroke-linecap="round"/><line x1="0" y1="8" x2="22" y2="8" stroke="#F5F0EB" stroke-width="2" stroke-linecap="round"/><line x1="0" y1="14" x2="22" y2="14" stroke="#F5F0EB" stroke-width="2" stroke-linecap="round"/></svg></button>
   </div>
 </header>
@@ -151,5 +153,15 @@
   <nav class="foot-social" aria-label="Eternal Life Hospice on social media"><span class="fs-label">Stay Connected</span><a href="https://www.linkedin.com/company/eternal-life-hospice/" target="_blank" rel="noopener" aria-label="LinkedIn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4V9h4v1.57A6 6 0 0 1 16 8z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg></a><a href="https://www.facebook.com/eternallifehospiceinc" target="_blank" rel="noopener" aria-label="Facebook"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg></a><a href="https://www.instagram.com/eternallifehospice/" target="_blank" rel="noopener" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg></a><a href="https://www.youtube.com/@EternalLifeHospice" target="_blank" rel="noopener" aria-label="YouTube"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46A2.78 2.78 0 0 0 1.46 6.42 29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58A2.78 2.78 0 0 0 3.41 19.6C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 0 0 1.95-1.95A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z"/><polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02" fill="currentColor" stroke="none"/></svg></a></nav>
   <p class="foot-copy">&copy; 2026 Eternal Life Hospice, Inc. All rights reserved. &nbsp;·&nbsp; <a href="/#privacy">Privacy</a></p>
 </footer>
-<script src="assets/elh.js?v=20260714c"></script>
+
+<!-- SEARCH OVERLAY -->
+<div class="search-overlay" id="searchOverlay" role="dialog" aria-modal="true" aria-label="Site search" aria-hidden="true">
+  <div class="search-box">
+    <input type="text" id="searchInput" placeholder="Search pages, cities, resources..." autocomplete="off" aria-label="Search">
+    <button class="search-close" id="searchClose" aria-label="Close search">&times;</button>
+  </div>
+  <p class="search-hint">Press Enter to open the first result, or Escape to close</p>
+  <div class="search-results" id="searchResults"></div>
+</div>
+
 </body></html>

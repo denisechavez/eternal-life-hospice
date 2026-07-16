@@ -72,6 +72,7 @@
       <div class="nav-group"><a href="/refer" class="nav-parent">For Providers</a><div class="nav-sub"><a href="/refer">Refer With Confidence</a><a href="/?lead=voice#leadcap">Schedule an Educational Session</a></div></div>
     </nav>
     <div class="hdr-cta-wrap"><span class="hdr-cta-note">Here in Moments That Matter Most</span><a href="tel:18059537273" class="hdr-cta">805.953.7273</a></div>
+    <button class="search-btn" id="searchBtn" aria-label="Search"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="9" cy="9" r="7"/><line x1="15" y1="15" x2="19" y2="19"/></svg></button>
     <button class="menu-btn" aria-label="Menu" aria-expanded="false"><svg width="22" height="16" viewBox="0 0 22 16"><line x1="0" y1="2" x2="22" y2="2" stroke="#F5F0EB" stroke-width="2" stroke-linecap="round"/><line x1="0" y1="8" x2="22" y2="8" stroke="#F5F0EB" stroke-width="2" stroke-linecap="round"/><line x1="0" y1="14" x2="22" y2="14" stroke="#F5F0EB" stroke-width="2" stroke-linecap="round"/></svg></button>
   </div>
 </header>
@@ -143,4 +144,14 @@
 <script src="../assets/header.js" defer></script>
 <script src="../assets/share.js" defer></script>
 <script src="/assets/chat.js" defer></script>
+<!-- SEARCH OVERLAY -->
+<div class="search-overlay" id="searchOverlay" role="dialog" aria-modal="true" aria-label="Site search" aria-hidden="true">
+  <div class="search-box">
+    <input type="text" id="searchInput" placeholder="Search pages, cities, resources..." autocomplete="off" aria-label="Search">
+    <button class="search-close" id="searchClose" aria-label="Close search">&times;</button>
+  </div>
+  <p class="search-hint">Press Enter to open the first result, or Escape to close</p>
+  <div class="search-results" id="searchResults"></div>
+</div>
+
 </body></html>

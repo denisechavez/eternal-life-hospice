@@ -219,6 +219,15 @@ p,li,blockquote{text-wrap:pretty}
   h1,h2,h3,h4{break-after:avoid;page-break-after:avoid}
   p,li,blockquote{orphans:3;widows:3}
 }
+
+/* ===== SEARCH ===== */
+.search-btn{background:none;border:none;color:var(--cream);cursor:pointer;padding:.4rem;display:flex;align-items:center;justify-content:center;transition:color .25s}
+.search-btn:hover{color:var(--gold)}#hdr.scrolled .search-btn{color:var(--deep)}.search-btn svg{width:20px;height:20px}
+.search-overlay{position:fixed;inset:0;z-index:2000;background:rgba(42,15,40,.92);backdrop-filter:blur(8px);display:none;flex-direction:column;align-items:center;padding:8vh 1.5rem 2rem;opacity:0;transition:opacity .3s ease}.search-overlay.open{display:flex;opacity:1}
+.search-box{width:100%;max-width:680px;position:relative}.search-box input{width:100%;background:rgba(245,240,235,.08);border:1px solid rgba(245,240,235,.15);border-radius:14px;padding:1rem 3rem 1rem 1.2rem;color:var(--cream);font-family:var(--ff-b);font-size:18px;outline:none;transition:border-color .25s,background .25s}.search-box input::placeholder{color:rgba(245,240,235,.4)}.search-box input:focus{border-color:var(--gold);background:rgba(245,240,235,.12)}
+.search-close{position:absolute;right:1rem;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--cream);cursor:pointer;font-size:24px;line-height:1;padding:.2rem;opacity:.6;transition:opacity .2s}.search-close:hover{opacity:1}
+.search-results{width:100%;max-width:680px;margin-top:1.2rem;max-height:60vh;overflow-y:auto}.search-result{display:block;padding:.9rem 1rem;border-radius:10px;transition:background .2s;text-decoration:none;margin-bottom:.4rem}.search-result:hover{background:rgba(245,240,235,.08)}.search-result-title{font-family:var(--ff-d);font-size:17px;color:var(--cream);margin-bottom:.25rem}.search-result-desc{font-size:14px;color:rgba(245,240,235,.6);line-height:1.5}.search-result-cat{font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);margin-bottom:.35rem}.search-empty{text-align:center;color:rgba(245,240,235,.5);padding:2rem;font-size:16px}.search-hint{text-align:center;color:rgba(245,240,235,.35);font-size:13px;margin-top:.6rem}
+@media(max-width:520px){.search-overlay{padding-top:6vh}.search-box input{font-size:16px}}
 </style>
 <script async src="/assets/analytics.js"></script>
 <script type="application/ld+json">
@@ -285,6 +294,7 @@ p,li,blockquote{text-wrap:pretty}
       <div class="nav-group"><a href="/refer" class="nav-parent">For Providers</a><div class="nav-sub"><a href="/refer">Refer With Confidence</a><a href="/?lead=voice#leadcap">Schedule an Educational Session</a></div></div>
     </nav>
     <div class="hdr-cta-wrap"><span class="hdr-cta-note">Here in Moments That Matter Most</span><a href="tel:18059537273" class="hdr-cta">805.953.7273</a></div>
+    <button class="search-btn" id="searchBtn" aria-label="Search"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="9" cy="9" r="7"/><line x1="15" y1="15" x2="19" y2="19"/></svg></button>
     <button class="menu-btn" aria-label="Menu" aria-expanded="false"><svg width="22" height="16" viewBox="0 0 22 16"><line x1="0" y1="2" x2="22" y2="2" stroke="#F5F0EB" stroke-width="2" stroke-linecap="round"/><line x1="0" y1="8" x2="22" y2="8" stroke="#F5F0EB" stroke-width="2" stroke-linecap="round"/><line x1="0" y1="14" x2="22" y2="14" stroke="#F5F0EB" stroke-width="2" stroke-linecap="round"/></svg></button>
   </div>
 </header>
@@ -399,4 +409,14 @@ p,li,blockquote{text-wrap:pretty}
 </footer>
 <script src="assets/header.js" defer></script>
 <script src="/assets/chat.js" defer></script>
+<!-- SEARCH OVERLAY -->
+<div class="search-overlay" id="searchOverlay" role="dialog" aria-modal="true" aria-label="Site search" aria-hidden="true">
+  <div class="search-box">
+    <input type="text" id="searchInput" placeholder="Search pages, cities, resources..." autocomplete="off" aria-label="Search">
+    <button class="search-close" id="searchClose" aria-label="Close search">&times;</button>
+  </div>
+  <p class="search-hint">Press Enter to open the first result, or Escape to close</p>
+  <div class="search-results" id="searchResults"></div>
+</div>
+
 </body></html>

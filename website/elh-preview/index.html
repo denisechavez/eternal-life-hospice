@@ -145,6 +145,15 @@ nav a:hover{color:var(--gold)}
 }
 @keyframes navdrop{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:translateY(0)}}
 
+/* ===== SEARCH ===== */
+.search-btn{background:none;border:none;color:var(--cream);cursor:pointer;padding:.4rem;display:flex;align-items:center;justify-content:center;transition:color .25s}
+.search-btn:hover{color:var(--gold)}#hdr.scrolled .search-btn{color:var(--deep)}.search-btn svg{width:20px;height:20px}
+.search-overlay{position:fixed;inset:0;z-index:2000;background:rgba(42,15,40,.92);backdrop-filter:blur(8px);display:none;flex-direction:column;align-items:center;padding:8vh 1.5rem 2rem;opacity:0;transition:opacity .3s ease}.search-overlay.open{display:flex;opacity:1}
+.search-box{width:100%;max-width:680px;position:relative}.search-box input{width:100%;background:rgba(245,240,235,.08);border:1px solid rgba(245,240,235,.15);border-radius:14px;padding:1rem 3rem 1rem 1.2rem;color:var(--cream);font-family:var(--ff-b);font-size:18px;outline:none;transition:border-color .25s,background .25s}.search-box input::placeholder{color:rgba(245,240,235,.4)}.search-box input:focus{border-color:var(--gold);background:rgba(245,240,235,.12)}
+.search-close{position:absolute;right:1rem;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--cream);cursor:pointer;font-size:24px;line-height:1;padding:.2rem;opacity:.6;transition:opacity .2s}.search-close:hover{opacity:1}
+.search-results{width:100%;max-width:680px;margin-top:1.2rem;max-height:60vh;overflow-y:auto}.search-result{display:block;padding:.9rem 1rem;border-radius:10px;transition:background .2s;text-decoration:none;margin-bottom:.4rem}.search-result:hover{background:rgba(245,240,235,.08)}.search-result-title{font-family:var(--ff-d);font-size:17px;color:var(--cream);margin-bottom:.25rem}.search-result-desc{font-size:14px;color:rgba(245,240,235,.6);line-height:1.5}.search-result-cat{font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);margin-bottom:.35rem}.search-empty{text-align:center;color:rgba(245,240,235,.5);padding:2rem;font-size:16px}.search-hint{text-align:center;color:rgba(245,240,235,.35);font-size:13px;margin-top:.6rem}
+@media(max-width:520px){.search-overlay{padding-top:6vh}.search-box input{font-size:16px}}
+
 /* ===== CREDENTIAL STRIP ===== */
 .cred-strip{margin-top:74px;background:var(--cream);overflow:hidden;position:relative;border-bottom:1px solid var(--cream-dark)}
 .cred-strip::before,.cred-strip::after{content:'';position:absolute;top:0;bottom:0;width:90px;z-index:4;pointer-events:none}
@@ -1136,6 +1145,7 @@ p,li,blockquote{text-wrap:pretty}
       <div class="nav-group"><a href="/refer" class="nav-parent">For Providers</a><div class="nav-sub"><a href="/refer">Refer With Confidence</a><a href="/?lead=voice#leadcap">Schedule an Educational Session</a></div></div>
     </nav>
     <div class="hdr-cta-wrap"><span class="hdr-cta-note">Here in Moments That Matter Most</span><a href="tel:18059537273" class="hdr-cta">805.953.7273</a></div>
+    <button class="search-btn" id="searchBtn" aria-label="Search"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="9" cy="9" r="7"/><line x1="15" y1="15" x2="19" y2="19"/></svg></button>
     <button class="menu-btn" aria-label="Menu"><svg width="22" height="16" viewBox="0 0 22 16"><line x1="0" y1="2" x2="22" y2="2" stroke="#F5F0EB" stroke-width="2" stroke-linecap="round"/><line x1="0" y1="8" x2="22" y2="8" stroke="#F5F0EB" stroke-width="2" stroke-linecap="round"/><line x1="0" y1="14" x2="22" y2="14" stroke="#F5F0EB" stroke-width="2" stroke-linecap="round"/></svg></button>
   </div>
 </header>
@@ -1863,6 +1873,21 @@ p,li,blockquote{text-wrap:pretty}
     ctaPill.addEventListener('mouseenter',function(){ ctaPill.classList.remove('cta-hue1','cta-hue2','cta-hue3'); ctaPill.classList.add(ctaHues[ctaIdx%3]); ctaIdx++; });
     ctaPill.addEventListener('mouseleave',function(){ ctaPill.classList.remove('cta-hue1','cta-hue2','cta-hue3'); }); }
 
+  // SEARCH
+  (function(){
+    var so=document.getElementById('searchOverlay'), si=document.getElementById('searchInput'), sr=document.getElementById('searchResults'), sb=document.getElementById('searchBtn'), sc=document.getElementById('searchClose'), idx=null, q='', fetching=false, lastFocus=null;
+    function esc(s){ var d=document.createElement('div'); d.textContent=s; return d.innerHTML; }
+    function openSearch(){ if(!so) return; lastFocus=document.activeElement; so.classList.add('open'); so.setAttribute('aria-hidden','false'); so.setAttribute('aria-modal','true'); if(si){ si.focus(); si.value=''; } if(sr) sr.innerHTML=''; }
+    function closeSearch(){ if(!so) return; so.classList.remove('open'); so.setAttribute('aria-hidden','true'); so.removeAttribute('aria-modal'); if(si) si.blur(); if(lastFocus&&lastFocus.focus) lastFocus.focus(); }
+    if(sb) sb.addEventListener('click', openSearch);
+    if(sc) sc.addEventListener('click', closeSearch);
+    document.addEventListener('keydown', function(e){ if(e.key==='Escape' && so && so.classList.contains('open')){ e.preventDefault(); closeSearch(); } if((e.metaKey||e.ctrlKey) && e.key==='k'){ e.preventDefault(); openSearch(); } });
+    function doSearch(val){ q=val.toLowerCase().trim(); if(!q){ if(sr) sr.innerHTML=''; return; } if(!idx){ if(fetching) return; if(sr) sr.innerHTML='<div class="search-empty">Loading search index...</div>'; fetching=true; fetch('/assets/search-index.json').then(function(r){ return r.json(); }).then(function(data){ idx=data; fetching=false; render(); }).catch(function(){ fetching=false; if(sr) sr.innerHTML='<div class="search-empty">Unable to load search. Try again.</div>'; }); return; } render(); }
+    function render(){ var hits=[]; for(var i=0;i<idx.length;i++){ var it=idx[i]; var txt=((it.title||'')+' '+(it.desc||'')+' '+(it.kw||'')).toLowerCase(); if(txt.indexOf(q)>-1){ hits.push(it); } } if(!sr) return; sr.innerHTML=''; if(!hits.length){ sr.innerHTML='<div class="search-empty">No results for "'+esc(q)+'"</div>'; return; } var c=document.createElement('div'); c.style.cssText='color:rgba(245,240,235,.4);font-size:13px;margin-bottom:.6rem;'; c.textContent=hits.length+' result'+(hits.length>1?'s':''); sr.appendChild(c); for(var j=0;j<hits.length;j++){ var r=hits[j]; var a=document.createElement('a'); a.className='search-result'; a.href=r.url||'#'; if(r.cat){ var cat=document.createElement('div'); cat.className='search-result-cat'; cat.textContent=r.cat; a.appendChild(cat); } var t=document.createElement('div'); t.className='search-result-title'; t.textContent=r.title||''; a.appendChild(t); var d=document.createElement('div'); d.className='search-result-desc'; d.textContent=r.desc||''; a.appendChild(d); sr.appendChild(a); } }
+    if(si){ si.addEventListener('input', function(){ doSearch(si.value); }); si.addEventListener('keydown', function(e){ if(e.key==='Enter'){ var first=sr?sr.querySelector('.search-result'):null; if(first){ e.preventDefault(); window.location.href=first.getAttribute('href'); } } }); }
+    if(so) so.addEventListener('click', function(e){ if(e.target===so) closeSearch(); });
+  })();
+
   // city page expand / collapse
   var cpC=document.getElementById('cpCollapse'), cpE=document.getElementById('cpExpand'), cpFoot=document.getElementById('cpCollapseFoot'), cpCB=document.getElementById('cpCollapseBtn');
   function cpOpen(o){ if(!cpC){return;} if(o){ cpC.classList.add('open'); cpE.classList.add('open'); cpE.querySelector('.lbl').textContent='Close'; cpFoot.classList.add('show'); } else { cpC.classList.remove('open'); cpE.classList.remove('open'); cpE.querySelector('.lbl').textContent='Explore Thousand Oaks'; cpFoot.classList.remove('show'); document.getElementById('coverage').scrollIntoView({behavior:'smooth'}); } }
@@ -1956,5 +1981,15 @@ p,li,blockquote{text-wrap:pretty}
 </script>
 <form name="elh-chat-callback" method="POST" data-netlify="true" netlify-honeypot="bot-field" action="/" hidden><input type="hidden" name="form-name" value="elh-chat-callback"><input type="hidden" name="source" value="chat"><p class="hp" style="display:none"><label>Leave blank<input name="bot-field"></label></p><input type="text" name="name"><input type="tel" name="phone"><input type="email" name="email"><input type="text" name="preferred_time"><textarea name="message"></textarea></form>
 <script src="/assets/chat.js" defer></script>
+<!-- SEARCH OVERLAY -->
+<div class="search-overlay" id="searchOverlay" role="dialog" aria-modal="true" aria-label="Site search" aria-hidden="true">
+  <div class="search-box">
+    <input type="text" id="searchInput" placeholder="Search pages, cities, resources..." autocomplete="off" aria-label="Search">
+    <button class="search-close" id="searchClose" aria-label="Close search">&times;</button>
+  </div>
+  <p class="search-hint">Press Enter to open the first result, or Escape to close</p>
+  <div class="search-results" id="searchResults"></div>
+</div>
+
 </body>
 </html>
