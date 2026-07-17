@@ -19,4 +19,12 @@
     t = l.createElement(r); t.async = 1; t.src = "https://www.clarity.ms/tag/" + i;
     y = l.getElementsByTagName(r)[0]; y.parentNode.insertBefore(t, y);
   })(window, document, "clarity", "script", "xddyi1rk95");
+
+  // ---- Brevo Visitor Tracker ----
+  window.Brevo = window.Brevo || [];
+  Brevo.push(['init', { client_key: 'kejxjl4hntbbl2jnfp84s6bs' }]);
+  var b = document.createElement('script');
+  b.async = true;
+  b.src = 'https://cdn.brevo.com/js/sdk-loader.js';
+  document.head.appendChild(b);
 })();
