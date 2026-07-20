@@ -1241,3 +1241,21 @@ id = "m6_M-UaL6j8TgH67BKmCT"
 uri = "file://exports/email/PIH-Health-letters.zip"
 type = "unspecified"
 title = "PIH Health Letters — All 8 (ZIP)"
+
+[[outputs]]
+id = "jUwNMJyoB1tfjYgbSNuWo"
+uri = "file://exports/print/ELH-JD-Administrative-Support-Coordinator.pdf"
+type = "pdf"
+title = "JD — Administrative Support Coordinator"
+
+[[outputs]]
+id = "hOvfPshgKbnkUCLu6TQH9"
+uri = "file://exports/print/ELH-JD-Marketing-Design-Digital-Media-Coordinator.pdf"
+type = "pdf"
+title = "JD — Marketing, Design & Digital Media Coordinator"
+
+[[outputs]]
+id = "yjxZAwzKjQYd0Cxtlbg3I"
+uri = "file://exports/print/ELH-JD-Community-Outreach-Referral-Relations-Coordinator.pdf"
+type = "pdf"
+title = "JD — Community Outreach & Referral Relations Coordinator"
