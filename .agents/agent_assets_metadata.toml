@@ -1259,3 +1259,9 @@ id = "yjxZAwzKjQYd0Cxtlbg3I"
 uri = "file://exports/print/ELH-JD-Community-Outreach-Referral-Relations-Coordinator.pdf"
 type = "pdf"
 title = "JD — Community Outreach & Referral Relations Coordinator (final)"
+
+[[outputs]]
+id = "-H7epQKB9vo9QOiGoJ6OJ"
+uri = "file://exports/ELH-AJCC-Job-Descriptions.zip"
+type = "unspecified"
+title = "All 3 AJCC Job Descriptions (ZIP)"
