@@ -156,6 +156,12 @@ uri = "file://exports/social/gbp-post-image.png"
 type = "image"
 title = "generated_image"
 
+[[generated]]
+id = "N8W4RGv4QzKswweZOaAPc"
+uri = "file://exports/social/gbp-family-guide-post.png"
+type = "image"
+title = "generated_image"
+
 [[outputs]]
 id = "qLfrLYeW6vnnXMfZ4rxbP"
 uri = "file://attached_assets/ELH-QR_eternallifehospice_cream.png"
@@ -1301,3 +1307,9 @@ id = "4uqNxFQbziDxpouKCj2m0"
 uri = "file://exports/social/gbp-post-image.png"
 type = "image"
 title = "Google Business Profile Post Image"
+
+[[outputs]]
+id = "rvW4aEMtHzGwhBCergS8h"
+uri = "file://exports/social/gbp-family-guide-post-FINAL.png"
+type = "image"
+title = "GBP Post Image — Family Guide (with real cover)"
