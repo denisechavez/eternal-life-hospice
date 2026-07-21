@@ -138,6 +138,24 @@ uri = "file://artifacts/mockup-sandbox/public/images/elh-stillness.png"
 type = "image"
 title = "candle flame stillness dark warm"
 
+[[generated]]
+id = "DEhpXYDhUaKVmmX2O2iUB"
+uri = "file://exports/social/family-guide-post.png"
+type = "image"
+title = "generated_image"
+
+[[generated]]
+id = "gr6-JEXTfsQM00-XZl31L"
+uri = "file://exports/social/referral-ad-creative.png"
+type = "image"
+title = "generated_image"
+
+[[generated]]
+id = "JJrU40WUIOh5mfy7uWl05"
+uri = "file://exports/social/gbp-post-image.png"
+type = "image"
+title = "generated_image"
+
 [[outputs]]
 id = "qLfrLYeW6vnnXMfZ4rxbP"
 uri = "file://attached_assets/ELH-QR_eternallifehospice_cream.png"
@@ -1265,3 +1283,21 @@ id = "-H7epQKB9vo9QOiGoJ6OJ"
 uri = "file://exports/ELH-AJCC-Job-Descriptions.zip"
 type = "unspecified"
 title = "All 3 AJCC Job Descriptions — Updated (ZIP)"
+
+[[outputs]]
+id = "0IEWA0L8AQ5c7vM8JWkcF"
+uri = "file://exports/social/family-guide-post.png"
+type = "image"
+title = "Organic Post Image — Family Guide"
+
+[[outputs]]
+id = "8TEU33QvSm_NSFzuterZx"
+uri = "file://exports/social/referral-ad-creative.png"
+type = "image"
+title = "Facebook & Instagram Ad Creative — Referral"
+
+[[outputs]]
+id = "4uqNxFQbziDxpouKCj2m0"
+uri = "file://exports/social/gbp-post-image.png"
+type = "image"
+title = "Google Business Profile Post Image"
