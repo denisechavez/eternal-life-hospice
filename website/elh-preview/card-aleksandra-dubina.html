@@ -17,7 +17,7 @@ body{background:#F5F0EB;font-family:Arial,Helvetica,sans-serif;min-height:100vh;
 .hd{background:#3C1C3B;padding:22px 24px 18px;text-align:center;}
 .hd img{height:52px;width:auto;}
 
-/* Photo + LinkedIn */
+/* Photo + LinkedIn badge */
 .photo-wrap{display:flex;justify-content:center;margin-top:-44px;margin-bottom:0;position:relative;z-index:2;}
 .photo-group{position:relative;display:inline-block;}
 .photo{width:90px;height:90px;border-radius:50%;border:3px solid #C9B07E;object-fit:cover;object-position:top;background:#EDE6DE;display:block;}
@@ -38,7 +38,6 @@ body{background:#F5F0EB;font-family:Arial,Helvetica,sans-serif;min-height:100vh;
 .btn{display:flex;align-items:center;gap:12px;padding:13px 18px;border-radius:8px;text-decoration:none;font-size:14px;font-weight:bold;transition:opacity .15s;}
 .btn-primary{background:#3C1C3B;color:#F5F0EB;}
 .btn-secondary{background:#F5F0EB;color:#3C1C3B;border:1.5px solid #D8CDBF;}
-.btn-gold{background:#C9B07E;color:#3C1C3B;}
 .btn-linkedin{background:#0A66C2;color:#fff;}
 .btn svg{flex-shrink:0;opacity:.85;}
 .btn span{flex:1;}
@@ -49,24 +48,20 @@ body{background:#F5F0EB;font-family:Arial,Helvetica,sans-serif;min-height:100vh;
 .detail-row{display:flex;gap:10px;align-items:flex-start;}
 .detail-row svg{flex-shrink:0;margin-top:3px;opacity:.6;}
 
-/* Physical card preview */
-.card-preview-label{text-align:center;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:#8A7080;margin:20px 24px 8px;}
-.biz-card{margin:0 20px;border-radius:8px;overflow:hidden;box-shadow:0 2px 16px rgba(61,20,84,.18);}
-.biz-card-front{background:#3C1C3B;padding:18px 20px 16px;color:#F5F0EB;position:relative;}
-.biz-card-front .bc-logo{height:30px;width:auto;margin-bottom:12px;opacity:.95;}
-.biz-card-front .bc-name{font-family:Georgia,'Times New Roman',serif;font-size:16px;color:#F5F0EB;font-weight:bold;line-height:1.2;}
-.biz-card-front .bc-title1{font-size:8.5px;letter-spacing:1.2px;text-transform:uppercase;color:#C9B07E;margin-top:4px;line-height:1.5;}
-.biz-card-front .bc-title2{font-size:8px;letter-spacing:1px;text-transform:uppercase;color:#C9B07E;opacity:.8;line-height:1.5;}
-.biz-card-front .bc-divider{height:1px;background:#C9B07E;opacity:.35;margin:10px 0;}
-.biz-card-front .bc-contact{font-size:8px;color:#EDE6DE;line-height:1.9;opacity:.9;}
-.biz-card-front .bc-contact strong{color:#C9B07E;font-size:7.5px;letter-spacing:.5px;text-transform:uppercase;}
-.biz-card-back{background:#F5F0EB;padding:16px 20px;text-align:center;}
-.biz-card-back .bc-tagline1{font-family:Georgia,'Times New Roman',serif;font-size:13px;color:#3C1C3B;font-weight:bold;line-height:1.3;}
-.biz-card-back .bc-tagline2{font-size:8px;letter-spacing:1.5px;text-transform:uppercase;color:#5B2E59;margin-top:5px;line-height:1.5;}
-.biz-card-back .bc-pillars-label{font-size:7.5px;color:#8A7080;margin-top:8px;letter-spacing:.5px;}
-.biz-card-back .bc-pillars{display:grid;grid-template-columns:1fr 1fr;gap:4px 12px;margin-top:6px;}
-.biz-card-back .bc-pill{font-size:7px;font-weight:bold;letter-spacing:.8px;text-transform:uppercase;color:#3C1C3B;text-align:left;}
-.card-flip-note{text-align:center;font-size:9px;color:#A07C36;margin:5px 20px 0;letter-spacing:.5px;}
+/* ── Flip card ── */
+.flip-section{padding:24px 20px 0;}
+.flip-label{text-align:center;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:#8A7080;margin-bottom:10px;}
+
+.flip-scene{width:100%;aspect-ratio:1145/595;perspective:900px;cursor:pointer;}
+.flip-inner{width:100%;height:100%;position:relative;transform-style:preserve-3d;transition:transform .55s cubic-bezier(.4,0,.2,1);}
+.flip-inner.flipped{transform:rotateY(180deg);}
+
+.flip-face{position:absolute;inset:0;width:100%;height:100%;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:10px;overflow:hidden;box-shadow:0 3px 18px rgba(61,20,84,.22);}
+.flip-face img{width:100%;height:100%;object-fit:cover;display:block;}
+.flip-face.back{transform:rotateY(180deg);}
+
+.flip-hint{text-align:center;margin-top:8px;font-size:10px;color:#A07C36;letter-spacing:.4px;display:flex;align-items:center;justify-content:center;gap:5px;}
+.flip-hint svg{width:12px;height:12px;opacity:.7;}
 
 /* Save */
 .save-wrap{padding:20px 20px 0;}
@@ -135,35 +130,24 @@ body{background:#F5F0EB;font-family:Arial,Helvetica,sans-serif;min-height:100vh;
     </div>
   </div>
 
-  <div class="card-preview-label">Business Card</div>
-  <div class="biz-card">
-    <div class="biz-card-front">
-      <img class="bc-logo" src="/assets/logo-cream.png" alt="Eternal Life Hospice">
-      <div class="bc-name">Aleksandra Dubina</div>
-      <div class="bc-title1">Founder &amp; Chief Executive Officer</div>
-      <div class="bc-title2">Certified Hospice Administrator</div>
-      <div class="bc-divider"></div>
-      <div class="bc-contact">
-        <strong>T</strong> &nbsp;805.953.7273 &nbsp;&nbsp; <strong>F</strong> &nbsp;805.953.8530<br>
-        aleksandra@eternallifehospice.com<br>
-        eternallifehospice.com<br>
-        4165 E Thousand Oaks Blvd, Ste 325B<br>
-        Westlake Village, CA 91362
+  <!-- Flip Card -->
+  <div class="flip-section">
+    <div class="flip-label">Business Card — Tap to Flip</div>
+    <div class="flip-scene" id="flipScene" role="button" aria-label="Flip business card" tabindex="0">
+      <div class="flip-inner" id="flipInner">
+        <div class="flip-face front">
+          <img src="/assets/img/biz-card-front.png" alt="Aleksandra Dubina business card front">
+        </div>
+        <div class="flip-face back">
+          <img src="/assets/img/biz-card-back.png" alt="Aleksandra Dubina business card back">
+        </div>
       </div>
     </div>
-    <div class="biz-card-back">
-      <div class="bc-tagline1">Care That Honors Life</div>
-      <div class="bc-tagline2">Here in Moments That Matter Most</div>
-      <div class="bc-pillars-label">Four pillars of care</div>
-      <div class="bc-pillars">
-        <div class="bc-pill">Clinical Confidence</div>
-        <div class="bc-pill">Whole-Person Comfort</div>
-        <div class="bc-pill">Guided Presence</div>
-        <div class="bc-pill">Compliance-Led Care</div>
-      </div>
+    <div class="flip-hint">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+      Tap card to see front &amp; back
     </div>
   </div>
-  <div class="card-flip-note">Front &amp; back · Eternal Life Hospice</div>
 
   <div class="save-wrap">
     <a class="save-btn" href="/assets/aleksandra-dubina.vcf" download="Aleksandra-Dubina-ELH.vcf">+ Save Contact to Phone</a>
@@ -179,6 +163,12 @@ body{background:#F5F0EB;font-family:Arial,Helvetica,sans-serif;min-height:100vh;
 
 </div>
 
+<script>
+const scene = document.getElementById('flipScene');
+const inner = document.getElementById('flipInner');
+scene.addEventListener('click', () => inner.classList.toggle('flipped'));
+scene.addEventListener('keydown', e => { if(e.key === 'Enter' || e.key === ' ') inner.classList.toggle('flipped'); });
+</script>
 <script async src="/assets/analytics.js"></script>
 </body>
 </html>
