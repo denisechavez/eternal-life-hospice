@@ -14,11 +14,11 @@ body{background:#F5F0EB;font-family:Arial,Helvetica,sans-serif;min-height:100vh;
 .card{width:100%;max-width:420px;background:#fff;box-shadow:0 4px 32px rgba(61,20,84,.13);}
 
 /* Header band */
-.hd{background:#3C1C3B;padding:22px 24px 18px;text-align:center;}
-.hd img{height:52px;width:auto;}
+.hd{background:#3C1C3B;padding:32px 24px 44px;text-align:center;}
+.hd img{height:56px;width:auto;}
 
 /* Photo + LinkedIn badge */
-.photo-wrap{display:flex;justify-content:center;margin-top:-44px;margin-bottom:0;position:relative;z-index:2;}
+.photo-wrap{display:flex;justify-content:center;margin-top:-52px;margin-bottom:0;position:relative;z-index:2;}
 .photo-group{position:relative;display:inline-block;}
 .photo{width:90px;height:90px;border-radius:50%;border:3px solid #C9B07E;object-fit:cover;object-position:top;background:#EDE6DE;display:block;}
 .linkedin-badge{position:absolute;bottom:0;right:-10px;width:28px;height:28px;background:#0A66C2;border-radius:50%;border:2px solid #fff;display:flex;align-items:center;justify-content:center;text-decoration:none;}
@@ -52,12 +52,12 @@ body{background:#F5F0EB;font-family:Arial,Helvetica,sans-serif;min-height:100vh;
 .flip-section{padding:24px 20px 0;}
 .flip-label{text-align:center;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:#8A7080;margin-bottom:10px;}
 
-.flip-scene{width:100%;aspect-ratio:1145/595;perspective:900px;cursor:pointer;}
+.flip-scene{width:100%;aspect-ratio:1163/598;perspective:900px;cursor:pointer;}
 .flip-inner{width:100%;height:100%;position:relative;transform-style:preserve-3d;transition:transform .55s cubic-bezier(.4,0,.2,1);}
 .flip-inner.flipped{transform:rotateY(180deg);}
 
-.flip-face{position:absolute;inset:0;width:100%;height:100%;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:10px;overflow:hidden;box-shadow:0 3px 18px rgba(61,20,84,.22);}
-.flip-face img{width:100%;height:100%;object-fit:cover;display:block;}
+.flip-face{position:absolute;inset:0;width:100%;height:100%;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:12px;overflow:hidden;box-shadow:0 3px 18px rgba(61,20,84,.22);}
+.flip-face img{width:100%;height:100%;object-fit:cover;object-position:center;display:block;}
 .flip-face.back{transform:rotateY(180deg);}
 
 .flip-hint{text-align:center;margin-top:8px;font-size:10px;color:#A07C36;letter-spacing:.4px;display:flex;align-items:center;justify-content:center;gap:5px;}
