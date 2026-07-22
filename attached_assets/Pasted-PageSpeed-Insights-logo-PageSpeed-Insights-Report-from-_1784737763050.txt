@@ -1,0 +1,316 @@
+PageSpeed Insights logo
+PageSpeed Insights
+Report from Jul 22, 2026, 9:27:59 AM
+https://eternallifehospice.com/
+Enter a valid URL
+
+
+smartphone
+Mobile
+
+computer
+Desktop
+
+Discover what your real users are experiencing
+No Data
+
+Diagnose performance issues
+70
+Performance
+100
+Accessibility
+92
+Best Practices
+100
+SEO
+3/3
+Agentic Browsing
+70
+FCP
++6
+LCP
++0
+TBT
++30
+CLS
++25
+SI
++9
+Performance
+Values are estimated and may vary. The performance score is calculated directly from these metrics.See calculator.
+0–49
+50–89
+90–100
+Final Screenshot
+
+Metrics
+Expand view
+First Contentful Paint
+2.6 s
+Largest Contentful Paint
+9.5 s
+Total Blocking Time
+20 ms
+Cumulative Layout Shift
+0.034
+Speed Index
+3.7 s
+Captured at Jul 22, 2026, 9:28 AM PDT
+Emulated Moto G Power with Lighthouse 13.4.0
+Single page session
+Initial page load
+Slow 4G throttling
+Using HeadlessChromium 149.0.7827.155 with lr
+View Treemap
+Screenshot
+Screenshot
+Screenshot
+Screenshot
+Screenshot
+Screenshot
+Screenshot
+Screenshot
+Show audits relevant to:
+
+All
+
+FCP
+
+LCP
+
+TBT
+
+CLS
+Insights
+Use efficient cache lifetimes Est savings of 483 KiB
+A long cache lifetime can speed up repeat visits to your page. Learn more about caching.LCPFCPUnscored
+Request
+Cache TTL
+Transfer Size
+eternallifehospice.com 1st party
+1,169 KiB
+…audio/aleksandra-welcome.mp3(eternallifehospice.com)
+1d
+534 KiB
+…img/inline-5eebc45ba1.jpg(eternallifehospice.com)
+1d
+140 KiB
+…img/cred-cms.png(eternallifehospice.com)
+1d
+139 KiB
+…img/cred-cdph.png(eternallifehospice.com)
+1d
+122 KiB
+…img/inline-ce5cac9062.jpg(eternallifehospice.com)
+1d
+100 KiB
+…img/elh-logo-h2-cream.png(eternallifehospice.com)
+1d
+49 KiB
+…img/elh-logo-h2-plum.png(eternallifehospice.com)
+1d
+49 KiB
+…img/hero-mobile-640.webp(eternallifehospice.com)
+1d
+24 KiB
+/assets/chat.js(eternallifehospice.com)
+1d
+10 KiB
+/assets/analytics.js(eternallifehospice.com)
+1d
+2 KiB
+Clarity utility 
+25 KiB
+/0.8.67/clarity.js(scripts.clarity.ms)
+1d
+25 KiB
+sibautomation.com
+4 KiB
+/sa.js?key=kejxjl4hntbbl2jnfp84s6bs(sibautomation.com)
+1m
+4 KiB
+brevo.com
+2 KiB
+/js/sdk-loader.js(cdn.brevo.com)
+8h
+2 KiB
+Improve image delivery Est savings of 352 KiB
+Reducing the download time of images can improve the perceived load time of the page and LCP. Learn more about optimizing image sizeLCPFCPUnscored
+URL
+Resource Size
+Est Savings
+eternallifehospice.com 1st party
+543.6 KiB	352.3 KiB
+CMS
+<img loading="lazy" decoding="async" src="assets/img/cred-cms.png" alt="CMS">
+…img/cred-cms.png(eternallifehospice.com)
+137.4 KiB
+134.6 KiB
+Using a modern image format (WebP, AVIF) or increasing the image compression could improve this image's download size.
+110.5 KiB
+This image file is larger than it needs to be (691x239) for its displayed dimensions (223x77). Use responsive images to reduce the image download size.
+123.1 KiB
+CDPH
+<img loading="lazy" decoding="async" src="assets/img/cred-cdph.png" alt="CDPH">
+…img/cred-cdph.png(eternallifehospice.com)
+121.1 KiB
+118.7 KiB
+Using a modern image format (WebP, AVIF) or increasing the image compression could improve this image's download size.
+94.5 KiB
+This image file is larger than it needs to be (607x269) for its displayed dimensions (182x80). Use responsive images to reduce the image download size.
+110.3 KiB
+Eternal Life Hospice logo
+<img class="s sym-cream" src="assets/img/elh-logo-h2-cream.png" alt="Eternal Life Hospice logo">
+…img/elh-logo-h2-cream.png(eternallifehospice.com)
+47.9 KiB
+43.9 KiB
+Using a modern image format (WebP, AVIF) or increasing the image compression could improve this image's download size.
+18.6 KiB
+This image file is larger than it needs to be (900x200) for its displayed dimensions (331x74). Use responsive images to reduce the image download size.
+41.4 KiB
+A hospice nurse with a stethoscope attending a patient at home
+<img loading="lazy" decoding="async" src="assets/img/inline-5eebc45ba1.jpg" alt="A hospice nurse with a stethoscope attending a patient at home">
+…img/inline-5eebc45ba1.jpg(eternallifehospice.com)
+138.3 KiB
+32.5 KiB
+This image file is larger than it needs to be (1080x776) for its displayed dimensions (721x901). Use responsive images to reduce the image download size.
+31.1 KiB
+A caregiver and a family member sitting together holding hands
+<img loading="lazy" decoding="async" src="assets/img/inline-ce5cac9062.jpg" alt="A caregiver and a family member sitting together holding hands">
+…img/inline-ce5cac9062.jpg(eternallifehospice.com)
+98.9 KiB
+22.5 KiB
+This image file is larger than it needs to be (1080x779) for its displayed dimensions (721x901). Use responsive images to reduce the image download size.
+22.5 KiB
+Forced reflow
+A forced reflow occurs when JavaScript queries geometric properties (such as offsetWidth) after styles have been invalidated by a change to the DOM state. This can result in poor performance. Learn more about forced reflows and possible mitigations.Unscored
+Source
+Total reflow time
+https://eternallifehospice.com:1784:63
+78 ms
+LCP request discovery
+Optimize LCP by making the LCP image discoverable from the HTML immediately, and avoiding lazy-loadingLCPUnscored
+LCP resources should not use loading=lazy
+fetchpriority=high should be applied to the image preload request
+Request is discoverable in initial document
+Clasped hands in caring gesture
+<img src="https://eternallifehospice.com/assets/img/hero-mobile-640.webp" alt="Clasped hands in caring gesture" style="width:100%;height:100%;object-fit:cover;object-position:65% center">
+Network dependency tree
+Avoid chaining critical requests by reducing the length of chains, reducing the download size of resources, or deferring the download of unnecessary resources to improve page load.LCPUnscored
+Maximum critical path latency: 666 ms
+Initial Navigation
+https://eternallifehospice.com - 291 ms, 50.08 KiB
+…fonts/inline-9a18143814.woff2(eternallifehospice.com) - 634 ms, 119.40 KiB
+…fonts/inline-7c1d820d25.woff2(eternallifehospice.com) - 666 ms, 147.43 KiB
+…fonts/inline-a3c2438bfe.woff2(eternallifehospice.com) - 633 ms, 11.45 KiB
+…fonts/inline-b6346d671c.woff2(eternallifehospice.com) - 615 ms, 11.45 KiB
+Preconnected origins
+preconnect hints help the browser establish a connection earlier in the page load, saving time when the first request for that origin is made. The following are the origins that the page preconnected to.
+Origin
+Source
+https://www.googletagmanager.com/
+head > link
+<link rel="preconnect" href="https://www.googletagmanager.com">
+https://www.clarity.ms/
+head > link
+<link rel="preconnect" href="https://www.clarity.ms">
+Preconnect candidates
+Add preconnect hints to your most important origins, but try to use no more than 4.
+Origin
+Est LCP savings
+https://cdn.brevo.com
+220 ms
+Layout shift culprits
+Optimize DOM size
+LCP breakdown
+3rd parties
+These insights are also available in the Chrome DevTools Performance Panel - record a trace to view more detailed information.
+Diagnostics
+Reduce unused JavaScript Est savings of 72 KiB
+Reduce unused JavaScript and defer loading scripts until they are required to decrease bytes consumed by network activity. Learn how to reduce unused JavaScript.LCPFCPUnscored
+URL
+Transfer Size
+Est Savings
+Google Tag Manager tag-manager 
+179.4 KiB	72.3 KiB
+/gtag/js?id=G-JRLYCRC48G(www.googletagmanager.com)
+179.4 KiB
+72.3 KiB
+Image elements do not have explicit width and height
+Avoid non-composited animations 1 animated element found
+Avoid long main-thread tasks 2 long tasks found
+More information about the performance of your application. These numbers don't directly affect the Performance score.
+Passed audits (14)
+Show
+100
+Accessibility
+These checks highlight opportunities to improve the accessibility of your web app. Automatic detection can only detect a subset of issues and does not guarantee the accessibility of your web app, so manual testing is also encouraged.
+Additional items to manually check (10)
+Hide
+Interactive controls are keyboard focusable
+Interactive elements indicate their purpose and state
+The page has a logical tab order
+Visual order on the page follows DOM order
+User focus is not accidentally trapped in a region
+The user's focus is directed to new content added to the page
+HTML5 landmark elements are used to improve navigation
+Offscreen content is hidden from assistive technology
+Custom controls have associated labels
+Custom controls have ARIA roles
+These items address areas which an automated testing tool cannot cover. Learn more in our guide on conducting an accessibility review.
+Passed audits (29)
+Show
+Not applicable (34)
+Show
+92
+Best Practices
+General
+Browser errors were logged to the console
+Issues were logged in the Issues panel in Chrome Devtools
+Trust and Safety
+Ensure CSP is effective against XSS attacks
+Use a strong HSTS policy
+Ensure proper origin isolation with COOP
+Mitigate DOM-based XSS with Trusted Types
+Browser Compatibility
+Baseline Features
+Passed audits (11)
+Show
+Not applicable (3)
+Show
+100
+SEO
+These checks ensure that your page is following basic search engine optimization advice. There are many additional factors Lighthouse does not score here that may affect your search ranking, including performance on Core Web Vitals. Learn more about Google Search Essentials.
+Additional items to manually check (1)
+Hide
+Structured data is valid
+Run these additional validators on your site to check additional SEO best practices.
+Passed audits (10)
+Show
+3/3
+Agentic Browsing
+These checks ensure high-quality, browsable websites for AI agents and validate the correctness of WebMCP integrations. This category is still under development and subject to change.
+Passed audits (3)
+Show
+Not applicable (3)
+Show
+More on PageSpeed Insights
+What's new
+Documentation
+Learn about Web Performance
+Ask questions on Stack Overflow
+Mailing list
+Related Content
+Updates
+Web Fundamentals
+Case Studies
+Podcasts
+Connect
+Twitter
+Youtube
+Google Developers Logo
+Chrome
+Firebase
+All products
+Terms and Privacy Policy
+For details, see the Google Developers Site Policies.
