@@ -76,7 +76,7 @@
   "@context": "https://schema.org",
   "@type": "Service",
   "serviceType": "Hospice care",
-  "name": "Physician-Led Hospice Care for Referring Providers",
+  "name": "Physician-Supported Hospice Care for Referring Providers",
   "description": "Medicare-certified, ACHC-accredited hospice care with same-day admissions when clinically appropriate, 24/7 nurse availability, and whole-person comfort delivered in the home, assisted living, RCFE and skilled nursing settings across Ventura and Los Angeles counties.",
   "provider": {
     "@type": "MedicalBusiness",
@@ -93,7 +93,7 @@
         "@type": "Offer",
         "itemOffered": {
           "@type": "MedicalTherapy",
-          "name": "Physician-Led Hospice Care",
+          "name": "Physician-Supported Hospice Care",
           "description": "Physician-directed, nurse-coordinated end-of-life care with same-day admissions when clinically appropriate and 24/7 on-call nursing."
         }
       },
@@ -362,19 +362,12 @@
       <button type="submit" class="af-submit">Send referral &#8594;</button>
       <p class="refer-mini">Eternal Life Hospice is independent, Medicare-certified, CDPH-licensed and ACHC-accredited, serving Ventura and Los Angeles counties. Patients and families always choose their hospice provider; this form simply connects you with our team. No information submitted here is stored as a medical record.</p>
     </form>
-
-    <div class="apply-error" id="referError" hidden>Sorry &mdash; something went wrong sending your referral. Please try again, or call us at <a href="tel:18059537273">805.953.7273</a>.</div>
-    <div class="apply-success" id="referSuccess" hidden>
-      <div class="as-icon">&#10003;</div>
-      <h3>Thank you &mdash; your referral is in.</h3>
-      <p>Our clinical intake team will call you back shortly to complete it securely. Need&nbsp;us&nbsp;sooner? Call <a href="tel:18059537273">805.953.7273</a> any&nbsp;time&nbsp;&mdash;<br>we&nbsp;answer&nbsp;24/7.</p>
     </div>
-  </div>
 </section>
 
 <section class="sec wrap" style="padding-top:0">
   <div class="note-panel">
-    <b>Referral at a glance.</b> Physician-led, Medicare-certified hospice care across Ventura &amp; Los Angeles counties. Three ways to refer &mdash; <a href="tel:18059537273">call <b>805.953.7273</b></a>, submit the <a href="#referral-form"><b>referral form above</b></a>, or secure-fax <b>805.953.8530</b>. Send patient demographics, diagnosis and contact details; our clinical team confirms eligibility and coordinates admission. Same-day admissions when clinically appropriate, with 24/7 on-call nursing.
+    <b>Referral at a glance.</b> Physician-supported, Medicare-certified hospice care across Ventura &amp; Los Angeles counties. Three ways to refer &mdash; <a href="tel:18059537273">call <b>805.953.7273</b></a>, submit the <a href="#referral-form"><b>referral form above</b></a>, or secure-fax <b>805.953.8530</b>. Send patient demographics, diagnosis and contact details; our clinical team confirms eligibility and coordinates admission. Same-day admissions when clinically appropriate, with 24/7 on-call nursing.
   </div>
 </section>
 
@@ -382,7 +375,7 @@
   <h2>Why refer to Eternal Life Hospice</h2>
   <p class="lede">Every hand-off carries real responsibility. Eternal Life Hospice is built to make it clean and dependable &mdash; a nationally accredited, Medicare-certified agency that confirms appropriateness, documents thoroughly and keeps you informed at every step.</p>
   <div class="roles">
-    <div class="role"><h3>Physician-led care</h3><p>A physician-directed clinical model with nurse-coordinated plans of care &mdash; the clinical rigor that protects both you and your patient.</p></div>
+    <div class="role"><h3>Physician-supported care</h3><p>A physician-directed clinical model with nurse-coordinated plans of care &mdash; the clinical rigor that protects both you and your patient.</p></div>
     <div class="role"><h3>Same-day admissions</h3><p>When clinically appropriate, we admit the same day, with 24/7 on-call nursing supporting your patient from the first hour.</p></div>
     <div class="role"><h3>Clean documentation</h3><p>Certification, recertification and required face-to-face encounters handled within regulatory windows, with records returned so your chart stays audit-ready.</p></div>
     <div class="role"><h3>Medicare-covered</h3><p>For eligible patients, the Medicare Part A hospice benefit covers hospice care related to the terminal illness with little to no out-of-pocket cost &mdash; we verify coverage during intake.</p></div>
@@ -405,7 +398,7 @@
   <h2>Services we bring to your patient</h2>
   <p class="lede">Eternal Life Hospice supports whole-person comfort &mdash; attending to the <b>physical, emotional and spiritual</b> together &mdash; with a physician-directed interdisciplinary team that comes to wherever your patient calls home.</p>
   <div class="roles">
-    <div class="role"><h3>Physician-led clinical care</h3><p>Physician-directed plans of care &middot; nurse case management &middot; same-day admissions when clinically appropriate &middot; 24/7 on-call nursing.</p></div>
+    <div class="role"><h3>Physician-supported clinical care</h3><p>Physician-directed plans of care &middot; nurse case management &middot; same-day admissions when clinically appropriate &middot; 24/7 on-call nursing.</p></div>
     <div class="role"><h3>Comfort &amp; symptom management</h3><p>Expert pain and symptom control &middot; medications related to the terminal diagnosis &middot; medical equipment and supplies delivered to the bedside.</p></div>
     <div class="role"><h3>Personal &amp; hands-on care</h3><p>Certified hospice aides for bathing, grooming and personal care &middot; caregiver teaching so families feel confident between visits.</p></div>
     <div class="role"><h3>Emotional &amp; spiritual support</h3><p>Medical social work &middot; chaplaincy and spiritual care honoring every faith and none &middot; counseling for the patient and family.</p></div>
@@ -473,19 +466,26 @@
   var btn=f.querySelector('.af-submit'); var orig=btn?btn.innerHTML:'';
   f.addEventListener('submit', function(e){
     e.preventDefault();
-    var err=document.getElementById('referError'); if(err) err.hidden=true;
+    
     if(btn){ btn.disabled=true; btn.textContent='Sending\u2026'; }
     var body=new URLSearchParams(); new FormData(f).forEach(function(v,k){ body.append(k,v); });
     fetch('/',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:body.toString()})
       .then(function(r){
         if(!r.ok) throw new Error('submit failed');
         f.style.display='none';
-        var su=document.getElementById('referSuccess');
-        if(su){ su.hidden=false; su.scrollIntoView({behavior:'smooth',block:'center'}); }
+        var su=document.createElement('div');
+        su.className='apply-success';
+        su.innerHTML='<div class="as-icon">&#10003;</div><h3>Thank you — your referral is in.</h3><p>Our clinical intake team will call you back shortly to complete it securely. Need us sooner? Call <a href="tel:18059537273">805.953.7273</a> any time —<br>we answer 24/7.</p>';
+        f.parentNode.insertBefore(su,f.nextSibling);
+        su.scrollIntoView({behavior:'smooth',block:'center'});
       })
       .catch(function(){
         if(btn){ btn.disabled=false; btn.innerHTML=orig; }
-        if(err){ err.hidden=false; err.scrollIntoView({behavior:'smooth',block:'center'}); }
+        var er=document.createElement('div');
+        er.className='apply-error';
+        er.innerHTML='Sorry — something went wrong sending your referral. Please try again, or call us at <a href="tel:18059537273">805.953.7273</a>.';
+        f.parentNode.insertBefore(er,f.nextSibling);
+        er.scrollIntoView({behavior:'smooth',block:'center'});
       });
   });
 })();

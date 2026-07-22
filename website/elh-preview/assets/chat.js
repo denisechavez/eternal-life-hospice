@@ -38,7 +38,7 @@
     },
     {
       q: "What therapies are included?",
-      a: "At no additional cost we bring in music therapy, therapeutic massage, reiki, aromatherapy, pet therapy, sound bath, holistic medicine and end-of-life doula support \u2014 alongside the clinical team."
+      a: "Our integrative comfort modalities — music therapy, therapeutic massage, reiki, aromatherapy, pet therapy, sound bath and doula support — are available when clinically appropriate and included in the care plan, at no additional expense to families."
     },
     {
       q: "How do I start care for a loved one?",

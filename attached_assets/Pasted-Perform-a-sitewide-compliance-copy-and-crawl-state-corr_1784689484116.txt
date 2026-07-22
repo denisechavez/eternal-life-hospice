@@ -1,0 +1,141 @@
+Perform a sitewide compliance-copy and crawl-state correction on eternallifehospice.com.
+
+Do not redesign the website. Do not change the brand hierarchy. imagery. navigation. Four Pillars. Family Guide or conversion structure.
+
+The last update was only partially applied. Search every route and reusable component for the following language and correct it everywhere.
+
+1. Remove all absolute cost claims
+
+Find and replace every instance of:
+- $0 On Medicare
+- $0 out-of-pocket
+- NO COPAY
+- No Deductibles · No Copays
+- 100% coverage
+- full coverage
+- patients pay $0
+
+Use:
+“Most Medicare-covered hospice services have little to no out-of-pocket cost. Limited copayments may apply in specific circumstances.”
+
+For short badge copy use:
+“Little to no out-of-pocket cost for most covered hospice services.”
+
+Apply this to:
+- homepage
+- coverage-area page
+- Family Guide
+- provider page
+- city pages
+- resource pages
+- metadata
+- Open Graph tags
+- schema
+- reusable trust bars
+
+2. Correct the First 48 Hours sentence
+
+Replace:
+“medications and equipment arrive to client”
+
+With:
+“Medications. equipment and supplies are coordinated and delivered based on the patient’s clinical needs.”
+
+3. Qualify every no-additional-expense statement
+
+Do not state or imply that every therapy. specialty service or mobile service is universally free.
+
+Use:
+“Certain supportive comfort modalities may be provided at no additional cost to the family when included in the individualized care plan and operationally available.”
+
+For clinical or contracted services use:
+“Available based on clinical assessment. plan-of-care appropriateness. provider availability and applicable coverage.”
+
+4. Standardize physician language
+
+Use:
+“Physician-supported hospice care”
+
+Remove “physician-led” from:
+- homepage metadata
+- Open Graph descriptions
+- structured data
+- generic brand descriptions
+
+On provider-specific clinical copy use:
+“Care delivered under hospice physician oversight and coordinated by the interdisciplinary team.”
+
+5. Fix referral form rendering
+
+The following content must not exist in initial server-rendered HTML:
+- Sorry — something went wrong sending your referral.
+- Thank you — your referral is in.
+
+Render success and error messages only after a real form submission response has been received.
+
+Verify by inspecting View Source and the initial HTML response. CSS hiding is not sufficient.
+
+6. Correct mobile dialysis and mobile-service language
+
+Replace:
+“Mobile Dialysis — Coordinated renal care. in place”
+
+With:
+“Dialysis coordination — coordination with the patient’s established renal-care provider when clinically appropriate.”
+
+Do not imply Eternal directly furnishes dialysis unless formally verified.
+
+Qualify mobile optometry. podiatry. laboratory. therapy and specialty services using:
+“Available based on clinical need. care-plan appropriateness. practitioner availability and coverage.”
+
+7. Remove unsupported sound and biological-effect wording
+
+Remove:
+- cellular resonance
+- love frequency
+- liberation frequency
+- return frequency
+- oneness frequency
+- any claim that sound frequencies treat or physiologically alter a patient
+
+Use experiential wording:
+“Created for relaxation. reflection. rest and emotional comfort.”
+
+Keep the disclaimer that sound experiences are complementary and not medical treatment.
+
+8. Review the coverage-area page separately
+
+The page /hospice-ventura-and-los-angeles-county-ca still contains outdated claims.
+
+Update:
+- NO COPAY
+- No Deductibles · No Copays
+- universal no-additional-expense claims
+- broad mobile-service claims
+
+9. Verify route and canonical behavior
+
+Confirm:
+- http://eternallifehospice.com redirects once to https://eternallifehospice.com/
+- https://www.eternallifehospice.com redirects once to https://eternallifehospice.com/
+- /providers redirects once to /refer
+- /refer is canonical
+- /providers is excluded from sitemap.xml
+- all internal provider links point directly to /refer
+
+10. Output a QA table for every indexable route containing:
+- URL
+- HTTP status
+- redirect destination
+- canonical
+- title
+- meta description
+- H1
+- sitemap inclusion
+- robots directive
+- schema types
+- presence of prohibited cost language
+- presence of physician-led language
+- presence of hidden success/error messages
+
+Do not report completion until a repository-wide text search confirms zero prohibited instances except where legally reviewed and intentionally approved.
