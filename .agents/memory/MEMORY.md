@@ -33,3 +33,4 @@
 - [SEO technical audit decisions](seo-audit-decisions.md) — 36-point brief: FAQPage schema only on visible Q&A pages; og:image needs width/height/alt on every page; www/http→canonical in _redirects; 4 content claims need human sign-off.
 - [The Amethyst — brand origin](amethyst-origin.md) — core of the brand; Greek amethystos = clarity in difficulty; name+colors from the stone; founder origin = personal family caregiving experience; weave carefully, not in every post.
 - [Social content library](social-content-library.md) — exports/social/elh-master-content-drafts.md (4,100+ lines, 14 parts); acquisition-safe strategy: voice+stills not face; Aleksandra voice=brand anchor not face; team on camera is safe; GBP 8-week library in Part 11.
+- [PageSpeed mobile optimisation](pagespeed-preload-rules.md) — 72→97 formula: fetchpriority="high" on preload LINK (not img), all 3 font preloads, analytics defer, Brevo preconnect.
