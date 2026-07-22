@@ -43,6 +43,14 @@ Fraunces preloads are needed for FCP (1.4s vs 2.6s without them).
 - TBT: 200ms → 20ms (analytics.js defer)
 - Score: 72 → 97
 
+## Clarity causes non-deterministic LCP
+
+Scores bounced 72% ↔ 97% on identical code. Root cause: Clarity's session-recording
+initialization (DOM layout reads / forced reflows) sometimes ran BEFORE the hero image
+painted → pushed LCP to ~9.5s. Fix: gate all third-party injection (GA4, Clarity, Brevo)
+behind `window addEventListener('load', init)` inside analytics.js. Hero paints at ~1.5s;
+load event fires at ~2–3s; Clarity can never interfere with LCP. analytics.js stays `defer`.
+
 ## Do NOT repeat these mistakes
 1. Never put `fetchpriority="high"` on the `<img>` fallback src inside `<picture>` — it triggers
    a wasted high-priority fetch for the wrong (desktop) image on mobile viewports.
