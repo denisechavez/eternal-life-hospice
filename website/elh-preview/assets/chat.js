@@ -79,7 +79,7 @@
       ".elhc-teaser{position:relative;max-width:236px;background:#fff;color:var(--ink);border:1px solid var(--cdark);border-radius:14px;border-bottom-right-radius:5px;padding:.62rem .72rem;font-size:13px;line-height:1.45;box-shadow:0 12px 30px rgba(60,28,59,.24);cursor:pointer;animation:elhcRise .42s cubic-bezier(.22,1,.36,1) both}",
       ".elhc-teaser:hover{border-color:var(--blue)}",
       ".elhc-teaser strong{display:block;font-family:'Fraunces ELH',Georgia,serif;font-weight:600;font-size:14px;color:var(--p);margin-bottom:2px}",
-      ".elhc-teaser-close{position:absolute;top:-9px;right:-9px;width:21px;height:21px;border-radius:50%;background:var(--p);color:var(--cream);border:2px solid var(--cream);cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;line-height:0}",
+      ".elhc-teaser-close{position:absolute;top:-13px;right:-13px;width:28px;height:28px;border-radius:50%;background:var(--p);color:var(--cream);border:2px solid var(--cream);cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;line-height:0}",
       ".elhc-teaser-close:hover{background:var(--deep)}",
       ".elhc-teaser-close svg{width:10px;height:10px}",
       ".elhc-chip-cb{background:var(--p);color:var(--cream);border-color:var(--p)}",
