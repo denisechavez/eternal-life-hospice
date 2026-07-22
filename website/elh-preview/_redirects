@@ -3,6 +3,14 @@ https://www.eternallifehospice.com/*  https://eternallifehospice.com/:splat  301
 http://www.eternallifehospice.com/*   https://eternallifehospice.com/:splat  301!
 http://eternallifehospice.com/*       https://eternallifehospice.com/:splat  301!
 
+# Legacy domain — eternallifehospiceinc.com → canonical domain (301, one hop)
+# ACTION REQUIRED: eternallifehospiceinc.com must be added to Netlify → Domain Management
+# before these rules fire. Add the domain, point DNS to Netlify, then these rules activate.
+https://www.eternallifehospiceinc.com/*  https://eternallifehospice.com/:splat  301!
+https://eternallifehospiceinc.com/*      https://eternallifehospice.com/:splat  301!
+http://www.eternallifehospiceinc.com/*   https://eternallifehospice.com/:splat  301!
+http://eternallifehospiceinc.com/*       https://eternallifehospice.com/:splat  301!
+
 /hospice-ventura-county-ca      /hospice-ventura-and-los-angeles-county-ca   301
 /hospice-los-angeles-county-ca  /hospice-ventura-and-los-angeles-county-ca   301
 

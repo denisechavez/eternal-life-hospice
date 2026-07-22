@@ -1,0 +1,84 @@
+Perform a final technical SEO and healthcare-content precision cleanup for eternallifehospice.com.
+
+Do not redesign the site.
+
+1. Make eternallifehospice.com the only canonical domain.
+
+2. Confirm that:
+- http://eternallifehospice.com redirects in one hop to https://eternallifehospice.com/
+- https://www.eternallifehospice.com redirects in one hop to https://eternallifehospice.com/
+- eternallifehospiceinc.com and all legacy URLs redirect by server-side 301 to the closest corresponding eternallifehospice.com page.
+
+3. Choose one permanent provider URL:
+- Keep /refer as canonical.
+- Redirect /providers directly to /refer in one hop.
+- Remove /providers from sitemap.xml.
+- Update every internal link to point directly to /refer.
+- Set /refer canonical to https://eternallifehospice.com/refer.
+
+4. Audit sitemap.xml:
+- Include only canonical 200-status indexable URLs.
+- Remove redirected URLs.
+- Remove duplicate URLs.
+- Include homepage. family guide. resources. referral page. regional page. city pages. media kit. journal pages and resource articles.
+- Use the canonical non-www HTTPS URLs only.
+
+5. Confirm robots.txt returns status 200 and contains:
+User-agent: *
+Allow: /
+Sitemap: https://eternallifehospice.com/sitemap.xml
+
+6. Remove form error and success messages from initial crawlable HTML.
+Render them only after a real form submission event.
+
+7. Standardize the primary description to:
+“Physician-supported hospice care.”
+
+Do not use “physician-led” unless specifically approved.
+
+8. Replace the homepage statistic “$0 On Medicare” with:
+“Little to no out-of-pocket cost for most Medicare-covered hospice services.”
+
+9. Replace absolute coverage claims with qualified language:
+“Available when clinically appropriate. included in the care plan and operationally available.”
+
+10. Change:
+“medications and equipment arrive to client”
+to:
+“Medications. equipment and supplies are coordinated and delivered based on the patient’s clinical needs.”
+
+11. Review every statement involving:
+- Medicare coverage
+- no additional expense
+- physical therapy
+- occupational therapy
+- speech therapy
+- mobile dialysis
+- mobile specialty services
+- sound frequencies
+- clinical effects of integrative modalities
+
+Clearly distinguish:
+- Medicare-covered hospice services
+- Agency-funded comfort offerings
+- Clinically indicated contracted services
+- Services continuing outside the hospice benefit
+- Non-medical relaxation and comfort modalities
+
+12. Add nearby citations or restrained wording for any health-effect statement.
+
+13. Keep the existing design. hierarchy. photographs. brand language. Four Pillars. First 48 Hours. Family Guide and provider conversion structure unchanged.
+
+14. Produce a final QA report listing:
+- Status code for every indexable URL
+- Canonical URL
+- Title
+- Meta description
+- H1
+- Robots status
+- Sitemap inclusion
+- Redirect source and destination
+- Structured-data types
+- Any broken links
+- Any duplicate titles
+- Any duplicate descriptions
