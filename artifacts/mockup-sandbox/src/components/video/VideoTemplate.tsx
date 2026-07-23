@@ -13,28 +13,8 @@ export default function VideoTemplate() {
 
   return (
     <div className="relative w-full h-full overflow-hidden bg-deep-plum text-cream">
-      {/* Persistent Background layer */}
-      <div className="absolute inset-0 z-0">
-        <motion.div 
-          className="absolute w-[800px] h-[800px] rounded-full opacity-20 blur-[100px]"
-          style={{ background: 'radial-gradient(circle, #6B3A6B, transparent)' }}
-          animate={{ 
-            x: ['-20%', '80%', '10%'], 
-            y: ['10%', '60%', '-20%'], 
-            scale: [1, 1.4, 0.8] 
-          }}
-          transition={{ duration: 25, repeat: Infinity, ease: 'easeInOut' }} 
-        />
-        <motion.div 
-          className="absolute w-[600px] h-[600px] rounded-full opacity-10 blur-[80px] right-0 bottom-0"
-          style={{ background: 'radial-gradient(circle, #C9A84C, transparent)' }}
-          animate={{ 
-            x: ['10%', '-60%', '20%'], 
-            y: ['-10%', '-80%', '0%'] 
-          }}
-          transition={{ duration: 20, repeat: Infinity, ease: 'easeInOut' }} 
-        />
-      </div>
+      {/* Fallback background — scenes overlay this with real photos */}
+      <div className="absolute inset-0 z-0 bg-deep-plum" />
 
       {/* Persistent Gold Line Motif */}
       <motion.div
