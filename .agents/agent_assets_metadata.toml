@@ -1313,3 +1313,15 @@ id = "rvW4aEMtHzGwhBCergS8h"
 uri = "file://exports/social/gbp-family-guide-post-FINAL.png"
 type = "image"
 title = "GBP Post Image — Family Guide (with real cover)"
+
+[[outputs]]
+id = "uW_-_p9cVWiC_qmaAaXZQ"
+uri = "file://exports/social/guide-fb-linkedin.jpg"
+type = "image"
+title = "Facebook + LinkedIn image (1280×720)"
+
+[[outputs]]
+id = "GqrEvNflTzap2btf-OJHU"
+uri = "file://exports/social/guide-gbp.jpg"
+type = "image"
+title = "GBP image (1280×720)"
