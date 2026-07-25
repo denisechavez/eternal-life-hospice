@@ -500,6 +500,11 @@ details.cqn-col:not([open])>summary.cqn-county{margin-bottom:0;padding-bottom:0;
   .article.wrap{padding-left:1.1rem;padding-right:1.1rem}
   /* Hero sections */
   .hero{padding-left:1.1rem;padding-right:1.1rem}
+  /* Distinction dark band — has its own padding that overrides .wrap */
+  .distinct{padding-left:1.1rem;padding-right:1.1rem}
+  .distinct .distinct-band{padding:1.4rem 1.1rem}
+  .distinct .distinct-head h2{font-size:1.4rem}
+  .distinct .distinct-head p{font-size:15px}
   /* Footer */
   #site-footer{padding:2rem 1.1rem 1.6rem}
   #site-footer .fc-addr span{white-space:normal}
@@ -507,6 +512,11 @@ details.cqn-col:not([open])>summary.cqn-county{margin-bottom:0;padding-bottom:0;
   .cta{padding-left:1.1rem;padding-right:1.1rem}
   /* Credentials strip label */
   .creds{padding-left:1.1rem;padding-right:1.1rem}
+  /* County hub quicknav chips */
+  .cqn-col{padding:16px 14px 18px}
+  .cqn-chips a,.cqn-chips span{font-size:13px;padding:.38rem .8rem}
+  .cqn-county{font-size:1.15rem}
+  .cqn-legend{font-size:13px}
   /* FAQ summary text */
   .lfaq summary{font-size:16px;padding:14px 0}
   /* Hero buttons — stack on very small screens */
