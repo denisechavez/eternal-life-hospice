@@ -178,6 +178,14 @@ footer a:hover{color:var(--gold)}
 /* city -> county uplink */
 .county-link{display:inline-block;margin-top:1.1rem;font-size:15px;font-weight:600;color:var(--plum)}
 .county-link:hover{color:var(--deep)}
+/* city page breadcrumb nav */
+.breadcrumb{max-width:1000px;margin:0 auto;padding:.65rem 1.6rem;border-bottom:1px solid var(--cream-dark)}
+.breadcrumb ol{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;align-items:center;gap:.15rem .2rem;font-size:13px;color:var(--ink-soft)}
+.breadcrumb li{display:flex;align-items:center;gap:.2rem}
+.breadcrumb li+li::before{content:"›";color:var(--gold);font-weight:700;margin-right:.15rem}
+.breadcrumb a{color:var(--plum);font-weight:600;text-decoration:none}
+.breadcrumb a:hover{color:var(--deep);text-decoration:underline}
+.breadcrumb [aria-current="page"]{color:var(--ink-soft);font-weight:400}
 /* interactive "where we serve" map */
 .serve-map{display:block;width:100%;max-width:740px;margin:1.4rem auto 0}
 .serve-map text{font-family:var(--ff-b);pointer-events:none}
