@@ -557,46 +557,10 @@
     "93552":{n:"Palmdale",s:"palmdale"},"93590":{n:"Palmdale",s:"palmdale"}
   };
   function norm(s){return s.toLowerCase().replace(/[^a-z0-9 ]/g,'').trim();}
-  function showAllChips(){
+  function filterChips(q){
+    var total=0;
     cols.forEach(function(col){
-      col.style.display='';
-      [].slice.call(col.querySelectorAll('.cqn-chips a,.cqn-chips span')).forEach(function(c){c.style.display='';});
-      if(col.tagName==='DETAILS') col.open=col.hasAttribute('data-default-open');
-    });
-    if(nores) nores.style.display='none';
-  }
-  function showZip(zip){
-    var hit=Z[zip];
-    var icon=hit?'<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#5B2E59" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>':'<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#8a6a5a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.4 2 2 0 0 1 3.6 1.2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 8.6a16 16 0 0 0 6.08 6.08l.96-.96a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>';
-    if(hit){
-      var btn=hit.s?'<a class="czr-btn" href="hospice-'+hit.s+'-ca">View Care Page &rarr;</a>':'<a class="czr-btn" href="tel:18059537273">Call Us</a>';
-      zipEl.innerHTML='<div class="czr-icon">'+icon+'</div><div class="czr-body"><div class="czr-label">ZIP Code '+zip+'</div><div class="czr-city">'+hit.n+'</div><div class="czr-sub">Eternal Life Hospice serves this community.</div></div>'+btn;
-      zipEl.className='cqn-zip-result cqn-zip-result--match';
-    } else {
-      zipEl.innerHTML='<div class="czr-icon">'+icon+'</div><div class="czr-body"><div class="czr-label">ZIP Code '+zip+'</div><div class="czr-city">Outside listed area</div><div class="czr-sub">We may still serve you &mdash; call and we&rsquo;ll confirm.</div></div><a class="czr-btn" href="tel:18059537273">Call 805.953.7273</a>';
-      zipEl.className='cqn-zip-result cqn-zip-result--miss';
-    }
-    zipEl.removeAttribute('hidden');
-    showAllChips();
-    if(status) status.textContent=hit?'ZIP '+zip+': '+hit.n+' is in our service area':'ZIP '+zip+' not in listed area \u2014 please call';
-  }
-  function clearZip(){
-    zipEl.setAttribute('hidden','');
-    zipEl.innerHTML='';
-    zipEl.className='cqn-zip-result';
-  }
-  var _zt;
-  inp.addEventListener('input',function(){
-    var v=inp.value.trim();
-    if(/^\d{5}$/.test(v)){
-      clearTimeout(_zt);
-      _zt=setTimeout(function(){showZip(v);},200);
-      return;
-    }
-    clearZip();
-    var q=norm(v), total=0;
-    cols.forEach(function(col){
-      var chips=[].slice.call(col.querySelectorAll('.cqn-chips a,.cqn-chips span')), shown=0;
+      var chips=[].slice.call(col.querySelectorAll('.cqn-chips a,.cqn-chips span')),shown=0;
       chips.forEach(function(c){
         var m=!q||norm(c.textContent).indexOf(q)>-1;
         c.style.display=m?'':'none'; if(m)shown++;
@@ -604,8 +568,31 @@
       col.style.display=shown?'':'none'; total+=shown;
       if(col.tagName==='DETAILS'){col.open=q?shown>0:col.hasAttribute('data-default-open');}
     });
-    if(nores) nores.style.display=total?'none':'block';
-    if(status) status.textContent=!q?'':(total?total+(total===1?' community':' communities')+' found':'No matching community found');
+    if(nores)nores.style.display=total?'none':'block';
+    return total;
+  }
+  if(zipEl)zipEl.setAttribute('hidden','');
+  var _zt;
+  inp.addEventListener('input',function(){
+    var v=inp.value.trim();
+    if(/^\d{5}$/.test(v)){
+      clearTimeout(_zt);
+      _zt=setTimeout(function(){
+        var hit=Z[v];
+        if(hit){
+          var total=filterChips(norm(hit.n));
+          if(status)status.textContent=hit.n+' (ZIP '+v+')';
+        } else {
+          filterChips('\x00');
+          if(nores)nores.style.display='block';
+          if(status)status.textContent='ZIP '+v+' not in listed area \u2014 please call 805.953.7273';
+        }
+      },200);
+      return;
+    }
+    var q=norm(v);
+    var total=filterChips(q);
+    if(status)status.textContent=!q?'':(total?total+(total===1?' community':' communities')+' found':'No matching community found');
   });
 })();
 </script>
