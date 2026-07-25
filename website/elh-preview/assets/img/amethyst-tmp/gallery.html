@@ -4,38 +4,72 @@
 <meta charset="utf-8">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-body{background:#1a0a1e;font-family:system-ui,sans-serif;padding:24px}
-h1{color:#c9a86c;font-size:18px;letter-spacing:.12em;text-transform:uppercase;margin-bottom:20px;text-align:center}
-.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
-.card{border-radius:10px;overflow:hidden;border:2px solid #3d1f4a}
-.card img{width:100%;height:220px;object-fit:cover;display:block}
-.label{background:#2a0e33;color:#e8d5f0;font-size:13px;padding:8px 12px;text-align:center;line-height:1.4}
-.letter{font-size:22px;font-weight:700;color:#c9a86c}
+body{background:#1a0a1e;font-family:system-ui,sans-serif;padding:32px 24px}
+h1{color:#c9a86c;font-size:15px;letter-spacing:.14em;text-transform:uppercase;margin-bottom:28px;text-align:center}
+.row{display:flex;flex-direction:column;gap:28px}
+.card{border-radius:12px;overflow:hidden;border:2px solid #5b2e59;display:flex;align-items:stretch}
+.card img{width:520px;min-width:520px;height:320px;object-fit:cover;display:block}
+.info{background:#2a0e33;flex:1;padding:24px 28px;display:flex;flex-direction:column;justify-content:center;gap:10px}
+.letter{font-size:48px;font-weight:800;color:#c9a86c;line-height:1}
+.name{color:#e8d5f0;font-size:20px;font-weight:600;margin-top:4px}
+.desc{color:#b09ec0;font-size:15px;line-height:1.6}
+.tag{display:inline-block;background:#5b2e59;color:#f0e4ff;font-size:12px;padding:3px 10px;border-radius:20px;margin-top:6px;align-self:flex-start}
 </style>
 </head>
 <body>
-<h1>Amethyst Candidates — Eternal Life Hospice</h1>
-<div class="grid">
+<h1>Amethyst Candidates — Choose One</h1>
+<div class="row">
+
   <div class="card">
     <img src="A_cathedral.jpg">
-    <div class="label"><span class="letter">A</span><br>Dark Purple Cathedral<br><small>Dramatic deep-purple geode interior</small></div>
+    <div class="info">
+      <div class="letter">A</div>
+      <div class="name">Dark Purple Cathedral</div>
+      <div class="desc">Two split-open cathedral geodes. Very deep, almost black-purple interior with tight crystal formations. Moody and dramatic.</div>
+      <span class="tag">Geode pair · very dark</span>
+    </div>
   </div>
+
   <div class="card">
     <img src="B_geode_SA.jpg">
-    <div class="label"><span class="letter">B</span><br>Amethyst Geode — South America<br><small>Rich violet cluster, museum quality</small></div>
+    <div class="info">
+      <div class="letter">B</div>
+      <div class="name">Amethyst Geode — South America</div>
+      <div class="desc">Shot from directly above the open geode. Incredibly dense violet crystals, museum-quality specimen. Rich, saturated color.</div>
+      <span class="tag">Top-down geode · ink-violet</span>
+    </div>
   </div>
+
   <div class="card">
     <img src="D_raw_1.jpg">
-    <div class="label"><span class="letter">D</span><br>Raw Amethyst Crystals — Set 1<br><small>Natural uncut points, warm violet</small></div>
+    <div class="info">
+      <div class="letter">D</div>
+      <div class="name">Raw Crystals — Set 1</div>
+      <div class="desc">Natural uncut amethyst cluster on white matrix. Warm violet tones with excellent clarity. Reads instantly as amethyst on any screen size.</div>
+      <span class="tag">Raw cluster · warm violet ★ recommended</span>
+    </div>
   </div>
+
   <div class="card">
     <img src="E_raw_2.jpg">
-    <div class="label"><span class="letter">E</span><br>Raw Amethyst Crystals — Set 2<br><small>Cluster with lighter lavender tones</small></div>
+    <div class="info">
+      <div class="letter">E</div>
+      <div class="name">Raw Crystals — Set 2</div>
+      <div class="desc">Two smaller clusters side by side. Lighter lavender-purple tones — more delicate and airy, softer overall palette.</div>
+      <span class="tag">Raw cluster · light lavender</span>
+    </div>
   </div>
+
   <div class="card">
     <img src="F_raw_3.jpg">
-    <div class="label"><span class="letter">F</span><br>Raw Amethyst Crystals — Set 3<br><small>Deep violet points, dramatic light</small></div>
+    <div class="info">
+      <div class="letter">F</div>
+      <div class="name">Raw Crystals — Set 3</div>
+      <div class="desc">Single bold cluster photographed close up with dramatic lighting. Deep violet points against lighter matrix. Strong, confident presence.</div>
+      <span class="tag">Raw cluster · deep violet ★ recommended</span>
+    </div>
   </div>
+
 </div>
 </body>
 </html>
