@@ -485,6 +485,35 @@ details.cqn-col:not([open])>summary.cqn-county{margin-bottom:0;padding-bottom:0;
 .share-native[hidden]{display:none}
 .share-toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%) translateY(12px);background:#3E1F3E;color:#F5F0EB;font-family:Arial,Helvetica,sans-serif;font-size:13px;letter-spacing:.03em;padding:10px 20px;border-radius:22px;box-shadow:0 8px 26px rgba(42,15,40,.35);opacity:0;pointer-events:none;transition:opacity .25s ease,transform .25s ease;z-index:9000}
 .share-toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+/* ---- City page body-list (ul stripped by * reset — restore indentation) ---- */
+.body-list{padding-left:1.4rem;margin-top:.6rem}
+.body-list li{color:var(--ink-soft);font-size:16px;line-height:1.7;margin-bottom:.35rem}
+.body-list li::marker{color:var(--gold)}
+
+/* ---- Mobile padding — safe gutters on all pages ---- */
+@media(max-width:480px){
+  /* Header */
+  #hdr{padding:0 1.1rem}
+  #hdr.nav-open nav{padding:1.2rem 1.1rem 1.8rem}
+  /* Main content wrapper */
+  .wrap{padding-left:1.1rem;padding-right:1.1rem}
+  .article.wrap{padding-left:1.1rem;padding-right:1.1rem}
+  /* Hero sections */
+  .hero{padding-left:1.1rem;padding-right:1.1rem}
+  /* Footer */
+  #site-footer{padding:2rem 1.1rem 1.6rem}
+  #site-footer .fc-addr span{white-space:normal}
+  /* CTA strip */
+  .cta{padding-left:1.1rem;padding-right:1.1rem}
+  /* Credentials strip label */
+  .creds{padding-left:1.1rem;padding-right:1.1rem}
+  /* FAQ summary text */
+  .lfaq summary{font-size:16px;padding:14px 0}
+  /* Hero buttons — stack on very small screens */
+  .hero-btns{flex-direction:column;align-items:stretch}
+  .hero-btns .btn-gold,.hero-btns .btn-ghost{text-align:center;padding:13px 16px}
+}
+
 /* ---- Print / PDF: clean handouts sitewide (page-specific @media print may override) ---- */
 @media print{
   @page{margin:14mm}
