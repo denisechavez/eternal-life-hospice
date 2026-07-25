@@ -199,7 +199,8 @@
 <section class="sec wrap county-quicknav">
   <div class="cqn-head"><div class="eyebrow">Find Your Community</div><h2>Hospice care in your city</h2><p>Every community we serve across Ventura and Los Angeles County &mdash; our care comes to you wherever you call home. If you don&rsquo;t see your town listed, please call; chances are<br>we&rsquo;re already nearby.</p>
     <label for="cqnSearch" class="cqn-sr">Search for your city or town</label>
-    <div class="cqn-search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.3-4.3"/></svg><input type="text" id="cqnSearch" placeholder="Search for your city or town&hellip;" autocomplete="off"></div>
+    <div class="cqn-search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.3-4.3"/></svg><input type="text" id="cqnSearch" placeholder="City name or ZIP code&hellip;" autocomplete="off" inputmode="text"></div>
+    <div id="cqnZipResult" hidden aria-live="polite"></div>
     <span id="cqnStatus" class="cqn-sr" aria-live="polite"></span>
     <p class="cqn-legend">Towns marked with <b>&#8599;</b> have a dedicated care guide &mdash; but <b>every</b> community below is<br>served exactly the same.</p>
   </div>
@@ -397,9 +398,203 @@
   var cols=[].slice.call(document.querySelectorAll('.county-quicknav .cqn-col'));
   var nores=document.getElementById('cqnNoResult');
   var status=document.getElementById('cqnStatus');
+  var zipEl=document.getElementById('cqnZipResult');
+  /* ZIP → community map — Ventura & Los Angeles County */
+  var Z={
+    "91320":{n:"Newbury Park",s:"newbury-park"},"91360":{n:"Thousand Oaks",s:"thousand-oaks"},
+    "91361":{n:"Westlake Village",s:"westlake-village"},"91362":{n:"Thousand Oaks",s:"thousand-oaks"},
+    "91377":{n:"Oak Park",s:"oak-park"},
+    "93001":{n:"Ventura",s:"ventura"},"93003":{n:"Ventura",s:"ventura"},
+    "93004":{n:"Saticoy",s:"saticoy"},"93007":{n:"Ventura",s:"ventura"},
+    "93010":{n:"Camarillo",s:"camarillo"},"93012":{n:"Santa Rosa Valley",s:"santa-rosa-valley"},
+    "93015":{n:"Fillmore",s:"fillmore"},"93016":{n:"Fillmore",s:"fillmore"},
+    "93021":{n:"Moorpark",s:"moorpark"},"93022":{n:"Oak View",s:"oak-view"},
+    "93023":{n:"Ojai",s:"ojai"},"93024":{n:"Ojai",s:"ojai"},
+    "93030":{n:"Oxnard",s:"oxnard"},"93031":{n:"Oxnard",s:"oxnard"},
+    "93032":{n:"Oxnard",s:"oxnard"},"93033":{n:"El Rio",s:"el-rio"},
+    "93034":{n:"Oxnard",s:"oxnard"},"93035":{n:"Port Hueneme",s:"port-hueneme"},
+    "93036":{n:"Oxnard",s:"oxnard"},"93040":{n:"Piru",s:"piru"},
+    "93041":{n:"Port Hueneme",s:"port-hueneme"},"93042":{n:"Point Mugu",s:"point-mugu"},
+    "93043":{n:"Port Hueneme",s:"port-hueneme"},"93044":{n:"Port Hueneme",s:"port-hueneme"},
+    "93060":{n:"Santa Paula",s:"santa-paula"},"93061":{n:"Santa Paula",s:"santa-paula"},
+    "93063":{n:"Simi Valley",s:"simi-valley"},"93065":{n:"Simi Valley",s:"simi-valley"},
+    "93066":{n:"Somis",s:"somis"},
+    "90026":{n:"Silver Lake",s:"silver-lake"},
+    "90028":{n:"Hollywood",s:"hollywood"},"90038":{n:"Hollywood",s:"hollywood"},
+    "90041":{n:"Eagle Rock",s:"eagle-rock"},"90042":{n:"Highland Park",s:"highland-park"},
+    "90046":{n:"West Hollywood",s:"west-hollywood"},"90048":{n:"West Hollywood",s:"west-hollywood"},
+    "90069":{n:"West Hollywood",s:"west-hollywood"},
+    "90201":{n:"Bell",s:"bell"},"90202":{n:"Bell Gardens",s:"bell-gardens"},
+    "90220":{n:"Compton",s:"compton"},"90221":{n:"Compton",s:"compton"},
+    "90222":{n:"Compton",s:"compton"},"90223":{n:"Compton",s:"compton"},
+    "90224":{n:"Compton",s:"compton"},
+    "90230":{n:"Culver City",s:"culver-city"},"90232":{n:"Culver City",s:"culver-city"},
+    "90233":{n:"Culver City",s:"culver-city"},
+    "90240":{n:"Downey",s:"downey"},"90241":{n:"Downey",s:"downey"},"90242":{n:"Downey",s:"downey"},
+    "90245":{n:"El Segundo",s:"el-segundo"},
+    "90247":{n:"Gardena",s:"gardena"},"90248":{n:"Gardena",s:"gardena"},"90249":{n:"Gardena",s:"gardena"},
+    "90250":{n:"Hawthorne",s:"hawthorne"},"90254":{n:"Hermosa Beach",s:"hermosa-beach"},
+    "90255":{n:"Huntington Park",s:"huntington-park"},"90260":{n:"Lawndale",s:"lawndale"},
+    "90262":{n:"Lynwood",s:"lynwood"},
+    "90263":{n:"Malibu",s:"malibu"},"90265":{n:"Malibu",s:"malibu"},
+    "90266":{n:"Manhattan Beach",s:"manhattan-beach"},"90267":{n:"Manhattan Beach",s:"manhattan-beach"},
+    "90270":{n:"Maywood",s:"maywood"},"90272":{n:"Pacific Palisades",s:"pacific-palisades"},
+    "90274":{n:"Rancho Palos Verdes",s:"rancho-palos-verdes"},
+    "90275":{n:"Palos Verdes Peninsula",s:"palos-verdes-peninsula"},
+    "90277":{n:"Redondo Beach",s:"redondo-beach"},"90278":{n:"Redondo Beach",s:"redondo-beach"},
+    "90280":{n:"South Gate",s:"south-gate"},
+    "90301":{n:"Inglewood",s:"inglewood"},"90302":{n:"Inglewood",s:"inglewood"},
+    "90303":{n:"Inglewood",s:"inglewood"},"90304":{n:"Inglewood",s:"inglewood"},
+    "90305":{n:"Inglewood",s:"inglewood"},
+    "90401":{n:"Santa Monica",s:"santa-monica"},"90402":{n:"Santa Monica",s:"santa-monica"},
+    "90403":{n:"Santa Monica",s:"santa-monica"},"90404":{n:"Santa Monica",s:"santa-monica"},
+    "90405":{n:"Santa Monica",s:"santa-monica"},
+    "90501":{n:"Torrance",s:"torrance"},"90502":{n:"Torrance",s:"torrance"},
+    "90503":{n:"Torrance",s:"torrance"},"90504":{n:"Torrance",s:"torrance"},
+    "90505":{n:"Torrance",s:"torrance"},
+    "90601":{n:"Whittier",s:"whittier"},"90602":{n:"Whittier",s:"whittier"},
+    "90603":{n:"Whittier",s:"whittier"},"90604":{n:"Whittier",s:"whittier"},
+    "90605":{n:"Whittier",s:"whittier"},"90606":{n:"Whittier",s:"whittier"},
+    "90638":{n:"La Mirada",s:"la-mirada"},"90640":{n:"Montebello",s:"montebello"},
+    "90650":{n:"Norwalk",s:"norwalk"},"90660":{n:"Pico Rivera",s:"pico-rivera"},
+    "90701":{n:"Artesia",s:"artesia"},"90703":{n:"Cerritos",s:"cerritos"},
+    "90704":{n:"Avalon",s:"avalon"},"90706":{n:"Bellflower",s:"bellflower"},
+    "90710":{n:"Harbor City",s:"harbor-city"},
+    "90712":{n:"Lakewood",s:"lakewood"},"90713":{n:"Lakewood",s:"lakewood"},
+    "90714":{n:"Lakewood",s:"lakewood"},"90715":{n:"Lakewood",s:"lakewood"},
+    "90716":{n:"Hawaiian Gardens",s:"hawaiian-gardens"},"90717":{n:"Lomita",s:"lomita"},
+    "90723":{n:"Paramount",s:"paramount"},
+    "90731":{n:"San Pedro",s:"san-pedro"},"90732":{n:"San Pedro",s:"san-pedro"},
+    "90745":{n:"Carson",s:"carson"},"90746":{n:"Carson",s:"carson"},"90747":{n:"Carson",s:"carson"},
+    "90755":{n:"Signal Hill",s:"signal-hill"},
+    "90801":{n:"Long Beach",s:"long-beach"},"90802":{n:"Long Beach",s:"long-beach"},
+    "90803":{n:"Long Beach",s:"long-beach"},"90804":{n:"Long Beach",s:"long-beach"},
+    "90805":{n:"Long Beach",s:"long-beach"},"90806":{n:"Long Beach",s:"long-beach"},
+    "90807":{n:"Long Beach",s:"long-beach"},"90808":{n:"Long Beach",s:"long-beach"},
+    "90810":{n:"Long Beach",s:"long-beach"},"90813":{n:"Long Beach",s:"long-beach"},
+    "90814":{n:"Long Beach",s:"long-beach"},"90815":{n:"Long Beach",s:"long-beach"},
+    "91001":{n:"Altadena",s:"altadena"},
+    "91006":{n:"Arcadia",s:"arcadia"},"91007":{n:"Arcadia",s:"arcadia"},
+    "91010":{n:"Duarte",s:"duarte"},
+    "91011":{n:"La Ca\u00f1ada Flintridge",s:"la-canada-flintridge"},
+    "91016":{n:"Monrovia",s:"monrovia"},"91017":{n:"Monrovia",s:"monrovia"},
+    "91020":{n:"Montrose",s:"montrose"},"91024":{n:"Sierra Madre",s:"sierra-madre"},
+    "91030":{n:"South Pasadena",s:"south-pasadena"},
+    "91040":{n:"Sunland",s:"sunland"},"91042":{n:"Tujunga",s:"tujunga"},"91043":{n:"Tujunga",s:"tujunga"},
+    "91101":{n:"Pasadena",s:"pasadena"},"91103":{n:"Pasadena",s:"pasadena"},
+    "91104":{n:"Pasadena",s:"pasadena"},"91105":{n:"Pasadena",s:"pasadena"},
+    "91106":{n:"Pasadena",s:"pasadena"},"91107":{n:"Pasadena",s:"pasadena"},
+    "91108":{n:"San Marino",s:"san-marino"},
+    "91201":{n:"Glendale",s:"glendale"},"91202":{n:"Glendale",s:"glendale"},
+    "91203":{n:"Glendale",s:"glendale"},"91204":{n:"Glendale",s:"glendale"},
+    "91205":{n:"Glendale",s:"glendale"},"91206":{n:"Glendale",s:"glendale"},
+    "91207":{n:"Glendale",s:"glendale"},"91208":{n:"Glendale",s:"glendale"},
+    "91214":{n:"La Crescenta",s:"la-crescenta"},
+    "91301":{n:"Agoura Hills",s:"agoura-hills"},"91302":{n:"Calabasas",s:"calabasas"},
+    "91303":{n:"Canoga Park",s:"canoga-park"},
+    "91304":{n:"West Hills",s:"west-hills"},"91307":{n:"West Hills",s:"west-hills"},
+    "91308":{n:"West Hills",s:"west-hills"},"91311":{n:"Chatsworth",s:"chatsworth"},
+    "91316":{n:"Encino",s:"encino"},"91436":{n:"Encino",s:"encino"},
+    "91321":{n:"Newhall",s:"newhall"},"91322":{n:"Newhall",s:"newhall"},
+    "91324":{n:"Northridge",s:"northridge"},"91325":{n:"Northridge",s:"northridge"},
+    "91326":{n:"Northridge",s:"northridge"},
+    "91331":{n:"Arleta",s:"arleta"},
+    "91335":{n:"Reseda",s:"reseda"},
+    "91340":{n:"San Fernando",s:"san-fernando"},"91341":{n:"San Fernando",s:"san-fernando"},
+    "91342":{n:"Sylmar",s:"sylmar"},"91343":{n:"North Hills",s:"north-hills"},
+    "91344":{n:"Granada Hills",s:"granada-hills"},"91345":{n:"Mission Hills",s:"mission-hills"},
+    "91350":{n:"Santa Clarita",s:"santa-clarita"},"91351":{n:"Canyon Country",s:"canyon-country"},
+    "91352":{n:"Sun Valley",s:"sun-valley"},
+    "91354":{n:"Valencia",s:"valencia"},"91355":{n:"Valencia",s:"valencia"},
+    "91356":{n:"Tarzana",s:"tarzana"},"91357":{n:"Tarzana",s:"tarzana"},
+    "91364":{n:"Woodland Hills",s:"woodland-hills"},"91365":{n:"Woodland Hills",s:"woodland-hills"},
+    "91367":{n:"Woodland Hills",s:"woodland-hills"},
+    "91381":{n:"Stevenson Ranch",s:"stevenson-ranch"},
+    "91384":{n:"Castaic",s:"castaic"},"91387":{n:"Canyon Country",s:"canyon-country"},
+    "91390":{n:"Santa Clarita",s:"santa-clarita"},
+    "91401":{n:"Van Nuys",s:"van-nuys"},"91402":{n:"Panorama City",s:"panorama-city"},
+    "91403":{n:"Sherman Oaks",s:"sherman-oaks"},
+    "91405":{n:"Van Nuys",s:"van-nuys"},"91406":{n:"Van Nuys",s:"van-nuys"},
+    "91411":{n:"Van Nuys",s:"van-nuys"},
+    "91413":{n:"Sherman Oaks",s:"sherman-oaks"},"91423":{n:"Sherman Oaks",s:"sherman-oaks"},
+    "91501":{n:"Burbank",s:"burbank"},"91502":{n:"Burbank",s:"burbank"},
+    "91503":{n:"Burbank",s:"burbank"},"91504":{n:"Burbank",s:"burbank"},
+    "91505":{n:"Burbank",s:"burbank"},"91506":{n:"Burbank",s:"burbank"},
+    "91601":{n:"North Hollywood",s:"north-hollywood"},"91602":{n:"Toluca Lake",s:"toluca-lake"},
+    "91604":{n:"Studio City",s:"studio-city"},
+    "91605":{n:"North Hollywood",s:"north-hollywood"},"91606":{n:"North Hollywood",s:"north-hollywood"},
+    "91607":{n:"Valley Village",s:"valley-village"},
+    "91702":{n:"Azusa",s:"azusa"},"91706":{n:"Baldwin Park",s:"baldwin-park"},
+    "91711":{n:"Claremont",s:"claremont"},
+    "91722":{n:"Covina",s:"covina"},"91723":{n:"Covina",s:"covina"},"91724":{n:"Covina",s:"covina"},
+    "91731":{n:"El Monte",s:"el-monte"},"91732":{n:"El Monte",s:"el-monte"},
+    "91733":{n:"South El Monte",s:"south-el-monte"},
+    "91740":{n:"Glendora",s:"glendora"},"91741":{n:"Glendora",s:"glendora"},
+    "91744":{n:"La Puente",s:"la-puente"},"91745":{n:"Hacienda Heights",s:"hacienda-heights"},
+    "91746":{n:"La Puente",s:"la-puente"},"91747":{n:"La Puente",s:"la-puente"},
+    "91748":{n:"Rowland Heights",s:"rowland-heights"},
+    "91750":{n:"La Verne",s:"la-verne"},
+    "91754":{n:"Monterey Park",s:"monterey-park"},"91755":{n:"Monterey Park",s:"monterey-park"},
+    "91756":{n:"Monterey Park",s:"monterey-park"},
+    "91765":{n:"Diamond Bar",s:"diamond-bar"},
+    "91766":{n:"Pomona",s:"pomona"},"91767":{n:"Pomona",s:"pomona"},"91768":{n:"Pomona",s:"pomona"},
+    "91770":{n:"Rosemead",s:"rosemead"},"91771":{n:"Rosemead",s:"rosemead"},"91772":{n:"Rosemead",s:"rosemead"},
+    "91773":{n:"San Dimas",s:"san-dimas"},
+    "91775":{n:"San Gabriel",s:"san-gabriel"},"91776":{n:"San Gabriel",s:"san-gabriel"},
+    "91778":{n:"San Gabriel",s:"san-gabriel"},
+    "91780":{n:"Temple City",s:"temple-city"},
+    "91788":{n:"Walnut",s:"walnut"},"91789":{n:"Walnut",s:"walnut"},
+    "91790":{n:"West Covina",s:"west-covina"},"91791":{n:"West Covina",s:"west-covina"},
+    "91792":{n:"West Covina",s:"west-covina"},"91793":{n:"West Covina",s:"west-covina"},
+    "91801":{n:"Alhambra",s:"alhambra"},"91802":{n:"Alhambra",s:"alhambra"},
+    "91803":{n:"Alhambra",s:"alhambra"},
+    "93510":{n:"Acton",s:"acton"},
+    "93532":{n:"Lake Hughes",s:"lake-hughes"},
+    "93534":{n:"Lancaster",s:"lancaster"},"93535":{n:"Lancaster",s:"lancaster"},
+    "93536":{n:"Lancaster",s:"lancaster"},"93539":{n:"Lancaster",s:"lancaster"},
+    "93543":{n:"Littlerock",s:"littlerock"},"93544":{n:"Llano",s:"llano"},
+    "93550":{n:"Palmdale",s:"palmdale"},"93551":{n:"Palmdale",s:"palmdale"},
+    "93552":{n:"Palmdale",s:"palmdale"},"93590":{n:"Palmdale",s:"palmdale"}
+  };
   function norm(s){return s.toLowerCase().replace(/[^a-z0-9 ]/g,'').trim();}
+  function showAllChips(){
+    cols.forEach(function(col){
+      col.style.display='';
+      [].slice.call(col.querySelectorAll('.cqn-chips a,.cqn-chips span')).forEach(function(c){c.style.display='';});
+      if(col.tagName==='DETAILS') col.open=col.hasAttribute('data-default-open');
+    });
+    if(nores) nores.style.display='none';
+  }
+  function showZip(zip){
+    var hit=Z[zip];
+    var icon=hit?'<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#5B2E59" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>':'<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#8a6a5a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.4 2 2 0 0 1 3.6 1.2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 8.6a16 16 0 0 0 6.08 6.08l.96-.96a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>';
+    if(hit){
+      var btn=hit.s?'<a class="czr-btn" href="hospice-'+hit.s+'-ca">View Care Page &rarr;</a>':'<a class="czr-btn" href="tel:18059537273">Call Us</a>';
+      zipEl.innerHTML='<div class="czr-icon">'+icon+'</div><div class="czr-body"><div class="czr-label">ZIP Code '+zip+'</div><div class="czr-city">'+hit.n+'</div><div class="czr-sub">Eternal Life Hospice serves this community.</div></div>'+btn;
+      zipEl.className='cqn-zip-result cqn-zip-result--match';
+    } else {
+      zipEl.innerHTML='<div class="czr-icon">'+icon+'</div><div class="czr-body"><div class="czr-label">ZIP Code '+zip+'</div><div class="czr-city">Outside listed area</div><div class="czr-sub">We may still serve you &mdash; call and we&rsquo;ll confirm.</div></div><a class="czr-btn" href="tel:18059537273">Call 805.953.7273</a>';
+      zipEl.className='cqn-zip-result cqn-zip-result--miss';
+    }
+    zipEl.removeAttribute('hidden');
+    showAllChips();
+    if(status) status.textContent=hit?'ZIP '+zip+': '+hit.n+' is in our service area':'ZIP '+zip+' not in listed area \u2014 please call';
+  }
+  function clearZip(){
+    zipEl.setAttribute('hidden','');
+    zipEl.innerHTML='';
+    zipEl.className='cqn-zip-result';
+  }
+  var _zt;
   inp.addEventListener('input',function(){
-    var q=norm(inp.value), total=0;
+    var v=inp.value.trim();
+    if(/^\d{5}$/.test(v)){
+      clearTimeout(_zt);
+      _zt=setTimeout(function(){showZip(v);},200);
+      return;
+    }
+    clearZip();
+    var q=norm(v), total=0;
     cols.forEach(function(col){
       var chips=[].slice.call(col.querySelectorAll('.cqn-chips a,.cqn-chips span')), shown=0;
       chips.forEach(function(c){
@@ -407,10 +602,10 @@
         c.style.display=m?'':'none'; if(m)shown++;
       });
       col.style.display=shown?'':'none'; total+=shown;
-      if(col.tagName==='DETAILS'){col.open = q ? shown>0 : col.hasAttribute('data-default-open');}
+      if(col.tagName==='DETAILS'){col.open=q?shown>0:col.hasAttribute('data-default-open');}
     });
-    if(nores)nores.style.display=total?'none':'block';
-    if(status)status.textContent=!q?'':(total?total+(total===1?' community':' communities')+' found':'No matching community found');
+    if(nores) nores.style.display=total?'none':'block';
+    if(status) status.textContent=!q?'':(total?total+(total===1?' community':' communities')+' found':'No matching community found');
   });
 })();
 </script>

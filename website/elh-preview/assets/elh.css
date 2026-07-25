@@ -433,6 +433,19 @@ details.cqn-col:not([open])>summary.cqn-county{margin-bottom:0;padding-bottom:0;
 .hero--city .hero-btns{justify-content:center;margin-top:1.7rem}
 .hero--city .hero-btns .btn-gold,.hero--city .hero-btns .btn-ghost{box-shadow:0 10px 26px rgba(0,0,0,.3)}
 .cqn-chips a:focus-visible,.cqn-county:focus-visible,.dcard:focus-visible,.hero--city .hero-btns a:focus-visible{outline:2px solid var(--gold);outline-offset:3px;border-radius:8px}
+/* ZIP code result card */
+.cqn-zip-result{display:flex;align-items:center;gap:1rem;border-radius:12px;padding:1rem 1.3rem;margin:.6rem 0 .4rem;font-size:15px}
+.cqn-zip-result[hidden]{display:none}
+.cqn-zip-result--match{background:rgba(91,46,89,.07);border:1.5px solid rgba(91,46,89,.22)}
+.cqn-zip-result--miss{background:rgba(245,240,235,.9);border:1.5px solid rgba(180,160,140,.3)}
+.czr-icon{font-size:20px;flex:none;line-height:1}
+.czr-body{flex:1;min-width:0}
+.czr-label{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--ink-soft);margin-bottom:.2rem}
+.czr-city{font-family:var(--ff-d);font-size:21px;font-weight:400;color:var(--deep);line-height:1.1;margin-bottom:.25rem}
+.czr-sub{color:var(--ink-soft);font-size:13px}
+.czr-btn{display:inline-block;padding:.5rem 1.1rem;background:var(--plum);color:#fff!important;border-radius:999px;font-size:13px;font-weight:600;text-decoration:none!important;white-space:nowrap;flex:none;transition:background .18s}
+.czr-btn:hover{background:var(--deep)}
+@media(max-width:520px){.cqn-zip-result{flex-wrap:wrap}.czr-btn{width:100%;text-align:center;margin-top:.4rem}}
 
 /* ===== JOURNAL / BLOG ===== */
 .blog-byline{font-size:14px;color:var(--ink-soft);margin:-.2rem 0 1.5rem;padding-bottom:1.2rem;border-bottom:1px solid rgba(91,46,89,.12)}
