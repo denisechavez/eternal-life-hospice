@@ -909,20 +909,21 @@ p,li,blockquote{text-wrap:pretty}
 .mod-tag{position:absolute;top:.75rem;right:.75rem;z-index:3;display:inline-flex;align-items:center;gap:.3em;background:linear-gradient(180deg,#D8C08C,#C4A86F);color:var(--deep);font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:.32rem .68rem;border-radius:999px;box-shadow:0 4px 12px rgba(60,28,59,.3)}
 .mod-card.feat .mod-badge{background:linear-gradient(180deg,#D8C08C,#C4A86F);color:var(--deep)}
 /* ===== Google Reviews scrolling ticker ===== */
-.rv-strip{background:var(--cream);overflow:hidden;position:relative;border-top:1px solid var(--cream-dark);border-bottom:1px solid var(--cream-dark)}
-.rv-strip::before,.rv-strip::after{content:'';position:absolute;top:0;bottom:0;width:80px;z-index:4;pointer-events:none}
-.rv-strip::before{left:0;background:linear-gradient(to right,var(--cream),transparent)}
-.rv-strip::after{right:0;background:linear-gradient(to left,var(--cream),transparent)}
-.rv-reel{display:flex;align-items:center;gap:0;animation:rvscroll 90s linear infinite;width:max-content;padding:.85rem 0;white-space:nowrap}
+.rv-strip{display:flex;align-items:stretch;background:var(--cream);border-top:1px solid var(--cream-dark);border-bottom:1px solid var(--cream-dark)}
+.rv-badge{display:inline-flex;align-items:center;gap:.45rem;flex-shrink:0;padding:.75rem 1.1rem .75rem 1.3rem;border-right:1px solid var(--cream-dark);text-decoration:none;background:var(--cream);z-index:5;white-space:nowrap}
+.rv-badge:hover{background:#f5f0e8}
+.rv-reel-stars{color:#F5A623;font-size:.85rem;letter-spacing:.06em}
+.rv-reel-score{font-weight:700;color:var(--deep);font-size:.85rem}
+.rv-reel-label{color:var(--ink-soft);font-size:.78rem}
+.rv-scroll-wrap{flex:1;overflow:hidden;position:relative}
+.rv-scroll-wrap::after{content:'';position:absolute;top:0;right:0;bottom:0;width:60px;background:linear-gradient(to left,var(--cream),transparent);pointer-events:none;z-index:4}
+.rv-reel{display:flex;align-items:center;gap:0;animation:rvscroll 70s linear infinite;width:max-content;padding:.8rem 0;white-space:nowrap}
 .rv-reel:hover{animation-play-state:paused}
-.rv-anchor{display:inline-flex;align-items:center;gap:.38rem;text-decoration:none;padding:0 1.2rem;flex-shrink:0}
-.rv-reel-stars{color:#F5A623;font-size:.82rem;letter-spacing:.06em}
-.rv-reel-score{font-weight:700;color:var(--deep);font-size:.82rem}
-.rv-reel-label{color:var(--ink-soft);font-size:.78rem;padding-left:.15rem}
 .rv-sep{color:var(--gold);font-size:.5rem;flex-shrink:0;padding:0 1rem;opacity:.7}
-.rv-item{font-size:.8rem;color:var(--ink-soft);padding:0 .2rem}
+.rv-item{font-size:.8rem;color:var(--ink-soft);padding:0 .2rem;white-space:nowrap}
 .rv-item em{font-style:normal;font-weight:600;color:var(--plum);padding-left:.3rem}
 @keyframes rvscroll{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+@media(max-width:480px){.rv-badge{padding:.65rem .8rem}.rv-reel-label{display:none}}
 </style>
 <style id="elh-embedded-fonts">
 @font-face{font-family:"Fraunces";font-style:normal;font-weight:100 900;font-display:swap;src:url(assets/fonts/inline-9a18143814.woff2) format("woff2")}
@@ -1246,8 +1247,9 @@ p,li,blockquote{text-wrap:pretty}
 </section>
 <!-- GOOGLE REVIEWS TICKER -->
 <div class="rv-strip" id="reviews" aria-label="Google Reviews — 5 stars">
-  <div class="rv-reel">
-    <a class="rv-anchor" href="https://maps.google.com/?cid=9771388271577679785" target="_blank" rel="noopener" aria-label="5.0 stars — 11 Google reviews"><svg width="22" height="22" viewBox="0 0 48 48" aria-hidden="true"><path fill="#4285F4" d="M45.12 24.5c0-1.56-.14-3.06-.4-4.5H24v8.51h11.84c-.51 2.75-2.06 5.08-4.39 6.64v5.52h7.11c4.16-3.83 6.56-9.47 6.56-16.17z"/><path fill="#34A853" d="M24 46c5.94 0 10.92-1.97 14.56-5.33l-7.11-5.52c-1.97 1.32-4.49 2.1-7.45 2.1-5.73 0-10.58-3.87-12.31-9.07H4.34v5.7C7.96 41.07 15.4 46 24 46z"/><path fill="#FBBC05" d="M11.69 28.18C11.25 26.86 11 25.45 11 24s.25-2.86.69-4.18v-5.7H4.34A21.991 21.991 0 0 0 2 24c0 3.55.85 6.91 2.34 9.88l7.35-5.7z"/><path fill="#EA4335" d="M24 10.75c3.23 0 6.13 1.11 8.41 3.29l6.31-6.31C34.91 4.18 29.93 2 24 2 15.4 2 7.96 6.93 4.34 14.12l7.35 5.7c1.73-5.2 6.58-9.07 12.31-9.07z"/></svg><span class="rv-reel-stars">★★★★★</span><span class="rv-reel-score">5.0</span><span class="rv-reel-label">· 11 Google reviews</span></a>
+  <a class="rv-badge" href="https://maps.google.com/?cid=9771388271577679785" target="_blank" rel="noopener" aria-label="5.0 stars — 11 Google reviews"><svg width="22" height="22" viewBox="0 0 48 48" aria-hidden="true"><path fill="#4285F4" d="M45.12 24.5c0-1.56-.14-3.06-.4-4.5H24v8.51h11.84c-.51 2.75-2.06 5.08-4.39 6.64v5.52h7.11c4.16-3.83 6.56-9.47 6.56-16.17z"/><path fill="#34A853" d="M24 46c5.94 0 10.92-1.97 14.56-5.33l-7.11-5.52c-1.97 1.32-4.49 2.1-7.45 2.1-5.73 0-10.58-3.87-12.31-9.07H4.34v5.7C7.96 41.07 15.4 46 24 46z"/><path fill="#FBBC05" d="M11.69 28.18C11.25 26.86 11 25.45 11 24s.25-2.86.69-4.18v-5.7H4.34A21.991 21.991 0 0 0 2 24c0 3.55.85 6.91 2.34 9.88l7.35-5.7z"/><path fill="#EA4335" d="M24 10.75c3.23 0 6.13 1.11 8.41 3.29l6.31-6.31C34.91 4.18 29.93 2 24 2 15.4 2 7.96 6.93 4.34 14.12l7.35 5.7c1.73-5.2 6.58-9.07 12.31-9.07z"/></svg><span class="rv-reel-stars">★★★★★</span><span class="rv-reel-score">5.0</span><span class="rv-reel-label">&nbsp;· 11 reviews</span></a>
+  <div class="rv-scroll-wrap">
+    <div class="rv-reel">
     <span class="rv-sep">◆</span>
     <span class="rv-item">"Our family is eternally grateful for the compassionate, dignified care they provided."<em>— David H.</em></span>
     <span class="rv-sep">◆</span>
@@ -1259,8 +1261,6 @@ p,li,blockquote{text-wrap:pretty}
     <span class="rv-sep">◆</span>
     <span class="rv-item">"A hospice that genuinely prioritizes patient comfort, dignity, and quality of care."<em>— DME Partner</em></span>
     <span class="rv-sep">◆</span>
-    <!-- duplicate set for seamless loop -->
-    <a class="rv-anchor" href="https://maps.google.com/?cid=9771388271577679785" target="_blank" rel="noopener" aria-label="5.0 stars — 11 Google reviews"><svg width="22" height="22" viewBox="0 0 48 48" aria-hidden="true"><path fill="#4285F4" d="M45.12 24.5c0-1.56-.14-3.06-.4-4.5H24v8.51h11.84c-.51 2.75-2.06 5.08-4.39 6.64v5.52h7.11c4.16-3.83 6.56-9.47 6.56-16.17z"/><path fill="#34A853" d="M24 46c5.94 0 10.92-1.97 14.56-5.33l-7.11-5.52c-1.97 1.32-4.49 2.1-7.45 2.1-5.73 0-10.58-3.87-12.31-9.07H4.34v5.7C7.96 41.07 15.4 46 24 46z"/><path fill="#FBBC05" d="M11.69 28.18C11.25 26.86 11 25.45 11 24s.25-2.86.69-4.18v-5.7H4.34A21.991 21.991 0 0 0 2 24c0 3.55.85 6.91 2.34 9.88l7.35-5.7z"/><path fill="#EA4335" d="M24 10.75c3.23 0 6.13 1.11 8.41 3.29l6.31-6.31C34.91 4.18 29.93 2 24 2 15.4 2 7.96 6.93 4.34 14.12l7.35 5.7c1.73-5.2 6.58-9.07 12.31-9.07z"/></svg><span class="rv-reel-stars">★★★★★</span><span class="rv-reel-score">5.0</span><span class="rv-reel-label">· 11 Google reviews</span></a>
     <span class="rv-sep">◆</span>
     <span class="rv-item">"Our family is eternally grateful for the compassionate, dignified care they provided."<em>— David H.</em></span>
     <span class="rv-sep">◆</span>
@@ -1272,6 +1272,7 @@ p,li,blockquote{text-wrap:pretty}
     <span class="rv-sep">◆</span>
     <span class="rv-item">"A hospice that genuinely prioritizes patient comfort, dignity, and quality of care."<em>— DME Partner</em></span>
     <span class="rv-sep">◆</span>
+    </div>
   </div>
 </div>
 <!-- GUIDED WALKTHROUGH -->
