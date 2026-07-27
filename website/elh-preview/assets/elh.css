@@ -178,6 +178,22 @@ footer a:hover{color:var(--gold)}
 /* city -> county uplink */
 .county-link{display:inline-block;margin-top:1.1rem;font-size:15px;font-weight:600;color:var(--plum)}
 .county-link:hover{color:var(--deep)}
+/* ===== Google Reviews scrolling ticker ===== */
+.rv-strip{background:var(--cream);overflow:hidden;position:relative;border-top:1px solid var(--cream-dark);border-bottom:1px solid var(--cream-dark)}
+.rv-strip::before,.rv-strip::after{content:'';position:absolute;top:0;bottom:0;width:80px;z-index:4;pointer-events:none}
+.rv-strip::before{left:0;background:linear-gradient(to right,var(--cream),transparent)}
+.rv-strip::after{right:0;background:linear-gradient(to left,var(--cream),transparent)}
+.rv-reel{display:flex;align-items:center;gap:0;animation:rvscroll 90s linear infinite;width:max-content;padding:.85rem 0;white-space:nowrap}
+.rv-reel:hover{animation-play-state:paused}
+.rv-anchor{display:inline-flex;align-items:center;gap:.38rem;text-decoration:none;padding:0 1.2rem;flex-shrink:0;white-space:nowrap}
+.rv-reel-stars{color:#F5A623;font-size:.82rem;letter-spacing:.06em}
+.rv-reel-score{font-weight:700;color:var(--deep);font-size:.82rem}
+.rv-reel-label{color:var(--ink-soft);font-size:.78rem;padding-left:.15rem}
+.rv-sep{color:var(--gold);font-size:.5rem;flex-shrink:0;padding:0 1rem;opacity:.7}
+.rv-item{font-size:.8rem;color:var(--ink-soft);padding:0 .2rem;white-space:nowrap}
+.rv-item em{font-style:normal;font-weight:600;color:var(--plum);padding-left:.3rem}
+@keyframes rvscroll{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+
 /* city page breadcrumb nav */
 .breadcrumb{max-width:1000px;margin:0 auto;padding:.65rem 1.6rem;border-bottom:1px solid var(--cream-dark)}
 .breadcrumb ol{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;align-items:center;gap:.15rem .2rem;font-size:13px;color:var(--ink-soft)}
