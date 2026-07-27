@@ -55,23 +55,24 @@
     /* --- CSS ------------------------------------------------------------ */
     var css = document.createElement('style');
     css.textContent =
-      /* Banner */
-      '#elh-cc{position:fixed;bottom:0;left:0;right:0;z-index:99999;background:#1a1225;' +
-      'color:rgba(245,240,235,.88);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;' +
-      'font-size:14px;line-height:1.5;box-shadow:0 -2px 22px rgba(0,0,0,.38);' +
-      'transform:translateY(100%);transition:transform .34s cubic-bezier(.4,0,.2,1)}' +
-      '#elh-cc.elh-cc-in{transform:translateY(0)}' +
-      '#elh-cc-in{max-width:1180px;margin:0 auto;padding:.9rem 1.4rem;display:flex;' +
-      'align-items:center;gap:1.2rem;flex-wrap:wrap}' +
-      '#elh-cc p{margin:0;flex:1 1 300px;font-size:13.5px;color:rgba(245,240,235,.72)}' +
-      '#elh-cc a{color:#c9b89a;text-underline-offset:3px}' +
-      '#elh-cc-btns{display:flex;gap:.6rem;flex-shrink:0;flex-wrap:wrap}' +
-      '.elh-ccb{border:none;border-radius:6px;padding:.48rem 1.05rem;font-size:13px;' +
+      /* Banner — small floating card, bottom-left */
+      '#elh-cc{position:fixed;bottom:1.4rem;left:1.4rem;z-index:99999;' +
+      'background:#fff;border:1px solid #e8e3dc;border-radius:12px;' +
+      'box-shadow:0 4px 24px rgba(0,0,0,.13);max-width:300px;width:calc(100vw - 2.8rem);' +
+      'font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;' +
+      'font-size:13px;line-height:1.5;' +
+      'opacity:0;transform:translateY(10px);transition:opacity .3s ease,transform .3s ease}' +
+      '#elh-cc.elh-cc-in{opacity:1;transform:translateY(0)}' +
+      '#elh-cc-in{padding:1rem 1.1rem}' +
+      '#elh-cc p{margin:0 0 .75rem;font-size:13px;color:#444;line-height:1.55}' +
+      '#elh-cc a{color:#7c5cbf;text-underline-offset:2px}' +
+      '#elh-cc-btns{display:flex;align-items:center;gap:.5rem}' +
+      '.elh-ccb{border:none;border-radius:6px;padding:.42rem .9rem;font-size:12.5px;' +
       'font-weight:600;cursor:pointer;transition:opacity .15s;letter-spacing:.01em}' +
       '.elh-ccb:hover{opacity:.82}' +
-      '.elh-cc-ok{background:#7c5cbf;color:#fff}' +
-      '.elh-cc-mg{background:transparent;color:rgba(245,240,235,.6);' +
-      'border:1px solid rgba(245,240,235,.22)}' +
+      '.elh-cc-ok{background:#7c5cbf;color:#fff;flex:1}' +
+      '.elh-cc-mg{background:transparent;color:#999;border:none;padding:.42rem .3rem;' +
+      'font-size:12px;font-weight:500;text-decoration:underline;text-underline-offset:2px}' +
       /* Modal overlay */
       '#elh-cc-modal{display:none;position:fixed;inset:0;z-index:100000;' +
       'background:rgba(0,0,0,.58);align-items:center;justify-content:center;padding:1rem}' +
@@ -113,11 +114,10 @@
     bar.setAttribute('aria-label', 'Cookie consent');
     bar.innerHTML =
       '<div id="elh-cc-in">' +
-        '<p>We use cookies and analytics tools to understand how visitors use our site and improve your experience. Essential cookies are always active. ' +
-        '<a href="/privacy-policy#cookies">Learn more</a></p>' +
+        '<p>We use cookies to improve your experience. <a href="/privacy-policy#cookies">Learn more</a></p>' +
         '<div id="elh-cc-btns">' +
-          '<button class="elh-ccb elh-cc-mg" id="elh-cc-mgbtn" aria-haspopup="dialog">Manage Preferences</button>' +
-          '<button class="elh-ccb elh-cc-ok" id="elh-cc-okbtn">Accept All</button>' +
+          '<button class="elh-ccb elh-cc-ok" id="elh-cc-okbtn">Accept</button>' +
+          '<button class="elh-ccb elh-cc-mg" id="elh-cc-mgbtn" aria-haspopup="dialog">Manage</button>' +
         '</div>' +
       '</div>';
     document.body.appendChild(bar);
