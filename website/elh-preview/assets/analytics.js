@@ -55,24 +55,25 @@
     /* --- CSS ------------------------------------------------------------ */
     var css = document.createElement('style');
     css.textContent =
-      /* Banner — small floating card, bottom-left */
-      '#elh-cc{position:fixed;bottom:1.4rem;left:1.4rem;z-index:99999;' +
-      'background:#fff;border:1px solid #e8e3dc;border-radius:12px;' +
-      'box-shadow:0 4px 24px rgba(0,0,0,.13);max-width:300px;width:calc(100vw - 2.8rem);' +
+      /* Banner — ultra-minimal pill, bottom-right */
+      '#elh-cc{position:fixed;bottom:1.2rem;right:1.2rem;z-index:99999;' +
+      'background:rgba(255,255,255,.92);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);' +
+      'border:1px solid rgba(0,0,0,.08);border-radius:99px;' +
+      'box-shadow:0 2px 12px rgba(0,0,0,.10);' +
       'font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;' +
-      'font-size:13px;line-height:1.5;' +
-      'opacity:0;transform:translateY(10px);transition:opacity .3s ease,transform .3s ease}' +
+      'font-size:12px;line-height:1;' +
+      'opacity:0;transform:translateY(6px);transition:opacity .28s ease,transform .28s ease}' +
       '#elh-cc.elh-cc-in{opacity:1;transform:translateY(0)}' +
-      '#elh-cc-in{padding:1rem 1.1rem}' +
-      '#elh-cc p{margin:0 0 .75rem;font-size:13px;color:#444;line-height:1.55}' +
-      '#elh-cc a{color:#7c5cbf;text-underline-offset:2px}' +
-      '#elh-cc-btns{display:flex;align-items:center;gap:.5rem}' +
-      '.elh-ccb{border:none;border-radius:6px;padding:.42rem .9rem;font-size:12.5px;' +
-      'font-weight:600;cursor:pointer;transition:opacity .15s;letter-spacing:.01em}' +
-      '.elh-ccb:hover{opacity:.82}' +
-      '.elh-cc-ok{background:#7c5cbf;color:#fff;flex:1}' +
-      '.elh-cc-mg{background:transparent;color:#999;border:none;padding:.42rem .3rem;' +
-      'font-size:12px;font-weight:500;text-decoration:underline;text-underline-offset:2px}' +
+      '#elh-cc-in{padding:.45rem .55rem .45rem .85rem;display:flex;align-items:center;gap:.5rem}' +
+      '#elh-cc p{margin:0;font-size:11.5px;color:#666;white-space:nowrap}' +
+      '#elh-cc a{color:#7c5cbf}' +
+      '#elh-cc-btns{display:flex;align-items:center;gap:.3rem;flex-shrink:0}' +
+      '.elh-ccb{border:none;border-radius:99px;font-size:11.5px;' +
+      'font-weight:600;cursor:pointer;transition:opacity .15s;white-space:nowrap}' +
+      '.elh-ccb:hover{opacity:.78}' +
+      '.elh-cc-ok{background:#7c5cbf;color:#fff;padding:.35rem .75rem}' +
+      '.elh-cc-mg{background:transparent;color:#aaa;border:none;padding:.35rem .4rem;' +
+      'font-size:11px;font-weight:500;text-decoration:underline;text-underline-offset:2px}' +
       /* Modal overlay */
       '#elh-cc-modal{display:none;position:fixed;inset:0;z-index:100000;' +
       'background:rgba(0,0,0,.58);align-items:center;justify-content:center;padding:1rem}' +
@@ -114,7 +115,7 @@
     bar.setAttribute('aria-label', 'Cookie consent');
     bar.innerHTML =
       '<div id="elh-cc-in">' +
-        '<p>We use cookies to improve your experience. <a href="/privacy-policy#cookies">Learn more</a></p>' +
+        '<p>We use <a href="/privacy-policy#cookies">cookies</a></p>' +
         '<div id="elh-cc-btns">' +
           '<button class="elh-ccb elh-cc-ok" id="elh-cc-okbtn">Accept</button>' +
           '<button class="elh-ccb elh-cc-mg" id="elh-cc-mgbtn" aria-haspopup="dialog">Manage</button>' +
