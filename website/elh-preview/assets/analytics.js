@@ -56,7 +56,7 @@
     var css = document.createElement('style');
     css.textContent =
       /* Banner — ultra-minimal pill, bottom-right */
-      '#elh-cc{position:fixed;bottom:1.2rem;right:1.2rem;z-index:99999;' +
+      '#elh-cc{position:fixed;bottom:1.2rem;left:1.2rem;z-index:99999;' +
       'background:rgba(255,255,255,.92);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);' +
       'border:1px solid rgba(0,0,0,.08);border-radius:99px;' +
       'box-shadow:0 2px 12px rgba(0,0,0,.10);' +
