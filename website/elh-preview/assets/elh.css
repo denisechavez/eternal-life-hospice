@@ -490,6 +490,36 @@ details.cqn-col:not([open])>summary.cqn-county{margin-bottom:0;padding-bottom:0;
 .body-list li{color:var(--ink-soft);font-size:16px;line-height:1.7;margin-bottom:.35rem}
 .body-list li::marker{color:var(--gold)}
 
+/* ===== Google Reviews trust bar ===== */
+.reviews-band{background:var(--cream);padding:4rem 1.6rem;border-top:1px solid var(--cream-dark)}
+.rv-inner{max-width:860px;margin:0 auto;text-align:center}
+.rv-header{display:flex;align-items:center;justify-content:center;gap:1rem;flex-wrap:wrap;margin-bottom:2.2rem}
+.rv-glogo{flex-shrink:0;width:36px;height:36px}
+.rv-aggregate{display:flex;align-items:center;gap:.55rem;flex-wrap:wrap;justify-content:center}
+.rv-score{font-family:'Fraunces ELH',Georgia,serif;font-size:2rem;font-weight:700;color:var(--deep);line-height:1}
+.rv-stars{font-size:1.25rem;color:#F5A623;letter-spacing:.05em;line-height:1}
+.rv-count{font-size:.9rem;font-weight:600;color:var(--plum);text-decoration:none;border-bottom:1px solid transparent;transition:border-color .2s}
+.rv-count:hover{border-color:var(--plum)}
+.rv-carousel{margin-bottom:1.6rem}
+.rv-card{display:none;flex-direction:column;align-items:center;justify-content:center;gap:.7rem;padding:0 1rem}
+.rv-card.rv-active{display:flex;animation:rv-fade .4s ease}
+.rv-card-stars{font-size:1rem;color:#F5A623;letter-spacing:.06em}
+.rv-quote{font-size:1rem;line-height:1.65;color:var(--ink-soft);max-width:640px;font-style:italic}
+.rv-quote::before{content:'\201C'}
+.rv-quote::after{content:'\201D'}
+.rv-author{font-size:.85rem;font-weight:600;color:var(--plum);letter-spacing:.03em}
+.rv-dots{display:flex;gap:.5rem;justify-content:center;margin-bottom:1.4rem}
+.rv-dot{width:7px;height:7px;border-radius:50%;background:var(--cream-dark);border:none;padding:0;cursor:pointer;transition:background .25s}
+.rv-dot.rv-dot-active{background:var(--plum)}
+.rv-cta{display:inline-flex;align-items:center;gap:.35rem;font-size:.85rem;font-weight:600;color:var(--plum);text-decoration:none;border-bottom:1px solid transparent;transition:border-color .2s}
+.rv-cta:hover{border-color:var(--plum)}
+@keyframes rv-fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+@media(max-width:480px){
+  .reviews-band{padding:3rem 1.1rem}
+  .rv-score{font-size:1.6rem}
+  .rv-quote{font-size:.95rem}
+}
+
 /* ---- Mobile padding — safe gutters on all pages ---- */
 @media(max-width:480px){
   /* Header */

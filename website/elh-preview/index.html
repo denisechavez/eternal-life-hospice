@@ -908,6 +908,31 @@ p,li,blockquote{text-wrap:pretty}
 .mod-card.feat .mod-img{position:relative}
 .mod-tag{position:absolute;top:.75rem;right:.75rem;z-index:3;display:inline-flex;align-items:center;gap:.3em;background:linear-gradient(180deg,#D8C08C,#C4A86F);color:var(--deep);font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:.32rem .68rem;border-radius:999px;box-shadow:0 4px 12px rgba(60,28,59,.3)}
 .mod-card.feat .mod-badge{background:linear-gradient(180deg,#D8C08C,#C4A86F);color:var(--deep)}
+/* ===== Google Reviews trust bar ===== */
+.reviews-band{background:var(--cream);padding:4rem 1.6rem;border-top:1px solid var(--cream-dark)}
+.rv-inner{max-width:860px;margin:0 auto;text-align:center}
+.rv-header{display:flex;align-items:center;justify-content:center;gap:1rem;flex-wrap:wrap;margin-bottom:2.2rem}
+.rv-glogo{flex-shrink:0}
+.rv-aggregate{display:flex;align-items:center;gap:.55rem;flex-wrap:wrap;justify-content:center}
+.rv-score{font-family:'Fraunces ELH',Georgia,serif;font-size:2rem;font-weight:700;color:var(--deep);line-height:1}
+.rv-stars{font-size:1.25rem;color:#F5A623;letter-spacing:.05em;line-height:1}
+.rv-count{font-size:.9rem;font-weight:600;color:var(--plum);text-decoration:none;border-bottom:1px solid transparent;transition:border-color .2s}
+.rv-count:hover{border-color:var(--plum)}
+.rv-carousel{margin-bottom:1.6rem}
+.rv-card{display:none;flex-direction:column;align-items:center;justify-content:center;gap:.7rem;padding:0 1rem}
+.rv-card.rv-active{display:flex;animation:rv-fade .4s ease}
+.rv-card-stars{font-size:1rem;color:#F5A623;letter-spacing:.06em}
+.rv-quote{font-size:1rem;line-height:1.65;color:var(--ink-soft);max-width:640px;font-style:italic;margin:0}
+.rv-quote::before{content:'\201C'}
+.rv-quote::after{content:'\201D'}
+.rv-author{font-size:.85rem;font-weight:600;color:var(--plum);letter-spacing:.03em}
+.rv-dots{display:flex;gap:.5rem;justify-content:center;margin-bottom:1.4rem}
+.rv-dot{width:7px;height:7px;border-radius:50%;background:var(--cream-dark);border:none;padding:0;cursor:pointer;transition:background .25s}
+.rv-dot.rv-dot-active{background:var(--plum)}
+.rv-cta{display:inline-flex;align-items:center;gap:.35rem;font-size:.85rem;font-weight:600;color:var(--plum);text-decoration:none;border-bottom:1px solid transparent;transition:border-color .2s}
+.rv-cta:hover{border-color:var(--plum)}
+@keyframes rv-fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+@media(max-width:480px){.reviews-band{padding:3rem 1.1rem}.rv-score{font-size:1.6rem}.rv-quote{font-size:.95rem}}
 </style>
 <style id="elh-embedded-fonts">
 @font-face{font-family:"Fraunces";font-style:normal;font-weight:100 900;font-display:swap;src:url(assets/fonts/inline-9a18143814.woff2) format("woff2")}
@@ -1707,6 +1732,105 @@ p,li,blockquote{text-wrap:pretty}
     <p style="margin-top:1.75rem;font-size:.9rem;color:var(--text-mid)">Admissions: <a href="tel:18059537273" style="color:var(--plum);font-weight:600;text-decoration:none">805.953.7273</a></p>
   </div>
 </section>
+<!-- GOOGLE REVIEWS -->
+<section class="reviews-band" id="reviews" aria-label="Google Reviews">
+  <div class="rv-inner">
+    <div class="rv-header">
+      <!-- Google G logo -->
+      <svg class="rv-glogo" viewBox="0 0 48 48" width="36" height="36" aria-label="Google" role="img"><path fill="#4285F4" d="M45.12 24.5c0-1.56-.14-3.06-.4-4.5H24v8.51h11.84c-.51 2.75-2.06 5.08-4.39 6.64v5.52h7.11c4.16-3.83 6.56-9.47 6.56-16.17z"/><path fill="#34A853" d="M24 46c5.94 0 10.92-1.97 14.56-5.33l-7.11-5.52c-1.97 1.32-4.49 2.1-7.45 2.1-5.73 0-10.58-3.87-12.31-9.07H4.34v5.7C7.96 41.07 15.4 46 24 46z"/><path fill="#FBBC05" d="M11.69 28.18C11.25 26.86 11 25.45 11 24s.25-2.86.69-4.18v-5.7H4.34A21.991 21.991 0 0 0 2 24c0 3.55.85 6.91 2.34 9.88l7.35-5.7z"/><path fill="#EA4335" d="M24 10.75c3.23 0 6.13 1.11 8.41 3.29l6.31-6.31C34.91 4.18 29.93 2 24 2 15.4 2 7.96 6.93 4.34 14.12l7.35 5.7c1.73-5.2 6.58-9.07 12.31-9.07z"/></svg>
+      <div class="rv-aggregate">
+        <span class="rv-score" id="rvScore">5.0</span>
+        <span class="rv-stars">★★★★★</span>
+        <a class="rv-count" id="rvCount" href="https://maps.google.com/?cid=9771388271577679785" target="_blank" rel="noopener">11 reviews on Google</a>
+      </div>
+    </div>
+    <!-- Review carousel — static fallback; JS enriches from API -->
+    <div class="rv-carousel" id="rvCarousel">
+      <div class="rv-card rv-active">
+        <div class="rv-card-stars">★★★★★</div>
+        <p class="rv-quote">Our family is eternally grateful for the compassionate, dignified care they provided. The nurses, aides, social worker, chaplain and physician were kind, attentive, and always available when we needed them.</p>
+        <span class="rv-author">— David H.</span>
+      </div>
+      <div class="rv-card">
+        <div class="rv-card-stars">★★★★★</div>
+        <p class="rv-quote">We have had a wonderful experience working with this hospice team. They are professional, compassionate, and truly dedicated to providing exceptional care to their patients and families.</p>
+        <span class="rv-author">— Edmond M.</span>
+      </div>
+      <div class="rv-card">
+        <div class="rv-card-stars">★★★★★</div>
+        <p class="rv-quote">Eternal Life Hospice is an exceptional hospice provider that delivers the kind of care anyone would want for a loved one. Their team serves patients and families with compassion, dignity, and unwavering integrity.</p>
+        <span class="rv-author">— Ronny K.</span>
+      </div>
+    </div>
+    <div class="rv-dots" id="rvDots" aria-label="Review navigation">
+      <button class="rv-dot rv-dot-active" aria-label="Review 1" data-rv="0"></button>
+      <button class="rv-dot" aria-label="Review 2" data-rv="1"></button>
+      <button class="rv-dot" aria-label="Review 3" data-rv="2"></button>
+    </div>
+    <a class="rv-cta" href="https://maps.google.com/?cid=9771388271577679785" target="_blank" rel="noopener">Read all reviews on Google &#8599;</a>
+  </div>
+</section>
+<script>
+(function(){
+  var cards=document.querySelectorAll('#rvCarousel .rv-card');
+  var dots=document.querySelectorAll('#rvDots .rv-dot');
+  var current=0,timer=null;
+  function show(i){
+    cards[current].classList.remove('rv-active');
+    dots[current].classList.remove('rv-dot-active');
+    current=i;
+    cards[current].classList.add('rv-active');
+    dots[current].classList.add('rv-dot-active');
+  }
+  function next(){show((current+1)%cards.length);}
+  function startTimer(){timer=setInterval(next,5000);}
+  dots.forEach(function(d){
+    d.addEventListener('click',function(){
+      clearInterval(timer);
+      show(parseInt(d.dataset.rv,10));
+      startTimer();
+    });
+  });
+  startTimer();
+  /* Enrich from live API */
+  fetch('/.netlify/functions/reviews').then(function(r){return r.ok?r.json():null;}).then(function(d){
+    if(!d||!d.total)return;
+    var sc=document.getElementById('rvScore');
+    var ct=document.getElementById('rvCount');
+    if(sc)sc.textContent=d.rating.toFixed(1);
+    if(ct)ct.textContent=d.total+' reviews on Google';
+    if(!d.reviews||!d.reviews.length)return;
+    /* Rebuild carousel with live quotes */
+    clearInterval(timer);
+    var carousel=document.getElementById('rvCarousel');
+    var dotsEl=document.getElementById('rvDots');
+    carousel.innerHTML='';
+    dotsEl.innerHTML='';
+    d.reviews.forEach(function(r,i){
+      var abbr=r.author.split(' ');
+      var name=abbr[0]+(abbr.length>1?' '+abbr[abbr.length-1][0]+'.':'');
+      var truncated=r.text.length>200?r.text.slice(0,197)+'…':r.text;
+      var card=document.createElement('div');
+      card.className='rv-card'+(i===0?' rv-active':'');
+      card.innerHTML='<div class="rv-card-stars">★★★★★</div><p class="rv-quote">'+truncated.replace(/</g,'&lt;')+'</p><span class="rv-author">&mdash; '+name.replace(/</g,'&lt;')+'</span>';
+      carousel.appendChild(card);
+      var dot=document.createElement('button');
+      dot.className='rv-dot'+(i===0?' rv-dot-active':'');
+      dot.setAttribute('aria-label','Review '+(i+1));
+      dot.dataset.rv=i;
+      dotsEl.appendChild(dot);
+    });
+    current=0;
+    cards=document.querySelectorAll('#rvCarousel .rv-card');
+    dots=document.querySelectorAll('#rvDots .rv-dot');
+    dots.forEach(function(dd){
+      dd.addEventListener('click',function(){clearInterval(timer);show(parseInt(dd.dataset.rv,10));startTimer();});
+    });
+    startTimer();
+  }).catch(function(){/* silently keep static fallback */});
+})();
+</script>
+
 <!-- LEAD CAPTURE -->
 <section class="leadcap tan-seam" id="leadcap">
   <div class="sec-head reveal">
