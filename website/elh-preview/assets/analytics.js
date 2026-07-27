@@ -184,9 +184,10 @@
   }
 
   /* ── Entry point ────────────────────────────────────────────────────── */
-  if (consent === 'all') {
+  var forceShow = window.location.search.indexOf('show-consent') !== -1;
+  if (!forceShow && consent === 'all') {
     loadAnalytics();                     // returning visitor who accepted
-  } else if (!consent) {
+  } else if (forceShow || !consent) {
     if (document.readyState === 'loading') {
       document.addEventListener('DOMContentLoaded', showBanner);
     } else {
