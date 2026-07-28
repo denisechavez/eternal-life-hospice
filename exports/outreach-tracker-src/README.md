@@ -4,6 +4,14 @@ Internal field visit-capture and follow-up tracking app for the Eternal Life Hos
 
 ---
 
+## Production builds & the trim test
+
+The deployment build command (`npm install && npm test`) runs `test-backup-trim.js`, which requires `DATABASE_URL` to connect to Postgres (exits 1 if missing).
+
+`DATABASE_URL` is a **Replit runtime-managed variable** — it is automatically injected in both development and production build environments by Replit's PostgreSQL integration. No manual secret configuration is required. The trim test will have a live database connection during every deploy build.
+
+---
+
 ## Setup in a new Replit
 
 ### 1. Create the Replit
