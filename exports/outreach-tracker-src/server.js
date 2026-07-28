@@ -616,16 +616,31 @@ async function runWeeklyBackup() {
       return;
     }
 
-    // Fetch all visits
-    const { rows: visits } = await query(
-      `SELECT id, company, category, address, city, county, visit_date,
-              contact_name, contact_title, contact_email, contact_phone,
-              materials, notes, owner, follow_up_due, followup_status,
-              attested, created_at, updated_at
-       FROM visits ORDER BY created_at DESC`
+    // Determine the cutoff: timestamp of the last SUCCESSFUL backup.
+    // No prior success → full backup (first ever run).
+    const lastOkRes = await query(
+      `SELECT ran_at FROM backup_log WHERE status = 'ok' ORDER BY ran_at DESC LIMIT 1`
     );
+    const lastSuccessfulAt = lastOkRes.rows.length ? lastOkRes.rows[0].ran_at : null;
+    const isFullBackup = !lastSuccessfulAt;
 
-    // Build CSV
+    // Fetch visits: all records on first run, only new/changed records thereafter.
+    const visitQuery = isFullBackup
+      ? `SELECT id, company, category, address, city, county, visit_date,
+                contact_name, contact_title, contact_email, contact_phone,
+                materials, notes, owner, follow_up_due, followup_status,
+                attested, created_at, updated_at
+         FROM visits ORDER BY created_at DESC`
+      : `SELECT id, company, category, address, city, county, visit_date,
+                contact_name, contact_title, contact_email, contact_phone,
+                materials, notes, owner, follow_up_due, followup_status,
+                attested, created_at, updated_at
+         FROM visits WHERE updated_at > $1 ORDER BY updated_at DESC`;
+    const visitParams = isFullBackup ? [] : [lastSuccessfulAt];
+    const { rows: visits } = await query(visitQuery, visitParams);
+
+    // Build CSV (always include header row even when visits is empty so the
+    // recipient gets a well-formed file that confirms continuity).
     const fields = [
       "id", "company", "category", "address", "city", "county", "visit_date",
       "contact_name", "contact_title", "contact_email", "contact_phone",
@@ -643,16 +658,25 @@ async function runWeeklyBackup() {
     ].join("\r\n");
 
     const dateStr = new Date().toISOString().slice(0, 10);
-    const filename = `ELH_Field_Log_Backup_${dateStr}.csv`;
+    const backupKind = isFullBackup ? "Full" : "Incremental";
+    const sinceStr = isFullBackup
+      ? "all records"
+      : `records updated since ${new Date(lastSuccessfulAt).toISOString().slice(0, 10)}`;
+    const filename = `ELH_Field_Log_${backupKind}_Backup_${dateStr}.csv`;
+
+    // Human-readable date range for the note column (used for continuity audits).
+    const noteText = isFullBackup
+      ? `Full backup: ${visits.length} record(s) emailed to ${to}`
+      : `Incremental backup: ${visits.length} record(s) updated since ${new Date(lastSuccessfulAt).toISOString().slice(0, 10)}, emailed to ${to}`;
 
     // Send via Brevo transactional email API
     const payload = JSON.stringify({
       sender: { name: "ELH Outreach Tracker", email: "no-reply@eternallifehospice.com" },
       to: [{ email: to }],
-      subject: `ELH Field Log Weekly Backup — ${dateStr}`,
+      subject: `ELH Field Log ${backupKind} Backup — ${dateStr}`,
       textContent:
-        `Weekly automated backup of the ELH Outreach Tracker field log.\n\n` +
-        `Records included: ${visits.length}\nDate: ${dateStr}\n\n` +
+        `${backupKind} automated backup of the ELH Outreach Tracker field log.\n\n` +
+        `Records included: ${visits.length} (${sinceStr})\nDate: ${dateStr}\n\n` +
         `The CSV file is attached.`,
       attachment: [
         { name: filename, content: Buffer.from(csv).toString("base64") },
@@ -694,9 +718,9 @@ async function runWeeklyBackup() {
 
     await query("INSERT INTO backup_log (status, note) VALUES ($1, $2)", [
       "ok",
-      `${visits.length} record(s) emailed to ${to}`,
+      noteText,
     ]);
-    console.log(`Weekly backup: sent ${visits.length} record(s) to ${to}`);
+    console.log(`Weekly backup: ${noteText}`);
   } catch (e) {
     const note = String((e && e.message) || "Unknown error").slice(0, 500);
     console.error("Weekly backup failed:", note);
