@@ -120,3 +120,8 @@ timeoutMs = 30000
 deploymentTarget = "autoscale"
 run = ["bash", "-c", "python3 website/devserver.py"]
 build = ["bash", "-c", "cd exports/outreach-tracker-src && npm ci --no-audit --no-fund && npm test"]
+
+[userenv]
+
+[userenv.shared]
+BACKUP_EMAIL = "backup@eternallifehospice.com"

@@ -34,19 +34,19 @@ if (!process.env.DATABASE_URL) {
   process.exit(1);
 }
 if (!process.env.BACKUP_EMAIL) {
-  console.warn(
-    "SKIP: BACKUP_EMAIL is not set — backup email test skipped.\n" +
-    "      Set BACKUP_EMAIL (and BREVO_API) to run the full integration test."
+  console.error(
+    "ERROR: BACKUP_EMAIL is not set — backup email test cannot run.\n" +
+    "       Set BACKUP_EMAIL (and BREVO_API) to run the full integration test."
   );
-  process.exit(0);
+  process.exit(1);
 }
 if (!process.env.BREVO_API) {
   // Allow any non-empty value — the fake https module never validates it.
-  console.warn(
-    "SKIP: BREVO_API is not set — backup email test skipped.\n" +
-    "      Set BREVO_API (any non-empty value works; real sends are intercepted) to run."
+  console.error(
+    "ERROR: BREVO_API is not set — backup email test cannot run.\n" +
+    "       Set BREVO_API (any non-empty value works; real sends are intercepted) to run."
   );
-  process.exit(0);
+  process.exit(1);
 }
 
 const pool = new Pool({ connectionString: process.env.DATABASE_URL });
