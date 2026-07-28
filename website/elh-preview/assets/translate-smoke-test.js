@@ -145,6 +145,76 @@ for (const page of PAGES) {
   }
 }
 
+// ── Full-coverage scan ────────────────────────────────────────────────────────
+// Walk every .html file under elh-preview/ and confirm each site page carries
+// the translate bar.  Pages that legitimately omit it are listed in EXCLUDED.
+console.log('\n' + '═'.repeat(60));
+console.log('Full-coverage scan — all site pages\n');
+
+// Paths relative to BASE that are intentionally excluded from the translate bar:
+//   • assets/            — social graphics and internal tooling (not site pages)
+//   • redirect stubs     — meta-refresh shims that immediately send the browser elsewhere
+//   • print cards        — standalone rack-card / business-card HTML (no shared nav)
+//   • aleksandradubina   — noindex digital business card (no shared nav)
+//   • family-guide       — standalone interactive booklet (no shared nav)
+const EXCLUDED_PREFIXES = ['assets/'];
+const EXCLUDED_FILES = new Set([
+  'blog/index.html',
+  'care-brief/index.html',
+  'resources/index.html',
+  'card-aleksandra-dubina.html',
+  'card-denise-chavez.html',
+  'aleksandradubina.html',
+  'family-guide.html',
+]);
+
+function walkHtml(dir, baseLen) {
+  const results = [];
+  for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+    const full = path.join(dir, entry.name);
+    if (entry.isDirectory()) {
+      results.push(...walkHtml(full, baseLen));
+    } else if (entry.isFile() && entry.name.endsWith('.html')) {
+      results.push(full.slice(baseLen + 1)); // relative to BASE
+    }
+  }
+  return results;
+}
+
+const allHtml   = walkHtml(BASE, BASE.length);
+const sitePages = allHtml.filter(f => {
+  if (EXCLUDED_PREFIXES.some(p => f.startsWith(p))) return false;
+  if (EXCLUDED_FILES.has(f)) return false;
+  return true;
+});
+
+console.log(`Scanning ${sitePages.length} site pages (${allHtml.length - sitePages.length} excluded)\n`);
+
+const scanFailed = [];
+
+for (const rel of sitePages.sort()) {
+  const html = fs.readFileSync(path.join(BASE, rel), 'utf8');
+  const missingScript = !hasTranslateScript(html);
+  const missingPills  = extractLangs(html).length === 0;
+  if (missingScript || missingPills) {
+    const why = [
+      missingScript ? 'no translate.js <script>' : '',
+      missingPills  ? 'no .ft-lang pills'         : '',
+    ].filter(Boolean).join(' + ');
+    scanFailed.push({ rel, why });
+  }
+}
+
+if (scanFailed.length === 0) {
+  console.log(`✅  All ${sitePages.length} site pages have the translate bar`);
+} else {
+  console.error(`❌  ${scanFailed.length} page(s) missing translate bar:`);
+  for (const { rel, why } of scanFailed) {
+    console.error(`     ${rel}  (${why})`);
+    allPassed = false;
+  }
+}
+
 // ── Summary ──────────────────────────────────────────────────────────────────
 console.log('\n' + '═'.repeat(60));
 if (allPassed) {
