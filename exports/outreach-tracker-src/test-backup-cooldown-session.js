@@ -116,14 +116,21 @@ function assert(condition, message) {
 }
 
 /* ── boot a fresh jsdom instance with optional pre-seeded sessionStorage ────── */
-async function bootApp({ sessionStorageData = {}, backupRunResponse = null, throwingStorage = false } = {}) {
+async function bootApp({ sessionStorageData = {}, backupRunResponse = null, throwingStorage = false, customStorage = null } = {}) {
   const dom = new JSDOM(MINIMAL_HTML, {
     runScripts: "dangerously",
     url: "http://localhost/",
   });
   const w = dom.window;
 
-  if (throwingStorage) {
+  if (customStorage) {
+    // Caller supplies a fully custom storage object (e.g. a mix of readable
+    // getItem + throwing removeItem) to exercise specific code paths.
+    Object.defineProperty(w, "sessionStorage", {
+      configurable: true,
+      get: () => customStorage,
+    });
+  } else if (throwingStorage) {
     // Replace sessionStorage with an object whose every method throws, simulating
     // a browser that blocks storage (e.g. Private Browsing with strict settings).
     const alwaysThrows = () => { throw new DOMException("Storage is disabled", "SecurityError"); };
@@ -498,6 +505,55 @@ async function runTests() {
     assert(
       btn.textContent.startsWith("Try again in"),
       `countdown label present despite broken storage (got "${btn.textContent}")`
+    );
+    console.log();
+  }
+
+  /* ── Scenario 8: proactive cleanup survives throwing sessionStorage ─────────
+   *
+   * When the browser blocks sessionStorage entirely, _ssGet() returns null so
+   * _cooldownUntil === 0 and the proactive-cleanup branch is unreachable in
+   * practice.  This scenario uses a hybrid mock: getItem returns a stale
+   * deadline (so _cooldownUntil > 0 but ≤ Date.now()), while removeItem always
+   * throws.  This exercises the else-if branch in enterApp() and confirms that
+   * _ssRemove()'s internal try/catch swallows the error gracefully — no
+   * uncaught exception, button stays enabled.
+   */
+  console.log("--- Scenario 8: proactive cleanup with throwing removeItem — no uncaught error, button enabled ---");
+  {
+    let uncaughtError = null;
+    const KEY = "runBackupCooldownUntil";
+    const staleDeadline = String(Date.now() - 60_000); // 60 s in the past
+
+    // Hybrid storage: getItem returns the stale deadline so the else-if branch
+    // in enterApp() fires; removeItem (and everything else) always throws to
+    // verify that _ssRemove's try/catch handles the error silently.
+    const alwaysThrows = () => { throw new DOMException("Storage is disabled", "SecurityError"); };
+    const hybridStorage = {
+      getItem: (k) => (k === KEY ? staleDeadline : null),
+      setItem:    alwaysThrows,
+      removeItem: alwaysThrows,
+      clear:      alwaysThrows,
+      key:        alwaysThrows,
+      length:     0,
+    };
+
+    const { w } = await bootApp({ customStorage: hybridStorage });
+
+    // Register the uncaught-error listener BEFORE enterApp() settles so we
+    // don't miss anything that fires during the cleanup branch.
+    w.addEventListener("error", (e) => { uncaughtError = e.error || e.message; });
+
+    const btn = w.document.getElementById("runBackupBtn");
+
+    // Give enterApp() time to reach and execute the proactive-cleanup branch
+    await new Promise((r) => setTimeout(r, 80));
+
+    assert(uncaughtError === null, "no uncaught error when removeItem throws during proactive cleanup");
+    assert(btn.disabled === false, "button stays enabled (stale key — no active cooldown)");
+    assert(
+      btn.textContent === "Run backup now",
+      `button label unchanged (got "${btn.textContent}")`
     );
     console.log();
   }
