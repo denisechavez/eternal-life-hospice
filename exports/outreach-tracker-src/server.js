@@ -548,13 +548,48 @@ app.post("/api/transcribe", requireAuth, transcribeLimiter, async (req, res) => 
 });
 
 // ---- on-demand full backup trigger ----
-const triggerLimiter = rateLimit({
-  max: 3,
-  windowMs: 60 * 60 * 1000, // 1 hour
-  message: "Too many backup requests. Please wait before trying again.",
-});
+// Rate-limit state is persisted in the trigger_rate_limit DB table so the
+// 3-per-hour cap survives a server restart mid-cooldown.
+const TRIGGER_RL_MAX = 3;
+const TRIGGER_RL_WINDOW_MS = 60 * 60 * 1000; // 1 hour
+const TRIGGER_RL_MESSAGE = "Too many backup requests. Please wait before trying again.";
 
-app.post("/api/backup/trigger", requireAuth, triggerLimiter, async (req, res) => {
+async function dbTriggerRateLimit(req, res, next) {
+  const ip = req.ip;
+  try {
+    // Atomic upsert: reset the bucket when the window has expired, else increment.
+    const { rows } = await query(
+      `INSERT INTO trigger_rate_limit (ip, count, first_at)
+       VALUES ($1, 1, NOW())
+       ON CONFLICT (ip) DO UPDATE SET
+         count    = CASE
+                      WHEN trigger_rate_limit.first_at < NOW() - ($2 * INTERVAL '1 millisecond')
+                      THEN 1
+                      ELSE trigger_rate_limit.count + 1
+                    END,
+         first_at = CASE
+                      WHEN trigger_rate_limit.first_at < NOW() - ($2 * INTERVAL '1 millisecond')
+                      THEN NOW()
+                      ELSE trigger_rate_limit.first_at
+                    END
+       RETURNING count, EXTRACT(EPOCH FROM first_at)::BIGINT * 1000 AS first_ms`,
+      [ip, TRIGGER_RL_WINDOW_MS]
+    );
+    const { count, first_ms } = rows[0];
+    if (count > TRIGGER_RL_MAX) {
+      const waitSec = Math.ceil((Number(first_ms) + TRIGGER_RL_WINDOW_MS - Date.now()) / 1000);
+      res.setHeader("Retry-After", String(Math.max(waitSec, 1)));
+      return res.status(429).json({ error: TRIGGER_RL_MESSAGE });
+    }
+    return next();
+  } catch (e) {
+    // Fail open: if the DB is temporarily unavailable, don't block the request.
+    console.error("dbTriggerRateLimit DB error:", e);
+    return next();
+  }
+}
+
+app.post("/api/backup/trigger", requireAuth, dbTriggerRateLimit, async (req, res) => {
   const forceFullBackup = req.query.full === "true";
   try {
     const result = await runWeeklyBackup({ forceFullBackup });

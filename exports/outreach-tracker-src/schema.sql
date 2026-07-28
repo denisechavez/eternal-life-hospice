@@ -52,6 +52,15 @@ CREATE TABLE IF NOT EXISTS backup_log (
   note     TEXT
 );
 
+-- Persistent rate-limit state for POST /api/backup/trigger.
+-- Survives server restarts so the 3-per-hour cap cannot be bypassed by
+-- cycling the process during the cooldown window.
+CREATE TABLE IF NOT EXISTS trigger_rate_limit (
+  ip       TEXT        NOT NULL PRIMARY KEY,
+  count    INTEGER     NOT NULL DEFAULT 1,
+  first_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
 -- Visit photos (business cards + site photos stored as binary)
 CREATE TABLE IF NOT EXISTS visit_photos (
   id         SERIAL PRIMARY KEY,
