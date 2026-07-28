@@ -479,6 +479,10 @@ function drawThumbs() {
       photos[slot] = null;
       $(slot === "card" ? "#dropCard" : "#dropSite").classList.remove("set");
       $(slot === "card" ? "#fCard" : "#fSite").value = "";
+      if (slot === "card" && hasCard === "yes" && !scanning) {
+        const h = $(".scanhint");
+        if (h) { h.textContent = aiEnabled ? SCAN_HINT : SCAN_HINT_NO_AI; h.classList.remove("busy"); }
+      }
       drawThumbs();
     })
   );
