@@ -23,7 +23,12 @@ async function api(path, opts = {}) {
   });
   let data = null;
   try { data = await res.json(); } catch (_) {}
-  if (!res.ok) throw new Error((data && data.error) || "Something went wrong.");
+  if (!res.ok) {
+    const err = new Error((data && data.error) || "Something went wrong.");
+    err.status = res.status;
+    err.retryAfter = res.headers.get("Retry-After");
+    throw err;
+  }
   return data;
 }
 
@@ -841,8 +846,33 @@ async function loadBackupStatus() {
 }
 
 /* ================= RUN BACKUP NOW ================= */
+let _runBackupCooldownTimer = null;
+
+function _startRunBackupCooldown(btn, waitSec) {
+  if (_runBackupCooldownTimer) clearInterval(_runBackupCooldownTimer);
+  let remaining = Math.max(waitSec, 1);
+  btn.disabled = true;
+  function tick() {
+    const m = Math.floor(remaining / 60);
+    const s = remaining % 60;
+    btn.textContent = m > 0
+      ? `Try again in ${m}:${String(s).padStart(2, "0")}`
+      : `Try again in ${s}s`;
+    remaining -= 1;
+    if (remaining < 0) {
+      clearInterval(_runBackupCooldownTimer);
+      _runBackupCooldownTimer = null;
+      btn.disabled = false;
+      btn.textContent = "Run backup now";
+    }
+  }
+  tick();
+  _runBackupCooldownTimer = setInterval(tick, 1000);
+}
+
 $("#runBackupBtn").addEventListener("click", async () => {
   const btn = $("#runBackupBtn");
+  if (btn.disabled) return;
   btn.disabled = true;
   const orig = btn.textContent;
   btn.textContent = "Running…";
@@ -913,11 +943,18 @@ $("#runBackupBtn").addEventListener("click", async () => {
         histEl.classList.remove("hidden");
       }
     }
-  } catch (err) {
-    toast(err.message || "Backup failed.", true);
-  } finally {
     btn.disabled = false;
     btn.textContent = orig;
+  } catch (err) {
+    if (err.status === 429) {
+      const waitSec = parseInt(err.retryAfter || "300", 10);
+      _startRunBackupCooldown(btn, waitSec);
+      toast(err.message || "Please wait before running another backup.", true);
+    } else {
+      toast(err.message || "Backup failed.", true);
+      btn.disabled = false;
+      btn.textContent = orig;
+    }
   }
 });
 

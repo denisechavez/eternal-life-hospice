@@ -605,7 +605,13 @@ app.get("/api/backup/status", requireAuth, async (req, res) => {
 });
 
 // ---- manual backup trigger ----
-app.post("/api/backup/run", requireAuth, async (req, res) => {
+const backupRunLimiter = rateLimit({
+  max: 1,
+  windowMs: 5 * 60 * 1000,
+  message: "Please wait 5 minutes before running another backup.",
+});
+
+app.post("/api/backup/run", requireAuth, backupRunLimiter, async (req, res) => {
   try {
     await runWeeklyBackup();
     const r = await query(
