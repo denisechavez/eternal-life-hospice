@@ -10,6 +10,7 @@ let visits = [];
 let photos = { card: null, site: null };
 let hasCard = "no";
 let scanning = false;
+let pendingCardPhoto = null;
 let aiEnabled = false;
 const SCAN_HINT = "Take a clear photo of the card. We'll read the name, title, email, phone, and address, then you check it. The photo is also saved with the visit.";
 const SCAN_HINT_NO_AI = "Card scanning isn't set up yet — the AI integration hasn't been enabled in this Replit. Enter the details below by hand.";
@@ -247,10 +248,14 @@ function bindPhoto(inputSel, slot, dropSel, afterSet) {
 }
 function onCardPhotoSet(d) {
   if (hasCard === "yes") {
-    if (!scanning) {
-      const h = $(".scanhint");
-      if (h) { h.textContent = aiEnabled ? SCAN_HINT : SCAN_HINT_NO_AI; h.classList.remove("busy"); }
+    if (scanning) {
+      // A scan is already in flight — queue this photo so it is not silently dropped.
+      // extractCard's finally block will pick it up once the current scan finishes.
+      pendingCardPhoto = d;
+      return;
     }
+    const h = $(".scanhint");
+    if (h) { h.textContent = aiEnabled ? SCAN_HINT : SCAN_HINT_NO_AI; h.classList.remove("busy"); }
     extractCard(d);
   }
 }
@@ -339,6 +344,12 @@ async function extractCard(dataUrl) {
     toast(err.message || "Couldn't read the card.", true);
   } finally {
     scanning = false;
+    // If a new photo was queued while this scan was in flight, process it now.
+    if (pendingCardPhoto !== null) {
+      const queued = pendingCardPhoto;
+      pendingCardPhoto = null;
+      extractCard(queued);
+    }
   }
 }
 
