@@ -687,10 +687,170 @@ async function runBoundaryTest() {
   console.log("\n=== Done (boundary-timestamp test) ===");
 }
 
+// ---------------------------------------------------------------------------
+// Boundary +1 ms test
+//
+// Complements runBoundaryTest by pinning the LOWER BOUND: the smallest
+// possible timestamp that MUST appear in an incremental backup.
+//
+// The incremental WHERE clause is:  updated_at > $1  (strict greater-than).
+// A record with updated_at = ran_at + 1 ms is the first timestamp that
+// satisfies the condition.  PostgreSQL stores timestamps at microsecond
+// resolution, so JavaScript Date rounding could in theory cause the +1 ms
+// record to be collapsed back to the cutoff and silently dropped.
+// This test confirms that never happens.
+// ---------------------------------------------------------------------------
+async function runBoundaryPlusOneTest() {
+  console.log("\n=== incremental backup boundary +1 ms test ===\n");
+  console.log(
+    "  (Pins lower bound: updated_at = ran_at + 1ms MUST appear in the backup)"
+  );
+
+  const SENTINEL_PLUS1 = "test-backup-boundary-plus1ms";
+
+  // High-water mark for surgical cleanup
+  const hwmRes3 = await pool.query(
+    "SELECT COALESCE(MAX(id), 0) AS hwm FROM backup_log"
+  );
+  const hwm3 = hwmRes3.rows[0].hwm;
+
+  // 1. Seed a successful backup_log row 5 seconds in the future so it is
+  //    guaranteed to be the latest 'ok' row.  Capture its exact ran_at so
+  //    we can derive the +1 ms updated_at directly in SQL.
+  const logInsert3 = await pool.query(
+    `INSERT INTO backup_log (ran_at, status, note)
+     VALUES (NOW() + INTERVAL '5 seconds', 'ok',
+             'Seeded by boundary+1ms test — safe to delete')
+     RETURNING ran_at`
+  );
+  const cutoff3 = logInsert3.rows[0].ran_at; // exact timestamp as JS Date
+
+  // Confirm this row is the effective cutoff runWeeklyBackup will use.
+  const effectiveCutoffRes3 = await pool.query(
+    `SELECT ran_at FROM backup_log WHERE status = 'ok' ORDER BY ran_at DESC LIMIT 1`
+  );
+  assert(
+    effectiveCutoffRes3.rows.length === 1 &&
+      effectiveCutoffRes3.rows[0].ran_at.getTime() === cutoff3.getTime(),
+    `boundary+1ms: seeded log row IS the effective cutoff (ran_at=${cutoff3.toISOString()})`
+  );
+
+  // 2. Insert a sentinel visit and set its updated_at to ran_at + 1 ms via SQL
+  //    so the microsecond-precise value is computed entirely inside PostgreSQL
+  //    (avoids any JavaScript Date rounding artefacts).
+  await pool.query(
+    `INSERT INTO visits (company, attested, notes) VALUES ($1, false, 'boundary+1ms-sentinel')`,
+    [SENTINEL_PLUS1]
+  );
+  await pool.query(
+    `UPDATE visits
+        SET updated_at = $1::timestamptz + INTERVAL '1 millisecond'
+      WHERE company = $2`,
+    [cutoff3, SENTINEL_PLUS1]
+  );
+
+  // Confirm the sentinel's updated_at is strictly after the cutoff.
+  // We use > rather than === cutoff+1 because pg preserves sub-millisecond
+  // (microsecond) precision as a float in Date.getTime(), so exact integer
+  // arithmetic is unreliable.  The important property is that the value is
+  // strictly greater than the cutoff — which is what the WHERE clause tests.
+  const sentinelTsRes3 = await pool.query(
+    `SELECT updated_at FROM visits WHERE company = $1`, [SENTINEL_PLUS1]
+  );
+  assert(
+    sentinelTsRes3.rows.length === 1 &&
+      sentinelTsRes3.rows[0].updated_at.getTime() > cutoff3.getTime(),
+    `boundary+1ms: sentinel updated_at is strictly after the cutoff ` +
+      `(cutoff=${cutoff3.toISOString()}, ` +
+      `got ${sentinelTsRes3.rows.length ? sentinelTsRes3.rows[0].updated_at.toISOString() : "none"})`
+  );
+
+  // 3. Run the incremental backup.
+  const fakeHttps5 = makeFakeHttps();
+  await runWeeklyBackup({ forceFullBackup: false, _httpsOverride: fakeHttps5 });
+
+  // ---- A. backup_log row produced ----
+  const logRes3 = await pool.query(
+    `SELECT status, note FROM backup_log WHERE id > $1 ORDER BY id DESC LIMIT 1`,
+    [hwm3]
+  );
+  assert(logRes3.rows.length >= 1, "boundary+1ms: backup_log received at least 1 new row");
+  if (logRes3.rows.length) {
+    const { status, note } = logRes3.rows[0];
+    assert(status === "ok", `boundary+1ms: backup_log row status = 'ok' (got '${status}')`);
+    assert(
+      note && note.startsWith("Incremental backup"),
+      `boundary+1ms: backup_log note starts with "Incremental backup" (got: "${note}")`
+    );
+    // The note embeds the record count — must be >= 1.
+    const match3 = note && note.match(/^Incremental backup:\s+(\d+)\s+record/);
+    assert(
+      match3 !== null,
+      `boundary+1ms: backup_log note contains a record count (got: "${note}")`
+    );
+    if (match3) {
+      assert(
+        parseInt(match3[1], 10) >= 1,
+        `boundary+1ms: backup_log note reports at least 1 changed record (got ${match3[1]})`
+      );
+    }
+  }
+
+  // ---- B. Brevo request was made ----
+  const { options: plus1Opts, parsed: plus1Parsed } = fakeHttps5.captured;
+  assert(plus1Opts !== null, "boundary+1ms: Brevo https.request was called");
+
+  if (plus1Parsed) {
+    const attachments3 = plus1Parsed.attachment || [];
+    assert(
+      attachments3.length === 1,
+      `boundary+1ms: 1 attachment present (got ${attachments3.length})`
+    );
+
+    if (attachments3.length) {
+      let csv3 = "";
+      try { csv3 = Buffer.from(attachments3[0].content, "base64").toString("utf8"); } catch (_) {}
+      assert(csv3.length > 0, "boundary+1ms: attachment decodes to non-empty string");
+
+      const lines3 = csv3.split(/\r?\n/).filter(Boolean);
+      const dataRowCount3 = lines3.length - 1; // subtract header
+      assert(
+        dataRowCount3 >= 1,
+        `boundary+1ms: CSV contains at least 1 data row (got ${dataRowCount3})`
+      );
+
+      const csvBody3 = lines3.slice(1).join("\n");
+
+      // ---- C. The +1 ms record IS in the CSV ----
+      assert(
+        csvBody3.includes(SENTINEL_PLUS1),
+        `boundary+1ms: record with updated_at = cutoff + 1ms IS included in the incremental CSV`
+      );
+    }
+  }
+
+  // --- Cleanup ---
+  await pool.query("DELETE FROM visits WHERE company = $1", [SENTINEL_PLUS1]);
+  await pool.query("DELETE FROM backup_log WHERE id > $1", [hwm3]);
+
+  const cleanV3 = await pool.query(
+    "SELECT COUNT(*)::int AS n FROM visits WHERE company = $1", [SENTINEL_PLUS1]
+  );
+  assert(cleanV3.rows[0].n === 0, "boundary+1ms: sentinel visit cleaned up");
+
+  const cleanL3 = await pool.query(
+    "SELECT COUNT(*)::int AS n FROM backup_log WHERE id > $1", [hwm3]
+  );
+  assert(cleanL3.rows[0].n === 0, "boundary+1ms: test backup_log rows cleaned up");
+
+  console.log("\n=== Done (boundary +1 ms test) ===");
+}
+
 run()
   .then(() => runIncrementalTest())
   .then(() => runIncrementalNoChangeTest())
   .then(() => runBoundaryTest())
+  .then(() => runBoundaryPlusOneTest())
   .catch((err) => {
     console.error("Unexpected error:", err);
     process.exitCode = 1;
