@@ -16,6 +16,19 @@
   }
 
   function bootAnalytics() {
+    // Inject preconnect hints now that consent is confirmed
+    var preconnects = [
+      'https://www.googletagmanager.com',
+      'https://www.google-analytics.com',
+      'https://www.clarity.ms',
+      'https://cdn.brevo.com'
+    ];
+    preconnects.forEach(function (origin) {
+      var l = document.createElement('link');
+      l.rel = 'preconnect'; l.href = origin; l.crossOrigin = 'anonymous';
+      document.head.appendChild(l);
+    });
+
     // GA4
     var GA = 'G-JRLYCRC48G';
     var s = document.createElement('script');
