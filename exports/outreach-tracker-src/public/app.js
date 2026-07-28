@@ -172,6 +172,14 @@ async function enterApp() {
   riskCheck();
   validate();
   loadBackupStatus(); // non-blocking — populate Export tab warning in background
+
+  // Resume backup-button cooldown if a cooldown was active when the page was last loaded
+  const _cooldownUntil = parseInt(sessionStorage.getItem(RUN_BACKUP_COOLDOWN_KEY) || "0", 10);
+  if (_cooldownUntil > Date.now()) {
+    const _remainingSec = Math.ceil((_cooldownUntil - Date.now()) / 1000);
+    const _backupBtn = $("#runBackupBtn");
+    if (_backupBtn) _startRunBackupCooldown(_backupBtn, _remainingSec);
+  }
 }
 
 function populateOwners() {
@@ -848,9 +856,12 @@ async function loadBackupStatus() {
 /* ================= RUN BACKUP NOW ================= */
 let _runBackupCooldownTimer = null;
 
+const RUN_BACKUP_COOLDOWN_KEY = "runBackupCooldownUntil";
+
 function _startRunBackupCooldown(btn, waitSec) {
   if (_runBackupCooldownTimer) clearInterval(_runBackupCooldownTimer);
   let remaining = Math.max(waitSec, 1);
+  sessionStorage.setItem(RUN_BACKUP_COOLDOWN_KEY, String(Date.now() + remaining * 1000));
   btn.disabled = true;
   function tick() {
     const m = Math.floor(remaining / 60);
@@ -862,6 +873,7 @@ function _startRunBackupCooldown(btn, waitSec) {
     if (remaining < 0) {
       clearInterval(_runBackupCooldownTimer);
       _runBackupCooldownTimer = null;
+      sessionStorage.removeItem(RUN_BACKUP_COOLDOWN_KEY);
       btn.disabled = false;
       btn.textContent = "Run backup now";
     }
