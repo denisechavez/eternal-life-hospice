@@ -79,7 +79,9 @@ async function run() {
   console.log("  Calling runWeeklyBackup (real Brevo send) ...");
   await runWeeklyBackup({ forceFullBackup: false });
 
-  // Check backup_log for the result row.
+  // Check backup_log for the result row written by runWeeklyBackup.
+  // Use seededLogId as the high-water mark — any row with a higher id was
+  // inserted by the backup run we just triggered.
   const logRes = await pool.query(
     `SELECT status, note FROM backup_log WHERE id > $1 ORDER BY id DESC LIMIT 1`,
     [seededLogId]
