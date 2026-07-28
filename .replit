@@ -23,6 +23,10 @@ args = "Start application"
 task = "workflow.run"
 args = "Reel Preview"
 
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "backup-trim-test"
+
 [[workflows.workflow]]
 name = "Start application"
 author = "agent"
@@ -46,6 +50,17 @@ waitForPort = 5173
 
 [workflows.workflow.metadata]
 outputType = "console"
+
+[[workflows.workflow]]
+name = "backup-trim-test"
+author = "agent"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "cd exports/outreach-tracker-src && npm test"
+
+[workflows.workflow.metadata]
+isValidation = true
 
 [[ports]]
 localPort = 3000

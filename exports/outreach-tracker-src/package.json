@@ -5,7 +5,8 @@
   "description": "Eternal Life Hospice — Field Outreach Tracker (internal)",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js"
+    "start": "node server.js",
+    "test": "node test-backup-trim.js"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
