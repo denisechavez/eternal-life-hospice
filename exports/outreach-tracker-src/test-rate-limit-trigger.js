@@ -255,6 +255,66 @@ async function runPostRestartTest() {
   }
 }
 
+/* ---------- DB-error (fail-closed) test ------------------------------------
+ * Verifies that the real dbTriggerRateLimit middleware (from
+ * db-trigger-rate-limit.js) blocks the request with 503 when the injected
+ * query function throws — exercising the actual catch block, not a mirror.
+ * --------------------------------------------------------------------------- */
+const {
+  makeTriggerRateLimit,
+  TRIGGER_RL_DB_ERROR_MESSAGE: DB_ERROR_MESSAGE,
+} = require("./db-trigger-rate-limit");
+
+async function runDbErrorTest() {
+  console.log("\n=== DB-error fail-closed test (real middleware) ===\n");
+
+  /* Inject a query stub that always throws — simulates an unreachable DB */
+  const throwingQuery = async () => {
+    throw new Error("simulated DB error — trigger_rate_limit unreachable");
+  };
+
+  /* Use the real factory from db-trigger-rate-limit.js */
+  const realMiddleware = makeTriggerRateLimit(throwingQuery);
+
+  const app = express();
+  app.use(express.json());
+  app.post(
+    "/api/backup/trigger",
+    realMiddleware,
+    (_req, res) => res.json({ ok: true, note: "stub — should never reach here" })
+  );
+
+  const srv = http.createServer(app);
+  await new Promise((resolve) => srv.listen(0, "127.0.0.1", resolve));
+  const base = `http://127.0.0.1:${srv.address().port}`;
+
+  try {
+    /* Every request must be blocked — the "DB" always throws */
+    for (let i = 1; i <= 2; i++) {
+      const r = await post(base, "/api/backup/trigger");
+      assert(
+        r.status === 503,
+        `DB-error request ${i}: real middleware blocks with 503 (got ${r.status})`
+      );
+      assert(
+        r.data && r.data.error === DB_ERROR_MESSAGE,
+        `DB-error request ${i}: error body is "${DB_ERROR_MESSAGE}" (got "${
+          r.data && r.data.error
+        }")`
+      );
+      /* No Retry-After header on a 503 — this is a transient infra error, not
+         a rate-limit window; callers should not treat it as a countdown */
+      const retryAfter = r.headers["retry-after"];
+      assert(
+        retryAfter === undefined,
+        `DB-error request ${i}: no Retry-After header on 503 (got "${retryAfter}")`
+      );
+    }
+  } finally {
+    srv.close();
+  }
+}
+
 /* ---------- main ---------- */
 async function run() {
   console.log("=== triggerLimiter rate-limit test ===\n");
@@ -282,6 +342,8 @@ async function run() {
   }
 
   await runPostRestartTest();
+
+  await runDbErrorTest();
 
   console.log("\n=== Done ===");
 

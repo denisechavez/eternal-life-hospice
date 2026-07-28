@@ -550,45 +550,8 @@ app.post("/api/transcribe", requireAuth, transcribeLimiter, async (req, res) => 
 // ---- on-demand full backup trigger ----
 // Rate-limit state is persisted in the trigger_rate_limit DB table so the
 // 3-per-hour cap survives a server restart mid-cooldown.
-const TRIGGER_RL_MAX = 3;
-const TRIGGER_RL_WINDOW_MS = 60 * 60 * 1000; // 1 hour
-const TRIGGER_RL_MESSAGE = "Too many backup requests. Please wait before trying again.";
-
-async function dbTriggerRateLimit(req, res, next) {
-  const ip = req.ip;
-  try {
-    // Atomic upsert: reset the bucket when the window has expired, else increment.
-    const { rows } = await query(
-      `INSERT INTO trigger_rate_limit (ip, count, first_at)
-       VALUES ($1, 1, NOW())
-       ON CONFLICT (ip) DO UPDATE SET
-         count    = CASE
-                      WHEN trigger_rate_limit.first_at < NOW() - ($2 * INTERVAL '1 millisecond')
-                      THEN 1
-                      ELSE trigger_rate_limit.count + 1
-                    END,
-         first_at = CASE
-                      WHEN trigger_rate_limit.first_at < NOW() - ($2 * INTERVAL '1 millisecond')
-                      THEN NOW()
-                      ELSE trigger_rate_limit.first_at
-                    END
-       RETURNING count, EXTRACT(EPOCH FROM first_at)::BIGINT * 1000 AS first_ms`,
-      [ip, TRIGGER_RL_WINDOW_MS]
-    );
-    const { count, first_ms } = rows[0];
-    if (count > TRIGGER_RL_MAX) {
-      const waitSec = Math.ceil((Number(first_ms) + TRIGGER_RL_WINDOW_MS - Date.now()) / 1000);
-      res.setHeader("Retry-After", String(Math.max(waitSec, 1)));
-      return res.status(429).json({ error: TRIGGER_RL_MESSAGE });
-    }
-    return next();
-  } catch (e) {
-    // Fail closed: if the rate-limit table is unreachable we cannot enforce
-    // the cap, so reject the request rather than silently allow it through.
-    console.error("dbTriggerRateLimit DB error:", e);
-    return res.status(503).json({ error: "Backup service temporarily unavailable. Please try again shortly." });
-  }
-}
+const { makeTriggerRateLimit } = require("./db-trigger-rate-limit");
+const dbTriggerRateLimit = makeTriggerRateLimit(query);
 
 app.post("/api/backup/trigger", requireAuth, dbTriggerRateLimit, async (req, res) => {
   const forceFullBackup = req.query.full === "true";
