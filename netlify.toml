@@ -1,6 +1,11 @@
 # Netlify configuration for Eternal Life Hospice.
-# The static site lives in website/elh-preview/. The build command runs the
-# Cookie Settings lint check and blocks the deploy if any page is missing the link.
+# The static site lives in website/elh-preview/. The build command runs two
+# pre-deploy checks and blocks the deploy if either fails:
+#
+#   1. check-cookie-settings.sh — every page must carry the Cookie Settings link
+#   2. translate-smoke-test.js  — every representative page must have the
+#      translate bar wired correctly (ft-lang pills + translate.js + valid
+#      canonical URL).  Catches bulk-edit regressions before they go live.
 #
 # We set `base` to the site folder so Netlify runs entirely inside it. This
 # isolates the deploy from the repo-root package.json (which belongs to the
@@ -10,7 +15,7 @@
 [build]
   base = "website/elh-preview"
   publish = "."
-  command = "bash ../check-cookie-settings.sh"
+  command = "bash ../check-cookie-settings.sh && node assets/translate-smoke-test.js"
 
 [functions]
   directory = "netlify/functions"

@@ -31,6 +31,10 @@ args = "backup-trim-test"
 task = "workflow.run"
 args = "focus-ring-check"
 
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "translate-smoke-test"
+
 [[workflows.workflow]]
 name = "Start application"
 author = "agent"
@@ -76,6 +80,17 @@ args = "cd exports/outreach-tracker-src && node test-rechint-focus.js"
 
 [workflows.workflow.metadata]
 outputType = "console"
+
+[[workflows.workflow]]
+name = "translate-smoke-test"
+author = "agent"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "cd website/elh-preview && node assets/translate-smoke-test.js"
+
+[workflows.workflow.metadata]
+isValidation = true
 
 [[ports]]
 localPort = 3000
