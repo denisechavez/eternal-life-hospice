@@ -6,6 +6,12 @@ Internal field visit-capture and follow-up tracking app for the Eternal Life Hos
 
 ## Production builds & the trim test
 
+### Cold-start (first deploy) behaviour
+
+When the test suite runs against a brand-new Postgres instance that has no `backup_log` table, `test-backup-trim.js` creates the table automatically via `CREATE TABLE IF NOT EXISTS` before inserting any rows. All 6 assertions still pass and the table is left clean after the test. This has been explicitly verified by dropping the table and re-running the test against the live database; no manual schema migration is needed before the first deploy.
+
+### Test sequence
+
 The deployment build command (`npm install && npm test`) runs seven test files in sequence:
 
 1. `test-scanhint-reset.js` — scan-hint DOM reset logic (no DB required)
