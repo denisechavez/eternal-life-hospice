@@ -223,16 +223,8 @@
       <a class="ft-lang" data-lang="fa">🇮🇷 فارسی</a>
     </div>
   </div>
-  <script>
-    (function(){
-      var base = window.location.href.split('#')[0];
-      document.querySelectorAll('.ft-lang').forEach(function(a){
-        var lang = a.getAttribute('data-lang');
-        a.href = 'https://translate.google.com/translate?sl=en&tl=' + lang + '&u=' + encodeURIComponent(base);
-      });
-    })();
-  </script>
 </footer>
+<script defer src="/assets/translate.js"></script>
 <div id="chat-widget-mount"></div>
 <script src="assets/chat.js?v=20260727b" defer></script>
 <div id="search-overlay" role="dialog" aria-modal="true" aria-label="Site search" hidden>

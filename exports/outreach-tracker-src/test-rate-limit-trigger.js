@@ -315,6 +315,78 @@ async function runDbErrorTest() {
   }
 }
 
+/* ---------- client-side toast path test for 503 and 429 -------------------
+ * Mirrors what triggerBackup()'s catch block does in public/app.js:
+ *
+ *   catch (err) {
+ *     if (err.status === 429) {
+ *       toast(err.message || "Please wait before running another backup.", true);
+ *     } else {
+ *       toast(err.message || "Backup failed.", true);   // ← 503 lands here
+ *     }
+ *   }
+ *
+ * We use simulateClientApiError() to build the Error object the same way the
+ * real api() helper does, then check the message that toast() would receive.
+ * --------------------------------------------------------------------------- */
+function runClientSideToastTest() {
+  console.log("\n=== client-side toast path test (503 + 429) ===\n");
+
+  /* --- 503: DB unreachable --- */
+  const err503 = simulateClientApiError(
+    503,
+    {},
+    { error: DB_ERROR_MESSAGE }
+  );
+
+  assert(
+    err503.message === DB_ERROR_MESSAGE,
+    `503 client error message equals server string ("${err503.message}")`
+  );
+  assert(
+    err503.status === 503,
+    `503 client error.status is 503 (got ${err503.status})`
+  );
+  assert(
+    err503.retryAfter === null,
+    `503 client error.retryAfter is null — no countdown for a transient infra error (got "${err503.retryAfter}")`
+  );
+
+  /* Simulate the triggerBackup catch block for a non-429 error */
+  const toastMsg503 = (err503 && err503.message) || "Backup failed.";
+  assert(
+    toastMsg503 === DB_ERROR_MESSAGE,
+    `triggerBackup toast receives the exact server string for 503 ("${toastMsg503}")`
+  );
+
+  /* --- 429: rate-limited --- */
+  const err429 = simulateClientApiError(
+    429,
+    { "retry-after": "3540" },
+    { error: TRIGGER_MESSAGE }
+  );
+
+  assert(
+    err429.message === TRIGGER_MESSAGE,
+    `429 client error message equals server string ("${err429.message}")`
+  );
+  assert(
+    err429.status === 429,
+    `429 client error.status is 429 (got ${err429.status})`
+  );
+  assert(
+    err429.retryAfter === "3540",
+    `429 client error.retryAfter is populated (got "${err429.retryAfter}")`
+  );
+
+  /* Simulate the triggerBackup catch block for a 429 error */
+  const toastMsg429 = (err429 && err429.message) || "Please wait before running another backup.";
+  assert(
+    toastMsg429 === TRIGGER_MESSAGE,
+    `triggerBackup toast receives the exact server string for 429 ("${toastMsg429}")`
+  );
+}
+
 /* ---------- main ---------- */
 async function run() {
   console.log("=== triggerLimiter rate-limit test ===\n");
@@ -344,6 +416,8 @@ async function run() {
   await runPostRestartTest();
 
   await runDbErrorTest();
+
+  runClientSideToastTest();
 
   console.log("\n=== Done ===");
 
