@@ -55,12 +55,12 @@ outputType = "console"
 name = "backup-trim-test"
 author = "agent"
 
-[[workflows.workflow.tasks]]
-task = "shell.exec"
-args = "cd exports/outreach-tracker-src && npm test"
-
 [workflows.workflow.metadata]
 isValidation = true
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "cd exports/outreach-tracker-src && npm install --no-audit --no-fund && npm test"
 
 [[ports]]
 localPort = 3000
@@ -93,3 +93,4 @@ timeoutMs = 30000
 [deployment]
 deploymentTarget = "autoscale"
 run = ["bash", "-c", "python3 website/devserver.py"]
+build = ["bash", "-c", "cd exports/outreach-tracker-src && npm install --no-audit --no-fund && npm test"]
