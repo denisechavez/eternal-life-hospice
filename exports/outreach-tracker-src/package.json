@@ -6,14 +6,15 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "test": "node test-rechint-focus.js && node test-scanhint-reset.js && node test-rec-btn-aria.js && node test-backup-trim.js && node test-backup-email.js && node test-rate-limit-trigger.js && node test-backup-brevo-failure.js && node test-backup-cooldown-session.js",
+    "test": "node test-rechint-focus.js && node test-scanhint-reset.js && node test-rec-btn-aria.js && node test-backup-trim.js && node test-backup-email.js && node test-rate-limit-trigger.js && node test-backup-brevo-failure.js && node test-backup-cooldown-session.js && node test-rate-limit-table.js",
     "test:scanhint": "node test-scanhint-reset.js",
     "test:backup-trim": "node test-backup-trim.js",
     "test:backup-email": "node test-backup-email.js",
     "test:rec-btn-aria": "node test-rec-btn-aria.js",
     "test:rate-limit-trigger": "node test-rate-limit-trigger.js",
     "test:backup-brevo-failure": "node test-backup-brevo-failure.js",
-    "test:focus": "node test-rechint-focus.js"
+    "test:focus": "node test-rechint-focus.js",
+    "test:rate-limit-table": "node test-rate-limit-table.js"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
