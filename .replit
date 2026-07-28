@@ -64,7 +64,7 @@ isValidation = true
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "cd exports/outreach-tracker-src && npm install --no-audit --no-fund && npm test"
+args = "cd exports/outreach-tracker-src && npm ci --no-audit --no-fund && npm test"
 
 [[workflows.workflow]]
 name = "focus-ring-check"
@@ -104,4 +104,4 @@ timeoutMs = 30000
 [deployment]
 deploymentTarget = "autoscale"
 run = ["bash", "-c", "python3 website/devserver.py"]
-build = ["bash", "-c", "cd exports/outreach-tracker-src && npm install --no-audit --no-fund && npm test"]
+build = ["bash", "-c", "cd exports/outreach-tracker-src && npm ci --no-audit --no-fund && npm test"]
