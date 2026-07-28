@@ -979,6 +979,19 @@ function switchTab(view) {
 }
 $$(".tab").forEach((t) => t.addEventListener("click", () => switchTab(t.dataset.view)));
 
+/* Pause the "Last checked" ticker when the browser tab is hidden;
+   resume it only when the Export view is still the active in-app tab. */
+document.addEventListener("visibilitychange", () => {
+  if (document.hidden) {
+    if (_backupCheckedAtTimer) { clearInterval(_backupCheckedAtTimer); _backupCheckedAtTimer = null; }
+  } else {
+    const exportView = $("#view-export");
+    if (exportView && !exportView.classList.contains("hidden") && !_backupCheckedAtTimer) {
+      _backupCheckedAtTimer = setInterval(renderCheckedAt, 1000);
+    }
+  }
+});
+
 /* ================= BOOT ================= */
 (async () => {
   try {
