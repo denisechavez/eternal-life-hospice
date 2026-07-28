@@ -243,7 +243,7 @@ function bindPhoto(inputSel, slot, dropSel, afterSet) {
     });
   });
 }
-bindPhoto("#fCard", "card", "#dropCard", (d) => {
+function onCardPhotoSet(d) {
   if (hasCard === "yes") {
     if (!scanning) {
       const h = $(".scanhint");
@@ -251,7 +251,8 @@ bindPhoto("#fCard", "card", "#dropCard", (d) => {
     }
     extractCard(d);
   }
-});
+}
+bindPhoto("#fCard", "card", "#dropCard", onCardPhotoSet);
 bindPhoto("#fSite", "site", "#dropSite");
 
 /* ----- keep voice + scan sections in sync with the current aiEnabled value ----- */

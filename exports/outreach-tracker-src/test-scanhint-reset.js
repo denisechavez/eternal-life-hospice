@@ -165,6 +165,7 @@ async function bootApp({ aiEnabled = true } = {}) {
       SCAN_HINT,
       SCAN_HINT_NO_AI,
       drawThumbs: () => drawThumbs(),
+      onCardPhotoSet: (d) => onCardPhotoSet(d),
     };
   `;
   w.document.body.appendChild(bridge);
@@ -310,6 +311,94 @@ async function runTests() {
 
     assert(hint.textContent === textBefore,  "card hint text unchanged when site photo removed");
     assert(!hint.classList.contains("busy"), "'busy' still absent after site photo removed");
+    console.log();
+  }
+
+  // ── Scenario 6: aiEnabled=true — hint resets when photo is swapped (no remove) ─
+  //
+  // extractCard is called by onCardPhotoSet and would immediately overwrite the hint
+  // with "Reading the card…".  Stub it out so we can observe the reset state cleanly.
+  {
+    console.log("Scenario 6: aiEnabled=true — swap card photo resets hint via afterSet callback");
+    const { w } = await bootApp({ aiEnabled: true });
+
+    w.__app.aiEnabled = true;
+    w.__app.hasCard = "yes";
+    loadFakeCardPhoto(w);
+
+    // Simulate a completed scan: post-scan text shown, busy absent
+    simulateScanSuccess(w);
+
+    const hint = w.document.querySelector(".scanhint");
+    assert(hint !== null, ".scanhint element exists");
+    assert(hint.textContent !== w.__app.SCAN_HINT, "hint text shows post-scan text before swap");
+
+    // Stub extractCard so it does not overwrite the hint during this test
+    const stubScript6 = w.document.createElement("script");
+    stubScript6.textContent = "extractCard = function() {};";
+    w.document.body.appendChild(stubScript6);
+
+    // Simulate choosing a new file — the real onCardPhotoSet callback
+    w.__app.onCardPhotoSet("data:image/jpeg;base64,/9j/newphoto");
+
+    assert(hint.textContent === w.__app.SCAN_HINT, "hint text resets to SCAN_HINT after swap");
+    assert(!hint.classList.contains("busy"),        "'busy' class is absent after swap reset");
+    console.log();
+  }
+
+  // ── Scenario 7: aiEnabled=false — swap resets hint to SCAN_HINT_NO_AI ──────────
+  {
+    console.log("Scenario 7: aiEnabled=false — swap card photo resets hint to SCAN_HINT_NO_AI");
+    const { w } = await bootApp({ aiEnabled: false });
+
+    w.__app.hasCard = "yes";
+    loadFakeCardPhoto(w);
+
+    // Simulate a failed scan: error text shown, busy absent
+    const hint = w.document.querySelector(".scanhint");
+    if (hint) { hint.textContent = "Couldn't read the card. Please type the details by hand."; hint.classList.remove("busy"); }
+
+    assert(hint !== null, ".scanhint element exists");
+    assert(hint.textContent !== w.__app.SCAN_HINT_NO_AI, "hint shows error text before swap");
+
+    // Stub extractCard so it does not overwrite the hint during this test
+    const stubScript7 = w.document.createElement("script");
+    stubScript7.textContent = "extractCard = function() {};";
+    w.document.body.appendChild(stubScript7);
+
+    // Simulate choosing a new file — real onCardPhotoSet callback
+    w.__app.onCardPhotoSet("data:image/jpeg;base64,/9j/newphoto2");
+
+    assert(hint.textContent === w.__app.SCAN_HINT_NO_AI, "hint resets to SCAN_HINT_NO_AI after swap");
+    assert(!hint.classList.contains("busy"),              "'busy' class is absent after swap reset");
+    console.log();
+  }
+
+  // ── Scenario 8: scanning=true — swap must NOT reset the hint ────────────────────
+  {
+    console.log("Scenario 8: scanning=true — swap must NOT reset the hint while scan in progress");
+    const { w } = await bootApp({ aiEnabled: true });
+
+    w.__app.aiEnabled = true;
+    w.__app.hasCard = "yes";
+    loadFakeCardPhoto(w);
+    simulateScanInProgress(w);
+    w.__app.scanning = true;
+
+    const hint = w.document.querySelector(".scanhint");
+    const textBefore = hint ? hint.textContent : "";
+
+    // Stub extractCard — scanning=true causes onCardPhotoSet to skip both the reset
+    // and the extractCard call, but stub anyway for safety
+    const stubScript8 = w.document.createElement("script");
+    stubScript8.textContent = "extractCard = function() {};";
+    w.document.body.appendChild(stubScript8);
+
+    // Simulate swap — afterSet should skip reset because scanning=true
+    w.__app.onCardPhotoSet("data:image/jpeg;base64,/9j/newphoto3");
+
+    assert(hint.textContent === textBefore, "hint text unchanged when scanning=true during swap");
+    assert(hint.classList.contains("busy"), "'busy' class retained when scanning=true during swap");
     console.log();
   }
 
