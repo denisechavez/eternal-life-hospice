@@ -6,7 +6,8 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "test": "node test-backup-trim.js"
+    "test": "node test-backup-trim.js",
+    "test:focus": "node test-rechint-focus.js"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
