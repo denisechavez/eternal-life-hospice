@@ -141,6 +141,19 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--slate);outline-o
 .backup-warn{background:rgba(156,47,63,.09);border-left:3px solid #9c2f3f;color:#7a1e2e;font-size:13px;line-height:1.5;padding:12px 15px;border-radius:0 3px 3px 0;margin-bottom:20px}
 .backup-warn strong{font-weight:600}
 
+/* ---------- backup history ---------- */
+.backup-history{background:#fff;border:1px solid var(--line);border-radius:3px;padding:14px 16px;margin-bottom:20px}
+.bh-heading{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--taupe);margin:0 0 10px;font-weight:600}
+.bh-list{list-style:none;margin:0;padding:0}
+.bh-row{display:flex;align-items:baseline;gap:8px;padding:4px 0;border-bottom:1px solid var(--line);font-size:12.5px;color:var(--deep)}
+.bh-row:last-child{border-bottom:none}
+.bh-icon{width:16px;text-align:center;font-size:11px;font-weight:700;flex-shrink:0}
+.bh-ok{color:#2e7d4f}
+.bh-err{color:#9c2f3f}
+.bh-na{color:var(--taupe)}
+.bh-date{min-width:100px;color:var(--taupe);font-size:12px}
+.bh-note{color:#6b5a6a;font-size:12px;font-style:italic}
+
 /* ---------- AI model warning banner ---------- */
 .ai-warn{display:flex;align-items:flex-start;gap:12px;background:rgba(192,128,58,.11);border-left:3px solid #C0803A;color:#7a4a0e;font-size:13px;line-height:1.5;padding:12px 15px;border-radius:0 3px 3px 0;margin-bottom:20px}
 .ai-warn span{flex:1}

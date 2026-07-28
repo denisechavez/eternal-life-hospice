@@ -550,15 +550,25 @@ app.post("/api/transcribe", requireAuth, transcribeLimiter, async (req, res) => 
 // ---- backup status ----
 app.get("/api/backup/status", requireAuth, async (req, res) => {
   try {
+    // Prune rows older than 90 days whenever the Export tab polls
+    await query(
+      `DELETE FROM backup_log WHERE ran_at < NOW() - INTERVAL '90 days'`
+    ).catch(() => {}); // ignore if table doesn't exist yet
+
     const r = await query(
-      `SELECT status, ran_at, note FROM backup_log ORDER BY ran_at DESC LIMIT 1`
+      `SELECT status, ran_at, note FROM backup_log ORDER BY ran_at DESC LIMIT 10`
     );
-    if (!r.rows.length) return res.json({ status: "never" });
-    const row = r.rows[0];
-    res.json({ status: row.status, ran_at: row.ran_at, note: row.note || null });
+    if (!r.rows.length) return res.json({ rows: [] });
+    res.json({
+      rows: r.rows.map((row) => ({
+        status: row.status,
+        ran_at: row.ran_at,
+        note: row.note || null,
+      })),
+    });
   } catch (_) {
     // backup_log table doesn't exist yet — not a problem
-    res.json({ status: "never" });
+    res.json({ rows: [] });
   }
 });
 

@@ -652,32 +652,85 @@ async function loadBackupStatus() {
     const r = await api("/api/backup/status");
     const warn = $("#backupWarn");
     const msgEl = $("#backupWarnMsg");
-    if (!warn || !msgEl) return;
+    const histEl = $("#backupHistory");
+    if (!warn || !msgEl || !histEl) return;
 
+    const rows = r.rows || [];
+
+    // ---- warning banner: based on most recent row ----
     let problem = null;
-
-    if (r.status === "error") {
-      problem = "The last backup attempt failed" +
-        (r.note ? ": " + r.note : "") +
-        ". Check BACKUP_EMAIL and the Brevo API key.";
-    } else if (r.status !== "never" && r.ran_at) {
-      const ageDays = (Date.now() - new Date(r.ran_at).getTime()) / (1000 * 60 * 60 * 24);
-      if (ageDays > 10) {
-        problem = "No successful backup in " + Math.floor(ageDays) +
-          " days. Check the backup schedule and email configuration.";
+    if (rows.length > 0) {
+      const latest = rows[0];
+      if (latest.status === "error") {
+        problem = "The last backup attempt failed" +
+          (latest.note ? ": " + latest.note : "") +
+          ". Check BACKUP_EMAIL and the Brevo API key.";
+      } else {
+        const ageDays = (Date.now() - new Date(latest.ran_at).getTime()) / (1000 * 60 * 60 * 24);
+        if (ageDays > 10) {
+          problem = "No successful backup in " + Math.floor(ageDays) +
+            " days. Check the backup schedule and email configuration.";
+        }
       }
     }
 
     if (problem) {
       msgEl.textContent = problem;
       warn.classList.remove("hidden");
-      // Also surface a toast so the warning is noticed even if the user never opens Export
-      if (r.status !== "error") {
-        // stale backup — gentle nudge via toast
+      if (rows[0] && rows[0].status !== "error") {
         toast("Backup may be overdue. Check the Export tab.", true);
       }
     } else {
       warn.classList.add("hidden");
+    }
+
+    // ---- history list ----
+    if (rows.length === 0) {
+      histEl.classList.add("hidden");
+    } else {
+      // Build with DOM nodes so server-sourced text (note, date) is never treated as HTML
+      const heading = document.createElement("p");
+      heading.className = "bh-heading";
+      heading.textContent = "Recent backup runs";
+
+      const ul = document.createElement("ul");
+      ul.className = "bh-list";
+
+      rows.forEach((row) => {
+        const icon = row.status === "ok" ? "✓" : row.status === "error" ? "✕" : "–";
+        const iconClass = row.status === "ok" ? "bh-ok" : row.status === "error" ? "bh-err" : "bh-na";
+        const dateStr = new Date(row.ran_at).toLocaleDateString("en-US", {
+          month: "short", day: "numeric", year: "numeric",
+        });
+
+        const li = document.createElement("li");
+        li.className = "bh-row";
+
+        const iconSpan = document.createElement("span");
+        iconSpan.className = "bh-icon " + iconClass;
+        iconSpan.textContent = icon;
+
+        const dateSpan = document.createElement("span");
+        dateSpan.className = "bh-date";
+        dateSpan.textContent = dateStr;
+
+        li.appendChild(iconSpan);
+        li.appendChild(dateSpan);
+
+        if (row.note) {
+          const noteSpan = document.createElement("span");
+          noteSpan.className = "bh-note";
+          noteSpan.textContent = row.note; // textContent — never innerHTML
+          li.appendChild(noteSpan);
+        }
+
+        ul.appendChild(li);
+      });
+
+      histEl.innerHTML = ""; // clear any previous render
+      histEl.appendChild(heading);
+      histEl.appendChild(ul);
+      histEl.classList.remove("hidden");
     }
   } catch (_) {
     // Don't break the export tab if the status check fails
