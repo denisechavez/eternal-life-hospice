@@ -1,0 +1,14 @@
+# Rename this file to .replit in your new Replit project
+
+run = "npm start"
+
+[nix]
+channel = "stable-24_05"
+
+[[ports]]
+localPort = 5000
+externalPort = 80
+
+[deployment]
+run = ["sh", "-c", "npm start"]
+deploymentTarget = "cloudrun"

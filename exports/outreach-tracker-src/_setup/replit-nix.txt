@@ -1,0 +1,7 @@
+# Copy this content into a file named "replit.nix" in your new Replit project
+{ pkgs }: {
+  deps = [
+    pkgs.nodejs_20
+    pkgs.postgresql
+  ];
+}
