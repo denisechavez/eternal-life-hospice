@@ -14,7 +14,8 @@
     "test:rate-limit-trigger": "node test-rate-limit-trigger.js",
     "test:backup-brevo-failure": "node test-backup-brevo-failure.js",
     "test:focus": "node test-rechint-focus.js",
-    "test:rate-limit-table": "node test-rate-limit-table.js"
+    "test:rate-limit-table": "node test-rate-limit-table.js",
+    "test:backup-nochange-real": "node test-backup-nochange-real-send.js"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
