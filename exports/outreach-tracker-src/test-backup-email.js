@@ -560,9 +560,137 @@ async function runIncrementalNoChangeTest() {
   console.log("\n=== Done (incremental no-change test) ===");
 }
 
+// ---------------------------------------------------------------------------
+// Boundary-timestamp test
+//
+// The incremental WHERE clause is:  updated_at > $1  (strict greater-than).
+// A record whose updated_at equals the cutoff exactly is intentionally
+// excluded — the assumption is that it was already captured by the backup
+// that produced that ran_at timestamp.
+//
+// This test pins that contract so any future change to ">=" is caught.
+// ---------------------------------------------------------------------------
+async function runBoundaryTest() {
+  console.log("\n=== incremental backup boundary-timestamp test ===\n");
+  console.log(
+    "  (Documents intentional behaviour: updated_at = ran_at is excluded by strict >)"
+  );
+
+  const SENTINEL_BOUNDARY = "test-backup-boundary";
+
+  // High-water mark for surgical cleanup
+  const hwmRes2 = await pool.query(
+    "SELECT COALESCE(MAX(id), 0) AS hwm FROM backup_log"
+  );
+  const hwm2 = hwmRes2.rows[0].hwm;
+
+  // 1. Seed a successful backup_log row 5 seconds in the future so it is
+  //    guaranteed to be the latest 'ok' row regardless of any pre-existing
+  //    rows in the database.  Capture its exact ran_at so we can align
+  //    the sentinel visit's updated_at to the same microsecond.
+  const logInsert = await pool.query(
+    `INSERT INTO backup_log (ran_at, status, note)
+     VALUES (NOW() + INTERVAL '5 seconds', 'ok',
+             'Seeded by boundary test — safe to delete')
+     RETURNING ran_at`
+  );
+  const cutoff = logInsert.rows[0].ran_at; // exact timestamp as JS Date
+
+  // Verify this row is indeed the effective cutoff that runWeeklyBackup will use.
+  const effectiveCutoffRes = await pool.query(
+    `SELECT ran_at FROM backup_log WHERE status = 'ok' ORDER BY ran_at DESC LIMIT 1`
+  );
+  assert(
+    effectiveCutoffRes.rows.length === 1 &&
+      effectiveCutoffRes.rows[0].ran_at.getTime() === cutoff.getTime(),
+    `boundary: seeded log row IS the effective cutoff (ran_at=${cutoff.toISOString()})`
+  );
+
+  // 2. Insert a sentinel visit and set its updated_at to the EXACT cutoff.
+  //    With strict ">", this record must not appear in the incremental backup.
+  await pool.query(
+    `INSERT INTO visits (company, attested, notes) VALUES ($1, false, 'boundary-sentinel')`,
+    [SENTINEL_BOUNDARY]
+  );
+  await pool.query(
+    `UPDATE visits SET updated_at = $1 WHERE company = $2`,
+    [cutoff, SENTINEL_BOUNDARY]
+  );
+
+  // Confirm the update took effect at the exact cutoff microsecond.
+  const sentinelTsRes = await pool.query(
+    `SELECT updated_at FROM visits WHERE company = $1`, [SENTINEL_BOUNDARY]
+  );
+  assert(
+    sentinelTsRes.rows.length === 1 &&
+      sentinelTsRes.rows[0].updated_at.getTime() === cutoff.getTime(),
+    `boundary: sentinel updated_at = cutoff exactly (${cutoff.toISOString()})`
+  );
+
+  // 3. Run the incremental backup (no force-full).
+  const fakeHttps4 = makeFakeHttps();
+  await runWeeklyBackup({ forceFullBackup: false, _httpsOverride: fakeHttps4 });
+
+  // ---- A. backup_log row produced ----
+  const logRes2 = await pool.query(
+    `SELECT status, note FROM backup_log WHERE id > $1 ORDER BY id DESC LIMIT 1`,
+    [hwm2]
+  );
+  assert(logRes2.rows.length >= 1, "boundary: backup_log received at least 1 new row");
+  if (logRes2.rows.length) {
+    const { status, note } = logRes2.rows[0];
+    assert(status === "ok", `boundary: backup_log row status = 'ok' (got '${status}')`);
+    assert(
+      note && note.startsWith("Incremental backup"),
+      `boundary: backup_log note starts with "Incremental backup" (got: "${note}")`
+    );
+  }
+
+  // ---- B. Brevo request was made ----
+  const { options: bndOpts, parsed: bndParsed } = fakeHttps4.captured;
+  assert(bndOpts !== null, "boundary: Brevo https.request was called");
+
+  if (bndParsed) {
+    const attachments = bndParsed.attachment || [];
+    assert(attachments.length === 1, `boundary: 1 attachment present (got ${attachments.length})`);
+
+    if (attachments.length) {
+      let csv = "";
+      try { csv = Buffer.from(attachments[0].content, "base64").toString("utf8"); } catch (_) {}
+      assert(csv.length > 0, "boundary: attachment decodes to non-empty string");
+
+      const lines = csv.split(/\r?\n/).filter(Boolean);
+      const csvBody = lines.slice(1).join("\n");
+
+      // ---- C. Boundary record is NOT in the CSV (strict > intentional) ----
+      assert(
+        !csvBody.includes(SENTINEL_BOUNDARY),
+        `boundary: record with updated_at = cutoff is excluded (strict > is intentional)`
+      );
+    }
+  }
+
+  // --- Cleanup ---
+  await pool.query("DELETE FROM visits WHERE company = $1", [SENTINEL_BOUNDARY]);
+  await pool.query("DELETE FROM backup_log WHERE id > $1", [hwm2]);
+
+  const cleanV = await pool.query(
+    "SELECT COUNT(*)::int AS n FROM visits WHERE company = $1", [SENTINEL_BOUNDARY]
+  );
+  assert(cleanV.rows[0].n === 0, "boundary: sentinel visit cleaned up");
+
+  const cleanL2 = await pool.query(
+    "SELECT COUNT(*)::int AS n FROM backup_log WHERE id > $1", [hwm2]
+  );
+  assert(cleanL2.rows[0].n === 0, "boundary: test backup_log rows cleaned up");
+
+  console.log("\n=== Done (boundary-timestamp test) ===");
+}
+
 run()
   .then(() => runIncrementalTest())
   .then(() => runIncrementalNoChangeTest())
+  .then(() => runBoundaryTest())
   .catch((err) => {
     console.error("Unexpected error:", err);
     process.exitCode = 1;
