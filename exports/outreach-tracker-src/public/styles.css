@@ -194,7 +194,7 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--slate);outline-o
 .voice .btn.ghost.recording::before{background:var(--cream);animation:recpulse 1.1s ease-in-out infinite}
 .voice .btn.ghost.working{color:var(--plum)}
 .voice .btn.ghost.working::before{background:var(--plum);animation:recpulse 1.1s ease-in-out infinite}
-.voice .btn.ghost:disabled{opacity:.65;cursor:not-allowed}
+.voice .btn.ghost:disabled,.voice .btn.ghost[aria-disabled="true"]{opacity:.65;cursor:not-allowed}
 .rechint{margin-top:9px;margin-bottom:0}
 .rechint.err{color:#a4304a}
 @keyframes recpulse{0%,100%{opacity:1}50%{opacity:.25}}

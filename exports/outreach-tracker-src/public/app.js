@@ -156,9 +156,26 @@ async function enterApp() {
   } catch (_) {
     aiEnabled = false;
   }
-  // Show/hide the voice recorder based on AI availability
+  // Show the voice recorder; grey it out with an explanation when AI is unavailable
   const voiceSection = $(".voice");
-  if (voiceSection) voiceSection.classList.toggle("hidden", !aiEnabled);
+  if (voiceSection) {
+    const btn = voiceSection.querySelector("#recBtn");
+    if (!aiEnabled) {
+      const msg = "Voice notes aren't available yet — enable the OpenAI integration in this Replit's Integrations panel.";
+      if (btn) {
+        btn.setAttribute("aria-disabled", "true");
+        btn.setAttribute("title", "Voice notes unavailable — AI integration not enabled");
+        btn.setAttribute("aria-describedby", "recHint");
+      }
+      setRecHint(msg, true);
+    } else {
+      if (btn) {
+        btn.removeAttribute("aria-disabled");
+        btn.removeAttribute("title");
+        btn.removeAttribute("aria-describedby");
+      }
+    }
+  }
 
   $("#meName").textContent = me ? me.name : "";
   populateOwners();
@@ -413,6 +430,8 @@ function blobToDataUrl(blob) {
 $("#recBtn").addEventListener("click", () => {
   if (!aiEnabled) {
     setRecHint("Voice notes aren't available yet — enable the OpenAI integration in this Replit's Integrations panel.", true);
+    const h = $("#recHint");
+    if (h) h.scrollIntoView({ behavior: "smooth", block: "nearest" });
     return;
   }
   if (recState === "recording") stopRecording();
