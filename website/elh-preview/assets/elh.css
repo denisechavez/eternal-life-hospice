@@ -23,8 +23,8 @@ a{color:inherit;text-decoration:none}
 .hdr-logo .sym-plum{display:none}
 #hdr.scrolled .hdr-logo .sym-cream{display:none}
 #hdr.scrolled .hdr-logo .sym-plum{display:block}
-.hdr-wordmark{display:flex;flex-direction:column;justify-content:center;line-height:1;font-family:var(--ff-d);font-size:22px;font-weight:500;color:var(--cream);letter-spacing:.01em}
-.hdr-wordmark small{font-size:.4em;letter-spacing:.3em;text-transform:uppercase;font-family:var(--ff-b);font-weight:600;color:var(--gold);margin-top:4px;display:block}
+.hdr-wordmark{display:none}
+.hdr-wordmark small{font-size:.42em;letter-spacing:.28em;text-transform:uppercase;font-family:var(--ff-b);font-weight:600;color:var(--gold);margin-top:3px}
 #hdr.scrolled .hdr-wordmark{color:var(--deep)}
 #hdr.scrolled .hdr-wordmark small{color:#9A7E4A}
 #hdr nav{display:none}
