@@ -572,6 +572,20 @@ app.get("/api/backup/status", requireAuth, async (req, res) => {
   }
 });
 
+// ---- manual backup trigger ----
+app.post("/api/backup/run", requireAuth, async (req, res) => {
+  try {
+    await runWeeklyBackup();
+    const r = await query(
+      `SELECT status, ran_at, note FROM backup_log ORDER BY ran_at DESC LIMIT 10`
+    ).catch(() => ({ rows: [] }));
+    res.json({ ok: true, rows: r.rows.map((row) => ({ status: row.status, ran_at: row.ran_at, note: row.note || null })) });
+  } catch (e) {
+    console.error("Manual backup run error:", e);
+    res.status(500).json({ error: "Backup run failed. Check server logs." });
+  }
+});
+
 // ---- weekly backup scheduler ----
 // Uses backup_log as persistent state so a server restart doesn't reset the
 // 7-day clock.  Key design rules:
@@ -587,6 +601,7 @@ const BACKUP_RETRY_MS   = 60 * 60 * 1000;            // 1 h on failure
 const BREVO_TIMEOUT_MS  = 30 * 1000;                 // 30 s HTTP timeout
 
 let backupRunning = false;
+let nextBackupTimer = null; // always cleared before a new timer is set
 
 async function runWeeklyBackup() {
   if (backupRunning) {
@@ -777,10 +792,12 @@ function scheduleNextBackup() {
         console.log(
           `Weekly backup scheduler: next ${status === "ok" ? "run" : "retry"} in ${hh} h ${mm} min.`
         );
-        setTimeout(
+        if (nextBackupTimer) clearTimeout(nextBackupTimer);
+        nextBackupTimer = setTimeout(
           () => runWeeklyBackup().catch((e) => console.error("Weekly backup unexpected error:", e)),
           delay
-        ).unref();
+        );
+        nextBackupTimer.unref();
       }
     } catch (e) {
       console.error("Weekly backup scheduler: DB check failed, retrying in 1 h:", e);

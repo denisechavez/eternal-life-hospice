@@ -773,6 +773,85 @@ async function loadBackupStatus() {
   }
 }
 
+/* ================= RUN BACKUP NOW ================= */
+$("#runBackupBtn").addEventListener("click", async () => {
+  const btn = $("#runBackupBtn");
+  btn.disabled = true;
+  const orig = btn.textContent;
+  btn.textContent = "Running…";
+  try {
+    const r = await api("/api/backup/run", { method: "POST" });
+    // Refresh the status UI with the rows returned by the endpoint
+    const warn = $("#backupWarn");
+    const msgEl = $("#backupWarnMsg");
+    const histEl = $("#backupHistory");
+    if (warn && msgEl && histEl) {
+      // Reuse loadBackupStatus logic by passing the fresh rows
+      const rows = r.rows || [];
+      let problem = null;
+      if (rows.length > 0) {
+        const latest = rows[0];
+        if (latest.status === "error") {
+          problem = "The last backup attempt failed" +
+            (latest.note ? ": " + latest.note : "") +
+            ". Check BACKUP_EMAIL and the Brevo API key.";
+        }
+      }
+      if (problem) {
+        msgEl.textContent = problem;
+        warn.classList.remove("hidden");
+        toast("Backup failed — check the Export tab for details.", true);
+      } else {
+        warn.classList.add("hidden");
+        toast("Backup sent. Check the inbox at BACKUP_EMAIL.");
+      }
+      // Rebuild history list
+      if (rows.length === 0) {
+        histEl.classList.add("hidden");
+      } else {
+        const heading = document.createElement("p");
+        heading.className = "bh-heading";
+        heading.textContent = "Recent backup runs";
+        const ul = document.createElement("ul");
+        ul.className = "bh-list";
+        rows.forEach((row) => {
+          const icon = row.status === "ok" ? "✓" : row.status === "error" ? "✕" : "–";
+          const iconClass = row.status === "ok" ? "bh-ok" : row.status === "error" ? "bh-err" : "bh-na";
+          const dateStr = new Date(row.ran_at).toLocaleDateString("en-US", {
+            month: "short", day: "numeric", year: "numeric",
+          });
+          const li = document.createElement("li");
+          li.className = "bh-row";
+          const iconSpan = document.createElement("span");
+          iconSpan.className = "bh-icon " + iconClass;
+          iconSpan.textContent = icon;
+          const dateSpan = document.createElement("span");
+          dateSpan.className = "bh-date";
+          dateSpan.textContent = dateStr;
+          li.appendChild(iconSpan);
+          li.appendChild(dateSpan);
+          if (row.note) {
+            const noteSpan = document.createElement("span");
+            noteSpan.className = "bh-note";
+            noteSpan.textContent = row.note;
+            li.appendChild(noteSpan);
+          }
+          ul.appendChild(li);
+        });
+        histEl.innerHTML = "";
+        histEl.appendChild(heading);
+        histEl.appendChild(ul);
+        histEl.classList.remove("hidden");
+      }
+    }
+  } catch (err) {
+    toast(err.message || "Backup failed.", true);
+  } finally {
+    btn.disabled = false;
+    btn.textContent = orig;
+  }
+});
+
 /* ================= TABS ================= */
 function switchTab(view) {
   $$(".tab").forEach((x) => x.setAttribute("aria-selected", x.dataset.view === view));
