@@ -370,6 +370,93 @@ async function runTests() {
     console.log();
   }
 
+  /* ── Scenario 5: stale (already-expired) key on load — button stays enabled ── */
+  //
+  // This covers the case where a user dismissed a 429, closed the tab, and
+  // returns hours later after the server-side 5-minute window has already reset.
+  // The enterApp cooldown-resume guard is:
+  //   if (_cooldownUntil > Date.now()) { … }
+  // A past deadline is NOT greater than Date.now(), so the cooldown is skipped
+  // and the button must remain enabled.  The stale key is left harmlessly in
+  // sessionStorage (not re-used; the `> Date.now()` guard prevents it).
+  //
+  console.log("--- Scenario 5: stale (already-expired) key on load — button stays enabled ---");
+  {
+    const KEY = "runBackupCooldownUntil";
+    // Deadline was 60 seconds in the past (server-side limit has fully reset)
+    const staleDeadline = String(Date.now() - 60_000);
+
+    const { w } = await bootApp({ sessionStorageData: { [KEY]: staleDeadline } });
+    const btn = w.document.getElementById("runBackupBtn");
+
+    // Give enterApp() a moment to finish running (it is async)
+    await new Promise((r) => setTimeout(r, 80));
+
+    assert(btn.disabled === false, "button stays enabled when stored deadline is already past");
+    assert(
+      btn.textContent === "Run backup now",
+      `button label unchanged (got "${btn.textContent}")`
+    );
+    // The stale key is left in storage — it is harmless because the guard
+    // (`> Date.now()`) will skip it on every subsequent enterApp() call too.
+    // This documents the chosen behaviour: no cleanup on load, no re-use.
+    assert(
+      w.sessionStorage.getItem(KEY) === staleDeadline,
+      "stale key is left in sessionStorage (not re-used, not cleared on load)"
+    );
+    console.log();
+  }
+
+  /* ── Scenario 6: stale key is left harmlessly after a successful backup run ── */
+  //
+  // After the user successfully triggers a backup (server returns 200), the
+  // success path in the click handler does NOT call _ssRemove — it only
+  // restores btn.disabled = false and btn.textContent.  The stale key therefore
+  // remains in sessionStorage, which is fine: the `> Date.now()` guard in
+  // enterApp() will still skip it on any subsequent page load.
+  //
+  console.log("--- Scenario 6: stale key remains harmlessly after a successful backup run ---");
+  {
+    const KEY = "runBackupCooldownUntil";
+    const staleDeadline = String(Date.now() - 300_000); // 5 minutes ago
+
+    // Boot with a successful /api/backup/run response
+    const { w, mockState } = await bootApp({
+      sessionStorageData: { [KEY]: staleDeadline },
+      backupRunResponse: {
+        ok: true,
+        status: 200,
+        headers: { get: () => null },
+        json: async () => ({ rows: [] }),
+      },
+    });
+    const btn = w.document.getElementById("runBackupBtn");
+
+    // Let enterApp() settle
+    await new Promise((r) => setTimeout(r, 80));
+
+    // Button must be enabled before the click (stale key was skipped)
+    assert(btn.disabled === false, "button enabled before run (stale key skipped)");
+
+    // Click — success path executes
+    btn.click();
+    // Wait for the async handler to complete and restore the button
+    await waitFor(() => btn.textContent === "Run backup now", 2000);
+
+    assert(btn.disabled === false, "button re-enabled after successful run");
+    assert(
+      btn.textContent === "Run backup now",
+      `button label restored to "Run backup now" (got "${btn.textContent}")`
+    );
+    // Documented behaviour: success path does not clean up the stale key;
+    // the key is left in storage and remains harmless on future loads.
+    assert(
+      w.sessionStorage.getItem(KEY) === staleDeadline,
+      "stale key still in sessionStorage after successful run (left harmlessly — guard skips it on next load)"
+    );
+    console.log();
+  }
+
   console.log("=== Done ===");
 }
 
