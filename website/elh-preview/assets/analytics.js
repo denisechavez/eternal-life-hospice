@@ -136,7 +136,7 @@
     modal.innerHTML =
       '<div id="elh-cc-box">' +
         '<h2>Cookie Preferences</h2>' +
-        '<p>Choose which cookies you allow. You can change your mind at any time by clearing your browser storage.</p>' +
+        '<p>Choose which cookies you allow. You can change your mind at any time using the Cookie Settings link in the footer.</p>' +
         '<div class="elh-cc-row">' +
           '<div class="elh-cc-row-lbl"><strong>Essential</strong>' +
           '<span>Required for basic site functions. Always active.</span></div>' +
@@ -183,11 +183,32 @@
     });
   }
 
+  /* ── Global: re-open cookie manager from footer link ───────────────── */
+  window.elhCookieSettings = function () {
+    var mod = document.getElementById('elh-cc-modal');
+    if (mod) {
+      // Banner already in DOM — just open the modal
+      mod.classList.add('elh-cc-open');
+      var btn = document.getElementById('elh-cc-save');
+      if (btn) btn.focus();
+    } else {
+      // First call after consent was already stored — rebuild UI then open
+      showBanner();
+      setTimeout(function () {
+        var m = document.getElementById('elh-cc-modal');
+        if (m) {
+          m.classList.add('elh-cc-open');
+          var b = document.getElementById('elh-cc-save');
+          if (b) b.focus();
+        }
+      }, 80);
+    }
+  };
+
   /* ── Entry point ────────────────────────────────────────────────────── */
-  var forceShow = window.location.search.indexOf('show-consent') !== -1;
-  if (!forceShow && consent === 'all') {
+  if (consent === 'all') {
     loadAnalytics();                     // returning visitor who accepted
-  } else if (forceShow || !consent) {
+  } else if (!consent) {
     if (document.readyState === 'loading') {
       document.addEventListener('DOMContentLoaded', showBanner);
     } else {
