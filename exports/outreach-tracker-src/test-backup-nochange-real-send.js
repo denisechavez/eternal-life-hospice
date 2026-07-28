@@ -82,7 +82,7 @@ async function run() {
   // Check backup_log for the result row.
   const logRes = await pool.query(
     `SELECT status, note FROM backup_log WHERE id > $1 ORDER BY id DESC LIMIT 1`,
-    [hwm]
+    [seededLogId]
   );
 
   assert(logRes.rows.length >= 1, "backup_log received at least 1 new row after the real send");
