@@ -21,10 +21,6 @@ args = "Start application"
 
 [[workflows.workflow.tasks]]
 task = "workflow.run"
-args = "Outreach Tracker (internal)"
-
-[[workflows.workflow.tasks]]
-task = "workflow.run"
 args = "Reel Preview"
 
 [[workflows.workflow]]
@@ -40,18 +36,6 @@ args = "python3 website/devserver.py"
 waitForPort = 5000
 
 [[workflows.workflow]]
-name = "Outreach Tracker (internal)"
-author = "agent"
-
-[[workflows.workflow.tasks]]
-task = "shell.exec"
-args = "cd outreach-tracker && PORT=3000 npm start"
-waitForPort = 3000
-
-[workflows.workflow.metadata]
-outputType = "console"
-
-[[workflows.workflow]]
 name = "Reel Preview"
 author = "agent"
 
@@ -62,10 +46,6 @@ waitForPort = 5173
 
 [workflows.workflow.metadata]
 outputType = "console"
-
-[[ports]]
-localPort = 3000
-externalPort = 3000
 
 [[ports]]
 localPort = 5000
@@ -93,4 +73,4 @@ timeoutMs = 30000
 
 [deployment]
 deploymentTarget = "autoscale"
-run = ["bash", "-c", "cd outreach-tracker && npm start"]
+run = ["bash", "-c", "python3 website/devserver.py"]
