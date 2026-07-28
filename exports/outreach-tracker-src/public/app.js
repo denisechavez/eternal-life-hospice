@@ -136,7 +136,7 @@ $("#logoutBtn").addEventListener("click", async () => {
 const AI_BANNER_DISMISSED_KEY = "aiModelBannerDismissed";
 
 function showAiModelBanner(warning) {
-  if (sessionStorage.getItem(AI_BANNER_DISMISSED_KEY)) return;
+  if (_ssGet(AI_BANNER_DISMISSED_KEY)) return;
   const banner = $("#aiModelBanner");
   const msg = $("#aiModelBannerMsg");
   if (!banner || !msg) return;
@@ -148,7 +148,7 @@ function showAiModelBanner(warning) {
 $("#aiModelBannerDismiss").addEventListener("click", () => {
   const banner = $("#aiModelBanner");
   if (banner) banner.classList.add("hidden");
-  sessionStorage.setItem(AI_BANNER_DISMISSED_KEY, "1");
+  _ssSet(AI_BANNER_DISMISSED_KEY, "1");
 });
 
 /* ================= APP BOOT ================= */
@@ -174,7 +174,7 @@ async function enterApp() {
   loadBackupStatus(); // non-blocking — populate Export tab warning in background
 
   // Resume backup-button cooldown if a cooldown was active when the page was last loaded
-  const _cooldownUntil = parseInt(sessionStorage.getItem(RUN_BACKUP_COOLDOWN_KEY) || "0", 10);
+  const _cooldownUntil = parseInt(_ssGet(RUN_BACKUP_COOLDOWN_KEY) || "0", 10);
   if (_cooldownUntil > Date.now()) {
     const _remainingSec = Math.ceil((_cooldownUntil - Date.now()) / 1000);
     const _backupBtn = $("#runBackupBtn");
@@ -853,6 +853,19 @@ async function loadBackupStatus() {
   }
 }
 
+/* ================= STORAGE HELPERS ================= */
+// sessionStorage can throw in privacy/restricted modes — always access via
+// these wrappers so a blocked storage API never breaks app initialisation.
+function _ssGet(key) {
+  try { return sessionStorage.getItem(key); } catch (_) { return null; }
+}
+function _ssSet(key, val) {
+  try { sessionStorage.setItem(key, val); } catch (_) {}
+}
+function _ssRemove(key) {
+  try { sessionStorage.removeItem(key); } catch (_) {}
+}
+
 /* ================= RUN BACKUP NOW ================= */
 let _runBackupCooldownTimer = null;
 
@@ -861,7 +874,7 @@ const RUN_BACKUP_COOLDOWN_KEY = "runBackupCooldownUntil";
 function _startRunBackupCooldown(btn, waitSec) {
   if (_runBackupCooldownTimer) clearInterval(_runBackupCooldownTimer);
   let remaining = Math.max(waitSec, 1);
-  sessionStorage.setItem(RUN_BACKUP_COOLDOWN_KEY, String(Date.now() + remaining * 1000));
+  _ssSet(RUN_BACKUP_COOLDOWN_KEY, String(Date.now() + remaining * 1000));
   btn.disabled = true;
   function tick() {
     const m = Math.floor(remaining / 60);
@@ -873,7 +886,7 @@ function _startRunBackupCooldown(btn, waitSec) {
     if (remaining < 0) {
       clearInterval(_runBackupCooldownTimer);
       _runBackupCooldownTimer = null;
-      sessionStorage.removeItem(RUN_BACKUP_COOLDOWN_KEY);
+      _ssRemove(RUN_BACKUP_COOLDOWN_KEY);
       btn.disabled = false;
       btn.textContent = "Run backup now";
     }

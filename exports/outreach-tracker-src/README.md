@@ -6,7 +6,17 @@ Internal field visit-capture and follow-up tracking app for the Eternal Life Hos
 
 ## Production builds & the trim test
 
-The deployment build command (`npm install && npm test`) runs `test-backup-trim.js`, which requires `DATABASE_URL` to connect to Postgres (exits 1 if missing).
+The deployment build command (`npm install && npm test`) runs seven test files in sequence:
+
+1. `test-scanhint-reset.js` — scan-hint DOM reset logic (no DB required)
+2. `test-rec-btn-aria.js` — record-button ARIA state (no DB required)
+3. `test-backup-trim.js` — backup_log 90-day trim (requires `DATABASE_URL`)
+4. `test-backup-email.js` — full and incremental backup email (requires `DATABASE_URL`; skipped cleanly when `BACKUP_EMAIL` or `BREVO_API` are absent)
+5. `test-rate-limit-trigger.js` — backup trigger rate-limit (requires `DATABASE_URL`)
+6. `test-backup-brevo-failure.js` — Brevo error surfacing (requires `DATABASE_URL`)
+7. `test-backup-cooldown-session.js` — backup-button cooldown sessionStorage persistence (no DB required)
+
+`DATABASE_URL` is a **Replit runtime-managed variable** — it is automatically injected in both development and production build environments by Replit's PostgreSQL integration. No manual secret configuration is required.
 
 `DATABASE_URL` is a **Replit runtime-managed variable** — it is automatically injected in both development and production build environments by Replit's PostgreSQL integration. No manual secret configuration is required. The trim test will have a live database connection during every deploy build.
 

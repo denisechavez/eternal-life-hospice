@@ -281,10 +281,160 @@ async function run() {
   );
   assert(cleanL.rows[0].n === 0, "test backup_log rows cleaned up");
 
-  console.log("\n=== Done ===");
+  console.log("\n=== Done (full-backup test) ===");
+}
+
+// ---------------------------------------------------------------------------
+// Incremental backup test
+//
+// Verifies that a normal (non-forced) runWeeklyBackup:
+//   • includes only records whose updated_at is AFTER the last successful run
+//   • excludes records that have not changed since then
+//   • writes a backup_log row whose note starts with "Incremental backup"
+//     and shows the correct record count
+// ---------------------------------------------------------------------------
+async function runIncrementalTest() {
+  console.log("\n=== incremental backup integration test ===\n");
+
+  const SENTINEL_PRE = "test-backup-incr-pre";   // unmodified record — must NOT appear
+  const SENTINEL_NEW = "test-backup-incr-new";   // record changed after last backup — MUST appear
+
+  // High-water mark so cleanup is surgical
+  const hwmRes = await pool.query(
+    "SELECT COALESCE(MAX(id), 0) AS hwm FROM backup_log"
+  );
+  const hwm = hwmRes.rows[0].hwm;
+
+  // 1. Insert the "old" sentinel visit, then push its updated_at 2 hours into
+  //    the past so it predates the simulated last successful backup.
+  await pool.query(
+    `INSERT INTO visits (company, attested, notes) VALUES ($1, false, 'incr-sentinel-pre')`,
+    [SENTINEL_PRE]
+  );
+  await pool.query(
+    `UPDATE visits SET updated_at = NOW() - INTERVAL '2 hours'
+     WHERE company = $1`,
+    [SENTINEL_PRE]
+  );
+
+  // 2. Seed a successful backup_log row dated 1 hour ago.  This becomes
+  //    lastSuccessfulAt for the incremental query (updated_at > lastSuccessfulAt).
+  await pool.query(
+    `INSERT INTO backup_log (ran_at, status, note)
+     VALUES (NOW() - INTERVAL '1 hour', 'ok',
+             'Seeded by incremental test — safe to delete')`,
+  );
+
+  // 3. Insert the "new" sentinel visit.  Its updated_at = NOW(), which is
+  //    after the seeded backup, so the incremental query must pick it up.
+  await pool.query(
+    `INSERT INTO visits (company, attested, notes) VALUES ($1, false, 'incr-sentinel-new')`,
+    [SENTINEL_NEW]
+  );
+
+  // 4. Run the incremental backup (forceFullBackup defaults to false).
+  const fakeHttps2 = makeFakeHttps();
+  await runWeeklyBackup({ forceFullBackup: false, _httpsOverride: fakeHttps2 });
+
+  // ---- A. backup_log row ----
+  const logRes = await pool.query(
+    `SELECT status, note FROM backup_log WHERE id > $1 ORDER BY id DESC LIMIT 1`,
+    [hwm]
+  );
+  assert(logRes.rows.length >= 1, "incremental: backup_log received at least 1 new row");
+  if (logRes.rows.length) {
+    const { status, note } = logRes.rows[0];
+    assert(status === "ok", `incremental: backup_log row status = 'ok' (got '${status}')`);
+    assert(
+      note && note.startsWith("Incremental backup"),
+      `incremental: backup_log note starts with "Incremental backup" (got: "${note}")`
+    );
+    // The note embeds the record count: "Incremental backup: N record(s) …"
+    // Assert ≥ 1 rather than exactly 1: other records in a live DB may also
+    // have been updated recently and will legitimately appear in the window.
+    const match = note && note.match(/^Incremental backup:\s+(\d+)\s+record/);
+    assert(
+      match !== null,
+      `incremental: backup_log note contains a record count (got: "${note}")`
+    );
+    if (match) {
+      assert(
+        parseInt(match[1], 10) >= 1,
+        `incremental: backup_log note reports at least 1 changed record (got ${match[1]})`
+      );
+    }
+  }
+
+  // ---- B. Brevo request was made ----
+  const { options: incrOpts, parsed: incrParsed } = fakeHttps2.captured;
+  assert(incrOpts !== null, "incremental: Brevo https.request was called");
+
+  if (incrParsed) {
+    // ---- C. Filename contains 'Incremental' ----
+    const attachments = incrParsed.attachment || [];
+    assert(attachments.length === 1, `incremental: 1 attachment present (got ${attachments.length})`);
+
+    if (attachments.length) {
+      const att = attachments[0];
+      assert(
+        att.name && att.name.includes("Incremental"),
+        `incremental: attachment filename contains 'Incremental' (got '${att.name}')`
+      );
+
+      // ---- D. Decode CSV and check row counts ----
+      let csv = "";
+      try { csv = Buffer.from(att.content, "base64").toString("utf8"); } catch (_) {}
+      assert(csv.length > 0, "incremental: attachment decodes to non-empty string");
+
+      const lines = csv.split(/\r?\n/).filter(Boolean);
+      const dataRowCount = lines.length - 1; // subtract header
+      // Assert ≥ 1 rather than exactly 1: other records updated within the
+      // cutoff window in a live DB will also appear legitimately.
+      assert(
+        dataRowCount >= 1,
+        `incremental: CSV contains at least 1 data row (got ${dataRowCount})`
+      );
+
+      // ---- E. Updated sentinel IS in the CSV ----
+      const csvBody = lines.slice(1).join("\n");
+      assert(
+        csvBody.includes(SENTINEL_NEW),
+        `incremental: updated sentinel ('${SENTINEL_NEW}') appears in CSV`
+      );
+
+      // ---- F. Unmodified sentinel is NOT in the CSV ----
+      assert(
+        !csvBody.includes(SENTINEL_PRE),
+        `incremental: unmodified sentinel ('${SENTINEL_PRE}') does NOT appear in CSV`
+      );
+    }
+  }
+
+  // --- Cleanup ---
+  await pool.query("DELETE FROM visits WHERE company = $1", [SENTINEL_PRE]);
+  await pool.query("DELETE FROM visits WHERE company = $1", [SENTINEL_NEW]);
+  await pool.query("DELETE FROM backup_log WHERE id > $1", [hwm]);
+
+  const cleanPre = await pool.query(
+    "SELECT COUNT(*)::int AS n FROM visits WHERE company = $1", [SENTINEL_PRE]
+  );
+  assert(cleanPre.rows[0].n === 0, "incremental: SENTINEL_PRE visits cleaned up");
+
+  const cleanNew = await pool.query(
+    "SELECT COUNT(*)::int AS n FROM visits WHERE company = $1", [SENTINEL_NEW]
+  );
+  assert(cleanNew.rows[0].n === 0, "incremental: SENTINEL_NEW visits cleaned up");
+
+  const cleanL = await pool.query(
+    "SELECT COUNT(*)::int AS n FROM backup_log WHERE id > $1", [hwm]
+  );
+  assert(cleanL.rows[0].n === 0, "incremental: test backup_log rows cleaned up");
+
+  console.log("\n=== Done (incremental backup test) ===");
 }
 
 run()
+  .then(() => runIncrementalTest())
   .catch((err) => {
     console.error("Unexpected error:", err);
     process.exitCode = 1;

@@ -583,9 +583,10 @@ async function dbTriggerRateLimit(req, res, next) {
     }
     return next();
   } catch (e) {
-    // Fail open: if the DB is temporarily unavailable, don't block the request.
+    // Fail closed: if the rate-limit table is unreachable we cannot enforce
+    // the cap, so reject the request rather than silently allow it through.
     console.error("dbTriggerRateLimit DB error:", e);
-    return next();
+    return res.status(503).json({ error: "Backup service temporarily unavailable. Please try again shortly." });
   }
 }
 

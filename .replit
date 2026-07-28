@@ -86,11 +86,6 @@ externalPort = 8099
 path = "scripts/post-merge.sh"
 timeoutMs = 30000
 
-[userenv]
-
-[userenv.shared]
-BACKUP_EMAIL = "backup-ci-test@example.com"
-
 [deployment]
 deploymentTarget = "autoscale"
 run = ["bash", "-c", "python3 website/devserver.py"]
