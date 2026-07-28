@@ -122,7 +122,7 @@ Open the preview URL to confirm the login page loads.
 3. Create a name, phone number, and password
 4. Log in
 
-### Step 10 — Log a test visit and verify card scanning
+### Step 10 — Log a test visit, verify card scanning, and verify voice notes
 
 1. Click **+ New Visit**
 2. **Verify AI card scanning (requires Step 7 OpenAI connection):**  
@@ -131,13 +131,20 @@ Open the preview URL to confirm the login page loads.
    - At least one field — name, company, title, phone, or email — should populate automatically within a few seconds.  
    - If the button is greyed out: the OpenAI integration in Step 7 was not completed. Go back and connect it, then restart the app before continuing.  
    - If the button is active but returns an error or fills nothing: check the Shell for a logged error message. A model or API key issue will appear there. Resolve it before field staff use the app.
-3. Fill in or confirm:  
+3. **Verify voice note transcription (requires Step 7 OpenAI connection):**  
+   - Locate the **Voice note** or microphone button on the new-visit form.  
+   - Click it and grant microphone permission when the browser prompts — if the browser blocks the permission, check your browser/OS microphone settings and try again.  
+   - Record a short phrase (e.g. "Test voice note — setup verification") and stop the recording.  
+   - Within a few seconds the transcribed text should appear in the notes field.  
+   - If the button is greyed out or missing: the OpenAI integration in Step 7 was not completed. Go back and connect it, then restart the app.  
+   - If the button is active but transcription fails or returns an error: check the Shell for a logged error message. A model or API key issue will appear there. Resolve it before field staff use the app.
+4. Fill in or confirm:  
    - Company: `TEST – Setup Verification`  
    - Visit date: today  
    - Status: `Not started`
-4. Save
-5. Confirm the visit appears in the visit list and the Follow-up tab
-6. Download the CSV export and confirm the row appears
+5. Save
+6. Confirm the visit appears in the visit list and the Follow-up tab
+7. Download the CSV export and confirm the row appears
 
 ### Step 11 — Deploy
 
@@ -156,6 +163,7 @@ Open the preview URL to confirm the login page loads.
 - [ ] App boots and login page loads
 - [ ] First account registered with `REGISTRATION_CODE`
 - [ ] Card scan tested — "Scan business card" button was active and populated at least one field from a sample card
+- [ ] Voice note tested — microphone permission granted, short phrase recorded, transcribed text appeared in notes field
 - [ ] Test visit saved and visible
 - [ ] CSV export contains the test visit row
 - [ ] App deployed at stable `*.replit.app` URL
