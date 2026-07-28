@@ -292,7 +292,7 @@ details.all-communities .comm-list span{color:var(--ink-soft)}
 @keyframes cscroll{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
 .csep{width:1px;height:46px;background:var(--cream-dark);flex-shrink:0}
 .lc{display:inline-flex;align-items:center;gap:.9rem;padding:.45rem 1.2rem;flex-shrink:0;position:relative;height:54px}
-.lc:hover{background:var(--cream-mid)}
+.lc:hover,.ic:hover{background:var(--cream-mid)}
 .ic:hover{background:var(--cream-mid)}
 .lc img{display:block;object-fit:contain;opacity:1;height:40px;width:auto;max-width:120px}
 .lc.cms img{height:40px}
