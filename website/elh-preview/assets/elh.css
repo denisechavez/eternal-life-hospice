@@ -294,10 +294,10 @@ details.all-communities .comm-list span{color:var(--ink-soft)}
 .lc{display:inline-flex;align-items:center;gap:.9rem;padding:.45rem 1.2rem;flex-shrink:0;position:relative;height:54px}
 .lc:hover{background:var(--cream-mid)}
 .ic:hover{background:var(--cream-mid)}
-.lc img{display:block;object-fit:contain;opacity:1}
-.lc.cms img{height:44px}
-.lc.cdph img{height:46px}
-.lc.achc img{height:56px}
+.lc img{display:block;object-fit:contain;opacity:1;height:40px;width:auto;max-width:120px}
+.lc.cms img{height:40px}
+.lc.cdph img{height:40px}
+.lc.achc img{height:40px}
 .ct{display:flex;flex-direction:column;gap:2px}
 .cl{font-size:14px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--plum);line-height:1.2;white-space:nowrap}
 .csub{font-size:12.5px;color:var(--text-mid);white-space:nowrap}
