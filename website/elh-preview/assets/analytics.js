@@ -1,7 +1,8 @@
 /* Eternal Life Hospice — Cookie Consent + Analytics loader
    (GA4 + Microsoft Clarity + Brevo)
    Analytics load only after explicit visitor consent.
-   Consent stored in localStorage: elh_cc = "all" | "essential"      */
+   Consent stored in localStorage: elh_cc = "all" | "essential"
+   Global: window.elhCookieSettings() — re-opens preferences at any time  */
 (function () {
   'use strict';
 
@@ -59,14 +60,15 @@
     var bar = document.getElementById('elh-cc');
     var mod = document.getElementById('elh-cc-modal');
     if (bar) { bar.classList.remove('elh-cc-in'); setTimeout(function () { bar.remove(); }, 380); }
-    if (mod) { mod.remove(); }
+    if (mod) { mod.classList.remove('elh-cc-open'); }
     if (level === 'all') { loadAnalytics(); }
   }
 
-  /* ── Banner + modal (injected entirely via JS) ──────────────────────── */
-  function showBanner() {
-    /* --- CSS ------------------------------------------------------------ */
+  /* ── Inject CSS (idempotent) ─────────────────────────────────────────── */
+  function ensureCSS() {
+    if (document.getElementById('elh-cc-css')) { return; }
     var css = document.createElement('style');
+    css.id = 'elh-cc-css';
     css.textContent =
       /* Banner — ultra-minimal pill, bottom-right */
       '#elh-cc{position:fixed;bottom:1.2rem;left:1.2rem;z-index:99999;' +
@@ -120,6 +122,67 @@
       'padding:.62rem 1rem;font-size:13.5px;font-weight:600;cursor:pointer}' +
       '.elh-cc-decl:hover{background:#ebe6de}';
     document.head.appendChild(css);
+  }
+
+  /* ── Inject modal only (for returning visitors opening Cookie Settings) ── */
+  function ensureModal() {
+    if (document.getElementById('elh-cc-modal')) { return; }
+    ensureCSS();
+
+    var currentConsent = null;
+    try { currentConsent = localStorage.getItem(KEY); } catch (e) {}
+    var analyticsOn = currentConsent === 'all';
+
+    var modal = document.createElement('div');
+    modal.id = 'elh-cc-modal';
+    modal.setAttribute('role', 'dialog');
+    modal.setAttribute('aria-modal', 'true');
+    modal.setAttribute('aria-label', 'Cookie preferences');
+    modal.innerHTML =
+      '<div id="elh-cc-box">' +
+        '<h2>Cookie Preferences</h2>' +
+        '<p>Choose which cookies you allow. You can update your choice at any time using the Cookie Settings link in the footer.</p>' +
+        '<div class="elh-cc-row">' +
+          '<div class="elh-cc-row-lbl"><strong>Essential</strong>' +
+          '<span>Required for basic site functions. Always active.</span></div>' +
+          '<label class="elh-tog"><input type="checkbox" checked disabled>' +
+          '<span class="elh-tog-tr"></span></label>' +
+        '</div>' +
+        '<div class="elh-cc-row">' +
+          '<div class="elh-cc-row-lbl"><strong>Analytics</strong>' +
+          '<span>Google Analytics &amp; Microsoft Clarity — help us understand how the site is used.</span></div>' +
+          '<label class="elh-tog"><input type="checkbox" id="elh-tog-a"' + (analyticsOn ? ' checked' : '') + '>' +
+          '<span class="elh-tog-tr"></span></label>' +
+        '</div>' +
+        '<div class="elh-cc-row">' +
+          '<div class="elh-cc-row-lbl"><strong>Marketing</strong>' +
+          '<span>Brevo visitor tracking — only active for newsletter subscribers.</span></div>' +
+          '<label class="elh-tog"><input type="checkbox" id="elh-tog-m"' + (analyticsOn ? ' checked' : '') + '>' +
+          '<span class="elh-tog-tr"></span></label>' +
+        '</div>' +
+        '<div id="elh-cc-mbtns">' +
+          '<button class="elh-cc-decl" id="elh-cc-decl">Decline All</button>' +
+          '<button class="elh-cc-save" id="elh-cc-save">Save Preferences</button>' +
+        '</div>' +
+      '</div>';
+    document.body.appendChild(modal);
+
+    modal.addEventListener('click', function (e) {
+      if (e.target === modal) { modal.classList.remove('elh-cc-open'); }
+    });
+    document.getElementById('elh-cc-save').addEventListener('click', function () {
+      var a = document.getElementById('elh-tog-a').checked;
+      var m = document.getElementById('elh-tog-m').checked;
+      saveConsent((a || m) ? 'all' : 'essential');
+    });
+    document.getElementById('elh-cc-decl').addEventListener('click', function () {
+      saveConsent('essential');
+    });
+  }
+
+  /* ── Banner + modal (injected for first-time visitors) ──────────────── */
+  function showBanner() {
+    ensureCSS();
 
     /* --- Banner ---------------------------------------------------------- */
     var bar = document.createElement('div');
@@ -140,82 +203,25 @@
       requestAnimationFrame(function () { bar.classList.add('elh-cc-in'); });
     });
 
-    /* --- Modal ----------------------------------------------------------- */
-    var modal = document.createElement('div');
-    modal.id = 'elh-cc-modal';
-    modal.setAttribute('role', 'dialog');
-    modal.setAttribute('aria-modal', 'true');
-    modal.setAttribute('aria-label', 'Cookie preferences');
-    modal.innerHTML =
-      '<div id="elh-cc-box">' +
-        '<h2>Cookie Preferences</h2>' +
-        '<p>Choose which cookies you allow. You can change your mind at any time using the Cookie Settings link in the footer.</p>' +
-        '<div class="elh-cc-row">' +
-          '<div class="elh-cc-row-lbl"><strong>Essential</strong>' +
-          '<span>Required for basic site functions. Always active.</span></div>' +
-          '<label class="elh-tog"><input type="checkbox" checked disabled>' +
-          '<span class="elh-tog-tr"></span></label>' +
-        '</div>' +
-        '<div class="elh-cc-row">' +
-          '<div class="elh-cc-row-lbl"><strong>Analytics</strong>' +
-          '<span>Google Analytics &amp; Microsoft Clarity — help us understand how the site is used.</span></div>' +
-          '<label class="elh-tog"><input type="checkbox" id="elh-tog-a" checked>' +
-          '<span class="elh-tog-tr"></span></label>' +
-        '</div>' +
-        '<div class="elh-cc-row">' +
-          '<div class="elh-cc-row-lbl"><strong>Marketing</strong>' +
-          '<span>Brevo visitor tracking — only active for newsletter subscribers.</span></div>' +
-          '<label class="elh-tog"><input type="checkbox" id="elh-tog-m" checked>' +
-          '<span class="elh-tog-tr"></span></label>' +
-        '</div>' +
-        '<div id="elh-cc-mbtns">' +
-          '<button class="elh-cc-decl" id="elh-cc-decl">Decline All</button>' +
-          '<button class="elh-cc-save" id="elh-cc-save">Save Preferences</button>' +
-        '</div>' +
-      '</div>';
-    document.body.appendChild(modal);
+    ensureModal();
 
     /* --- Handlers -------------------------------------------------------- */
     document.getElementById('elh-cc-okbtn').addEventListener('click', function () {
       saveConsent('all');
     });
     document.getElementById('elh-cc-mgbtn').addEventListener('click', function () {
-      modal.classList.add('elh-cc-open');
+      var mod = document.getElementById('elh-cc-modal');
+      mod.classList.add('elh-cc-open');
       document.getElementById('elh-cc-save').focus();
-    });
-    modal.addEventListener('click', function (e) {
-      if (e.target === modal) { modal.classList.remove('elh-cc-open'); }
-    });
-    document.getElementById('elh-cc-save').addEventListener('click', function () {
-      var a = document.getElementById('elh-tog-a').checked;
-      var m = document.getElementById('elh-tog-m').checked;
-      saveConsent((a || m) ? 'all' : 'essential');
-    });
-    document.getElementById('elh-cc-decl').addEventListener('click', function () {
-      saveConsent('essential');
     });
   }
 
-  /* ── Global: re-open cookie manager from footer link ───────────────── */
+  /* ── Public API — called by "Cookie Settings" footer link ───────────── */
   window.elhCookieSettings = function () {
+    ensureModal();
     var mod = document.getElementById('elh-cc-modal');
-    if (mod) {
-      // Banner already in DOM — just open the modal
-      mod.classList.add('elh-cc-open');
-      var btn = document.getElementById('elh-cc-save');
-      if (btn) btn.focus();
-    } else {
-      // First call after consent was already stored — rebuild UI then open
-      showBanner();
-      setTimeout(function () {
-        var m = document.getElementById('elh-cc-modal');
-        if (m) {
-          m.classList.add('elh-cc-open');
-          var b = document.getElementById('elh-cc-save');
-          if (b) b.focus();
-        }
-      }, 80);
-    }
+    mod.classList.add('elh-cc-open');
+    document.getElementById('elh-cc-save').focus();
   };
 
   /* ── Entry point ────────────────────────────────────────────────────── */
