@@ -153,6 +153,8 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--slate);outline-o
 .bh-na{color:var(--taupe)}
 .bh-date{min-width:100px;color:var(--taupe);font-size:12px}
 .bh-note{color:#6b5a6a;font-size:12px;font-style:italic}
+/* ---------- backup checked-at timestamp ---------- */
+.backup-checked-at{font-size:11.5px;color:var(--taupe);margin:-12px 0 20px;text-align:right}
 
 /* ---------- AI model warning banner ---------- */
 .ai-warn{display:flex;align-items:flex-start;gap:12px;background:rgba(192,128,58,.11);border-left:3px solid #C0803A;color:#7a4a0e;font-size:13px;line-height:1.5;padding:12px 15px;border-radius:0 3px 3px 0;margin-bottom:20px}

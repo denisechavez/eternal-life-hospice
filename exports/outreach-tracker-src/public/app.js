@@ -696,9 +696,28 @@ $("#csv").addEventListener("click", () => {
 });
 
 /* ================= BACKUP STATUS ================= */
+let _backupStatusCache = null; // { ts: Number, data: Object }
+const BACKUP_STATUS_TTL = 30_000; // 30 seconds
+let _backupCheckedAtTimer = null;
+
+function renderCheckedAt() {
+  const el = $("#backupCheckedAt");
+  if (!el || !_backupStatusCache) return;
+  const secs = Math.round((Date.now() - _backupStatusCache.ts) / 1000);
+  const label = secs < 5 ? "just now" : secs + " s ago";
+  el.textContent = "Last checked " + label;
+  el.classList.remove("hidden");
+}
+
 async function loadBackupStatus() {
   try {
-    const r = await api("/api/backup/status");
+    let r;
+    if (_backupStatusCache && (Date.now() - _backupStatusCache.ts < BACKUP_STATUS_TTL)) {
+      r = _backupStatusCache.data;
+    } else {
+      r = await api("/api/backup/status");
+      _backupStatusCache = { ts: Date.now(), data: r };
+    }
     const warn = $("#backupWarn");
     const msgEl = $("#backupWarnMsg");
     const histEl = $("#backupHistory");
@@ -781,6 +800,7 @@ async function loadBackupStatus() {
       histEl.appendChild(ul);
       histEl.classList.remove("hidden");
     }
+    renderCheckedAt();
   } catch (_) {
     // Don't break the export tab if the status check fails
   }
@@ -794,6 +814,8 @@ $("#runBackupBtn").addEventListener("click", async () => {
   btn.textContent = "Running…";
   try {
     const r = await api("/api/backup/run", { method: "POST" });
+    _backupStatusCache = { ts: Date.now(), data: r }; // treat fresh run as new cache baseline
+    renderCheckedAt();
     // Refresh the status UI with the rows returned by the endpoint
     const warn = $("#backupWarn");
     const msgEl = $("#backupWarnMsg");
@@ -871,6 +893,11 @@ function switchTab(view) {
   ["log", "queue", "export"].forEach((v) => $("#view-" + v).classList.toggle("hidden", v !== view));
   $("#bar").classList.toggle("hidden", view !== "log");
   window.scrollTo(0, 0);
+  if (_backupCheckedAtTimer) { clearInterval(_backupCheckedAtTimer); _backupCheckedAtTimer = null; }
+  if (view === "export") {
+    loadBackupStatus();
+    _backupCheckedAtTimer = setInterval(renderCheckedAt, 1000);
+  }
   if (view === "log") {
     api("/api/config").then((cfg) => {
       aiEnabled = Boolean(cfg.aiEnabled);
