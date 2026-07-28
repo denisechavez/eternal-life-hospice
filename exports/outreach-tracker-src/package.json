@@ -6,7 +6,12 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "test": "node test-rec-btn-aria.js && node test-backup-trim.js && node test-backup-email.js && node test-rate-limit-trigger.js",
+    "test": "node test-scanhint-reset.js",
+    "test:scanhint": "node test-scanhint-reset.js",
+    "test:backup-trim": "node test-backup-trim.js",
+    "test:backup-email": "node test-backup-email.js",
+    "test:rec-btn-aria": "node test-rec-btn-aria.js",
+    "test:rate-limit-trigger": "node test-rate-limit-trigger.js",
     "test:focus": "node test-rechint-focus.js"
   },
   "dependencies": {
@@ -16,5 +21,8 @@
     "express-session": "^1.18.0",
     "openai": "^6.46.0",
     "pg": "^8.22.0"
+  },
+  "devDependencies": {
+    "jsdom": "^29.1.1"
   }
 }
