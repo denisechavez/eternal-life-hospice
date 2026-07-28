@@ -89,6 +89,7 @@ timeoutMs = 30000
 [userenv]
 
 [userenv.shared]
+BACKUP_EMAIL = "backup-ci-test@example.com"
 
 [deployment]
 deploymentTarget = "autoscale"
