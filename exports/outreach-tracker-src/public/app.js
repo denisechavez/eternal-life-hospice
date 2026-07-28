@@ -230,7 +230,15 @@ function bindPhoto(inputSel, slot, dropSel, afterSet) {
     });
   });
 }
-bindPhoto("#fCard", "card", "#dropCard", (d) => { if (hasCard === "yes") extractCard(d); });
+bindPhoto("#fCard", "card", "#dropCard", (d) => {
+  if (hasCard === "yes") {
+    if (!scanning) {
+      const h = $(".scanhint");
+      if (h) { h.textContent = aiEnabled ? SCAN_HINT : SCAN_HINT_NO_AI; h.classList.remove("busy"); }
+    }
+    extractCard(d);
+  }
+});
 bindPhoto("#fSite", "site", "#dropSite");
 
 /* ----- keep voice + scan sections in sync with the current aiEnabled value ----- */
