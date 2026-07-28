@@ -157,25 +157,7 @@ async function enterApp() {
     aiEnabled = false;
   }
   // Show the voice recorder; grey it out with an explanation when AI is unavailable
-  const voiceSection = $(".voice");
-  if (voiceSection) {
-    const btn = voiceSection.querySelector("#recBtn");
-    if (!aiEnabled) {
-      const msg = "Voice notes aren't available yet — enable the OpenAI integration in this Replit's Integrations panel.";
-      if (btn) {
-        btn.setAttribute("aria-disabled", "true");
-        btn.setAttribute("title", "Voice notes unavailable — AI integration not enabled");
-        btn.setAttribute("aria-describedby", "recHint");
-      }
-      setRecHint(msg, true);
-    } else {
-      if (btn) {
-        btn.removeAttribute("aria-disabled");
-        btn.removeAttribute("title");
-        btn.removeAttribute("aria-describedby");
-      }
-    }
-  }
+  updateVoiceSection();
 
   $("#meName").textContent = me ? me.name : "";
   populateOwners();
@@ -250,6 +232,41 @@ function bindPhoto(inputSel, slot, dropSel, afterSet) {
 }
 bindPhoto("#fCard", "card", "#dropCard", (d) => { if (hasCard === "yes") extractCard(d); });
 bindPhoto("#fSite", "site", "#dropSite");
+
+/* ----- keep voice + scan sections in sync with the current aiEnabled value ----- */
+function updateVoiceSection() {
+  const voiceSection = $(".voice");
+  if (!voiceSection) return;
+  const btn = voiceSection.querySelector("#recBtn");
+  if (!aiEnabled) {
+    const msg = "Voice notes aren't available yet — enable the OpenAI integration in this Replit's Integrations panel.";
+    if (btn) {
+      btn.setAttribute("aria-disabled", "true");
+      btn.setAttribute("title", "Voice notes unavailable — AI integration not enabled");
+      btn.setAttribute("aria-describedby", "recHint");
+    }
+    setRecHint(msg, true);
+  } else {
+    if (btn) {
+      btn.removeAttribute("aria-disabled");
+      btn.removeAttribute("title");
+      btn.removeAttribute("aria-describedby");
+    }
+  }
+}
+
+function updateScanSection() {
+  if (hasCard !== "yes") return;
+  const h = $(".scanhint");
+  const btn = $("#scanBtn");
+  if (aiEnabled) {
+    if (h) { h.textContent = SCAN_HINT; h.classList.remove("busy"); }
+    if (btn) btn.disabled = false;
+  } else {
+    if (h) { h.textContent = SCAN_HINT_NO_AI; h.classList.remove("busy"); }
+    if (btn) btn.disabled = true;
+  }
+}
 
 /* ----- business card toggle + AI auto-fill ----- */
 function setHasCard(val) {
@@ -762,6 +779,13 @@ function switchTab(view) {
   ["log", "queue", "export"].forEach((v) => $("#view-" + v).classList.toggle("hidden", v !== view));
   $("#bar").classList.toggle("hidden", view !== "log");
   window.scrollTo(0, 0);
+  if (view === "log") {
+    api("/api/config").then((cfg) => {
+      aiEnabled = Boolean(cfg.aiEnabled);
+      updateVoiceSection();
+      updateScanSection();
+    }).catch(() => {});
+  }
 }
 $$(".tab").forEach((t) => t.addEventListener("click", () => switchTab(t.dataset.view)));
 
