@@ -6,7 +6,7 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "test": "node test-backup-trim.js",
+    "test": "node test-backup-trim.js && node test-backup-email.js",
     "test:focus": "node test-rechint-focus.js"
   },
   "dependencies": {
