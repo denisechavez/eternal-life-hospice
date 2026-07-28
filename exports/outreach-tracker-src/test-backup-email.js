@@ -433,8 +433,136 @@ async function runIncrementalTest() {
   console.log("\n=== Done (incremental backup test) ===");
 }
 
+// ---------------------------------------------------------------------------
+// Incremental backup — no-change test
+//
+// Verifies that when nothing has changed since the last successful backup
+// the backup still:
+//   • sends an email (Brevo request is made)
+//   • attaches a well-formed CSV that contains ONLY the header row (0 data rows)
+//   • writes a backup_log note reporting "Incremental backup: 0 record(s)…"
+// ---------------------------------------------------------------------------
+async function runIncrementalNoChangeTest() {
+  console.log("\n=== incremental backup — no-change test ===\n");
+
+  // High-water mark so cleanup is surgical
+  const hwmRes = await pool.query(
+    "SELECT COALESCE(MAX(id), 0) AS hwm FROM backup_log"
+  );
+  const hwm = hwmRes.rows[0].hwm;
+
+  // Seed a successful backup_log row at NOW().
+  // All visits already in the DB have updated_at <= NOW(), so the incremental
+  // query (updated_at > lastSuccessfulAt) will return 0 rows.
+  await pool.query(
+    `INSERT INTO backup_log (ran_at, status, note)
+     VALUES (NOW(), 'ok',
+             'Seeded by no-change incremental test — safe to delete')`
+  );
+
+  // Run the incremental backup — nothing has changed since NOW().
+  const fakeHttps3 = makeFakeHttps();
+  await runWeeklyBackup({ forceFullBackup: false, _httpsOverride: fakeHttps3 });
+
+  // ---- A. backup_log row ----
+  const logRes = await pool.query(
+    `SELECT status, note FROM backup_log WHERE id > $1 ORDER BY id DESC LIMIT 1`,
+    [hwm]
+  );
+  assert(logRes.rows.length >= 1, "no-change: backup_log received at least 1 new row");
+  if (logRes.rows.length) {
+    const { status, note } = logRes.rows[0];
+    assert(status === "ok", `no-change: backup_log row status = 'ok' (got '${status}')`);
+    assert(
+      note && note.startsWith("Incremental backup"),
+      `no-change: backup_log note starts with "Incremental backup" (got: "${note}")`
+    );
+    const match = note && note.match(/^Incremental backup:\s+(\d+)\s+record/);
+    assert(
+      match !== null,
+      `no-change: backup_log note contains a record count (got: "${note}")`
+    );
+    if (match) {
+      assert(
+        parseInt(match[1], 10) === 0,
+        `no-change: backup_log note reports 0 changed records (got ${match[1]})`
+      );
+    }
+  }
+
+  // ---- B. Brevo request was still made ----
+  const { options: noChangeOpts, parsed: noChangeParsed } = fakeHttps3.captured;
+  assert(noChangeOpts !== null, "no-change: Brevo https.request was called");
+
+  if (noChangeParsed) {
+    // ---- C. Attachment present ----
+    const attachments = noChangeParsed.attachment || [];
+    assert(
+      attachments.length === 1,
+      `no-change: 1 attachment present (got ${attachments.length})`
+    );
+
+    if (attachments.length) {
+      const att = attachments[0];
+
+      // ---- D. Filename contains 'Incremental' ----
+      assert(
+        att.name && att.name.includes("Incremental"),
+        `no-change: attachment filename contains 'Incremental' (got '${att.name}')`
+      );
+
+      // ---- E. Decode CSV — header only, 0 data rows ----
+      let csv = "";
+      try { csv = Buffer.from(att.content, "base64").toString("utf8"); } catch (_) {}
+      assert(
+        csv.length > 0,
+        "no-change: attachment decodes to non-empty string (header row is present)"
+      );
+
+      const lines = csv.split(/\r?\n/).filter(Boolean);
+      assert(lines.length >= 1, "no-change: CSV has at least the header row");
+
+      const dataRowCount = lines.length - 1; // subtract header
+      assert(
+        dataRowCount === 0,
+        `no-change: CSV contains exactly 0 data rows (got ${dataRowCount})`
+      );
+
+      // ---- F. Header is still well-formed ----
+      const EXPECTED_FIELDS = [
+        "id", "company", "category", "address", "city", "county", "visit_date",
+        "contact_name", "contact_title", "contact_email", "contact_phone",
+        "materials", "notes", "owner", "follow_up_due", "followup_status",
+        "attested", "created_at", "updated_at",
+      ];
+      const headerCols = (lines[0] || "").split(",");
+      assert(
+        headerCols.length === EXPECTED_FIELDS.length,
+        `no-change: CSV header has ${EXPECTED_FIELDS.length} columns (got ${headerCols.length})`
+      );
+      EXPECTED_FIELDS.forEach((col, i) => {
+        assert(
+          headerCols[i] === col,
+          `no-change: CSV column[${i}] = '${col}' (got '${headerCols[i]}')`
+        );
+      });
+    }
+  }
+
+  // --- Cleanup ---
+  await pool.query("DELETE FROM backup_log WHERE id > $1", [hwm]);
+
+  const cleanL = await pool.query(
+    "SELECT COUNT(*)::int AS n FROM backup_log WHERE id > $1", [hwm]
+  );
+  assert(cleanL.rows[0].n === 0, "no-change: test backup_log rows cleaned up");
+
+  console.log("\n=== Done (incremental no-change test) ===");
+}
+
 run()
   .then(() => runIncrementalTest())
+  .then(() => runIncrementalNoChangeTest())
   .catch((err) => {
     console.error("Unexpected error:", err);
     process.exitCode = 1;
