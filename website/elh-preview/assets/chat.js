@@ -628,16 +628,10 @@
   }
 
   function maybeShowTeaser() {
-    if (opened) return;
-    try { if (sessionStorage.getItem("elhcTeaserSeen")) return; } catch (e) {}
-    var delay = reduced() ? 700 : 2200;
-    window.setTimeout(function () {
-      if (opened || !teaser) return;
-      teaser.style.display = "block";
-      try { sessionStorage.setItem("elhcTeaserSeen", "1"); } catch (e) {}
-      // Gently retire the nudge if it goes unnoticed, so it never nags.
-      window.setTimeout(function () { if (!opened) dismissTeaser(false); }, 14000);
-    }, delay);
+    // Intentionally disabled: the teaser auto-popup is a no-op.
+    // On a hospice site an unsolicited greeting feels intrusive; the widget
+    // stays closed until the visitor clicks the launch button themselves.
+    return;
   }
 
   function dismissTeaser(remember) {
