@@ -96,9 +96,10 @@ Expected output: a series of `CREATE TABLE` / `CREATE INDEX` lines, no errors.
 | `SESSION_SECRET` | `Jm9NeuC1iBk6UV+vOkWgRDYF1JhdlSfsjHSveQDq71bUFgoeVVrPIS16BjK4G2fr` |
 | `REGISTRATION_CODE` | `D39642477C85677E705122C8` |
 
-3. **Optional — for AI card scanning & voice notes:**  
+3. **Required for AI card scanning & voice notes:**  
    Sidebar → **Tools → Integrations** → search **OpenAI** → Connect.  
-   This sets `AI_INTEGRATIONS_OPENAI_API_KEY` and `AI_INTEGRATIONS_OPENAI_BASE_URL` automatically.
+   This sets `AI_INTEGRATIONS_OPENAI_API_KEY` and `AI_INTEGRATIONS_OPENAI_BASE_URL` automatically.  
+   Without this step the "Scan business card" button will be disabled and voice notes will be unavailable.
 
 ### Step 8 — Start the app
 
