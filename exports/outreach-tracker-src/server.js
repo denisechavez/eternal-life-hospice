@@ -548,7 +548,13 @@ app.post("/api/transcribe", requireAuth, transcribeLimiter, async (req, res) => 
 });
 
 // ---- on-demand full backup trigger ----
-app.post("/api/backup/trigger", requireAuth, async (req, res) => {
+const triggerLimiter = rateLimit({
+  max: 3,
+  windowMs: 60 * 60 * 1000, // 1 hour
+  message: "Too many backup requests. Please wait before trying again.",
+});
+
+app.post("/api/backup/trigger", requireAuth, triggerLimiter, async (req, res) => {
   const forceFullBackup = req.query.full === "true";
   try {
     const result = await runWeeklyBackup({ forceFullBackup });
