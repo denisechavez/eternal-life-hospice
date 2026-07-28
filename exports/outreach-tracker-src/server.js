@@ -572,6 +572,199 @@ app.get("/api/backup/status", requireAuth, async (req, res) => {
   }
 });
 
+// ---- weekly backup scheduler ----
+// Uses backup_log as persistent state so a server restart doesn't reset the
+// 7-day clock.  Key design rules:
+//   1. backupRunning guard — prevents overlapping runs.
+//   2. scheduleNextBackup reads the LATEST row (any status) so a failed run
+//      is treated as an attempt and retried with backoff, not immediately.
+//   3. On success → next run in 7 days.
+//      On failure → retry in BACKUP_RETRY_MS (1 h) from the last attempt.
+//      On DB error → retry scheduleNextBackup in 1 h.
+
+const BACKUP_INTERVAL_MS = 7 * 24 * 60 * 60 * 1000; // 7 days
+const BACKUP_RETRY_MS   = 60 * 60 * 1000;            // 1 h on failure
+const BREVO_TIMEOUT_MS  = 30 * 1000;                 // 30 s HTTP timeout
+
+let backupRunning = false;
+
+async function runWeeklyBackup() {
+  if (backupRunning) {
+    console.log("Weekly backup: already running, skipping duplicate trigger.");
+    return;
+  }
+  backupRunning = true;
+  console.log("Weekly backup: starting at", new Date().toISOString());
+  try {
+    const to = process.env.BACKUP_EMAIL;
+    if (!to) {
+      console.warn("Weekly backup: BACKUP_EMAIL not set.");
+      await query("INSERT INTO backup_log (status, note) VALUES ($1, $2)", [
+        "error",
+        "BACKUP_EMAIL environment variable is not set.",
+      ]);
+      return; // scheduleNextBackup called in finally
+    }
+
+    const brevoKey = process.env.BREVO_API;
+    if (!brevoKey) {
+      console.warn("Weekly backup: BREVO_API not set.");
+      await query("INSERT INTO backup_log (status, note) VALUES ($1, $2)", [
+        "error",
+        "BREVO_API environment variable is not set.",
+      ]);
+      return;
+    }
+
+    // Fetch all visits
+    const { rows: visits } = await query(
+      `SELECT id, company, category, address, city, county, visit_date,
+              contact_name, contact_title, contact_email, contact_phone,
+              materials, notes, owner, follow_up_due, followup_status,
+              attested, created_at, updated_at
+       FROM visits ORDER BY created_at DESC`
+    );
+
+    // Build CSV
+    const fields = [
+      "id", "company", "category", "address", "city", "county", "visit_date",
+      "contact_name", "contact_title", "contact_email", "contact_phone",
+      "materials", "notes", "owner", "follow_up_due", "followup_status",
+      "attested", "created_at", "updated_at",
+    ];
+    const csvEsc = (v) => {
+      if (v === null || v === undefined) return "";
+      const s = Array.isArray(v) ? JSON.stringify(v) : String(v);
+      return /[,"\n\r]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s;
+    };
+    const csv = [
+      fields.join(","),
+      ...visits.map((r) => fields.map((f) => csvEsc(r[f])).join(",")),
+    ].join("\r\n");
+
+    const dateStr = new Date().toISOString().slice(0, 10);
+    const filename = `ELH_Field_Log_Backup_${dateStr}.csv`;
+
+    // Send via Brevo transactional email API
+    const payload = JSON.stringify({
+      sender: { name: "ELH Outreach Tracker", email: "no-reply@eternallifehospice.com" },
+      to: [{ email: to }],
+      subject: `ELH Field Log Weekly Backup — ${dateStr}`,
+      textContent:
+        `Weekly automated backup of the ELH Outreach Tracker field log.\n\n` +
+        `Records included: ${visits.length}\nDate: ${dateStr}\n\n` +
+        `The CSV file is attached.`,
+      attachment: [
+        { name: filename, content: Buffer.from(csv).toString("base64") },
+      ],
+    });
+
+    const https = require("https");
+    await new Promise((resolve, reject) => {
+      const req = https.request(
+        {
+          hostname: "api.brevo.com",
+          path: "/v3/smtp/email",
+          method: "POST",
+          headers: {
+            "api-key": brevoKey,
+            "Content-Type": "application/json",
+            "Content-Length": Buffer.byteLength(payload),
+          },
+        },
+        (res) => {
+          let body = "";
+          res.on("data", (c) => (body += c));
+          res.on("end", () => {
+            if (res.statusCode >= 200 && res.statusCode < 300) {
+              resolve();
+            } else {
+              reject(new Error(`Brevo ${res.statusCode}: ${body.slice(0, 200)}`));
+            }
+          });
+        }
+      );
+      req.setTimeout(BREVO_TIMEOUT_MS, () => {
+        req.destroy(new Error(`Brevo request timed out after ${BREVO_TIMEOUT_MS / 1000} s`));
+      });
+      req.on("error", reject);
+      req.write(payload);
+      req.end();
+    });
+
+    await query("INSERT INTO backup_log (status, note) VALUES ($1, $2)", [
+      "ok",
+      `${visits.length} record(s) emailed to ${to}`,
+    ]);
+    console.log(`Weekly backup: sent ${visits.length} record(s) to ${to}`);
+  } catch (e) {
+    const note = String((e && e.message) || "Unknown error").slice(0, 500);
+    console.error("Weekly backup failed:", note);
+    try {
+      await query("INSERT INTO backup_log (status, note) VALUES ($1, $2)", [
+        "error",
+        note,
+      ]);
+    } catch (dbErr) {
+      console.error("Weekly backup: could not write to backup_log:", dbErr);
+    }
+  } finally {
+    backupRunning = false;
+    scheduleNextBackup();
+  }
+}
+
+// Reads the LATEST backup_log row (any status) to decide when to next fire:
+//   - No rows yet        → fire immediately (first ever run)
+//   - Last row = 'ok'    → fire in (7 days − elapsed); or immediately if overdue
+//   - Last row = 'error' → fire in (BACKUP_RETRY_MS − elapsed); or immediately
+//                          if the retry window has already passed
+// This prevents the tight-loop where a failed run keeps rescheduling as
+// "overdue" because only ok rows were checked.
+function scheduleNextBackup() {
+  // Defer DB check so it never blocks the startup path.
+  setImmediate(async () => {
+    try {
+      const r = await query(
+        `SELECT status, ran_at FROM backup_log ORDER BY ran_at DESC LIMIT 1`
+      );
+      const now = Date.now();
+
+      if (!r.rows.length) {
+        console.log("Weekly backup scheduler: no prior attempt, firing now.");
+        runWeeklyBackup().catch((e) => console.error("Weekly backup unexpected error:", e));
+        return;
+      }
+
+      const { status, ran_at } = r.rows[0];
+      const elapsed = now - new Date(ran_at).getTime();
+      const window = status === "ok" ? BACKUP_INTERVAL_MS : BACKUP_RETRY_MS;
+      const delay  = Math.max(0, window - elapsed);
+
+      if (delay === 0) {
+        const reason = status === "ok"
+          ? `overdue by ${Math.floor(elapsed / 3_600_000)} h`
+          : `retry window elapsed`;
+        console.log(`Weekly backup scheduler: ${reason}, firing now.`);
+        runWeeklyBackup().catch((e) => console.error("Weekly backup unexpected error:", e));
+      } else {
+        const hh = Math.floor(delay / 3_600_000);
+        const mm = Math.floor((delay % 3_600_000) / 60_000);
+        console.log(
+          `Weekly backup scheduler: next ${status === "ok" ? "run" : "retry"} in ${hh} h ${mm} min.`
+        );
+        setTimeout(
+          () => runWeeklyBackup().catch((e) => console.error("Weekly backup unexpected error:", e)),
+          delay
+        ).unref();
+      }
+    } catch (e) {
+      console.error("Weekly backup scheduler: DB check failed, retrying in 1 h:", e);
+      setTimeout(scheduleNextBackup, BACKUP_RETRY_MS).unref();
+    }
+  });
+}
+
 // ---- AI model startup probe ----
 // Runs once after boot; sets aiModelWarning when the card-scanning model is
 // unreachable or retired so /api/config can surface it to the client.
@@ -617,4 +810,8 @@ app.listen(PORT, "0.0.0.0", () => {
   console.log(`ELH Outreach Tracker running on port ${PORT}`);
   // Non-blocking — sets aiModelWarning if the card-scanning model is broken.
   probeAiModel().catch((e) => console.error("probeAiModel unexpected error:", e));
+  // Non-blocking — starts the persistent weekly backup scheduler.
+  // Reads the last successful run from backup_log so a server restart does not
+  // reset the 7-day clock; fires immediately if overdue or never run before.
+  scheduleNextBackup();
 });
