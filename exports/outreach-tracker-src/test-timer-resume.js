@@ -318,10 +318,12 @@ async function runTests() {
 }
 
 runTests()
-  .then(() => {
-    process.exit(process.exitCode || 0);
-  })
   .catch((err) => {
     console.error("Unexpected error:", err);
-    process.exit(1);
+    process.exitCode = 1;
+  })
+  .finally(() => {
+    // jsdom setInterval timers keep the Node event loop alive; force exit so
+    // the test runner (npm test chain) is not blocked waiting for them to clear.
+    process.exit(process.exitCode || 0);
   });

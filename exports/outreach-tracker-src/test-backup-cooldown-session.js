@@ -20,6 +20,8 @@
 
 "use strict";
 
+const http    = require("http");
+const express = require("express");
 const { JSDOM } = require("jsdom");
 const fs   = require("fs");
 const path = require("path");
@@ -116,7 +118,7 @@ function assert(condition, message) {
 }
 
 /* ── boot a fresh jsdom instance with optional pre-seeded sessionStorage ────── */
-async function bootApp({ sessionStorageData = {}, backupRunResponse = null, throwingStorage = false, customStorage = null } = {}) {
+async function bootApp({ sessionStorageData = {}, backupRunResponse = null, throwingStorage = false, customStorage = null, backupRunFetcher = null } = {}) {
   const dom = new JSDOM(MINIMAL_HTML, {
     runScripts: "dangerously",
     url: "http://localhost/",
@@ -196,6 +198,7 @@ async function bootApp({ sessionStorageData = {}, backupRunResponse = null, thro
     }
     // /api/backup/run — controlled per test
     if (url.includes("/api/backup/run")) {
+      if (backupRunFetcher) return backupRunFetcher(url, opts);
       const resp = mockState.backupRunResponse;
       if (resp) return resp;
       // Default: 429
@@ -555,6 +558,144 @@ async function runTests() {
       btn.textContent === "Run backup now",
       `button label unchanged (got "${btn.textContent}")`
     );
+    console.log();
+  }
+
+  /* ── Scenario 9: hard-refresh bypass — server gate blocks second instance ──
+   *
+   * When sessionStorage is blocked (e.g. Private Browsing), the client-side
+   * cooldown lives in-memory only and is lost on a hard refresh.  A new page
+   * load (second jsdom instance) therefore has zero knowledge of the cooldown.
+   * This scenario verifies that the SERVER-SIDE rate limit is the real backstop:
+   * even without any client cooldown, the second "hard-refreshed" instance is
+   * still rejected with 429 by the server.
+   *
+   * The test spins up a real Express server with max=1 per window so the first
+   * request is allowed and the second is definitively blocked at the server.
+   * ─────────────────────────────────────────────────────────────────────────── */
+  console.log("--- Scenario 9: hard-refresh bypass — server gate blocks second instance (throwingStorage) ---");
+  {
+    /* ── build a tight in-memory rate limiter: max 1 per window ── */
+    const rlStore9 = new Map();
+    function rateLimit1({ windowMs, message }) {
+      return (req, res, next) => {
+        const now = Date.now();
+        const key = `${req.path}:${req.ip}`;
+        let rec = rlStore9.get(key);
+        if (!rec || now - rec.first > windowMs) {
+          rec = { count: 0, first: now };
+          rlStore9.set(key, rec);
+        }
+        rec.count += 1;
+        if (rec.count > 1) {
+          const waitSec = Math.ceil((rec.first + windowMs - now) / 1000);
+          res.setHeader("Retry-After", String(Math.max(waitSec, 1)));
+          return res.status(429).json({ error: message });
+        }
+        next();
+      };
+    }
+
+    const RATE_MSG = "Too many backup requests. Please wait before trying again.";
+    const app9 = express();
+    app9.use(express.json());
+    app9.post(
+      "/api/backup/run",
+      rateLimit1({ windowMs: 60 * 60 * 1000, message: RATE_MSG }),
+      (_req, res) => res.json({ ok: true, note: "stub backup ok" })
+    );
+    const srv9 = http.createServer(app9);
+    await new Promise((resolve) => srv9.listen(0, "127.0.0.1", resolve));
+    const base9 = `http://127.0.0.1:${srv9.address().port}`;
+
+    /* ── make a real HTTP POST, return a fetch-compatible response object ── */
+    function makeRealFetcher(baseUrl) {
+      return function (url) {
+        return new Promise((resolve, reject) => {
+          const target = new URL("/api/backup/run", baseUrl);
+          const reqOpts = {
+            hostname: target.hostname,
+            port: Number(target.port),
+            path: target.pathname,
+            method: "POST",
+            headers: { "Content-Type": "application/json", "Content-Length": "0" },
+          };
+          const req = http.request(reqOpts, (res) => {
+            let body = "";
+            res.on("data", (c) => (body += c));
+            res.on("end", () => {
+              let data = null;
+              try { data = JSON.parse(body); } catch (_) {}
+              resolve({
+                ok: res.statusCode >= 200 && res.statusCode < 300,
+                status: res.statusCode,
+                headers: {
+                  get: (h) => res.headers[h.toLowerCase()] != null
+                    ? String(res.headers[h.toLowerCase()])
+                    : null,
+                },
+                json: async () => data,
+              });
+            });
+          });
+          req.on("error", reject);
+          req.end();
+        });
+      };
+    }
+
+    const realFetcher = makeRealFetcher(base9);
+
+    try {
+      /* ── Instance 1: throwingStorage — client has NO stored cooldown ──────
+       *   First click → server allows (count=1, within max=1 limit).
+       *   Button should re-enable once the successful response is processed.
+       * ─────────────────────────────────────────────────────────────────── */
+      const { w: w1 } = await bootApp({
+        throwingStorage: true,
+        backupRunFetcher: realFetcher,
+      });
+      const btn1 = w1.document.getElementById("runBackupBtn");
+      assert(btn1.disabled === false, "Scenario 9 / instance 1: button starts enabled (no client cooldown)");
+
+      btn1.click();
+
+      // Wait for the async handler — successful run re-enables the button
+      await waitFor(() => btn1.textContent === "Run backup now", 2000);
+
+      assert(btn1.disabled === false, "Scenario 9 / instance 1: button re-enabled after server returned 200");
+      assert(
+        btn1.textContent === "Run backup now",
+        `Scenario 9 / instance 1: label restored to "Run backup now" (got "${btn1.textContent}")`
+      );
+
+      /* ── Instance 2: throwingStorage, fresh jsdom — client has NO cooldown ──
+       *   This models a hard-refresh in a privacy context: in-memory cooldown
+       *   is gone, sessionStorage is inaccessible, so the client believes the
+       *   button is freely clickable.
+       *   Second click → server blocks with 429 (count=2, exceeds max=1).
+       *   The button must become disabled, proving the server is the backstop.
+       * ─────────────────────────────────────────────────────────────────── */
+      const { w: w2 } = await bootApp({
+        throwingStorage: true,
+        backupRunFetcher: realFetcher,
+      });
+      const btn2 = w2.document.getElementById("runBackupBtn");
+      assert(btn2.disabled === false, "Scenario 9 / instance 2: button starts enabled (no client cooldown after hard-refresh)");
+
+      btn2.click();
+
+      // Wait for the async handler — 429 from server disables the button
+      await waitFor(() => btn2.disabled === true, 2000);
+
+      assert(btn2.disabled === true, "Scenario 9 / instance 2: button disabled — server 429 enforced despite no client cooldown");
+      assert(
+        btn2.textContent.startsWith("Try again in"),
+        `Scenario 9 / instance 2: countdown label shown (got "${btn2.textContent}")`
+      );
+    } finally {
+      srv9.close();
+    }
     console.log();
   }
 
