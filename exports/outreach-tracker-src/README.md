@@ -6,9 +6,30 @@ Internal field visit-capture and follow-up tracking app for the Eternal Life Hos
 
 ## Production builds & the trim test
 
-### Cold-start (first deploy) behaviour
+### Database privilege requirements
 
-When the test suite runs against a brand-new Postgres instance that has no `backup_log` table, `test-backup-trim.js` creates the table automatically via `CREATE TABLE IF NOT EXISTS` before inserting any rows. All 6 assertions still pass and the table is left clean after the test. This has been explicitly verified by dropping the table and re-running the test against the live database; no manual schema migration is needed before the first deploy.
+Replit's managed PostgreSQL assigns the `postgres` superuser role to the app connection, which includes full DDL rights (CREATE, DROP, ALTER). The test suite relies only on DML (INSERT / SELECT / DELETE) and `information_schema` reads, so it runs fine under a restricted DML-only role as well.
+
+**`test-backup-trim.js` does not create the `backup_log` table.** The table must exist before the test runs. Creating tables inside a test file is fragile: if the database role lacks DDL privileges the inline `CREATE TABLE` crashes before any assertion executes, producing a misleading permissions error rather than a clear setup message.
+
+Table creation is the responsibility of the one-time migration:
+
+```bash
+psql $DATABASE_URL < schema.sql
+```
+
+If the table is absent when the test runs, the test exits immediately with:
+
+```
+ERROR: backup_log table does not exist.
+       Run the schema migration first:  psql $DATABASE_URL < schema.sql
+```
+
+### Cold-start (first deploy) checklist
+
+1. Enable the PostgreSQL integration (sets `DATABASE_URL` automatically).
+2. Run `psql $DATABASE_URL < schema.sql` once to create all tables.
+3. Run `npm test` — all assertions pass against the now-populated schema.
 
 ### Test sequence
 

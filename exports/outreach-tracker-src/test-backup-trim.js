@@ -37,15 +37,24 @@ function assert(condition, message) {
 async function run() {
   console.log("=== backup_log 90-day trim test ===\n");
 
-  // Ensure the table exists (mirrors schema.sql)
-  await query(`
-    CREATE TABLE IF NOT EXISTS backup_log (
-      id     SERIAL PRIMARY KEY,
-      ran_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-      status TEXT        NOT NULL,
-      note   TEXT
-    )
+  // Verify the table already exists (must be created by schema.sql before tests run).
+  // We deliberately do NOT issue CREATE TABLE here: if the database role lacks DDL
+  // privileges the inline CREATE would crash before any assertion runs, masking the
+  // real problem.  A missing table is a setup error — fail loudly so the operator
+  // knows to run: psql $DATABASE_URL < schema.sql
+  const tableCheck = await query(`
+    SELECT 1 FROM information_schema.tables
+     WHERE table_schema = 'public'
+       AND table_name   = 'backup_log'
   `);
+  if (tableCheck.rows.length === 0) {
+    console.error(
+      "ERROR: backup_log table does not exist.\n" +
+      "       Run the schema migration first:  psql $DATABASE_URL < schema.sql"
+    );
+    process.exitCode = 1;
+    return;
+  }
 
   // --- Insert test rows with a sentinel note so we can target only our rows ---
   const SENTINEL = "test-backup-trim-script";

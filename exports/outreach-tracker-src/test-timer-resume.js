@@ -256,6 +256,9 @@ async function runTests() {
 
     // Total intervals ever created: step 1 + step 4 = 2 (step 5 must NOT add a 3rd)
     assert(spy.created === 2, `total intervals ever created = 2 (no phantom 3rd), got ${spy.created}`);
+
+    // Teardown: clear all live intervals then close the jsdom window so Node exits cleanly.
+    for (const id of spy.active) w.clearInterval(id);
     dom.window.close();
     console.log();
   }
@@ -281,6 +284,8 @@ async function runTests() {
     w.__setHidden(false);
     assert(spy.active.size === 1, "foreground while on export restarts exactly one interval");
     assert(spy.created === 2, `total intervals created = 2 (one per start), got ${spy.created}`);
+
+    for (const id of spy.active) w.clearInterval(id);
     dom.window.close();
     console.log();
   }
@@ -303,6 +308,8 @@ async function runTests() {
 
     assert(spy.active.size === 0, "foreground while on Log: 0 intervals live");
     assert(w.__getTimerId() === null, "foreground while on Log: _backupCheckedAtTimer is null");
+
+    for (const id of spy.active) w.clearInterval(id);
     dom.window.close();
     console.log();
   }
