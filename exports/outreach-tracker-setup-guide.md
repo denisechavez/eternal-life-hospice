@@ -122,16 +122,22 @@ Open the preview URL to confirm the login page loads.
 3. Create a name, phone number, and password
 4. Log in
 
-### Step 10 — Log a test visit
+### Step 10 — Log a test visit and verify card scanning
 
 1. Click **+ New Visit**
-2. Fill in:  
+2. **Verify AI card scanning (requires Step 7 OpenAI connection):**  
+   - The **Scan business card** button should be active (not greyed out).  
+   - Click it and photograph or upload any business card (a colleague's card, a printed sample, or even a card face photographed on a desk).  
+   - At least one field — name, company, title, phone, or email — should populate automatically within a few seconds.  
+   - If the button is greyed out: the OpenAI integration in Step 7 was not completed. Go back and connect it, then restart the app before continuing.  
+   - If the button is active but returns an error or fills nothing: check the Shell for a logged error message. A model or API key issue will appear there. Resolve it before field staff use the app.
+3. Fill in or confirm:  
    - Company: `TEST – Setup Verification`  
    - Visit date: today  
    - Status: `Not started`
-3. Save
-4. Confirm the visit appears in the visit list and the Follow-up tab
-5. Download the CSV export and confirm the row appears
+4. Save
+5. Confirm the visit appears in the visit list and the Follow-up tab
+6. Download the CSV export and confirm the row appears
 
 ### Step 11 — Deploy
 
@@ -146,8 +152,10 @@ Open the preview URL to confirm the login page loads.
 
 - [ ] Schema applied (no errors)
 - [ ] Two secrets set (`SESSION_SECRET`, `REGISTRATION_CODE`)
+- [ ] OpenAI integration connected (Step 7)
 - [ ] App boots and login page loads
 - [ ] First account registered with `REGISTRATION_CODE`
+- [ ] Card scan tested — "Scan business card" button was active and populated at least one field from a sample card
 - [ ] Test visit saved and visible
 - [ ] CSV export contains the test visit row
 - [ ] App deployed at stable `*.replit.app` URL
