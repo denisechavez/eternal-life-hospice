@@ -116,17 +116,34 @@ function assert(condition, message) {
 }
 
 /* ── boot a fresh jsdom instance with optional pre-seeded sessionStorage ────── */
-async function bootApp({ sessionStorageData = {}, backupRunResponse = null } = {}) {
+async function bootApp({ sessionStorageData = {}, backupRunResponse = null, throwingStorage = false } = {}) {
   const dom = new JSDOM(MINIMAL_HTML, {
     runScripts: "dangerously",
     url: "http://localhost/",
   });
   const w = dom.window;
 
-  // Pre-populate sessionStorage BEFORE app.js runs so the boot IIFE
-  // → enterApp() → resume-cooldown block sees it immediately.
-  for (const [k, v] of Object.entries(sessionStorageData)) {
-    w.sessionStorage.setItem(k, v);
+  if (throwingStorage) {
+    // Replace sessionStorage with an object whose every method throws, simulating
+    // a browser that blocks storage (e.g. Private Browsing with strict settings).
+    const alwaysThrows = () => { throw new DOMException("Storage is disabled", "SecurityError"); };
+    Object.defineProperty(w, "sessionStorage", {
+      configurable: true,
+      get: () => ({
+        getItem:    alwaysThrows,
+        setItem:    alwaysThrows,
+        removeItem: alwaysThrows,
+        clear:      alwaysThrows,
+        key:        alwaysThrows,
+        length:     0,
+      }),
+    });
+  } else {
+    // Pre-populate sessionStorage BEFORE app.js runs so the boot IIFE
+    // → enterApp() → resume-cooldown block sees it immediately.
+    for (const [k, v] of Object.entries(sessionStorageData)) {
+      w.sessionStorage.setItem(k, v);
+    }
   }
 
   // Build a mutable fetch mock so individual scenarios can control each route.
@@ -453,6 +470,34 @@ async function runTests() {
     assert(
       w.sessionStorage.getItem(KEY) === staleDeadline,
       "stale key still in sessionStorage after successful run (left harmlessly — guard skips it on next load)"
+    );
+    console.log();
+  }
+
+  /* ── Scenario 7: storage unavailable — cooldown still runs in-memory ──────── */
+  console.log("--- Scenario 7: sessionStorage blocked — no uncaught error, button still disables ---");
+  {
+    let uncaughtError = null;
+
+    const { w } = await bootApp({ throwingStorage: true });
+
+    // Capture any uncaught error the window emits (would indicate a missing try/catch)
+    w.addEventListener("error", (e) => { uncaughtError = e.error || e.message; });
+
+    const btn = w.document.getElementById("runBackupBtn");
+    assert(btn !== null, "#runBackupBtn exists in DOM");
+    assert(btn.disabled === false, "button starts enabled with throwing storage");
+
+    // Click — fetch mock returns 429, cooldown logic runs with broken sessionStorage
+    btn.click();
+
+    await waitFor(() => btn.disabled === true);
+
+    assert(uncaughtError === null, "no uncaught error when sessionStorage always throws");
+    assert(btn.disabled === true, "button is disabled (in-memory cooldown) despite broken storage");
+    assert(
+      btn.textContent.startsWith("Try again in"),
+      `countdown label present despite broken storage (got "${btn.textContent}")`
     );
     console.log();
   }
