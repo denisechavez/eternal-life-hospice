@@ -41,6 +41,28 @@ const MIN_NAV_LINKS = 5; // minimum links to make the scroll cap meaningful
 
 // ─── helpers ────────────────────────────────────────────────────────────────
 
+/**
+ * Walk a directory tree recursively and return all file paths whose names
+ * satisfy the predicate.  Follows directories but not symlinks.
+ */
+function walkHtmlFiles(dir, results = []) {
+  let entries;
+  try {
+    entries = fs.readdirSync(dir, { withFileTypes: true });
+  } catch (_) {
+    return results;
+  }
+  for (const entry of entries) {
+    const full = path.join(dir, entry.name);
+    if (entry.isDirectory()) {
+      walkHtmlFiles(full, results);
+    } else if (entry.isFile() && entry.name.endsWith(".html")) {
+      results.push(full);
+    }
+  }
+  return results;
+}
+
 function assert(condition, message) {
   if (!condition) {
     console.error(`  FAIL: ${message}`);
@@ -133,13 +155,9 @@ function run() {
   // ── 2. Check every HTML file with an inline #hdr.nav-open nav rule ──────
   console.log("[ inline <style> blocks in HTML files ]");
 
-  // Collect all .html files directly under website/elh-preview/ (not subdirs)
-  // and also check index.html specifically (the only standalone page known to
-  // carry the full header CSS inline).
-  const htmlFiles = fs
-    .readdirSync(PREVIEW_DIR)
-    .filter(f => f.endsWith(".html"))
-    .map(f => path.join(PREVIEW_DIR, f));
+  // Collect all .html files under website/elh-preview/ recursively so that
+  // standalone pages added in sub-folders are automatically covered.
+  const htmlFiles = walkHtmlFiles(PREVIEW_DIR);
 
   let inlineChecked = 0;
 
@@ -168,7 +186,7 @@ function run() {
   }
 
   if (inlineChecked === 0) {
-    console.log("  INFO: no inline #hdr.nav-open nav rules found in top-level HTML files");
+    console.log("  INFO: no inline #hdr.nav-open nav rules found in any HTML file under elh-preview/");
   }
 
   console.log();
