@@ -201,6 +201,7 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--slate);outline-o
 .voice .btn.ghost:disabled,.voice .btn.ghost[aria-disabled="true"]{opacity:.65;cursor:not-allowed}
 .rechint{margin-top:9px;margin-bottom:0}
 .rechint.err{color:#a4304a}
+#recHint:focus-visible{outline:2px solid var(--slate);outline-offset:2px}
 @keyframes recpulse{0%,100%{opacity:1}50%{opacity:.25}}
 
 @media(prefers-reduced-motion:reduce){*{transition:none !important}}
