@@ -1,5 +1,6 @@
 # Netlify configuration for Eternal Life Hospice.
-# The static site lives in website/elh-preview/. No build step.
+# The static site lives in website/elh-preview/. The build command runs the
+# Cookie Settings lint check and blocks the deploy if any page is missing the link.
 #
 # We set `base` to the site folder so Netlify runs entirely inside it. This
 # isolates the deploy from the repo-root package.json (which belongs to the
@@ -9,6 +10,7 @@
 [build]
   base = "website/elh-preview"
   publish = "."
+  command = "bash ../check-cookie-settings.sh"
 
 [functions]
   directory = "netlify/functions"
