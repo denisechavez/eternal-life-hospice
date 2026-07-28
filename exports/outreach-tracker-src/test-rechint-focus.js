@@ -25,16 +25,26 @@
  * Usage:
  *   node test-rechint-focus.js
  *
+ * Flags:
+ *   --skip-regression   Run only the forward checks (used internally by the
+ *                       regression-proof section to avoid infinite recursion).
+ *
  * Exit codes: 0 = all assertions passed, 1 = a failure occurred.
  */
 
 "use strict";
 
-const fs   = require("fs");
-const path = require("path");
+const fs            = require("fs");
+const path          = require("path");
+const { spawnSync } = require("child_process");
 
 const CSS_PATH  = path.join(__dirname, "public", "styles.css");
 const HTML_PATH = path.join(__dirname, "public", "index.html");
+
+// When this script runs itself as a subprocess to prove the regression check
+// works, it passes --skip-regression so the subprocess only runs the forward
+// checks and does not mutate the CSS a second time.
+const SKIP_REGRESSION = process.argv.includes("--skip-regression");
 
 function assert(condition, message) {
   if (!condition) {
@@ -110,4 +120,50 @@ function run() {
   console.log("\n=== Done ===");
 }
 
+// ── Regression proof ────────────────────────────────────────────────────────
+// Temporarily injects a bare `#recHint:focus { outline: 2px solid red; }` rule
+// into styles.css, spawns this same script with --skip-regression, and asserts
+// that it exits with code 1.  The CSS file is always restored, even on error.
+//
+// This section is skipped when the script is called with --skip-regression so
+// that the subprocess used for the proof doesn't recurse.
+function runRegressionCheck() {
+  console.log("\n=== Regression proof: bare :focus swap ===\n");
+
+  const originalCss = fs.readFileSync(CSS_PATH, "utf8");
+  // Inject a bare :focus rule that the check should flag.
+  const mutatedCss =
+    originalCss + "\n/* regression-probe */\n#recHint:focus { outline: 2px solid red; }\n";
+
+  try {
+    fs.writeFileSync(CSS_PATH, mutatedCss, "utf8");
+
+    const result = spawnSync(process.execPath, [__filename, "--skip-regression"], {
+      encoding: "utf8",
+    });
+
+    const exitCode = result.status;
+    assert(
+      exitCode === 1,
+      `check exits 1 when a bare #recHint:focus outline rule is present (got ${exitCode})`
+    );
+
+    if (exitCode !== 1) {
+      // Surface subprocess output to aid debugging when the proof fails.
+      if (result.stdout) process.stdout.write("  [subprocess stdout]\n" + result.stdout);
+      if (result.stderr) process.stderr.write("  [subprocess stderr]\n" + result.stderr);
+    }
+  } finally {
+    // Always restore the original CSS — even if the spawn threw.
+    fs.writeFileSync(CSS_PATH, originalCss, "utf8");
+    console.log("  INFO: styles.css restored to original state");
+  }
+
+  console.log("\n=== Regression proof done ===");
+}
+
 run();
+
+if (!SKIP_REGRESSION) {
+  runRegressionCheck();
+}

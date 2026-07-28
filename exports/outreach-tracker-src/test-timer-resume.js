@@ -210,7 +210,7 @@ async function runTests() {
   // ── Scenario 1: the core edge case ──────────────────────────────────────────
   {
     console.log("Scenario 1: hide → switch-to-log → switch-to-export → foreground");
-    const { w, spy } = await bootApp();
+    const { dom, w, spy } = await bootApp();
 
     // Reset spy counters after boot (boot may have created intervals unrelated
     // to the export timer, e.g. the cooldown; start clean).
@@ -256,13 +256,14 @@ async function runTests() {
 
     // Total intervals ever created: step 1 + step 4 = 2 (step 5 must NOT add a 3rd)
     assert(spy.created === 2, `total intervals ever created = 2 (no phantom 3rd), got ${spy.created}`);
+    dom.window.close();
     console.log();
   }
 
   // ── Scenario 2: simpler path — hide then foreground without tab switch ───────
   {
     console.log("Scenario 2: hide then immediately foreground (no in-app tab change)");
-    const { w, spy } = await bootApp();
+    const { dom, w, spy } = await bootApp();
 
     spy.active.clear();
     spy.created = 0;
@@ -280,13 +281,14 @@ async function runTests() {
     w.__setHidden(false);
     assert(spy.active.size === 1, "foreground while on export restarts exactly one interval");
     assert(spy.created === 2, `total intervals created = 2 (one per start), got ${spy.created}`);
+    dom.window.close();
     console.log();
   }
 
   // ── Scenario 3: foreground while on a non-export tab must NOT start timer ───
   {
     console.log("Scenario 3: foreground while on Log tab must NOT start the timer");
-    const { w, spy } = await bootApp();
+    const { dom, w, spy } = await bootApp();
 
     spy.active.clear();
     spy.created = 0;
@@ -301,13 +303,18 @@ async function runTests() {
 
     assert(spy.active.size === 0, "foreground while on Log: 0 intervals live");
     assert(w.__getTimerId() === null, "foreground while on Log: _backupCheckedAtTimer is null");
+    dom.window.close();
     console.log();
   }
 
   console.log("=== Done ===");
 }
 
-runTests().catch((err) => {
-  console.error("Unexpected error:", err);
-  process.exitCode = 1;
-});
+runTests()
+  .then(() => {
+    process.exit(process.exitCode || 0);
+  })
+  .catch((err) => {
+    console.error("Unexpected error:", err);
+    process.exit(1);
+  });
