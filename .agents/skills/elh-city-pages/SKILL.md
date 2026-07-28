@@ -97,3 +97,35 @@ Zero results = all pages have unique city photos.
 4. Add `<img class="hero-bg">` in the hero section
 5. Update `hospice-ventura-and-los-angeles-county-ca.html` county-quicknav section to include the new city link
 6. Add the city to the sitemap (`sitemap.xml`)
+7. **Run the translate-bar guard before committing** — this catches pages copied from old templates that lack the bar:
+   ```bash
+   node website/elh-preview/assets/test-city-page-translate.js \
+        website/elh-preview/hospice-CITY-ca.html
+   ```
+   The script exits 0 (safe to commit) or 1 (translate bar missing / incomplete) and prints the exact fix if it fails. Do not commit the new page until this exits 0.
+
+### Translate bar markup (copy verbatim into any page that lacks it)
+
+Place this block immediately before `</footer>`, then add the script tag immediately before `</body>`:
+
+```html
+  <div class="foot-translate">
+    <span class="ft-label">Translate this page</span>
+    <div class="ft-lang-btns">
+      <a class="ft-lang" data-lang="es">🇲🇽 Español</a>
+      <a class="ft-lang" data-lang="ru">🇷🇺 Русский</a>
+      <a class="ft-lang" data-lang="uk">🇺🇦 Українська</a>
+      <a class="ft-lang" data-lang="ko">🇰🇷 한국어</a>
+      <a class="ft-lang" data-lang="hy">🇦🇲 Հայերեն</a>
+      <a class="ft-lang" data-lang="tl">🇵🇭 Filipino</a>
+      <a class="ft-lang" data-lang="vi">🇻🇳 Tiếng Việt</a>
+      <a class="ft-lang" data-lang="zh-CN">🇨🇳 中文</a>
+      <a class="ft-lang" data-lang="ar">🇸🇦 العربية</a>
+      <a class="ft-lang" data-lang="fa">🇮🇷 فارسی</a>
+    </div>
+  </div>
+```
+
+```html
+<script defer src="/assets/translate.js"></script>
+```
