@@ -77,5 +77,49 @@ assert(
   `error message mentions "BACKUP_EMAIL" so the cause is unambiguous`
 );
 
-console.log("\n=== Done (BACKUP_EMAIL guard test) ===");
+// ---------------------------------------------------------------------------
+// Case 2: BACKUP_EMAIL is set but BREVO_API is absent
+// The BREVO_API guard (lines 43-50 of test-backup-email.js) must fire.
+// ---------------------------------------------------------------------------
+
+console.log("\n=== BREVO_API absence guard test ===\n");
+
+// Build a clean env that has DATABASE_URL + BACKUP_EMAIL but NOT BREVO_API.
+const brevoGuardEnv = Object.assign({}, process.env);
+brevoGuardEnv.BACKUP_EMAIL = "test-guard@example.com";
+delete brevoGuardEnv.BREVO_API;
+
+const brevoResult = spawnSync(process.execPath, [scriptPath], {
+  env: brevoGuardEnv,
+  encoding: "utf8",
+  timeout: 15000,
+});
+
+const brevoOutput = (brevoResult.stdout || "") + (brevoResult.stderr || "");
+
+// 1. Must exit non-zero
+assert(
+  brevoResult.status !== 0,
+  `test-backup-email.js exits non-zero when BREVO_API is absent (got exit code ${brevoResult.status})`
+);
+
+// 2. Output must contain "ERROR:"
+assert(
+  brevoOutput.includes("ERROR:"),
+  `output contains "ERROR:" (got: ${JSON.stringify(brevoOutput.slice(0, 300))})`
+);
+
+// 3. Output must NOT contain "SKIP:"
+assert(
+  !brevoOutput.includes("SKIP:"),
+  `output does NOT contain "SKIP:" — failure is visible, not silently skipped`
+);
+
+// 4. The error message should mention BREVO_API so the cause is obvious
+assert(
+  brevoOutput.includes("BREVO_API"),
+  `error message mentions "BREVO_API" so the cause is unambiguous (got: ${JSON.stringify(brevoOutput.slice(0, 300))})`
+);
+
+console.log("\n=== Done (BREVO_API guard test) ===");
 process.exit(failures > 0 ? 1 : 0);
