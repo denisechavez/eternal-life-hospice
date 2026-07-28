@@ -6,7 +6,7 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "test": "node test-rechint-focus.js && node test-scanhint-reset.js && node test-rec-btn-aria.js && node test-backup-trim.js && node test-backup-email.js && node test-rate-limit-trigger.js && node test-backup-brevo-failure.js && node test-backup-cooldown-session.js && node test-rate-limit-table.js && node test-nav-scroll.js && node test-timer-resume.js",
+    "test": "node test-rechint-focus.js && node test-scanhint-reset.js && node test-rec-btn-aria.js && node test-backup-trim.js && node test-backup-email.js && node test-rate-limit-trigger.js && node test-backup-brevo-failure.js && node test-backup-cooldown-session.js && node test-rate-limit-table.js && node test-nav-scroll.js && node test-nav-scroll-regression.js && node test-timer-resume.js",
     "test:scanhint": "node test-scanhint-reset.js",
     "test:backup-trim": "node test-backup-trim.js",
     "test:backup-email": "node test-backup-email.js",

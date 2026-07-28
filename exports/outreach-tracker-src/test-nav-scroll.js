@@ -34,7 +34,10 @@ const path = require("path");
 
 // Paths relative to this script (exports/outreach-tracker-src/)
 const REPO_ROOT   = path.resolve(__dirname, "..", "..");
-const ELH_CSS     = path.join(REPO_ROOT, "website", "elh-preview", "assets", "elh.css");
+// Allow the regression harness to point at a mutated CSS copy without changing
+// the real file.  Normal runs leave ELH_CSS_OVERRIDE unset.
+const ELH_CSS     = process.env.ELH_CSS_OVERRIDE
+  || path.join(REPO_ROOT, "website", "elh-preview", "assets", "elh.css");
 const PREVIEW_DIR = path.join(REPO_ROOT, "website", "elh-preview");
 
 const MIN_NAV_LINKS = 5; // minimum links to make the scroll cap meaningful
