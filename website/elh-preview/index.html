@@ -2105,11 +2105,6 @@ p,li,blockquote{text-wrap:pretty}
   <div class="search-results" id="searchResults"></div>
 </div>
 
-<script>
-document.querySelectorAll('.ft-lang').forEach(function(a){
-  a.href='https://translate.google.com/translate?sl=en&tl='+a.dataset.lang+'&u='+encodeURIComponent(location.href);
-  a.target='_blank';a.rel='noopener';
-});
-</script>
+<script defer src="/assets/translate.js"></script>
 </body>
 </html>
