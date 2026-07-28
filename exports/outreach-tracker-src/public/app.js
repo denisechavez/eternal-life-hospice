@@ -257,6 +257,7 @@ function updateVoiceSection() {
 
 function updateScanSection() {
   if (hasCard !== "yes") return;
+  if (scanning) return;
   const h = $(".scanhint");
   const btn = $("#scanBtn");
   if (aiEnabled) {
