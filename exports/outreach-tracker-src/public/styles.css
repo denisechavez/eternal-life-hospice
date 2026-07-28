@@ -141,6 +141,12 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--slate);outline-o
 .backup-warn{background:rgba(156,47,63,.09);border-left:3px solid #9c2f3f;color:#7a1e2e;font-size:13px;line-height:1.5;padding:12px 15px;border-radius:0 3px 3px 0;margin-bottom:20px}
 .backup-warn strong{font-weight:600}
 
+/* ---------- AI model warning banner ---------- */
+.ai-warn{display:flex;align-items:flex-start;gap:12px;background:rgba(192,128,58,.11);border-left:3px solid #C0803A;color:#7a4a0e;font-size:13px;line-height:1.5;padding:12px 15px;border-radius:0 3px 3px 0;margin-bottom:20px}
+.ai-warn span{flex:1}
+.ai-warn-dismiss{flex:none;background:none;border:0;color:#7a4a0e;font-size:18px;line-height:1;cursor:pointer;padding:0 2px;opacity:.7}
+.ai-warn-dismiss:hover{opacity:1}
+
 /* ---------- auth ---------- */
 .auth{min-height:100dvh;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:32px 18px}
 .authcard{width:100%;max-width:400px;background:#fff;border:1px solid var(--line);border-radius:5px;box-shadow:var(--shadow);overflow:hidden}

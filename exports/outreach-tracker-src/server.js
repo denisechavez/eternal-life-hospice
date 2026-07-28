@@ -9,6 +9,9 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 const MAX_USERS = 2;
 
+// Populated at startup by probeAiModel(); read by /api/config.
+let aiModelWarning = null;
+
 if (!process.env.SESSION_SECRET) {
   console.error(
     "FATAL: SESSION_SECRET is not set. Refusing to start with an insecure session secret."
@@ -123,6 +126,7 @@ app.get("/api/config", async (req, res) => {
       requiresCode: Boolean(process.env.REGISTRATION_CODE),
       signedIn: Boolean(req.session && req.session.userId),
       aiEnabled: Boolean(process.env.AI_INTEGRATIONS_OPENAI_API_KEY),
+      aiModelWarning: aiModelWarning || null,
     });
   } catch (e) {
     console.error("config error", e);
@@ -543,42 +547,6 @@ app.post("/api/transcribe", requireAuth, transcribeLimiter, async (req, res) => 
   }
 });
 
-// ---- backup helpers ----
-async function logBackupResult(status, note) {
-  try {
-    await query(
-      "INSERT INTO backup_log (status, note) VALUES ($1, $2)",
-      [status, note ? String(note).slice(0, 500) : null]
-    );
-  } catch (e) {
-    console.error("Failed to write backup_log:", e);
-  }
-}
-
-function buildBackupCsv(rows) {
-  const cols = [
-    "visit_date", "company", "category", "address", "city", "county",
-    "contact_name", "contact_title", "contact_email", "contact_phone",
-    "materials", "notes", "owner", "follow_up_due", "followup_status",
-  ];
-  const head = [
-    "Visit date", "Organization", "Category", "Address", "City", "County",
-    "Contact", "Title", "Email", "Phone", "Materials left", "Notes",
-    "Owner", "Follow-up due", "Status",
-  ];
-  const neutralize = (s) => (/^[=+\-@\t\r]/.test(s) ? "'" + s : s);
-  const csvRows = rows.map((v) =>
-    cols.map((c) => {
-      let val = v[c];
-      if (Array.isArray(val)) val = val.join("; ");
-      if ((c === "visit_date" || c === "follow_up_due") && val)
-        val = String(val).slice(0, 10);
-      return `"${neutralize(String(val ?? "")).replace(/"/g, '""')}"`;
-    }).join(",")
-  );
-  return "\uFEFF" + [head.join(","), ...csvRows].join("\r\n");
-}
-
 // ---- backup status ----
 app.get("/api/backup/status", requireAuth, async (req, res) => {
   try {
@@ -594,70 +562,39 @@ app.get("/api/backup/status", requireAuth, async (req, res) => {
   }
 });
 
-// ---- backup: run & log ----
-app.post("/api/backup/run", requireAuth, async (req, res) => {
-  const backupEmail = process.env.BACKUP_EMAIL;
-  const brevoKey = process.env.BREVO_API;
-
-  if (!backupEmail || !brevoKey) {
-    const note = !backupEmail
-      ? "BACKUP_EMAIL is not set"
-      : "BREVO_API key is not set";
-    await logBackupResult("error", note);
-    return res.status(503).json({ error: "Backup is not configured — " + note + "." });
-  }
-
-  let rows;
+// ---- AI model startup probe ----
+// Runs once after boot; sets aiModelWarning when the card-scanning model is
+// unreachable or retired so /api/config can surface it to the client.
+async function probeAiModel() {
+  if (!process.env.AI_INTEGRATIONS_OPENAI_API_KEY) return;
   try {
-    const r = await query("SELECT * FROM visits ORDER BY created_at DESC");
-    rows = r.rows;
-  } catch (e) {
-    const note = "Could not read visits: " + (e.message || "DB error");
-    await logBackupResult("error", note);
-    return res.status(500).json({ error: note });
-  }
-
-  const csvContent = buildBackupCsv(rows);
-  const csvB64 = Buffer.from(csvContent, "utf8").toString("base64");
-  const dateStamp = new Date().toISOString().slice(0, 10);
-  const fileName = `ELH_Field_Log_${dateStamp}.csv`;
-
-  const payload = {
-    sender: { name: "ELH Outreach Tracker", email: backupEmail },
-    to: [{ email: backupEmail }],
-    subject: `ELH Field Log Backup — ${dateStamp}`,
-    textContent:
-      `Automated backup from the ELH Outreach Tracker.\n\n` +
-      `${rows.length} visit${rows.length !== 1 ? "s" : ""} exported on ${dateStamp}.\n`,
-    attachment: [{ name: fileName, content: csvB64 }],
-  };
-
-  try {
-    const brevoRes = await fetch("https://api.brevo.com/v3/smtp/email", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "api-key": brevoKey,
-      },
-      body: JSON.stringify(payload),
+    const OpenAI = require("openai");
+    const client = new OpenAI({
+      apiKey: process.env.AI_INTEGRATIONS_OPENAI_API_KEY,
+      baseURL: process.env.AI_INTEGRATIONS_OPENAI_BASE_URL,
     });
-
-    if (!brevoRes.ok) {
-      const body = await brevoRes.text().catch(() => "");
-      const note = `Brevo returned HTTP ${brevoRes.status}: ${body.slice(0, 200)}`;
-      await logBackupResult("error", note);
-      return res.status(502).json({ error: "Backup email failed. " + note });
-    }
-
-    const note = `${rows.length} visit${rows.length !== 1 ? "s" : ""} sent to ${backupEmail}`;
-    await logBackupResult("ok", note);
-    return res.json({ ok: true, count: rows.length });
+    // Use the same model as extractCardContact; a minimal text-only call is
+    // enough to confirm the model is live without spending tokens.
+    await client.chat.completions.create({
+      model: "gpt-5.4-mini",
+      messages: [{ role: "user", content: "ping" }],
+      max_tokens: 1,
+    });
+    aiModelWarning = null;
+    console.log("AI model probe: card-scanning model is reachable.");
   } catch (e) {
-    const note = "Network error sending backup: " + (e.message || "unknown");
-    await logBackupResult("error", note);
-    return res.status(502).json({ error: note });
+    const msg = String((e && e.message) || "");
+    const status = e && e.status;
+    // 404 = model not found / retired; treat auth failures and hard
+    // unavailability as broken too — any of these blocks field staff.
+    if (status === 404 || status === 401 || status === 503 || /model/i.test(msg)) {
+      aiModelWarning =
+        "Card scanning is unavailable — the AI model may need updating. Contact your admin.";
+      console.warn("AI model probe failed (status " + status + "):", msg);
+    }
+    // Transient network errors are not surfaced as a banner (don't false-alarm).
   }
-});
+}
 
 // ---- static frontend ----
 app.use(express.static(path.join(__dirname, "public")));
@@ -668,4 +605,6 @@ app.get("*", (req, res) => {
 
 app.listen(PORT, "0.0.0.0", () => {
   console.log(`ELH Outreach Tracker running on port ${PORT}`);
+  // Non-blocking — sets aiModelWarning if the card-scanning model is broken.
+  probeAiModel().catch((e) => console.error("probeAiModel unexpected error:", e));
 });

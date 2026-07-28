@@ -127,12 +127,32 @@ $("#logoutBtn").addEventListener("click", async () => {
   location.reload();
 });
 
+/* ================= AI MODEL BANNER ================= */
+const AI_BANNER_DISMISSED_KEY = "aiModelBannerDismissed";
+
+function showAiModelBanner(warning) {
+  if (sessionStorage.getItem(AI_BANNER_DISMISSED_KEY)) return;
+  const banner = $("#aiModelBanner");
+  const msg = $("#aiModelBannerMsg");
+  if (!banner || !msg) return;
+  msg.textContent = warning ||
+    "Card scanning is unavailable — the AI model may need updating. Contact your admin.";
+  banner.classList.remove("hidden");
+}
+
+$("#aiModelBannerDismiss").addEventListener("click", () => {
+  const banner = $("#aiModelBanner");
+  if (banner) banner.classList.add("hidden");
+  sessionStorage.setItem(AI_BANNER_DISMISSED_KEY, "1");
+});
+
 /* ================= APP BOOT ================= */
 async function enterApp() {
   // Fetch config to learn if the OpenAI integration is enabled
   try {
     const cfg = await api("/api/config");
     aiEnabled = Boolean(cfg.aiEnabled);
+    if (cfg.aiModelWarning) showAiModelBanner(cfg.aiModelWarning);
   } catch (_) {
     aiEnabled = false;
   }
