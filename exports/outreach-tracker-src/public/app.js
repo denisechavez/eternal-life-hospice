@@ -179,6 +179,8 @@ async function enterApp() {
     const _remainingSec = Math.ceil((_cooldownUntil - Date.now()) / 1000);
     const _backupBtn = $("#runBackupBtn");
     if (_backupBtn) _startRunBackupCooldown(_backupBtn, _remainingSec);
+  } else if (_cooldownUntil > 0) {
+    _ssRemove(RUN_BACKUP_COOLDOWN_KEY); // expired — clean up proactively
   }
 }
 

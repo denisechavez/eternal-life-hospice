@@ -414,12 +414,11 @@ async function runTests() {
       btn.textContent === "Run backup now",
       `button label unchanged (got "${btn.textContent}")`
     );
-    // The stale key is left in storage — it is harmless because the guard
-    // (`> Date.now()`) will skip it on every subsequent enterApp() call too.
-    // This documents the chosen behaviour: no cleanup on load, no re-use.
+    // The stale key is proactively removed by the else-if branch in enterApp()
+    // so it never lingers in storage for the rest of the session.
     assert(
-      w.sessionStorage.getItem(KEY) === staleDeadline,
-      "stale key is left in sessionStorage (not re-used, not cleared on load)"
+      w.sessionStorage.getItem(KEY) === null,
+      "stale key is removed from sessionStorage on load (proactive cleanup)"
     );
     console.log();
   }
@@ -427,12 +426,11 @@ async function runTests() {
   /* ── Scenario 6: stale key is left harmlessly after a successful backup run ── */
   //
   // After the user successfully triggers a backup (server returns 200), the
-  // success path in the click handler does NOT call _ssRemove — it only
-  // restores btn.disabled = false and btn.textContent.  The stale key therefore
-  // remains in sessionStorage, which is fine: the `> Date.now()` guard in
-  // enterApp() will still skip it on any subsequent page load.
+  // stale key was already removed by the proactive cleanup in enterApp() (the
+  // `else if (_cooldownUntil > 0)` branch), so the key is null both before and
+  // after the successful run.
   //
-  console.log("--- Scenario 6: stale key remains harmlessly after a successful backup run ---");
+  console.log("--- Scenario 6: stale key already cleaned up by enterApp before a successful backup run ---");
   {
     const KEY = "runBackupCooldownUntil";
     const staleDeadline = String(Date.now() - 300_000); // 5 minutes ago
@@ -452,8 +450,12 @@ async function runTests() {
     // Let enterApp() settle
     await new Promise((r) => setTimeout(r, 80));
 
-    // Button must be enabled before the click (stale key was skipped)
+    // Button must be enabled before the click (stale key was skipped and cleaned up)
     assert(btn.disabled === false, "button enabled before run (stale key skipped)");
+    assert(
+      w.sessionStorage.getItem(KEY) === null,
+      "stale key already removed by enterApp() proactive cleanup before the click"
+    );
 
     // Click — success path executes
     btn.click();
@@ -465,11 +467,9 @@ async function runTests() {
       btn.textContent === "Run backup now",
       `button label restored to "Run backup now" (got "${btn.textContent}")`
     );
-    // Documented behaviour: success path does not clean up the stale key;
-    // the key is left in storage and remains harmless on future loads.
     assert(
-      w.sessionStorage.getItem(KEY) === staleDeadline,
-      "stale key still in sessionStorage after successful run (left harmlessly — guard skips it on next load)"
+      w.sessionStorage.getItem(KEY) === null,
+      "key remains absent after successful run"
     );
     console.log();
   }
