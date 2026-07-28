@@ -13,7 +13,7 @@
 </head>
 <body>
 
-<!-- ================= AUTH ================= -->
+<!-- ~~~ AUTH ~~~ -->
 <div id="auth" class="auth hidden">
   <div class="authcard">
     <div class="authhead">
@@ -72,7 +72,7 @@
   </div>
 </div>
 
-<!-- ================= APP ================= -->
+<!-- ~~~ APP ~~~ -->
 <div id="app" class="hidden">
 <div class="wrap">
 
@@ -103,7 +103,7 @@
     <button type="button" class="ai-warn-dismiss" id="aiModelBannerDismiss" aria-label="Dismiss">×</button>
   </div>
 
-  <!-- ================= LOG ================= -->
+  <!-- ~~~ LOG ~~~ -->
   <section id="view-log">
     <div class="sec">
       <h2 class="sech">Start here</h2>
@@ -235,12 +235,12 @@
     </div>
   </section>
 
-  <!-- ================= QUEUE ================= -->
+  <!-- ~~~ QUEUE ~~~ -->
   <section id="view-queue" class="hidden">
     <div id="queue"></div>
   </section>
 
-  <!-- ================= EXPORT ================= -->
+  <!-- ~~~ EXPORT ~~~ -->
   <section id="view-export" class="hidden">
     <div id="backupWarn" class="backup-warn hidden" role="alert">
       <strong>Backup problem</strong> — <span id="backupWarnMsg"></span>
@@ -266,6 +266,12 @@
       <h3>Backup</h3>
       <p>The weekly backup emails a CSV to the address in <code>BACKUP_EMAIL</code>. Use this to verify the email and Brevo API settings are working without waiting for the next scheduled run.</p>
       <button class="btn ghost" id="runBackupBtn" style="max-width:260px">Run backup now</button>
+    </div>
+    <div class="expbox">
+      <h3>Email backup</h3>
+      <p>Send a full export of all records to the backup address right now — useful before a handoff, after a data import, or when troubleshooting the weekly schedule.</p>
+      <button class="btn" id="triggerBackup" style="max-width:260px">Send full backup now</button>
+      <p id="triggerBackupStatus" class="trigger-backup-status hidden" aria-live="polite"></p>
     </div>
   </section>
 </div>

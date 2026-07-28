@@ -695,6 +695,40 @@ $("#csv").addEventListener("click", () => {
   toast("CSV downloaded.");
 });
 
+/* ================= ON-DEMAND FULL BACKUP ================= */
+(function () {
+  const btn = $("#triggerBackup");
+  const statusEl = $("#triggerBackupStatus");
+  if (!btn || !statusEl) return;
+
+  function setStatus(msg, isError) {
+    statusEl.textContent = msg;
+    statusEl.classList.toggle("trigger-backup-error", Boolean(isError));
+    statusEl.classList.remove("hidden");
+  }
+
+  btn.addEventListener("click", async () => {
+    if (btn.disabled) return;
+    btn.disabled = true;
+    btn.textContent = "Sending…";
+    statusEl.classList.add("hidden");
+    statusEl.textContent = "";
+    try {
+      const r = await api("/api/backup/trigger?full=true", { method: "POST" });
+      setStatus(r.note || "Full backup sent.", false);
+      toast("Full backup sent.");
+      loadBackupStatus();
+    } catch (e) {
+      const msg = (e && e.message) || "Backup failed. Check BACKUP_EMAIL and the Brevo API key.";
+      setStatus(msg, true);
+      toast(msg, true);
+    } finally {
+      btn.disabled = false;
+      btn.textContent = "Send full backup now";
+    }
+  });
+})();
+
 /* ================= BACKUP STATUS ================= */
 let _backupStatusCache = null; // { ts: Number, data: Object }
 const BACKUP_STATUS_TTL = 30_000; // 30 seconds

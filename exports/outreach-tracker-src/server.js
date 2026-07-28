@@ -547,6 +547,32 @@ app.post("/api/transcribe", requireAuth, transcribeLimiter, async (req, res) => 
   }
 });
 
+// ---- on-demand full backup trigger ----
+app.post("/api/backup/trigger", requireAuth, async (req, res) => {
+  const forceFullBackup = req.query.full === "true";
+  try {
+    const result = await runWeeklyBackup({ forceFullBackup });
+    if (result && result.busy) {
+      return res.status(409).json({ error: "A backup is already in progress. Please wait a moment and try again." });
+    }
+    // runWeeklyBackup resolves after the run completes (success or failure).
+    // Read the latest log row to surface the outcome.
+    const r = await query(
+      `SELECT status, note FROM backup_log ORDER BY ran_at DESC LIMIT 1`
+    );
+    const row = r.rows[0];
+    if (!row || row.status !== "ok") {
+      const note = (row && row.note) || "Unknown error";
+      return res.status(502).json({ error: note });
+    }
+    res.json({ ok: true, note: row.note });
+  } catch (e) {
+    const msg = String((e && e.message) || "Unknown error").slice(0, 300);
+    console.error("on-demand backup trigger error:", msg);
+    res.status(500).json({ error: msg });
+  }
+});
+
 // ---- backup status ----
 app.get("/api/backup/status", requireAuth, async (req, res) => {
   try {
@@ -603,17 +629,20 @@ const BREVO_TIMEOUT_MS  = 30 * 1000;                 // 30 s HTTP timeout
 let backupRunning = false;
 let nextBackupTimer = null; // always cleared before a new timer is set
 
-async function runWeeklyBackup() {
+// opts.forceFullBackup — when true, always exports all records regardless of
+// prior successful runs (used by the on-demand "Send full backup now" button).
+async function runWeeklyBackup({ forceFullBackup = false } = {}) {
   if (backupRunning) {
     console.log("Weekly backup: already running, skipping duplicate trigger.");
-    return;
+    return { busy: true };
   }
   backupRunning = true;
-  console.log("Weekly backup: starting at", new Date().toISOString());
+  const runLabel = forceFullBackup ? "On-demand full backup" : "Weekly backup";
+  console.log(`${runLabel}: starting at`, new Date().toISOString());
   try {
     const to = process.env.BACKUP_EMAIL;
     if (!to) {
-      console.warn("Weekly backup: BACKUP_EMAIL not set.");
+      console.warn(`${runLabel}: BACKUP_EMAIL not set.`);
       await query("INSERT INTO backup_log (status, note) VALUES ($1, $2)", [
         "error",
         "BACKUP_EMAIL environment variable is not set.",
@@ -623,7 +652,7 @@ async function runWeeklyBackup() {
 
     const brevoKey = process.env.BREVO_API;
     if (!brevoKey) {
-      console.warn("Weekly backup: BREVO_API not set.");
+      console.warn(`${runLabel}: BREVO_API not set.`);
       await query("INSERT INTO backup_log (status, note) VALUES ($1, $2)", [
         "error",
         "BREVO_API environment variable is not set.",
@@ -632,12 +661,12 @@ async function runWeeklyBackup() {
     }
 
     // Determine the cutoff: timestamp of the last SUCCESSFUL backup.
-    // No prior success → full backup (first ever run).
+    // No prior success OR forceFullBackup → full backup.
     const lastOkRes = await query(
       `SELECT ran_at FROM backup_log WHERE status = 'ok' ORDER BY ran_at DESC LIMIT 1`
     );
     const lastSuccessfulAt = lastOkRes.rows.length ? lastOkRes.rows[0].ran_at : null;
-    const isFullBackup = !lastSuccessfulAt;
+    const isFullBackup = forceFullBackup || !lastSuccessfulAt;
 
     // Fetch visits: all records on first run, only new/changed records thereafter.
     const visitQuery = isFullBackup
@@ -681,7 +710,7 @@ async function runWeeklyBackup() {
 
     // Human-readable date range for the note column (used for continuity audits).
     const noteText = isFullBackup
-      ? `Full backup: ${visits.length} record(s) emailed to ${to}`
+      ? `${forceFullBackup ? "On-demand full" : "Full"} backup: ${visits.length} record(s) emailed to ${to}`
       : `Incremental backup: ${visits.length} record(s) updated since ${new Date(lastSuccessfulAt).toISOString().slice(0, 10)}, emailed to ${to}`;
 
     // Send via Brevo transactional email API

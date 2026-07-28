@@ -139,6 +139,8 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--slate);outline-o
 
 /* ---------- backup warning ---------- */
 .backup-warn{background:rgba(156,47,63,.09);border-left:3px solid #9c2f3f;color:#7a1e2e;font-size:13px;line-height:1.5;padding:12px 15px;border-radius:0 3px 3px 0;margin-bottom:20px}
+.trigger-backup-status{margin-top:10px;font-size:13px;color:var(--plum)}
+.trigger-backup-status.trigger-backup-error{color:#9c2f3f}
 .backup-warn strong{font-weight:600}
 
 /* ---------- backup history ---------- */
