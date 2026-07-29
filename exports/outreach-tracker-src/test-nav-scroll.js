@@ -206,6 +206,73 @@ function run() {
 
   console.log();
 
+  // ── 4. Sub-folder recursion proof ──────────────────────────────────────────
+  // Create a temporary HTML file with a deliberately broken #hdr.nav-open nav
+  // rule (overflow-y present but max-height missing) inside a new sub-folder of
+  // PREVIEW_DIR.  The section-2 logic is then re-run against only that file to
+  // prove that walkHtmlFiles recurses into sub-folders AND that the missing
+  // max-height is flagged.  Both assertions PASS when the recursive scan works
+  // correctly; if the recursion is accidentally removed, walkHtmlFiles will not
+  // find the file, brokenRuleDetected stays false, and the assert below fails.
+  console.log("[ sub-folder recursion proof ]");
+
+  const tmpSubDir   = path.join(PREVIEW_DIR, "_nav-scroll-subdir-test");
+  const tmpHtmlFile = path.join(tmpSubDir, "subfolder-broken.html");
+
+  // HTML with overflow-y set but max-height intentionally omitted
+  const brokenHtml = [
+    "<!DOCTYPE html>",
+    "<html><head><style>",
+    "#hdr.nav-open nav {",
+    "  overflow-y: auto;",
+    "  /* max-height intentionally omitted — regression bait */",
+    "}",
+    "</style></head>",
+    "<body><nav><a href='/'>Home</a></nav></body>",
+    "</html>",
+  ].join("\n");
+
+  try {
+    fs.mkdirSync(tmpSubDir, { recursive: true });
+    fs.writeFileSync(tmpHtmlFile, brokenHtml, "utf8");
+
+    // 4a. Walk must include the sub-folder file
+    const filesAfterCreate = walkHtmlFiles(PREVIEW_DIR);
+    assert(
+      filesAfterCreate.includes(tmpHtmlFile),
+      "walkHtmlFiles recurses into sub-folders and finds the temporary nested file"
+    );
+
+    // 4b. The inline check must detect the missing max-height in that file
+    const tmpHtml    = fs.readFileSync(tmpHtmlFile, "utf8");
+    const tmpBlocks  = extractStyleBlocks(tmpHtml);
+    let brokenRuleDetected = false;
+
+    for (const block of tmpBlocks) {
+      const ruleBlocks = extractRuleBlocks(block, "#hdr.nav-open nav");
+      if (ruleBlocks.length === 0) continue;
+      const combined = ruleBlocks.join(" ");
+      if (!/max-height\s*:\s*calc\(100vh\s*-\s*74px\)/.test(combined)) {
+        brokenRuleDetected = true;
+      }
+    }
+
+    const relTmp = path.relative(REPO_ROOT, tmpHtmlFile);
+    assert(
+      brokenRuleDetected,
+      `${relTmp} — sub-folder inline rule missing max-height is caught by the check`
+    );
+  } finally {
+    // Always remove the temporary artefacts regardless of assertion outcome
+    try {
+      fs.rmSync(tmpSubDir, { recursive: true, force: true });
+    } catch (_) {
+      // ignore cleanup errors
+    }
+  }
+
+  console.log();
+
   if (process.exitCode === 1) {
     console.error("=== FAILED — one or more assertions did not pass ===");
   } else {
