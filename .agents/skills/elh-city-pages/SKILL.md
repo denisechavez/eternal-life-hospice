@@ -104,6 +104,11 @@ Zero results = all pages have unique city photos.
    ```
    The script exits 0 (safe to commit) or 1 (translate bar missing / incomplete) and prints the exact fix if it fails. Do not commit the new page until this exits 0.
 
+   **Automated coverage:** the `translate-bar-city-pages` validation step runs
+   `test-city-pages-batch.js` across all 146 `hospice-*-ca.html` files on every
+   deploy.  A missing or incomplete translate bar on any city page will fail the
+   deploy before it ships.
+
 ### Translate bar markup (copy verbatim into any page that lacks it)
 
 Place this block immediately before `</footer>`, then add the script tag immediately before `</body>`:

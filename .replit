@@ -35,6 +35,10 @@ args = "focus-ring-check"
 task = "workflow.run"
 args = "translate-smoke-test"
 
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "translate-bar-city-pages"
+
 [[workflows.workflow]]
 name = "Start application"
 author = "agent"
@@ -88,6 +92,17 @@ author = "agent"
 [[workflows.workflow.tasks]]
 task = "shell.exec"
 args = "cd website/elh-preview && node assets/translate-smoke-test.js"
+
+[workflows.workflow.metadata]
+isValidation = true
+
+[[workflows.workflow]]
+name = "translate-bar-city-pages"
+author = "agent"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "node website/elh-preview/assets/test-city-pages-batch.js"
 
 [workflows.workflow.metadata]
 isValidation = true
