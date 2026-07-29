@@ -27,10 +27,10 @@ a{color:inherit;text-decoration:none}
 .hdr-logo .sym-plum{display:none}
 #hdr.scrolled .hdr-logo .sym-cream{display:none}
 #hdr.scrolled .hdr-logo .sym-plum{display:block}
-.hdr-wordmark{display:none}
-.hdr-wordmark small{font-size:.42em;letter-spacing:.28em;text-transform:uppercase;font-family:var(--ff-b);font-weight:600;color:var(--gold);margin-top:3px}
+.hdr-wordmark{display:flex;flex-direction:column;line-height:1;font-family:var(--ff-d);font-size:1.5rem;font-weight:400;color:var(--cream);letter-spacing:.01em}
+.hdr-wordmark small{font-size:.48em;letter-spacing:.14em;text-transform:uppercase;font-family:var(--ff-b);font-weight:600;color:rgba(245,240,235,.82);margin-top:3px}
 #hdr.scrolled .hdr-wordmark{color:var(--deep)}
-#hdr.scrolled .hdr-wordmark small{color:#9A7E4A}
+#hdr.scrolled .hdr-wordmark small{color:var(--ink-soft)}
 #hdr nav{display:none}
 #hdr nav a{font-size:13px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;color:rgba(245,240,235,.75);transition:color .2s}
 #hdr.scrolled nav a{color:var(--text-mid)}
@@ -268,7 +268,7 @@ p,li,blockquote{text-wrap:pretty}
 <body>
 <header id="hdr">
   <div class="hdr-in">
-    <a class="hdr-logo" href="/"><img class="s sym-cream" src="assets/img/elh-logo-h2-cream.webp" alt="Eternal Life Hospice logo"><img class="s sym-plum" src="assets/img/elh-logo-h2-plum.webp" alt="" aria-hidden="true"><span class="hdr-wordmark">Eternal<small>Life Hospice</small></span></a>
+    <a class="hdr-logo" href="/"><img class="s sym-cream" src="assets/img/elh-sym-cream.webp" alt="Eternal Life Hospice logo" width="260" height="200"><img class="s sym-plum" src="assets/img/elh-sym-plum.webp" alt="" aria-hidden="true" width="260" height="200"><span class="hdr-wordmark">Eternal<small>Life Hospice</small></span></a>
     <nav>
       <div class="nav-group">
         <a href="/#standard" class="nav-parent">The Eternal Standard</a>

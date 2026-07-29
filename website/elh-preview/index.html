@@ -119,10 +119,10 @@ body.anno-on .anno-toggle .lbl-on{display:inline}
 .hdr-in{display:flex;align-items:center;height:74px;gap:2rem}
 .hdr-logo{display:flex;align-items:center;gap:.4rem;flex-shrink:0;margin-right:auto}
 .hdr-logo img.s{height:42px;width:auto;opacity:1}
-.hdr-wordmark{display:none}
-.hdr-wordmark small{font-size:.42em;letter-spacing:.28em;text-transform:uppercase;font-family:var(--ff-b);font-weight:600;color:var(--gold);margin-top:3px}
+.hdr-wordmark{display:flex;flex-direction:column;line-height:1;font-family:var(--ff-d);font-size:1.5rem;font-weight:400;color:var(--cream);letter-spacing:.01em}
+.hdr-wordmark small{font-size:.48em;letter-spacing:.14em;text-transform:uppercase;font-family:var(--ff-b);font-weight:600;color:rgba(245,240,235,.82);margin-top:3px}
 #hdr.scrolled .hdr-wordmark{color:var(--deep)}
-#hdr.scrolled .hdr-wordmark small{color:#9A7E4A}
+#hdr.scrolled .hdr-wordmark small{color:var(--ink-soft)}
 .hdr-logo .sym-cream{display:block}
 .hdr-logo .sym-plum{display:none}
 #hdr.scrolled .hdr-logo .sym-cream{display:none}
@@ -1156,7 +1156,7 @@ p,li,blockquote{text-wrap:pretty}
 <!-- HEADER -->
 <header id="hdr">
   <div class="hdr-in">
-    <a class="hdr-logo" role="button" tabindex="0" style="cursor:pointer" onclick="document.getElementById('top').scrollIntoView({behavior:'smooth'});return false;"><img class="s sym-cream" src="assets/img/elh-logo-h2-cream.webp" alt="Eternal Life Hospice logo" width="900" height="200"><img class="s sym-plum" src="assets/img/elh-logo-h2-plum.webp" alt="" aria-hidden="true" width="900" height="200"><span class="hdr-wordmark">Eternal<small>Life Hospice</small></span></a>
+    <a class="hdr-logo" role="button" tabindex="0" style="cursor:pointer" onclick="document.getElementById('top').scrollIntoView({behavior:'smooth'});return false;"><img class="s sym-cream" src="assets/img/elh-sym-cream.webp" alt="Eternal Life Hospice logo" width="260" height="200"><img class="s sym-plum" src="assets/img/elh-sym-plum.webp" alt="" aria-hidden="true" width="260" height="200"><span class="hdr-wordmark">Eternal<small>Life Hospice</small></span></a>
     <nav>
       <div class="nav-group">
         <a href="#standard" class="nav-parent">The Eternal Standard</a>
