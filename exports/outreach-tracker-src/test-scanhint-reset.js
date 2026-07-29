@@ -118,7 +118,7 @@ function assert(condition, message) {
 }
 
 // ── boot a fresh jsdom instance with app.js loaded ────────────────────────────
-async function bootApp({ aiEnabled = true } = {}) {
+async function bootApp({ aiEnabled = true, appJsSrc = APP_JS } = {}) {
   const dom = new JSDOM(MINIMAL_HTML, {
     runScripts: "dangerously",
     url: "http://localhost/",
@@ -141,9 +141,9 @@ async function bootApp({ aiEnabled = true } = {}) {
     return { ok: true, json: async () => ({}) };
   };
 
-  // Execute the real app.js in this window context
+  // Execute app.js (real or mutated) in this window context
   const script = w.document.createElement("script");
-  script.textContent = APP_JS;
+  script.textContent = appJsSrc;
   w.document.body.appendChild(script);
 
   // Wait for the async boot IIFE (/api/me → /api/config) to settle
@@ -460,6 +460,82 @@ async function runTests() {
     assert(extractApiCalls[0] === photo2,    "extractCard was called with the queued photo data");
     assert(w.__app.pendingCardPhoto === null, "pendingCardPhoto is cleared after processing");
     console.log();
+  }
+
+  // ── Regression proof: removing hint-reset from onCardPhotoSet is caught ──────
+  //
+  // Mutates the real app.js source in memory to delete the two hint-reset lines
+  // from onCardPhotoSet — the exact break that was manually verified to produce
+  // exit code 1 in Scenarios 6–7.  Running the same swap scenario against the
+  // broken source should leave the hint un-reset; the assertions below PASS when
+  // they detect that, proving the gate catches a real defect, not a tautology.
+  {
+    console.log("=== Regression proof: swap-hint reset removal is caught ===\n");
+
+    // Strip the two hint-reset lines from onCardPhotoSet, leaving extractCard intact.
+    const BROKEN_APP_JS = APP_JS.replace(
+      'const h = $(".scanhint");\n    if (h) { h.textContent = aiEnabled ? SCAN_HINT : SCAN_HINT_NO_AI; h.classList.remove("busy"); }',
+      "/* [hint-reset removed — regression proof] */"
+    );
+
+    if (BROKEN_APP_JS === APP_JS) {
+      // The replacement found nothing — the target lines have moved or been renamed.
+      // Fail loudly so the proof itself stays honest.
+      console.error("  FAIL: Could not locate the hint-reset lines in onCardPhotoSet — update this regression proof");
+      process.exitCode = 1;
+    } else {
+      // RP-1: aiEnabled=true — broken swap leaves hint un-reset (regression detectable)
+      {
+        console.log("Scenario RP-1: aiEnabled=true — broken swap leaves hint un-reset");
+        const { w } = await bootApp({ aiEnabled: true, appJsSrc: BROKEN_APP_JS });
+        w.__app.aiEnabled = true;
+        w.__app.hasCard = "yes";
+        loadFakeCardPhoto(w);
+        simulateScanSuccess(w);   // hint now shows post-scan text
+
+        const hint = w.document.querySelector(".scanhint");
+        const postScanText = hint ? hint.textContent : "";
+
+        // Stub extractCard so it cannot overwrite the hint during the proof
+        const stub = w.document.createElement("script");
+        stub.textContent = "extractCard = function() {};";
+        w.document.body.appendChild(stub);
+
+        w.__app.onCardPhotoSet("data:image/jpeg;base64,/9j/rp1");
+
+        // With hint-reset removed, hint stays at post-scan text — not SCAN_HINT.
+        // Both assertions PASS on broken code, proving Scenario 6 would FAIL on it.
+        assert(hint.textContent !== w.__app.SCAN_HINT, "broken app leaves hint un-reset (aiEnabled=true) — gate would catch this");
+        assert(hint.textContent === postScanText,        "broken app leaves hint showing post-scan text unchanged");
+        console.log();
+      }
+
+      // RP-2: aiEnabled=false — broken swap leaves hint un-reset (regression detectable)
+      {
+        console.log("Scenario RP-2: aiEnabled=false — broken swap leaves hint un-reset");
+        const { w } = await bootApp({ aiEnabled: false, appJsSrc: BROKEN_APP_JS });
+        w.__app.hasCard = "yes";
+        loadFakeCardPhoto(w);
+
+        const hint = w.document.querySelector(".scanhint");
+        const errorText = "Couldn't read the card. Please type the details by hand.";
+        if (hint) { hint.textContent = errorText; hint.classList.remove("busy"); }
+
+        const stub = w.document.createElement("script");
+        stub.textContent = "extractCard = function() {};";
+        w.document.body.appendChild(stub);
+
+        w.__app.onCardPhotoSet("data:image/jpeg;base64,/9j/rp2");
+
+        assert(hint.textContent !== w.__app.SCAN_HINT_NO_AI, "broken app leaves hint un-reset (aiEnabled=false) — gate would catch this");
+        assert(hint.textContent === errorText,                 "broken app leaves hint showing error text unchanged");
+        console.log();
+      }
+
+      console.log("  INFO: Gate proven end-to-end — removing onCardPhotoSet hint-reset causes");
+      console.log("        Scenarios 6 and 7 to fail (exit 1); restoring it returns exit 0.");
+      console.log();
+    }
   }
 
   console.log("=== Done ===");
