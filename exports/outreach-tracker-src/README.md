@@ -33,8 +33,21 @@ ERROR: backup_log table does not exist.
 
 ### Test sequence
 
-The deployment build command (`npm install && npm test`) runs all test files in sequence.
+The deployment build command (`npm ci --no-audit --no-fund && npm test`) runs all test files in sequence.
 **This is the deploy gate** — a non-zero exit from any file aborts the build and blocks the deploy.
+
+The build command is declared in `_setup/dot-replit.toml` under `[deployment] build`:
+
+```toml
+[deployment]
+build = ["sh", "-c", "npm ci --no-audit --no-fund && npm test"]
+run   = ["sh", "-c", "npm start"]
+```
+
+`test-deploy-hook.js` (last in the chain) verifies that this wiring is in place:
+it reads `_setup/dot-replit.toml` and `package.json` and asserts that both the
+build command and the guard test exist. If either is removed, the chain itself
+fails — so the hook cannot be silently bypassed.
 
 1. `test-rechint-focus.js` — #recHint focus-ring static check (no DB required; **focus-ring deploy guard**)
 2. `test-scanhint-reset.js` — scan-hint DOM reset logic (no DB required)
