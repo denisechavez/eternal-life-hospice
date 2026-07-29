@@ -1,0 +1,102 @@
+What is working
+
+The opening is direct:
+
+“When a family asks ‘how do we choose?’ now you have an answer.”
+
+That creates immediate relevance for case managers, discharge planners and care teams. The email also gives clear permission to share the guide with patients and caregivers which is important for distribution.
+
+The three CTA paths are also well organized:
+
+View the Family Guide
+Submit a Patient Referral
+Schedule a Staff Presentation
+
+This supports trust-building, immediate referrals and future relationship development without turning the email into a hard sales pitch.
+
+Changes I would make before sending
+1. Change the hero wording slightly
+
+Current:
+
+When a family asks “how do we choose?” now you have an answer.
+
+Better:
+
+When a family asks “How do we choose a hospice?” you now have a clear resource to share.
+
+The current version is emotionally strong but slightly vague. Adding “a hospice” makes the subject immediately clear.
+
+2. Strengthen the referral CTA
+
+Current:
+
+Submit a Patient Referral
+
+Use:
+
+Refer a Patient
+
+It is shorter, more direct and easier to process quickly.
+
+Directly beneath it add:
+
+For time-sensitive referrals call 805.953.7273.
+
+That matters because urgent hospice referrals should not depend solely on a web form.
+
+3. Improve the presentation CTA
+
+Current:
+
+Schedule a Staff Presentation
+
+Use:
+
+Request a 15-Minute Hospice Education Session
+
+This explains what the recipient is requesting and lowers the perceived commitment.
+
+4. Remove the fourth Aleksandra CTA
+
+Near the signature there is another link:
+
+Schedule a Call with Aleksandra
+
+I would remove it from this email. There are already three primary choices. A fourth CTA creates unnecessary competition and may dilute referral clicks. Aleksandra’s phone and email are already visible.
+
+5. Make the immediate-referral message more visible
+
+Add this short block immediately above the three buttons:
+
+Have a patient who may need hospice now?
+Our team is available to review eligibility, answer questions and coordinate the next appropriate step throughout Ventura and Los Angeles counties.
+
+This does not make the email aggressive. It quietly tells referral partners that Eternal is open and ready.
+
+6. Confirm every link before sending
+
+The visible links appear to direct to Eternal’s website but the page extraction does not expose the exact destination paths. Verify that:
+
+Family Guide goes directly to /family-guide
+Referral goes directly to /refer
+Education session goes to a specific request form or scheduling page
+Every link includes the planned UTM parameters
+The unsubscribe link functions correctly
+Final CTA section
+
+Use this exact wording:
+
+How Can We Support You Today?
+
+Choose the resource or next step that is most useful for you, your team or a family in your care.
+
+View the Family Guide
+
+Refer a Patient
+
+For time-sensitive referrals call 805.953.7273.
+
+Request a 15-Minute Hospice Education Session
+
+We come to you for a concise and practical discussion of hospice eligibility, the referral process and how to support families at the appropriate time.
