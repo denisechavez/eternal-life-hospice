@@ -262,8 +262,126 @@ async function runPostRestartTest() {
  * --------------------------------------------------------------------------- */
 const {
   makeTriggerRateLimit,
+  TRIGGER_RL_MAX,
+  TRIGGER_RL_WINDOW_MS,
+  TRIGGER_RL_MESSAGE: DB_TRIGGER_MESSAGE,
   TRIGGER_RL_DB_ERROR_MESSAGE: DB_ERROR_MESSAGE,
 } = require("./db-trigger-rate-limit");
+
+/* ---------- DB-backed middleware happy-path test ----------------------------
+ * Uses the REAL makeTriggerRateLimit factory from db-trigger-rate-limit.js,
+ * with a stateful stub queryFn that faithfully mimics the Postgres atomic
+ * upsert (reset bucket when window expired, else increment).
+ *
+ * Confirms:
+ *   - Requests 1-3 pass through to the stub handler (2xx).
+ *   - Request 4 is blocked with 429 + correct JSON body + Retry-After header.
+ *   - Request 5 is also blocked (not a one-off glitch).
+ *   - The client-side api() error object carries the right fields.
+ * --------------------------------------------------------------------------- */
+async function runDbBackedHappyPathTest() {
+  console.log("\n=== DB-backed middleware happy-path test (real makeTriggerRateLimit) ===\n");
+
+  /* Simulate the trigger_rate_limit table state: keyed by IP */
+  const tableState = new Map(); // ip -> { count, first_ms }
+
+  /**
+   * Stub queryFn that mirrors the atomic upsert in db-trigger-rate-limit.js:
+   *
+   *   INSERT INTO trigger_rate_limit (ip, count, first_at) VALUES ($1, 1, NOW())
+   *   ON CONFLICT (ip) DO UPDATE SET
+   *     count    = CASE WHEN expired THEN 1 ELSE count+1 END,
+   *     first_at = CASE WHEN expired THEN NOW() ELSE first_at END
+   *   RETURNING count, EXTRACT(EPOCH FROM first_at)::BIGINT * 1000 AS first_ms
+   */
+  function stubQuery(_sql, [ip, windowMs]) {
+    const now = Date.now();
+    let rec = tableState.get(ip);
+    if (!rec || now - rec.first_ms > windowMs) {
+      rec = { count: 1, first_ms: now };
+    } else {
+      rec = { count: rec.count + 1, first_ms: rec.first_ms };
+    }
+    tableState.set(ip, rec);
+    return Promise.resolve({ rows: [{ count: rec.count, first_ms: rec.first_ms }] });
+  }
+
+  const realMiddleware = makeTriggerRateLimit(stubQuery);
+
+  const app = express();
+  app.use(express.json());
+  app.post(
+    "/api/backup/trigger",
+    realMiddleware,
+    (_req, res) => res.json({ ok: true, note: "stub backup ok" })
+  );
+
+  const srv = http.createServer(app);
+  await new Promise((resolve) => srv.listen(0, "127.0.0.1", resolve));
+  const base = `http://127.0.0.1:${srv.address().port}`;
+
+  try {
+    /* Requests 1–TRIGGER_RL_MAX: all must pass through to the stub handler */
+    for (let i = 1; i <= TRIGGER_RL_MAX; i++) {
+      const r = await post(base, "/api/backup/trigger");
+      assert(
+        r.status >= 200 && r.status < 300,
+        `DB-backed happy-path request ${i}: status is 2xx (got ${r.status})`
+      );
+      assert(
+        r.data && r.data.ok === true,
+        `DB-backed happy-path request ${i}: response body has ok:true`
+      );
+    }
+
+    /* Request TRIGGER_RL_MAX + 1: must be rate-limited */
+    const r4 = await post(base, "/api/backup/trigger");
+
+    assert(
+      r4.status === 429,
+      `DB-backed happy-path request ${TRIGGER_RL_MAX + 1}: status is 429 (got ${r4.status})`
+    );
+    assert(
+      r4.data && r4.data.error === DB_TRIGGER_MESSAGE,
+      `DB-backed happy-path request ${TRIGGER_RL_MAX + 1}: error body is "${DB_TRIGGER_MESSAGE}" (got "${r4.data && r4.data.error}")`
+    );
+
+    const retryAfter4 = r4.headers["retry-after"];
+    assert(
+      retryAfter4 !== undefined && retryAfter4 !== null,
+      `DB-backed happy-path request ${TRIGGER_RL_MAX + 1}: Retry-After header is present (got "${retryAfter4}")`
+    );
+    const retryAfterNum = Number(retryAfter4);
+    assert(
+      Number.isFinite(retryAfterNum) && retryAfterNum >= 1,
+      `DB-backed happy-path request ${TRIGGER_RL_MAX + 1}: Retry-After is a positive integer (got "${retryAfter4}")`
+    );
+
+    /* Client-side error object should carry the right fields */
+    const clientErr = simulateClientApiError(r4.status, r4.headers, r4.data);
+    assert(
+      clientErr.message === DB_TRIGGER_MESSAGE,
+      `DB-backed happy-path: client api() error.message equals server string ("${clientErr.message}")`
+    );
+    assert(
+      clientErr.status === 429,
+      `DB-backed happy-path: client api() error.status is 429 (got ${clientErr.status})`
+    );
+    assert(
+      clientErr.retryAfter !== null,
+      `DB-backed happy-path: client api() error.retryAfter is populated (got "${clientErr.retryAfter}")`
+    );
+
+    /* Request TRIGGER_RL_MAX + 2: also blocked — not a one-off glitch */
+    const r5 = await post(base, "/api/backup/trigger");
+    assert(
+      r5.status === 429,
+      `DB-backed happy-path request ${TRIGGER_RL_MAX + 2}: also blocked with 429 (got ${r5.status})`
+    );
+  } finally {
+    srv.close();
+  }
+}
 
 async function runDbErrorTest() {
   console.log("\n=== DB-error fail-closed test (real middleware) ===\n");
@@ -491,6 +609,8 @@ async function run() {
   await runPostRestartTest();
 
   await runWindowResetTest();
+
+  await runDbBackedHappyPathTest();
 
   await runDbErrorTest();
 
