@@ -1,0 +1,363 @@
+<!doctype html>
+<!--
+  ETERNAL LIFE HOSPICE — EMAIL CAMPAIGN #2
+  "A Complimentary Family Guide for Patients and Caregivers"
+  =========================================================
+  Production-ready responsive HTML email.
+  Built for Brevo: table layout, all CSS inline, web-safe fonts.
+  Georgia echoes Fraunces · Arial/Helvetica echoes Jost.
+  Images via live https URL only.
+
+  BEFORE SENDING — three things:
+  1. UNSUBSCRIBE: replace {{ unsubscribe }} below with Brevo's real tag if needed
+     (it is already set to Brevo syntax).
+  2. VERIFY LIVE: confirm https://eternallifehospice.com/family-guide loads.
+  3. REPLY-TO: set reply-to in Brevo campaign settings to info@eternallifehospice.com
+
+  TRACKING: all three CTAs carry UTM params for campaign = family_guide_email_2
+  CTA 1 — View Family Guide (primary):  utm_content=family_guide_primary
+  CTA 2 — View Family Guide (footer):   utm_content=family_guide_footer
+  CTA 3 — Refer a Patient:              utm_content=refer_patient
+  CTA 4 — Education Session:            utm_content=education_session
+  CTA 5 — Phone (tel: link):            tracked via Brevo click
+  CTA 6 — Email (mailto: link):         tracked via Brevo click
+
+  SUBJECT:      A Complimentary Family Guide for Patients and Caregivers
+  PREVIEW TEXT: A practical hospice resource created to support families and healthcare professionals.
+  SENDER:       Aleksandra Dubina | Eternal Life Hospice
+  REPLY-TO:     info@eternallifehospice.com
+  EDUCATION SESSION URL: https://eternallifehospice.com/?lead=voice#leadcap
+    (This is the live scheduling anchor used on the ELH website; /contact also exists as fallback.)
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title>A Complimentary Family Guide | Eternal Life Hospice</title>
+<style>
+  @media only screen and (max-width:480px){
+    .em-wrap{width:100%!important;max-width:100%!important;}
+    .em-pad{padding-left:20px!important;padding-right:20px!important;}
+    .em-pad-sm{padding:20px!important;}
+    .pillar-cell{display:block!important;width:100%!important;padding:16px 0 0!important;}
+    .pillar-inner{margin-bottom:0!important;}
+    .pillar-spacer{display:none!important;}
+    .btn-full{width:100%!important;display:block!important;box-sizing:border-box!important;}
+    .font-body{font-size:16px!important;line-height:1.7!important;}
+    .font-h1{font-size:26px!important;line-height:1.25!important;}
+    .font-h2{font-size:20px!important;}
+    .logo-img{width:130px!important;}
+    .check-row td{padding-bottom:10px!important;}
+  }
+</style>
+</head>
+<body style="margin:0;padding:0;background-color:#F5F0EB;">
+
+<!-- ============================================================ -->
+<!-- PREHEADER (hidden preview text)                              -->
+<!-- ============================================================ -->
+<div style="display:none;max-height:0;overflow:hidden;mso-hide:all;font-size:1px;line-height:1px;color:#F5F0EB;">
+  A practical hospice resource created to support families and healthcare professionals.&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;
+</div>
+
+<!-- ============================================================ -->
+<!-- OUTER WRAPPER                                                -->
+<!-- ============================================================ -->
+<table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="background-color:#F5F0EB;">
+<tr><td align="center" style="padding:28px 12px 40px;">
+
+  <!-- ========== MAIN CONTAINER (600px) ========== -->
+  <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="600" class="em-wrap" style="width:600px;max-width:100%;background-color:#ffffff;border:1px solid #E0D8D0;">
+
+    <!-- ============================================================ -->
+    <!-- TOP BAR — Deep Plum                                          -->
+    <!-- ============================================================ -->
+    <tr><td align="center" style="background-color:#381B37;padding:14px 24px;">
+      <div style="font-family:Arial,Helvetica,sans-serif;font-size:11px;font-weight:bold;letter-spacing:3.5px;text-transform:uppercase;color:#C9B07E;line-height:1.4;">HERE IN MOMENTS THAT MATTER MOST</div>
+    </td></tr>
+
+    <!-- ============================================================ -->
+    <!-- LOGO BAND — Cream                                            -->
+    <!-- ============================================================ -->
+    <tr><td align="center" style="background-color:#F5F0EB;padding:28px 40px 20px;">
+      <a href="https://eternallifehospice.com" style="text-decoration:none;">
+        <img src="https://eternallifehospice.com/assets/logo-eternal-trans.png"
+             alt="Eternal Life Hospice — Care That Honors Life"
+             width="160" class="logo-img"
+             style="display:block;border:0;outline:none;width:160px;height:auto;margin:0 auto;">
+      </a>
+    </td></tr>
+
+    <!-- Gold divider -->
+    <tr><td style="background-color:#C9B07E;font-size:0;line-height:0;height:3px;">&nbsp;</td></tr>
+
+    <!-- ============================================================ -->
+    <!-- OPENING COPY                                                 -->
+    <!-- ============================================================ -->
+    <tr><td class="em-pad" style="padding:40px 48px 8px;">
+      <div style="font-family:Arial,Helvetica,sans-serif;font-size:12px;font-weight:bold;letter-spacing:2.5px;text-transform:uppercase;color:#A07C36;padding-bottom:18px;">A Resource for Healthcare Professionals</div>
+      <div class="font-h1" style="font-family:Georgia,'Times New Roman',serif;font-size:28px;line-height:1.25;color:#381B37;padding-bottom:22px;">A Complimentary Family Guide<br>for Patients and Caregivers</div>
+      <div class="font-body" style="font-family:Arial,Helvetica,sans-serif;font-size:15.5px;line-height:1.7;color:#472B44;padding-bottom:14px;">Dear Healthcare Professional,</div>
+      <div class="font-body" style="font-family:Arial,Helvetica,sans-serif;font-size:15.5px;line-height:1.7;color:#472B44;padding-bottom:14px;">Conversations about hospice are often accompanied by uncertainty. Families may not know what hospice is, when it may be appropriate, or what to expect in the days ahead.</div>
+      <div class="font-body" style="font-family:Arial,Helvetica,sans-serif;font-size:15.5px;line-height:1.7;color:#472B44;padding-bottom:14px;">To support those conversations, Eternal Life Hospice created a complimentary Family Guide for patients, caregivers and healthcare professionals.</div>
+      <div class="font-body" style="font-family:Arial,Helvetica,sans-serif;font-size:15.5px;line-height:1.7;color:#472B44;padding-bottom:14px;">The guide provides clear and practical information that can be shared during a discharge conversation, in a physician&#8217;s office, at a care community or with a family seeking answers.</div>
+      <div class="font-body" style="font-family:Arial,Helvetica,sans-serif;font-size:15.5px;line-height:1.7;color:#472B44;padding-bottom:32px;">Our hope is that it brings greater clarity, confidence and comfort during an important time.</div>
+    </td></tr>
+
+    <!-- ============================================================ -->
+    <!-- INSIDE THE FAMILY GUIDE — Checklist                         -->
+    <!-- ============================================================ -->
+    <tr><td class="em-pad" style="padding:0 48px 32px;">
+      <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="background-color:#F5F0EB;border:1px solid #D8CDBF;border-radius:4px;">
+        <tr><td style="padding:26px 28px 6px;">
+          <div class="font-h2" style="font-family:Georgia,'Times New Roman',serif;font-size:21px;color:#381B37;padding-bottom:18px;">Inside the Family Guide</div>
+          <!-- Checklist rows -->
+          <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">
+            <tr class="check-row"><td width="22" valign="top" style="padding-bottom:12px;vertical-align:top;">
+              <div style="width:16px;height:16px;background-color:#5B2E59;border-radius:2px;margin-top:3px;text-align:center;line-height:16px;">
+                <span style="color:#C9B07E;font-family:Arial,sans-serif;font-size:10px;font-weight:bold;">&#10003;</span>
+              </div>
+            </td><td style="padding-left:10px;padding-bottom:12px;">
+              <div class="font-body" style="font-family:Arial,Helvetica,sans-serif;font-size:15px;line-height:1.5;color:#472B44;">Understanding hospice care</div>
+            </td></tr>
+            <tr class="check-row"><td width="22" valign="top" style="padding-bottom:12px;vertical-align:top;">
+              <div style="width:16px;height:16px;background-color:#5B2E59;border-radius:2px;margin-top:3px;text-align:center;line-height:16px;">
+                <span style="color:#C9B07E;font-family:Arial,sans-serif;font-size:10px;font-weight:bold;">&#10003;</span>
+              </div>
+            </td><td style="padding-left:10px;padding-bottom:12px;">
+              <div class="font-body" style="font-family:Arial,Helvetica,sans-serif;font-size:15px;line-height:1.5;color:#472B44;">When hospice may be appropriate</div>
+            </td></tr>
+            <tr class="check-row"><td width="22" valign="top" style="padding-bottom:12px;vertical-align:top;">
+              <div style="width:16px;height:16px;background-color:#5B2E59;border-radius:2px;margin-top:3px;text-align:center;line-height:16px;">
+                <span style="color:#C9B07E;font-family:Arial,sans-serif;font-size:10px;font-weight:bold;">&#10003;</span>
+              </div>
+            </td><td style="padding-left:10px;padding-bottom:12px;">
+              <div class="font-body" style="font-family:Arial,Helvetica,sans-serif;font-size:15px;line-height:1.5;color:#472B44;">What families can expect</div>
+            </td></tr>
+            <tr class="check-row"><td width="22" valign="top" style="padding-bottom:12px;vertical-align:top;">
+              <div style="width:16px;height:16px;background-color:#5B2E59;border-radius:2px;margin-top:3px;text-align:center;line-height:16px;">
+                <span style="color:#C9B07E;font-family:Arial,sans-serif;font-size:10px;font-weight:bold;">&#10003;</span>
+              </div>
+            </td><td style="padding-left:10px;padding-bottom:12px;">
+              <div class="font-body" style="font-family:Arial,Helvetica,sans-serif;font-size:15px;line-height:1.5;color:#472B44;">Medicare hospice coverage</div>
+            </td></tr>
+            <tr class="check-row"><td width="22" valign="top" style="padding-bottom:12px;vertical-align:top;">
+              <div style="width:16px;height:16px;background-color:#5B2E59;border-radius:2px;margin-top:3px;text-align:center;line-height:16px;">
+                <span style="color:#C9B07E;font-family:Arial,sans-serif;font-size:10px;font-weight:bold;">&#10003;</span>
+              </div>
+            </td><td style="padding-left:10px;padding-bottom:12px;">
+              <div class="font-body" style="font-family:Arial,Helvetica,sans-serif;font-size:15px;line-height:1.5;color:#472B44;">The role of the hospice care team</div>
+            </td></tr>
+            <tr class="check-row"><td width="22" valign="top" style="padding-bottom:12px;vertical-align:top;">
+              <div style="width:16px;height:16px;background-color:#5B2E59;border-radius:2px;margin-top:3px;text-align:center;line-height:16px;">
+                <span style="color:#C9B07E;font-family:Arial,sans-serif;font-size:10px;font-weight:bold;">&#10003;</span>
+              </div>
+            </td><td style="padding-left:10px;padding-bottom:12px;">
+              <div class="font-body" style="font-family:Arial,Helvetica,sans-serif;font-size:15px;line-height:1.5;color:#472B44;">Preparing for the first days of care</div>
+            </td></tr>
+            <tr class="check-row"><td width="22" valign="top" style="padding-bottom:12px;vertical-align:top;">
+              <div style="width:16px;height:16px;background-color:#5B2E59;border-radius:2px;margin-top:3px;text-align:center;line-height:16px;">
+                <span style="color:#C9B07E;font-family:Arial,sans-serif;font-size:10px;font-weight:bold;">&#10003;</span>
+              </div>
+            </td><td style="padding-left:10px;padding-bottom:12px;">
+              <div class="font-body" style="font-family:Arial,Helvetica,sans-serif;font-size:15px;line-height:1.5;color:#472B44;">Practical guidance for patients and caregivers</div>
+            </td></tr>
+          </table>
+          <div class="font-body" style="font-family:Arial,Helvetica,sans-serif;font-size:14.5px;line-height:1.65;color:#6f5a6d;font-style:italic;padding-top:6px;padding-bottom:4px;">Please feel free to share this guide with patients, families and caregivers who may benefit from clear hospice information.</div>
+        </td></tr>
+      </table>
+    </td></tr>
+
+    <!-- ============================================================ -->
+    <!-- PRIMARY CTA — View the Family Guide                          -->
+    <!-- ============================================================ -->
+    <tr><td align="center" class="em-pad" style="padding:0 48px 40px;">
+      <table role="presentation" cellpadding="0" cellspacing="0" border="0" align="center">
+        <tr><td style="background-color:#5B2E59;border-radius:28px;">
+          <a href="https://eternallifehospice.com/family-guide?utm_source=brevo&amp;utm_medium=email&amp;utm_campaign=family_guide_email_2&amp;utm_content=family_guide_primary"
+             class="btn-full"
+             style="display:inline-block;padding:15px 44px;font-family:Arial,Helvetica,sans-serif;font-size:16px;font-weight:bold;color:#F5F0EB;text-decoration:none;border-radius:28px;min-height:44px;line-height:1.3;">
+            View the Family Guide &rarr;
+          </a>
+        </td></tr>
+      </table>
+    </td></tr>
+
+    <!-- Gold divider -->
+    <tr><td style="background-color:#C9B07E;font-size:0;line-height:0;height:3px;">&nbsp;</td></tr>
+
+    <!-- ============================================================ -->
+    <!-- WHY WE CREATED IT                                            -->
+    <!-- ============================================================ -->
+    <tr><td style="background-color:#F5F0EB;padding:36px 48px;" class="em-pad">
+      <div style="font-family:Arial,Helvetica,sans-serif;font-size:11px;font-weight:bold;letter-spacing:2.5px;text-transform:uppercase;color:#A07C36;padding-bottom:12px;">Our Commitment</div>
+      <div class="font-h2" style="font-family:Georgia,'Times New Roman',serif;font-size:22px;color:#381B37;padding-bottom:16px;">Why We Created It</div>
+      <div class="font-body" style="font-family:Arial,Helvetica,sans-serif;font-size:15.5px;line-height:1.7;color:#472B44;padding-bottom:12px;">At Eternal Life Hospice, we believe informed families are better prepared to make thoughtful decisions.</div>
+      <div class="font-body" style="font-family:Arial,Helvetica,sans-serif;font-size:15.5px;line-height:1.7;color:#472B44;padding-bottom:12px;">Education can reduce uncertainty, strengthen communication and allow patients and families to receive appropriate support earlier.</div>
+      <div class="font-body" style="font-family:Arial,Helvetica,sans-serif;font-size:15.5px;line-height:1.7;color:#472B44;">Our goal is to create practical resources that support healthcare professionals and the families they serve.</div>
+    </td></tr>
+
+    <!-- Gold divider -->
+    <tr><td style="background-color:#C9B07E;font-size:0;line-height:0;height:3px;">&nbsp;</td></tr>
+
+    <!-- ============================================================ -->
+    <!-- THE ETERNAL STANDARD — 2×2 PILLARS                          -->
+    <!-- ============================================================ -->
+    <tr><td class="em-pad" style="padding:40px 48px 36px;background-color:#ffffff;">
+      <div style="font-family:Arial,Helvetica,sans-serif;font-size:11px;font-weight:bold;letter-spacing:2.5px;text-transform:uppercase;color:#A07C36;padding-bottom:10px;">Our Approach to Care</div>
+      <div class="font-h2" style="font-family:Georgia,'Times New Roman',serif;font-size:24px;color:#381B37;padding-bottom:6px;">The Eternal Standard</div>
+      <div style="font-family:Arial,Helvetica,sans-serif;font-size:14.5px;line-height:1.6;color:#6f5a6d;padding-bottom:24px;font-style:italic;">Dignity, defined by four pillars of care.</div>
+
+      <!-- Row 1 -->
+      <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">
+        <tr>
+          <!-- Pillar 1 -->
+          <td class="pillar-cell" width="48%" valign="top" style="vertical-align:top;width:48%;">
+            <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" class="pillar-inner" style="background-color:#F5F0EB;border-left:3px solid #5B2E59;">
+              <tr><td style="padding:18px 18px 20px;">
+                <div style="font-family:Arial,Helvetica,sans-serif;font-size:11px;font-weight:bold;letter-spacing:2px;text-transform:uppercase;color:#5B2E59;padding-bottom:8px;">Clinical Confidence</div>
+                <div style="font-family:Arial,Helvetica,sans-serif;font-size:14px;line-height:1.6;color:#472B44;">Physician-supported hospice care focused on comfort, symptom management and clinical coordination.</div>
+              </td></tr>
+            </table>
+          </td>
+          <td class="pillar-spacer" width="4%" style="width:4%;font-size:0;">&nbsp;</td>
+          <!-- Pillar 2 -->
+          <td class="pillar-cell" width="48%" valign="top" style="vertical-align:top;width:48%;">
+            <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" class="pillar-inner" style="background-color:#F5F0EB;border-left:3px solid #C9B07E;">
+              <tr><td style="padding:18px 18px 20px;">
+                <div style="font-family:Arial,Helvetica,sans-serif;font-size:11px;font-weight:bold;letter-spacing:2px;text-transform:uppercase;color:#A07C36;padding-bottom:8px;">Guided Presence</div>
+                <div style="font-family:Arial,Helvetica,sans-serif;font-size:14px;line-height:1.6;color:#472B44;">Families understand what is happening, what comes next and who to call.</div>
+              </td></tr>
+            </table>
+          </td>
+        </tr>
+        <!-- Spacer row -->
+        <tr><td colspan="3" style="height:12px;font-size:0;line-height:0;">&nbsp;</td></tr>
+        <!-- Row 2 -->
+        <tr>
+          <!-- Pillar 3 -->
+          <td class="pillar-cell" width="48%" valign="top" style="vertical-align:top;width:48%;">
+            <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" class="pillar-inner" style="background-color:#F5F0EB;border-left:3px solid #6793AC;">
+              <tr><td style="padding:18px 18px 20px;">
+                <div style="font-family:Arial,Helvetica,sans-serif;font-size:11px;font-weight:bold;letter-spacing:2px;text-transform:uppercase;color:#4A6E8A;padding-bottom:8px;">Whole-Person Comfort</div>
+                <div style="font-family:Arial,Helvetica,sans-serif;font-size:14px;line-height:1.6;color:#472B44;">Care that considers physical, emotional, social, spiritual and family needs.</div>
+              </td></tr>
+            </table>
+          </td>
+          <td class="pillar-spacer" width="4%" style="width:4%;font-size:0;">&nbsp;</td>
+          <!-- Pillar 4 -->
+          <td class="pillar-cell" width="48%" valign="top" style="vertical-align:top;width:48%;">
+            <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" class="pillar-inner" style="background-color:#F5F0EB;border-left:3px solid #B7A89D;">
+              <tr><td style="padding:18px 18px 20px;">
+                <div style="font-family:Arial,Helvetica,sans-serif;font-size:11px;font-weight:bold;letter-spacing:2px;text-transform:uppercase;color:#7A6A62;padding-bottom:8px;">Compliance-Led Care</div>
+                <div style="font-family:Arial,Helvetica,sans-serif;font-size:14px;line-height:1.6;color:#472B44;">Care delivered with integrity, privacy, accountability and responsible clinical practice.</div>
+              </td></tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+    </td></tr>
+
+    <!-- Gold divider -->
+    <tr><td style="background-color:#C9B07E;font-size:0;line-height:0;height:3px;">&nbsp;</td></tr>
+
+    <!-- ============================================================ -->
+    <!-- HOW CAN WE SUPPORT YOU — 3 CTAs                             -->
+    <!-- ============================================================ -->
+    <tr><td class="em-pad" style="padding:40px 48px 36px;background-color:#ffffff;">
+      <div class="font-h2" style="font-family:Georgia,'Times New Roman',serif;font-size:24px;color:#381B37;padding-bottom:8px;">How Can We Support You Today?</div>
+      <div class="font-body" style="font-family:Arial,Helvetica,sans-serif;font-size:15px;line-height:1.65;color:#6f5a6d;padding-bottom:30px;">Choose the resource or next step that is most useful for you, your team or a family in your care.</div>
+
+      <!-- CTA 1 — Primary solid plum -->
+      <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="margin-bottom:14px;">
+        <tr><td align="center" style="background-color:#5B2E59;border-radius:6px;">
+          <a href="https://eternallifehospice.com/family-guide?utm_source=brevo&amp;utm_medium=email&amp;utm_campaign=family_guide_email_2&amp;utm_content=family_guide_footer"
+             class="btn-full"
+             style="display:block;padding:16px 32px;font-family:Arial,Helvetica,sans-serif;font-size:16px;font-weight:bold;color:#F5F0EB;text-decoration:none;border-radius:6px;text-align:center;min-height:44px;line-height:1.3;">
+            View the Family Guide
+          </a>
+        </td></tr>
+      </table>
+
+      <!-- CTA 2 — Secondary solid gold -->
+      <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="margin-bottom:14px;">
+        <tr><td align="center" style="background-color:#C9B07E;border-radius:6px;">
+          <a href="https://eternallifehospice.com/refer?utm_source=brevo&amp;utm_medium=email&amp;utm_campaign=family_guide_email_2&amp;utm_content=refer_patient"
+             class="btn-full"
+             style="display:block;padding:16px 32px;font-family:Arial,Helvetica,sans-serif;font-size:16px;font-weight:bold;color:#3C1C3B;text-decoration:none;border-radius:6px;text-align:center;min-height:44px;line-height:1.3;">
+            Refer a Patient
+          </a>
+        </td></tr>
+      </table>
+
+      <!-- CTA 3 — Outlined plum -->
+      <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="margin-bottom:30px;">
+        <tr><td align="center" style="border:2px solid #5B2E59;border-radius:6px;">
+          <a href="https://eternallifehospice.com/?lead=voice&amp;utm_source=brevo&amp;utm_medium=email&amp;utm_campaign=family_guide_email_2&amp;utm_content=education_session#leadcap"
+             class="btn-full"
+             style="display:block;padding:15px 32px;font-family:Arial,Helvetica,sans-serif;font-size:15px;font-weight:bold;color:#5B2E59;text-decoration:none;border-radius:4px;text-align:center;min-height:44px;line-height:1.3;background-color:#ffffff;">
+            Request a Complimentary Education Session
+          </a>
+        </td></tr>
+      </table>
+
+      <!-- Contact line -->
+      <div align="center" style="font-family:Arial,Helvetica,sans-serif;font-size:14px;line-height:1.9;color:#6f5a6d;">
+        <a href="tel:8059537273" style="color:#5B2E59;font-weight:bold;text-decoration:none;">805.953.7273</a>
+        &nbsp;&nbsp;&middot;&nbsp;&nbsp;
+        <a href="mailto:info@eternallifehospice.com" style="color:#5B2E59;font-weight:bold;text-decoration:none;">info@eternallifehospice.com</a>
+        &nbsp;&nbsp;&middot;&nbsp;&nbsp;
+        <a href="https://eternallifehospice.com" style="color:#5B2E59;font-weight:bold;text-decoration:none;">eternallifehospice.com</a>
+      </div>
+    </td></tr>
+
+    <!-- ============================================================ -->
+    <!-- CLOSING COPY + SIGNATURE                                     -->
+    <!-- ============================================================ -->
+    <tr><td class="em-pad" style="padding:36px 48px 40px;background-color:#F5F0EB;border-top:1px solid #D8CDBF;">
+      <div class="font-body" style="font-family:Arial,Helvetica,sans-serif;font-size:15.5px;line-height:1.7;color:#472B44;padding-bottom:12px;">Thank you for the important work you do each day for patients and families.</div>
+      <div class="font-body" style="font-family:Arial,Helvetica,sans-serif;font-size:15.5px;line-height:1.7;color:#472B44;padding-bottom:28px;">We appreciate the opportunity to serve as an educational and clinical resource whenever hospice questions arise.</div>
+      <div style="font-family:Arial,Helvetica,sans-serif;font-size:15px;line-height:1.7;color:#472B44;">
+        Warm regards,<br><br>
+        <strong style="font-family:Georgia,'Times New Roman',serif;font-size:17px;color:#381B37;">Aleksandra Dubina</strong><br>
+        <span style="font-size:14px;color:#6f5a6d;">Founder and Chief Executive Officer<br>
+        Certified Hospice Administrator</span><br><br>
+        <span style="font-size:14px;font-weight:bold;color:#381B37;">Eternal Life Hospice</span><br>
+        <span style="font-size:13px;color:#6f5a6d;font-style:italic;">Care That Honors Life</span>
+      </div>
+    </td></tr>
+
+    <!-- ============================================================ -->
+    <!-- FOOTER — Deep Plum                                           -->
+    <!-- ============================================================ -->
+    <tr><td style="background-color:#381B37;padding:30px 40px;" class="em-pad-sm">
+      <div align="center" style="font-family:Arial,Helvetica,sans-serif;font-size:10.5px;font-weight:bold;letter-spacing:2.5px;text-transform:uppercase;color:#C9B07E;padding-bottom:6px;">HERE IN MOMENTS THAT MATTER MOST</div>
+      <div align="center" style="font-family:Georgia,'Times New Roman',serif;font-style:italic;font-size:15px;color:#C9B07E;padding-bottom:10px;">The Eternal Standard</div>
+      <div align="center" style="font-family:Arial,Helvetica,sans-serif;font-size:11px;color:#a892a6;letter-spacing:0.5px;padding-bottom:16px;">Clinical Confidence &nbsp;&middot;&nbsp; Guided Presence &nbsp;&middot;&nbsp; Whole-Person Comfort &nbsp;&middot;&nbsp; Compliance-Led Care</div>
+      <div align="center" style="font-family:Arial,Helvetica,sans-serif;font-size:10.5px;font-weight:bold;letter-spacing:1px;text-transform:uppercase;color:#C9B07E;padding-bottom:14px;">Medicare-Certified &nbsp;&middot;&nbsp; CDPH-Licensed &nbsp;&middot;&nbsp; ACHC-Accredited</div>
+      <div align="center" style="font-family:Arial,Helvetica,sans-serif;font-size:12px;line-height:1.8;color:#d8ccd8;">
+        <strong style="color:#e8dde8;">Eternal Life Hospice</strong><br>
+        4165 E Thousand Oaks Blvd., Suite 325B, Westlake Village, CA 91362<br>
+        <a href="tel:8059537273" style="color:#d8ccd8;text-decoration:none;">805.953.7273</a>
+        &nbsp;&middot;&nbsp;
+        <a href="mailto:info@eternallifehospice.com" style="color:#d8ccd8;text-decoration:none;">info@eternallifehospice.com</a>
+        &nbsp;&middot;&nbsp;
+        <a href="https://eternallifehospice.com" style="color:#d8ccd8;text-decoration:none;">eternallifehospice.com</a><br>
+        Serving Ventura &amp; Los Angeles County
+      </div>
+      <div align="center" style="font-family:Arial,Helvetica,sans-serif;font-size:11px;line-height:1.8;color:#a892a6;padding-top:16px;border-top:1px solid #5B2E59;margin-top:16px;">
+        This educational communication is sent to subscribers of Eternal Life Hospice updates.<br>
+        Manage your preferences or <a href="{{ unsubscribe }}" style="color:#a892a6;text-decoration:underline;">unsubscribe</a> at any time.
+      </div>
+    </td></tr>
+
+  </table>
+  <!-- END MAIN CONTAINER -->
+
+</td></tr>
+</table>
+<!-- END OUTER WRAPPER -->
+
+</body>
+</html>

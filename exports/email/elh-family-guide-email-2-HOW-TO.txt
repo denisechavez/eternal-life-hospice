@@ -1,0 +1,80 @@
+ETERNAL LIFE HOSPICE — EMAIL CAMPAIGN #2
+HOW-TO SEND GUIDE
+=========================================================
+
+FILES IN THIS FOLDER
+---------------------
+elh-family-guide-email-2.html   — production HTML email (upload to Brevo)
+elh-family-guide-email-2.txt    — plain-text version (paste into Brevo plain-text tab)
+elh-family-guide-email-2-HOW-TO.txt — this file
+
+CAMPAIGN SETTINGS (enter in Brevo)
+------------------------------------
+Subject line:    A Complimentary Family Guide for Patients and Caregivers
+Preview text:    A practical hospice resource created to support families and healthcare professionals.
+Sender name:     Aleksandra Dubina | Eternal Life Hospice
+Sender email:    aleksandra@eternallifehospice.com  (or your verified sender)
+Reply-to:        info@eternallifehospice.com
+Send time:       Tuesday 10:30 AM (target cadence)
+
+UNSUBSCRIBE
+-----------
+The footer already contains {{ unsubscribe }} — Brevo's standard merge tag.
+No changes needed. Brevo replaces it automatically on send.
+
+CTA LINKS — VERIFIED LIVE
+---------------------------
+1. View Family Guide (primary button):
+   https://eternallifehospice.com/family-guide  ✓ LIVE
+
+2. View Family Guide (footer CTA):
+   https://eternallifehospice.com/family-guide  ✓ LIVE
+
+3. Refer a Patient:
+   https://eternallifehospice.com/refer  ✓ LIVE
+
+4. Request a Complimentary Education Session:
+   https://eternallifehospice.com/?lead=voice#leadcap  ✓ LIVE
+   (This is the scheduling anchor used on the live ELH website.
+    /contact is also available as a fallback if needed.)
+
+5. Phone:   tel:8059537273  ✓
+6. Email:   mailto:info@eternallifehospice.com  ✓
+7. Website: https://eternallifehospice.com  ✓
+
+UTM TRACKING (already embedded in all links)
+----------------------------------------------
+utm_source=brevo
+utm_medium=email
+utm_campaign=family_guide_email_2
+
+Content tags per CTA:
+  family_guide_primary   — primary View Family Guide button (above fold)
+  family_guide_footer    — View Family Guide in the 3-CTA section
+  refer_patient          — Refer a Patient button
+  education_session      — Education Session button
+
+Track separately in GA4:
+  Family Guide clicks · Referral clicks · Education session clicks
+  Phone clicks · Email clicks
+
+SEND CHECKLIST
+---------------
+Before clicking Send in Brevo, confirm:
+
+[ ] HTML file uploaded to Brevo campaign
+[ ] Plain-text version pasted in Brevo plain-text tab
+[ ] Subject line entered exactly as above
+[ ] Preview text entered exactly as above
+[ ] Sender name and reply-to set correctly
+[ ] Send a test email to yourself first — check on mobile AND desktop
+[ ] Confirm Family Guide page loads: https://eternallifehospice.com/family-guide
+[ ] Confirm Refer page loads:        https://eternallifehospice.com/refer
+[ ] Unsubscribe link works in test send
+[ ] Email does not trigger spam warnings in test
+
+NOTE ON MAILING LIST
+---------------------
+Clean the list in NeverBounce before sending.
+Export your Brevo list → run through NeverBounce → re-import only Valid + Accept-All contacts.
+Remove hard bounces, unsubscribes, and complaints before this send.
