@@ -279,6 +279,44 @@ console.log('Canonical-guard self-test\n');
   }
 })();
 
+// ── Inline-translate IIFE guard ───────────────────────────────────────────────
+// City pages must never contain an inline <script> block that implements
+// translate logic (i.e. references ft-lang handling).  Any such block means
+// the page duplicated translate.js internally instead of loading the shared
+// file — bug-fixes to translate.js would silently not apply to that page.
+//
+// Pattern: a <script> tag WITHOUT a src= attribute that contains "ft-lang".
+// This catches both IIFE patterns and addEventListener-based duplicates.
+console.log('\n' + '═'.repeat(60));
+console.log('Inline-translate IIFE guard — city pages\n');
+
+const cityPages = allHtml.filter(f => /^hospice-.*-ca\.html$/.test(f));
+const inlineFailed = [];
+
+for (const rel of cityPages.sort()) {
+  const html = fs.readFileSync(path.join(BASE, rel), 'utf8');
+  // Extract all <script ...> blocks that have no src= attribute
+  const inlineScriptRe = /<script(?![^>]*\bsrc\s*=)[^>]*>([\s\S]*?)<\/script>/gi;
+  let m;
+  while ((m = inlineScriptRe.exec(html)) !== null) {
+    const body = m[1];
+    if (/ft-lang/.test(body)) {
+      inlineFailed.push(rel);
+      break;
+    }
+  }
+}
+
+if (inlineFailed.length === 0) {
+  console.log(`✅  No city page contains inline translate logic (${cityPages.length} checked)`);
+} else {
+  console.error(`❌  ${inlineFailed.length} city page(s) contain inline translate logic — remove the inline <script> and load /assets/translate.js instead:`);
+  for (const rel of inlineFailed) {
+    console.error(`     ${rel}`);
+  }
+  allPassed = false;
+}
+
 // ── Summary ──────────────────────────────────────────────────────────────────
 console.log('\n' + '═'.repeat(60));
 if (allPassed) {

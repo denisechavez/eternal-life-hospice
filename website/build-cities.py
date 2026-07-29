@@ -75,7 +75,8 @@ FOOTER = """\
   <div class="search-box"><input type="text" id="searchInput" placeholder="Search pages, cities, resources..." autocomplete="off" aria-label="Search"><button class="search-close" id="searchClose" aria-label="Close search">&times;</button></div>
   <p class="search-hint">Press Enter to open the first result, or Escape to close</p>
   <div class="search-results" id="searchResults"></div>
-</div>"""
+</div>
+<script defer src="/assets/translate.js"></script>"""
 
 # ── Schema builders ────────────────────────────────────────────────────────────
 
