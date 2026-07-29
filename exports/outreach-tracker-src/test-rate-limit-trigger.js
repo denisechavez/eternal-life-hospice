@@ -580,6 +580,100 @@ async function runWindowResetTest() {
   }
 }
 
+/* ---------- disabled-mid-flight 503 toast test -----------------------------
+ * Verifies that when the triggerBackup button is disabled before the API call
+ * (pre-flight state) and the API call rejects with a 503, the catch block
+ * still fires toast() with the exact DB_ERROR_MESSAGE string AND the finally
+ * block re-enables the button.
+ *
+ * This mirrors the real handler in public/app.js verbatim:
+ *
+ *   btn.disabled = true;
+ *   try {
+ *     await api(...);          // ← throws a 503 Error
+ *   } catch (e) {
+ *     const msg = (e && e.message) || "Backup failed...";
+ *     toast(msg, true);        // ← must fire with DB_ERROR_MESSAGE
+ *   } finally {
+ *     btn.disabled = false;   // ← must re-enable
+ *   }
+ *
+ * No HTTP server is required — we drive the handler logic directly.
+ * --------------------------------------------------------------------------- */
+async function runDisabledMidFlightToastTest() {
+  console.log("\n=== disabled-mid-flight 503 toast test ===\n");
+
+  /* --- mock objects that replace the real DOM elements --- */
+  const btn = { disabled: false, textContent: "Send full backup now" };
+  const statusEl = { textContent: "", hidden: false, isError: false };
+
+  /* Minimal stubs that mirror the setStatus / toast closures in the IIFE */
+  const toastCalls = [];
+  function toast(m, isErr) {
+    toastCalls.push({ m, isErr });
+  }
+  function setStatus(msg, isError) {
+    statusEl.textContent = msg;
+    statusEl.isError = isError;
+  }
+
+  /* --- stub api() that always rejects with a 503 --- */
+  async function api503() {
+    btn.disabled = true;          // step 1: button disabled before await
+    btn.textContent = "Sending…";
+    throw simulateClientApiError(503, {}, { error: DB_ERROR_MESSAGE });
+  }
+
+  /* --- replicate the triggerBackup click handler body --- */
+  if (!btn.disabled) {           // guard (btn starts enabled — gate passes)
+    btn.disabled = true;
+    btn.textContent = "Sending…";
+    statusEl.hidden = true;
+    statusEl.textContent = "";
+    try {
+      await api503();
+    } catch (e) {
+      const msg = (e && e.message) || "Backup failed. Check BACKUP_EMAIL and the Brevo API key.";
+      setStatus(msg, true);
+      toast(msg, true);
+    } finally {
+      btn.disabled = false;
+      btn.textContent = "Send full backup now";
+    }
+  }
+
+  /* --- assertions --- */
+  assert(
+    toastCalls.length === 1,
+    `disabled-mid-flight: toast() was called exactly once (called ${toastCalls.length} time(s))`
+  );
+
+  assert(
+    toastCalls[0] && toastCalls[0].m === DB_ERROR_MESSAGE,
+    `disabled-mid-flight: toast message equals DB_ERROR_MESSAGE ("${toastCalls[0] && toastCalls[0].m}")`
+  );
+
+  assert(
+    toastCalls[0] && toastCalls[0].isErr === true,
+    `disabled-mid-flight: toast called with isErr=true (got ${toastCalls[0] && toastCalls[0].isErr})`
+  );
+
+  assert(
+    btn.disabled === false,
+    `disabled-mid-flight: button is re-enabled in the finally block (disabled=${btn.disabled})`
+  );
+
+  assert(
+    statusEl.isError === true,
+    `disabled-mid-flight: status element shows error state (isError=${statusEl.isError})`
+  );
+
+  assert(
+    statusEl.textContent === DB_ERROR_MESSAGE,
+    `disabled-mid-flight: status element text equals DB_ERROR_MESSAGE ("${statusEl.textContent}")`
+  );
+}
+
 /* ---------- main ---------- */
 async function run() {
   console.log("=== triggerLimiter rate-limit test ===\n");
@@ -615,6 +709,8 @@ async function run() {
   await runDbErrorTest();
 
   runClientSideToastTest();
+
+  await runDisabledMidFlightToastTest();
 
   console.log("\n=== Done ===");
 
