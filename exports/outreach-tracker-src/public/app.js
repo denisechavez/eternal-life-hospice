@@ -183,6 +183,14 @@ async function enterApp() {
   } else if (_cooldownUntil > 0) {
     _ssRemove(RUN_BACKUP_COOLDOWN_KEY); // expired — clean up proactively
   }
+
+  // If the export view was already the active tab when the app booted (e.g. a
+  // direct deep-link or cold-boot on the Export tab), switchTab() was never
+  // called, so the "Last checked" interval was never started.  Start it now.
+  const _bootExportView = $("#view-export");
+  if (_bootExportView && !_bootExportView.classList.contains("hidden") && !_backupCheckedAtTimer) {
+    _backupCheckedAtTimer = setInterval(renderCheckedAt, 1000);
+  }
 }
 
 function populateOwners() {

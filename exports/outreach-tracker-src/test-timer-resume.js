@@ -27,6 +27,7 @@ const path = require("path");
 const APP_JS = fs.readFileSync(path.join(__dirname, "public", "app.js"), "utf8");
 
 // ── minimal HTML matching what app.js binds listeners to at load ──────────────
+// Default: Log tab is the active view (standard DOM boot order).
 const MINIMAL_HTML = `<!DOCTYPE html><html><body>
   <div id="auth"></div>
   <div id="app">
@@ -105,6 +106,86 @@ const MINIMAL_HTML = `<!DOCTYPE html><html><body>
   </div>
 </body></html>`;
 
+// Cold-boot variant: Export tab is already the active view when the page loads.
+// (view-log hidden, view-export visible, export tab aria-selected.)
+const MINIMAL_HTML_ON_EXPORT = `<!DOCTYPE html><html><body>
+  <div id="auth"></div>
+  <div id="app">
+    <div id="autherr"    class="hidden"></div>
+    <div id="regClosed"  class="hidden"></div>
+    <div id="codeWrap"   class="hidden"></div>
+    <span id="meName"></span>
+    <button id="toReg"></button>
+    <button id="toLogin"></button>
+    <button id="toLogin2"></button>
+    <form id="loginForm">
+      <input id="li-phone"><input id="li-pass">
+    </form>
+    <form id="regForm">
+      <input id="re-name"><input id="re-phone">
+      <input id="re-pass"><input id="re-code">
+    </form>
+    <button id="logoutBtn"></button>
+    <div id="aiModelBanner" class="hidden">
+      <span id="aiModelBannerMsg"></span>
+      <button id="aiModelBannerDismiss"></button>
+    </div>
+    <div id="toast"></div>
+    <input id="org">
+    <input id="date" type="date">
+    <textarea id="notes"></textarea>
+    <input id="addr"><input id="cname"><input id="ctitle">
+    <input id="cemail"><input id="cphone"><input id="city">
+    <select id="cat"><option>Hospital</option></select>
+    <select id="county"><option>Ventura</option></select>
+    <select id="owner"><option>Unassigned</option></select>
+    <select id="due"><option value="5">5 days</option></select>
+    <div id="mats"></div>
+    <input id="attest" type="checkbox">
+    <button id="saveBtn"></button>
+    <button id="clearBtn"></button>
+    <div id="guard"><b></b></div>
+    <div id="hasCard">
+      <button class="segbtn" data-val="yes"></button>
+      <button class="segbtn" data-val="no"></button>
+    </div>
+    <div id="cardScan">
+      <button id="scanBtn"></button>
+      <p class="scanhint"></p>
+      <input id="fCard" type="file">
+      <div id="dropCard"></div>
+    </div>
+    <div id="manualHint"></div>
+    <input id="fSite" type="file">
+    <div id="dropSite"></div>
+    <div id="thumbs"></div>
+    <div class="voice">
+      <button id="recBtn"><span class="reclabel">Record</span></button>
+      <p id="recHint"></p>
+    </div>
+    <div id="queue"></div>
+    <span id="qcount">0</span>
+    <span id="sVisits">0</span>
+    <span id="sOrgs">0</span>
+    <span id="sOpen">0</span>
+    <span id="sWon">0</span>
+    <div id="bar" class="hidden"></div>
+    <button id="csv"></button>
+    <button id="triggerBackup">Send full backup now</button>
+    <div   id="triggerBackupStatus" class="hidden"></div>
+    <button id="runBackupBtn"></button>
+    <div id="backupWarn"    class="hidden"><span id="backupWarnMsg"></span></div>
+    <div id="backupHistory" class="hidden"></div>
+    <span id="backupCheckedAt" class="hidden"></span>
+    <button class="tab" data-view="log"></button>
+    <button class="tab" data-view="queue"></button>
+    <button class="tab" data-view="export" aria-selected="true"></button>
+    <div id="view-log"    class="hidden"></div>
+    <div id="view-queue"  class="hidden"></div>
+    <div id="view-export"></div>
+  </div>
+</body></html>`;
+
 // ── assertion helper ──────────────────────────────────────────────────────────
 function assert(condition, message) {
   if (!condition) {
@@ -116,6 +197,77 @@ function assert(condition, message) {
 }
 
 // ── boot jsdom, install interval spy, then load app.js ───────────────────────
+// bootAppOnExport: boots with the Export view already visible and a logged-in
+// /api/me response so enterApp() runs — simulating a direct deep-link boot.
+async function bootAppOnExport() {
+  const dom = new JSDOM(MINIMAL_HTML_ON_EXPORT, {
+    runScripts: "dangerously",
+    url: "http://localhost/",
+  });
+  const w = dom.window;
+
+  w.fetch = async (url) => {
+    if (url.includes("/api/me")) {
+      return { ok: true, json: async () => ({ user: { id: 1, name: "Test User" } }) };
+    }
+    if (url.includes("/api/config")) {
+      return { ok: true, json: async () => ({ registrationOpen: true, requiresCode: false, aiEnabled: false }) };
+    }
+    if (url.includes("/api/visits")) {
+      return { ok: true, json: async () => ({ visits: [] }) };
+    }
+    if (url.includes("/api/backup/status")) {
+      return { ok: true, json: async () => ({ lastBackupAt: null, checkedAt: null }) };
+    }
+    return { ok: true, json: async () => ({}) };
+  };
+
+  const spy = {
+    active: new Set(),
+    created: 0,
+    cleared: 0,
+  };
+
+  const _realSetInterval   = w.setInterval.bind(w);
+  const _realClearInterval = w.clearInterval.bind(w);
+
+  w.setInterval = (fn, ms, ...args) => {
+    const id = _realSetInterval(fn, ms, ...args);
+    spy.active.add(id);
+    spy.created++;
+    return id;
+  };
+  w.clearInterval = (id) => {
+    if (id !== null && id !== undefined && spy.active.has(id)) {
+      spy.active.delete(id);
+      spy.cleared++;
+    }
+    _realClearInterval(id);
+  };
+
+  const script = w.document.createElement("script");
+  script.textContent = APP_JS;
+  w.document.body.appendChild(script);
+
+  // Wait for the async boot chain: /api/me → enterApp → /api/config + /api/visits
+  await new Promise((resolve) => setTimeout(resolve, 80));
+
+  const bridge = w.document.createElement("script");
+  bridge.textContent = `
+    window.__setHidden = function(isHidden) {
+      Object.defineProperty(document, 'hidden', { value: isHidden, writable: true, configurable: true });
+      document.dispatchEvent(new Event('visibilitychange'));
+    };
+    window.__switchTab = function(view) { switchTab(view); };
+    window.__getTimerId = function() { return _backupCheckedAtTimer; };
+  `;
+  w.document.body.appendChild(bridge);
+
+  await new Promise((resolve) => setTimeout(resolve, 10));
+
+  return { dom, w, spy };
+}
+
 async function bootApp() {
   const dom = new JSDOM(MINIMAL_HTML, {
     runScripts: "dangerously",
@@ -370,6 +522,25 @@ async function runTests() {
       text1 !== text2,
       `text changed between ticks: "${text1}" → "${text2}"`
     );
+
+    for (const id of spy.active) w.clearInterval(id);
+    dom.window.close();
+    console.log();
+  }
+
+  // ── Scenario 5: cold-boot directly on the Export tab ────────────────────────
+  {
+    console.log("Scenario 5: cold-boot with Export tab already active (no switchTab call)");
+    const { dom, w, spy } = await bootAppOnExport();
+
+    // The boot IIFE called enterApp() which detected the pre-visible export view
+    // and started the interval without any switchTab() invocation.
+    assert(spy.active.size === 1,
+      `cold-boot on export: 1 interval live after boot, got ${spy.active.size}`);
+    assert(w.__getTimerId() !== null,
+      "cold-boot on export: _backupCheckedAtTimer is non-null after boot");
+    assert(spy.created === 1,
+      `cold-boot on export: exactly 1 interval ever created (no phantom extra), got ${spy.created}`);
 
     for (const id of spy.active) w.clearInterval(id);
     dom.window.close();
