@@ -194,6 +194,17 @@ async function bootApp() {
 
     // Expose the raw _backupCheckedAtTimer value for inspection.
     window.__getTimerId = function() { return _backupCheckedAtTimer; };
+
+    // Helpers for the renderCheckedAt DOM-update scenario.
+    // Sets the cached-status timestamp so renderCheckedAt sees a specific age.
+    window.__setBackupStatusTs = function(ts) {
+      _backupStatusCache = { ts: ts, data: { rows: [] } };
+    };
+    // Returns the current textContent of #backupCheckedAt (or null if missing).
+    window.__getCheckedAtText = function() {
+      var el = document.getElementById('backupCheckedAt');
+      return el ? el.textContent : null;
+    };
   `;
   w.document.body.appendChild(bridge);
 
@@ -308,6 +319,57 @@ async function runTests() {
 
     assert(spy.active.size === 0, "foreground while on Log: 0 intervals live");
     assert(w.__getTimerId() === null, "foreground while on Log: _backupCheckedAtTimer is null");
+
+    for (const id of spy.active) w.clearInterval(id);
+    dom.window.close();
+    console.log();
+  }
+
+  // ── Scenario 4: renderCheckedAt actually writes new text on each tick ────────
+  // This catches the case where the interval is live but renderCheckedAt is a
+  // no-op (e.g. the #backupCheckedAt selector broke), which the interval-count
+  // assertions above would not detect.
+  {
+    console.log("Scenario 4: #backupCheckedAt text changes on each interval tick");
+    const { dom, w, spy } = await bootApp();
+
+    spy.active.clear();
+    spy.created = 0;
+    spy.cleared = 0;
+
+    // Switch to Export so the interval starts.
+    w.__switchTab("export");
+    await new Promise((r) => setTimeout(r, 20)); // let loadBackupStatus settle
+    assert(spy.active.size === 1, "scenario 4 baseline: 1 interval live after export switch");
+
+    // Plant a cache timestamp that is clearly in the past (8 s ago) so
+    // renderCheckedAt will write "8 s ago" (≥5 s threshold) and the
+    // second tick will write "9 s ago" — a detectable change.
+    const baseTs = Date.now() - 8000;
+    w.__setBackupStatusTs(baseTs);
+
+    // Wait for the first interval tick (interval = 1000 ms; allow 200 ms slack).
+    await new Promise((r) => setTimeout(r, 1200));
+    const text1 = w.__getCheckedAtText();
+    assert(
+      typeof text1 === "string" && text1.includes("s ago"),
+      `tick 1: #backupCheckedAt shows a relative age (got "${text1}")`
+    );
+
+    // Wait for the second interval tick.
+    await new Promise((r) => setTimeout(r, 1200));
+    const text2 = w.__getCheckedAtText();
+    assert(
+      typeof text2 === "string" && text2.includes("s ago"),
+      `tick 2: #backupCheckedAt still shows a relative age (got "${text2}")`
+    );
+
+    // The key assertion: the DOM text must have changed between the two ticks,
+    // proving renderCheckedAt is writing to the element on every call.
+    assert(
+      text1 !== text2,
+      `text changed between ticks: "${text1}" → "${text2}"`
+    );
 
     for (const id of spy.active) w.clearInterval(id);
     dom.window.close();
