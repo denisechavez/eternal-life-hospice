@@ -33,15 +33,22 @@ ERROR: backup_log table does not exist.
 
 ### Test sequence
 
-The deployment build command (`npm install && npm test`) runs seven test files in sequence:
+The deployment build command (`npm install && npm test`) runs all test files in sequence.
+**This is the deploy gate** — a non-zero exit from any file aborts the build and blocks the deploy.
 
-1. `test-scanhint-reset.js` — scan-hint DOM reset logic (no DB required)
-2. `test-rec-btn-aria.js` — record-button ARIA state (no DB required)
-3. `test-backup-trim.js` — backup_log 90-day trim (requires `DATABASE_URL`)
-4. `test-backup-email.js` — full and incremental backup email (requires `DATABASE_URL`; skipped cleanly when `BACKUP_EMAIL` or `BREVO_API` are absent)
-5. `test-rate-limit-trigger.js` — backup trigger rate-limit (requires `DATABASE_URL`)
-6. `test-backup-brevo-failure.js` — Brevo error surfacing (requires `DATABASE_URL`)
-7. `test-backup-cooldown-session.js` — backup-button cooldown sessionStorage persistence (no DB required)
+1. `test-rechint-focus.js` — #recHint focus-ring static check (no DB required; **focus-ring deploy guard**)
+2. `test-scanhint-reset.js` — scan-hint DOM reset logic (no DB required)
+3. `test-rec-btn-aria.js` — record-button ARIA state (no DB required)
+4. `test-backup-trim.js` — backup_log 90-day trim (requires `DATABASE_URL`)
+5. `test-backup-email-guard.js` — BREVO_API environment guard (requires `DATABASE_URL`)
+6. `test-backup-email.js` — full and incremental backup email (requires `DATABASE_URL`; skipped cleanly when `BACKUP_EMAIL` or `BREVO_API` are absent)
+7. `test-rate-limit-trigger.js` — backup trigger rate-limit (requires `DATABASE_URL`)
+8. `test-backup-brevo-failure.js` — Brevo error surfacing (requires `DATABASE_URL`)
+9. `test-backup-cooldown-session.js` — backup-button cooldown sessionStorage persistence (no DB required)
+10. `test-rate-limit-table.js` — rate-limit table enforcement (requires `DATABASE_URL`)
+11. `test-nav-scroll.js` — nav scroll behaviour (no DB required)
+12. `test-nav-scroll-regression.js` — nav scroll regression proof (no DB required)
+13. `test-timer-resume.js` — export-tab timer resume (no DB required)
 
 `DATABASE_URL` is a **Replit runtime-managed variable** — it is automatically injected in both development and production build environments by Replit's PostgreSQL integration. No manual secret configuration is required.
 
