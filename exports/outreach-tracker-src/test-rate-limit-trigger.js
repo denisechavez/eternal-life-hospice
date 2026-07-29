@@ -21,14 +21,14 @@ const express = require("express");
 
 /* ---------- in-memory rate-limit middleware (mirrors original server.js) ---- */
 const rlBuckets = new Map();
-function rateLimit({ max, windowMs, message }) {
+function rateLimit({ max, windowMs, message, buckets = rlBuckets }) {
   return (req, res, next) => {
     const now = Date.now();
     const key = `${req.path}:${req.ip}`;
-    let rec = rlBuckets.get(key);
+    let rec = buckets.get(key);
     if (!rec || now - rec.first > windowMs) {
       rec = { count: 0, first: now };
-      rlBuckets.set(key, rec);
+      buckets.set(key, rec);
     }
     rec.count += 1;
     if (rec.count > max) {
@@ -387,6 +387,81 @@ function runClientSideToastTest() {
   );
 }
 
+/* ---------- window-reset test ----------------------------------------------
+ * Verifies that the rate-limit window resets after it expires, so a user is
+ * not permanently locked out after a single backup attempt.
+ *
+ * Uses a very short windowMs (200 ms) so the test completes quickly.
+ * Steps:
+ *   1. Spin up a server with max=1, windowMs=200.
+ *   2. Make 1 allowed request (should succeed).
+ *   3. Make a 2nd request immediately (should be blocked with 429).
+ *   4. Wait 250 ms for the window to expire.
+ *   5. Make a 3rd request (should succeed again — the window has reset).
+ * --------------------------------------------------------------------------- */
+async function runWindowResetTest() {
+  console.log("\n=== window-reset test (short windowMs) ===\n");
+
+  const SHORT_WINDOW_MS = 200;
+  const SHORT_MESSAGE = "Too many backup requests. Please wait before trying again.";
+
+  /* Use an isolated bucket map so prior test runs don't pollute this window */
+  const shortLimiter = rateLimit({
+    max: 1,
+    windowMs: SHORT_WINDOW_MS,
+    message: SHORT_MESSAGE,
+    buckets: new Map(),
+  });
+
+  const app = express();
+  app.use(express.json());
+  app.post(
+    "/api/backup/trigger",
+    shortLimiter,
+    (_req, res) => res.json({ ok: true, note: "stub" })
+  );
+
+  const srv = http.createServer(app);
+  await new Promise((resolve) => srv.listen(0, "127.0.0.1", resolve));
+  const base = `http://127.0.0.1:${srv.address().port}`;
+
+  try {
+    /* Step 1 — first request must succeed (slot available) */
+    const r1 = await post(base, "/api/backup/trigger");
+    assert(
+      r1.status >= 200 && r1.status < 300,
+      `window-reset: first request succeeds (got ${r1.status})`
+    );
+
+    /* Step 2 — second request immediately: window still open, slot exhausted → 429 */
+    const r2 = await post(base, "/api/backup/trigger");
+    assert(
+      r2.status === 429,
+      `window-reset: second request (within window) is blocked with 429 (got ${r2.status})`
+    );
+    assert(
+      r2.data && r2.data.error === SHORT_MESSAGE,
+      `window-reset: second request error body is correct (got "${r2.data && r2.data.error}")`
+    );
+
+    /* Step 3 — wait for the window to expire */
+    await new Promise((resolve) => setTimeout(resolve, SHORT_WINDOW_MS + 50));
+
+    /* Step 4 — third request: window has reset, slot is available again → 200 */
+    const r3 = await post(base, "/api/backup/trigger");
+    assert(
+      r3.status >= 200 && r3.status < 300,
+      `window-reset: third request (after window expiry) succeeds (got ${r3.status})`
+    );
+    assert(
+      r3.data && r3.data.ok === true,
+      `window-reset: third request response body indicates success (got ${JSON.stringify(r3.data)})`
+    );
+  } finally {
+    srv.close();
+  }
+}
+
 /* ---------- main ---------- */
 async function run() {
   console.log("=== triggerLimiter rate-limit test ===\n");
@@ -414,6 +489,8 @@ async function run() {
   }
 
   await runPostRestartTest();
+
+  await runWindowResetTest();
 
   await runDbErrorTest();
 
