@@ -989,12 +989,231 @@ async function runClockSkewTest() {
   console.log("\n=== Done (clock-skew boundary test) ===");
 }
 
+// ---------------------------------------------------------------------------
+// Mid-flight update test
+//
+// Verifies that backup.js correctly handles the race window where a visit is
+// updated AFTER the incremental DB query snapshot but BEFORE the backup_log
+// write completes.
+//
+//   Timeline (with fix)
+//   -------------------
+//   ranAt  captured by backup.js with  new Date()  BEFORE the query runs
+//   T1     incremental DB query runs   ──► snapshot frozen in memory
+//   T_mid  sentinel visit updated mid-flight (hook fires inside req.end)
+//   T_log  backup_log INSERT executes; ran_at = ranAt  (NOT the DB default)
+//
+//   Because ranAt < T_mid, the next incremental cutoff (= ranAt) is also
+//   below T_mid, so the sentinel satisfies  updated_at > ranAt  and WILL
+//   appear in the next backup's CSV.
+//
+// The test also confirms that the CURRENT CSV holds only the pre-update
+// values (the snapshot was taken before T_mid), which is correct — the
+// current backup accurately reflects what was in the DB at query time.
+// ---------------------------------------------------------------------------
+async function runMidFlightUpdateTest() {
+  console.log("\n=== incremental backup mid-flight update test ===\n");
+  console.log(
+    "  (Confirms fix: ranAt captured before the query ensures mid-flight\n" +
+    "   updates fall inside the NEXT incremental window, not silently lost.)"
+  );
+
+  const SENTINEL_CO = "test-backup-mid-flight";
+  const NOTES_PRE   = "mid-flight-pre-update";   // value when queried
+  const NOTES_POST  = "mid-flight-post-update";  // value after mid-flight update
+
+  // High-water mark for surgical cleanup
+  const hwmRes = await pool.query(
+    "SELECT COALESCE(MAX(id), 0) AS hwm FROM backup_log"
+  );
+  const hwm = hwmRes.rows[0].hwm;
+
+  // 1. Seed a successful backup_log row 1 hour ago so we are in incremental mode.
+  await pool.query(
+    `INSERT INTO backup_log (ran_at, status, note)
+     VALUES (NOW() - INTERVAL '1 hour', 'ok',
+             'Seeded by mid-flight test — safe to delete')`
+  );
+
+  // 2. Insert the sentinel visit NOW() (after the seeded log row → in window).
+  await pool.query(
+    `INSERT INTO visits (company, attested, notes) VALUES ($1, false, $2)`,
+    [SENTINEL_CO, NOTES_PRE]
+  );
+
+  // 3. Build a fake-https that runs a hook AFTER req.end() is called but
+  //    BEFORE the simulated Brevo response resolves — i.e., between the
+  //    DB query snapshot and the backup_log INSERT.
+  let capturedMidBody   = "";
+  let capturedMidOpts   = null;
+
+  const fakeHttpsMid = {
+    request(options, callback) {
+      capturedMidOpts = options;
+      const { EventEmitter: EE } = require("events");
+      const fakeRes = new EE();
+      fakeRes.statusCode = 201;
+
+      const fakeReq = new EE();
+      fakeReq.setTimeout = () => {};
+      fakeReq.destroy   = (err) => fakeReq.emit("error", err);
+      fakeReq.write     = (chunk) => { capturedMidBody += chunk; };
+      fakeReq.end       = () => {
+        // Run the mid-flight update asynchronously, then resolve the response.
+        (async () => {
+          // Update the sentinel's notes AND updated_at to NOW() while the
+          // "email is in flight" — this simulates a real concurrent edit
+          // that would move updated_at to T_mid (after ranAt was captured).
+          // Without the explicit updated_at update the column stays at the
+          // original INSERT time, which is before ranAt, and the assertion
+          // about the next window would be wrong.
+          await pool.query(
+            `UPDATE visits SET notes = $1, updated_at = NOW() WHERE company = $2`,
+            [NOTES_POST, SENTINEL_CO]
+          );
+          // Now deliver the fake 201 response so backup.js can proceed.
+          setImmediate(() => {
+            callback(fakeRes);
+            setImmediate(() => fakeRes.emit("end"));
+          });
+        })().catch((hookErr) => fakeReq.emit("error", hookErr));
+      };
+      return fakeReq;
+    },
+    get captured() {
+      return {
+        options: capturedMidOpts,
+        body:    capturedMidBody,
+        parsed:  capturedMidBody ? JSON.parse(capturedMidBody) : null,
+      };
+    },
+  };
+
+  // 4. Run the incremental backup.
+  await runWeeklyBackup({ forceFullBackup: false, _httpsOverride: fakeHttpsMid });
+
+  // ---- A. backup_log row ----
+  const logRes = await pool.query(
+    `SELECT status, note, ran_at FROM backup_log WHERE id > $1 ORDER BY id DESC LIMIT 1`,
+    [hwm]
+  );
+  assert(logRes.rows.length >= 1, "mid-flight: backup_log received at least 1 new row");
+  let logRanAt = null;
+  if (logRes.rows.length) {
+    const { status, note, ran_at } = logRes.rows[0];
+    logRanAt = ran_at;
+    assert(status === "ok", `mid-flight: backup_log row status = 'ok' (got '${status}')`);
+    assert(
+      note && note.startsWith("Incremental backup"),
+      `mid-flight: backup_log note starts with "Incremental backup" (got: "${note}")`
+    );
+  }
+
+  // ---- B. Brevo request was made ----
+  const { options: midOpts, parsed: midParsed } = fakeHttpsMid.captured;
+  assert(midOpts !== null, "mid-flight: Brevo https.request was called");
+
+  if (midParsed) {
+    const attachments = midParsed.attachment || [];
+    assert(
+      attachments.length === 1,
+      `mid-flight: 1 attachment present (got ${attachments.length})`
+    );
+
+    if (attachments.length) {
+      let csv = "";
+      try { csv = Buffer.from(attachments[0].content, "base64").toString("utf8"); } catch (_) {}
+      assert(csv.length > 0, "mid-flight: attachment decodes to non-empty string");
+
+      const lines  = csv.split(/\r?\n/).filter(Boolean);
+      const csvBody = lines.slice(1).join("\n");
+
+      // ---- C. Sentinel IS in the CSV (was queried before the mid-flight update) ----
+      assert(
+        csvBody.includes(SENTINEL_CO),
+        `mid-flight: sentinel company ('${SENTINEL_CO}') IS in the CSV ` +
+        `(it was in the incremental window when the query ran)`
+      );
+
+      // ---- D. CSV contains PRE-update notes (query snapshot is frozen) ----
+      assert(
+        csvBody.includes(NOTES_PRE),
+        `mid-flight: CSV contains the PRE-update notes ('${NOTES_PRE}') ` +
+        `— the DB snapshot was taken before the mid-flight hook ran`
+      );
+
+      // ---- E. CSV does NOT contain POST-update notes (snapshot is frozen) ----
+      assert(
+        !csvBody.includes(NOTES_POST),
+        `mid-flight: CSV does NOT contain the POST-update notes ('${NOTES_POST}') ` +
+        `— the mid-flight change occurred after the query snapshot (correct)`
+      );
+    }
+  }
+
+  // ---- F. Confirm the NEXT incremental backup CATCHES the mid-flight update.
+  //
+  //    backup.js now captures ranAt = new Date() BEFORE the visits query runs.
+  //    That timestamp is written as backup_log.ran_at (not the DB default NOW()).
+  //
+  //    Timeline (after the fix):
+  //      ranAt  = T_pre_query  (captured before query, written to backup_log)
+  //      T_mid  = sentinel update during hook  (T_mid > T_pre_query)
+  //      T_log  = when INSERT executes          (T_log ≥ T_mid > T_pre_query)
+  //
+  //    Next incremental cutoff = backup_log.ran_at = ranAt = T_pre_query.
+  //    Sentinel updated_at = T_mid > T_pre_query → included in the next window.
+  //
+  //    We verify directly: sentinel satisfies  updated_at > backup_log.ran_at.
+  if (logRanAt) {
+    const nextWindowRes = await pool.query(
+      `SELECT COUNT(*)::int AS n FROM visits
+        WHERE company = $1 AND updated_at > $2`,
+      [SENTINEL_CO, logRanAt]
+    );
+    assert(
+      nextWindowRes.rows[0].n === 1,
+      `mid-flight: sentinel updated_at > backup_log.ran_at — ` +
+      `the NEXT incremental backup WILL catch the mid-flight update ` +
+      `(fix: backup.js captures ranAt before the query and writes it as ran_at)`
+    );
+  }
+
+  // ---- Confirm the mid-flight update IS in the DB (data integrity is fine) ----
+  const currentNotesRes = await pool.query(
+    `SELECT notes FROM visits WHERE company = $1`, [SENTINEL_CO]
+  );
+  assert(
+    currentNotesRes.rows.length >= 1 &&
+      currentNotesRes.rows[0].notes === NOTES_POST,
+    `mid-flight: sentinel DB row now has POST-update notes ('${NOTES_POST}') ` +
+    `— the update committed successfully, just not captured in the backup CSV`
+  );
+
+  // --- Cleanup ---
+  await pool.query("DELETE FROM visits WHERE company = $1", [SENTINEL_CO]);
+  await pool.query("DELETE FROM backup_log WHERE id > $1", [hwm]);
+
+  const cleanV = await pool.query(
+    "SELECT COUNT(*)::int AS n FROM visits WHERE company = $1", [SENTINEL_CO]
+  );
+  assert(cleanV.rows[0].n === 0, "mid-flight: sentinel visit cleaned up");
+
+  const cleanL = await pool.query(
+    "SELECT COUNT(*)::int AS n FROM backup_log WHERE id > $1", [hwm]
+  );
+  assert(cleanL.rows[0].n === 0, "mid-flight: test backup_log rows cleaned up");
+
+  console.log("\n=== Done (mid-flight update test) ===");
+}
+
 run()
   .then(() => runIncrementalTest())
   .then(() => runIncrementalNoChangeTest())
   .then(() => runBoundaryTest())
   .then(() => runBoundaryPlusOneTest())
   .then(() => runClockSkewTest())
+  .then(() => runMidFlightUpdateTest())
   .catch((err) => {
     console.error("Unexpected error:", err);
     process.exitCode = 1;

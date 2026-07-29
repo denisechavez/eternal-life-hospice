@@ -55,6 +55,14 @@ async function runWeeklyBackup({ forceFullBackup = false, _httpsOverride } = {})
       return;
     }
 
+    // Capture the wall-clock time NOW, before the visits query runs.
+    // Using this pre-query timestamp as backup_log.ran_at means any visit
+    // updated between the query snapshot and the log write will have
+    // updated_at > ranAt and will therefore be caught by the NEXT incremental
+    // backup.  Without this, a mid-flight update (T_query < updated_at < T_log)
+    // would fall below the next cutoff and be silently skipped.
+    const ranAt = new Date();
+
     // Determine the cutoff: timestamp of the last SUCCESSFUL backup.
     // No prior success OR forceFullBackup → full backup.
     const lastOkRes = await query(
@@ -154,10 +162,10 @@ async function runWeeklyBackup({ forceFullBackup = false, _httpsOverride } = {})
       req.end();
     });
 
-    await query("INSERT INTO backup_log (status, note) VALUES ($1, $2)", [
-      "ok",
-      noteText,
-    ]);
+    await query(
+      "INSERT INTO backup_log (ran_at, status, note) VALUES ($1, $2, $3)",
+      [ranAt, "ok", noteText]
+    );
     console.log(`Weekly backup: ${noteText}`);
   } catch (e) {
     const note = String((e && e.message) || "Unknown error").slice(0, 500);
