@@ -45,3 +45,4 @@ inside an existing project. This App is the Eternal Life Hospice company.
   home automatically without being asked.
 - Non-technical audience: explain in plain language, focus on outcomes, avoid jargon.
 - Strong emphasis on SEO correctness and healthcare compliance.
+- **Do not propose follow-up tasks.** Never call the follow-up-tasks skill or propose new tasks unprompted.
