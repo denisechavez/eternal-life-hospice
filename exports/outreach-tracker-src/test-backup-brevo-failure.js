@@ -119,39 +119,23 @@ function makeFakeTimeoutHttps() {
 async function run() {
   console.log("=== Brevo failure surfacing test ===\n");
 
-  // Ensure tables exist (mirrors schema.sql)
-  await pool.query(`
-    CREATE TABLE IF NOT EXISTS visits (
-      id              SERIAL PRIMARY KEY,
-      company         TEXT NOT NULL,
-      category        TEXT,
-      address         TEXT,
-      city            TEXT,
-      county          TEXT,
-      visit_date      DATE,
-      contact_name    TEXT,
-      contact_title   TEXT,
-      contact_email   TEXT,
-      contact_phone   TEXT,
-      materials       JSONB DEFAULT '[]',
-      notes           TEXT,
-      owner           TEXT,
-      follow_up_due   DATE,
-      followup_status TEXT DEFAULT 'Not started',
-      attested        BOOLEAN DEFAULT FALSE,
-      created_by      INTEGER,
-      created_at      TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-      updated_at      TIMESTAMPTZ NOT NULL DEFAULT NOW()
-    )
-  `);
-  await pool.query(`
-    CREATE TABLE IF NOT EXISTS backup_log (
-      id     SERIAL PRIMARY KEY,
-      ran_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-      status TEXT        NOT NULL,
-      note   TEXT
-    )
-  `);
+  // Verify both tables exist (must be created by schema.sql before tests run).
+  // We deliberately do NOT issue CREATE TABLE here: a missing table is a setup
+  // error — fail loudly so the operator knows to run the migration first.
+  for (const tableName of ["visits", "backup_log"]) {
+    const tableCheck = await pool.query(`
+      SELECT 1 FROM information_schema.tables
+       WHERE table_schema = 'public'
+         AND table_name   = $1
+    `, [tableName]);
+    if (tableCheck.rows.length === 0) {
+      console.error(
+        `ERROR: ${tableName} table does not exist.\n` +
+        "       Run the schema migration first:  psql $DATABASE_URL < schema.sql"
+      );
+      process.exit(1);
+    }
+  }
 
   // --- Remember the backup_log high-water mark ---
   const hwmRes = await pool.query(

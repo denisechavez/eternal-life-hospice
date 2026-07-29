@@ -53,9 +53,8 @@ async function run() {
 
   if (rows.length === 0) {
     console.error(
-      "\n  The table is missing.  Apply the schema:\n" +
-      "    psql $DATABASE_URL < schema.sql\n" +
-      "  or run the CREATE TABLE block from schema.sql manually.\n"
+      "ERROR: trigger_rate_limit table does not exist.\n" +
+      "       Run the schema migration first:  psql $DATABASE_URL < schema.sql"
     );
     console.log("\n=== Done (FAILED) ===");
     return;
