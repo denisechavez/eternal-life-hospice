@@ -29,6 +29,13 @@
  *   .ft-lang-btns     — pills container
  *   .ft-lang          — individual language pill
  *
+ * Ancestor selectors also checked:
+ *   footer            — the <footer> HTML element that wraps the bar
+ *   #site-footer      — the id on that element in every elh-preview page
+ *   If any hiding rule targets an ancestor the bar disappears even when
+ *   none of its own CSS is flagged.  These use a token-aware match so
+ *   a rule like ".footer-something" is not a false positive.
+ *
  * CSS parser:
  *   Uses a brace-depth recursive parser (not a regex) so rules inside @media,
  *   @supports, and other nested at-rules are evaluated correctly. A rule like
@@ -59,6 +66,15 @@ const TARGET_SELECTORS = [
   '.ft-label',
   '.ft-lang-btns',
   '.ft-lang',
+];
+
+// ── Ancestor selectors ────────────────────────────────────────────────────────
+// A hiding rule on any of these makes the translate bar invisible even when
+// none of its own selectors are touched.  In every elh-preview page the bar
+// lives as a direct child of <footer id="site-footer">.
+const ANCESTOR_SELECTORS = [
+  'footer',
+  '#site-footer',
 ];
 
 // ── Hiding declarations to flag ───────────────────────────────────────────────
@@ -138,6 +154,13 @@ function* iterRules(css) {
       // Recurse into its body to find any nested selector rules.
       // @keyframes bodies contain step selectors (from/to/%), not real rules —
       // those selectors never target .ft-lang so they are harmless to recurse.
+      //
+      // Skip @media print blocks: hiding elements for print output is
+      // intentional and does not affect screen visibility for real visitors.
+      if (/^@media\s*print\b/i.test(prelude)) {
+        i = j;
+        continue;
+      }
       yield* iterRules(body);
     } else if (prelude.length > 0) {
       // Regular rule: the prelude is the selector list, body is declarations.
@@ -200,9 +223,38 @@ function extractLinkedStylesheets(html, pageRel) {
   );
 }
 
-/** Returns true if any TARGET_SELECTOR appears in the selector string. */
+/**
+ * Returns true if an ancestor selector token appears as the **subject** of
+ * the CSS rule (i.e. the rightmost compound selector), not merely as a
+ * scoping context.
+ *
+ * Examples:
+ *   "footer { display:none }"          → selector="footer"     → TRUE  ✓
+ *   "#hdr, #site-footer, .btn"         → contains "#site-footer" at subject → TRUE  ✓
+ *   "#site-footer .foot-social .child" → "#site-footer" is scoping, not subject → FALSE ✓
+ *   ".footer-link { display:none }"    → different token → FALSE ✓
+ *
+ * The key rule: after the ancestor token must come ONLY end-of-string, a
+ * comma (next selector in the list), or a pseudo/attribute/class modifier
+ * that stays on the same compound selector (: [ . #).  A space, >, +, or ~
+ * after the token means the ancestor is a scoping context — skip it.
+ */
+function selectorMatchesAncestor(selector, ancestor) {
+  const esc = ancestor.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  return new RegExp(
+    '(?:^|[\\s,>+~])' + esc + '(?=[,:{\\[.#]|$)'
+  ).test(selector);
+}
+
+/**
+ * Returns true if the CSS selector targets any translate-bar element OR any
+ * known ancestor element (footer / #site-footer).  Translate-bar selectors
+ * use a substring match; ancestor selectors use the token-aware matcher above
+ * to avoid false positives like ".footer-link".
+ */
 function targetsTranslateBar(selector) {
-  return TARGET_SELECTORS.some(t => selector.includes(t));
+  if (TARGET_SELECTORS.some(t => selector.includes(t))) return true;
+  return ANCESTOR_SELECTORS.some(a => selectorMatchesAncestor(selector, a));
 }
 
 /** Returns the first matching hiding pattern description, or null. */
@@ -240,10 +292,16 @@ function readCss(relPath) {
 
 // ── Self-test ─────────────────────────────────────────────────────────────────
 /**
- * Quick sanity check: verify the parser catches a display:none rule that is
- * nested inside a @media block — the case the simple regex parser missed.
+ * Sanity checks run before any real pages are scanned:
+ *
+ *   1. Parser catches translate-bar hiding nested inside @media / @supports.
+ *   2. Ancestor hiding: `footer { display:none }` is flagged even though the
+ *      translate bar's own selectors are untouched.
+ *   3. False-positive guard: `.footer-link { display:none }` must NOT be
+ *      flagged (token-boundary check on the ancestor matcher).
  */
 function selfTest() {
+  // ── check 1: nested at-rule hiding on bar selectors ─────────────────────
   const syntheticCss = `
     /* normal rule */
     .ft-lang { display: inline-flex; color: red; }
@@ -263,17 +321,60 @@ function selfTest() {
 
   const found = scanCss(syntheticCss);
 
-  // Expect exactly 2 findings: display:none and visibility:hidden.
-  const displayNone   = found.some(f => f.selector.includes('.ft-lang')         && /display.*none/i.test(f.hiding));
-  const visHidden     = found.some(f => f.selector.includes('.foot-translate')   && /visibility.*hidden/i.test(f.hiding));
-  const normalMissed  = found.some(f => /inline-flex/.test(f.hiding)); // must NOT flag this
+  const displayNone  = found.some(f => f.selector.includes('.ft-lang')       && /display.*none/i.test(f.hiding));
+  const visHidden    = found.some(f => f.selector.includes('.foot-translate') && /visibility.*hidden/i.test(f.hiding));
+  const normalMissed = found.some(f => /inline-flex/.test(f.hiding)); // must NOT flag this
 
   if (!displayNone || !visHidden || normalMissed) {
     console.error('❌  Self-test FAILED — CSS parser is not detecting nested at-rule hiding');
     console.error('   findings:', JSON.stringify(found, null, 2));
     process.exit(2);
   }
-  // Self-test passed — continue silently.
+
+  // ── check 2: ancestor hiding — footer { display:none } must be caught ───
+  // This is the regression case: the bar's own CSS is fine but its containing
+  // <footer> is hidden, so the bar disappears from the page.
+  const ancestorCss = `
+    footer { display: none; }
+    #site-footer { visibility: hidden; }
+  `;
+
+  const ancestorFound = scanCss(ancestorCss);
+  const footerCaught     = ancestorFound.some(f => /footer/.test(f.selector) && /display.*none/i.test(f.hiding));
+  const siteFooterCaught = ancestorFound.some(f => /#site-footer/.test(f.selector) && /visibility.*hidden/i.test(f.hiding));
+
+  if (!footerCaught || !siteFooterCaught) {
+    console.error('❌  Self-test FAILED — ancestor hiding (footer/site-footer) not detected');
+    console.error('   findings:', JSON.stringify(ancestorFound, null, 2));
+    process.exit(2);
+  }
+
+  // ── check 3: false-positive guards ─────────────────────────────────────
+  // 3a. ".footer-link" must NOT match the "footer" token (different selector)
+  // 3b. "#site-footer .child" must NOT flag #site-footer (scoping context, not subject)
+  // 3c. "@media print { #site-footer { display:none } }" must NOT be flagged
+  //     (print hiding is intentional and irrelevant to screen visitors)
+  const fp3a = scanCss(`.footer-link { display: none; }`);
+  const fp3b = scanCss(`#site-footer .foot-social .fs-invite { display: none; }`);
+  const fp3c = scanCss(`@media print { #site-footer { display: none; } }`);
+
+  if (fp3a.length > 0) {
+    console.error('❌  Self-test FAILED — false positive 3a: ".footer-link" matched as ancestor');
+    console.error('   findings:', JSON.stringify(fp3a, null, 2));
+    process.exit(2);
+  }
+  if (fp3b.length > 0) {
+    console.error('❌  Self-test FAILED — false positive 3b: "#site-footer .child" matched as ancestor subject');
+    console.error('   findings:', JSON.stringify(fp3b, null, 2));
+    process.exit(2);
+  }
+  if (fp3c.length > 0) {
+    console.error('❌  Self-test FAILED — false positive 3c: @media print hiding incorrectly flagged');
+    console.error('   findings:', JSON.stringify(fp3c, null, 2));
+    process.exit(2);
+  }
+
+  // All self-tests passed — continue silently.
 }
 
 // ── Main ──────────────────────────────────────────────────────────────────────
@@ -299,7 +400,8 @@ console.log('═'.repeat(60));
 console.log(`Scanning ${sitePages.length} site pages for hiding CSS rules\n`);
 console.log('CSS sources  : inline <style> blocks + linked stylesheets + assets/elh.css');
 console.log('CSS parser   : recursive brace-depth (handles @media/@supports nesting)');
-console.log('Targets      :', TARGET_SELECTORS.join(', '));
+console.log('Bar targets  :', TARGET_SELECTORS.join(', '));
+console.log('Ancestors    :', ANCESTOR_SELECTORS.join(', '), ' ← hidden ancestor = hidden bar');
 console.log('Hiding props : display:none · visibility:hidden · opacity:0 · height:0 · max-height:0\n');
 
 let allPassed = true;
