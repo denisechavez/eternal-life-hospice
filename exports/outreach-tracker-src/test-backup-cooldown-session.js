@@ -118,7 +118,7 @@ function assert(condition, message) {
 }
 
 /* ── boot a fresh jsdom instance with optional pre-seeded sessionStorage ────── */
-async function bootApp({ sessionStorageData = {}, backupRunResponse = null, throwingStorage = false, customStorage = null, backupRunFetcher = null } = {}) {
+async function bootApp({ sessionStorageData = {}, backupRunResponse = null, throwingStorage = false, customStorage = null, backupRunFetcher = null, captureErrors = false } = {}) {
   const dom = new JSDOM(MINIMAL_HTML, {
     runScripts: "dangerously",
     url: "http://localhost/",
@@ -218,6 +218,16 @@ async function bootApp({ sessionStorageData = {}, backupRunResponse = null, thro
     };
   };
 
+  // Optionally register an uncaught-error collector BEFORE the script runs so
+  // that synchronous errors thrown during app.js evaluation — including anything
+  // in the boot IIFE's synchronous setup path — are captured.  Callers that need
+  // this pass `captureErrors: true`; the returned `uncaughtErrors` array is then
+  // populated with any window `error` events that fire during and after boot.
+  const uncaughtErrors = captureErrors ? [] : null;
+  if (captureErrors) {
+    w.addEventListener("error", (e) => { uncaughtErrors.push(e.error || e.message); });
+  }
+
   // Execute the real app.js in this window context
   const script = w.document.createElement("script");
   script.textContent = APP_JS;
@@ -227,7 +237,7 @@ async function bootApp({ sessionStorageData = {}, backupRunResponse = null, thro
   // /api/backup/status) time to resolve.
   await new Promise((resolve) => setTimeout(resolve, 60));
 
-  return { dom, w, mockState };
+  return { dom, w, mockState, uncaughtErrors };
 }
 
 /* ── wait for a DOM condition, polling every 20 ms up to `maxMs` ───────────── */
@@ -696,6 +706,65 @@ async function runTests() {
     } finally {
       srv9.close();
     }
+    console.log();
+  }
+
+  /* ── Scenario 10: fully opaque blocked storage — neither cooldown branch fires
+   *
+   * This scenario documents and asserts the defined safe behavior when the
+   * browser blocks sessionStorage so completely that getItem itself throws
+   * (e.g. iOS Safari Private Browsing, or a browser extension that traps every
+   * storage access).
+   *
+   * _ssGet() wraps getItem in a try/catch and returns null on error, so the
+   * enterApp() cooldown-resume block evaluates to:
+   *
+   *   const _cooldownUntil = parseInt(null || "0", 10);  // → 0
+   *
+   * With _cooldownUntil === 0 both guards are false:
+   *   • `_cooldownUntil > Date.now()` → false  — active-cooldown branch skipped
+   *   • `_cooldownUntil > 0`          → false  — proactive-cleanup branch skipped
+   *
+   * Expected/safe outcome: neither branch fires.  The app boots cleanly, no
+   * uncaught error is thrown, and the button remains enabled.  Proactive cleanup
+   * requires a positive _cooldownUntil (i.e. a stale timestamp) to enter the
+   * else-if branch; when getItem throws there is no timestamp to parse, so
+   * cleanup is correctly skipped rather than silently attempted.
+   *
+   * The error listener is registered via captureErrors=true inside bootApp(),
+   * BEFORE app.js executes, so any synchronous or async exception thrown during
+   * the script-evaluation or enterApp() cooldown path is captured.
+   */
+  console.log("--- Scenario 10: fully opaque blocked storage (getItem throws) — neither cooldown branch fires, no uncaught error ---");
+  {
+    // captureErrors registers the window error listener before app.js runs,
+    // ensuring boot-phase exceptions are not missed.
+    const { w, uncaughtErrors } = await bootApp({ throwingStorage: true, captureErrors: true });
+
+    const btn = w.document.getElementById("runBackupBtn");
+
+    // Give enterApp() time to reach and fully execute the cooldown block.
+    await new Promise((r) => setTimeout(r, 80));
+
+    assert(
+      uncaughtErrors.length === 0,
+      "no uncaught error when getItem throws (fully opaque blocked storage)"
+    );
+    assert(
+      btn.disabled === false,
+      "button stays enabled — _cooldownUntil === 0 so neither cooldown branch fires"
+    );
+    assert(
+      btn.textContent === "Run backup now",
+      `button label unchanged (got "${btn.textContent}")`
+    );
+    // Confirm no spurious in-memory cooldown timer was started — label must
+    // still be unchanged after an extra tick.
+    await new Promise((r) => setTimeout(r, 40));
+    assert(
+      btn.textContent === "Run backup now",
+      "button label still unchanged after extra tick — no spurious cooldown started"
+    );
     console.log();
   }
 
