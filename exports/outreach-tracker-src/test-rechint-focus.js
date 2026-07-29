@@ -162,8 +162,63 @@ function runRegressionCheck() {
   console.log("\n=== Regression proof done ===");
 }
 
+// ── Regression proof: tabindex removal ──────────────────────────────────────
+// Temporarily removes `tabindex="0"` from the #recHint tag in index.html,
+// spawns this same script with --skip-regression, and asserts that it exits
+// with code 1.  The HTML file is always restored, even on error.
+//
+// This section is skipped when the script is called with --skip-regression so
+// that the subprocess used for the proof doesn't recurse.
+function runTabindexRegressionCheck() {
+  console.log("\n=== Regression proof: tabindex removal ===\n");
+
+  const originalHtml = fs.readFileSync(HTML_PATH, "utf8");
+  // Remove tabindex="0" (or tabindex='0') from the #recHint tag.
+  const mutatedHtml = originalHtml.replace(
+    /(<[^>]+id=["']recHint["'][^>]*)\s+tabindex=["']0["']/,
+    "$1"
+  );
+
+  if (mutatedHtml === originalHtml) {
+    // Safety net: if the substitution didn't change anything the proof is
+    // meaningless — fail loudly rather than silently passing.
+    console.error(
+      "  FAIL: Could not remove tabindex=\"0\" from #recHint — pattern not found"
+    );
+    process.exitCode = 1;
+    return;
+  }
+
+  try {
+    fs.writeFileSync(HTML_PATH, mutatedHtml, "utf8");
+
+    const result = spawnSync(process.execPath, [__filename, "--skip-regression"], {
+      encoding: "utf8",
+    });
+
+    const exitCode = result.status;
+    assert(
+      exitCode === 1,
+      `check exits 1 when tabindex="0" is absent from #recHint (got ${exitCode})`
+    );
+
+    if (exitCode !== 1) {
+      // Surface subprocess output to aid debugging when the proof fails.
+      if (result.stdout) process.stdout.write("  [subprocess stdout]\n" + result.stdout);
+      if (result.stderr) process.stderr.write("  [subprocess stderr]\n" + result.stderr);
+    }
+  } finally {
+    // Always restore the original HTML — even if the spawn threw.
+    fs.writeFileSync(HTML_PATH, originalHtml, "utf8");
+    console.log("  INFO: index.html restored to original state");
+  }
+
+  console.log("\n=== Regression proof done ===");
+}
+
 run();
 
 if (!SKIP_REGRESSION) {
   runRegressionCheck();
+  runTabindexRegressionCheck();
 }
