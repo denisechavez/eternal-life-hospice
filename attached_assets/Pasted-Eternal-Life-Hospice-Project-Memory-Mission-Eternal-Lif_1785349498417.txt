@@ -1,0 +1,198 @@
+Eternal Life Hospice Project Memory
+Mission
+
+Eternal Life Hospice is in a turnaround and growth phase.
+
+Every technical decision, design decision and marketing feature must support one primary objective:
+
+Generate qualified hospice referrals that convert into admissions.
+
+Branding is important but measurable business growth comes first.
+
+Current Business Priorities
+
+Current census is extremely low.
+
+Cash flow is a top priority.
+
+Marketing activities must produce measurable ROI.
+
+Do not recommend features simply because they are visually impressive.
+
+Recommend features that increase:
+
+Referral volume
+Admissions
+Phone calls
+Contact form submissions
+Provider engagement
+Search visibility
+AI discoverability
+Local authority
+Google rankings
+Conversion rate
+Marketing Strategy
+
+A professional PPC agency will manage:
+
+Google Ads
+Microsoft Ads
+Meta Ads
+
+The website should be optimized to maximize every paid visitor.
+
+Every landing page should increase conversion.
+
+Every page should have measurable goals.
+
+Website Philosophy
+
+The website is not an online brochure.
+
+It is a referral-generation platform.
+
+Every page should answer:
+
+Why Eternal?
+
+Why now?
+
+What happens next?
+
+How do I refer?
+
+How quickly will someone respond?
+
+Why should I trust Eternal?
+
+Content Philosophy
+
+Every piece of content should accomplish at least one objective.
+
+Educate.
+
+Build trust.
+
+Increase authority.
+
+Improve SEO.
+
+Improve AI retrieval.
+
+Increase referrals.
+
+Improve conversion.
+
+Support providers.
+
+Support families.
+
+CRM Philosophy
+
+Every referral source should be tracked.
+
+Every phone call should be measurable.
+
+Every form submission should be measurable.
+
+Every admission should be attributable to its marketing source.
+
+Dashboards should show:
+
+Referral source
+
+Admission source
+
+Campaign ROI
+
+Cost per referral
+
+Cost per admission
+
+Referral partner activity
+
+Website conversion
+
+Email engagement
+
+Social engagement
+
+SEO Philosophy
+
+Every page should support:
+
+Google Search
+
+ChatGPT
+
+Perplexity
+
+Gemini
+
+Claude
+
+AI search
+
+Schema
+
+Structured data
+
+Internal linking
+
+Topical authority
+
+Entity optimization
+
+Medical authority
+
+Email Strategy
+
+Emails are educational.
+
+Never overly promotional.
+
+Build long-term trust.
+
+Become the preferred educational resource for referral partners.
+
+Social Media Strategy
+
+Social media supports PPC.
+
+PPC supports the website.
+
+The website supports referrals.
+
+Everything works together as one system.
+
+Reporting Philosophy
+
+Weekly reporting.
+
+Monthly reporting.
+
+Everything measurable.
+
+Never guess.
+
+Always use data.
+
+Internal Rule
+
+When making recommendations always ask:
+
+Will this increase referrals or admissions?
+
+If not
+
+It is not a priority.
+
+One thing I would add
+
+I would also create a Project Constitution for Replit that says:
+
+If there is ever a conflict between aesthetics and conversion, choose conversion.
+
+If there is ever a conflict between complexity and usability, choose usability.
+
+If there is ever a conflict between adding another feature and increasing referrals, prioritize referrals.

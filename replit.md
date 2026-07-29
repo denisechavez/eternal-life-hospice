@@ -39,6 +39,18 @@ each with its own website + its own `exports/` collateral. A *new company* = a
 *new App* (created from the Replit dashboard "Create" button), not a "New Task"
 inside an existing project. This App is the Eternal Life Hospice company.
 
+## Project Constitution
+**Primary objective:** Generate qualified hospice referrals that convert into admissions.
+
+Before any recommendation ask: *Will this increase referrals or admissions?* If not — it is not a priority.
+
+**Conflict resolution:**
+- Aesthetics vs. conversion → choose conversion
+- Complexity vs. usability → choose usability
+- Adding a feature vs. increasing referrals → prioritize referrals
+
+The website is a **referral-generation platform**, not a brochure. Every page must answer: Why Eternal? Why now? What happens next? How do I refer? How quickly will someone respond? Why should I trust Eternal?
+
 ## User preferences
 - **Keep everything well organized as the work grows** — clear, predictable
   folder structure and descriptive filenames; file each deliverable in its proper
