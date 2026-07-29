@@ -102,7 +102,21 @@ function run() {
     );
   }
 
-  // ── 3. No bare :focus rule that would show an outline on mouse clicks ───────
+  // ── 3. #recBtn must carry aria-describedby="recHint" ────────────────────────
+  // Match the opening tag of the button, allowing attributes in any order.
+  const recBtnTag = html.match(/<[^>]+id=["']recBtn["'][^>]*>/);
+  assert(
+    recBtnTag !== null,
+    "#recBtn element is present in index.html"
+  );
+  if (recBtnTag) {
+    assert(
+      /aria-describedby=["']recHint["']/.test(recBtnTag[0]),
+      '#recBtn has aria-describedby="recHint" — screen readers will announce the hint'
+    );
+  }
+
+  // ── 4. No bare :focus rule that would show an outline on mouse clicks ───────
   const focusBareBlock = css.match(/#recHint\s*:\s*focus(?!-visible)\s*\{([^}]*)\}/);
   if (focusBareBlock) {
     const decls = focusBareBlock[1];
@@ -216,9 +230,65 @@ function runTabindexRegressionCheck() {
   console.log("\n=== Regression proof done ===");
 }
 
+// ── Regression proof: aria-describedby removal ──────────────────────────────
+// Temporarily removes `aria-describedby="recHint"` from the #recBtn tag in
+// index.html, spawns this same script with --skip-regression, and asserts that
+// it exits with code 1.  The HTML file is always restored, even on error.
+//
+// This section is skipped when the script is called with --skip-regression so
+// that the subprocess used for the proof doesn't recurse.
+function runAriaDescribedByRegressionCheck() {
+  console.log("\n=== Regression proof: aria-describedby removal ===\n");
+
+  const originalHtml = fs.readFileSync(HTML_PATH, "utf8");
+  // Remove aria-describedby="recHint" (or aria-describedby='recHint') from the
+  // #recBtn tag.
+  const mutatedHtml = originalHtml.replace(
+    /(<[^>]+id=["']recBtn["'][^>]*)\s+aria-describedby=["']recHint["']/,
+    "$1"
+  );
+
+  if (mutatedHtml === originalHtml) {
+    // Safety net: if the substitution didn't change anything the proof is
+    // meaningless — fail loudly rather than silently passing.
+    console.error(
+      "  FAIL: Could not remove aria-describedby=\"recHint\" from #recBtn — pattern not found"
+    );
+    process.exitCode = 1;
+    return;
+  }
+
+  try {
+    fs.writeFileSync(HTML_PATH, mutatedHtml, "utf8");
+
+    const result = spawnSync(process.execPath, [__filename, "--skip-regression"], {
+      encoding: "utf8",
+    });
+
+    const exitCode = result.status;
+    assert(
+      exitCode === 1,
+      `check exits 1 when aria-describedby="recHint" is absent from #recBtn (got ${exitCode})`
+    );
+
+    if (exitCode !== 1) {
+      // Surface subprocess output to aid debugging when the proof fails.
+      if (result.stdout) process.stdout.write("  [subprocess stdout]\n" + result.stdout);
+      if (result.stderr) process.stderr.write("  [subprocess stderr]\n" + result.stderr);
+    }
+  } finally {
+    // Always restore the original HTML — even if the spawn threw.
+    fs.writeFileSync(HTML_PATH, originalHtml, "utf8");
+    console.log("  INFO: index.html restored to original state");
+  }
+
+  console.log("\n=== Regression proof done ===");
+}
+
 run();
 
 if (!SKIP_REGRESSION) {
   runRegressionCheck();
   runTabindexRegressionCheck();
+  runAriaDescribedByRegressionCheck();
 }
