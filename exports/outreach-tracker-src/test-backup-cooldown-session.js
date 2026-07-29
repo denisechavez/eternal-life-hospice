@@ -768,6 +768,71 @@ async function runTests() {
     console.log();
   }
 
+  /* ── Scenario 11: Retry-After drives the countdown when storage is blocked ──
+   *
+   * When sessionStorage is blocked (throwingStorage: true), the cooldown runs
+   * entirely in-memory.  The duration MUST come from the server's Retry-After
+   * header — not from a hardcoded fallback such as the default 300 s used when
+   * no header is present.
+   *
+   * This scenario configures the mock to return Retry-After: 120 and asserts
+   * that the button label immediately shows a countdown consistent with 120 s
+   * (i.e. "Try again in 2:00") rather than the 5-minute default ("Try again
+   * in 4:59" or similar).
+   * ─────────────────────────────────────────────────────────────────────────── */
+  console.log("--- Scenario 11: Retry-After value drives countdown when sessionStorage is blocked ---");
+  {
+    const RETRY_AFTER_SEC = 120; // deliberately not the 300 s default
+
+    const { w } = await bootApp({
+      throwingStorage: true,
+      backupRunResponse: {
+        ok: false,
+        status: 429,
+        headers: { get: (h) => (h === "Retry-After" ? String(RETRY_AFTER_SEC) : null) },
+        json: async () => ({ error: "Rate limit — try again later." }),
+      },
+    });
+
+    const btn = w.document.getElementById("runBackupBtn");
+    assert(btn !== null, "#runBackupBtn exists in DOM");
+    assert(btn.disabled === false, "button starts enabled (throwingStorage, no prior cooldown)");
+
+    // Click — mock returns 429 with Retry-After: 120
+    btn.click();
+
+    // Wait for the async handler to fire and the countdown to start
+    await waitFor(() => btn.disabled === true);
+
+    assert(btn.disabled === true, "button is disabled after 429 (throwingStorage)");
+    assert(
+      btn.textContent.startsWith("Try again in"),
+      `countdown label present (got "${btn.textContent}")`
+    );
+
+    // Parse the countdown label and verify it reflects the server Retry-After value.
+    // Expected immediately after the first tick: "Try again in 2:00" (120 s ÷ 60 = 2 m 0 s).
+    const labelMatch = btn.textContent.match(/Try again in (?:(\d+):(\d+)|(\d+)s)/);
+    assert(labelMatch !== null, "button text matches countdown format (M:SS or Xs)");
+    if (labelMatch) {
+      const shownSec = labelMatch[3] !== undefined
+        ? parseInt(labelMatch[3], 10)
+        : parseInt(labelMatch[1], 10) * 60 + parseInt(labelMatch[2], 10);
+      // Allow ±3 s tolerance for timing jitter between click and assertion
+      assert(
+        Math.abs(shownSec - RETRY_AFTER_SEC) <= 3,
+        `countdown reflects Retry-After=${RETRY_AFTER_SEC}s from server ` +
+        `(got ${shownSec}s — would be ~300s if the hardcoded fallback were used instead)`
+      );
+      // Explicitly confirm it is NOT near the 300 s hardcoded default
+      assert(
+        shownSec < 200,
+        `countdown (${shownSec}s) is well below the 300 s default — confirming server header was used`
+      );
+    }
+    console.log();
+  }
+
   console.log("=== Done ===");
 }
 
