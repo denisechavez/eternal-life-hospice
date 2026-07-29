@@ -830,11 +830,171 @@ async function runBoundaryPlusOneTest() {
   console.log("\n=== Done (boundary +1 ms test) ===");
 }
 
+// ---------------------------------------------------------------------------
+// Clock-skew boundary test
+//
+// In the laboratory tests above, backup_log.ran_at and the sentinel visit's
+// updated_at are always seeded inside the same transaction or via explicit SQL
+// arithmetic — so they are perfectly synchronised.  In production the backup
+// may take several milliseconds between writing the backup_log row and the
+// moment a concurrent INSERT lands on the DB server, so NOW() at INSERT time
+// is genuinely a few ms after ran_at.
+//
+// This test exercises that real-world path:
+//   1. Seed backup_log.ran_at with NOW() and capture the exact value.
+//   2. Wait ~5 ms in JavaScript (setTimeout) so real wall-clock time passes.
+//   3. Insert the sentinel visit — its updated_at is DB-side NOW() at insert
+//      time, which is genuinely *after* ran_at by the elapsed wall-clock gap.
+//   4. Confirm the sentinel appears in the incremental CSV.
+// ---------------------------------------------------------------------------
+async function runClockSkewTest() {
+  console.log("\n=== incremental backup clock-skew boundary test ===\n");
+  console.log(
+    "  (Seeds log row, waits ~5 ms real time, inserts sentinel at NOW() — " +
+    "mirrors production clock drift)"
+  );
+
+  const SENTINEL_SKEW = "test-backup-clock-skew";
+
+  // High-water mark for surgical cleanup
+  const hwmRes4 = await pool.query(
+    "SELECT COALESCE(MAX(id), 0) AS hwm FROM backup_log"
+  );
+  const hwm4 = hwmRes4.rows[0].hwm;
+
+  // 1. Seed a successful backup_log row at NOW() and capture its exact ran_at.
+  //    We use NOW() + 0 so the row is clearly the latest 'ok' entry but does
+  //    not push into the future (unlike the boundary tests), so the incremental
+  //    query will pick up any record inserted *after* this moment.
+  const logInsert4 = await pool.query(
+    `INSERT INTO backup_log (ran_at, status, note)
+     VALUES (NOW(), 'ok',
+             'Seeded by clock-skew test — safe to delete')
+     RETURNING ran_at`
+  );
+  const cutoff4 = logInsert4.rows[0].ran_at; // exact JS Date from PostgreSQL
+
+  // Confirm this is indeed the effective cutoff.
+  const effectiveCutoffRes4 = await pool.query(
+    `SELECT ran_at FROM backup_log WHERE status = 'ok' ORDER BY ran_at DESC LIMIT 1`
+  );
+  assert(
+    effectiveCutoffRes4.rows.length === 1 &&
+      effectiveCutoffRes4.rows[0].ran_at.getTime() === cutoff4.getTime(),
+    `clock-skew: seeded log row IS the effective cutoff (ran_at=${cutoff4.toISOString()})`
+  );
+
+  // 2. Wait ~5 ms so the DB-side NOW() at the next INSERT is genuinely after
+  //    ran_at — simulating the small wall-clock gap that occurs in production
+  //    between writing the backup_log row and a concurrent visit update.
+  await new Promise((resolve) => setTimeout(resolve, 5));
+
+  // 3. Insert the sentinel at real DB-side NOW() (no manual timestamp override).
+  //    updated_at defaults to NOW(), which is the DB clock's current time.
+  await pool.query(
+    `INSERT INTO visits (company, attested, notes)
+     VALUES ($1, false, 'clock-skew-sentinel')`,
+    [SENTINEL_SKEW]
+  );
+
+  // Verify the sentinel's updated_at is strictly after the cutoff.
+  const sentinelTsRes4 = await pool.query(
+    `SELECT updated_at FROM visits WHERE company = $1`, [SENTINEL_SKEW]
+  );
+  assert(
+    sentinelTsRes4.rows.length === 1 &&
+      sentinelTsRes4.rows[0].updated_at.getTime() > cutoff4.getTime(),
+    `clock-skew: sentinel updated_at is strictly after the seeded ran_at ` +
+      `(ran_at=${cutoff4.toISOString()}, ` +
+      `updated_at=${sentinelTsRes4.rows.length ? sentinelTsRes4.rows[0].updated_at.toISOString() : "none"})`
+  );
+
+  // 4. Run the incremental backup.
+  const fakeHttps6 = makeFakeHttps();
+  await runWeeklyBackup({ forceFullBackup: false, _httpsOverride: fakeHttps6 });
+
+  // ---- A. backup_log row produced ----
+  const logRes4 = await pool.query(
+    `SELECT status, note FROM backup_log WHERE id > $1 ORDER BY id DESC LIMIT 1`,
+    [hwm4]
+  );
+  assert(logRes4.rows.length >= 1, "clock-skew: backup_log received at least 1 new row");
+  if (logRes4.rows.length) {
+    const { status, note } = logRes4.rows[0];
+    assert(status === "ok", `clock-skew: backup_log row status = 'ok' (got '${status}')`);
+    assert(
+      note && note.startsWith("Incremental backup"),
+      `clock-skew: backup_log note starts with "Incremental backup" (got: "${note}")`
+    );
+    const match4 = note && note.match(/^Incremental backup:\s+(\d+)\s+record/);
+    assert(
+      match4 !== null,
+      `clock-skew: backup_log note contains a record count (got: "${note}")`
+    );
+    if (match4) {
+      assert(
+        parseInt(match4[1], 10) >= 1,
+        `clock-skew: backup_log note reports at least 1 changed record (got ${match4[1]})`
+      );
+    }
+  }
+
+  // ---- B. Brevo request was made ----
+  const { options: skewOpts, parsed: skewParsed } = fakeHttps6.captured;
+  assert(skewOpts !== null, "clock-skew: Brevo https.request was called");
+
+  if (skewParsed) {
+    const attachments4 = skewParsed.attachment || [];
+    assert(
+      attachments4.length === 1,
+      `clock-skew: 1 attachment present (got ${attachments4.length})`
+    );
+
+    if (attachments4.length) {
+      let csv4 = "";
+      try { csv4 = Buffer.from(attachments4[0].content, "base64").toString("utf8"); } catch (_) {}
+      assert(csv4.length > 0, "clock-skew: attachment decodes to non-empty string");
+
+      const lines4 = csv4.split(/\r?\n/).filter(Boolean);
+      const dataRowCount4 = lines4.length - 1; // subtract header
+      assert(
+        dataRowCount4 >= 1,
+        `clock-skew: CSV contains at least 1 data row (got ${dataRowCount4})`
+      );
+
+      const csvBody4 = lines4.slice(1).join("\n");
+
+      // ---- C. The sentinel inserted after the real elapsed gap IS in the CSV ----
+      assert(
+        csvBody4.includes(SENTINEL_SKEW),
+        `clock-skew: sentinel inserted after ~5 ms real elapsed time IS included in the incremental CSV`
+      );
+    }
+  }
+
+  // --- Cleanup ---
+  await pool.query("DELETE FROM visits WHERE company = $1", [SENTINEL_SKEW]);
+  await pool.query("DELETE FROM backup_log WHERE id > $1", [hwm4]);
+
+  const cleanV4 = await pool.query(
+    "SELECT COUNT(*)::int AS n FROM visits WHERE company = $1", [SENTINEL_SKEW]
+  );
+  assert(cleanV4.rows[0].n === 0, "clock-skew: sentinel visit cleaned up");
+
+  const cleanL4 = await pool.query(
+    "SELECT COUNT(*)::int AS n FROM backup_log WHERE id > $1", [hwm4]
+  );
+  assert(cleanL4.rows[0].n === 0, "clock-skew: test backup_log rows cleaned up");
+
+  console.log("\n=== Done (clock-skew boundary test) ===");
+}
+
 run()
   .then(() => runIncrementalTest())
   .then(() => runIncrementalNoChangeTest())
   .then(() => runBoundaryTest())
   .then(() => runBoundaryPlusOneTest())
+  .then(() => runClockSkewTest())
   .catch((err) => {
     console.error("Unexpected error:", err);
     process.exitCode = 1;
