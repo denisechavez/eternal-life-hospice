@@ -11,6 +11,10 @@
 #      height:0, or max-height:0, and no bar element carries the HTML hidden
 #      attribute.  Catches CSS regressions that leave the markup in place but
 #      make the bar invisible to real visitors.
+#   4. test-chat-teaser.js             — the chat widget teaser auto-popup must
+#      remain a no-op (maybeShowTeaser immediately returns).  Blocks a deploy
+#      if a future edit accidentally re-enables the greeting bubble that would
+#      appear on every first visit to a hospice page.
 #
 # We set `base` to the site folder so Netlify runs entirely inside it. This
 # isolates the deploy from the repo-root package.json (which belongs to the
@@ -20,7 +24,7 @@
 [build]
   base = "website/elh-preview"
   publish = "."
-  command = "bash ../check-cookie-settings.sh && node assets/translate-smoke-test.js && node assets/translate-visibility-check.js"
+  command = "bash ../check-cookie-settings.sh && node assets/translate-smoke-test.js && node assets/translate-visibility-check.js && node assets/test-chat-teaser.js"
 
 [functions]
   directory = "netlify/functions"
