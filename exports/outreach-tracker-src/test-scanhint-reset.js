@@ -538,6 +538,65 @@ async function runTests() {
     }
   }
 
+  // ── Scenario 11: double-swap mid-scan — only the LAST photo is processed ────────
+  //
+  // pendingCardPhoto is a single slot: each new call to onCardPhotoSet while
+  // scanning=true overwrites the previous queued value.  After the in-flight scan
+  // finishes exactly one API call must fire, carrying photo3 (the final pick).
+  {
+    console.log("Scenario 11: double-swap mid-scan — only the last photo is scanned");
+    const { w } = await bootApp({ aiEnabled: true });
+
+    w.__app.aiEnabled = true;
+    w.__app.hasCard = "yes";
+
+    // Track every /api/extract-card call
+    const extractApiCalls = [];
+    w.fetch = async (url, opts) => {
+      if (url && url.includes("/api/config")) {
+        return { ok: true, json: async () => ({ registrationOpen: true, requiresCode: false, aiEnabled: true }) };
+      }
+      if (url && url.includes("/api/extract-card")) {
+        extractApiCalls.push(JSON.parse(opts.body).image);
+        return { ok: true, json: async () => ({ contact: {} }) };
+      }
+      return { ok: true, json: async () => ({}) };
+    };
+
+    // Simulate: a scan is already in flight
+    w.__app.scanning = true;
+
+    // User swaps the card photo twice while the scan runs
+    const photo2 = "data:image/jpeg;base64,/9j/photo2intermediate";
+    const photo3 = "data:image/jpeg;base64,/9j/photo3final";
+
+    w.__app.onCardPhotoSet(photo2);
+    assert(w.__app.pendingCardPhoto === photo2, "first swap stores photo2 in pendingCardPhoto");
+
+    w.__app.onCardPhotoSet(photo3);
+    assert(w.__app.pendingCardPhoto === photo3, "second swap overwrites to photo3 — photo2 is discarded");
+
+    // Simulate the in-flight scan finishing: clear the flag, then drain the queue
+    w.__app.scanning = false;
+    const drainScript11 = w.document.createElement("script");
+    drainScript11.textContent = `
+      if (pendingCardPhoto !== null) {
+        const queued = pendingCardPhoto;
+        pendingCardPhoto = null;
+        extractCard(queued);
+      }
+    `;
+    w.document.body.appendChild(drainScript11);
+
+    // extractCard is async — wait for it to settle
+    await new Promise((resolve) => setTimeout(resolve, 30));
+
+    assert(extractApiCalls.length === 1,     "exactly one API call fires (intermediate photo is not processed)");
+    assert(extractApiCalls[0] === photo3,    "the single API call carries photo3 (the last pick)");
+    assert(w.__app.pendingCardPhoto === null, "pendingCardPhoto is cleared after processing");
+    console.log();
+  }
+
   console.log("=== Done ===");
 }
 
