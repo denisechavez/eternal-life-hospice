@@ -196,24 +196,88 @@ for (const rel of sitePages.sort()) {
   const html = fs.readFileSync(path.join(BASE, rel), 'utf8');
   const missingScript = !hasTranslateScript(html);
   const missingPills  = extractLangs(html).length === 0;
-  if (missingScript || missingPills) {
+  const canonical     = extractCanonical(html);
+  const badCanonical  = !canonical || !canonical.startsWith('https://eternallifehospice.com');
+  if (missingScript || missingPills || badCanonical) {
     const why = [
-      missingScript ? 'no translate.js <script>' : '',
-      missingPills  ? 'no .ft-lang pills'         : '',
+      missingScript ? 'no translate.js <script>'                                   : '',
+      missingPills  ? 'no .ft-lang pills'                                           : '',
+      badCanonical  ? `bad canonical (${canonical ? canonical : 'missing'})` : '',
     ].filter(Boolean).join(' + ');
     scanFailed.push({ rel, why });
   }
 }
 
 if (scanFailed.length === 0) {
-  console.log(`✅  All ${sitePages.length} site pages have the translate bar`);
+  console.log(`✅  All ${sitePages.length} site pages have the translate bar and a valid canonical URL`);
 } else {
-  console.error(`❌  ${scanFailed.length} page(s) missing translate bar:`);
+  console.error(`❌  ${scanFailed.length} page(s) failing translate-bar / canonical check:`);
   for (const { rel, why } of scanFailed) {
     console.error(`     ${rel}  (${why})`);
     allPassed = false;
   }
 }
+
+// ── Canonical-guard self-test ─────────────────────────────────────────────────
+// Prove the full-coverage canonical check catches a bad canonical by temporarily
+// injecting one into a real site page, running the check, then restoring.
+console.log('\n' + '═'.repeat(60));
+console.log('Canonical-guard self-test\n');
+
+(function runCanonicalSelfTest() {
+  // Use the city page — it is always present and has a canonical
+  const probeRel  = 'hospice-ventura-ca.html';
+  const probeFile = path.join(BASE, probeRel);
+
+  if (!fs.existsSync(probeFile)) {
+    console.error('  ✗ FAIL: probe page not found for self-test:', probeFile);
+    allPassed = false;
+    return;
+  }
+
+  const originalHtml = fs.readFileSync(probeFile, 'utf8');
+
+  // 1. Verify the page currently has a valid canonical (baseline)
+  const baseCanonical = extractCanonical(originalHtml);
+  if (!baseCanonical || !baseCanonical.startsWith('https://eternallifehospice.com')) {
+    console.error('  ✗ FAIL: probe page already has a bad canonical before injection:', baseCanonical);
+    allPassed = false;
+    return;
+  }
+  console.log('  ✓ baseline canonical is valid:', baseCanonical);
+
+  // 2. Inject a broken canonical (wrong domain) and confirm detection fires
+  const brokenHtml = originalHtml.replace(
+    /<link[^>]+rel=["']canonical["'][^>]*>/i,
+    `<link rel="canonical" href="http://localhost/hospice-ventura-ca">`,
+  );
+  fs.writeFileSync(probeFile, brokenHtml, 'utf8');
+
+  let detectedBad = false;
+  try {
+    const injectedCanonical = extractCanonical(fs.readFileSync(probeFile, 'utf8'));
+    detectedBad = !injectedCanonical || !injectedCanonical.startsWith('https://eternallifehospice.com');
+  } finally {
+    // Always restore before asserting so a crash can't leave the file broken
+    fs.writeFileSync(probeFile, originalHtml, 'utf8');
+  }
+
+  if (detectedBad) {
+    console.log('  ✓ broken canonical (http://localhost) correctly detected by guard');
+  } else {
+    console.error('  ✗ FAIL: guard did NOT catch the injected broken canonical — self-test is broken');
+    allPassed = false;
+  }
+
+  // 3. Confirm the page is clean again after restore
+  const restoredCanonical = extractCanonical(fs.readFileSync(probeFile, 'utf8'));
+  if (restoredCanonical && restoredCanonical.startsWith('https://eternallifehospice.com')) {
+    console.log('  ✓ page restored — canonical is valid again:', restoredCanonical);
+  } else {
+    console.error('  ✗ FAIL: page not correctly restored after self-test, canonical:', restoredCanonical);
+    allPassed = false;
+  }
+})();
 
 // ── Summary ──────────────────────────────────────────────────────────────────
 console.log('\n' + '═'.repeat(60));
