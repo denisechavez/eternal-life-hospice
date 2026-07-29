@@ -46,3 +46,4 @@ inside an existing project. This App is the Eternal Life Hospice company.
 - Non-technical audience: explain in plain language, focus on outcomes, avoid jargon.
 - Strong emphasis on SEO correctness and healthcare compliance.
 - **Do not propose follow-up tasks.** Never call the follow-up-tasks skill or propose new tasks unprompted.
+- **Design and test before implementing.** When given a new instruction or change request: design the approach, validate/test it, then implement — all in one turn. Do not ship first and test later.
