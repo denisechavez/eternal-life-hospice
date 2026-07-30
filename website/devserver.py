@@ -13,6 +13,7 @@ ROOT = os.path.join(BASE, "elh-preview")
 # Internal-only routes for the workspace canvas hub (never published to the site):
 CANVAS_HUB = os.path.join(BASE, "canvas-hub")
 EMAILS_DIR = os.path.abspath(os.path.join(BASE, "..", "exports", "email"))
+REPORTS_DIR = os.path.abspath(os.path.join(BASE, "..", "exports", "campaign-reports"))
 
 
 class PrettyURLHandler(http.server.SimpleHTTPRequestHandler):
@@ -25,6 +26,8 @@ class PrettyURLHandler(http.server.SimpleHTTPRequestHandler):
             rel = os.path.normpath(clean[len("/canvas-hub/"):]).lstrip("/")
             if rel.startswith("emails/"):
                 base, rel = EMAILS_DIR, rel[len("emails/"):]
+            elif rel.startswith("campaign-reports/"):
+                base, rel = REPORTS_DIR, rel[len("campaign-reports/"):]
             else:
                 base, rel = CANVAS_HUB, rel
             resolved = os.path.abspath(os.path.join(base, rel))

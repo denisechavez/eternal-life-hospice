@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ELH Campaign Weekly Report — Week of July 28, 2026</title>
+<style>
+  :root {
+    --plum:#4a235a; --gold:#c9b07e; --cream:#f5f0eb; --ink:#1a1420;
+    --ink-soft:#6b5f72; --light:#faf7f4; --border:#e8e0ec;
+    --red:#c0392b; --green:#27ae60; --amber:#e67e22; --blue:#2980b9;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--light);color:var(--ink);font-size:14px;line-height:1.5}
+
+  .report-header{background:var(--plum);color:var(--cream);padding:32px 40px 28px}
+  .report-header h1{font-size:1.6rem;font-weight:600;margin-bottom:4px}
+  .report-header .meta{font-size:.8rem;opacity:.7;letter-spacing:.06em;text-transform:uppercase}
+  .report-header .badge{display:inline-block;background:var(--gold);color:var(--plum);font-size:.7rem;font-weight:700;letter-spacing:.08em;padding:3px 10px;border-radius:20px;text-transform:uppercase;margin-top:10px}
+
+  .container{max-width:1100px;margin:0 auto;padding:32px 24px}
+
+  .alert{background:#fff3cd;border:1px solid #ffc107;border-radius:8px;padding:14px 18px;margin-bottom:28px;display:flex;gap:12px;align-items:flex-start}
+  .alert .icon{font-size:1.2rem;flex-shrink:0;margin-top:1px}
+  .alert strong{display:block;margin-bottom:3px;font-size:.85rem}
+  .alert p{font-size:.8rem;color:#856404}
+
+  .kpi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:14px;margin-bottom:32px}
+  .kpi{background:#fff;border:1px solid var(--border);border-radius:10px;padding:18px 16px}
+  .kpi .label{font-size:.7rem;text-transform:uppercase;letter-spacing:.08em;color:var(--ink-soft);margin-bottom:6px}
+  .kpi .value{font-size:2rem;font-weight:700;line-height:1;color:var(--plum)}
+  .kpi .sub{font-size:.72rem;color:var(--ink-soft);margin-top:4px}
+  .kpi.warn .value{color:var(--amber)}
+  .kpi.bad .value{color:var(--red)}
+  .kpi.good .value{color:var(--green)}
+
+  .section{margin-bottom:36px}
+  .section-head{display:flex;align-items:baseline;gap:12px;margin-bottom:14px;padding-bottom:10px;border-bottom:2px solid var(--border)}
+  .section-head h2{font-size:1rem;font-weight:700;color:var(--plum)}
+  .section-head .count{font-size:.75rem;color:var(--ink-soft);background:var(--cream);padding:2px 9px;border-radius:12px}
+
+  .tbl-wrap{border:1px solid var(--border);border-radius:10px;overflow:hidden;background:#fff}
+  table{width:100%;border-collapse:collapse}
+  thead tr{background:var(--plum);color:var(--cream)}
+  thead th{padding:10px 14px;font-size:.72rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;text-align:left}
+  tbody tr{border-bottom:1px solid var(--border)}
+  tbody tr:last-child{border-bottom:none}
+  tbody tr:hover{background:#faf6ff}
+  tbody td{padding:9px 14px;font-size:.82rem;vertical-align:middle}
+  tbody td a{color:var(--plum);text-decoration:none}
+  tbody td a:hover{text-decoration:underline}
+  td.num{text-align:center;font-weight:600;color:var(--plum)}
+
+  .campaign-card{background:#fff;border:1px solid var(--border);border-radius:10px;padding:20px 22px;margin-bottom:14px}
+  .campaign-card .cname{font-size:.7rem;text-transform:uppercase;letter-spacing:.08em;color:var(--ink-soft)}
+  .campaign-card h3{font-size:1rem;font-weight:700;margin:4px 0 10px;color:var(--ink)}
+  .campaign-meta{display:flex;flex-wrap:wrap;gap:16px;font-size:.78rem;color:var(--ink-soft)}
+  .campaign-meta span strong{color:var(--ink)}
+  .stat-row{display:grid;grid-template-columns:repeat(6,1fr);gap:10px;margin-top:14px}
+  .stat-box{background:var(--light);border-radius:7px;padding:10px 12px;text-align:center}
+  .stat-box .sval{font-size:1.3rem;font-weight:700;color:var(--plum)}
+  .stat-box .slabel{font-size:.65rem;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-soft);margin-top:2px}
+  .tag-zero{font-size:.6rem;background:#fee;color:var(--red);padding:1px 6px;border-radius:8px;font-weight:700;vertical-align:middle;margin-left:4px}
+  .tag-issue{font-size:.65rem;background:#fff3cd;color:#856404;padding:2px 8px;border-radius:8px;display:inline-block;margin-top:6px}
+
+  .bar-wrap{margin-top:10px}
+  .bar-label{display:flex;justify-content:space-between;font-size:.72rem;color:var(--ink-soft);margin-bottom:4px}
+  .bar{height:7px;background:var(--border);border-radius:4px;overflow:hidden}
+  .bar-fill{height:100%;background:var(--plum);border-radius:4px}
+  .bar-fill.gold{background:var(--gold)}
+  .bar-fill.red{background:var(--red)}
+  .bar-fill.green{background:var(--green)}
+
+  .actions{background:#fff;border:1px solid var(--border);border-radius:10px;padding:18px 20px}
+  .action-item{display:flex;gap:12px;padding:10px 0;border-bottom:1px solid var(--border)}
+  .action-item:last-child{border-bottom:none}
+  .action-item .priority{font-size:.65rem;font-weight:700;padding:2px 8px;border-radius:12px;text-transform:uppercase;letter-spacing:.05em;flex-shrink:0;margin-top:2px;height:fit-content}
+  .p-high{background:#ffe5e5;color:var(--red)}
+  .p-med{background:#fff3cd;color:#856404}
+  .p-low{background:#e8f4fd;color:var(--blue)}
+  .action-item .atxt strong{display:block;font-size:.83rem;margin-bottom:2px}
+  .action-item .atxt p{font-size:.77rem;color:var(--ink-soft)}
+
+  .footer{text-align:center;font-size:.72rem;color:var(--ink-soft);padding:24px;border-top:1px solid var(--border);margin-top:16px}
+
+  @media print{body{background:#fff}.report-header{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
+  @media(max-width:600px){.stat-row{grid-template-columns:repeat(3,1fr)}.kpi-grid{grid-template-columns:repeat(2,1fr)}}
+</style>
+</head>
+<body>
+
+<div class="report-header">
+  <div class="meta">Eternal Life Hospice · Email Campaign Report</div>
+  <h1>Weekly Campaign Dashboard</h1>
+  <div class="badge">Week of July 28, 2026</div>
+</div>
+
+<div class="container">
+
+  <div class="alert">
+    <div class="icon">⚠️</div>
+    <div>
+      <strong>Action required: Tracking was not recording for Campaign #1</strong>
+      <p>All open/click stats returned zero from Brevo. This happens when a campaign is sent without the tracking pixel enabled, or when UTM parameters are left blank in the template. Before Campaign #2 sends: enable open tracking in Brevo campaign settings and confirm <code>utm_campaign=family_guide_email_2</code> is populated on every link.</p>
+    </div>
+  </div>
+
+  <!-- KPIs -->
+  <div class="kpi-grid">
+    <div class="kpi">
+      <div class="label">List 8 — Active</div>
+      <div class="value">709</div>
+      <div class="sub">of 759 total contacts</div>
+    </div>
+    <div class="kpi bad">
+      <div class="label">Blacklisted</div>
+      <div class="value">50</div>
+      <div class="sub">bounced or unsubscribed</div>
+    </div>
+    <div class="kpi good">
+      <div class="label">Professional</div>
+      <div class="value">493</div>
+      <div class="sub">org / healthcare domains</div>
+    </div>
+    <div class="kpi">
+      <div class="label">Consumer</div>
+      <div class="value">216</div>
+      <div class="sub">gmail / yahoo / hotmail</div>
+    </div>
+    <div class="kpi warn">
+      <div class="label">No Name</div>
+      <div class="value">55</div>
+      <div class="sub">active contacts missing name</div>
+    </div>
+    <div class="kpi">
+      <div class="label">Campaigns Sent</div>
+      <div class="value">1</div>
+      <div class="sub">Campaign #2 in draft</div>
+    </div>
+  </div>
+
+  <!-- Campaigns -->
+  <div class="section">
+    <div class="section-head"><h2>Campaigns</h2><span class="count">1 sent · 1 in draft</span></div>
+
+    <div class="campaign-card">
+      <div class="cname">Campaign #1 · elh-brief-issue1</div>
+      <h3>Introducing The Eternal Care Brief: Issue 01</h3>
+      <div class="campaign-meta">
+        <span><strong>Sent:</strong> July 14, 2026</span>
+        <span><strong>Lists:</strong> Master Verified (#8) + SYMPLR Network (#10)</span>
+        <span><strong>Est. recipients:</strong> ~1,882 (759 + 1,123)</span>
+      </div>
+      <div class="tag-issue">⚠ Open tracking not recording — stats show API-reported zeros; actual opens unknown. Enable tracking before Campaign #2.</div>
+      <div class="stat-row">
+        <div class="stat-box"><div class="sval">—<span class="tag-zero">?</span></div><div class="slabel">Delivered</div></div>
+        <div class="stat-box"><div class="sval">—<span class="tag-zero">?</span></div><div class="slabel">Opens</div></div>
+        <div class="stat-box"><div class="sval">—<span class="tag-zero">?</span></div><div class="slabel">Open Rate</div></div>
+        <div class="stat-box"><div class="sval">—<span class="tag-zero">?</span></div><div class="slabel">Clicks</div></div>
+        <div class="stat-box"><div class="sval">—<span class="tag-zero">?</span></div><div class="slabel">Bounces</div></div>
+        <div class="stat-box"><div class="sval">—<span class="tag-zero">?</span></div><div class="slabel">Unsubs</div></div>
+      </div>
+    </div>
+
+    <div class="campaign-card" style="border-color:#c9b07e;background:#fffef9">
+      <div class="cname" style="color:var(--gold)">Campaign #2 · In Draft</div>
+      <h3>When a family asks "How do we choose a hospice?" — now you have the answer.</h3>
+      <div class="campaign-meta">
+        <span><strong>Status:</strong> Draft — ready to finalize and send</span>
+        <span><strong>Target:</strong> List 8 (Master Verified) only</span>
+        <span><strong>Est. recipients:</strong> 709 active contacts</span>
+      </div>
+      <div class="tag-issue" style="background:#fff9ec;color:#7a6020">📋 Before send: enable open tracking · confirm utm_campaign=family_guide_email_2 · remove 50 blacklisted contacts from List 8</div>
+    </div>
+  </div>
+
+  <!-- List Health -->
+  <div class="section">
+    <div class="section-head"><h2>List Health — Master Verified (#8)</h2><span class="count">759 total contacts</span></div>
+    <div style="background:#fff;border:1px solid var(--border);border-radius:10px;padding:22px 24px">
+      <div class="bar-wrap">
+        <div class="bar-label"><span>Active (not blacklisted)</span><span>709 / 759 — 93%</span></div>
+        <div class="bar"><div class="bar-fill green" style="width:93%"></div></div>
+      </div>
+      <div class="bar-wrap" style="margin-top:14px">
+        <div class="bar-label"><span>Professional org/healthcare domains</span><span>493 / 709 active — 70%</span></div>
+        <div class="bar"><div class="bar-fill" style="width:70%"></div></div>
+      </div>
+      <div class="bar-wrap" style="margin-top:14px">
+        <div class="bar-label"><span>Consumer addresses (gmail/yahoo/hotmail/aol)</span><span>216 / 709 active — 30%</span></div>
+        <div class="bar"><div class="bar-fill gold" style="width:30%"></div></div>
+      </div>
+      <div class="bar-wrap" style="margin-top:14px">
+        <div class="bar-label"><span>Blacklisted / bounced (exclude from sends)</span><span>50 / 759 — 7%</span></div>
+        <div class="bar"><div class="bar-fill red" style="width:7%"></div></div>
+      </div>
+      <div class="bar-wrap" style="margin-top:14px">
+        <div class="bar-label"><span>Missing first/last name (personalization gap)</span><span>55 / 709 active — 8%</span></div>
+        <div class="bar"><div class="bar-fill" style="width:8%;background:#aaa"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Top Orgs -->
+  <div class="section">
+    <div class="section-head"><h2>Top Organizations on List</h2><span class="count">active contacts only · by domain</span></div>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Organization</th><th>Domain</th><th style="text-align:center">Contacts</th></tr></thead>
+        <tbody>
+          <tr><td>Longwood Management</td><td>longwoodmgmt.com</td><td class="num">32</td></tr>
+          <tr><td>Fresenius Medical Care (FMC)</td><td>fmc-na.com</td><td class="num">22</td></tr>
+          <tr><td>Mariner Health Care</td><td>marinerhealthcare.com</td><td class="num">6</td></tr>
+          <tr><td>APLA Health</td><td>aplahealth.org</td><td class="num">5</td></tr>
+          <tr><td>Links Health</td><td>linkshealth.com</td><td class="num">5</td></tr>
+          <tr><td>Jewish Home for the Aging</td><td>jha.org</td><td class="num">5</td></tr>
+          <tr><td>Fresenius Medical Care</td><td>freseniusmedicalcare.com</td><td class="num">5</td></tr>
+          <tr><td>East Valley Community Health Center</td><td>evchc.org</td><td class="num">4</td></tr>
+          <tr><td>Rosecrans Care Center</td><td>rosecranscc.com</td><td class="num">4</td></tr>
+          <tr><td>Del Amo Gardens</td><td>delamogardens.com</td><td class="num">4</td></tr>
+          <tr><td>Wipfli / Contractor</td><td>wipfli.com</td><td class="num">3</td></tr>
+          <tr><td>Adventist Health</td><td>ah.org</td><td class="num">3</td></tr>
+          <tr><td>Airport Marina Counseling</td><td>amcshelps.com</td><td class="num">3</td></tr>
+          <tr><td>Alexandria Care Center</td><td>alexandriacc.com</td><td class="num">3</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Priority Outreach -->
+  <div class="section">
+    <div class="section-head"><h2>Priority Outreach — Who to Contact</h2><span class="count">488 professional contacts with full data</span></div>
+    <p style="font-size:.78rem;color:var(--ink-soft);margin-bottom:12px">Healthcare and org-domain contacts with name + company on file. Since Campaign #1 open tracking didn't record, <strong>treat all as unconfirmed</strong> — prioritize personal follow-up (phone or visit) for the top accounts above before Campaign #2 lands in their inbox.</p>
+    <div class="tbl-wrap" style="max-height:520px;overflow-y:auto">
+      <table>
+        <thead><tr><th>Name</th><th>Email</th><th>Organization</th><th>Title</th></tr></thead>
+        <tbody>
+          <tr><td>Dalena D Powell-Mays</td><td><a href="mailto:dpowell@1736fcc.org">dpowell@1736fcc.org</a></td><td>1736 Family Crisis Center</td><td>Facility Administrator</td></tr>
+          <tr><td>John Raffoul</td><td><a href="mailto:bryantmc@ah.org">bryantmc@ah.org</a></td><td>Adventist Health White Memorial</td><td>Facility Administrator</td></tr>
+          <tr><td>Eden A Garcia-Balis</td><td><a href="mailto:amcclure@amcshelps.com">amcclure@amcshelps.com</a></td><td>Airport Marina Counseling Service</td><td>Facility Administrator</td></tr>
+          <tr><td>Lucy Ter Oganesyan</td><td><a href="mailto:lusine.teroganesyan@alexandriacc.com">lusine.teroganesyan@alexandriacc.com</a></td><td>Alexandria Care Center</td><td>Facility Administrator</td></tr>
+          <tr><td>Esteban Maldonado-Ramos</td><td><a href="mailto:esteban.maldonado-ramos@ahmc.com">esteban.maldonado-ramos@ahmc.com</a></td><td>AHMC Healthcare</td><td>Facility Administrator</td></tr>
+          <tr><td>Liza Molineros</td><td><a href="mailto:lmolineros@aplahealth.org">lmolineros@aplahealth.org</a></td><td>APLA Health</td><td>Facility Administrator</td></tr>
+          <tr><td>Maria Sandoval</td><td><a href="mailto:msandoval@aplahealth.org">msandoval@aplahealth.org</a></td><td>APLA Health</td><td>Facility Administrator</td></tr>
+          <tr><td>Monica Mccarthy</td><td><a href="mailto:wbrodine@eisnerhealth.org">wbrodine@eisnerhealth.org</a></td><td>Eisner Health Family Medicine Center</td><td>Facility Administrator</td></tr>
+          <tr><td>Sarah I Houssayni</td><td><a href="mailto:skennedy@lachc.com">skennedy@lachc.com</a></td><td>Los Angeles Christian Health Centers</td><td>Facility Administrator</td></tr>
+          <tr><td>Narine Nazari</td><td><a href="mailto:sunnylandcbas@yahoo.com">sunnylandcbas@yahoo.com</a></td><td>Sunnyland Cbas</td><td>Facility Administrator</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="font-size:.75rem;color:var(--ink-soft);padding:10px 14px;background:#fff;border:1px solid var(--border);border-top:none;border-radius:0 0 10px 10px">Showing top contacts. Export the full 488-contact professional list: Brevo → Contacts → List 8 → Filter by domain type → Export CSV.</p>
+  </div>
+
+  <!-- Action Items -->
+  <div class="section">
+    <div class="section-head"><h2>This Week's Action Items</h2><span class="count">before Campaign #2 sends</span></div>
+    <div class="actions">
+      <div class="action-item">
+        <span class="priority p-high">High</span>
+        <div class="atxt">
+          <strong>Enable open + click tracking in Brevo before Campaign #2</strong>
+          <p>Go to Brevo → Campaigns → your draft → Settings tab → turn on Open tracking and Click tracking. Without this, you'll have no data on who engaged with the email.</p>
+        </div>
+      </div>
+      <div class="action-item">
+        <span class="priority p-high">High</span>
+        <div class="atxt">
+          <strong>Remove 50 blacklisted contacts from List 8</strong>
+          <p>These contacts hard-bounced or unsubscribed during Campaign #1. Sending to them again damages your sender reputation with ESPs. In Brevo: filter List 8 by "Blacklisted = Yes" → select all → remove from list.</p>
+        </div>
+      </div>
+      <div class="action-item">
+        <span class="priority p-high">High</span>
+        <div class="atxt">
+          <strong>Fill in utm_campaign on all Campaign #2 links</strong>
+          <p>Current draft links have utm_campaign blank. Set to <code>family_guide_email_2</code> before uploading HTML to Brevo — this ties email clicks to GA4 sessions so you know which campaign drove referral form submissions.</p>
+        </div>
+      </div>
+      <div class="action-item">
+        <span class="priority p-med">Medium</span>
+        <div class="atxt">
+          <strong>Phone follow-up: Longwood Management (32 contacts) + FMC (22 contacts)</strong>
+          <p>Your two largest institutional clusters. A single call to each confirms the Care Brief reached the right person and plants a personal connection before the Family Guide email arrives. This is your highest-ROI outreach activity this week.</p>
+        </div>
+      </div>
+      <div class="action-item">
+        <span class="priority p-med">Medium</span>
+        <div class="atxt">
+          <strong>Name-parse 55 contacts missing first/last name</strong>
+          <p>Contacts with no name will receive "Dear ," as the salutation. Run the name-parse script to auto-fill from firstname.lastname@domain format addresses before Campaign #2 sends.</p>
+        </div>
+      </div>
+      <div class="action-item">
+        <span class="priority p-low">Low</span>
+        <div class="atxt">
+          <strong>Add SYMPLR Network (#10) health check to next week's report</strong>
+          <p>Campaign #1 sent to 1,123 SYMPLR contacts but their bounce/blacklist data wasn't pulled for this report. Add it next week for a complete picture of your full 1,882-contact send.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- How to update this report weekly -->
+  <div class="section">
+    <div class="section-head"><h2>How to Generate Next Week's Report</h2></div>
+    <div style="background:#fff;border:1px solid var(--border);border-radius:10px;padding:20px 22px;font-size:.82rem;line-height:1.8">
+      <p style="margin-bottom:10px">Each Monday, ask the agent: <strong>"Generate this week's campaign report"</strong> — it will pull fresh data from the Brevo API and update all numbers automatically. The report will include:</p>
+      <ul style="padding-left:20px;color:var(--ink-soft)">
+        <li>Campaign open rate, click rate, bounces, and unsubscribes for any sent campaigns</li>
+        <li>Updated list health for List 8 and List 10</li>
+        <li>Who clicked / who opened (once tracking is enabled) — sortable by company</li>
+        <li>New contacts added that week</li>
+        <li>Updated action item checklist</li>
+      </ul>
+    </div>
+  </div>
+
+</div>
+
+<div class="footer">
+  Eternal Life Hospice · Internal Use Only · Generated July 30, 2026 · Data source: Brevo API v3
+</div>
+
+</body>
+</html>
