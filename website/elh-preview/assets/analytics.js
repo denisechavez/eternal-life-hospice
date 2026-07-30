@@ -3,6 +3,8 @@
    Analytics load only after explicit visitor consent.
    Consent stored in localStorage: elh_cc = "all" | "essential"
    Global: window.elhCookieSettings() — re-opens preferences at any time  */
+
+
 (function () {
   'use strict';
 
@@ -53,19 +55,6 @@
     b.async = true; b.src = 'https://cdn.brevo.com/js/sdk-loader.js';
     document.head.appendChild(b);
 
-    // WhatConverts call tracking
-    var $wc_load = function (a) { return JSON.parse(JSON.stringify(a)); };
-    window.$wc_leads = window.$wc_leads || {
-      doc: {
-        url:    $wc_load(document.URL),
-        ref:    $wc_load(document.referrer),
-        search: $wc_load(location.search),
-        hash:   $wc_load(location.hash)
-      }
-    };
-    var wc = document.createElement('script');
-    wc.async = true; wc.src = '//s.ksrndkehqnwntyxlhgto.com/172406.js';
-    document.head.appendChild(wc);
   }
 
   /* ── Save preference + act on it ───────────────────────────────────── */
