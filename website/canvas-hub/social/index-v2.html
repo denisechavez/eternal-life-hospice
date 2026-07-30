@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ELH Social Manager v2</title>
+<style>
+  :root{
+    --deep:#3C1C3B;--plum:#5B2E59;--gold:#C9B07E;--cream:#F5F0EB;
+    --muted:#9B8A99;--border:rgba(92,46,89,.12);
+    --gbp:#4285F4;--fb:#1877F2;--li:#0A66C2;
+    --card:#fff;--bg:#F0EBE5;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:-apple-system,'Segoe UI',sans-serif;background:var(--bg);color:var(--deep);height:100vh;overflow:hidden;display:flex;flex-direction:column}
+
+  /* ── Top bar ── */
+  .topbar{background:var(--deep);color:var(--cream);height:48px;display:flex;align-items:center;padding:0 16px;gap:0;flex-shrink:0}
+  .tb-brand{display:flex;align-items:center;gap:8px;margin-right:auto}
+  .tb-leaf{width:28px;height:28px;border-radius:50%;background:rgba(201,176,126,.2);border:1px solid rgba(201,176,126,.4);display:flex;align-items:center;justify-content:center;font-size:13px}
+  .tb-name{font-size:.82rem;font-weight:600;letter-spacing:.02em}
+  .tb-dot{width:4px;height:4px;border-radius:50%;background:rgba(245,240,235,.25);margin:0 10px}
+  .tb-sub{font-size:.72rem;opacity:.45;letter-spacing:.01em}
+  .tb-week{display:flex;align-items:center;gap:6px}
+  .tb-nav{background:none;border:none;color:rgba(245,240,235,.5);cursor:pointer;font-size:.9rem;padding:4px 6px;border-radius:4px;transition:color .15s}
+  .tb-nav:hover{color:var(--cream)}
+  .tb-wlabel{font-size:.75rem;font-weight:600;letter-spacing:.04em;color:rgba(245,240,235,.75);min-width:128px;text-align:center}
+  .tb-badge{background:rgba(201,176,126,.18);border:1px solid rgba(201,176,126,.3);color:var(--gold);font-size:.62rem;font-weight:700;padding:.2rem .55rem;border-radius:99px;letter-spacing:.07em;margin-left:12px}
+
+  /* ── Progress strip ── */
+  .progress-strip{background:var(--plum);height:36px;display:flex;align-items:center;padding:0 16px;gap:0;flex-shrink:0}
+  .ps-stat{display:flex;align-items:center;gap:6px;padding:0 14px;border-right:1px solid rgba(255,255,255,.1);font-size:.72rem;color:rgba(245,240,235,.7)}
+  .ps-stat:first-child{padding-left:0}
+  .ps-stat:last-child{border:none;margin-left:auto;padding-right:0}
+  .ps-num{font-weight:700;color:var(--gold);font-size:.82rem}
+  .ps-bar{flex:1;margin:0 24px;height:4px;background:rgba(255,255,255,.1);border-radius:2px;overflow:hidden}
+  .ps-fill{height:100%;background:var(--gold);border-radius:2px;width:86%}
+
+  /* ── Shell ── */
+  .shell{display:grid;grid-template-columns:192px 1fr;flex:1;overflow:hidden}
+
+  /* ── Sidebar ── */
+  .sidebar{background:var(--deep);display:flex;flex-direction:column;padding:12px 10px;overflow:hidden}
+  .sb-section{font-size:.6rem;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:rgba(245,240,235,.3);padding:0 6px;margin-bottom:6px;margin-top:4px}
+  .pfilt{display:flex;align-items:center;gap:8px;padding:7px 8px;border-radius:7px;cursor:pointer;color:rgba(245,240,235,.75);font-size:.8rem;transition:background .14s;border:none;background:none;width:100%;text-align:left}
+  .pfilt:hover{background:rgba(255,255,255,.07)}
+  .pfilt.on{background:rgba(255,255,255,.11);color:var(--cream)}
+  .pfilt .ico{width:22px;height:22px;border-radius:5px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+  .ico-all{background:rgba(201,176,126,.25)}
+  .ico-gbp{background:#4285F4}
+  .ico-fb{background:#1877F2}
+  .ico-li{background:#0A66C2}
+  .pfilt .cnt{margin-left:auto;font-size:.65rem;font-weight:700;color:rgba(245,240,235,.4);background:rgba(255,255,255,.1);border-radius:99px;padding:.1rem .4rem}
+  .pfilt.on .cnt{color:var(--gold)}
+  .sb-div{border:none;border-top:1px solid rgba(255,255,255,.07);margin:10px 0}
+  .ai-btn{width:100%;background:var(--gold);color:var(--deep);border:none;border-radius:8px;padding:8px 10px;font-size:.78rem;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:5px;transition:opacity .14s;letter-spacing:.01em}
+  .ai-btn:hover{opacity:.88}
+  .ai-sparkle{font-size:.9rem}
+  .sb-spacer{flex:1}
+  .sb-status{background:rgba(0,0,0,.25);border-radius:8px;padding:10px;margin-top:10px}
+  .sb-status-row{display:flex;justify-content:space-between;align-items:center;font-size:.72rem;color:rgba(245,240,235,.5);padding:3px 0}
+  .sb-status-row span:last-child{font-weight:600;color:rgba(245,240,235,.8)}
+  .sb-status-row.hi span:last-child{color:var(--gold)}
+
+  /* ── Main ── */
+  .main{overflow:hidden;display:flex;flex-direction:column;padding:12px 14px;gap:8px}
+  .day-header{display:grid;grid-template-columns:52px repeat(5,1fr);gap:6px;flex-shrink:0}
+  .dh{text-align:center;font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.09em;color:var(--muted);padding:3px 0}
+
+  /* ── Calendar rows ── */
+  .cal-row{display:grid;grid-template-columns:52px repeat(5,1fr);gap:6px;flex:1}
+  .row-icon{display:flex;align-items:center;justify-content:center}
+  .ri{width:30px;height:30px;border-radius:7px;display:flex;align-items:center;justify-content:center}
+  .ri-gbp{background:#4285F4}
+  .ri-fb{background:#1877F2}
+  .ri-li{background:#0A66C2}
+
+  /* ── Post cell ── */
+  .cell{background:var(--card);border:1px solid var(--border);border-radius:9px;padding:9px 10px;cursor:pointer;transition:box-shadow .16s,transform .16s;position:relative;display:flex;flex-direction:column;overflow:hidden}
+  .cell::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;border-radius:9px 0 0 9px}
+  .cell[data-platform="gbp"]::before{background:var(--gbp)}
+  .cell[data-platform="fb"]::before{background:var(--fb)}
+  .cell[data-platform="li"]::before{background:var(--li)}
+  .cell:hover{box-shadow:0 4px 18px rgba(60,28,59,.12);transform:translateY(-1px)}
+  .c-title{font-size:.75rem;font-weight:700;color:var(--deep);line-height:1.3;margin-bottom:4px;padding-left:4px}
+  .c-preview{font-size:.67rem;color:var(--muted);line-height:1.45;flex:1;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;padding-left:4px}
+  .c-foot{display:flex;align-items:center;justify-content:space-between;margin-top:6px;padding-left:4px}
+  .st{font-size:.59rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;padding:.16rem .42rem;border-radius:99px}
+  .st-sched{background:#EBF3FF;color:#1155CC}
+  .st-draft{background:#FFF7E6;color:#92600A}
+  .st-pub{background:#E6F4EA;color:#1A6E35}
+  .c-time{font-size:.62rem;color:var(--muted)}
+
+  /* ── Empty cell ── */
+  .empty{background:rgba(255,255,255,.35);border:1px dashed rgba(92,46,89,.08);cursor:default;align-items:center;justify-content:center}
+  .empty:hover{box-shadow:none;transform:none}
+  .empty::before{display:none}
+  .empty-plus{font-size:1.1rem;color:rgba(92,46,89,.15);line-height:1}
+
+  /* ── Modal ── */
+  .overlay{display:none;position:fixed;inset:0;background:rgba(20,5,20,.6);z-index:100;align-items:center;justify-content:center}
+  .overlay.open{display:flex}
+  .modal{background:#fff;border-radius:14px;width:100%;max-width:580px;max-height:88vh;overflow-y:auto;box-shadow:0 20px 60px rgba(20,5,20,.35);display:flex;flex-direction:column}
+  .mhead{background:var(--deep);color:var(--cream);padding:14px 18px;border-radius:14px 14px 0 0;display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+  .mhead-left{flex:1}
+  .mhead h2{font-size:.9rem;font-weight:700;line-height:1.3}
+  .mpills{display:flex;gap:5px;flex-wrap:wrap;margin-top:6px}
+  .mpill{font-size:.62rem;font-weight:600;padding:.18rem .5rem;border-radius:99px;background:rgba(255,255,255,.12);letter-spacing:.04em}
+  .mclose{background:none;border:none;color:rgba(245,240,235,.6);font-size:1.1rem;cursor:pointer;flex-shrink:0}
+  .mclose:hover{color:var(--cream)}
+  .mbody{padding:16px 18px;display:flex;flex-direction:column;gap:12px}
+  .field-label{font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:4px}
+  .copy-area{width:100%;min-height:140px;border:1.5px solid var(--border);border-radius:8px;padding:10px 12px;font-size:.8rem;line-height:1.65;color:var(--deep);resize:vertical;font-family:inherit;background:var(--cream)}
+  .copy-area:focus{outline:none;border-color:var(--plum)}
+  .tags-wrap{display:flex;gap:5px;flex-wrap:wrap}
+  .ht{font-size:.67rem;background:rgba(91,46,89,.07);color:var(--plum);padding:.18rem .45rem;border-radius:5px}
+  .img-note{background:rgba(92,46,89,.04);border:1px solid var(--border);border-radius:7px;padding:8px 10px;font-size:.7rem;color:var(--muted);display:flex;align-items:center;gap:6px}
+  .mfooter{display:flex;gap:7px;padding:12px 18px;border-top:1px solid var(--border)}
+  .btn{padding:7px 14px;border-radius:7px;font-size:.78rem;font-weight:700;cursor:pointer;border:none;transition:opacity .14s;letter-spacing:.01em}
+  .btn:hover{opacity:.87}
+  .bp{background:var(--plum);color:#fff}
+  .bg{background:var(--gold);color:var(--deep)}
+  .bo{background:none;border:1.5px solid var(--border);color:var(--muted)}
+
+  /* ── AI panel ── */
+  .ai-overlay{display:none;position:fixed;inset:0;background:rgba(20,5,20,.6);z-index:200;align-items:center;justify-content:center}
+  .ai-overlay.open{display:flex}
+  .ai-box{background:#fff;border-radius:14px;width:100%;max-width:480px;box-shadow:0 20px 60px rgba(20,5,20,.35)}
+  .ai-hd{background:linear-gradient(135deg,var(--gold),#D4BC92);color:var(--deep);padding:14px 18px;border-radius:14px 14px 0 0;display:flex;align-items:center;justify-content:space-between}
+  .ai-hd h2{font-size:.9rem;font-weight:700}
+  .ai-bd{padding:16px 18px;display:flex;flex-direction:column;gap:10px}
+  .ai-inp{width:100%;border:1.5px solid var(--border);border-radius:8px;padding:8px 11px;font-size:.82rem;font-family:inherit;color:var(--deep);background:var(--cream)}
+  .ai-inp:focus{outline:none;border-color:var(--plum)}
+  .ai-sel{width:100%;border:1.5px solid var(--border);border-radius:8px;padding:8px 11px;font-size:.82rem;font-family:inherit;color:var(--deep);background:var(--cream)}
+  .gen-spinner{display:none;text-align:center;padding:20px;color:var(--muted);font-size:.8rem}
+  .gen-spinner.show{display:block}
+  .spin{width:24px;height:24px;border:2.5px solid var(--border);border-top-color:var(--plum);border-radius:50%;animation:sp .65s linear infinite;margin:0 auto 8px}
+  @keyframes sp{to{transform:rotate(360deg)}}
+  .ai-actions{display:flex;gap:7px}
+
+  /* ── Toast ── */
+  .toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);background:var(--deep);color:var(--cream);padding:7px 16px;border-radius:99px;font-size:.78rem;font-weight:600;z-index:999;opacity:0;transition:opacity .25s;pointer-events:none;white-space:nowrap}
+  .toast.on{opacity:1}
+</style>
+</head>
+<body>
+
+<!-- Top bar -->
+<div class="topbar">
+  <div class="tb-brand">
+    <div class="tb-leaf">🌿</div>
+    <span class="tb-name">ELH Social Manager</span>
+    <span class="tb-dot"></span>
+    <span class="tb-sub">Eternal Life Hospice</span>
+  </div>
+  <div class="tb-week">
+    <button class="tb-nav">‹</button>
+    <span class="tb-wlabel">Aug 4 – 8, 2026</span>
+    <button class="tb-nav">›</button>
+  </div>
+  <span class="tb-badge">1-WEEK DEMO</span>
+</div>
+
+<!-- Progress strip -->
+<div class="progress-strip">
+  <div class="ps-stat"><span class="ps-num">6</span>&nbsp;Scheduled</div>
+  <div class="ps-stat"><span class="ps-num">1</span>&nbsp;Draft</div>
+  <div class="ps-stat"><span class="ps-num">0</span>&nbsp;Published</div>
+  <div class="ps-bar"><div class="ps-fill"></div></div>
+  <div class="ps-stat"><span class="ps-num">3</span>&nbsp;platforms · 7 posts this week</div>
+</div>
+
+<div class="shell">
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sb-section">Platforms</div>
+
+    <button class="pfilt on" onclick="filt('all',this)">
+      <span class="ico ico-all">
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="5" stroke="#C9B07E" stroke-width="1.5"/><circle cx="6" cy="6" r="2" fill="#C9B07E"/></svg>
+      </span>
+      All Platforms <span class="cnt">7</span>
+    </button>
+
+    <button class="pfilt" onclick="filt('gbp',this)">
+      <span class="ico ico-gbp">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="white"><path d="M21.8 10.2h-.8V10H12v4h5.7A6 6 0 1 1 12 6c1.6 0 3 .6 4.1 1.6L19 4.8A10 10 0 1 0 22 12c0-.6-.1-1.2-.2-1.8z"/></svg>
+      </span>
+      Google Business <span class="cnt">3</span>
+    </button>
+
+    <button class="pfilt" onclick="filt('fb',this)">
+      <span class="ico ico-fb">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="white"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+      </span>
+      Facebook <span class="cnt">2</span>
+    </button>
+
+    <button class="pfilt" onclick="filt('li',this)">
+      <span class="ico ico-li">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="white"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg>
+      </span>
+      LinkedIn <span class="cnt">2</span>
+    </button>
+
+    <div class="sb-div"></div>
+
+    <button class="ai-btn" onclick="openAI()">
+      <span class="ai-sparkle">✦</span> Generate with AI
+    </button>
+
+    <div class="sb-spacer"></div>
+
+    <div class="sb-status">
+      <div class="sb-status-row hi"><span>Scheduled</span><span>6</span></div>
+      <div class="sb-status-row"><span>Draft</span><span>1</span></div>
+      <div class="sb-status-row"><span>Published</span><span>0</span></div>
+      <div class="sb-div" style="margin:6px 0"></div>
+      <div class="sb-status-row"><span>Reach est.</span><span style="color:rgba(245,240,235,.5)">—</span></div>
+    </div>
+  </aside>
+
+  <!-- Calendar -->
+  <main class="main">
+
+    <!-- Day headers -->
+    <div class="day-header">
+      <div></div>
+      <div class="dh">Mon · 4</div>
+      <div class="dh">Tue · 5</div>
+      <div class="dh">Wed · 6</div>
+      <div class="dh">Thu · 7</div>
+      <div class="dh">Fri · 8</div>
+    </div>
+
+    <!-- GBP row -->
+    <div class="cal-row">
+      <div class="row-icon"><div class="ri ri-gbp">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="white"><path d="M21.8 10.2h-.8V10H12v4h5.7A6 6 0 1 1 12 6c1.6 0 3 .6 4.1 1.6L19 4.8A10 10 0 1 0 22 12c0-.6-.1-1.2-.2-1.8z"/></svg>
+      </div></div>
+      <div class="cell" data-platform="gbp" onclick="openPost('gbp-mon')">
+        <div class="c-title">What Medicare Actually Covers</div>
+        <div class="c-preview">Families ask: "Can we afford this?" In almost every case — yes. Medicare covers 100%.</div>
+        <div class="c-foot"><span class="st st-sched">Scheduled</span><span class="c-time">9:00 AM</span></div>
+      </div>
+      <div class="cell empty" data-platform="gbp"><div class="empty-plus">+</div></div>
+      <div class="cell" data-platform="gbp" onclick="openPost('gbp-wed')">
+        <div class="c-title">The First 48 Hours</div>
+        <div class="c-preview">The first 48 hours set everything that follows. Here's what they look like at ELH.</div>
+        <div class="c-foot"><span class="st st-sched">Scheduled</span><span class="c-time">9:00 AM</span></div>
+      </div>
+      <div class="cell empty" data-platform="gbp"><div class="empty-plus">+</div></div>
+      <div class="cell" data-platform="gbp" onclick="openPost('gbp-fri')">
+        <div class="c-title">ACHC Accreditation — Why It Matters</div>
+        <div class="c-preview">Three credentials. One is required. One is state law. One is a choice. We explain all three.</div>
+        <div class="c-foot"><span class="st st-sched">Scheduled</span><span class="c-time">9:00 AM</span></div>
+      </div>
+    </div>
+
+    <!-- Facebook row -->
+    <div class="cal-row">
+      <div class="row-icon"><div class="ri ri-fb">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="white"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+      </div></div>
+      <div class="cell" data-platform="fb" onclick="openPost('fb-mon')">
+        <div class="c-title">5 Hospice Myths That Cost Families Months</div>
+        <div class="c-preview">Most families wait too long — because of myths that just won't die. Here are the 5 biggest.</div>
+        <div class="c-foot"><span class="st st-sched">Scheduled</span><span class="c-time">11:00 AM</span></div>
+      </div>
+      <div class="cell empty" data-platform="fb"><div class="empty-plus">+</div></div>
+      <div class="cell empty" data-platform="fb"><div class="empty-plus">+</div></div>
+      <div class="cell" data-platform="fb" onclick="openPost('fb-thu')">
+        <div class="c-title">The End-of-Life Doula</div>
+        <div class="c-preview">Most hospices don't include a doula. We do. A trained companion for the dying process.</div>
+        <div class="c-foot"><span class="st st-draft">Draft</span><span class="c-time">11:00 AM</span></div>
+      </div>
+      <div class="cell empty" data-platform="fb"><div class="empty-plus">+</div></div>
+    </div>
+
+    <!-- LinkedIn row -->
+    <div class="cal-row">
+      <div class="row-icon"><div class="ri ri-li">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="white"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2" fill="white"/></svg>
+      </div></div>
+      <div class="cell empty" data-platform="li"><div class="empty-plus">+</div></div>
+      <div class="cell" data-platform="li" onclick="openPost('li-tue')">
+        <div class="c-title">Why I Started Eternal Life Hospice</div>
+        <div class="c-preview">Families kept getting the prognosis — and then being left to figure out the rest alone.</div>
+        <div class="c-foot"><span class="st st-sched">Scheduled</span><span class="c-time">8:00 AM</span></div>
+      </div>
+      <div class="cell empty" data-platform="li"><div class="empty-plus">+</div></div>
+      <div class="cell empty" data-platform="li"><div class="empty-plus">+</div></div>
+      <div class="cell" data-platform="li" onclick="openPost('li-fri')">
+        <div class="c-title">Choosing Hospice Is Not Giving Up</div>
+        <div class="c-preview">It's a real, deliberate, loving choice — to spend remaining time exactly as the person wants.</div>
+        <div class="c-foot"><span class="st st-sched">Scheduled</span><span class="c-time">8:00 AM</span></div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<!-- Post modal -->
+<div class="overlay" id="overlay" onclick="if(event.target===this)closeModal()">
+<div class="modal">
+  <div class="mhead" id="mhead">
+    <div class="mhead-left">
+      <h2 id="mtitle"></h2>
+      <div class="mpills" id="mpills"></div>
+    </div>
+    <button class="mclose" onclick="closeModal()">✕</button>
+  </div>
+  <div class="mbody">
+    <div>
+      <div class="field-label">Post Copy</div>
+      <textarea class="copy-area" id="mcopy"></textarea>
+    </div>
+    <div>
+      <div class="field-label">Hashtags</div>
+      <div class="tags-wrap" id="mtags"></div>
+    </div>
+    <div class="img-note">📸 <span id="mimg"></span></div>
+  </div>
+  <div class="mfooter">
+    <button class="btn bp" onclick="doSchedule()">✓ Confirm Schedule</button>
+    <button class="btn bg" onclick="doPublish()">▶ Publish Now</button>
+    <button class="btn bo" onclick="closeModal()" style="margin-left:auto">Cancel</button>
+  </div>
+</div>
+</div>
+
+<!-- AI panel -->
+<div class="ai-overlay" id="ai-overlay" onclick="if(event.target===this)closeAI()">
+<div class="ai-box">
+  <div class="ai-hd">
+    <h2>✦ Generate Post with AI</h2>
+    <button style="background:none;border:none;cursor:pointer;font-size:1rem;color:var(--deep)" onclick="closeAI()">✕</button>
+  </div>
+  <div class="ai-bd">
+    <div>
+      <div class="field-label">Topic</div>
+      <input class="ai-inp" id="ai-topic" placeholder="e.g. Our music therapy program for dementia patients" />
+    </div>
+    <div>
+      <div class="field-label">Platform</div>
+      <select class="ai-sel" id="ai-plat">
+        <option value="gbp">Google Business Profile</option>
+        <option value="fb">Facebook</option>
+        <option value="li">LinkedIn</option>
+      </select>
+    </div>
+    <div>
+      <div class="field-label">Tone</div>
+      <select class="ai-sel">
+        <option>Warm &amp; educational</option>
+        <option>Professional — referral partners</option>
+        <option>Founder voice (Aleksandra)</option>
+      </select>
+    </div>
+    <div class="gen-spinner" id="gen">
+      <div class="spin"></div>Generating in your brand voice…
+    </div>
+    <div class="ai-actions" id="ai-acts">
+      <button class="btn bp" style="flex:1" onclick="genPost()">Generate</button>
+      <button class="btn bo" onclick="closeAI()">Cancel</button>
+    </div>
+  </div>
+</div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const P={
+  'gbp-mon':{title:'What Medicare Actually Covers',plat:'GBP',day:'Mon Aug 4',time:'9:00 AM',status:'Scheduled',img:'first-48-hours.jpg or comfort-therapies.jpg',tags:['#HospiceCare','#Medicare','#VenturaCounty','#EndOfLifeCare','#EternalLifeHospice'],copy:`One of the most common questions families ask us: "Can we really afford this?"\n\nThe answer, in almost every case, is yes.\n\nMedicare Part A covers the hospice benefit completely. No deductible. No copay. No bill for nursing visits, aide support, social work, chaplaincy, medications, or medical equipment related to the terminal diagnosis.\n\nThe benefit was designed to remove the financial barrier from end-of-life care entirely. Our admissions team verifies eligibility, coordinates directly with Medicare, and ensures your family never receives a surprise bill.\n\nIf your loved one has Medicare Part A and a physician's prognosis of six months or less, they are very likely eligible — at no cost to you.\n\nCall us: 805.953.7273\nEternal Life Hospice · Ventura & Los Angeles County`},
+  'gbp-wed':{title:'The First 48 Hours',plat:'GBP',day:'Wed Aug 6',time:'9:00 AM',status:'Scheduled',img:'first-48-hours.jpg',tags:['#HospiceCare','#EternalLifeHospice','#VenturaCounty','#CareThatHonorsLife'],copy:`The first 48 hours of hospice care set everything that follows.\n\nWithin hours of admission, the interdisciplinary team is established — physician oversight, nursing, social work, spiritual care, and aide support. Medications and equipment are coordinated and delivered to the home.\n\nA registered nurse completes an initial assessment — not just clinical, but human. Who is this person? What are they afraid of? What does comfort mean, specifically, to them?\n\nA care plan is built around those answers. Not a template. A plan for this person.\n\nWe aim to have everything in place within 24 hours, not 48.\n\n805.953.7273 · Serving Ventura & Los Angeles County`},
+  'gbp-fri':{title:'ACHC Accreditation — Why It Matters',plat:'GBP',day:'Fri Aug 8',time:'9:00 AM',status:'Scheduled',img:'Office exterior or team photo',tags:['#ACHC','#HospiceCare','#EternalLifeHospice','#QualityCare'],copy:`Eternal Life Hospice holds three credentials.\n\nMedicare certification is required by law.\nCDPH licensure is required by the State of California.\nACHC accreditation is different. It is voluntary.\n\nThe Accreditation Commission for Health Care conducts an independent, on-site review of our clinical standards, policies, staff competencies, and patient outcomes. They do not take our word for anything. They verify.\n\nWe pursued ACHC accreditation because families deserve to know that an independent body has reviewed our care.\n\n805.953.7273 · eternallifehospice.com`},
+  'fb-mon':{title:'5 Hospice Myths That Cost Families Months',plat:'Facebook',day:'Mon Aug 4',time:'11:00 AM',status:'Scheduled',img:'Carousel: 5 slides, plum background gold text',tags:['#HospiceCare','#HospiceMyths','#Medicare','#CareThatHonorsLife','#EternalLifeHospice'],copy:`Care That Honors Life — and that starts with the truth.\n\n1. "Hospice means giving up." → It's a continuation of care.\n2. "It's only for the last few days." → Eligible patients often have months.\n3. "All treatment stops." → Goals shift to comfort — not abandonment.\n4. "It's only for cancer." → Heart, COPD, dementia, ALS all qualify.\n5. "It costs too much." → Medicare covers 100%.\n\nFull guide → eternallifehospice.com/blog/five-hospice-myths`},
+  'fb-thu':{title:'The End-of-Life Doula',plat:'Facebook',day:'Thu Aug 7',time:'11:00 AM',status:'Draft',img:'comfort-therapies.jpg or aromatherapy.jpg',tags:['#EndOfLifeDoula','#HospiceCare','#EternalLifeHospice','#CareThatHonorsLife'],copy:`Most hospices don't include an end-of-life doula.\n\nWe do.\n\nA doula is a trained companion for the dying process. Not clinical. Not spiritual. Human.\n\nOur doula helps patients and families understand what to expect. She guides legacy conversations — the letter to a grandchild, the things a person has always meant to say. She helps families learn how to be present for what is coming without being afraid of it.\n\nDying is not a medical event. It is a human one.\n\n805.953.7273 · eternallifehospice.com`},
+  'li-tue':{title:'Why I Started Eternal Life Hospice',plat:'LinkedIn',day:'Tue Aug 5',time:'8:00 AM',status:'Scheduled',img:'Aleksandra headshot — warm window light',tags:['#HospiceCare','#HealthcareLeadership','#EndOfLifeCare','#CareThatHonorsLife','#HospiceFounder'],copy:`I started Eternal Life Hospice because I kept seeing the same thing.\n\nFamilies getting the call — the prognosis, the timeline — and then being left to figure out the rest on their own.\n\nWhat comes next deserves the same level of care as everything that came before.\n\nWhat I didn't expect was how sacred it would feel. Not sad — sacred. To be trusted with a family at the most tender moment of their lives.\n\n— Aleksandra Lekovic\nFounder & CEO · Certified Hospice Administrator`},
+  'li-fri':{title:'Choosing Hospice Is Not Giving Up',plat:'LinkedIn',day:'Fri Aug 8',time:'8:00 AM',status:'Scheduled',img:'Aleksandra headshot or branded quote graphic',tags:['#HospiceCare','#EndOfLifeCare','#PalliativeCare','#CareThatHonorsLife','#EternalLifeHospice'],copy:`I want to say something clearly, because I hear the opposite every week.\n\nChoosing hospice is not giving up.\n\nIt is a choice — a real, deliberate, loving choice — to spend the time that remains the way the person wants to spend it. At home. With family nearby. With pain managed.\n\nThe families who call us early tell us the same thing, every time: they wish they'd called sooner. Not because hospice hurried anything. Because hospice made the time they had better.\n\n— Aleksandra Lekovic\nFounder & CEO, Eternal Life Hospice`}
+};
+
+let cur=null;
+function openPost(id){
+  const p=P[id]; if(!p)return; cur=id;
+  document.getElementById('mtitle').textContent=p.title;
+  document.getElementById('mpills').innerHTML=`<span class="mpill">${p.plat}</span><span class="mpill">${p.day} · ${p.time}</span><span class="mpill">${p.status}</span>`;
+  document.getElementById('mcopy').value=p.copy;
+  document.getElementById('mtags').innerHTML=p.tags.map(t=>`<span class="ht">${t}</span>`).join('');
+  document.getElementById('mimg').textContent=p.img;
+  document.getElementById('overlay').classList.add('open');
+}
+function closeModal(){document.getElementById('overlay').classList.remove('open');cur=null;}
+function doSchedule(){closeModal();toast('✓ Scheduled');}
+function doPublish(){closeModal();toast('▶ Connecting to platform API… (add credentials to go live)');}
+
+function filt(p,el){
+  document.querySelectorAll('.pfilt').forEach(b=>b.classList.remove('on'));
+  el.classList.add('on');
+  document.querySelectorAll('.cell[data-platform]').forEach(c=>{
+    c.style.opacity=(p==='all'||c.dataset.platform===p)?'1':'.25';
+  });
+}
+
+function openAI(){document.getElementById('ai-overlay').classList.add('open');}
+function closeAI(){document.getElementById('ai-overlay').classList.remove('open');document.getElementById('gen').classList.remove('show');document.getElementById('ai-acts').style.display='flex';}
+function genPost(){
+  const t=document.getElementById('ai-topic').value.trim();
+  if(!t){alert('Enter a topic first.');return;}
+  document.getElementById('ai-acts').style.display='none';
+  document.getElementById('gen').classList.add('show');
+  setTimeout(()=>{closeAI();toast('✦ Post generated — connect OpenAI key to activate');},2000);
+}
+
+function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('on');setTimeout(()=>t.classList.remove('on'),3000);}
+</script>
+</body>
+</html>
