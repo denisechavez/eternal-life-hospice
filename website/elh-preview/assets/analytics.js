@@ -55,6 +55,15 @@
     b.async = true; b.src = 'https://cdn.brevo.com/js/sdk-loader.js';
     document.head.appendChild(b);
 
+    // Metricool
+    var mc = document.createElement('script');
+    mc.type = 'text/javascript';
+    mc.src = 'https://tracker.metricool.com/resources/be.js';
+    mc.onreadystatechange = mc.onload = function () {
+      beTracker.t({ hash: '6737811bcbdf68de28bffe4886ee6695' });
+    };
+    document.head.appendChild(mc);
+
   }
 
   /* ── Save preference + act on it ───────────────────────────────────── */
