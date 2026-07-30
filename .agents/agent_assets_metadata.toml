@@ -1343,3 +1343,15 @@ id = "GKCtTxuioqulPhfeW3Q0u"
 uri = "file://attached_assets/gif_previews/option3_shimmer.gif"
 type = "image"
 title = "Option 3 — Shimmer Sweep (slower)"
+
+[[outputs]]
+id = "bczw5OnqbGIRroa4UikjB"
+uri = "file://exports/social/post-medicare-1200x900.jpg"
+type = "image"
+title = "GBP Post — Medicare Coverage (1200×900)"
+
+[[outputs]]
+id = "JxlQkcO461NgAj6BYqrnC"
+uri = "file://exports/social/post-founder-linkedin-1200x627.jpg"
+type = "image"
+title = "LinkedIn Post — Founder Quote (1200×627)"
