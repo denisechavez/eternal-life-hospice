@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ELH Engagement Review — July 30, 2026</title>
+<style>
+  :root{--plum:#4a235a;--gold:#c9b07e;--cream:#f5f0eb;--ink:#1a1420;
+    --ink-soft:#6b5f72;--light:#faf7f4;--border:#e8e0ec;
+    --red:#c0392b;--green:#27ae60;--amber:#e67e22;--blue:#2980b9}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--light);color:var(--ink);font-size:14px;line-height:1.5}
+  .report-header{background:var(--plum);color:var(--cream);padding:32px 40px 28px}
+  .report-header h1{font-size:1.6rem;font-weight:600;margin-bottom:4px}
+  .report-header .meta{font-size:.8rem;opacity:.7;letter-spacing:.06em;text-transform:uppercase}
+  .badge{display:inline-block;background:var(--gold);color:var(--plum);font-size:.7rem;font-weight:700;letter-spacing:.08em;padding:3px 10px;border-radius:20px;text-transform:uppercase;margin-top:10px}
+  .container{max-width:1100px;margin:0 auto;padding:32px 24px}
+  .alert{background:#fff3cd;border:1px solid #ffc107;border-radius:8px;padding:14px 18px;margin-bottom:28px;display:flex;gap:12px;align-items:flex-start}
+  .alert-info{background:#e3f2fd;border-color:#2196f3}
+  .alert-lock{background:#fce4ec;border-color:#e91e63}
+  .alert .icon{font-size:1.2rem;flex-shrink:0;margin-top:1px}
+  .alert strong{display:block;margin-bottom:3px;font-size:.85rem}
+  .alert p{font-size:.8rem;color:#5d4037}
+  .alert-info p{color:#0d47a1}
+  .alert-lock p{color:#880e4f}
+  .kpi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px;margin-bottom:32px}
+  .kpi{background:#fff;border:1px solid var(--border);border-radius:10px;padding:18px 16px}
+  .kpi .label{font-size:.7rem;text-transform:uppercase;letter-spacing:.08em;color:var(--ink-soft);margin-bottom:6px}
+  .kpi .value{font-size:2rem;font-weight:700;line-height:1;color:var(--plum)}
+  .kpi .sub{font-size:.72rem;color:var(--ink-soft);margin-top:4px}
+  .kpi.good .value{color:var(--green)}
+  .kpi.warn .value{color:var(--amber)}
+  .kpi.bad  .value{color:var(--red)}
+  .section{margin-bottom:36px}
+  .section-head{display:flex;align-items:baseline;gap:12px;margin-bottom:14px;padding-bottom:10px;border-bottom:2px solid var(--border)}
+  .section-head h2{font-size:1rem;font-weight:700;color:var(--plum)}
+  .section-head .count{font-size:.75rem;color:var(--ink-soft);background:var(--cream);padding:2px 9px;border-radius:12px}
+  .tbl-wrap{border:1px solid var(--border);border-radius:10px;overflow:hidden;background:#fff}
+  table{width:100%;border-collapse:collapse}
+  thead tr{background:var(--plum);color:var(--cream)}
+  thead th{padding:10px 14px;font-size:.72rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;text-align:left}
+  tbody tr{border-bottom:1px solid var(--border)}
+  tbody tr:last-child{border-bottom:none}
+  tbody tr:hover{background:#faf6ff}
+  tbody td{padding:9px 14px;font-size:.82rem;vertical-align:middle}
+  .tier-badge{display:inline-block;font-size:.68rem;font-weight:700;padding:2px 8px;border-radius:12px;letter-spacing:.05em;text-transform:uppercase}
+  .tier1{background:#e8f5e9;color:#1b5e20}
+  .tier2{background:#e3f2fd;color:#0d47a1}
+  .tier3{background:#fff9c4;color:#f57f17}
+  .tier4{background:#fce4ec;color:#880e4f}
+  .progress-wrap{background:#fff;border:1px solid var(--border);border-radius:10px;padding:24px 28px;margin-bottom:28px}
+  .progress-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:16px}
+  .progress-head h3{font-size:.9rem;font-weight:700;color:var(--plum)}
+  .progress-head .pct{font-size:.8rem;color:var(--ink-soft)}
+  .sends-track{display:flex;gap:8px;flex-wrap:wrap}
+  .send-dot{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:700;flex-direction:column;line-height:1.2}
+  .send-dot.sent{background:var(--plum);color:var(--cream)}
+  .send-dot.sent-broken{background:#e67e22;color:#fff}
+  .send-dot.pending{background:#e8e0ec;color:var(--ink-soft)}
+  .send-dot.unlock{background:#c8e6c9;color:#1b5e20;border:2px dashed #4caf50}
+  .send-dot .dot-n{font-size:.9rem}
+  .send-dot .dot-lbl{font-size:.55rem;text-transform:uppercase;letter-spacing:.04em}
+  .timeline{position:relative;padding-left:28px;margin-top:8px}
+  .timeline::before{content:"";position:absolute;left:10px;top:0;bottom:0;width:2px;background:var(--border)}
+  .tl-row{position:relative;padding:10px 0 10px 12px;font-size:.82rem}
+  .tl-row::before{content:"";position:absolute;left:-5px;top:16px;width:12px;height:12px;border-radius:50%;background:var(--border);border:2px solid #fff;box-shadow:0 0 0 2px var(--border)}
+  .tl-row.done::before{background:var(--plum);border-color:var(--plum);box-shadow:0 0 0 2px var(--plum)}
+  .tl-row.broken::before{background:var(--amber);border-color:var(--amber);box-shadow:0 0 0 2px var(--amber)}
+  .tl-row.next::before{background:var(--gold);border-color:var(--gold);box-shadow:0 0 0 2px var(--gold)}
+  .tl-date{font-size:.75rem;color:var(--ink-soft);font-weight:600;margin-right:8px}
+  .tl-note{font-size:.75rem;color:var(--ink-soft);margin-top:2px}
+  code{background:#f0eaf5;padding:1px 5px;border-radius:3px;font-size:.82rem;font-family:monospace}
+  .footer{text-align:center;font-size:.72rem;color:var(--ink-soft);padding:24px;border-top:1px solid var(--border);margin-top:16px}
+  @media(max-width:600px){.kpi-grid{grid-template-columns:repeat(2,1fr)}.sends-track{gap:6px}.send-dot{width:38px;height:38px}}
+  @media print{body{background:#fff}.report-header{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
+</style>
+</head>
+<body>
+
+<div class="report-header">
+  <div class="meta">Eternal Life Hospice · Email Engagement Review</div>
+  <h1>List Engagement Report</h1>
+  <div class="badge">Baseline · July 30, 2026</div>
+  <div class="badge" style="margin-left:8px;background:#e67e22;color:#fff">🔒 Suppression locked — 1 of 6 sends</div>
+</div>
+
+<div class="container">
+
+  <!-- Lock notice -->
+  <div class="alert alert-lock">
+    <span class="icon">🔒</span>
+    <div>
+      <strong>Suppression locked — minimum 6 sends required</strong>
+      <p>Only 1 campaign has been sent so far (and its tracking was broken). The 6-send threshold
+      gives B2B contacts at health systems enough time to engage — corporate spam filters and email
+      delays are common. Run the engagement review script again after Send #6 (est. week of
+      September 7, 2026 on a weekly cadence). At that point, suppression will be unlocked and
+      never-engaged contacts can be blacklisted or moved to a re-engagement sequence.</p>
+    </div>
+  </div>
+
+  <!-- Tracking notice -->
+  <div class="alert">
+    <span class="icon">⚠️</span>
+    <div>
+      <strong>Campaign #1 tracking was not enabled — engagement data unavailable for that send</strong>
+      <p>Open and click tracking was not active for the July 14 send. All contacts are currently
+      treated as "unconfirmed." Tracking is confirmed enabled for Campaign #2 (July 31, 2026).
+      Engagement tiers will be meaningful once Campaign #2 data is collected.</p>
+    </div>
+  </div>
+
+  <!-- KPIs -->
+  <div class="kpi-grid">
+    <div class="kpi">
+      <div class="label">Campaigns analyzed</div>
+      <div class="value">1</div>
+      <div class="sub">of 6 required for suppression</div>
+    </div>
+    <div class="kpi">
+      <div class="label">Total contacts (all lists)</div>
+      <div class="value">2,059</div>
+      <div class="sub">Lists 8 · 10 · 9 · 13 · 2 (active)</div>
+    </div>
+    <div class="kpi warn">
+      <div class="label">Engagement data</div>
+      <div class="value">—</div>
+      <div class="sub">Tracking broken on send #1</div>
+    </div>
+    <div class="kpi">
+      <div class="label">Suppression candidates</div>
+      <div class="value">—</div>
+      <div class="sub">Unlocks after send #6</div>
+    </div>
+    <div class="kpi">
+      <div class="label">Tier 1 — Clickers</div>
+      <div class="value">—</div>
+      <div class="sub">Pending tracking data</div>
+    </div>
+    <div class="kpi">
+      <div class="label">Est. suppression date</div>
+      <div class="value">Sep 7</div>
+      <div class="sub">~6 weeks at weekly cadence</div>
+    </div>
+  </div>
+
+  <!-- Send progress -->
+  <div class="section">
+    <div class="section-head">
+      <h2>Send Progress to Suppression Unlock</h2>
+      <span class="count">1 of 6 minimum sends</span>
+    </div>
+    <div class="progress-wrap">
+      <div class="progress-head">
+        <h3>Weekly send cadence — suppression unlocks after send #6</h3>
+        <span class="pct">17% complete</span>
+      </div>
+      <div class="sends-track">
+        <div class="send-dot sent-broken">
+          <span class="dot-n">#1</span>
+          <span class="dot-lbl">Jul 14</span>
+        </div>
+        <div class="send-dot sent">
+          <span class="dot-n">#2</span>
+          <span class="dot-lbl">Jul 31</span>
+        </div>
+        <div class="send-dot pending">
+          <span class="dot-n">#3</span>
+          <span class="dot-lbl">Aug 7</span>
+        </div>
+        <div class="send-dot pending">
+          <span class="dot-n">#4</span>
+          <span class="dot-lbl">Aug 14</span>
+        </div>
+        <div class="send-dot pending">
+          <span class="dot-n">#5</span>
+          <span class="dot-lbl">Aug 21</span>
+        </div>
+        <div class="send-dot pending">
+          <span class="dot-n">#6</span>
+          <span class="dot-lbl">Aug 28</span>
+        </div>
+        <div class="send-dot unlock">
+          <span class="dot-n">🔓</span>
+          <span class="dot-lbl">Sep 7+</span>
+        </div>
+      </div>
+      <p style="font-size:.75rem;color:var(--ink-soft);margin-top:14px">
+        <span style="background:#e67e22;color:#fff;padding:1px 6px;border-radius:3px;font-size:.68rem">⚠ tracking broken</span> = send happened but no engagement data.
+        <span style="background:var(--plum);color:var(--cream);padding:1px 6px;border-radius:3px;font-size:.68rem">●</span> = sent with tracking.
+        <span style="background:#c8e6c9;color:#1b5e20;padding:1px 6px;border-radius:3px;font-size:.68rem">🔓</span> = suppression unlocked (run script).
+      </p>
+    </div>
+  </div>
+
+  <!-- Campaign table -->
+  <div class="section">
+    <div class="section-head">
+      <h2>Campaigns</h2>
+      <span class="count">1 sent · 1 scheduled</span>
+    </div>
+    <div class="tbl-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Campaign</th><th>Sent date</th><th>Recipients</th>
+            <th>Unique opens</th><th>Unique clicks</th>
+            <th>Bounces</th><th>Unsubs</th><th>Tracking</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Introducing The Eternal Care Brief: Issue 01</strong><br>
+                <span style="font-size:.72rem;color:var(--ink-soft)">elh-brief-issue1 · Send #1</span></td>
+            <td>Jul 14, 2026</td>
+            <td>~1,882</td>
+            <td><span style="color:var(--amber)">— (tracking off)</span></td>
+            <td><span style="color:var(--amber)">— (tracking off)</span></td>
+            <td>—</td>
+            <td>—</td>
+            <td><span style="color:var(--red);font-size:.78rem;font-weight:600">✗ Off</span></td>
+          </tr>
+          <tr style="background:#fffef9">
+            <td><strong>When a family asks "How do we choose a hospice?"</strong><br>
+                <span style="font-size:.72rem;color:var(--gold)">family_guide_email_2 · Send #2 · Scheduled</span></td>
+            <td>Jul 31, 2026</td>
+            <td>~2,059</td>
+            <td>—</td>
+            <td>—</td>
+            <td>—</td>
+            <td>—</td>
+            <td><span style="color:var(--green);font-size:.78rem;font-weight:600">✓ Enabled</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Active lists -->
+  <div class="section">
+    <div class="section-head">
+      <h2>Active Lists Included in Analysis</h2>
+      <span class="count">5 active lists · 2,059 total contacts</span>
+    </div>
+    <div class="tbl-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>List ID</th><th>Name</th><th style="text-align:right">Contacts</th><th>Notes</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>#8</strong></td>
+            <td>Master Verified</td>
+            <td style="text-align:right">778</td>
+            <td style="font-size:.78rem;color:var(--ink-soft)">NeverBounce-validated; primary send list</td>
+          </tr>
+          <tr>
+            <td><strong>#10</strong></td>
+            <td>SYMPLR Network</td>
+            <td style="text-align:right">1,123</td>
+            <td style="font-size:.78rem;color:var(--ink-soft)">Hospital staff from vcs PDFs; NeverBounce valid only</td>
+          </tr>
+          <tr>
+            <td><strong>#9</strong></td>
+            <td>Catch-All — send with caution</td>
+            <td style="text-align:right">148</td>
+            <td style="font-size:.78rem;color:var(--ink-soft)">NeverBounce catch-all results; higher bounce risk</td>
+          </tr>
+          <tr>
+            <td><strong>#13</strong></td>
+            <td>Hospice Owners — Prospecting</td>
+            <td style="text-align:right">8</td>
+            <td style="font-size:.78rem;color:var(--ink-soft)">Small targeted list; competitor/peer hospice owners</td>
+          </tr>
+          <tr>
+            <td><strong>#2</strong></td>
+            <td>Your first list</td>
+            <td style="text-align:right">2</td>
+            <td style="font-size:.78rem;color:var(--ink-soft)">Legacy; minimal contacts</td>
+          </tr>
+          <tr style="background:#f5f0fb;font-weight:600">
+            <td colspan="2">Total</td>
+            <td style="text-align:right">2,059</td>
+            <td style="font-size:.78rem;color:var(--ink-soft)">
+              Excluded: #3 (system) · #6 (system) · #11 (test) · #12 (test)
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Engagement tier definitions -->
+  <div class="section">
+    <div class="section-head">
+      <h2>Engagement Tiers (Definitions)</h2>
+      <span class="count">populated after send #2 data is available</span>
+    </div>
+    <div style="background:#fff;border:1px solid var(--border);border-radius:10px;overflow:hidden">
+      <table>
+        <thead>
+          <tr>
+            <th>Tier</th><th>Criteria</th><th>Target action</th><th>Suppression</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="tier-badge tier1">Tier 1 · Clickers</span></td>
+            <td>Clicked at least once across any campaign</td>
+            <td>Direct follow-up, phone/visit, referral-ask sequence</td>
+            <td>Never</td>
+          </tr>
+          <tr>
+            <td><span class="tier-badge tier2">Tier 2 · Active Openers</span></td>
+            <td>Opened 2+ times, never clicked</td>
+            <td>Stronger CTA — specific resource, case study, direct invitation</td>
+            <td>Never</td>
+          </tr>
+          <tr>
+            <td><span class="tier-badge tier3">Tier 3 · Occasional Openers</span></td>
+            <td>Opened exactly once, never clicked</td>
+            <td>Continue weekly cadence; watch for second open</td>
+            <td>Never</td>
+          </tr>
+          <tr>
+            <td><span class="tier-badge tier4">Tier 4 · Never Engaged</span></td>
+            <td>Zero opens and zero clicks across ALL 6+ campaigns</td>
+            <td>Re-engagement sequence, then suppress if still no response</td>
+            <td><strong>After send #6</strong> — blacklist or move to re-engagement list</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- How to run the script at send #6 -->
+  <div class="section">
+    <div class="section-head">
+      <h2>How to Run the Suppression Review (at Send #6)</h2>
+    </div>
+    <div style="background:#fff;border:1px solid var(--border);border-radius:10px;padding:22px 26px;font-size:.83rem;line-height:1.9">
+
+      <p style="margin-bottom:10px"><strong>After send #6 lands (est. week of August 28 – September 7, 2026), run:</strong></p>
+
+      <div style="background:#f5f0fb;border-radius:7px;padding:12px 16px;font-family:monospace;font-size:.82rem;margin-bottom:16px">
+        <span style="color:#888"># Analysis only (safe to run any time — no changes made)</span><br>
+        BREVO_API=&lt;key&gt; node exports/campaign-reports/engagement-review.js --dry-run<br><br>
+        <span style="color:#888"># Suppress: blacklist never-engaged contacts in Brevo</span><br>
+        BREVO_API=&lt;key&gt; node exports/campaign-reports/engagement-review.js --suppress<br><br>
+        <span style="color:#888"># Alternative: move to re-engagement list instead of hard blacklist</span><br>
+        BREVO_API=&lt;key&gt; node exports/campaign-reports/engagement-review.js --move-to-list
+      </div>
+
+      <p style="margin-bottom:8px"><strong>Note on Brevo IP whitelisting:</strong>
+      The Brevo account restricts API calls to authorized IPs. The script must be run from a machine
+      whose IP is in Brevo's authorized list (Settings → Security → Authorized IPs), or the IP
+      restriction must be temporarily removed. The Replit environment IP is not currently authorized.</p>
+
+      <p style="margin-top:12px;font-size:.78rem;color:var(--ink-soft)">
+        The script outputs an HTML report to <code>exports/campaign-reports/engagement-report-YYYY-MM-DD.html</code>
+        and prints a tier summary to stdout. Run with <code>--min-sends 6</code> (default) to ensure
+        suppression is blocked until at least 6 campaigns have been sent.
+      </p>
+
+      <div style="margin-top:16px;background:#e8f5e9;border-radius:7px;padding:12px 16px;font-size:.78rem">
+        <strong style="color:#1b5e20">💡 Ask the agent at send #6:</strong><br>
+        <span style="color:#2e7d32">"Run the engagement review and suppress unresponsive contacts from our email list."</span><br>
+        The agent will run the script against the Brevo API, generate an updated version of this report
+        with real tier data, and apply suppression after confirming the contact count with you.
+      </div>
+    </div>
+  </div>
+
+  <!-- Timeline -->
+  <div class="section">
+    <div class="section-head">
+      <h2>Engagement Review Timeline</h2>
+    </div>
+    <div style="background:#fff;border:1px solid var(--border);border-radius:10px;padding:20px 28px">
+      <div class="timeline">
+        <div class="tl-row broken">
+          <span class="tl-date">Jul 14, 2026</span><strong>Send #1</strong> — Care Brief Issue 1
+          <div class="tl-note">⚠ Tracking was off — no engagement data for this send</div>
+        </div>
+        <div class="tl-row done">
+          <span class="tl-date">Jul 31, 2026</span><strong>Send #2</strong> — Family Guide email (scheduled)
+          <div class="tl-note">✓ Tracking enabled — first send with real open/click data</div>
+        </div>
+        <div class="tl-row">
+          <span class="tl-date">Aug 7, 2026</span><strong>Send #3</strong> — Weekly care brief
+          <div class="tl-note">Scheduled</div>
+        </div>
+        <div class="tl-row">
+          <span class="tl-date">Aug 14, 2026</span><strong>Send #4</strong> — Weekly care brief
+          <div class="tl-note">Scheduled</div>
+        </div>
+        <div class="tl-row">
+          <span class="tl-date">Aug 21, 2026</span><strong>Send #5</strong> — Weekly care brief
+          <div class="tl-note">Scheduled</div>
+        </div>
+        <div class="tl-row">
+          <span class="tl-date">Aug 28, 2026</span><strong>Send #6</strong> — Weekly care brief
+          <div class="tl-note">After this send: run engagement review → suppression unlocked</div>
+        </div>
+        <div class="tl-row next">
+          <span class="tl-date">Sep 7+, 2026</span><strong>🔓 Engagement Review &amp; Suppression</strong>
+          <div class="tl-note">Run <code>engagement-review.js --suppress</code> · tier report · suppress Tier 4 · segment Tier 1–3 for targeted follow-up</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /container -->
+
+<div class="footer">
+  Eternal Life Hospice · Internal Use Only · Generated July 30, 2026 · Baseline report — re-run at send #6<br>
+  Script: <code>exports/campaign-reports/engagement-review.js</code>
+</div>
+
+</body>
+</html>
