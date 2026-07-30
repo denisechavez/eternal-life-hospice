@@ -1,76 +1,50 @@
 #!/usr/bin/env node
 /**
- * Batch translate-bar guard — all city pages
+ * Batch translate-bar removal guard — all city pages
  *
- * Runs test-city-page-translate.js on every hospice-*-ca.html file under
- * website/elh-preview/.  Exits 0 only when every page passes; exits 1 as
- * soon as any page fails so the deploy is blocked.
+ * Verifies that no hospice-*-ca.html city page contains .ft-lang pills
+ * or a translate.js script tag — the Google Translate feature was removed
+ * July 2026.
+ *
+ * Exits 0 only when every city page is clean; exits 1 if any remnant found.
  *
  * Usage (from repo root):
  *   node website/elh-preview/assets/test-city-pages-batch.js
- *
- * This script is registered as the "translate-bar-city-pages" validation step
- * and is the automated counterpart to the per-file pre-commit guard (step 7 in
- * the elh-city-pages skill).
  */
 
 'use strict';
 
-const fs           = require('fs');
-const path         = require('path');
-const { execFileSync } = require('child_process');
+const fs   = require('fs');
+const path = require('path');
 
-const PREVIEW_DIR  = path.join(__dirname, '..');
-const GUARD_SCRIPT = path.join(__dirname, 'test-city-page-translate.js');
+const PREVIEW_DIR = path.join(__dirname, '..');
 
-// ── collect all hospice-*-ca.html files ───────────────────────────────────────
+function hasTranslateBar(html) {
+  return /class=["'][^"']*ft-lang[^"']*["']/.test(html) ||
+         /src=["'][^"']*translate\.js["']/.test(html) ||
+         /class=["']foot-translate["']/.test(html);
+}
 
 const cityPages = fs.readdirSync(PREVIEW_DIR)
   .filter(name => /^hospice-.+-ca\.html$/.test(name))
-  .sort()
-  .map(name => path.join(PREVIEW_DIR, name));
+  .sort();
 
-if (cityPages.length === 0) {
-  console.error('No hospice-*-ca.html files found under', PREVIEW_DIR);
-  process.exit(1);
-}
+console.log(`Translate-bar removal check — ${cityPages.length} city page(s)\n`);
+console.log('═'.repeat(60));
 
-console.log(`\nTranslate-bar batch check — ${cityPages.length} city page(s)\n`);
-
-// ── run the per-file guard on each page ───────────────────────────────────────
-
-const failed = [];
-
-for (const filePath of cityPages) {
-  try {
-    execFileSync(process.execPath, [GUARD_SCRIPT, filePath], {
-      stdio: 'pipe',   // suppress per-file output on success
-    });
-  } catch (err) {
-    // Guard exited non-zero — print its output and record the failure
-    const stdout = err.stdout ? err.stdout.toString() : '';
-    const stderr = err.stderr ? err.stderr.toString() : '';
-    console.error(`\n── FAIL: ${path.basename(filePath)}`);
-    if (stdout) process.stdout.write(stdout);
-    if (stderr) process.stderr.write(stderr);
-    failed.push(path.basename(filePath));
+let failures = 0;
+for (const name of cityPages) {
+  const html = fs.readFileSync(path.join(PREVIEW_DIR, name), 'utf8');
+  if (hasTranslateBar(html)) {
+    console.error(`  FAIL: ${name}`);
+    failures++;
   }
 }
 
-// ── summary ───────────────────────────────────────────────────────────────────
-
-console.log('\n' + '═'.repeat(60));
-
-if (failed.length === 0) {
-  console.log(`✅  All ${cityPages.length} city pages passed the translate-bar check`);
+if (failures === 0) {
+  console.log(`\n✅  All ${cityPages.length} city pages clean — translate bar removed`);
   process.exit(0);
 } else {
-  console.error(`❌  ${failed.length} of ${cityPages.length} city page(s) failed:`);
-  for (const name of failed) {
-    console.error(`     ${name}`);
-  }
-  console.error('\n    Fix each page before deploying.');
-  console.error('    Copy the foot-translate block from any passing city page');
-  console.error('    and add <script defer src="/assets/translate.js"></script> before </body>.');
+  console.error(`\n❌  ${failures} city page(s) still contain translate bar markup`);
   process.exit(1);
 }
