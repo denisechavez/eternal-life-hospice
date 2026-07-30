@@ -6,31 +6,38 @@
 <title>Post: Founder — 1080×1080</title>
 <style>
   *{margin:0;padding:0;box-sizing:border-box}
-  html,body{width:1080px;height:1080px;overflow:hidden;background:#3C1C3B}
-  .card{position:relative;width:1080px;height:1080px;font-family:'Georgia',serif}
+  html,body{width:1200px;height:627px;overflow:hidden;background:#3C1C3B}
+  .card{position:relative;width:1200px;height:627px;font-family:'Georgia',serif}
   .bg{position:absolute;inset:0;background-image:url('img/founder-bg.jpg');background-size:cover;background-position:center}
   .overlay{position:absolute;inset:0;background:linear-gradient(135deg,rgba(91,46,89,.90) 0%,rgba(60,28,59,.75) 60%,rgba(60,28,59,.92) 100%)}
-  .content{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:space-between;padding:72px 68px}
+  .content{position:absolute;inset:0;display:grid;grid-template-columns:1fr 420px;gap:0}
 
-  .logo-row{display:flex;align-items:center;gap:16px}
-  .logo-mark{width:48px;height:48px;border-radius:50%;background:rgba(201,176,126,.25);border:1.5px solid rgba(201,176,126,.5);display:flex;align-items:center;justify-content:center;font-size:22px}
-  .logo-name{color:rgba(245,240,235,.75);font-size:18px;letter-spacing:.12em;text-transform:uppercase;font-family:'Segoe UI',sans-serif;font-weight:400}
+  /* Left panel */
+  .left{display:flex;flex-direction:column;justify-content:space-between;padding:46px 56px 46px 64px;border-right:1px solid rgba(201,176,126,.15)}
 
-  .body-content{flex:1;display:flex;flex-direction:column;justify-content:center;padding:32px 0}
+  .logo-row{display:flex;align-items:center;gap:12px}
+  .logo-mark{width:38px;height:38px;border-radius:50%;background:rgba(201,176,126,.25);border:1.5px solid rgba(201,176,126,.5);display:flex;align-items:center;justify-content:center;font-size:18px}
+  .logo-name{color:rgba(245,240,235,.7);font-size:14px;letter-spacing:.14em;text-transform:uppercase;font-family:'Segoe UI',sans-serif;font-weight:400}
 
-  .quote-mark{color:#C9B07E;font-size:120px;line-height:.7;font-family:'Georgia',serif;margin-bottom:16px;opacity:.6}
-  .quote-text{color:#F5F0EB;font-size:44px;line-height:1.25;font-weight:400;font-style:italic;margin-bottom:36px;max-width:880px}
+  .quote-wrap{flex:1;display:flex;flex-direction:column;justify-content:center;padding:20px 0}
+  .quote-mark{color:#C9B07E;font-size:80px;line-height:.6;font-family:'Georgia',serif;margin-bottom:12px;opacity:.55}
+  .quote-text{color:#F5F0EB;font-size:36px;line-height:1.3;font-weight:400;font-style:italic;max-width:640px}
   .quote-text em{color:#C9B07E;font-style:normal}
 
-  .divider{width:60px;height:3px;background:#C9B07E;border-radius:2px;margin-bottom:28px}
-
+  .attr-block{display:flex;align-items:center;gap:16px}
+  .divider-v{width:3px;height:40px;background:#C9B07E;border-radius:2px;flex-shrink:0}
   .attribution{font-family:'Segoe UI',sans-serif}
-  .attr-name{color:#F5F0EB;font-size:22px;font-weight:600;letter-spacing:.04em}
-  .attr-title{color:rgba(245,240,235,.6);font-size:16px;letter-spacing:.06em;text-transform:uppercase;margin-top:4px}
+  .attr-name{color:#F5F0EB;font-size:18px;font-weight:600;letter-spacing:.03em}
+  .attr-title{color:rgba(245,240,235,.55);font-size:12px;letter-spacing:.08em;text-transform:uppercase;margin-top:3px}
 
-  .footer{display:flex;align-items:flex-end;justify-content:space-between}
-  .hashtags{color:rgba(201,176,126,.55);font-size:15px;font-family:'Segoe UI',sans-serif;line-height:1.7;max-width:600px}
-  .platform-badge{background:rgba(201,176,126,.15);border:1px solid rgba(201,176,126,.35);color:#C9B07E;font-size:14px;font-family:'Segoe UI',sans-serif;padding:7px 18px;border-radius:99px;letter-spacing:.08em;text-transform:uppercase;white-space:nowrap}
+  /* Right panel */
+  .right{display:flex;flex-direction:column;justify-content:space-between;padding:46px 40px 46px 44px;background:rgba(0,0,0,.18)}
+
+  .platform-badge{background:rgba(201,176,126,.15);border:1px solid rgba(201,176,126,.35);color:#C9B07E;font-size:12px;font-family:'Segoe UI',sans-serif;padding:5px 14px;border-radius:99px;letter-spacing:.1em;text-transform:uppercase;align-self:flex-start}
+  .cta-block{margin-top:auto}
+  .cta-label{color:rgba(201,176,126,.6);font-size:11px;letter-spacing:.12em;text-transform:uppercase;font-family:'Segoe UI',sans-serif;margin-bottom:6px}
+  .cta-url{color:#C9B07E;font-size:14px;font-family:'Segoe UI',sans-serif;font-weight:600}
+  .hashtags{color:rgba(201,176,126,.45);font-size:12px;font-family:'Segoe UI',sans-serif;line-height:1.85;margin-top:20px}
 </style>
 </head>
 <body>
@@ -39,28 +46,41 @@
   <div class="overlay"></div>
   <div class="content">
 
-    <div class="logo-row">
-      <div class="logo-mark">🌿</div>
-      <div class="logo-name">Eternal Life Hospice</div>
-    </div>
+    <!-- Left: quote + attribution -->
+    <div class="left">
+      <div class="logo-row">
+        <div class="logo-mark">🌿</div>
+        <div class="logo-name">Eternal Life Hospice</div>
+      </div>
 
-    <div class="body-content">
-      <div class="quote-mark">"</div>
-      <div class="quote-text">What comes next deserves the <em>same care and precision</em> as everything that came before.</div>
-      <div class="divider"></div>
-      <div class="attribution">
-        <div class="attr-name">Aleksandra Lekovic</div>
-        <div class="attr-title">Founder &amp; CEO · Certified Hospice Administrator</div>
+      <div class="quote-wrap">
+        <div class="quote-mark">"</div>
+        <div class="quote-text">What comes next deserves the <em>same care and precision</em> as everything that came before.</div>
+      </div>
+
+      <div class="attr-block">
+        <div class="divider-v"></div>
+        <div class="attribution">
+          <div class="attr-name">Aleksandra Lekovic</div>
+          <div class="attr-title">Founder &amp; CEO · Certified Hospice Administrator</div>
+        </div>
       </div>
     </div>
 
-    <div class="footer">
-      <div class="hashtags">
-        #HospiceCare #EndOfLifeCare<br>
-        #CareThatHonorsLife #EternalLifeHospice<br>
-        #HospiceFounder #HealthcareLeadership
-      </div>
+    <!-- Right: platform + CTAs -->
+    <div class="right">
       <div class="platform-badge">LinkedIn</div>
+      <div class="cta-block">
+        <div class="cta-label">Learn more</div>
+        <div class="cta-url">eternallifehospice.com</div>
+        <div class="hashtags">
+          #HospiceCare #EndOfLifeCare<br>
+          #CareThatHonorsLife<br>
+          #EternalLifeHospice<br>
+          #HospiceFounder<br>
+          #HealthcareLeadership
+        </div>
+      </div>
     </div>
 
   </div>
