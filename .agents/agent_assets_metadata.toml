@@ -1325,3 +1325,21 @@ id = "GqrEvNflTzap2btf-OJHU"
 uri = "file://exports/social/guide-gbp.jpg"
 type = "image"
 title = "GBP image — exactly 1200×900"
+
+[[outputs]]
+id = "ES_oZJJPMTzCcuXnoRtyg"
+uri = "file://attached_assets/gif_previews/option1_pulse_ring.gif"
+type = "image"
+title = "Option 1 — Pulse Ring"
+
+[[outputs]]
+id = "gW3j7V6-wBEx3JCeX3IKj"
+uri = "file://attached_assets/gif_previews/option2_bounce_arrow.gif"
+type = "image"
+title = "Option 2 — Bounce Arrow"
+
+[[outputs]]
+id = "GKCtTxuioqulPhfeW3Q0u"
+uri = "file://attached_assets/gif_previews/option3_shimmer.gif"
+type = "image"
+title = "Option 3 — Shimmer Sweep"
