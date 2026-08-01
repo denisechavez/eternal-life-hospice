@@ -22,6 +22,7 @@
   --taupe:#B7A89D; --cream:#F5F0EB; --cream-mid:#EDE6DE; --cream-dark:#D8CDBF;
   --ink:#2C1A2B; --ink-mid:#5A4057; --ink-light:#8A7080; --paper:#FFFDFB;
   --ff-d:'Fraunces ELH',Georgia,serif; --ff-b:'Jost ELH',system-ui,sans-serif;
+  --tb-h:54px;
 }
 *{box-sizing:border-box}
 html{scroll-behavior:auto;-webkit-text-size-adjust:100%;text-size-adjust:100%;overflow-x:clip}
@@ -37,159 +38,84 @@ a{color:inherit}
 #bootveil .bv-logo{width:172px;height:64px;background:url('assets/img/elh-logo-h2-cream.webp') center/contain no-repeat;animation:veilpulse 1.7s ease-in-out infinite}
 #bootveil.gone{opacity:0;pointer-events:none}
 @keyframes veilpulse{0%,100%{opacity:.45;transform:scale(.98)}50%{opacity:1;transform:scale(1)}}
-body:not(.kitready) .stage,body:not(.kitready) .kit-hero{visibility:hidden}
 
 /* ---------- TOOLBAR ---------- */
-.toolbar{position:sticky;top:0;z-index:50;display:flex;align-items:center;gap:14px;
-  flex-wrap:wrap;padding:10px 18px;background:rgba(36,17,35,.72);
-  backdrop-filter:blur(10px);border-bottom:1px solid rgba(201,176,126,.25)}
+.toolbar{position:sticky;top:0;z-index:50;height:var(--tb-h);display:flex;align-items:center;gap:14px;
+  padding:0 18px;background:rgba(36,17,35,.82);
+  backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+  border-bottom:1px solid rgba(201,176,126,.22)}
 .tb-back{font-family:var(--ff-b);font-size:13px;letter-spacing:.03em;color:#F5F0EB;background:rgba(245,240,235,.10);border:1px solid rgba(245,240,235,.28);border-radius:20px;padding:6px 13px;cursor:pointer;white-space:nowrap;flex-shrink:0;transition:background .2s,border-color .2s;text-decoration:none;display:inline-flex;align-items:center}
 .tb-back:hover{background:rgba(245,240,235,.18);border-color:rgba(245,240,235,.5)}
 .tb-brand{display:flex;align-items:center;gap:11px;margin-right:auto}
-.tb-brand img{height:30px}
+.tb-brand img{height:28px}
 .tb-brand span{font-family:var(--ff-b);color:var(--gold);font-size:12px;letter-spacing:.22em;text-transform:uppercase}
-.seg{display:inline-flex;border:1px solid rgba(201,176,126,.45);border-radius:999px;overflow:hidden}
-.seg button{appearance:none;border:0;background:transparent;color:#E7D9C2;font-family:var(--ff-b);
-  font-size:13px;letter-spacing:.04em;padding:7px 14px;cursor:pointer;transition:.18s}
-.seg button.on{background:var(--gold);color:var(--deep);font-weight:600}
-.seg button:not(.on):hover{background:rgba(201,176,126,.16)}
+@media(max-width:480px){.tb-brand span{display:none}}
 .tb-act{display:flex;gap:8px}
 .btn{font-family:var(--ff-b);font-size:13px;letter-spacing:.04em;padding:7px 15px;border-radius:999px;cursor:pointer;transition:.18s;
   background:rgba(245,240,235,.10);border:1px solid rgba(245,240,235,.28);color:#F5F0EB;text-decoration:none;display:inline-flex;align-items:center;gap:7px;white-space:nowrap}
 .btn:hover{background:rgba(245,240,235,.18);border-color:rgba(245,240,235,.5)}
 .btn.primary{background:var(--gold);border-color:var(--gold);color:var(--deep);font-weight:600}
 .btn.primary:hover{background:#d8c194}
+.dl-ic{width:15px;height:15px;flex:0 0 auto}
 
 /* ---------- HERO ---------- */
-.kit-hero{max-width:820px;margin:0 auto;padding:30px 22px 6px;text-align:center;color:var(--cream)}
-.kit-hero .eyebrow{font-family:var(--ff-b);font-weight:600;letter-spacing:.3em;text-transform:uppercase;color:var(--gold);font-size:12.5px;margin-bottom:12px}
-.kit-hero h1{font-family:var(--ff-d);font-weight:300;font-size:46px;line-height:1.04;color:var(--cream);margin:0 0 14px;letter-spacing:-.01em}
+.kit-hero{max-width:720px;margin:0 auto;padding:28px 22px 20px;text-align:center;color:var(--cream)}
+.kit-hero .eyebrow{font-family:var(--ff-b);font-weight:600;letter-spacing:.3em;text-transform:uppercase;color:var(--gold);font-size:12px;margin-bottom:10px}
+.kit-hero h1{font-family:var(--ff-d);font-weight:300;font-size:clamp(32px,5vw,46px);line-height:1.04;color:var(--cream);margin:0 0 12px;letter-spacing:-.01em}
 .kit-hero h1 em{font-style:italic;color:#E7D9C2}
-.kit-hero .lead{font-size:16.5px;line-height:1.6;color:#E3D6D9;max-width:620px;margin:0 auto 22px}
-.hero-acts{display:flex;flex-wrap:wrap;gap:12px;justify-content:center}
-.hero-acts .btn{font-size:14px;padding:11px 20px}
-.dl-ic{width:15px;height:15px;flex:0 0 auto}
-.section-eyebrow{font-family:var(--ff-b);font-weight:600;letter-spacing:.26em;text-transform:uppercase;color:var(--gold);font-size:12px;text-align:center;margin:0 0 8px}
-.section-head{font-family:var(--ff-d);font-weight:300;font-size:32px;color:var(--cream);text-align:center;margin:0 auto 6px;line-height:1.08}
-.section-sub{font-family:var(--ff-b);font-size:14.5px;color:#C9B6C6;text-align:center;max-width:560px;margin:0 auto 6px}
+.kit-hero .lead{font-size:15.5px;line-height:1.6;color:#E3D6D9;max-width:580px;margin:0 auto 20px}
+.hero-acts{display:flex;flex-wrap:wrap;gap:10px;justify-content:center}
+.hero-acts .btn{font-size:14px;padding:10px 20px}
 
-/* ---------- STAGE / BOOKLET ---------- */
-.stage{display:flex;align-items:flex-start;justify-content:center;gap:14px;padding:26px 16px 6px;position:relative}
-.navbtn{position:sticky;top:46vh;flex:0 0 auto;width:46px;height:46px;border-radius:50%;
-  border:1px solid rgba(201,176,126,.5);background:rgba(60,28,59,.5);color:#F0E3CB;font-size:20px;
-  cursor:pointer;transition:.18s;display:flex;align-items:center;justify-content:center}
-.navbtn:hover{background:var(--gold);color:var(--deep);border-color:var(--gold)}
-.navbtn:disabled{opacity:.25;cursor:default}
-/* ---------- BOOK (two-page open-book spread) ---------- */
-.book{position:relative;display:flex;justify-content:center;align-items:flex-start;width:100%;max-width:1040px;margin:0 auto;perspective:2800px;perspective-origin:50% 40%}
-.book .side{position:relative;width:50%;min-width:0;cursor:zoom-in}
-.sheet{position:relative;width:100%;aspect-ratio:1620 / 2500;background:var(--paper);overflow:hidden;box-shadow:0 18px 50px rgba(20,8,22,.5)}
-.side.left .sheet{border-radius:14px 0 0 14px}
-.side.right .sheet{border-radius:0 14px 14px 0}
-.sheet>img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;object-position:center;display:block}
-/* spine shading on the inner edges */
-.side .sheet::after{content:"";position:absolute;top:0;bottom:0;width:38px;pointer-events:none;z-index:2}
-.side.left .sheet::after{right:0;background:linear-gradient(90deg,rgba(40,18,40,0),rgba(40,18,40,.22))}
-.side.right .sheet::after{left:0;background:linear-gradient(270deg,rgba(40,18,40,0),rgba(40,18,40,.22))}
-/* single-page states (cover / back cover, centered) */
-.book.single{max-width:520px}
-.book.single .side.right{display:none}
-.book.single .side.left{width:100%}
-.book.single .side.left .sheet{border-radius:14px}
-.book.single .side.left .sheet::after{display:none}
-/* transient turning leaf — only present during a turn, so resting pages carry NO transform/backface (pixel-sharp) */
-.leaf{position:absolute;top:0;width:50%;height:100%;z-index:40;transform-style:preserve-3d;pointer-events:none;display:none}
-.leaf.on{display:block}
-.leaf .face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden}
-.leaf .face .sheet{width:100%;height:100%;box-shadow:0 18px 50px rgba(20,8,22,.5)}
-.leaf.fwd{right:0;transform-origin:left center;transform:rotateY(0deg)}
-.leaf.bwd{left:0;transform-origin:right center;transform:rotateY(0deg)}
-.leaf.anim{transition:transform 1s cubic-bezier(.2,.55,.3,1)}
-.leaf.fwd.go{transform:rotateY(-180deg)}
-.leaf.bwd.go{transform:rotateY(180deg)}
-.leaf .face.back{transform:rotateY(180deg)}
-.leaf.fwd .face.front .sheet{border-radius:0 14px 14px 0}
-.leaf.fwd .face.back .sheet{border-radius:14px 0 0 14px}
-.leaf.bwd .face.front .sheet{border-radius:14px 0 0 14px}
-.leaf.bwd .face.back .sheet{border-radius:0 14px 14px 0}
-/* soft shadow that sweeps across the turning leaf */
-.leaf .face::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(90deg,rgba(40,18,40,.30),rgba(40,18,40,0) 32%);opacity:0;transition:opacity .5s ease}
-.leaf.go .face::after{opacity:1}
-/* cover open / close cross-fade */
-.book.fading .side{transition:opacity .42s ease}
-.book.fade-out .side{opacity:0}
-/* ---------- GALLERY (scroll) mode ---------- */
-.pages{width:100%;max-width:560px;position:relative;margin:0 auto}
-.pages .page{position:relative;background:var(--paper);border-radius:14px;overflow:hidden;box-shadow:0 18px 50px rgba(20,8,22,.5);margin:0 auto 26px;cursor:zoom-in}
-.pages .page img{display:block;width:100%;height:auto}
-body.booklet .pages{display:none}
-body.scroll .book{display:none}
-body.scroll .navbtn,body.scroll .indicator{display:none}
-@media(prefers-reduced-motion:reduce){
-  /* page-turn is user-initiated & essential; keep a quicker, gentler turn (not a fade) */
-  .leaf.anim{transition:transform .55s ease}
-  .book.fading .side{transition:opacity .3s ease}
+/* ---------- HEYZINE FLIPBOOK EMBED ---------- */
+.hz-wrap{
+  width:100%;
+  /* Full remaining viewport height after toolbar + hero (~160px) */
+  height:calc(100vh - var(--tb-h) - 160px);
+  min-height:520px;
+  max-height:1000px;
+  margin:0 0 0;
+  position:relative;
+  background:rgba(40,18,40,.4);
 }
-/* page footer folio */
-.pfoot{position:absolute;left:0;right:0;bottom:0;display:flex;justify-content:space-between;
-  align-items:center;font-family:var(--ff-b);font-size:11px;letter-spacing:.09em;color:#F0E3CB;
-  padding:8px 14px;background:linear-gradient(0deg,rgba(40,18,40,.55),rgba(40,18,40,0));pointer-events:none}
-.pfoot .pf-r{letter-spacing:.14em}
-body.scroll .pfoot{display:none}
-
-/* indicator dots */
-.indicator{display:flex;align-items:center;justify-content:center;gap:10px;padding:2px 11px 4px}
-.indicator .lbl{color:#E7D9C2;font-size:10.5px;letter-spacing:.09em;font-family:var(--ff-b)}
-.dots{display:flex;gap:5px;flex-wrap:wrap;max-width:260px;justify-content:center}
-.dot{width:6px;height:6px;border-radius:50%;background:rgba(231,217,194,.35);cursor:pointer;transition:.18s}
-.dot.on{background:var(--gold);transform:scale(1.25)}
-.scroll-hint{text-align:center;color:#B79FB4;font-size:12.5px;letter-spacing:.04em;font-family:var(--ff-b);padding:2px 0 6px;display:none}
-body.scroll .scroll-hint{display:block}
-
-/* ---------- CLOSED FOLDER + OPEN AFFORDANCE ---------- */
-.openkit{display:none}
-body.booklet.closed .openkit{display:inline-flex;align-items:center;gap:9px;position:fixed;left:50%;bottom:30px;transform:translateX(-50%);
-  font-family:var(--ff-b);font-weight:600;font-size:15px;letter-spacing:.02em;color:var(--deep);background:var(--gold);border:0;border-radius:999px;
-  padding:14px 26px;cursor:pointer;z-index:200;box-shadow:0 14px 34px rgba(20,8,22,.6),0 0 0 6px rgba(201,176,126,.16);animation:okpulse 2.4s ease-in-out infinite}
-.openkit:hover{background:#d8c194}
-.openkit svg{width:18px;height:18px}
-@keyframes okpulse{0%,100%{box-shadow:0 12px 30px rgba(20,8,22,.55),0 0 0 6px rgba(201,176,126,.16)}50%{box-shadow:0 14px 34px rgba(20,8,22,.6),0 0 0 13px rgba(201,176,126,.04)}}
-body.closed .navbtn,body.closed .indicator,body.closed .scroll-hint{visibility:hidden}
-body.booklet.closed .book .side{cursor:pointer}
-@media(prefers-reduced-motion:reduce){.openkit{animation:none}}
+.hz-wrap iframe{
+  display:block;
+  width:100%;
+  height:100%;
+  border:none;
+}
+/* Loading state shown until iframe fires load */
+.hz-wrap .hz-loading{
+  position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;
+  justify-content:center;gap:14px;color:#E3D6D9;font-family:var(--ff-b);font-size:14px;
+  letter-spacing:.04em;pointer-events:none;transition:opacity .4s ease
+}
+.hz-wrap .hz-loading svg{width:36px;height:36px;color:var(--gold);animation:hzspin 1.2s linear infinite}
+@keyframes hzspin{to{transform:rotate(360deg)}}
+.hz-wrap.loaded .hz-loading{opacity:0}
 
 /* ---------- SHARE STRIP ---------- */
-.sharekit{max-width:820px;margin:36px auto 0;padding:26px 22px 40px;text-align:center}
+.sharekit{max-width:820px;margin:28px auto 0;padding:0 22px 40px;text-align:center}
 .sk-in{display:inline-flex;align-items:center;gap:18px;background:rgba(245,240,235,.06);border:1px solid rgba(201,176,126,.24);border-radius:16px;padding:18px 24px;flex-wrap:wrap;justify-content:center}
-.sk-in img{width:92px;height:92px;border-radius:8px}
+.sk-in img{width:88px;height:88px;border-radius:8px}
 .sk-txt{text-align:left;max-width:340px}
 .sk-txt .sk-h{font-family:var(--ff-d);font-size:19px;color:var(--cream);margin-bottom:5px}
 .sk-txt p{font-family:var(--ff-b);font-size:13.5px;line-height:1.55;color:#C9B6C6;margin:0}
 .sk-txt .btn{margin-top:12px;font-size:13px}
-
-.compliance-note{max-width:760px;margin:8px auto 0;padding:0 22px 30px;text-align:center;font-family:var(--ff-b);font-size:12px;line-height:1.6;color:#9B82A0}
+.compliance-note{max-width:760px;margin:0 auto;padding:0 22px 28px;text-align:center;font-family:var(--ff-b);font-size:12px;line-height:1.6;color:#9B82A0}
 
 /* toast */
 .mk-toast{position:fixed;left:50%;bottom:34px;transform:translateX(-50%) translateY(16px);background:var(--deep);color:#F5F0EB;font-size:14px;padding:12px 22px;border-radius:10px;box-shadow:0 10px 30px rgba(60,28,59,.35);opacity:0;visibility:hidden;transition:opacity .3s ease,transform .3s ease,visibility 0s .3s;z-index:400}
 .mk-toast.show{opacity:1;visibility:visible;transform:translateX(-50%) translateY(0);transition:opacity .3s ease,transform .3s ease,visibility 0s}
 
-/* lightbox */
-.lightbox{position:fixed;inset:0;z-index:600;background:rgba(24,10,26,.92);display:none;align-items:center;justify-content:center;padding:24px;cursor:zoom-out}
-.lightbox.open{display:flex}
-.lightbox img{max-width:96vw;max-height:92vh;border-radius:10px;box-shadow:0 20px 60px rgba(0,0,0,.6)}
-.lb-close{position:absolute;top:18px;right:22px;width:42px;height:42px;border-radius:50%;border:1px solid rgba(245,240,235,.4);background:rgba(60,28,59,.6);color:#F5F0EB;font-size:22px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+/* social share links in share strip */
+.sk-social{display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:14px}
+.sk-social a{display:inline-flex;align-items:center;gap:6px;padding:5px 12px;border-radius:999px;border:1px solid rgba(201,176,126,.35);color:#E3D6D9;font-size:12.5px;font-weight:500;text-decoration:none;transition:border-color .2s,color .2s}
+.sk-social a:hover{border-color:var(--gold);color:var(--gold)}
+.sk-social a svg{width:14px;height:14px;flex:0 0 auto}
 
-@media(max-width:640px){
-  .kit-hero{padding:32px 18px 4px}
-  .kit-hero h1{font-size:34px}
-  .navbtn{display:none}
-  .stage{padding:18px 12px 4px}
-  .sk-txt{text-align:center}
-  .sk-in{gap:14px}
-}
-
-/* ---------- SITE FOOTER (matches site chrome) ---------- */
-#site-footer{background:linear-gradient(180deg,#33172f 0%,#2a1226 100%);color:#E3D6D9;padding:52px 22px 26px;margin-top:40px;font-family:var(--ff-b)}
+/* ---------- SITE FOOTER ---------- */
+#site-footer{background:linear-gradient(180deg,#33172f 0%,#2a1226 100%);color:#E3D6D9;padding:52px 22px 26px;margin-top:0;font-family:var(--ff-b)}
 #site-footer a{color:#E3D6D9;text-decoration:none}
 #site-footer a:hover{color:var(--gold)}
 .foot-grid{max-width:1120px;margin:0 auto;display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr 1fr 1.5fr;gap:34px}
@@ -211,12 +137,16 @@ body.booklet.closed .book .side{cursor:pointer}
 .foot-signup{font-weight:600;color:var(--gold)!important}
 .foot-disclaimer{max-width:1120px;margin:24px auto 0;font-size:11px;line-height:1.6;color:#7E6A85}
 .foot-bottom{max-width:1120px;margin:20px auto 0;padding-top:18px;border-top:1px solid rgba(201,176,126,.12);display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;font-size:12px;color:#8A7080}
+.foot-bottom-links a{color:#B79FB4;transition:color .2s}
+.foot-bottom-links a:hover{color:var(--gold)}
+.foot-translate{max-width:1120px;margin:24px auto 0;padding-top:18px;border-top:1px solid rgba(255,255,255,.06)}
+.ft-label{display:block;font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:rgba(245,240,235,.60);margin-bottom:.65rem}
+.ft-lang-btns{display:flex;flex-wrap:wrap;gap:.45rem}
+.ft-lang{display:inline-flex;align-items:center;gap:.35rem;padding:.3rem .75rem;border:1px solid rgba(245,240,235,.14);border-radius:20px;font-size:12.5px;color:rgba(245,240,235,.65);text-decoration:none;transition:border-color .2s,color .2s,background .2s;white-space:nowrap}
+.ft-lang:hover{border-color:rgba(201,176,126,.5);color:var(--cream);background:rgba(201,176,126,.08)}
 @media(max-width:860px){.foot-grid{grid-template-columns:1fr 1fr}.foot-social .fs-invite{margin-left:0}}
-.sk-social{display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:14px}
-.sk-social a{display:inline-flex;align-items:center;gap:6px;padding:5px 12px;border-radius:999px;border:1px solid rgba(201,176,126,.35);color:#E3D6D9;font-size:12.5px;font-weight:500;text-decoration:none;transition:border-color .2s,color .2s}
-.sk-social a:hover{border-color:var(--gold);color:var(--gold)}
-.sk-social a svg{width:14px;height:14px;flex:0 0 auto}
 @media(max-width:520px){.foot-grid{grid-template-columns:1fr}}
+@media(max-width:640px){.kit-hero{padding:24px 18px 16px}.sk-txt{text-align:center}.sk-in{gap:14px}.hz-wrap{min-height:420px}}
 </style>
 <script async src="/assets/analytics.js?v=20260727h"></script>
 <script type="application/ld+json">
@@ -224,18 +154,8 @@ body.booklet.closed .book .side{cursor:pointer}
   "@context": "https://schema.org",
   "@type": "BreadcrumbList",
   "itemListElement": [
-    {
-      "@type": "ListItem",
-      "position": 1,
-      "name": "Home",
-      "item": "https://eternallifehospice.com/"
-    },
-    {
-      "@type": "ListItem",
-      "position": 2,
-      "name": "Media Kit",
-      "item": "https://eternallifehospice.com/media-kit"
-    }
+    {"@type":"ListItem","position":1,"name":"Home","item":"https://eternallifehospice.com/"},
+    {"@type":"ListItem","position":2,"name":"Media Kit","item":"https://eternallifehospice.com/media-kit"}
   ]
 }
 </script>
@@ -253,77 +173,80 @@ body.booklet.closed .book .side{cursor:pointer}
   </script>
   <noscript>Please ensure Javascript is enabled for purposes of <a href="https://userway.org">website accessibility</a></noscript>
 
-
 <script>var $wc_load=function(a){return JSON.parse(JSON.stringify(a))},$wc_leads=$wc_leads||{doc:{url:$wc_load(document.URL),ref:$wc_load(document.referrer),search:$wc_load(location.search),hash:$wc_load(location.hash)}};</script>
 <script async src="//s.ksrndkehqnwntyxlhgto.com/172406.js"></script>
 </head>
-<body class="booklet closed">
+<body>
 <div id="bootveil"><div class="bv-logo" role="img" aria-label="Eternal Life Hospice"></div></div>
 
+<!-- TOOLBAR -->
 <div class="toolbar">
-  <a class="tb-back" id="tbBack" href="/">&#8592;&nbsp;Back to site</a>
+  <a class="tb-back" href="/">&#8592;&nbsp;Back to site</a>
   <div class="tb-brand">
     <img src="assets/img/elh-logo-h2-cream.webp" alt="Eternal Life Hospice">
     <span>Media Kit</span>
   </div>
-  <div class="seg" id="viewSeg">
-    <button data-view="booklet" class="on">Flipbook</button>
-    <button data-view="scroll">Gallery</button>
-  </div>
   <div class="tb-act">
-    <button class="btn" id="shareBtn"><svg class="dl-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>Share</button>
-    <a class="btn primary" id="dlKit" href="assets/downloads/eternal-life-press-kit-digital.pdf" download><svg class="dl-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Download PDF</a>
+    <button class="btn" id="shareBtn">
+      <svg class="dl-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>Share
+    </button>
+    <a class="btn primary" href="assets/downloads/eternal-life-press-kit-digital.pdf" download>
+      <svg class="dl-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Download PDF
+    </a>
   </div>
 </div>
 <div class="mk-toast" id="mkToast" role="status" aria-live="polite">Link copied &mdash; ready to paste anywhere</div>
 
+<!-- HERO -->
 <header class="kit-hero">
   <div class="eyebrow">The Eternal Life Press &amp; Media Kit</div>
   <h1>Everything that sets our hospice care apart, <em>in one place</em></h1>
-  <p class="lead">Open the kit and turn the pages &mdash; a welcome from our founder, the counties we serve and the four pillars of The Eternal Standard &mdash; then download the print-ready PDF to share. Care That Honors Life.</p>
+  <p class="lead">Turn the pages to find a welcome from our founder, the counties we serve, and the four pillars of The Eternal Standard. Download the print-ready PDF to share. Care That Honors Life.</p>
   <div class="hero-acts">
-    <a class="btn primary" href="assets/downloads/eternal-life-press-kit-digital.pdf" download><svg class="dl-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Download Press Kit (PDF)</a>
-    <a class="btn" href="/refer"><svg class="dl-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg>Refer a Patient</a>
+    <a class="btn primary" href="assets/downloads/eternal-life-press-kit-digital.pdf" download>
+      <svg class="dl-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Download Press Kit (PDF)
+    </a>
+    <a class="btn" href="/refer">
+      <svg class="dl-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg>Refer a Patient
+    </a>
   </div>
 </header>
 
-<div class="stage">
-  <button class="navbtn" id="prevBtn" aria-label="Previous page">&#8249;</button>
-  <div class="book" id="book">
-    <div class="side left"><div class="sheet"><img id="pgL" alt="" decoding="async"></div></div>
-    <div class="side right"><div class="sheet"><img id="pgR" alt="" decoding="async"></div></div>
-    <div class="leaf" id="leaf" aria-hidden="true">
-      <div class="face front"><div class="sheet"><img id="lfF" alt="" decoding="async"></div></div>
-      <div class="face back"><div class="sheet"><img id="lfB" alt="" decoding="async"></div></div>
-    </div>
+<!-- ═══════════════════════════════════════════════════════════════════
+     HEYZINE FLIPBOOK EMBED
+     ─────────────────────────────────────────────────────────────────
+     Once you have your HeyZine flipbook URL (e.g.
+       https://heyzine.com/flip-book/XXXXXXXXXXXXX.html
+     ), replace HEYZINE_URL_HERE below with that URL.
+     ═══════════════════════════════════════════════════════════════════ -->
+<div class="hz-wrap" id="hzWrap">
+  <!-- Loading spinner shown until the iframe finishes loading -->
+  <div class="hz-loading" aria-hidden="true">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/>
+    </svg>
+    Loading the kit&hellip;
   </div>
-  <div class="pages" id="pages">
-    <section class="page is-current"><img src="assets/kit/01-front-cover.png?v=20260714c" width="1616" height="2484" alt="Press kit front cover — Care That Honors Life"></section>
-    <section class="page"><img src="assets/kit/02-welcome.jpg?v=20260714e" width="1719" height="2620" alt="A welcome letter from founder Aleksandra Dubina, with Medicare, CDPH and ACHC credentials" loading="lazy"></section>
-    <section class="page"><img src="assets/kit/05-clinical-front.jpg?v=20260714c" width="1708" height="2608" alt="Pillar one — Clinical Confidence (card front)" loading="lazy"></section>
-    <section class="page"><img src="assets/kit/06-clinical-back.jpg?v=20260714c" width="1707" height="2607" alt="The Eternal Standard — what Clinical Confidence means (card back)" loading="lazy"></section>
-    <section class="page"><img src="assets/kit/07-guided-front.jpg?v=20260714c" width="1707" height="2458" alt="Pillar two — Guided Presence (card front)" loading="lazy"></section>
-    <section class="page"><img src="assets/kit/08-guided-back.jpg?v=20260714c" width="1707" height="2458" alt="The Eternal Standard — the first 48 hours of hospice care and what families can expect (card back)" loading="lazy"></section>
-    <section class="page"><img src="assets/kit/09-comfort-front.jpg?v=20260714c" width="1707" height="2307" alt="Pillar three — Whole-Person Comfort (card front)" loading="lazy"></section>
-    <section class="page"><img src="assets/kit/10-comfort-back.jpg?v=20260714c" width="1707" height="2308" alt="The Eternal Standard — comfort is more than medication and holistic integrative modalities (card back)" loading="lazy"></section>
-    <section class="page"><img src="assets/kit/11-compliance-front.jpg?v=20260714c" width="1707" height="2157" alt="Pillar four — Compliance-Led Care (card front)" loading="lazy"></section>
-    <section class="page"><img src="assets/kit/12-compliance-back.jpg?v=20260714c" width="1707" height="2158" alt="The Eternal Standard — Compliance-Led Care means trust protected at every level (card back)" loading="lazy"></section>
-    <section class="page"><img src="assets/kit/03-coverage.png?v=20260714c" width="1620" height="2500" alt="Hospice coverage explained — what is included and accepted insurance (inside back cover)" loading="lazy"></section>
-    <section class="page"><img src="assets/kit/13-back-cover.png?v=20260714c" width="1616" height="2484" alt="Press kit back cover — Here in moments that matter most" loading="lazy"></section>
-  </div>
-  <button class="navbtn" id="nextBtn" aria-label="Next page">&#8250;</button>
-  <button class="openkit" id="openKit" type="button" aria-label="Open the media kit"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>Open the Kit</button>
+  <iframe
+    id="hzFrame"
+    src="HEYZINE_URL_HERE"
+    title="Eternal Life Hospice — Media Kit flipbook"
+    allow="fullscreen"
+    allowfullscreen
+    scrolling="no"
+  ></iframe>
 </div>
-<div class="indicator"><span class="lbl" id="pageLbl">Cover</span><div class="dots" id="dots"></div></div>
-<div class="scroll-hint">Tap any page to enlarge</div>
 
+<!-- SHARE STRIP -->
 <div class="sharekit">
   <div class="sk-in">
-    <img src="assets/img/qr-media-kit-cream.png" alt="QR code to this media kit at eternallifehospice.com/media-kit">
+    <img src="assets/img/qr-media-kit-cream.png" alt="QR code to this media kit at eternallifehospice.com/media-kit" width="88" height="88" loading="lazy">
     <div class="sk-txt">
       <div class="sk-h">Share this kit</div>
       <p>Scan or send the link to open the full media kit on any device.</p>
-      <button class="btn" id="shareBtn2"><svg class="dl-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>Copy link to this kit</button>
+      <button class="btn" id="shareBtn2">
+        <svg class="dl-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>Copy link to this kit
+      </button>
       <nav class="sk-social" aria-label="Share media kit on social media">
         <a href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Feternallifehospice.com%2Fmedia-kit" target="_blank" rel="noopener" aria-label="Share on LinkedIn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4V9h4v1.57A6 6 0 0 1 16 8z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>LinkedIn</a>
         <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Feternallifehospice.com%2Fmedia-kit" target="_blank" rel="noopener" aria-label="Share on Facebook"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>Facebook</a>
@@ -336,8 +259,6 @@ body.booklet.closed .book .side{cursor:pointer}
 
 <p class="compliance-note">Eternal Life Hospice, Inc. is a Medicare-certified, CDPH-licensed, ACHC-accredited hospice serving Ventura and Los Angeles County. Integrative modalities are offered for comfort and wellbeing and are not intended to diagnose, treat, cure or prevent any medical condition.</p>
 
-<div class="lightbox" id="lightbox"><button class="lb-close" id="lbClose" aria-label="Close">&times;</button><img id="lbImg" src="" alt="Enlarged press kit page"></div>
-
 <footer id="site-footer">
   <div class="foot-grid">
     <div><div class="foot-logo"><a href="/" aria-label="Eternal Life Hospice — home"><img loading="lazy" decoding="async" src="assets/img/elh-logo-cream-g.png" alt="Eternal Life Hospice logo"></a></div><p class="foot-tag">Care That Honors Life.</p><p class="foot-legal">Medicare-Certified · CDPH-Licensed · ACHC-Accredited. Serving families across Ventura and Los Angeles Counties.</p><div class="foot-qr"><img src="assets/img/qr-cream.png" alt="Scan to visit eternallifehospice.com" width="96" height="96" loading="lazy"><span>Scan to visit<br>on your phone</span></div></div>
@@ -347,7 +268,7 @@ body.booklet.closed .book .side{cursor:pointer}
   </div>
   <nav class="foot-social" aria-label="Eternal Life Hospice on social media"><span class="fs-label">Stay Connected</span><a href="https://www.linkedin.com/company/eternal-life-hospice/" target="_blank" rel="noopener" aria-label="Visit Eternal Life Hospice on LinkedIn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4V9h4v1.57A6 6 0 0 1 16 8z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg></a><a href="https://www.facebook.com/eternallifehospiceinc" target="_blank" rel="noopener" aria-label="Visit Eternal Life Hospice on Facebook"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg></a><a href="https://www.instagram.com/eternallifehospice/" target="_blank" rel="noopener" aria-label="Visit Eternal Life Hospice on Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg></a><a href="https://www.youtube.com/@EternalLifeHospice" target="_blank" rel="noopener" aria-label="Watch Eternal Life Hospice on YouTube"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z"/><polygon points="9.75 15.02 15.5 11.75 9.75 8.48"/></svg></a><a href="https://yelp.to/uEz7kTDDl6" target="_blank" rel="noopener" aria-label="Eternal Life Hospice on Yelp"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false"><path d="m7.6885 15.1415-3.6715.8483c-.3769.0871-.755.183-1.1452.155-.2611-.0188-.5122-.0414-.7606-.213a1.179 1.179 0 0 1-.331-.3594c-.3486-.5519-.3656-1.3661-.3697-2.0004a6.2874 6.2874 0 0 1 .3314-2.0642 1.857 1.857 0 0 1 .1073-.2474 2.3426 2.3426 0 0 1 .1255-.2165 2.4572 2.4572 0 0 1 .1563-.1975 1.1736 1.1736 0 0 1 .399-.2831 1.082 1.082 0 0 1 .4592-.0837c.2355.0016.5139.052.91.1734.0555.0191.1237.0382.1856.0572.3277.1013.7048.2404 1.1499.3987.6863.2404 1.3663.487 2.0463.7397l1.2117.4423c.2217.0807.4363.18.6412.297.174.0984.3273.2298.4512.387a1.217 1.217 0 0 1 .192.4309 1.2205 1.2205 0 0 1-.872 1.4522c-.0468.0151-.0852.0239-.1085.0293l-1.105.2553-.0031-.001zM18.8208 7.565a1.8506 1.8506 0 0 0-.2042-.1754 2.4082 2.4082 0 0 0-.2077-.1394 2.3607 2.3607 0 0 0-.2269-.109 1.1705 1.1705 0 0 0-.482-.0796 1.0862 1.0862 0 0 0-.4498.1263c-.2107.1048-.4388.2732-.742.5551-.042.0417-.0947.0886-.142.133-.2502.2351-.5286.5252-.8599.863a114.6363 114.6363 0 0 0-1.5166 1.5629l-.8962.9293a4.1897 4.1897 0 0 0-.4466.5483 1.541 1.541 0 0 0-.2364.5459 1.2199 1.2199 0 0 0 .0107.4518l.0046.02a1.218 1.218 0 0 0 1.4184.923 1.162 1.162 0 0 0 .1105-.0213l4.7781-1.104c.3766-.087.7587-.1667 1.097-.3631.2269-.1316.4428-.262.5909-.5252a1.1793 1.1793 0 0 0 .1405-.4683c.0733-.6512-.2668-1.3908-.5403-1.963a6.2792 6.2792 0 0 0-1.2001-1.7103zM8.9703.0754a8.6724 8.6724 0 0 0-.83.1564c-.2754.066-.548.1383-.8146.2236-.868.2844-2.0884.8063-2.295 1.8065-.1165.5655.1595 1.1439.3737 1.66.2595.6254.614 1.1889.9373 1.7777.8543 1.5545 1.7245 3.0993 2.5922 4.6457.259.4617.5416 1.0464 1.043 1.2856a1.058 1.058 0 0 0 .1013.0383c.2248.0851.4699.1016.7041.0471a4.3015 4.3015 0 0 0 .0418-.0097 1.2136 1.2136 0 0 0 .5658-.3397 1.1033 1.1033 0 0 0 .079-.0822c.3463-.435.3454-1.0833.3764-1.6134.1042-1.771.2139-3.5423.3009-5.3142.0332-.6712.1055-1.3333.0655-2.0096-.0328-.5579-.0368-1.1984-.3891-1.6563-.6218-.8073-1.9476-.741-2.8523-.6158zm2.084 15.9505a1.1053 1.1053 0 0 0-1.2306-.4145 1.1398 1.1398 0 0 0-.1526.0633 1.4806 1.4806 0 0 0-.2171.1354c-.1992.1475-.3668.3392-.5196.5315-.0386.049-.074.1143-.12.1562l-.7686 1.0573a113.9168 113.9168 0 0 0-1.2913 1.789c-.278.3895-.5184.7184-.7083 1.0094-.036.0547-.0734.116-.1075.1647-.2277.3522-.3566.6092-.4228.8381a1.0945 1.0945 0 0 0-.046.4721c.0211.1655.0768.3246.1635.467.046.0715.0957.1406.1487.207a2.334 2.334 0 0 0 .1754.1825 1.843 1.843 0 0 0 .2108.1732c.5304.369 1.1112.6342 1.722.8391a6.0958 6.0958 0 0 0 1.5716.3004c.091.0046.1821.0025.2728-.006a2.3878 2.3878 0 0 0 .2506-.0351 2.3862 2.3862 0 0 0 .2447-.071 1.1927 1.1927 0 0 0 .4175-.2658c.1127-.113.1994-.249.2541-.3989.0889-.2214.1473-.5026.1857-.92.0034-.0593.0118-.1305.0177-.1958.0304-.3463.0443-.7531.0666-1.2315.0375-.7357.067-1.4681.0903-2.2026 0 0 .0495-1.3053.0494-1.306.0113-.3008.002-.6342-.0814-.9336a1.396 1.396 0 0 0-.1756-.4054zm8.6754 2.0439c-.1605-.176-.3878-.3514-.7462-.5682-.0518-.0288-.1124-.0674-.1684-.1009-.2985-.1795-.658-.3684-1.078-.5965a120.7615 120.7615 0 0 0-1.9427-1.042l-1.1515-.6107c-.0597-.0175-.1203-.0607-.1766-.0878-.2212-.1058-.4558-.2045-.6992-.2498a1.4915 1.4915 0 0 0-.2545-.0265 1.1527 1.1527 0 0 0-.1648.01 1.1077 1.1077 0 0 0-.9227.9133 1.4186 1.4186 0 0 0 .0159.439c.0563.3065.1932.6096.3346.875l.615 1.1526c.3422.65.6884 1.2963 1.0435 1.9406.229.4202.4196.7799.5982 1.078.0338.056.0721.1163.1011.1682.2173.3584.392.584.569.7458.1146.1107.252.195.4026.247.1583.0525.326.071.4919.0546a2.368 2.368 0 0 0 .251-.0435c.0817-.022.1622-.048.241-.0784a1.863 1.863 0 0 0 .2475-.1143 6.1018 6.1018 0 0 0 1.2818-.9597c.4596-.4522.8659-.9454 1.182-1.51.044-.08.0819-.163.1138-.2483a2.49 2.49 0 0 0 .0773-.2411c.0186-.083.033-.1669.0429-.2513a1.188 1.188 0 0 0-.0565-.491 1.0933 1.0933 0 0 0-.248-.4041z"/></svg></a><span class="fs-invite">An invitation to learn, share &amp; contribute in The Eternal Care Brief</span><a class="foot-signup" href="/care-brief#signup">Sign up today &#8594;</a></nav>
   <div class="foot-disclaimer"><strong style="color:rgba(245,240,235,.5)">Disclaimer:</strong> Eternal Life Hospice Inc. is a licensed and Medicare-certified hospice care provider. We do not sell, prescribe, dispense or ship prescription medications, and we do not operate an online pharmacy or telemedicine prescribing service. All hospice services are provided in person by licensed healthcare professionals. Any references to Medicare coverage, medication support or medical coordination relate solely to patient care delivered under physician direction and do not constitute prescription drug sales or online medical services. The integrative modalities described are complementary care offered for patient comfort and wellbeing; they are not intended to diagnose, treat, cure or prevent any medical condition. Medicare coverage details are subject to change; confirm current eligibility with your care team or call <a href="tel:18006334227" style="color:inherit;text-decoration:none">1.800.MEDICARE</a>.</div>
-  <div class="foot-bottom"><span>© 2026 Eternal Life Hospice Inc. All rights reserved. · A <a href="https://conduitint.com" target="_blank" rel="noopener" style="color:inherit;text-decoration:none">Conduit International</a> build</span><span class="foot-bottom-links"><a href="/privacy-policy" style="text-decoration:none">Privacy Policy</a> &nbsp;·&nbsp; <a href="/terms" style="text-decoration:none">Terms &amp; Conditions</a> &nbsp;&middot;&nbsp; <a href="#" onclick="window.elhCookieSettings&amp;&amp;window.elhCookieSettings();return false;" style="color:inherit;text-decoration:none">Cookie Settings</a></span><span><a href="/" style="color:inherit">eternallifehospice.com</a></span></div>
+  <div class="foot-bottom"><span>© 2026 Eternal Life Hospice Inc. All rights reserved. · A <a href="https://conduitint.com" target="_blank" rel="noopener" style="color:inherit;text-decoration:none">Conduit International</a> build</span><span class="foot-bottom-links"><a href="/privacy-policy" style="text-decoration:none">Privacy Policy</a> &nbsp;·&nbsp; <a href="/terms" style="text-decoration:none">Terms &amp; Conditions</a> &nbsp;&middot;&nbsp; <a href="#" onclick="window.elhCookieSettings&&window.elhCookieSettings();return false;" style="color:inherit;text-decoration:none">Cookie Settings</a></span><span><a href="/" style="color:inherit">eternallifehospice.com</a></span></div>
 
   <div class="foot-translate">
     <span class="ft-label">Translate this page</span>
@@ -368,171 +289,52 @@ body.booklet.closed .book .side{cursor:pointer}
 
 <script>
 (function(){
-  var pageEls=Array.prototype.slice.call(document.querySelectorAll('#pages .page'));
-  // page data single-sourced from the gallery markup (keeps URLs/cache-busters in one place)
-  var PAGES=pageEls.map(function(p){var im=p.querySelector('img');return {src:im.getAttribute('src'),alt:im.getAttribute('alt')||''};});
+  'use strict';
 
-  // Spread model — mirrors the physical book / PDF order. {one} = single centered page.
-  var SPREADS=[
-    {one:0},     // 0  front cover
-    {l:1,r:2},   // 1  welcome | Clinical Confidence (front)
-    {l:3,r:4},   // 2  Clinical (back) | Guided Presence (front)
-    {l:5,r:6},   // 3  Guided (back) | Whole-Person Comfort (front)
-    {l:7,r:8},   // 4  Comfort (back) | Compliance-Led Care (front)
-    {l:9,r:10},  // 5  Compliance (back) | coverage
-    {one:11}     // 6  back cover
-  ];
-  var NS=SPREADS.length, cur=0, busy=false;
-
-  var book=document.getElementById('book');
-  var pgL=document.getElementById('pgL'), pgR=document.getElementById('pgR');
-  var leaf=document.getElementById('leaf'), lfF=document.getElementById('lfF'), lfB=document.getElementById('lfB');
-  var sideL=book.querySelector('.side.left'), sideR=book.querySelector('.side.right');
-  var lbl=document.getElementById('pageLbl');
-  var prevBtn=document.getElementById('prevBtn'), nextBtn=document.getElementById('nextBtn');
-
-  // dots — one per spread
-  var dotsWrap=document.getElementById('dots'), dots=[];
-  for(var d=0;d<NS;d++){var dt=document.createElement('div');dt.className='dot'+(d===0?' on':'');dt.setAttribute('data-i',d);dotsWrap.appendChild(dt);dots.push(dt);}
-
-  // gallery folios (skip cover) — gallery still shows every page stacked
-  pageEls.forEach(function(p,idx){
-    if(idx===0) return;
-    var f=document.createElement('div'); f.className='pfoot';
-    f.innerHTML='<span class="pf-l">Eternal Life Hospice &middot; Care That Honors Life</span><span class="pf-r">'+idx+' / '+(PAGES.length-1)+'</span>';
-    p.appendChild(f);
-  });
-
-  function setImg(el,i){ if(i==null){el.removeAttribute('src');el.alt='';return;} el.src=PAGES[i].src; el.alt=PAGES[i].alt; }
-  function isSingle(i){ return SPREADS[i].one!=null; }
-
-  // paint a spread with NO transforms -> pages are pixel-sharp at rest
-  function renderStatic(i){
-    var s=SPREADS[i];
-    if(s.one!=null){ book.classList.add('single'); setImg(pgL,s.one); setImg(pgR,null); }
-    else{ book.classList.remove('single'); setImg(pgL,s.l); setImg(pgR,s.r); }
-  }
-  function chrome(){
-    dots.forEach(function(dt){dt.classList.toggle('on',+dt.getAttribute('data-i')===cur);});
-    lbl.textContent=(cur===0)?'Cover':(cur===NS-1)?'Back cover':('Spread '+cur+' of '+(NS-2));
-    prevBtn.disabled=(cur===0); nextBtn.disabled=(cur===NS-1);
+  /* ── Boot veil ── */
+  function revealPage(){
+    var v=document.getElementById('bootveil');
+    if(v){v.classList.add('gone');setTimeout(function(){v.remove();},600);}
   }
 
-  function finishLeaf(target){ leaf.className='leaf'; renderStatic(target); cur=target; busy=false; chrome(); }
-
-  // classic open-book leaf turn between two interior spreads
-  function leafTurn(target){
-    var fwd=target>cur, s=SPREADS[cur], t=SPREADS[target];
-    if(fwd){ setImg(pgL,s.l); setImg(pgR,t.r); }   // left stays; next right revealed under the leaf
-    else   { setImg(pgR,s.r); setImg(pgL,t.l); }   // right stays; prev left revealed under the leaf
-    if(fwd){ setImg(lfF,s.r); setImg(lfB,t.l); }   // leaf front = current right, back = next left
-    else   { setImg(lfF,s.l); setImg(lfB,t.r); }   // leaf front = current left, back = prev right
-    book.classList.remove('single');
-    leaf.className='leaf on '+(fwd?'fwd':'bwd');
-    void leaf.offsetWidth;                          // commit start state before animating
-    leaf.classList.add('anim','go');
-    var done=false;
-    // only the leaf's own transform transition ends the turn — ignore the .face::after opacity
-    // transitionend (~.5s) that bubbles up, or it would snap the flip shut halfway
-    function end(e){ if(e && (e.target!==leaf || e.propertyName!=='transform'))return; if(done)return; done=true; leaf.removeEventListener('transitionend',end); finishLeaf(target); }
-    leaf.addEventListener('transitionend',end);
-    setTimeout(end,1300);                           // safety net if transitionend is missed
-  }
-
-  // gentle cross-fade for the cover open/close and the back cover (single <-> spread)
-  function crossFade(target){
-    book.classList.add('fading'); void book.offsetWidth; book.classList.add('fade-out');
-    setTimeout(function(){
-      renderStatic(target); cur=target; chrome(); void book.offsetWidth;
-      book.classList.remove('fade-out');
-      setTimeout(function(){ book.classList.remove('fading'); busy=false; },440);
-    },430);
-  }
-
-  function go(target){
-    if(target<0)target=0; if(target>NS-1)target=NS-1;
-    if(document.body.classList.contains('closed') && target>0){document.body.classList.remove('closed');}
-    if(target===cur||busy)return;
-    if(!document.body.classList.contains('booklet')){ cur=target; renderStatic(target); chrome(); return; }
-    busy=true;
-    if(!isSingle(cur) && !isSingle(target) && Math.abs(target-cur)===1){ leafTurn(target); }
-    else{ crossFade(target); }
-  }
-
-  prevBtn.onclick=function(){go(cur-1);};
-  nextBtn.onclick=function(){go(cur+1);};
-  dots.forEach(function(dt){dt.onclick=function(){go(+dt.getAttribute('data-i'));};});
-
-  document.addEventListener('keydown',function(e){
-    if(document.getElementById('lightbox').classList.contains('open')){ if(e.key==='Escape')closeLb(); return; }
-    if(document.activeElement && /INPUT|TEXTAREA/.test(document.activeElement.tagName))return;
-    if(e.key==='ArrowRight')go(cur+1); if(e.key==='ArrowLeft')go(cur-1);
-  });
-  var x0=null;
-  book.addEventListener('touchstart',function(e){x0=e.touches[0].clientX;},{passive:true});
-  book.addEventListener('touchend',function(e){
-    if(x0===null)return; var dx=e.changedTouches[0].clientX-x0;
-    if(Math.abs(dx)>55){go(cur+(dx<0?1:-1));}
-    x0=null;
-  },{passive:true});
-
-  // view toggle (Flipbook <-> Gallery)
-  document.querySelectorAll('#viewSeg button').forEach(function(b){
-    b.onclick=function(){
-      document.querySelectorAll('#viewSeg button').forEach(function(x){x.classList.remove('on');}); b.classList.add('on');
-      var v=b.getAttribute('data-view');
-      document.body.classList.remove('closed');
-      document.body.classList.toggle('scroll',v==='scroll');
-      document.body.classList.toggle('booklet',v==='booklet');
-      if(v==='booklet'){ renderStatic(cur); chrome(); }
-    };
-  });
-
-  // open the kit (closed cover -> first spread)
-  var openBtn=document.getElementById('openKit');
-  function openKit(){ document.body.classList.remove('closed'); if(cur===0){go(1);} }
-  if(openBtn)openBtn.onclick=openKit;
-
-  // lightbox (tap any page to enlarge — gallery pages and the open book)
-  var lb=document.getElementById('lightbox'), lbImg=document.getElementById('lbImg');
-  function openLb(src,alt){ if(!src)return; lbImg.src=src; lbImg.alt=alt||'Enlarged press kit page'; lb.classList.add('open'); }
-  function closeLb(){ lb.classList.remove('open'); lbImg.src=''; }
-  pageEls.forEach(function(p){
-    var img=p.querySelector('img');
-    p.addEventListener('click',function(){
-      if(document.body.classList.contains('closed')){ openKit(); return; }
-      if(document.body.classList.contains('scroll')){ openLb(img.getAttribute('src'),img.getAttribute('alt')); }
+  /* ── HeyZine iframe load ── */
+  var frame=document.getElementById('hzFrame');
+  var wrap=document.getElementById('hzWrap');
+  if(frame){
+    frame.addEventListener('load',function(){
+      wrap.classList.add('loaded');
+      revealPage();
     });
-  });
-  sideL.addEventListener('click',function(){ if(document.body.classList.contains('closed')){ openKit(); return; } if(!busy)openLb(pgL.getAttribute('src'),pgL.alt); });
-  sideR.addEventListener('click',function(){ if(!busy)openLb(pgR.getAttribute('src'),pgR.alt); });
-  document.getElementById('lbClose').onclick=closeLb;
-  lb.addEventListener('click',function(e){ if(e.target===lb)closeLb(); });
+    /* Fallback — reveal anyway after 6s in case iframe load event doesn't fire */
+    setTimeout(revealPage, 6000);
+  } else {
+    revealPage();
+  }
 
-  // share
+  /* ── Share ── */
+  var SHARE_URL='https://eternallifehospice.com/media-kit';
+  function toast(){
+    var t=document.getElementById('mkToast');
+    if(!t)return;
+    t.classList.add('show');
+    clearTimeout(t._tid);
+    t._tid=setTimeout(function(){t.classList.remove('show');},2600);
+  }
+  function copyLink(){
+    if(navigator.clipboard&&navigator.clipboard.writeText){
+      navigator.clipboard.writeText(SHARE_URL).then(toast).catch(function(){window.prompt('Copy this link:',SHARE_URL);});
+    } else { window.prompt('Copy this link:',SHARE_URL); }
+  }
   function share(){
-    var url='https://eternallifehospice.com/media-kit';
-    var data={title:'Eternal Life Hospice \u2014 Media Kit',text:'The Eternal Life Hospice press & media kit \u2014 open the folder and read online, or download the PDF.',url:url};
-    function toast(){ var t=document.getElementById('mkToast'); if(!t)return; t.classList.add('show'); clearTimeout(t._tid); t._tid=setTimeout(function(){t.classList.remove('show');},2600); }
-    function copyLink(){ if(navigator.clipboard&&navigator.clipboard.writeText){ navigator.clipboard.writeText(url).then(toast).catch(function(){ window.prompt('Copy this link:',url); }); } else{ window.prompt('Copy this link:',url); } }
-    if(navigator.share){ navigator.share(data).catch(function(err){ if(!err||err.name!=='AbortError') copyLink(); }); return; }
+    var data={title:'Eternal Life Hospice \u2014 Media Kit',text:'The Eternal Life Hospice press & media kit \u2014 open the folder and read online, or download the PDF.',url:SHARE_URL};
+    if(navigator.share){ navigator.share(data).catch(function(e){if(!e||e.name!=='AbortError')copyLink();}); return; }
     copyLink();
   }
-  document.getElementById('shareBtn').onclick=share;
-  var sb2=document.getElementById('shareBtn2'); if(sb2)sb2.onclick=share;
+  var sb=document.getElementById('shareBtn'), sb2=document.getElementById('shareBtn2');
+  if(sb) sb.onclick=share;
+  if(sb2) sb2.onclick=share;
 
-  // initial paint
-  renderStatic(0); chrome();
-
-  // reveal (boot veil)
-  function reveal(){ if(document.body.classList.contains('kitready'))return; document.body.classList.add('kitready'); var v=document.getElementById('bootveil'); if(v){v.classList.add('gone'); setTimeout(function(){ if(v&&v.parentNode){v.parentNode.removeChild(v);} },650);} }
-  var fontsReady=(document.fonts&&document.fonts.ready)?document.fonts.ready:Promise.resolve();
-  var loaded=new Promise(function(res){ if(document.readyState==='complete')res(); else window.addEventListener('load',res); });
-  Promise.all([fontsReady,loaded]).then(function(){ requestAnimationFrame(function(){ requestAnimationFrame(reveal); }); });
-  setTimeout(reveal,3000);
 })();
 </script>
-
-<script defer src="/assets/translate.js"></script>
 </body>
 </html>
