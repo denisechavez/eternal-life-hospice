@@ -1,0 +1,715 @@
+Heyzine API
+Application programming interface for developers or NoCode tools to integrate flipbooks in applications or workflows.
+
+Getting started
+Heyzine provides a comprehensive and flexible API to manage flipbooks in your account. It allows you to create, list and delete flipbooks, manage the access list with password, get embed codes and receive leads via webhooks. The API uses either a Client ID or an API key for authentication. When the API Key is required, you must provide it in a header this way:
+
+Authorization: Bearer API_KEY
+
+This is your Client Id:
+
+••••••••••••••••
+
+Copy
+This is your API key:
+
+•••••••••••••••••••••••••••••••••••••••••••••••••••••••••
+
+Copy
+Reset keys
+PDF to Flipbook Conversion
+Link Conversion
+Create a link with parameters pointing to your pdf file and use it in anchors, iframes, dialogs, or anywhere else. The link will redirect to the final flipbook url. The conversion process starts with the first access, so it can take some time to load the first time you open it. To convert server-side and avoid revealing the original url, you can use the /rest endpoint and get a json response.
+
+Parameters
+pdfstringrequired
+Url pointing to the pdf, docx or pptx to be converted. Must be a direct link with no redirections and correctly url-encoded.
+kstringrequired
+Client Id. Get the client id.
+tplstring
+Flipbook ID to use as a template. It copies the logo, page effect, background, controls, and all the styles. It doesn't copy the access list and interactions.
+tstring
+Title shown on the flipbook and social shares.
+sstring
+Subtitle to show on the flipbook and social shares.
+dsstring
+Description to show on the flipbook and social shares.
+dboolean (1 or 0)
+Allow downloading the original pdf. d=1 to allow it.
+fsboolean (1 or 0)
+Show the fullscreen button. fs=1 to show it.
+shboolean (1 or 0)
+Show the share button. sh=1 to show it.
+pnboolean (1 or 0)
+Show the previous and next buttons. pn=1 to show it.
+stboolean (1 or 0)
+Show the title, subtitle and description on the flipbook's background. st=1 to show it.
+bgstring
+Remove the background image and use a solid hex color. bg=00000 for black bg=ffffff for white background.
+lgstring
+Url pointing to the company logo you want to place in the flipbook. Available on the Standard Plan and above.
+pestring
+Reader page effect: magazine, book, album, notebook, slideshow, cards, coverflow, or onepage.
+rtlboolean (1 or 0)
+Right-to-left reading direction. rtl=1 to enable.
+Link format
+
+https://heyzine.com/api1?pdf={pdf url}&k={client id}
+
+Basic example
+
+https://heyzine.com/api1?pdf=https://codingfocus.com/sample.pdf&k=d3m0
+
+Titles and controls
+
+https://heyzine.com/api1?pdf=https%3A%2F%2Fcodingfocus.com%2Fsample.pdf%3Fexample2&t=Test%20title&s=Test%20subtitle&d=1&k=d3m0
+
+Copy design from template
+
+https://heyzine.com/api1?pdf=https%3A%2F%2Fcodingfocus.com%2Fsample.pdf%3Fexample3&k=d3m0&tpl=02d4d12c08593f3d10a5f61338758eaa0bf67abd.pdf
+
+REST API Conversion
+Call the Sync REST endpoint client or server-side, to convert the PDF and get a JSON response with the links to the flipbook, thumbnail, and PDF. The endpoint will send the response right after the conversion ends. You have to make sure the client has a long enough time out for the largest documents.
+
+Call the Async REST endpoint to get the JSON response immediately in case you don't want to wait for the conversion process. Subsequent calls to the endpoint with the same parameters will return the current state of the conversion. (started, processed, or failed). During the conversion time, flipbook links will show a not-found page.
+
+Parameters
+pdfstringrequired
+Url pointing to the pdf, docx or pptx to be converted. Must be a direct link with no redirections and correctly url-encoded.
+client_idstringrequired
+Client Id. Get the client id.
+templatestring
+Flipbook ID to use as a template. It copies the logo, page effect, background, controls, and all the styles. It doesn't copy the access list and interactions.
+titlestring
+Title shown on the flipbook and social shares.
+subtitlestring
+Subtitle to show on the flipbook and social shares.
+descriptionstring
+Description to show on the flipbook and social shares.
+private_notestring
+Internal text that is never shown to visitors. Corresponds to the “private” parameter of the flipbook response object.
+tagsstring
+Comma-separated list of tags to organize and filter the flipbook in the administration panel. "tags": "catalog,summer,last collection"
+downloadboolean
+Allow downloading the original pdf. true to allow it.
+full_screenboolean
+Show the fullscreen button. true to show it.
+shareboolean
+Show the share button. true to show it.
+prev_nextboolean
+Show the previous and next buttons. true to show it.
+show_infoboolean
+Show the title, subtitle and description on the flipbook's background. true to show it.
+background_colorstring
+Remove the background image and use a solid hex color. bg: "00000" for black bg: "ffffff" for white background.
+logostring
+Url pointing to the company logo you want to place in the flipbook. Available on the Standard Plan and above.
+page_effectstring
+Reader page effect: magazine, book, album, notebook, slideshow, cards, coverflow, or onepage.
+rtlboolean
+Right-to-left reading direction. true or right_to_left to enable.
+url_pathstring
+Custom path for the flipbook URL (the part after the domain). It can't contain spaces, special characters, ? & / + #, or use a reserved word, and must be unique within the domain. Requires a plan with custom url support.
+url_domainstring
+Custom domain to publish the flipbook on, e.g. "docs.example.com". Must be an active custom domain assigned to your account. Requires a plan with custom url support.
+Sync Endpoint
+
+POST https://heyzine.com/api1/rest
+
+Request example
+
+{
+  "pdf": "https://codingfocus.com/sample.pdf",
+  "client_id": "d3m0",
+  "prev_next": true,
+  "rtl": true
+}
+
+Response example
+
+{
+  "id": "e8264ee61f7f5a9fd4291590480762b998574610.pdf",
+  "url": "https://heyzine.com/flip-book/e8264ee61f.html",
+  "thumbnail": "https://cdn.heyzine.com/flip-book/cover/e8264ee61f.jpg",
+  "pdf": "https://cdn.heyzine.com/flip-book/pdf/e8264ee61f7f5a9fd4291590480762b998574610.pdf",
+  "meta": {
+    "num_pages": 6,
+    "aspect_ratio": 0.7078
+  }
+}
+
+Async Endpoint
+
+POST https://heyzine.com/api1/async
+
+Request example
+
+{
+  "pdf": "https://codingfocus.com/sample.pdf",
+  "client_id": "d3m0",
+  "show_info": true,
+  "background_color": "ffffff",
+  "rtl": true
+}
+
+Response example
+
+{
+  "id": "e8264ee61f7f5a9fd4291590480762b998574610.pdf",
+  "url": "https://heyzine.com/flip-book/e8264ee61f.html",
+  "thumbnail": "https://cdn.heyzine.com/flip-book/cover/e8264ee61f.jpg",
+  "pdf": "https://cdn.heyzine.com/flip-book/pdf/e8264ee61f7f5a9fd4291590480762b998574610.pdf",
+  "meta": {
+    "num_pages": 6,
+    "aspect_ratio": 0.7078
+  },
+  "state": "processed"
+}
+
+Flipbook Management
+Get flipbook info
+Get all available information about a specific flipbook by its identifier.
+
+Parameters
+idstringrequired
+Flipbook Identifier
+Endpoint
+
+GET https://heyzine.com/api1/flipbook-details
+Authorization: Bearer API_KEY
+
+Request example
+
+{
+  "id": "c16430e4c0cd91123474d0621b01b8f1f944f48ff85b1.pdf"
+}
+
+Response example
+
+{
+  "id": "c16430e4c0cd91123474d0621b01b8f1f944f48ff85b1.pdf",
+  "date": "2024-11-05T13:58:48Z",
+  "title": "My awesome test",
+  "subtitle": "Flipbook conversion using the API",
+  "description": "The description of the flipbook",
+  "private": "Internal management note",
+  "pages": 67,
+  "tags": "catalogs,summer,promotions",
+  "links": {
+    "custom": "https://mycustomdomain.aflip.in/my-flipbook",
+    "base": "https://heyzine.com/flip-book/c16430e4c0.html",
+    "thumbnail": "https://cdn.heyzine.com/flip-book/cover/c16430e4c0.jpg",
+    "pdf": "https://cdn.heyzine.com/flip-book/pdf/c16430e4c0cd91123474d0621b01b8f1f944f48ff85b1.pdf"
+  },
+  "oembed": { oEmbed object},
+}
+
+List flipbooks
+Get a list of all the flipbooks in the account.
+
+Endpoint
+
+GET https://heyzine.com/api1/flipbook-list
+Authorization: Bearer API_KEY
+
+Response example
+
+[
+  {
+    "id": "c16430e4c0cd91123474d0621b01b8f1f944f48ff85b1.pdf",
+    "date": "2024-11-05T13:58:48Z",
+    "title": "My awesome test",
+    "subtitle": "Flipbook conversion using the API",
+    "description": "The description of the flipbook",
+    "private": "Internal management note",
+    "pages": 67,
+    "size": 143135,
+    "links": {
+      "custom": "https://mycustomdomain.aflip.in/my-flipbook",
+      "base": "https://heyzine.com/flip-book/c16430e4c0.html",
+      "thumbnail": "https://cdn.heyzine.com/flip-book/cover/c16430e4c0.jpg",
+      "pdf": "https://cdn.heyzine.com/flip-book/pdf/c16430e4c0cd91123474d0621b01b8f1f944f48ff85b1.pdf"
+    }
+  }
+]
+
+Update flipbook design
+Change the look and options of an existing flipbook. Optional template copies styles from another flipbook in your account. Specific fields overwrite the template fields.
+
+Parameters
+idstringrequired
+Flipbook Identifier
+templatestring
+Flipbook ID to use as a template. It copies the logo, page effect, background, controls, and all the styles. It doesn't copy the access list and interactions.
+titlestring
+Title shown on the flipbook and social shares.
+subtitlestring
+Subtitle to show on the flipbook and social shares.
+descriptionstring
+Description to show on the flipbook and social shares.
+private_notestring
+Internal text that is never shown to visitors. Corresponds to the “private” parameter of the flipbook response object.
+tagsstring
+Comma-separated list of tags to organize and filter the flipbook in the administration panel. "tags": "catalog,summer,last collection"
+downloadboolean
+Allow downloading the original pdf. true to allow it.
+full_screenboolean
+Show the fullscreen button. true to show it.
+shareboolean
+Show the share button. true to show it.
+prev_nextboolean
+Show the previous and next buttons. true to show it.
+show_infoboolean
+Show the title, subtitle and description on the flipbook's background. true to show it.
+background_colorstring
+Remove the background image and use a solid hex color. bg: "00000" for black bg: "ffffff" for white background.
+logostring
+Url pointing to the company logo you want to place in the flipbook. Available on the Standard Plan and above.
+page_effectstring
+Reader page effect: magazine, book, album, notebook, slideshow, cards, coverflow, or onepage.
+rtlboolean
+Right-to-left reading direction. true or right_to_left to enable.
+url_pathstring
+Custom path for the flipbook URL (the part after the domain). It can't contain spaces, special characters, ? & / + #, or use a reserved word, and must be unique within the domain. Requires a plan with custom url support.
+url_domainstring
+Custom domain to publish the flipbook on, e.g. "docs.example.com". Must be an active custom domain assigned to your account. Requires a plan with custom url support.
+Endpoint
+
+PATCH https://heyzine.com/api1/flipbook-design
+Authorization: Bearer API_KEY
+
+Request example
+
+{
+  "id": "c16430e4c0cd91123474d0621b01b8f1f944f48ff85b1.pdf",
+  "template": "02d4d12c08593f3d10a5f61338758eaa0bf67abd.pdf",
+  "page_effect": "fade",
+  "url_path": "my-flipbook",
+  "url_domain": "docs.example.com",
+  "rtl": true
+}
+
+Response example
+
+{
+  "success": true,
+  "code": 200,
+  "msg": "Flipbook updated"
+}
+
+Delete flipbook
+Delete an specific flipbook by its identifier.
+
+Parameters
+idstringrequired
+Flipbook Identifier
+Endpoint
+
+POST https://heyzine.com/api1/flipbook-delete
+Authorization: Bearer API_KEY
+
+Request example
+
+{
+  "id": "c16430e4c0cd91123474d0621b01b8f1f944f48ff85b1.pdf"
+}
+
+Response example
+
+{
+  "success": true,
+  "code": 200,
+  "msg": "Flipbook deleted"
+}
+
+Bookshelf Management
+List bookshelves
+Get a list of all the bookshelves in the account.
+
+Endpoint
+
+GET https://heyzine.com/api1/bookshelf-list
+Authorization: Bearer API_KEY
+
+Response example
+
+[
+  {
+    "id": "a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2",
+    "date": "2025-03-15T10:30:00Z",
+    "title": "Product Catalogs",
+    "subtitle": "All product flipbooks",
+    "description": "Collection of product catalogs",
+    "flipbook_count": 5,
+    "links": {
+      "url": "https://heyzine.com/shelf/a1b2c3d4e5.html",
+      "thumbnail": "https://heyzine.com/shelf/cover/a1b2c3d4e5.html"
+    }
+  }
+]
+
+List flipbooks in a bookshelf
+Get a list of all the flipbooks in a specific bookshelf, ordered by position.
+
+Parameters
+idstringrequired
+Bookshelf identifier
+Endpoint
+
+GET https://heyzine.com/api1/bookshelf-flipbooks
+Authorization: Bearer API_KEY
+
+Request example
+
+{
+  "id": "a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2"
+}
+
+Response example
+
+[
+  {
+    "id": "c16430e4c0cd91123474d0621b01b8f1f944f48ff85b1.pdf",
+    "date": "2024-11-05T13:58:48Z",
+    "title": "My awesome test",
+    "subtitle": "Flipbook conversion using the API",
+    "description": "The description of the flipbook",
+    "pages": 67,
+    "position": 0,
+    "links": {
+      "custom": "https://mycustomdomain.aflip.in/my-flipbook",
+      "base": "https://heyzine.com/flip-book/c16430e4c0.html",
+      "thumbnail": "https://cdn.heyzine.com/flip-book/cover/c16430e4c0.jpg",
+      "pdf": "https://cdn.heyzine.com/flip-book/pdf/c16430e4c0cd91123474d0621b01b8f1f944f48ff85b1.pdf"
+    }
+  }
+]
+
+Add flipbook to bookshelf
+Add a flipbook to a bookshelf. Optionally specify a position to control the order.
+
+Parameters
+idstringrequired
+Bookshelf identifier
+flipbook_idstringrequired
+Flipbook Identifier
+positioninteger
+Position of the flipbook in the bookshelf (0-based). If not specified, the flipbook is added at the end.
+Endpoint
+
+POST https://heyzine.com/api1/bookshelf-add
+Authorization: Bearer API_KEY
+
+Request example
+
+{
+  "id": "a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2",
+  "flipbook_id": "c16430e4c0cd91123474d0621b01b8f1f944f48ff85b1.pdf",
+  "position": 2
+}
+
+Response example
+
+{
+  "success": true,
+  "code": 200,
+  "msg": "Flipbook added to bookshelf"
+}
+
+Remove flipbook from bookshelf
+Remove a flipbook from a bookshelf.
+
+Parameters
+idstringrequired
+Bookshelf identifier
+flipbook_idstringrequired
+Flipbook Identifier
+Endpoint
+
+POST https://heyzine.com/api1/bookshelf-remove
+Authorization: Bearer API_KEY
+
+Request example
+
+{
+  "id": "a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2",
+  "flipbook_id": "c16430e4c0cd91123474d0621b01b8f1f944f48ff85b1.pdf"
+}
+
+Response example
+
+{
+  "success": true,
+  "code": 200,
+  "msg": "Flipbook removed from bookshelf"
+}
+
+Social Metadata
+Set social metadata for a flipbook
+Set the title, description, and thumbnail for the social sharing metadata of a specific flipbook.
+
+Parameters
+idstringrequired
+Flipbook identifier
+titlestring
+Optional title for social sharing
+descriptionstring
+Optional description for social sharing
+thumbnailstring (URL)
+URL pointing to an image for the social thumbnail
+Endpoint
+
+POST https://heyzine.com/api1/flipbook-social
+Authorization: Bearer API_KEY
+
+Request example
+
+{
+  "id": "c16430e4c0cd91123474d0621b01b8f1f944f48ff85b1.pdf",
+  "title": "My Flipbook Title",
+  "description": "A description for social sharing.",
+  "thumbnail": "https://example.com/image.jpg"
+}
+
+Response example
+
+{
+  "success": true
+}
+
+Set social metadata for a bookshelf
+Set the title, description, and thumbnail for the social sharing metadata of a specific bookshelf (library).
+
+Parameters
+idstringrequired
+Bookshelf (library) identifier
+titlestring
+Optional title for social sharing
+descriptionstring
+Optional description for social sharing
+thumbnailstring (URL)
+URL pointing to an image for the social thumbnail
+Endpoint
+
+POST https://heyzine.com/api1/bookshelf-social
+Authorization: Bearer API_KEY
+
+Request example
+
+{
+  "id": "library1234567890abcdef",
+  "title": "My Bookshelf Title",
+  "description": "A description for social sharing.",
+  "thumbnail": "https://example.com/library-image.jpg"
+}
+
+Response example
+
+{
+  "success": true
+}
+
+Password Protection
+Configure the password protection
+Configure the password-protection mode, and the text that will be used to ask for the user name and password on the flipbook´s login page.
+
+Parameters
+namestringrequired
+Flipbook Identifier, or the bookshelf identifier when type is "bookshelf".
+typestring
+"flipbook" (default) or "bookshelf".
+modestringrequired
+"users": Different credentials for each user. "everyone": Use a single password for all visitors. "disabled": Disable the password protection.
+text_userstring
+Text used to ask for the username on the login screen.
+text_passwordstring
+Text used to ask for the password on the login screen.
+passwordstring
+Required when mode is "everyone". Password to be used on the flipbook login page.
+Endpoint
+
+POST https://heyzine.com/api1/access-setup
+Authorization: Bearer API_KEY
+
+Request example
+
+{
+  "name": "1f1aa4115833b3ee73a562ca27a422119ee22dc.pdf",
+  "mode": "users",
+  "text_user": "Please, type your email:",
+  "text_password": "Please, type your password:"
+}
+
+Response example
+
+{
+  "success": true,
+  "code": 200,
+  "msg": "Access configuration set"
+}
+
+Add user access
+Grant user access to a flipbook.
+
+Parameters
+namestringrequired
+Flipbook Identifier, or the bookshelf identifier when type is "bookshelf".
+typestring
+"flipbook" (default) or "bookshelf".
+access_typestringrequired
+"user_pass": Access with username and password, "google": Access with Google SignIn, "pass_only": Access with password only, "otp": Access with a one-time password, "email_link": Email a one-time access link to the user, "send_code": Email a code to the user.
+
+email_link and send_code are only available on Premium Plans
+userstring
+User name or email to be used on the flipbook login page. Required when access_type is user_pass, google, email_link, or send_code.
+passwordstring
+Password to be used on the flipbook login page. Required when access_type is user_pass, pass_only, or otp.
+Endpoint
+
+POST https://heyzine.com/api1/access-add
+Authorization: Bearer API_KEY
+
+Request example
+
+{
+  "name": "1f1aa4115833b3ee73a562ca27a422119ee22dc.pdf",
+  "access_type": "user_pass",
+  "user": "reader@heyzine.com",
+  "password": "mYp4ssW0rd"
+}
+
+Response example
+
+{
+  "success": true,
+  "code": 200,
+  "msg": "Added to the access list"
+}
+
+Remove user access
+Revoke user access to a flipbook.
+
+Parameters
+namestringrequired
+Flipbook Identifier, or the bookshelf identifier when type is "bookshelf".
+typestring
+"flipbook" (default) or "bookshelf".
+userstring
+User name or email to be used on the flipbook login page. Required when access_type is user_pass, google, email_link, or send_code.
+passwordstring
+Password to be used on the flipbook login page. Required when access_type is pass_only, or otp.
+Endpoint
+
+POST https://heyzine.com/api1/access-remove
+Authorization: Bearer API_KEY
+
+Request example
+
+{
+  "name": "1f1aa4115833b3ee73a562ca27a422119ee22dc.pdf",
+  "user": "reader@heyzine.com",
+}
+
+Response example
+
+{
+  "success": true,
+  "code": 200,
+  "msg": "Removed from the access list"
+}
+
+Find the ID of a flipbook on your account
+Flipbook link:
+Find
+
+jQuery PDF to flipbook
+jQuery plugin to convert all the PDF links on your site to flipbooks.
+
+Usage steps:
+
+1.-Include jquery and the plugin through a CDN or download and include them in your project:
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script type="text/javascript" src="https://cdn.heyzine.com/release/jquery.pdfflipbook.4.js"></script>
+
+2.-Call the plugin with the Client Id to convert all the links:
+
+$('a').pdfFlipbook({ key: 'd3m0' });
+
+3.-Optionally, you can use DOM attributes to customize the resulting flipbook and presentation:
+
+Parameter	Required	Description	Example
+flipbook	Optional	When the element has an href, this attribute will be ignored, otherwise defines the url of the pdf file and binds a click event for navigation.	<span flipbook="/link-to-pdf.pdf">This is a flipbook</span>
+title	Optional	Title for the page	<a flipbook="/link-to-pdf.pdf" title="title">This is a flipbook</a>
+subtitle	Optional	Subtitle for the page	<a flipbook="/link-to-pdf.pdf" subtitle="subtitle">This is a flipbook</a>
+showdownload	Optional	Show the download button on the flipbook page	<a flipbook="/link-to-pdf.pdf" showdownload>This is a flipbook</a>
+showmodal	Optional	Opens the flipbook in a simple modal over the page	<a flipbook="/link-to-pdf.pdf" showmodal>This is a flipbook</a>
+See the jquery demo here: Demo
+
+oEmbed API
+oEmbed is an API that allows third-party websites and apps to fetch an Html embed code to display Heyzine flipbooks.
+
+Discovering oEmbed URIs
+Most flipbooks support oEmbed. Your application can discover the corresponding oEmbed URI by searching the flipbook for a element with the type "application/json+oembed".
+For example, the flipbook sample here, includes the following link tag:
+
+<link rel="alternate" type="application/json+oembed" href="https://heyzine.com/api1/oembed?url=https%3A%2F%2Fheyzine.com%2Fflip-book%2Fdce36e099f.html&format=json" title="PDF to Flipbook | Heyzine" />
+
+Using oEmbed data from Heyzine in your app or website
+Send a GET request to /api1/oembed, with the url parameter set to a flipbook link to get his oEmbed data.
+Heyzine supports the standard oEmbed 1.0 parameters (url, format, maxwidth, and maxheight).
+
+Request
+
+https://heyzine.com/api1/oembed?url=https%3A%2F%2Fheyzine.com%2Fflip-book%2Fdce36e099f.html&format=json
+
+Response
+
+{
+  "type": "rich",
+  "version": "1.0",
+  "title": "Venice guide",
+  "provider_name": "Heyzine",
+  "provider_url": "https:\/\/heyzine.com",
+  "html": "<iframe allowfullscreen=\"allowfullscreen\" allow=\"clipboard-write\" scrolling=\"no\" class=\"fp-iframe\" style=\"width: 100%; height: 600px;\" src=\"https:\/\/heyzine.com\/flip-book\/dce36e099f.html\"><\/iframe>",
+  "width": 1920,
+  "height": 2717,
+  "thumbnail_url": "https:\/\/heyzine.com\/files\/uploaded\/v2\/dce36e099f71f95449f722bfc227cb4bdd1b30f0.pdf-thumb.jpg",
+  "thumbnail_width": 400,
+  "thumbnail_height": 566
+}
+
+Webhooks
+Heyzine supports webhooks to notify events to an external endpoint URL with a predefined frequency.
+Access your account webhooks section to define the endpoints and frequency.
+
+ 
+
+Leads Webhook
+The webhook will be called each time new leads are collected on any lead generation form in the account.
+Request body reference:
+
+
+data: {
+  "id_webhook": Identifier of the event,
+  "date": Date an time (UTC) of the event request,
+  "leads": [
+    0: {
+      date: Date and time (UTC) when the lead was collected,
+      first_value: Answer to the first field on the form,
+      second_value: Answer to the second field on the form,
+      flipbook: {
+        id: Identifier of the flipbook containing the form,
+        title: Title set on the publish settings of the flipbook
+      },
+      answer: [
+        0: {
+          label: Question on the form,
+          value: Lead answer,
+        },...
+      ]
+    },...
+  ]
+}
+
+API limits
