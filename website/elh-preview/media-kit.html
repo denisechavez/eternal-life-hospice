@@ -3,11 +3,11 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta property="og:type" content="website"><meta property="og:title" content="Eternal Life Hospice — Media Kit"><meta property="og:description" content="The Eternal Life Hospice press &amp; media kit — open the folder and read the whole kit online, or download the print-ready PDF. Care That Honors Life."><meta property="og:url" content="https://eternallifehospice.com/media-kit"><meta property="og:image" content="https://eternallifehospice.com/assets/og-image-v2.jpg"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:image:alt" content="Eternal Life Hospice — Media Kit"><meta property="og:site_name" content="Eternal Life Hospice"><meta name="twitter:card" content="summary_large_image"><link rel="icon" type="image/png" href="assets/favicon.png">
-<title>Eternal Life Hospice — Media Kit</title>
-<meta name="description" content="Read the Eternal Life Hospice press &amp; media kit online — turn the pages or download the print-ready PDF. Serving Ventura &amp; Los Angeles County.">
+<meta property="og:type" content="website"><meta property="og:title" content="Eternal Care Kit — Eternal Life Hospice"><meta property="og:description" content="The Eternal Life Hospice Care Kit — turn the pages online or download the print-ready PDF. Care That Honors Life."><meta property="og:url" content="https://eternallifehospice.com/media-kit"><meta property="og:image" content="https://eternallifehospice.com/assets/og-image-v2.jpg"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:image:alt" content="Eternal Care Kit — Eternal Life Hospice"><meta property="og:site_name" content="Eternal Life Hospice"><meta name="twitter:card" content="summary_large_image"><link rel="icon" type="image/png" href="assets/favicon.png">
+<title>Eternal Care Kit — Eternal Life Hospice</title>
+<meta name="description" content="Browse the Eternal Life Hospice Care Kit online — turn the pages or download the print-ready PDF. Serving Ventura &amp; Los Angeles County.">
 <link rel="canonical" href="https://eternallifehospice.com/media-kit">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"Eternal Life Hospice — Media Kit","url":"https://eternallifehospice.com/media-kit","publisher":{"@type":"Organization","name":"Eternal Life Hospice, Inc.","url":"https://eternallifehospice.com"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"Eternal Care Kit — Eternal Life Hospice","url":"https://eternallifehospice.com/media-kit","publisher":{"@type":"Organization","name":"Eternal Life Hospice, Inc.","url":"https://eternallifehospice.com"}}</script>
 <style>
 @font-face{font-family:'Fraunces ELH';font-weight:100 900;font-style:normal;font-display:swap;src:url('assets/fonts/Fraunces-var.woff2') format('woff2')}
 @font-face{font-family:'Fraunces ELH';font-weight:100 900;font-style:italic;font-display:swap;src:url('assets/fonts/Fraunces-Italic-var.woff2') format('woff2')}
@@ -64,12 +64,49 @@ button{cursor:pointer}
 .btn.primary:hover{background:#d8c194}
 .ic{width:15px;height:15px;flex:0 0 auto}
 
+/* ── SHARE BAR (top, below toolbar) ── */
+.sharebar{
+  display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:8px;
+  padding:10px 18px;
+  background:rgba(30,12,29,.55);
+  border-bottom:1px solid rgba(201,176,126,.16);
+}
+.sharebar-label{font-family:var(--ff-b);font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;
+  color:rgba(201,176,126,.75);margin-right:4px;white-space:nowrap}
+.sba{display:inline-flex;align-items:center;gap:5px;padding:5px 13px;border-radius:999px;
+  border:1px solid rgba(201,176,126,.30);color:#E3D6D9;font-family:var(--ff-b);font-size:12px;
+  font-weight:500;text-decoration:none;cursor:pointer;background:transparent;
+  transition:border-color .2s,color .2s,background .2s;white-space:nowrap}
+.sba:hover{border-color:var(--gold);color:var(--gold);background:rgba(201,176,126,.08)}
+.sba svg{width:13px;height:13px;flex:0 0 auto}
+.sba.copy-done{border-color:var(--gold);color:var(--gold)}
+
+/* ── FLOATING QR CORNER ── */
+.qr-corner{
+  position:fixed;bottom:22px;right:22px;z-index:200;
+  background:rgba(36,17,35,.92);border:1px solid rgba(201,176,126,.30);
+  border-radius:14px;padding:12px 13px 10px;
+  display:flex;flex-direction:column;align-items:center;gap:7px;
+  backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+  box-shadow:0 12px 32px rgba(20,8,22,.55);
+  transition:opacity .25s,transform .25s;
+}
+.qr-corner img{width:72px;height:72px;border-radius:6px;display:block}
+.qr-corner span{font-family:var(--ff-b);font-size:10.5px;color:rgba(201,176,126,.8);
+  text-align:center;line-height:1.35;letter-spacing:.04em}
+.qr-corner .qr-close{
+  position:absolute;top:6px;right:7px;background:none;border:none;
+  color:rgba(245,240,235,.4);font-size:14px;cursor:pointer;line-height:1;padding:2px 4px;
+  transition:color .15s}
+.qr-corner .qr-close:hover{color:rgba(245,240,235,.8)}
+@media(max-width:480px){.qr-corner{bottom:14px;right:12px}.qr-corner img{width:60px;height:60px}}
+
 /* ── FLIPBOOK STAGE ── */
 .stage{
   display:flex;align-items:center;justify-content:center;
-  /* full viewport minus toolbar — slight vertical padding */
-  min-height:calc(100vh - var(--tb-h));
-  padding:24px 16px 28px;
+  /* ~65 vh so the book doesn't eat the whole screen */
+  min-height:clamp(380px, 65vh, 680px);
+  padding:20px 16px 24px;
   position:relative;
 }
 
@@ -77,7 +114,7 @@ button{cursor:pointer}
 .book-wrap{
   position:relative;
   display:flex;align-items:center;justify-content:center;
-  width:100%;max-width:1160px;
+  width:100%;max-width:880px;
 }
 
 /* ── NAV ARROWS ── */
@@ -277,7 +314,7 @@ button{cursor:pointer}
 @media(max-width:540px){.sharekit{margin-top:38px}.sk-txt{text-align:center}.sk-in{gap:14px}}
 </style>
 <script async src="/assets/analytics.js?v=20260727h"></script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://eternallifehospice.com/"},{"@type":"ListItem","position":2,"name":"Media Kit","item":"https://eternallifehospice.com/media-kit"}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://eternallifehospice.com/"},{"@type":"ListItem","position":2,"name":"Eternal Care Kit","item":"https://eternallifehospice.com/media-kit"}]}</script>
 <script>(function(d){d.addEventListener('DOMContentLoaded',function(){var s=d.createElement('script');s.setAttribute('data-color','#6793AC');s.setAttribute('data-trigger','elh-ada-trigger');s.setAttribute('data-account','puHleOAe1C');s.src='https://cdn.userway.org/widget.js';d.body.appendChild(s);})})(document)</script>
 <noscript>Please ensure Javascript is enabled for purposes of <a href="https://userway.org">website accessibility</a></noscript>
 <script>var $wc_load=function(a){return JSON.parse(JSON.stringify(a))},$wc_leads=$wc_leads||{doc:{url:$wc_load(document.URL),ref:$wc_load(document.referrer),search:$wc_load(location.search),hash:$wc_load(location.hash)}};</script>
@@ -291,7 +328,7 @@ button{cursor:pointer}
   <a class="tb-back" href="/">&#8592;&nbsp;Back to site</a>
   <div class="tb-brand">
     <img src="assets/img/elh-logo-h2-cream.webp" alt="Eternal Life Hospice">
-    <span>Media Kit</span>
+    <span>Eternal Care Kit</span>
   </div>
   <div class="tb-act">
     <button class="btn" id="shareBtn">
@@ -304,10 +341,30 @@ button{cursor:pointer}
 </div>
 <div class="mk-toast" id="mkToast" role="status" aria-live="polite">Link copied — ready to paste anywhere</div>
 
+<!-- SHARE BAR -->
+<div class="sharebar" role="navigation" aria-label="Share the Eternal Care Kit">
+  <span class="sharebar-label">Share this kit</span>
+  <button class="sba" id="shareBtnCopy">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>Copy link
+  </button>
+  <a class="sba" href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Feternallifehospice.com%2Fmedia-kit" target="_blank" rel="noopener" aria-label="Share on LinkedIn">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4V9h4v1.57A6 6 0 0 1 16 8z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>LinkedIn
+  </a>
+  <a class="sba" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Feternallifehospice.com%2Fmedia-kit" target="_blank" rel="noopener" aria-label="Share on Facebook">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>Facebook
+  </a>
+  <a class="sba" href="mailto:?subject=Eternal%20Care%20Kit%20%E2%80%94%20Eternal%20Life%20Hospice&body=https%3A%2F%2Feternallifehospice.com%2Fmedia-kit" aria-label="Share by email">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>Email
+  </a>
+  <a class="sba" href="assets/downloads/eternal-life-press-kit-digital.pdf" download aria-label="Download PDF">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Download PDF
+  </a>
+</div>
+
 <!-- ═══════════════════════════════════
      FLIPBOOK STAGE
      ═══════════════════════════════════ -->
-<div class="stage" id="stage" aria-label="Press &amp; Media Kit viewer" role="region">
+<div class="stage" id="stage" aria-label="Eternal Care Kit viewer" role="region">
   <div class="book-wrap">
 
     <button class="navbtn" id="btnPrev" aria-label="Previous page" disabled>
@@ -344,26 +401,14 @@ button{cursor:pointer}
   </div><!-- /.book-wrap -->
 </div><!-- /.stage -->
 
-<!-- SHARE STRIP -->
-<div class="sharekit">
-  <div class="sk-in">
-    <img src="assets/img/qr-media-kit-cream.png" alt="QR code — scan to open the media kit" width="88" height="88" loading="lazy">
-    <div class="sk-txt">
-      <div class="sk-h">Share this kit</div>
-      <p>Scan or send the link to open the full media kit on any device.</p>
-      <button class="btn" id="shareBtn2">
-        <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>Copy link to this kit
-      </button>
-      <nav class="sk-social" aria-label="Share media kit on social media">
-        <a href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Feternallifehospice.com%2Fmedia-kit" target="_blank" rel="noopener" aria-label="Share on LinkedIn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4V9h4v1.57A6 6 0 0 1 16 8z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>LinkedIn</a>
-        <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Feternallifehospice.com%2Fmedia-kit" target="_blank" rel="noopener" aria-label="Share on Facebook"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>Facebook</a>
-        <a href="mailto:?subject=Eternal%20Life%20Hospice%20%E2%80%94%20Media%20Kit&body=https%3A%2F%2Feternallifehospice.com%2Fmedia-kit" aria-label="Share by email"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>Email</a>
-      </nav>
-    </div>
-  </div>
-</div>
-
 <p class="compliance-note">Eternal Life Hospice, Inc. is a Medicare-certified, CDPH-licensed, ACHC-accredited hospice serving Ventura and Los Angeles County. Integrative modalities are offered for comfort and wellbeing and are not intended to diagnose, treat, cure or prevent any medical condition.</p>
+
+<!-- FLOATING QR CORNER -->
+<div class="qr-corner" id="qrCorner" aria-label="Scan QR code to open the Eternal Care Kit on your phone">
+  <button class="qr-close" id="qrClose" aria-label="Dismiss QR code">×</button>
+  <img src="assets/img/qr-media-kit-cream.png" alt="QR code — scan to open the Eternal Care Kit" width="72" height="72" loading="lazy">
+  <span>Scan to open<br>on your phone</span>
+</div>
 
 <footer id="site-footer">
   <div class="foot-grid">
@@ -464,7 +509,7 @@ function updateIndicator(idx){
     ? 'Page ' + sp.p + ' of ' + PAGES
     : 'Pages ' + sp.l + '–' + sp.r + ' of ' + PAGES;
   indEl.textContent = label;
-  book.setAttribute('aria-label', 'Media Kit — ' + label);
+  book.setAttribute('aria-label', 'Eternal Care Kit — ' + label);
 }
 
 /* ─────────────────────────────────────────────
@@ -617,26 +662,43 @@ function preload(idx){
    SHARE
    ───────────────────────────────────────────── */
 var SHARE_URL = 'https://eternallifehospice.com/media-kit';
-function toast(){
+function toast(msg){
   var t = document.getElementById('mkToast');
   if(!t) return;
+  if(msg) t.textContent = msg;
   t.classList.add('show');
   clearTimeout(t._tid);
   t._tid = setTimeout(function(){ t.classList.remove('show'); }, 2600);
 }
 function share(){
-  var data = {title:'Eternal Life Hospice — Media Kit',url:SHARE_URL};
+  var data = {title:'Eternal Care Kit — Eternal Life Hospice',url:SHARE_URL};
   if(navigator.share){ navigator.share(data).catch(function(e){ if(!e||e.name!=='AbortError') copyLink(); }); return; }
   copyLink();
 }
 function copyLink(){
   if(navigator.clipboard && navigator.clipboard.writeText){
-    navigator.clipboard.writeText(SHARE_URL).then(toast).catch(function(){ window.prompt('Copy this link:',SHARE_URL); });
+    navigator.clipboard.writeText(SHARE_URL).then(function(){
+      toast('Link copied — ready to paste anywhere');
+      var btn = document.getElementById('shareBtnCopy');
+      if(btn){ btn.classList.add('copy-done'); setTimeout(function(){ btn.classList.remove('copy-done'); }, 2400); }
+    }).catch(function(){ window.prompt('Copy this link:',SHARE_URL); });
   } else { window.prompt('Copy this link:',SHARE_URL); }
 }
-var sb = document.getElementById('shareBtn'), sb2 = document.getElementById('shareBtn2');
-if(sb) sb.onclick = share;
-if(sb2) sb2.onclick = share;
+var sb  = document.getElementById('shareBtn');
+var sbc = document.getElementById('shareBtnCopy');
+if(sb)  sb.onclick  = share;
+if(sbc) sbc.onclick = copyLink;
+
+/* QR corner dismiss */
+var qrClose = document.getElementById('qrClose');
+var qrCorner = document.getElementById('qrCorner');
+if(qrClose && qrCorner){
+  qrClose.onclick = function(){
+    qrCorner.style.opacity = '0';
+    qrCorner.style.transform = 'translateY(12px)';
+    setTimeout(function(){ qrCorner.style.display = 'none'; }, 280);
+  };
+}
 
 /* ─────────────────────────────────────────────
    BOOT
