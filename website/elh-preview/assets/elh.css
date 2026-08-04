@@ -467,6 +467,8 @@ details.cqn-col:not([open])>summary.cqn-county{margin-bottom:0;padding-bottom:0;
 @media(max-width:520px){.cqn-zip-result{flex-wrap:wrap}.czr-btn{width:100%;text-align:center;margin-top:.4rem}}
 
 /* ===== JOURNAL / BLOG ===== */
+.byline{font-size:14px;color:var(--ink-soft);margin:-.2rem 0 1.5rem;padding-bottom:1.2rem;border-bottom:1px solid rgba(91,46,89,.12)}
+.byline time{white-space:nowrap}
 .blog-byline{font-size:14px;color:var(--ink-soft);margin:-.2rem 0 1.5rem;padding-bottom:1.2rem;border-bottom:1px solid rgba(91,46,89,.12)}
 .blog-byline b{color:var(--plum);font-weight:600}
 .blog-byline time{white-space:nowrap}
