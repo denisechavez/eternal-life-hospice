@@ -3,7 +3,10 @@
   X-Frame-Options: SAMEORIGIN
   Referrer-Policy: strict-origin-when-cross-origin
   Permissions-Policy: geolocation=(), microphone=(), camera=()
-  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.clarity.ms https://scripts.clarity.ms https://cdn.brevo.com https://sibautomation.com https://www.google-analytics.com https://s.ksrndkehqnwntyxlhgto.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https:; connect-src 'self' https://www.google-analytics.com https://region1.google-analytics.com https://www.clarity.ms https://in.clarity.ms https://cdn.brevo.com https://api.brevo.com https://stats.g.doubleclick.net https://www.google.com https://s.ksrndkehqnwntyxlhgto.com; media-src 'self'; frame-src 'none'; frame-ancestors 'self'; form-action 'self';
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.clarity.ms https://scripts.clarity.ms https://cdn.brevo.com https://sibautomation.com https://www.google-analytics.com https://s.ksrndkehqnwntyxlhgto.com https://cdn.userway.org; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.userway.org; font-src 'self' https://fonts.gstatic.com data: https://cdn.userway.org; img-src 'self' data: https:; connect-src 'self' https://www.google-analytics.com https://region1.google-analytics.com https://www.clarity.ms https://in.clarity.ms https://cdn.brevo.com https://api.brevo.com https://stats.g.doubleclick.net https://www.google.com https://s.ksrndkehqnwntyxlhgto.com https://p.ksrndkehqnwntyxlhgto.com https://process.iconnode.com https://cdn.userway.org https://widget.userway.org; media-src 'self'; frame-src 'none' https://cdn.userway.org; frame-ancestors 'self'; form-action 'self';
+
+/assets/*
+  Cache-Control: public, max-age=86400
 
 /assets/img/*
   Cache-Control: public, max-age=31536000, immutable
@@ -11,8 +14,8 @@
 /assets/audio/*
   Cache-Control: public, max-age=31536000, immutable
 
-/assets/*
-  Cache-Control: public, max-age=86400
+/assets/kit2/*
+  Cache-Control: public, max-age=2592000, immutable
 
 /assets/fonts/*
   Cache-Control: public, max-age=31536000, immutable
