@@ -328,6 +328,7 @@ nav a:hover{color:var(--gold)}
 @media(max-width:560px){.svc-grid{grid-template-columns:1fr}}
 .mod-card{background:var(--cream);border-radius:14px;overflow:hidden;border:1px solid var(--cream-dark);cursor:pointer;transition:box-shadow .25s,transform .25s}
 .mod-card:hover{box-shadow:0 12px 32px rgba(91,46,89,.13);transform:translateY(-3px)}
+.mod-card:focus-visible{outline:3px solid var(--gold);outline-offset:3px}
 .mod-card.feat{border-color:var(--plum)}
 .mod-img{height:130px;position:relative;display:flex;align-items:flex-end;padding:.85rem;overflow:hidden}
 .mod-img-note{font-size:12px;color:rgba(245,240,235,.5);font-style:italic;line-height:1.4;position:relative;z-index:1}
@@ -641,7 +642,7 @@ nav a:hover{color:var(--gold)}
 .lf-field.full{grid-column:1/-1}
 .lf-field label{font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--plum);margin-bottom:.35rem}
 .lf-field input,.lf-field textarea,.lf-field select{width:100%;min-width:0;padding:.7rem .9rem;border:1px solid var(--cream-dark);border-radius:8px;font-family:var(--ff-b);font-size:15px;color:var(--text-dark);background:var(--cream);transition:border .2s}
-.lf-field input:focus,.lf-field textarea:focus,.lf-field select:focus{outline:none;border-color:var(--plum)}
+.lf-field input:focus,.lf-field textarea:focus,.lf-field select:focus{outline:none;border-color:var(--plum);box-shadow:0 0 0 3px rgba(201,176,126,.25)}
 .lf-field textarea{resize:vertical;min-height:70px}
 .lf-note{font-size:12.5px;color:var(--text-light);margin:.5rem 0 1rem;line-height:1.6}
 .lead-success{display:none;text-align:center;padding:2rem 1rem}
@@ -1153,13 +1154,14 @@ p,li,blockquote{text-wrap:pretty}
 <script async src="//s.ksrndkehqnwntyxlhgto.com/172406.js"></script>
 </head>
 <body>
+<a class="skip-link" href="#main-content">Skip to main content</a>
 <!-- ANNOTATION TOGGLE -->
 
 
 <!-- HEADER -->
 <header id="hdr">
   <div class="hdr-in">
-    <a class="hdr-logo" role="button" tabindex="0" style="cursor:pointer" onclick="document.getElementById('top').scrollIntoView({behavior:'smooth'});return false;"><img class="s sym-cream" src="assets/img/elh-logo-h2-cream.webp" alt="Eternal Life Hospice logo"><img class="s sym-plum" src="assets/img/elh-logo-h2-plum.webp" alt="" aria-hidden="true"></a>
+    <a class="hdr-logo" href="/"><img class="s sym-cream" src="assets/img/elh-logo-h2-cream.webp" alt="Eternal Life Hospice logo"><img class="s sym-plum" src="assets/img/elh-logo-h2-plum.webp" alt="" aria-hidden="true"></a>
     <nav>
       <div class="nav-group">
         <a href="#standard" class="nav-parent">The Eternal Standard</a>
@@ -1201,7 +1203,7 @@ p,li,blockquote{text-wrap:pretty}
     </nav>
     <div class="hdr-cta-wrap"><button id="elh-ada-trigger" aria-label="Accessibility options" style="background:none;border:none;cursor:pointer;padding:0 .5rem 0 0;color:rgba(245,240,235,.75);display:flex;align-items:center;flex-shrink:0"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="12" cy="4.5" r="2"/><path d="M17 8h-4.15l-.85-2H7v2h3.15l.85 2H8c-1.1 0-2 .9-2 2v5h2v-4.5h1.35L11 16h2l-1.5-3.5V12h4l1 4h2l-1.25-5H17z"/></svg></button><span class="hdr-cta-note">Here in Moments That Matter Most</span><a href="tel:18059537273" class="hdr-cta">805.953.7273</a></div>
     <button class="search-btn" id="searchBtn" aria-label="Search"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="9" cy="9" r="7"/><line x1="15" y1="15" x2="19" y2="19"/></svg></button>
-    <button class="menu-btn" aria-label="Menu"><svg width="22" height="16" viewBox="0 0 22 16"><line x1="0" y1="2" x2="22" y2="2" stroke="#F5F0EB" stroke-width="2" stroke-linecap="round"/><line x1="0" y1="8" x2="22" y2="8" stroke="#F5F0EB" stroke-width="2" stroke-linecap="round"/><line x1="0" y1="14" x2="22" y2="14" stroke="#F5F0EB" stroke-width="2" stroke-linecap="round"/></svg></button>
+    <button class="menu-btn" aria-label="Menu" aria-expanded="false"><svg width="22" height="16" viewBox="0 0 22 16"><line x1="0" y1="2" x2="22" y2="2" stroke="#F5F0EB" stroke-width="2" stroke-linecap="round"/><line x1="0" y1="8" x2="22" y2="8" stroke="#F5F0EB" stroke-width="2" stroke-linecap="round"/><line x1="0" y1="14" x2="22" y2="14" stroke="#F5F0EB" stroke-width="2" stroke-linecap="round"/></svg></button>
   </div>
 </header>
 

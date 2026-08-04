@@ -575,6 +575,10 @@ details.cqn-col:not([open])>summary.cqn-county{margin-bottom:0;padding-bottom:0;
   .hero-btns .btn-gold,.hero-btns .btn-ghost{text-align:center;padding:13px 16px}
 }
 
+/* ---- Skip-to-content link (hidden off-screen; visible on focus for keyboard/AT users) ---- */
+.skip-link{position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden}
+.skip-link:focus{position:fixed;top:0;left:0;width:auto;height:auto;padding:.5rem 1.25rem;background:var(--plum);color:var(--cream);font-size:1rem;z-index:10000;border-radius:0 0 6px 0;outline:3px solid var(--gold);text-decoration:none}
+
 /* ---- Print / PDF: clean handouts sitewide (page-specific @media print may override) ---- */
 @media print{
   @page{margin:14mm}
