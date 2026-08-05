@@ -1,5 +1,5 @@
 # Netlify configuration for Eternal Life Hospice.
-# The static site lives in website/elh-preview/. The build command runs three
+# The static site lives in website/elh-preview/. The build command runs five
 # pre-deploy checks and blocks the deploy if any fail:
 #
 #   1. check-cookie-settings.sh        — every page must carry the Cookie Settings link
@@ -15,6 +15,11 @@
 #      remain a no-op (maybeShowTeaser immediately returns).  Blocks a deploy
 #      if a future edit accidentally re-enables the greeting bubble that would
 #      appear on every first visit to a hospice page.
+#   5. check-city-scripts.py           — city-page generator must not emit
+#      render-blocking <script> tags in <head>.  Renders a city page in-memory
+#      and checks: no external scripts without defer/async, no bare CDN src=,
+#      both deferred-loader patterns present, plus three mutation self-tests.
+#      Exits 1 and cancels the deploy if the template is broken.
 #
 # We set `base` to the site folder so Netlify runs entirely inside it. This
 # isolates the deploy from the repo-root package.json (which belongs to the
@@ -24,7 +29,7 @@
 [build]
   base = "website/elh-preview"
   publish = "."
-  command = "bash ../check-cookie-settings.sh && node assets/translate-smoke-test.js && node assets/translate-visibility-check.js && node assets/test-chat-teaser.js"
+  command = "bash ../check-cookie-settings.sh && node assets/translate-smoke-test.js && node assets/translate-visibility-check.js && node assets/test-chat-teaser.js && python3 ../check-city-scripts.py"
 
 [functions]
   directory = "netlify/functions"
