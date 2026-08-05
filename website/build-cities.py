@@ -18,6 +18,29 @@ BASE = os.path.dirname(__file__)
 DATA_FILE = os.path.join(BASE, "city-data.json")
 OUT_DIR   = os.path.join(BASE, "elh-preview")
 
+# ── Deferred script snippets (must NOT be inside an f-string — JS braces clash) ─
+
+HEAD_SCRIPTS = (
+    '<script async src="/assets/analytics.js"></script>\n'
+    # UserWay accessibility widget — requestIdleCallback deferred (never DOMContentLoaded)
+    '<script>(function(d){var load=function(){var s=d.createElement(\'script\');'
+    's.setAttribute(\'data-color\',\'#6793AC\');'
+    's.setAttribute(\'data-trigger\',\'elh-ada-trigger\');'
+    's.setAttribute(\'data-account\',\'puHleOAe1C\');'
+    's.src=\'https://cdn.userway.org/widget.js\';d.body.appendChild(s)};'
+    '\'requestIdleCallback\'in window?window.requestIdleCallback(load):window.addEventListener(\'load\',load)})(document)'
+    '</script>\n'
+    '<noscript>Please ensure Javascript is enabled for purposes of '
+    '<a href="https://userway.org">website accessibility</a></noscript>\n'
+    # WhatConverts lead tracking — window load deferred (never inline async)
+    '<script>window.addEventListener(\'load\',function(){'
+    'var f=function(a){return JSON.parse(JSON.stringify(a))};'
+    'window.$wc_leads=window.$wc_leads||{doc:{url:f(document.URL),ref:f(document.referrer),'
+    'search:f(location.search),hash:f(location.hash)}};'
+    'var s=document.createElement(\'script\');'
+    's.src=\'//s.ksrndkehqnwntyxlhgto.com/172406.js\';document.body.appendChild(s)});</script>'
+)
+
 # ── Shared HTML fragments ──────────────────────────────────────────────────────
 
 HEADER = """\
@@ -230,7 +253,7 @@ def render_page(c):
   <link rel="icon" type="image/png" href="assets/favicon.png">
   <link rel="stylesheet" href="assets/elh.css?v=20260714c">
 {schema_tags}
-  <script async src="/assets/analytics.js"></script>
+{HEAD_SCRIPTS}
 </head><body>
 {HEADER}
 {CRED_STRIP}
