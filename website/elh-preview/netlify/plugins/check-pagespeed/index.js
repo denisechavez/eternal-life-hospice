@@ -8,6 +8,11 @@
  * Required env var : GOOGLE_API_KEY      (Netlify Site → Environment variables)
  * Optional env var : PSI_THRESHOLD       (integer 0-100, default 80)
  * Optional env var : PSI_URL             (override the URL to check)
+ * Optional env var : LCP_BUDGET_MS       (integer ms, default 2500)
+ *                    Budget rationale: Google "Good" LCP threshold is ≤ 2.5 s.
+ *                    The ELH homepage was optimised to ~1.9 s (mobile); 2.5 s
+ *                    gives a 600 ms regression buffer before failing the build,
+ *                    keeping us firmly in the "Good" band on Core Web Vitals.
  *
  * Alert env vars (at least one recommended):
  *   SLACK_WEBHOOK_URL  — Slack incoming webhook URL; set in Netlify env vars
@@ -26,6 +31,9 @@ const PSI_HOST = "www.googleapis.com";
 const PSI_PATH = "/pagespeedonline/v5/runPagespeed";
 const DEFAULT_URL = "https://eternallifehospice.com";
 const DEFAULT_THRESHOLD = 80;
+// LCP budget: Google "Good" ceiling is 2500 ms. We enforce this to catch
+// regressions from image swaps, new fonts, or third-party scripts early.
+const DEFAULT_LCP_BUDGET_MS = 2500;
 const DEFAULT_ALERT_TO   = "team@eternallifehospice.com";
 const DEFAULT_ALERT_FROM = "noreply@eternallifehospice.com";
 
@@ -107,11 +115,13 @@ function psiRequest(url, strategy, apiKey) {
 // ---------------------------------------------------------------------------
 // Slack notification
 // ---------------------------------------------------------------------------
-async function sendSlackAlert({ webhookUrl, score, threshold, deployLogUrl, siteUrl, reason }) {
+async function sendSlackAlert({ webhookUrl, score, threshold, deployLogUrl, siteUrl, reason, extra }) {
   const url = new URL(webhookUrl);
   const emoji  = "🔴";
   const header = reason === "no-score"
     ? `${emoji} *PageSpeed check failed* — no performance score returned`
+    : reason === "lcp-over-budget"
+    ? `${emoji} *PageSpeed check failed* — LCP budget exceeded`
     : `${emoji} *PageSpeed check failed* — score ${score}/100 (threshold ${threshold}/100)`;
 
   const body = {
@@ -141,9 +151,11 @@ async function sendSlackAlert({ webhookUrl, score, threshold, deployLogUrl, site
 // ---------------------------------------------------------------------------
 // Brevo (Sendinblue) email notification
 // ---------------------------------------------------------------------------
-async function sendBrevoAlert({ apiKey, to, from, score, threshold, deployLogUrl, siteUrl, reason }) {
+async function sendBrevoAlert({ apiKey, to, from, score, threshold, deployLogUrl, siteUrl, reason, extra }) {
   const subject = reason === "no-score"
     ? "⚠️ PageSpeed check failed — no score returned"
+    : reason === "lcp-over-budget"
+    ? "⚠️ PageSpeed check failed — LCP budget exceeded"
     : `⚠️ PageSpeed score ${score}/100 is below threshold (${threshold}/100)`;
 
   const htmlContent = `
@@ -257,9 +269,10 @@ module.exports = {
       return;
     }
 
-    const siteUrl   = process.env.PSI_URL || DEFAULT_URL;
-    const threshold = parseInt(process.env.PSI_THRESHOLD || String(DEFAULT_THRESHOLD), 10);
-    const strategy  = "mobile";
+    const siteUrl    = process.env.PSI_URL || DEFAULT_URL;
+    const threshold  = parseInt(process.env.PSI_THRESHOLD  || String(DEFAULT_THRESHOLD),    10);
+    const lcpBudget  = parseInt(process.env.LCP_BUDGET_MS  || String(DEFAULT_LCP_BUDGET_MS), 10);
+    const strategy   = "mobile";
 
     // Build a link to the Netlify deploy log for this exact deploy
     const siteName = constants.SITE_NAME || "elh-preview";
@@ -273,6 +286,7 @@ module.exports = {
     console.log(`  URL      : ${siteUrl}`);
     console.log(`  Strategy : ${strategy}`);
     console.log(`  Threshold: ${threshold}/100`);
+    console.log(`  LCP budget: ≤ ${lcpBudget} ms  (Google "Good" = ≤ 2500 ms)`);
     console.log(`${"=".repeat(60)}`);
 
     let data;
@@ -340,6 +354,37 @@ module.exports = {
         `Review recent changes for regressions.`
       );
       return;
+    }
+
+    // ------------------------------------------------------------------
+    // LCP budget check
+    // PSI reports numericValue in milliseconds. We enforce ≤ LCP_BUDGET_MS
+    // (default 2500 ms) — the Google "Good" Core Web Vitals threshold.
+    // This catches regressions from image swaps, font changes, or new
+    // third-party scripts before they reach users.
+    // ------------------------------------------------------------------
+    const lcpAudit = audits["largest-contentful-paint"] ?? {};
+    const lcpMs    = lcpAudit.numericValue != null ? Math.round(lcpAudit.numericValue) : null;
+    const lcpDisplay = lcpAudit.displayValue ?? (lcpMs != null ? `${(lcpMs / 1000).toFixed(1)} s` : "n/a");
+
+    if (lcpMs == null) {
+      console.log("  [LCP] numericValue not present in PSI response — skipping LCP budget check.");
+    } else if (lcpMs > lcpBudget) {
+      const msg =
+        `LCP ${lcpDisplay} (${lcpMs} ms) exceeds budget of ${lcpBudget} ms. ` +
+        `Check for new render-blocking resources, unoptimised images, or added third-party scripts.`;
+      await sendAlert({
+        score: perf,
+        threshold,
+        deployLogUrl,
+        siteUrl,
+        reason: "lcp-over-budget",
+        extra: msg,
+      });
+      utils.build.failPlugin(msg);
+      return;
+    } else {
+      console.log(`  ✓ LCP ${lcpDisplay} (${lcpMs} ms) is within the ${lcpBudget} ms budget.`);
     }
 
     console.log(

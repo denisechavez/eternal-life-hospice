@@ -58,16 +58,24 @@ def extract_scores(data: dict) -> dict:
         audit = audits.get(audit_id, {})
         score = audit.get("score")
         display = audit.get("displayValue", "")
-        results[audit_id] = {
+        entry = {
             "label": label,
             "score": round(score * 100) if score is not None else None,
             "displayValue": display,
         }
+        # Preserve raw millisecond value for LCP so we can enforce a budget
+        if audit_id == "largest-contentful-paint" and audit.get("numericValue") is not None:
+            entry["numericValue"] = round(audit["numericValue"])
+        results[audit_id] = entry
 
     return results
 
 
 THRESHOLD_DEFAULT = 80
+# LCP budget: Google "Good" Core Web Vitals ceiling is 2500 ms.
+# The ELH homepage was optimised to ~1.9 s mobile; 2500 ms gives a
+# 600 ms regression buffer while keeping us firmly in the "Good" band.
+LCP_BUDGET_MS_DEFAULT = 2500
 
 
 def main():
@@ -79,6 +87,13 @@ def main():
         type=int,
         default=THRESHOLD_DEFAULT,
         help=f"Minimum acceptable performance score (0–100). Exit 1 if below. Default: {THRESHOLD_DEFAULT}",
+    )
+    parser.add_argument(
+        "--lcp-budget",
+        type=int,
+        default=LCP_BUDGET_MS_DEFAULT,
+        dest="lcp_budget",
+        help=f"Maximum acceptable LCP in milliseconds. Exit 1 if exceeded. Default: {LCP_BUDGET_MS_DEFAULT}",
     )
     args = parser.parse_args()
 
@@ -136,12 +151,35 @@ def main():
     if cache_score is not None and cache_score < 50:
         print(f"WARNING: Cache-TTL score is low ({cache_score}/100) — review _headers.", file=sys.stderr)
 
+    failed = False
+
     # Enforce performance threshold
     if perf is not None and perf < args.threshold:
         print(
             f"FAIL: Performance score {perf}/100 is below threshold {args.threshold}/100.",
             file=sys.stderr,
         )
+        failed = True
+
+    # Enforce LCP budget (Google "Good" = ≤ 2500 ms)
+    # Uses numericValue (milliseconds) from the PSI audit for precision.
+    lcp_audit = scores.get("largest-contentful-paint", {})
+    lcp_ms = lcp_audit.get("numericValue")
+    lcp_display = lcp_audit.get("displayValue", "n/a")
+    if lcp_ms is not None:
+        if lcp_ms > args.lcp_budget:
+            print(
+                f"FAIL: LCP {lcp_display} ({lcp_ms} ms) exceeds budget of {args.lcp_budget} ms. "
+                f"Check for new render-blocking resources, unoptimised images, or added third-party scripts.",
+                file=sys.stderr,
+            )
+            failed = True
+        else:
+            print(f"✓ LCP {lcp_display} ({lcp_ms} ms) is within the {args.lcp_budget} ms budget.")
+    else:
+        print("WARNING: LCP numericValue not present in PSI response — skipping LCP budget check.", file=sys.stderr)
+
+    if failed:
         sys.exit(1)
 
     print(f"✓ API call succeeded. Performance score {perf}/100 meets threshold {args.threshold}/100.")
