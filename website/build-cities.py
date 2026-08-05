@@ -76,7 +76,7 @@ HEAD_SCRIPTS = (
 
 HEADER = """\
   <header id="hdr"><div class="hdr-in">
-    <a class="hdr-logo" href="/"><img class="s sym-cream" src="assets/img/elh-logo-h2-cream.webp" alt="Eternal Life Hospice logo"><img class="s sym-plum" src="assets/img/elh-logo-h2-plum.webp" alt="" aria-hidden="true"><span class="hdr-wordmark">Eternal<small>Life Hospice</small></span></a>
+    <a class="hdr-logo" href="/"><img class="s sym-cream" src="assets/img/elh-logo-h2-cream.webp" alt="Eternal Life Hospice logo" width="331" height="74"><img class="s sym-plum" src="assets/img/elh-logo-h2-plum.webp" alt="" aria-hidden="true" width="331" height="74"><span class="hdr-wordmark">Eternal<small>Life Hospice</small></span></a>
     <nav>
       <div class="nav-group"><a href="/#standard" class="nav-parent">The Eternal Standard</a><div class="nav-sub"><a href="/#standard">Four Pillars : One Standard</a></div></div>
       <div class="nav-group"><a href="/#first48" class="nav-parent">The First 48 Hours</a><div class="nav-sub"><a href="/#faq">Common Questions Answered</a><a href="family-guide">Family eGuide</a></div></div>
@@ -298,6 +298,8 @@ def render_page(c):
   <meta name="twitter:card" content="summary_large_image">
   <link rel="icon" type="image/png" href="assets/favicon.png">
   {_hero_preload_tag(slug)}
+  <link rel="preload" as="font" href="assets/fonts/fraunces-latin.woff2" type="font/woff2" crossorigin fetchpriority="high">
+  <link rel="preload" as="font" href="assets/fonts/fraunces-italic-latin.woff2" type="font/woff2" crossorigin fetchpriority="high">
   <link rel="stylesheet" href="assets/elh.css?v=20260714c">
 {schema_tags}
 {HEAD_SCRIPTS}

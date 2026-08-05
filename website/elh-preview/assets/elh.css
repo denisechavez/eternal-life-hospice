@@ -1,6 +1,6 @@
 
-@font-face{font-family:'Fraunces ELH';font-weight:100 900;font-style:normal;font-display:swap;src:url(fonts/Fraunces-var.woff2) format('woff2')}
-@font-face{font-family:'Fraunces ELH';font-weight:100 900;font-style:italic;font-display:swap;src:url(fonts/Fraunces-Italic-var.woff2) format('woff2')}
+@font-face{font-family:'Fraunces ELH';font-weight:100 900;font-style:normal;font-display:swap;src:url(fonts/fraunces-latin.woff2) format('woff2')}
+@font-face{font-family:'Fraunces ELH';font-weight:100 900;font-style:italic;font-display:swap;src:url(fonts/fraunces-italic-latin.woff2) format('woff2')}
 @font-face{font-family:'Jost ELH';font-weight:300;font-display:swap;src:url(fonts/JostELH-Light.woff2) format('woff2')}
 @font-face{font-family:'Jost ELH';font-weight:400;font-display:swap;src:url(fonts/JostELH-Regular.woff2) format('woff2')}
 @font-face{font-family:'Jost ELH';font-weight:500;font-display:swap;src:url(fonts/JostELH-Medium.woff2) format('woff2')}
