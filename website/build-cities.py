@@ -14,6 +14,34 @@ Or for a single city:
 
 import json, os, re, sys, textwrap, argparse
 
+def _hero_img_tag(slug: str, city: str) -> str:
+    """Return a <picture class="hero-bg"> element for the city hero.
+
+    Uses WebP source + JPEG fallback when a .webp file exists; falls back to
+    a plain <img class="hero-bg"> pointing at the JPEG when only the .jpg is
+    present.  Returns an empty string when neither image file is found.
+    """
+    img_dir  = os.path.join(OUT_DIR, "assets", "img", "city")
+    jpg_path = os.path.join(img_dir, f"{slug}.jpg")
+    webp_path = os.path.join(img_dir, f"{slug}.webp")
+
+    if os.path.isfile(webp_path):
+        return (
+            f'<picture class="hero-bg">'
+            f'<source srcset="assets/img/city/{slug}.webp" type="image/webp">'
+            f'<img class="hero-bg" src="assets/img/city/{slug}.jpg"'
+            f' alt="{city}, California" width="1536" height="1024"'
+            f' loading="eager" decoding="async">'
+            f'</picture>'
+        )
+    if os.path.isfile(jpg_path):
+        return (
+            f'<img class="hero-bg" src="assets/img/city/{slug}.jpg"'
+            f' alt="{city}, California" width="1536" height="1024"'
+            f' loading="eager" decoding="async">'
+        )
+    return ""
+
 def _hero_preload_tag(slug: str) -> str:
     """Return the correct <link rel="preload"> tag for the city hero image.
 
@@ -113,6 +141,21 @@ FOOTER = """\
   <nav class="foot-social" aria-label="Eternal Life Hospice on social media"><span class="fs-label">Stay Connected</span><a href="https://www.linkedin.com/company/eternal-life-hospice/" target="_blank" rel="noopener" aria-label="LinkedIn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4V9h4v1.57A6 6 0 0 1 16 8z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg></a><a href="https://www.facebook.com/eternallifehospiceinc" target="_blank" rel="noopener" aria-label="Facebook"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg></a><a href="https://www.instagram.com/eternallifehospice/" target="_blank" rel="noopener" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg></a><a href="https://www.youtube.com/@EternalLifeHospice" target="_blank" rel="noopener" aria-label="YouTube"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z"/><polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"/></svg></a></nav>
   <div class="foot-disclaimer"><strong style="color:rgba(245,240,235,.5)">Disclaimer:</strong> Eternal Life Hospice Inc. is a licensed and Medicare-certified hospice care provider. The integrative modalities described are complementary care offered for patient comfort and wellbeing; they are not intended to diagnose, treat, cure or prevent any medical condition. Medicare coverage details are subject to change; confirm current eligibility with your care team or call <a href="tel:18006334227" style="color:inherit;text-decoration:none">1.800.MEDICARE</a>.</div>
   <div class="foot-bottom"><span>&copy; 2026 Eternal Life Hospice Inc. All rights reserved. &middot; A <a href="https://conduitint.com" target="_blank" rel="noopener" style="color:inherit;text-decoration:none">Conduit International</a> build</span><span><a href="/" style="color:inherit">eternallifehospice.com</a></span></div>
+  <div class="foot-translate">
+    <span class="ft-label">Translate this page</span>
+    <div class="ft-lang-btns">
+      <a class="ft-lang" data-lang="es">\U0001f1f2\U0001f1fd Espa\u00f1ol</a>
+      <a class="ft-lang" data-lang="ru">\U0001f1f7\U0001f1fa \u0420\u0443\u0441\u0441\u043a\u0438\u0439</a>
+      <a class="ft-lang" data-lang="uk">\U0001f1fa\U0001f1e6 \u0423\u043a\u0440\u0430\u0457\u043d\u0441\u044c\u043a\u0430</a>
+      <a class="ft-lang" data-lang="ko">\U0001f1f0\U0001f1f7 \ud55c\uad6d\uc5b4</a>
+      <a class="ft-lang" data-lang="hy">\U0001f1e6\U0001f1f2 \u0540\u0561\u0575\u0565\u0580\u0587\u576b</a>
+      <a class="ft-lang" data-lang="tl">\U0001f1f5\U0001f1ed Filipino</a>
+      <a class="ft-lang" data-lang="vi">\U0001f1fb\U0001f1f3 Ti\u1ebfng Vi\u1ec7t</a>
+      <a class="ft-lang" data-lang="zh-CN">\U0001f1e8\U0001f1f3 \u4e2d\u6587</a>
+      <a class="ft-lang" data-lang="ar">\U0001f1f8\U0001f1e6 \u0627\u0644\u0639\u0631\u0628\u064a\u0629</a>
+      <a class="ft-lang" data-lang="fa">\U0001f1ee\U0001f1f7 \u0641\u0627\u0631\u0633\u06cc</a>
+    </div>
+  </div>
 </footer>
 <script src="assets/header.js" defer></script><script src="/assets/chat.js" defer></script>
 <div class="search-overlay" id="searchOverlay" role="dialog" aria-modal="true" aria-label="Site search" aria-hidden="true">
@@ -279,7 +322,7 @@ def render_page(c):
 </head><body>
 {HEADER}
 {CRED_STRIP}
-<section class="hero hero--city hero--tall">
+<section class="hero hero--city hero--tall">{_hero_img_tag(slug, city)}
     <div class="eyebrow">{eyebrow}</div>
     <h1>{h1}</h1>
     <p>Eternal Life Hospice provides physician-supported hospice care for eligible patients and families in {city} and surrounding communities. Care may be provided in private homes, assisted-living communities, residential-care settings and skilled-nursing facilities throughout {county}.</p>
