@@ -310,8 +310,10 @@ def render_page(c):
 {schema_tags}
 {HEAD_SCRIPTS}
 </head><body>
+<a class="skip-link" href="#main-content">Skip to main content</a>
 {HEADER}
 {CRED_STRIP}
+<main id="main-content">
 <section class="hero hero--city hero--tall">{_hero_img_tag(slug, city)}<div class="eyebrow">{eyebrow}</div>
     <h1>{h1}</h1>
     <p>Eternal Life Hospice provides physician-supported hospice care for eligible patients and families in {city} and surrounding communities. Care may be provided in private homes, assisted-living communities, residential-care settings and skilled-nursing facilities throughout {county}.</p>
@@ -420,6 +422,7 @@ def render_page(c):
   <p>{family_ctx if family_ctx else "A conversation costs nothing and brings clarity. We will guide you from there."}</p>
   <div class="btns"><a class="btn-gold" href="tel:18059537273">Call Eternal Life Hospice</a><a class="btn-ghost" href="family-guide">Read the Family Guide &#8594;</a><a class="btn-ghost" href="/refer">Refer a Patient &#8594;</a></div>
 </section>
+</main>
 {FOOTER}
 </body></html>"""
     return page
