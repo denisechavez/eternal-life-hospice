@@ -7,7 +7,11 @@
  *
  * Required env var : GOOGLE_API_KEY      (Netlify Site → Environment variables)
  * Optional env var : PSI_THRESHOLD       (integer 0-100, default 80)
- * Optional env var : PSI_URL             (override the URL to check)
+ * Optional env var : PSI_URL             (single URL to check; default homepage)
+ * Optional env var : PSI_URLS            (comma-separated list of URLs to check;
+ *                                         overrides PSI_URL when set; each URL is
+ *                                         checked independently and any single
+ *                                         failure fails the build)
  * Optional env var : LCP_BUDGET_MS       (integer ms, default 2500)
  *                    Budget rationale: Google "Good" LCP threshold is ≤ 2.5 s.
  *                    The ELH homepage was optimised to ~1.9 s (mobile); 2.5 s
@@ -257,6 +261,91 @@ async function sendAlert(opts) {
 }
 
 // ---------------------------------------------------------------------------
+// Check a single URL — returns null on pass, or an error string on failure.
+// Sends alerts for each individual failure.
+// ---------------------------------------------------------------------------
+async function checkUrl({ siteUrl, strategy, apiKey, threshold, lcpBudget, deployLogUrl }) {
+  console.log(`\n${"=".repeat(60)}`);
+  console.log(`  PageSpeed Insights post-deploy check`);
+  console.log(`  URL      : ${siteUrl}`);
+  console.log(`  Strategy : ${strategy}`);
+  console.log(`  Threshold: ${threshold}/100`);
+  console.log(`  LCP budget: ≤ ${lcpBudget} ms  (Google "Good" = ≤ 2500 ms)`);
+  console.log(`${"=".repeat(60)}`);
+
+  let data;
+  try {
+    data = await psiRequest(siteUrl, strategy, apiKey);
+  } catch (err) {
+    await sendAlert({ score: null, threshold, deployLogUrl, siteUrl, reason: "api-error" });
+    return `PageSpeed API error for ${siteUrl}: ${err.message}`;
+  }
+
+  const cats   = data?.lighthouseResult?.categories ?? {};
+  const audits = data?.lighthouseResult?.audits ?? {};
+
+  const perfScore = cats?.performance?.score;
+  const perf = perfScore != null ? Math.round(perfScore * 100) : null;
+
+  if (perf != null) {
+    const bar = "█".repeat(Math.floor(perf / 5));
+    console.log(`\n  Overall performance : ${String(perf).padStart(3)}/100  ${bar}`);
+  } else {
+    console.log("\n  Overall performance : n/a");
+  }
+
+  console.log();
+  for (const [auditId, shortLabel] of AUDITS_OF_INTEREST) {
+    const audit = audits[auditId] ?? {};
+    const s     = audit.score != null ? Math.round(audit.score * 100) : null;
+    const dv    = audit.displayValue ?? "";
+    const sStr  = s != null ? `${String(s).padStart(3)}/100` : "  n/a ";
+    console.log(`  ${shortLabel.padEnd(20)} ${sStr}   ${dv}`);
+  }
+
+  console.log(`\n${"=".repeat(60)}\n`);
+
+  if (perf == null) {
+    await sendAlert({ score: null, threshold, deployLogUrl, siteUrl, reason: "no-score" });
+    return `PageSpeed returned no performance score for ${siteUrl} — check the API response.`;
+  }
+
+  if (perf < threshold) {
+    await sendAlert({ score: perf, threshold, deployLogUrl, siteUrl, reason: "below-threshold" });
+    return (
+      `Performance score ${perf}/100 is below the required threshold of ${threshold}/100 ` +
+      `for ${siteUrl}. Review recent changes for regressions.`
+    );
+  }
+
+  // ------------------------------------------------------------------
+  // LCP budget check
+  // PSI reports numericValue in milliseconds. We enforce ≤ LCP_BUDGET_MS
+  // (default 2500 ms) — the Google "Good" Core Web Vitals threshold.
+  // This catches regressions from image swaps, font changes, or new
+  // third-party scripts before they reach users.
+  // ------------------------------------------------------------------
+  const lcpAudit  = audits["largest-contentful-paint"] ?? {};
+  const lcpMs     = lcpAudit.numericValue != null ? Math.round(lcpAudit.numericValue) : null;
+  const lcpDisplay = lcpAudit.displayValue ?? (lcpMs != null ? `${(lcpMs / 1000).toFixed(1)} s` : "n/a");
+
+  if (lcpMs == null) {
+    console.log("  [LCP] numericValue not present in PSI response — skipping LCP budget check.");
+  } else if (lcpMs > lcpBudget) {
+    const msg =
+      `LCP ${lcpDisplay} (${lcpMs} ms) exceeds budget of ${lcpBudget} ms for ${siteUrl}. ` +
+      `Check for new render-blocking resources, unoptimised images, or added third-party scripts.`;
+    await sendAlert({ score: perf, threshold, deployLogUrl, siteUrl, reason: "lcp-over-budget", extra: msg });
+    return msg;
+  } else {
+    console.log(`  ✓ LCP ${lcpDisplay} (${lcpMs} ms) is within the ${lcpBudget} ms budget.`);
+  }
+
+  console.log(`✓ PageSpeed check passed for ${siteUrl}: ${perf}/100 meets threshold ${threshold}/100.`);
+  return null; // pass
+}
+
+// ---------------------------------------------------------------------------
 // Build plugin entry point
 // ---------------------------------------------------------------------------
 module.exports = {
@@ -269,10 +358,25 @@ module.exports = {
       return;
     }
 
-    const siteUrl    = process.env.PSI_URL || DEFAULT_URL;
-    const threshold  = parseInt(process.env.PSI_THRESHOLD  || String(DEFAULT_THRESHOLD),    10);
-    const lcpBudget  = parseInt(process.env.LCP_BUDGET_MS  || String(DEFAULT_LCP_BUDGET_MS), 10);
-    const strategy   = "mobile";
+    // Resolve the list of URLs to check.
+    // PSI_URLS (comma-separated) takes precedence; falls back to PSI_URL, then the homepage.
+    let urlsToCheck;
+    const psiUrlsEnv = process.env.PSI_URLS;
+    if (psiUrlsEnv) {
+      urlsToCheck = psiUrlsEnv
+        .split(",")
+        .map((u) => u.trim())
+        .filter(Boolean);
+      if (urlsToCheck.length === 0) {
+        urlsToCheck = [process.env.PSI_URL || DEFAULT_URL];
+      }
+    } else {
+      urlsToCheck = [process.env.PSI_URL || DEFAULT_URL];
+    }
+
+    const threshold = parseInt(process.env.PSI_THRESHOLD  || String(DEFAULT_THRESHOLD),    10);
+    const lcpBudget = parseInt(process.env.LCP_BUDGET_MS  || String(DEFAULT_LCP_BUDGET_MS), 10);
+    const strategy  = "mobile";
 
     // Build a link to the Netlify deploy log for this exact deploy
     const siteName = constants.SITE_NAME || "elh-preview";
@@ -281,114 +385,30 @@ module.exports = {
       ? `https://app.netlify.com/sites/${siteName}/deploys/${deployId}`
       : `https://app.netlify.com/sites/${siteName}/deploys`;
 
-    console.log(`\n${"=".repeat(60)}`);
-    console.log(`  PageSpeed Insights post-deploy check`);
-    console.log(`  URL      : ${siteUrl}`);
-    console.log(`  Strategy : ${strategy}`);
-    console.log(`  Threshold: ${threshold}/100`);
-    console.log(`  LCP budget: ≤ ${lcpBudget} ms  (Google "Good" = ≤ 2500 ms)`);
-    console.log(`${"=".repeat(60)}`);
+    console.log(`\nChecking ${urlsToCheck.length} URL(s): ${urlsToCheck.join(", ")}`);
 
-    let data;
-    try {
-      data = await psiRequest(siteUrl, strategy, apiKey);
-    } catch (err) {
-      // API error — alert the team then fail the plugin
-      await sendAlert({
-        score: null,
-        threshold,
-        deployLogUrl,
-        siteUrl,
-        reason: "api-error",
-      });
-      utils.build.failPlugin(`PageSpeed API error: ${err.message}`);
+    // Check all URLs, collecting failures.
+    // We run them sequentially to avoid hammering the PSI API concurrently.
+    const failures = [];
+    for (const siteUrl of urlsToCheck) {
+      const failure = await checkUrl({ siteUrl, strategy, apiKey, threshold, lcpBudget, deployLogUrl });
+      if (failure) {
+        failures.push(failure);
+      }
+    }
+
+    if (failures.length > 0) {
+      const summary = failures.length === 1
+        ? failures[0]
+        : `${failures.length} URLs failed PageSpeed checks:\n` +
+          failures.map((f, i) => `  ${i + 1}. ${f}`).join("\n");
+      utils.build.failPlugin(summary);
       return;
-    }
-
-    const cats   = data?.lighthouseResult?.categories ?? {};
-    const audits = data?.lighthouseResult?.audits ?? {};
-
-    const perfScore = cats?.performance?.score;
-    const perf = perfScore != null ? Math.round(perfScore * 100) : null;
-
-    if (perf != null) {
-      const bar = "█".repeat(Math.floor(perf / 5));
-      console.log(`\n  Overall performance : ${String(perf).padStart(3)}/100  ${bar}`);
-    } else {
-      console.log("\n  Overall performance : n/a");
-    }
-
-    console.log();
-    for (const [auditId, shortLabel] of AUDITS_OF_INTEREST) {
-      const audit = audits[auditId] ?? {};
-      const s     = audit.score != null ? Math.round(audit.score * 100) : null;
-      const dv    = audit.displayValue ?? "";
-      const sStr  = s != null ? `${String(s).padStart(3)}/100` : "  n/a ";
-      console.log(`  ${shortLabel.padEnd(20)} ${sStr}   ${dv}`);
-    }
-
-    console.log(`\n${"=".repeat(60)}\n`);
-
-    if (perf == null) {
-      await sendAlert({
-        score: null,
-        threshold,
-        deployLogUrl,
-        siteUrl,
-        reason: "no-score",
-      });
-      utils.build.failPlugin("PageSpeed returned no performance score — check the API response.");
-      return;
-    }
-
-    if (perf < threshold) {
-      await sendAlert({
-        score: perf,
-        threshold,
-        deployLogUrl,
-        siteUrl,
-        reason: "below-threshold",
-      });
-      utils.build.failPlugin(
-        `Performance score ${perf}/100 is below the required threshold of ${threshold}/100. ` +
-        `Review recent changes for regressions.`
-      );
-      return;
-    }
-
-    // ------------------------------------------------------------------
-    // LCP budget check
-    // PSI reports numericValue in milliseconds. We enforce ≤ LCP_BUDGET_MS
-    // (default 2500 ms) — the Google "Good" Core Web Vitals threshold.
-    // This catches regressions from image swaps, font changes, or new
-    // third-party scripts before they reach users.
-    // ------------------------------------------------------------------
-    const lcpAudit = audits["largest-contentful-paint"] ?? {};
-    const lcpMs    = lcpAudit.numericValue != null ? Math.round(lcpAudit.numericValue) : null;
-    const lcpDisplay = lcpAudit.displayValue ?? (lcpMs != null ? `${(lcpMs / 1000).toFixed(1)} s` : "n/a");
-
-    if (lcpMs == null) {
-      console.log("  [LCP] numericValue not present in PSI response — skipping LCP budget check.");
-    } else if (lcpMs > lcpBudget) {
-      const msg =
-        `LCP ${lcpDisplay} (${lcpMs} ms) exceeds budget of ${lcpBudget} ms. ` +
-        `Check for new render-blocking resources, unoptimised images, or added third-party scripts.`;
-      await sendAlert({
-        score: perf,
-        threshold,
-        deployLogUrl,
-        siteUrl,
-        reason: "lcp-over-budget",
-        extra: msg,
-      });
-      utils.build.failPlugin(msg);
-      return;
-    } else {
-      console.log(`  ✓ LCP ${lcpDisplay} (${lcpMs} ms) is within the ${lcpBudget} ms budget.`);
     }
 
     console.log(
-      `✓ PageSpeed check passed: ${perf}/100 meets threshold ${threshold}/100.`
+      `\n✓ All ${urlsToCheck.length} URL(s) passed PageSpeed checks ` +
+      `(threshold ${threshold}/100, LCP ≤ ${lcpBudget} ms).`
     );
   },
 };

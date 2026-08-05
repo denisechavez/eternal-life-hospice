@@ -5,6 +5,12 @@ PageSpeed Insights API smoke-test.
 Usage:
     python3 website/check-pagespeed.py
     python3 website/check-pagespeed.py --url https://eternallifehospice.com/about --strategy desktop
+    python3 website/check-pagespeed.py --urls https://eternallifehospice.com/about https://eternallifehospice.com/services
+    python3 website/check-pagespeed.py --urls https://eternallifehospice.com https://eternallifehospice.com/about https://eternallifehospice.com/services
+
+--urls accepts one or more space-separated URLs and checks every one; any
+single failure causes exit code 1 after all URLs have been tested (so you
+see the full picture before failing).
 
 Returns exit code 0 on success, 1 on any error.
 """
@@ -78,33 +84,14 @@ THRESHOLD_DEFAULT = 80
 LCP_BUDGET_MS_DEFAULT = 2500
 
 
-def main():
-    parser = argparse.ArgumentParser(description="PageSpeed Insights API smoke-test")
-    parser.add_argument("--url",       default=DEFAULT_URL,      help="Page URL to test")
-    parser.add_argument("--strategy",  default=DEFAULT_STRATEGY, choices=["mobile", "desktop"])
-    parser.add_argument(
-        "--threshold",
-        type=int,
-        default=THRESHOLD_DEFAULT,
-        help=f"Minimum acceptable performance score (0–100). Exit 1 if below. Default: {THRESHOLD_DEFAULT}",
-    )
-    parser.add_argument(
-        "--lcp-budget",
-        type=int,
-        default=LCP_BUDGET_MS_DEFAULT,
-        dest="lcp_budget",
-        help=f"Maximum acceptable LCP in milliseconds. Exit 1 if exceeded. Default: {LCP_BUDGET_MS_DEFAULT}",
-    )
-    args = parser.parse_args()
-
-    key = os.environ.get("GOOGLE_API_KEY", "")
-    if not key:
-        print("ERROR: GOOGLE_API_KEY env var is not set", file=sys.stderr)
-        sys.exit(1)
-
-    print(f"Running PageSpeed Insights for {args.url} ({args.strategy})…")
+def check_single_url(url: str, strategy: str, key: str, threshold: int, lcp_budget: int) -> bool:
+    """
+    Run the PSI check for one URL. Prints results and returns True on pass,
+    False on any failure. Never raises — errors are printed and treated as failures.
+    """
+    print(f"\nRunning PageSpeed Insights for {url} ({strategy})…")
     try:
-        data = run(args.url, args.strategy, key)
+        data = run(url, strategy, key)
     except urllib.error.HTTPError as exc:
         body = exc.read().decode()
         try:
@@ -122,12 +109,16 @@ def main():
                 "\n  https://console.cloud.google.com/apis/credentials",
                 file=sys.stderr,
             )
-        sys.exit(1)
+        return False
+    except Exception as exc:
+        print(f"ERROR: {exc}", file=sys.stderr)
+        return False
 
     scores = extract_scores(data)
 
     print(f"\n{'='*55}")
-    print(f"  PageSpeed Insights — {args.strategy.upper()}")
+    print(f"  PageSpeed Insights — {strategy.upper()}")
+    print(f"  URL: {url}")
     print(f"{'='*55}")
 
     perf = scores.pop("performance", None)
@@ -151,15 +142,15 @@ def main():
     if cache_score is not None and cache_score < 50:
         print(f"WARNING: Cache-TTL score is low ({cache_score}/100) — review _headers.", file=sys.stderr)
 
-    failed = False
+    passed = True
 
     # Enforce performance threshold
-    if perf is not None and perf < args.threshold:
+    if perf is not None and perf < threshold:
         print(
-            f"FAIL: Performance score {perf}/100 is below threshold {args.threshold}/100.",
+            f"FAIL: Performance score {perf}/100 is below threshold {threshold}/100 for {url}.",
             file=sys.stderr,
         )
-        failed = True
+        passed = False
 
     # Enforce LCP budget (Google "Good" = ≤ 2500 ms)
     # Uses numericValue (milliseconds) from the PSI audit for precision.
@@ -167,22 +158,95 @@ def main():
     lcp_ms = lcp_audit.get("numericValue")
     lcp_display = lcp_audit.get("displayValue", "n/a")
     if lcp_ms is not None:
-        if lcp_ms > args.lcp_budget:
+        if lcp_ms > lcp_budget:
             print(
-                f"FAIL: LCP {lcp_display} ({lcp_ms} ms) exceeds budget of {args.lcp_budget} ms. "
+                f"FAIL: LCP {lcp_display} ({lcp_ms} ms) exceeds budget of {lcp_budget} ms for {url}. "
                 f"Check for new render-blocking resources, unoptimised images, or added third-party scripts.",
                 file=sys.stderr,
             )
-            failed = True
+            passed = False
         else:
-            print(f"✓ LCP {lcp_display} ({lcp_ms} ms) is within the {args.lcp_budget} ms budget.")
+            print(f"✓ LCP {lcp_display} ({lcp_ms} ms) is within the {lcp_budget} ms budget.")
     else:
         print("WARNING: LCP numericValue not present in PSI response — skipping LCP budget check.", file=sys.stderr)
 
-    if failed:
+    if passed:
+        print(f"✓ {url} — performance score {perf}/100 meets threshold {threshold}/100.")
+
+    return passed
+
+
+def main():
+    parser = argparse.ArgumentParser(description="PageSpeed Insights API smoke-test")
+    url_group = parser.add_mutually_exclusive_group()
+    url_group.add_argument(
+        "--url",
+        default=None,
+        help="Single page URL to test (default: homepage). Use --urls to test multiple.",
+    )
+    url_group.add_argument(
+        "--urls",
+        nargs="+",
+        metavar="URL",
+        help=(
+            "One or more page URLs to test. Every URL is checked independently; "
+            "any single failure fails the run. Mutually exclusive with --url."
+        ),
+    )
+    parser.add_argument("--strategy",  default=DEFAULT_STRATEGY, choices=["mobile", "desktop"])
+    parser.add_argument(
+        "--threshold",
+        type=int,
+        default=THRESHOLD_DEFAULT,
+        help=f"Minimum acceptable performance score (0–100). Exit 1 if below. Default: {THRESHOLD_DEFAULT}",
+    )
+    parser.add_argument(
+        "--lcp-budget",
+        type=int,
+        default=LCP_BUDGET_MS_DEFAULT,
+        dest="lcp_budget",
+        help=f"Maximum acceptable LCP in milliseconds. Exit 1 if exceeded. Default: {LCP_BUDGET_MS_DEFAULT}",
+    )
+    args = parser.parse_args()
+
+    key = os.environ.get("GOOGLE_API_KEY", "")
+    if not key:
+        print("ERROR: GOOGLE_API_KEY env var is not set", file=sys.stderr)
         sys.exit(1)
 
-    print(f"✓ API call succeeded. Performance score {perf}/100 meets threshold {args.threshold}/100.")
+    # Resolve the list of URLs to check
+    if args.urls:
+        urls = args.urls
+    else:
+        urls = [args.url or DEFAULT_URL]
+
+    if len(urls) > 1:
+        print(f"Checking {len(urls)} URLs: {', '.join(urls)}")
+
+    # Check every URL; collect failures so the user sees the full picture.
+    failures = []
+    for url in urls:
+        ok = check_single_url(
+            url=url,
+            strategy=args.strategy,
+            key=key,
+            threshold=args.threshold,
+            lcp_budget=args.lcp_budget,
+        )
+        if not ok:
+            failures.append(url)
+
+    if failures:
+        print(
+            f"\nFAIL: {len(failures)} of {len(urls)} URL(s) did not meet the PageSpeed budget:",
+            file=sys.stderr,
+        )
+        for f in failures:
+            print(f"  • {f}", file=sys.stderr)
+        sys.exit(1)
+
+    if len(urls) > 1:
+        print(f"\n✓ All {len(urls)} URLs passed PageSpeed checks.")
     sys.exit(0)
 
 
