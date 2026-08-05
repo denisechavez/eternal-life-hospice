@@ -2,7 +2,7 @@
 """
 Regression guard: city-page generator must not emit render-blocking scripts
 ===========================================================================
-Renders one published city page in-memory and runs four groups of checks:
+Renders ALL published city pages in-memory and runs four groups of checks:
 
   [1] No external <script src=…> in <head> without defer or async
   [2] Third-party CDN URLs (UserWay, WhatConverts) are NOT static bare src=
@@ -127,126 +127,105 @@ def collect_errors(html):
     return errs
 
 
-# ── Render a real city page ───────────────────────────────────────────────────
+# ── Load all published cities ─────────────────────────────────────────────────
 
 _data_file = os.path.join(os.path.dirname(__file__), "city-data.json")
 with open(_data_file, encoding='utf-8') as _f:
     _cities = json.load(_f)
 
-_city = next(
-    (c for c in _cities if c.get('publishStatus') == 'published'),
-    None,
-)
-if _city is None:
-    print("ERROR: no published city found in city-data.json — cannot render test page")
+_published = [c for c in _cities if c.get('publishStatus') == 'published']
+
+if not _published:
+    print("ERROR: no published city found in city-data.json — cannot render test pages")
     sys.exit(1)
 
-print(f"\nCity-script regression check — rendering: hospice-{_city['slug']}-ca.html\n")
-html = _mod.render_page(_city)
-head = extract_head(html)
+print(f"\nCity-script regression check — {len(_published)} published city page(s)\n")
 
-errors = []
+# ── [1–3] Check every published city page ────────────────────────────────────
 
-# ── [ 1 ] External scripts in <head> without defer/async ─────────────────────
-print("[ 1 ] Scanning <head> for blocking external scripts …")
-_found_external = False
-for attrs in iter_script_attrs(head):
-    if is_ld_json(attrs) or not has_src(attrs):
-        continue
-    _found_external = True
-    src = src_value(attrs)
-    if has_defer_or_async(attrs):
-        print(f"  ✓  {src!r}  (defer or async present)")
+print(f"[ 1–3 ] Scanning all {len(_published)} published cities …")
+
+all_errors = []   # list of (slug, error_string) pairs
+pass_count = 0
+
+for city_data in _published:
+    slug = city_data['slug']
+    html = _mod.render_page(city_data)
+    city_errs = collect_errors(html)
+    if city_errs:
+        for e in city_errs:
+            all_errors.append((slug, e))
+            print(f"  ✗  [{slug}] {e}")
     else:
-        msg = f"blocking-external-script: src={src!r} — add defer or async"
-        print(f"  ✗  {msg}")
-        errors.append(msg)
-if not _found_external:
-    print("  ✓  no external scripts found in <head>  (all are inline deferred loaders)")
+        pass_count += 1
 
-# ── [ 2 ] CDN URLs must not be bare static src= attributes ───────────────────
-print("\n[ 2 ] Confirming third-party CDN URLs are not bare <script src= …")
-for substring in FORBIDDEN_BARE_SRC_SUBSTRINGS:
-    pat = re.compile(
-        r'<script\b[^>]*\bsrc\s*=\s*["\'][^"\']*' + re.escape(substring),
-        re.IGNORECASE,
-    )
-    if pat.search(head):
-        msg = (f"bare-cdn-src: {substring!r} is a static <script src= in <head> "
-               f"— must be dynamically injected")
-        print(f"  ✗  {msg}")
-        errors.append(msg)
-    else:
-        print(f"  ✓  {substring!r}  not a bare static src")
+if not all_errors:
+    print(f"  ✓  all {pass_count} cities clean  "
+          f"(no blocking scripts · no bare CDN srcs · deferred-loader patterns present)")
 
-# ── [ 3 ] Deferred-loader patterns present ────────────────────────────────────
-print("\n[ 3 ] Verifying deferred-loader patterns in rendered HTML …")
-for pattern, label in REQUIRED_PATTERNS:
-    if pattern in html:
-        print(f"  ✓  {pattern!r}")
-        print(f"       {label}")
-    else:
-        msg = f"missing-deferred-pattern: {pattern!r} — {label}"
-        print(f"  ✗  {msg}")
-        errors.append(msg)
+# ── [4] Mutation self-tests (run once on the first published city's HTML) ─────
 
-# ── [ 4 ] Mutation self-tests ─────────────────────────────────────────────────
 print("\n[ 4 ] Mutation self-tests (guard must catch known-bad templates) …")
+
+# Use first published city as the mutation base
+_base_html = _mod.render_page(_published[0])
+_base_slug  = _published[0]['slug']
+
+mutation_errors = []
 
 # Helper: inject a snippet into <head> just before the first <link>
 def inject_into_head(base_html, snippet):
     return base_html.replace('<link rel="stylesheet"', snippet + '\n<link rel="stylesheet"', 1)
 
 # Mutation A — blocking external script with no defer/async
-_mutant_a = inject_into_head(html, '<script src="/assets/bad-blocking.js"></script>')
+_mutant_a = inject_into_head(_base_html, '<script src="/assets/bad-blocking.js"></script>')
 _errs_a = collect_errors(_mutant_a)
 if any('blocking-external-script' in e for e in _errs_a):
     print("  ✓  Mutation A: blocking external <script src> in <head> is caught")
 else:
     msg = "Mutation A FAILED: guard did not catch a blocking external script in <head>"
     print(f"  ✗  {msg}")
-    errors.append(msg)
+    mutation_errors.append(msg)
 
 # Mutation B — CDN loader URL as a bare static src
 _mutant_b = inject_into_head(
-    html, '<script src="https://cdn.userway.org/widget.js"></script>')
+    _base_html, '<script src="https://cdn.userway.org/widget.js"></script>')
 _errs_b = collect_errors(_mutant_b)
 if any('bare-cdn-src' in e for e in _errs_b):
     print("  ✓  Mutation B: bare CDN static src in <head> is caught")
 else:
     msg = "Mutation B FAILED: guard did not catch a bare CDN <script src= in <head>"
     print(f"  ✗  {msg}")
-    errors.append(msg)
+    mutation_errors.append(msg)
 
 # Mutation C — deferred-loader pattern stripped from HEAD_SCRIPTS
-_mutant_c = html.replace("requestIdleCallback", "REMOVED_PATTERN")
+_mutant_c = _base_html.replace("requestIdleCallback", "REMOVED_PATTERN")
 _errs_c = collect_errors(_mutant_c)
 if any('missing-deferred-pattern' in e for e in _errs_c):
     print("  ✓  Mutation C: removed requestIdleCallback is caught")
 else:
     msg = "Mutation C FAILED: guard did not catch removal of requestIdleCallback"
     print(f"  ✗  {msg}")
-    errors.append(msg)
+    mutation_errors.append(msg)
 
 # ── Summary ───────────────────────────────────────────────────────────────────
 
 print()
 
-if errors:
+combined_errors = all_errors + [(f"mutation/{_base_slug}", e) for e in mutation_errors]
+
+if combined_errors:
     print("❌  FAIL — city-script regression check found issues:")
-    for e in errors:
-        print(f"     {e}")
+    for slug, e in combined_errors:
+        print(f"     [{slug}] {e}")
     print()
-    print("    Blocking scripts in <head> slow page load and hurt PageSpeed scores.")
-    print("    Fix HEAD_SCRIPTS in website/build-cities.py before deploying.")
+    if all_errors:
+        print("    Blocking scripts in <head> slow page load and hurt PageSpeed scores.")
+        print("    Fix HEAD_SCRIPTS in website/build-cities.py before deploying.")
     sys.exit(1)
 
-checks_run = (
-    len(REQUIRED_PATTERNS)
-    + len(FORBIDDEN_BARE_SRC_SUBSTRINGS)
-    + 3  # mutation tests
-)
-print(f"✅  OK — all {checks_run} checks pass "
-      f"(no blocking <head> scripts · no bare CDN srcs · "
-      f"{len(REQUIRED_PATTERNS)} deferred-loader patterns · 3 mutations caught).")
+checks_per_city = len(REQUIRED_PATTERNS) + len(FORBIDDEN_BARE_SRC_SUBSTRINGS) + 1  # +1 for blocking-script scan
+total_city_checks = checks_per_city * len(_published)
+print(f"✅  OK — all checks pass across {len(_published)} published cities "
+      f"({total_city_checks} total city checks · 3 mutations caught).")
 sys.exit(0)
