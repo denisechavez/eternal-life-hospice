@@ -61,7 +61,7 @@ OUT_DIR   = os.path.join(BASE, "elh-preview")
 # ── Deferred script snippets (must NOT be inside an f-string — JS braces clash) ─
 
 HEAD_SCRIPTS = (
-    '<script defer src="/assets/analytics.js"></script>\n'
+    '<script defer src="/assets/analytics.js?v=20260727h"></script>\n'
     # UserWay accessibility widget — requestIdleCallback deferred (never DOMContentLoaded)
     '<script>(function(d){var load=function(){var s=d.createElement(\'script\');'
     's.setAttribute(\'data-color\',\'#6793AC\');'
