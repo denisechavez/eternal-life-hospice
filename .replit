@@ -39,6 +39,10 @@ args = "translate-smoke-test"
 task = "workflow.run"
 args = "translate-bar-city-pages"
 
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "city-script-regression-check"
+
 [[workflows.workflow]]
 name = "Start application"
 author = "agent"
@@ -106,6 +110,17 @@ args = "node website/elh-preview/assets/test-city-pages-batch.js"
 
 [workflows.workflow.metadata]
 isValidation = true
+
+[[workflows.workflow]]
+name = "city-script-regression-check"
+author = "agent"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "python3 website/check-city-scripts.py"
+
+[workflows.workflow.metadata]
+outputType = "console"
 
 [[ports]]
 localPort = 3000
