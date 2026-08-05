@@ -1,3 +1,4 @@
 User-agent: *
 Allow: /
+Disallow: /assets/search-index.json
 Sitemap: https://eternallifehospice.com/sitemap.xml
