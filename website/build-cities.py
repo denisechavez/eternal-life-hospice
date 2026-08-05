@@ -15,52 +15,34 @@ Or for a single city:
 import json, os, re, sys, textwrap, argparse
 
 def _hero_img_tag(slug: str, city: str) -> str:
-    """Return a <picture class="hero-bg"> element for the city hero.
+    """Return a <picture> element for the city hero image.
 
-    Uses WebP source + JPEG fallback when a .webp file exists; falls back to
-    a plain <img class="hero-bg"> pointing at the JPEG when only the .jpg is
-    present.  Returns an empty string when neither image file is found.
+    Always emits the full WebP-source + JPEG-fallback <picture> so every
+    generated page has an <img class="hero-bg"> in the hero section.
+    Hero images (assets/img/city/{slug}.webp and .jpg) are deployed
+    separately; their on-disk presence is NOT checked here.
     """
-    img_dir  = os.path.join(OUT_DIR, "assets", "img", "city")
-    jpg_path = os.path.join(img_dir, f"{slug}.jpg")
-    webp_path = os.path.join(img_dir, f"{slug}.webp")
-
-    if os.path.isfile(webp_path):
-        return (
-            f'<picture class="hero-bg">'
-            f'<source srcset="assets/img/city/{slug}.webp" type="image/webp">'
-            f'<img class="hero-bg" src="assets/img/city/{slug}.jpg"'
-            f' alt="{city}, California" width="1536" height="1024"'
-            f' loading="eager" decoding="async">'
-            f'</picture>'
-        )
-    if os.path.isfile(jpg_path):
-        return (
-            f'<img class="hero-bg" src="assets/img/city/{slug}.jpg"'
-            f' alt="{city}, California" width="1536" height="1024"'
-            f' loading="eager" decoding="async">'
-        )
-    return ""
+    return (
+        f'<picture>'
+        f'<source srcset="assets/img/city/{slug}.webp" type="image/webp">'
+        f'<img class="hero-bg" src="assets/img/city/{slug}.jpg"'
+        f' alt="{city}, California" width="1536" height="1024"'
+        f' loading="eager" decoding="async">'
+        f'</picture>'
+    )
 
 def _hero_preload_tag(slug: str) -> str:
-    """Return the correct <link rel="preload"> tag for the city hero image.
+    """Return the <link rel="preload"> tag for the city hero image.
 
-    Prefers a WebP variant (assets/img/city/{slug}.webp) when one exists in
-    the output directory, emitting type="image/webp" to match the homepage
-    pattern.  Falls back to the JPEG without a type attribute when only the
-    .jpg is present.
+    Always emits a WebP preload so browsers begin fetching the hero image
+    before the CSS is parsed.  The JPEG is the fallback inside the <picture>
+    element; the preload always targets the WebP variant.
+    Hero images are deployed separately; on-disk presence is NOT checked here.
     """
-    img_dir = os.path.join(OUT_DIR, "assets", "img", "city")
-    webp_path = os.path.join(img_dir, f"{slug}.webp")
-    if os.path.isfile(webp_path):
-        return (
-            f'<link rel="preload" as="image" '
-            f'href="assets/img/city/{slug}.webp" '
-            f'type="image/webp" fetchpriority="high">'
-        )
     return (
         f'<link rel="preload" as="image" '
-        f'href="assets/img/city/{slug}.jpg" fetchpriority="high">'
+        f'href="assets/img/city/{slug}.webp" '
+        f'type="image/webp" fetchpriority="high">'
     )
 
 BASE = os.path.dirname(__file__)

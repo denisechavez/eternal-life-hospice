@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 Regression guard: city-page generator must not emit render-blocking scripts
-===========================================================================
+---------------------------------------------------------------------------
 Renders ALL published city pages in-memory and runs four groups of checks:
 
   [1] No external <script src=…> in <head> without defer or async
@@ -141,6 +141,23 @@ def collect_errors(html):
         if pattern not in html:
             errs.append(f"missing-deferred-pattern: {pattern!r} — {label}")
 
+    # [4] Hero image — every page must contain <img class="hero-bg">
+    if not re.search(r'<img\b[^>]*\bclass=["\'][^"\']*hero-bg', html, re.IGNORECASE):
+        errs.append(
+            'missing-hero-img: no <img class="hero-bg"> found — '
+            'hero section will render as a plain dark background'
+        )
+
+    # [5] WebP preload — <link rel="preload" as="image" …webp> must be in <head>
+    if not re.search(
+        r'<link\b[^>]*\brel\s*=\s*["\']preload["\'][^>]*\.webp',
+        head, re.IGNORECASE,
+    ):
+        errs.append(
+            'missing-webp-preload: no <link rel="preload" as="image" …webp> '
+            'in <head> — hero image will not be eagerly preloaded'
+        )
+
     return errs
 
 
@@ -225,158 +242,117 @@ else:
     print(f"  ✗  {msg}")
     mutation_errors.append(msg)
 
-# ── [ 5 ] WebP hero-preload sentinel test ────────────────────────────────────
-# Uses a dedicated fake slug that will never have a real image on disk, so
-# both the WebP branch and the JPEG fallback branch of _hero_preload_tag are
-# always exercised regardless of which real city images exist.
-print("\n[ 5 ] WebP hero preload — sentinel tests (WebP branch + JPEG fallback) …")
+# ── [ 5 ] Hero image + WebP preload — attribute checks and mutation tests ──────
+print("\n[ 5 ] Hero image and WebP preload — attribute checks and mutations …")
 
-_SENTINEL_SLUG = "test-webp-sentinel"
-_img_dir       = os.path.join(_mod.OUT_DIR, "assets", "img", "city")
-_sentinel_webp = os.path.join(_img_dir, f"{_SENTINEL_SLUG}.webp")
-_sentinel_webp_created = False
-_webp_checks = 0
+# collect_errors already checks every published city (groups [4] and [5] inside
+# collect_errors).  This section verifies the exact tag attributes on a single
+# rendered page and runs two extra mutation tests.
 
-# Minimal fake city dict — only the fields that render_page requires
-_fake_city = {
-    "slug": _SENTINEL_SLUG,
-    "city": "Test City",
-    "county": "Test County",
-    "subregion": "test area",
-    "canonicalUrl": f"https://eternallifehospice.com/hospice-{_SENTINEL_SLUG}-ca",
-    "title": "Test City Hospice Care | Eternal Life Hospice",
-    "metaDescription": "Test city meta description.",
-    "h1": "Hospice Care in Test City",
-    "heroEyebrow": "Test Eyebrow",
-    "atAGlanceSummary": "Test summary.",
-    "localIntroduction": "Test introduction.",
-    "faqItems": [{"q": "Test Q?", "a": "Test A."}],
-    "lastMaterialUpdate": "2026-08-05",
-    "latitude": 34.0,
-    "longitude": -119.0,
-}
+_base_head = extract_head(_base_html)
 
-try:
-    os.makedirs(_img_dir, exist_ok=True)
+# 5a — all three required attributes on the SAME <link> tag --------------------
+_preload_tag = find_city_hero_preload(_base_head, _base_slug)
 
-    # --- 5a: WebP branch — sentinel .webp present on disk -------------------
-    # Create a zero-byte sentinel so _hero_preload_tag detects a WebP file.
-    open(_sentinel_webp, 'wb').close()
-    _sentinel_webp_created = True
+if _preload_tag is not None:
+    print(f"  ✓  <link rel=preload as=image> found for {_base_slug}")
+else:
+    msg = (f'webp-preload: no <link rel="preload" as="image"> found '
+           f'for slug {_base_slug!r}')
+    print(f"  ✗  {msg}")
+    mutation_errors.append(msg)
 
-    _webp_html = _mod.render_page(_fake_city)
-    _webp_head = extract_head(_webp_html)
-    _preload_tag = find_city_hero_preload(_webp_head, _SENTINEL_SLUG)
+_hero_checks = 1
 
-    if _preload_tag is not None:
-        _has_webp_href = bool(re.search(
-            r'href\s*=\s*["\']assets/img/city/' + re.escape(_SENTINEL_SLUG) + r'\.webp["\']',
-            _preload_tag, re.IGNORECASE))
-        _has_webp_type = bool(re.search(
-            r'type\s*=\s*["\']image/webp["\']', _preload_tag, re.IGNORECASE))
+if _preload_tag is not None:
+    _has_webp_href = bool(re.search(
+        r'href\s*=\s*["\']assets/img/city/' + re.escape(_base_slug) + r'\.webp["\']',
+        _preload_tag, re.IGNORECASE))
+    _has_webp_type = bool(re.search(
+        r'type\s*=\s*["\']image/webp["\']', _preload_tag, re.IGNORECASE))
 
-        if _has_webp_href:
-            print(f"  ✓  WebP branch: preload href=…{_SENTINEL_SLUG}.webp")
-        else:
-            msg = (f'webp-preload: href does not end in .webp '
-                   f'for slug {_SENTINEL_SLUG!r} when .webp file is present')
-            print(f"  ✗  {msg}")
-            mutation_errors.append(msg)
-        _webp_checks += 1
-
-        if _has_webp_type:
-            print(f'  ✓  WebP branch: type="image/webp" present on the same preload tag')
-        else:
-            msg = (f'webp-preload: type="image/webp" missing from preload tag '
-                   f'for {_SENTINEL_SLUG!r}')
-            print(f"  ✗  {msg}")
-            mutation_errors.append(msg)
-        _webp_checks += 1
+    if _has_webp_href:
+        print(f"  ✓  preload href is assets/img/city/{_base_slug}.webp (same tag)")
     else:
-        msg = (f'webp-preload: no <link rel="preload" as="image"> found '
-               f'for slug {_SENTINEL_SLUG!r} when .webp file is present')
+        msg = f'webp-preload: href does not end in .webp for slug {_base_slug!r}'
         print(f"  ✗  {msg}")
         mutation_errors.append(msg)
-        _webp_checks += 2  # count sub-checks as run (already failed above)
+    _hero_checks += 1
 
-    # Remove the WebP sentinel before testing the JPEG fallback branch
-    os.remove(_sentinel_webp)
-    _sentinel_webp_created = False
-
-    # --- 5b: JPEG fallback branch — no .webp file on disk ------------------
-    # _hero_preload_tag must emit a .jpg href with NO type="image/webp"
-    _jpg_html = _mod.render_page(_fake_city)
-    _jpg_head = extract_head(_jpg_html)
-    _jpg_preload_tag = find_city_hero_preload(_jpg_head, _SENTINEL_SLUG)
-
-    if _jpg_preload_tag is not None:
-        _has_jpg_href = bool(re.search(
-            r'href\s*=\s*["\']assets/img/city/' + re.escape(_SENTINEL_SLUG) + r'\.jpg["\']',
-            _jpg_preload_tag, re.IGNORECASE))
-        _has_no_webp_type = not bool(re.search(
-            r'type\s*=\s*["\']image/webp["\']', _jpg_preload_tag, re.IGNORECASE))
-
-        if _has_jpg_href and _has_no_webp_type:
-            print(f"  ✓  JPEG fallback: preload href=…{_SENTINEL_SLUG}.jpg "
-                  f'with no type="image/webp"')
-        else:
-            if not _has_jpg_href:
-                msg = (f'jpeg-fallback: preload href does not end in .jpg '
-                       f'for slug {_SENTINEL_SLUG!r} when no .webp is present')
-                print(f"  ✗  {msg}")
-                mutation_errors.append(msg)
-            if not _has_no_webp_type:
-                msg = (f'jpeg-fallback: type="image/webp" incorrectly present on '
-                       f'JPEG fallback preload tag for {_SENTINEL_SLUG!r}')
-                print(f"  ✗  {msg}")
-                mutation_errors.append(msg)
+    if _has_webp_type:
+        print(f'  ✓  type="image/webp" present on the preload tag')
     else:
-        msg = (f'jpeg-fallback: no <link rel="preload" as="image"> found '
-               f'for slug {_SENTINEL_SLUG!r} when no .webp file is present')
+        msg = (f'webp-preload: type="image/webp" missing from '
+               f'<link rel=preload as=image> for {_base_slug!r}')
         print(f"  ✗  {msg}")
         mutation_errors.append(msg)
-    _webp_checks += 1  # JPEG fallback check
+    _hero_checks += 1
+else:
+    _hero_checks += 2  # count sub-checks as run (already failed above)
 
-    # --- 5c: mutation — decoy WebP link must not fool the guard -------------
-    # Re-create the WebP sentinel for the mutation test
-    open(_sentinel_webp, 'wb').close()
-    _sentinel_webp_created = True
-    _webp_html2 = _mod.render_page(_fake_city)
+# 5b — img.hero-bg present in the rendered hero section -----------------------
+if re.search(r'<img\b[^>]*\bclass=["\'][^"\']*hero-bg', _base_html, re.IGNORECASE):
+    print(f"  ✓  <img class=\"hero-bg\"> found in rendered page for {_base_slug}")
+else:
+    msg = f'missing-hero-img: no <img class="hero-bg"> in rendered page for {_base_slug!r}'
+    print(f"  ✗  {msg}")
+    mutation_errors.append(msg)
+_hero_checks += 1
 
-    # Replace the real preload's .webp href with .jpg (simulating a forgotten
-    # update), then inject a decoy <link> that carries type="image/webp" and a
-    # .webp href but is NOT a preload.  The guard must still reject this page.
-    _decoy = (f'<link rel="prefetch" as="image" '
-              f'href="assets/img/city/{_SENTINEL_SLUG}.webp" type="image/webp">')
-    _mutant_d = re.sub(
-        r'(<link\b[^>]*\brel\s*=\s*["\']preload["\'][^>]*)'
-        + re.escape(_SENTINEL_SLUG) + r'\.webp',
-        r'\g<1>' + _SENTINEL_SLUG + '.jpg',
-        _webp_html2, count=1, flags=re.IGNORECASE,
-    )
-    # Inject decoy just before the stylesheet so it lands in <head>
-    _mutant_d = _mutant_d.replace('<link rel="stylesheet"',
-                                  _decoy + '\n  <link rel="stylesheet"', 1)
-    _mutant_d_head = extract_head(_mutant_d)
-    _mutant_preload = find_city_hero_preload(_mutant_d_head, _SENTINEL_SLUG)
-    _mutant_webp = (_mutant_preload is not None and
-                    bool(re.search(r'\.webp["\']', _mutant_preload, re.IGNORECASE)) and
-                    bool(re.search(r'type\s*=\s*["\']image/webp["\']',
-                                   _mutant_preload, re.IGNORECASE)))
-    if not _mutant_webp:
-        print("  ✓  Mutation 5c: decoy WebP link does not satisfy preload guard "
-              "(wrong preload is caught)")
-    else:
-        msg = ("webp-preload-mutation: guard passed despite preload pointing to "
-               ".jpg while a decoy WebP link was present — assertions are too loose")
-        print(f"  ✗  {msg}")
-        mutation_errors.append(msg)
-    _webp_checks += 1
+# Mutation D — strip the hero img; guard must catch it -------------------------
+_mutant_d = re.sub(
+    r'<img\b[^>]*\bclass=["\'][^"\']*hero-bg[^>]*>',
+    '', _base_html, count=1, flags=re.IGNORECASE,
+)
+_errs_d = collect_errors(_mutant_d)
+if any('missing-hero-img' in e for e in _errs_d):
+    print("  ✓  Mutation D: missing img.hero-bg is caught")
+else:
+    msg = "Mutation D FAILED: guard did not catch a page with no <img class=\"hero-bg\">"
+    print(f"  ✗  {msg}")
+    mutation_errors.append(msg)
+_hero_checks += 1
 
-finally:
-    # Always clean up the sentinel file if we created it.
-    if _sentinel_webp_created and os.path.isfile(_sentinel_webp):
-        os.remove(_sentinel_webp)
+# Mutation E — replace WebP preload with a JPEG preload; guard must catch it ---
+_mutant_e = re.sub(
+    r'<link\b[^>]*\brel\s*=\s*["\']preload["\'][^>]*\.webp[^>]*>',
+    f'<link rel="preload" as="image" href="assets/img/city/{_base_slug}.jpg" fetchpriority="high">',
+    _base_html, count=1, flags=re.IGNORECASE,
+)
+_errs_e = collect_errors(_mutant_e)
+if any('missing-webp-preload' in e for e in _errs_e):
+    print("  ✓  Mutation E: WebP preload replaced with JPEG preload is caught")
+else:
+    msg = "Mutation E FAILED: guard did not catch a page with a JPEG-only preload"
+    print(f"  ✗  {msg}")
+    mutation_errors.append(msg)
+_hero_checks += 1
+
+# Mutation F — decoy WebP prefetch must not fool the preload guard -------------
+_decoy = (f'<link rel="prefetch" as="image" '
+          f'href="assets/img/city/{_base_slug}.webp" type="image/webp">')
+_mutant_f = re.sub(
+    r'(<link\b[^>]*\brel\s*=\s*["\']preload["\'][^>]*)'
+    + re.escape(_base_slug) + r'\.webp',
+    r'\g<1>' + _base_slug + '.jpg',
+    _base_html, count=1, flags=re.IGNORECASE,
+)
+_mutant_f = _mutant_f.replace('<link rel="stylesheet"',
+                              _decoy + '\n  <link rel="stylesheet"', 1)
+_mutant_f_head = extract_head(_mutant_f)
+_mutant_preload = find_city_hero_preload(_mutant_f_head, _base_slug)
+_mutant_webp = (_mutant_preload is not None and
+                bool(re.search(r'\.webp["\']', _mutant_preload, re.IGNORECASE)) and
+                bool(re.search(r'type\s*=\s*["\']image/webp["\']',
+                               _mutant_preload, re.IGNORECASE)))
+if not _mutant_webp:
+    print("  ✓  Mutation F: decoy WebP prefetch does not satisfy preload guard")
+else:
+    msg = ("Mutation F FAILED: guard passed despite preload pointing to "
+           ".jpg while a decoy WebP prefetch was present — assertions too loose")
+    print(f"  ✗  {msg}")
+    mutation_errors.append(msg)
+_hero_checks += 1
 
 # ── Summary ───────────────────────────────────────────────────────────────────
 
@@ -394,9 +370,11 @@ if combined_errors:
         print("    Fix HEAD_SCRIPTS in website/build-cities.py before deploying.")
     sys.exit(1)
 
-checks_per_city = len(REQUIRED_PATTERNS) + len(FORBIDDEN_BARE_SRC_SUBSTRINGS) + 1  # +1 for blocking-script scan
+# checks per city: blocking-script scan(1) + bare-CDN(2) + deferred-patterns(2)
+#                  + hero-img(1) + webp-preload(1) = 7
+checks_per_city = 1 + len(FORBIDDEN_BARE_SRC_SUBSTRINGS) + len(REQUIRED_PATTERNS) + 2
 total_city_checks = checks_per_city * len(_published)
 print(f"✅  OK — all checks pass across {len(_published)} published cities "
-      f"({total_city_checks} total city checks · 3 mutations caught · "
-      f"{_webp_checks} WebP preload checks).")
+      f"({total_city_checks} total city checks · 6 mutations caught · "
+      f"{_hero_checks} hero/preload attribute checks).")
 sys.exit(0)
