@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 Eternal Life Hospice — City Page Generator
-==========================================
+------------------------------------------
 Reads city-data.json, writes one HTML file per published city
 into website/elh-preview/.
 
@@ -23,7 +23,7 @@ def _hero_img_tag(slug: str, city: str) -> str:
     separately; their on-disk presence is NOT checked here.
     """
     return (
-        f'<picture>'
+        f'<picture class="hero-bg">'
         f'<source srcset="assets/img/city/{slug}.webp" type="image/webp">'
         f'<img class="hero-bg" src="assets/img/city/{slug}.jpg"'
         f' alt="{city}, California" width="1536" height="1024"'
