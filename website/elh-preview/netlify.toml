@@ -9,3 +9,10 @@
 [functions]
   directory = "netlify/functions"
   node_bundler = "esbuild"
+
+# ── Post-deploy PageSpeed check ─────────────────────────────────────────────
+# Runs on every successful production deploy via the onSuccess lifecycle hook.
+# Requires GOOGLE_API_KEY set in Netlify Site → Environment variables.
+# Optional: PSI_THRESHOLD (int, default 80) and PSI_URL to override the target.
+[[plugins]]
+  package = "./netlify/plugins/check-pagespeed"

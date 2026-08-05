@@ -67,10 +67,19 @@ def extract_scores(data: dict) -> dict:
     return results
 
 
+THRESHOLD_DEFAULT = 80
+
+
 def main():
     parser = argparse.ArgumentParser(description="PageSpeed Insights API smoke-test")
-    parser.add_argument("--url",      default=DEFAULT_URL,     help="Page URL to test")
-    parser.add_argument("--strategy", default=DEFAULT_STRATEGY, choices=["mobile", "desktop"])
+    parser.add_argument("--url",       default=DEFAULT_URL,      help="Page URL to test")
+    parser.add_argument("--strategy",  default=DEFAULT_STRATEGY, choices=["mobile", "desktop"])
+    parser.add_argument(
+        "--threshold",
+        type=int,
+        default=THRESHOLD_DEFAULT,
+        help=f"Minimum acceptable performance score (0–100). Exit 1 if below. Default: {THRESHOLD_DEFAULT}",
+    )
     args = parser.parse_args()
 
     key = os.environ.get("GOOGLE_API_KEY", "")
@@ -127,7 +136,15 @@ def main():
     if cache_score is not None and cache_score < 50:
         print(f"WARNING: Cache-TTL score is low ({cache_score}/100) — review _headers.", file=sys.stderr)
 
-    print("✓ API call succeeded.")
+    # Enforce performance threshold
+    if perf is not None and perf < args.threshold:
+        print(
+            f"FAIL: Performance score {perf}/100 is below threshold {args.threshold}/100.",
+            file=sys.stderr,
+        )
+        sys.exit(1)
+
+    print(f"✓ API call succeeded. Performance score {perf}/100 meets threshold {args.threshold}/100.")
     sys.exit(0)
 
 
