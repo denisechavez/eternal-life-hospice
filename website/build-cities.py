@@ -14,6 +14,27 @@ Or for a single city:
 
 import json, os, re, sys, textwrap, argparse
 
+def _hero_preload_tag(slug: str) -> str:
+    """Return the correct <link rel="preload"> tag for the city hero image.
+
+    Prefers a WebP variant (assets/img/city/{slug}.webp) when one exists in
+    the output directory, emitting type="image/webp" to match the homepage
+    pattern.  Falls back to the JPEG without a type attribute when only the
+    .jpg is present.
+    """
+    img_dir = os.path.join(OUT_DIR, "assets", "img", "city")
+    webp_path = os.path.join(img_dir, f"{slug}.webp")
+    if os.path.isfile(webp_path):
+        return (
+            f'<link rel="preload" as="image" '
+            f'href="assets/img/city/{slug}.webp" '
+            f'type="image/webp" fetchpriority="high">'
+        )
+    return (
+        f'<link rel="preload" as="image" '
+        f'href="assets/img/city/{slug}.jpg" fetchpriority="high">'
+    )
+
 BASE = os.path.dirname(__file__)
 DATA_FILE = os.path.join(BASE, "city-data.json")
 OUT_DIR   = os.path.join(BASE, "elh-preview")
@@ -251,7 +272,7 @@ def render_page(c):
   <meta property="og:site_name" content="Eternal Life Hospice">
   <meta name="twitter:card" content="summary_large_image">
   <link rel="icon" type="image/png" href="assets/favicon.png">
-  <link rel="preload" as="image" href="assets/img/city/{slug}.jpg" fetchpriority="high">
+  {_hero_preload_tag(slug)}
   <link rel="stylesheet" href="assets/elh.css?v=20260714c">
 {schema_tags}
 {HEAD_SCRIPTS}
