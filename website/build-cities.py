@@ -14,6 +14,25 @@ Or for a single city:
 
 import json, os, re, sys, textwrap, argparse
 
+def _hero_img_tag(slug: str, city: str) -> str:
+    """Return the <img class="hero-bg"> tag for the city hero section.
+
+    Mirrors _hero_preload_tag: prefers WebP when the file exists, falls back
+    to JPEG. Uses eager loading + async decoding so the browser fetches it at
+    highest priority alongside the preload hint.
+    """
+    img_dir = os.path.join(OUT_DIR, "assets", "img", "city")
+    webp_path = os.path.join(img_dir, f"{slug}.webp")
+    if os.path.isfile(webp_path):
+        src = f"assets/img/city/{slug}.webp"
+    else:
+        src = f"assets/img/city/{slug}.jpg"
+    return (
+        f'<img class="hero-bg" src="{src}" alt="{city}, California" '
+        f'width="1536" height="1024" loading="eager" decoding="async">'
+    )
+
+
 def _hero_preload_tag(slug: str) -> str:
     """Return the correct <link rel="preload"> tag for the city hero image.
 
@@ -120,7 +139,21 @@ FOOTER = """\
   <p class="search-hint">Press Enter to open the first result, or Escape to close</p>
   <div class="search-results" id="searchResults"></div>
 </div>
-<script defer src="/assets/translate.js"></script>"""
+<div class="foot-translate">
+    <span class="ft-label">Translate this page</span>
+    <div class="ft-lang-btns">
+      <a class="ft-lang" data-lang="es">🇲🇽 Español</a>
+      <a class="ft-lang" data-lang="ru">🇷🇺 Русский</a>
+      <a class="ft-lang" data-lang="uk">🇺🇦 Українська</a>
+      <a class="ft-lang" data-lang="ko">🇰🇷 한국어</a>
+      <a class="ft-lang" data-lang="hy">🇦🇲 Հայերեն</a>
+      <a class="ft-lang" data-lang="tl">🇵🇭 Filipino</a>
+      <a class="ft-lang" data-lang="vi">🇻🇳 Tiếng Việt</a>
+      <a class="ft-lang" data-lang="zh-CN">🇨🇳 中文</a>
+      <a class="ft-lang" data-lang="ar">🇸🇦 العربية</a>
+      <a class="ft-lang" data-lang="fa">🇮🇷 فارسی</a>
+    </div>
+<script defer src="/assets/translate.js?v=20260805"></script>"""
 
 # ── Schema builders ────────────────────────────────────────────────────────────
 
@@ -279,8 +312,7 @@ def render_page(c):
 </head><body>
 {HEADER}
 {CRED_STRIP}
-<section class="hero hero--city hero--tall">
-    <div class="eyebrow">{eyebrow}</div>
+<section class="hero hero--city hero--tall">{_hero_img_tag(slug, city)}<div class="eyebrow">{eyebrow}</div>
     <h1>{h1}</h1>
     <p>Eternal Life Hospice provides physician-supported hospice care for eligible patients and families in {city} and surrounding communities. Care may be provided in private homes, assisted-living communities, residential-care settings and skilled-nursing facilities throughout {county}.</p>
     <div class="hero-btns"><a class="btn-gold" href="tel:18059537273">Call for Hospice Guidance</a><a class="btn-ghost" href="family-guide">Read the Family Guide &#8594;</a><a class="btn-ghost" href="/refer">Refer a Patient &#8594;</a></div>
