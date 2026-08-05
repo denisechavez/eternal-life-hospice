@@ -26,6 +26,9 @@
 /assets/chat.js
   Cache-Control: public, max-age=31536000, immutable
 
+/assets/share.js
+  Cache-Control: public, max-age=31536000, immutable
+
 /assets/analytics.js
   Cache-Control: public, max-age=31536000, immutable
 
