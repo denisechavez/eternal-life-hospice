@@ -21,7 +21,7 @@ OUT_DIR   = os.path.join(BASE, "elh-preview")
 # ── Deferred script snippets (must NOT be inside an f-string — JS braces clash) ─
 
 HEAD_SCRIPTS = (
-    '<script async src="/assets/analytics.js"></script>\n'
+    '<script defer src="/assets/analytics.js"></script>\n'
     # UserWay accessibility widget — requestIdleCallback deferred (never DOMContentLoaded)
     '<script>(function(d){var load=function(){var s=d.createElement(\'script\');'
     's.setAttribute(\'data-color\',\'#6793AC\');'
@@ -251,6 +251,7 @@ def render_page(c):
   <meta property="og:site_name" content="Eternal Life Hospice">
   <meta name="twitter:card" content="summary_large_image">
   <link rel="icon" type="image/png" href="assets/favicon.png">
+  <link rel="preload" as="image" href="assets/img/city/{slug}.jpg" fetchpriority="high">
   <link rel="stylesheet" href="assets/elh.css?v=20260714c">
 {schema_tags}
 {HEAD_SCRIPTS}
