@@ -74,7 +74,7 @@ check(/class=["'][^"']*foot-translate[^"']*["']/.test(html),
       'foot-translate wrapper div is present');
 
 // 2. translate.js script tag
-check(/src=["'][^"']*translate\.js["']/i.test(html),
+check(/src=["'][^"']*translate\.js[^"']*["']/i.test(html),
       'translate.js script tag is present');
 
 // 3. .ft-lang pills — all expected languages

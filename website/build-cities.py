@@ -70,7 +70,7 @@ OUT_DIR   = os.path.join(BASE, "elh-preview")
 # ── Deferred script snippets (must NOT be inside an f-string — JS braces clash) ─
 
 HEAD_SCRIPTS = (
-    '<script defer src="/assets/analytics.js"></script>\n'
+    '<script defer src="/assets/analytics.js?v=20260727h"></script>\n'
     # UserWay accessibility widget — requestIdleCallback deferred (never DOMContentLoaded)
     '<script>(function(d){var load=function(){var s=d.createElement(\'script\');'
     's.setAttribute(\'data-color\',\'#6793AC\');'
@@ -94,7 +94,7 @@ HEAD_SCRIPTS = (
 
 HEADER = """\
   <header id="hdr"><div class="hdr-in">
-    <a class="hdr-logo" href="/"><img class="s sym-cream" src="assets/img/elh-logo-h2-cream.png" alt="Eternal Life Hospice logo"><img class="s sym-plum" src="assets/img/elh-logo-h2-plum.png" alt="" aria-hidden="true"><span class="hdr-wordmark">Eternal<small>Life Hospice</small></span></a>
+    <a class="hdr-logo" href="/"><img class="s sym-cream" src="assets/img/elh-logo-h2-cream.webp" alt="Eternal Life Hospice logo"><img class="s sym-plum" src="assets/img/elh-logo-h2-plum.webp" alt="" aria-hidden="true"><span class="hdr-wordmark">Eternal<small>Life Hospice</small></span></a>
     <nav>
       <div class="nav-group"><a href="/#standard" class="nav-parent">The Eternal Standard</a><div class="nav-sub"><a href="/#standard">Four Pillars : One Standard</a></div></div>
       <div class="nav-group"><a href="/#first48" class="nav-parent">The First 48 Hours</a><div class="nav-sub"><a href="/#faq">Common Questions Answered</a><a href="family-guide">Family eGuide</a></div></div>
@@ -111,11 +111,11 @@ HEADER = """\
 
 CRED_STRIP = """\
 <div class="cred-strip"><div class="cred-track">
-    <a class="lc cms" href="https://www.medicare.gov/care-compare/?providerType=Hospice" target="_blank" rel="noopener"><img loading="lazy" decoding="async" src="assets/img/cred-cms.png" alt="CMS Medicare Certified"><div class="ct"><span class="cl">Medicare Certified</span><span class="csub">Centers for Medicare &amp; Medicaid Services</span><span class="ext">medicare.gov &#8599;</span></div></a>
+    <a class="lc cms" href="https://www.medicare.gov/care-compare/?providerType=Hospice" target="_blank" rel="noopener"><img loading="lazy" decoding="async" src="assets/img/cred-cms.webp" alt="CMS Medicare Certified"><div class="ct"><span class="cl">Medicare Certified</span><span class="csub">Centers for Medicare &amp; Medicaid Services</span><span class="ext">medicare.gov &#8599;</span></div></a>
     <div class="csep"></div>
-    <a class="lc cdph" href="https://www.cdph.ca.gov/Programs/CHCQ/LCP/CalHealthFind/pages/home.aspx" target="_blank" rel="noopener"><img loading="lazy" decoding="async" src="assets/img/cred-cdph.png" alt="CDPH Licensed"><div class="ct"><span class="cl">CDPH Licensed</span><span class="csub">California Dept. of Public Health</span><span class="ext">cdph.ca.gov &#8599;</span></div></a>
+    <a class="lc cdph" href="https://www.cdph.ca.gov/Programs/CHCQ/LCP/CalHealthFind/pages/home.aspx" target="_blank" rel="noopener"><img loading="lazy" decoding="async" src="assets/img/cred-cdph.webp" alt="CDPH Licensed"><div class="ct"><span class="cl">CDPH Licensed</span><span class="csub">California Dept. of Public Health</span><span class="ext">cdph.ca.gov &#8599;</span></div></a>
     <div class="csep"></div>
-    <a class="lc achc" href="https://achc.org/search-facilities/" target="_blank" rel="noopener"><img loading="lazy" decoding="async" src="assets/img/cred-achc.png" alt="ACHC Accredited"><div class="ct"><span class="cl">ACHC Accredited</span><span class="csub">Accreditation Commission for Health Care</span><span class="ext">achc.org &#8599;</span></div></a>
+    <a class="lc achc" href="https://achc.org/search-facilities/" target="_blank" rel="noopener"><img loading="lazy" decoding="async" src="assets/img/cred-achc.webp" alt="ACHC Accredited"><div class="ct"><span class="cl">ACHC Accredited</span><span class="csub">Accreditation Commission for Health Care</span><span class="ext">achc.org &#8599;</span></div></a>
     <div class="csep"></div>
     <a class="ic" href="/#first48"><svg viewBox="0 0 48 48" width="44" height="44" fill="none"><circle cx="24" cy="24" r="15" stroke="#D8CDBF" stroke-width="1.5"/><line x1="24" y1="12" x2="24" y2="24" stroke="#5B2E59" stroke-width="2.5" stroke-linecap="round"/><line x1="24" y1="24" x2="33" y2="24" stroke="#C9B07E" stroke-width="2.5" stroke-linecap="round"/><circle cx="24" cy="24" r="2.5" fill="#5B2E59"/></svg><div class="ct"><span class="cl">Same-Day Admissions</span><span class="csub">24/7 On-Call Nursing</span></div></a>
     <div class="csep"></div>
@@ -126,7 +126,7 @@ CRED_STRIP = """\
 FOOTER = """\
 <footer id="site-footer">
   <div class="foot-grid">
-    <div><div class="foot-logo"><a href="/" aria-label="Eternal Life Hospice &mdash; home"><img loading="lazy" decoding="async" src="assets/img/elh-logo-cream-g.png" alt="Eternal Life Hospice logo"></a></div><p class="foot-tag">Care That Honors Life.</p><p class="foot-legal">Medicare-Certified &middot; CDPH-Licensed &middot; ACHC-Accredited. Serving families across Ventura and Los Angeles Counties.</p><div class="foot-qr"><img src="assets/img/qr-cream.png" alt="Scan to visit eternallifehospice.com" width="96" height="96" loading="lazy"><span>Scan to visit<br>on your phone</span></div></div>
+    <div><div class="foot-logo"><a href="/" aria-label="Eternal Life Hospice &mdash; home"><img loading="lazy" decoding="async" src="assets/img/elh-logo-cream-g.webp" alt="Eternal Life Hospice logo"></a></div><p class="foot-tag">Care That Honors Life.</p><p class="foot-legal">Medicare-Certified &middot; CDPH-Licensed &middot; ACHC-Accredited. Serving families across Ventura and Los Angeles Counties.</p><div class="foot-qr"><img src="assets/img/qr-cream.webp" alt="Scan to visit eternallifehospice.com" width="96" height="96" loading="lazy"><span>Scan to visit<br>on your phone</span></div></div>
     <div class="foot-col"><h4>For Families</h4><a href="family-guide">Family eGuide</a><a href="resources">Resources</a><a href="blog">Journal</a><a href="volunteer">Volunteer</a><a href="careers">Careers</a><a href="/#coverage">Coverage Area</a></div>
     <div class="foot-col"><h4>For Providers</h4><a href="/refer">Refer With Confidence</a><a href="/referral-card">Referral eCard</a><a href="/?lead=voice#leadcap">Schedule an Educational Session</a></div>
     <div class="foot-col"><h4>Resources</h4><a href="/media-kit">Media Kit</a><a href="/care-brief/hospice-is-part-of-life-a-continuation-of-care">Care Brief</a><a href="family-guide">Family eGuide</a></div>
@@ -157,13 +157,13 @@ FOOTER = """\
     </div>
   </div>
 </footer>
-<script src="assets/header.js" defer></script><script src="/assets/chat.js" defer></script>
+<script src="assets/header.js?v=20260805" defer></script><script src="/assets/chat.js?v=20260805" defer></script>
 <div class="search-overlay" id="searchOverlay" role="dialog" aria-modal="true" aria-label="Site search" aria-hidden="true">
   <div class="search-box"><input type="text" id="searchInput" placeholder="Search pages, cities, resources..." autocomplete="off" aria-label="Search"><button class="search-close" id="searchClose" aria-label="Close search">&times;</button></div>
   <p class="search-hint">Press Enter to open the first result, or Escape to close</p>
   <div class="search-results" id="searchResults"></div>
 </div>
-<script defer src="/assets/translate.js"></script>"""
+<script defer src="/assets/translate.js?v=20260805"></script>"""
 
 # ── Schema builders ────────────────────────────────────────────────────────────
 
@@ -320,8 +320,10 @@ def render_page(c):
 {schema_tags}
 {HEAD_SCRIPTS}
 </head><body>
+<a class="skip-link" href="#main-content">Skip to main content</a>
 {HEADER}
 {CRED_STRIP}
+<main id="main-content">
 <section class="hero hero--city hero--tall">{_hero_img_tag(slug, city)}
     <div class="eyebrow">{eyebrow}</div>
     <h1>{h1}</h1>
@@ -431,6 +433,7 @@ def render_page(c):
   <p>{family_ctx if family_ctx else "A conversation costs nothing and brings clarity. We will guide you from there."}</p>
   <div class="btns"><a class="btn-gold" href="tel:18059537273">Call Eternal Life Hospice</a><a class="btn-ghost" href="family-guide">Read the Family Guide &#8594;</a><a class="btn-ghost" href="/refer">Refer a Patient &#8594;</a></div>
 </section>
+</main>
 {FOOTER}
 </body></html>"""
     return page

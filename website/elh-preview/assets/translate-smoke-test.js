@@ -75,7 +75,7 @@ function extractLangs(html) {
 }
 
 function hasTranslateScript(html) {
-  return /src=["'][^"']*translate\.js["']/i.test(html);
+  return /src=["'][^"']*translate\.js[^"']*["']/i.test(html);
 }
 
 // Replicate translate.js
