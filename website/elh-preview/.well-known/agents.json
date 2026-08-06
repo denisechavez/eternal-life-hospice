@@ -1,0 +1,10 @@
+{
+  "agents": [
+    {
+      "name": "ELH Care Assistant",
+      "description": "Answers questions about hospice care, eligibility, Medicare coverage, services, and referrals for Eternal Life Hospice.",
+      "url": "https://eternallifehospice.com",
+      "type": "informational"
+    }
+  ]
+}

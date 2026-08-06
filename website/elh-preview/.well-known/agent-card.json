@@ -1,0 +1,23 @@
+{
+  "name": "Eternal Life Hospice",
+  "description": "AI assistant for Eternal Life Hospice — answers questions about hospice care, Medicare coverage, services, and how to make a referral. Serves families, patients, and healthcare providers in Ventura and Los Angeles Counties, California.",
+  "url": "https://eternallifehospice.com",
+  "version": "1.0",
+  "provider": {
+    "organization": "Eternal Life Hospice, Inc.",
+    "url": "https://eternallifehospice.com"
+  },
+  "capabilities": {
+    "chat": true,
+    "referrals": true,
+    "informational": true
+  },
+  "supportedInterfaces": ["chat"],
+  "contact": {
+    "phone": "+18059537273",
+    "email": "info@eternallifehospice.com"
+  },
+  "serviceArea": {
+    "counties": ["Ventura County, CA", "Los Angeles County, CA"]
+  }
+}
