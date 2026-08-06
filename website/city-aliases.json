@@ -1,0 +1,33 @@
+{
+  "comment": "Explicit alias → canonical-city map for the coverage lookup function.",
+  "comment2": "Keys are the normalised query string (lowercase, no punctuation, no diacritics).",
+  "comment3": "Values must exactly match the `city` field in city-data.json.",
+  "comment4": "Add an alias here whenever a prefix match is intentional and you want it to be auditable.",
+  "aliases": {
+    "la canada flintridge": "La Cañada Flintridge",
+    "la canada flintridge ca": "La Cañada Flintridge",
+    "la canana flintridge": "La Cañada Flintridge",
+    "thousand oaks ca": "Thousand Oaks",
+    "west hollywood ca": "West Hollywood",
+    "west hills ca": "West Hills",
+    "west covina ca": "West Covina",
+    "north hollywood ca": "North Hollywood",
+    "north hills ca": "North Hills",
+    "bell gardens ca": "Bell Gardens",
+    "bellflower ca": "Bellflower",
+    "south el monte ca": "South El Monte",
+    "south pasadena ca": "South Pasadena",
+    "oak park ca": "Oak Park",
+    "oak view ca": "Oak View",
+    "san fernando ca": "San Fernando",
+    "san gabriel ca": "San Gabriel",
+    "san marino ca": "San Marino",
+    "san dimas ca": "San Dimas",
+    "san pedro ca": "San Pedro",
+    "hollywood ca": "Hollywood",
+    "pasadena ca": "Pasadena",
+    "glendale ca": "Glendale",
+    "burbank ca": "Burbank",
+    "torrance ca": "Torrance"
+  }
+}

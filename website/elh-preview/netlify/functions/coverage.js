@@ -20,8 +20,23 @@
 
 /* eslint-disable @typescript-eslint/no-var-requires */
 const cities = require("../../../city-data.json");
+const aliasFile = require("../../../city-aliases.json");
 
 const PHONE = "805.953.7273";
+
+// ── Alias map ─────────────────────────────────────────────────────────────────
+// city-aliases.json holds an explicit alias→canonical-city table so that
+// intended fuzzy matches are auditable.  Keys are already normalised
+// (lowercase, no punctuation, no diacritics); values are canonical city names.
+// We normalise the keys at load time to guard against hand-editing drift.
+const aliasMap = (function () {
+  const raw = aliasFile.aliases || {};
+  const out = Object.create(null);
+  Object.keys(raw).forEach(function (k) {
+    out[normalise(k)] = raw[k];
+  });
+  return out;
+}());
 
 // ── Normalise a city name for comparison ──────────────────────────────────────
 // Strips accents (ñ→n, é→e), lowercases, removes punctuation.
@@ -123,11 +138,20 @@ exports.handler = async function (event) {
     return c._normCity === q || c._normSlug === q;
   });
 
-  // 2. Prefix / contained match — only fires when the normalised query is at
-  //    least 4 characters (guards against very-short inputs like "W" or "San"
-  //    returning a confidently-wrong result).
-  //    When multiple cities share the same prefix the query is ambiguous: we
-  //    return served:false + a suggestions list instead of picking the first.
+  // 2a. Alias map — checked before prefix logic.
+  //     city-aliases.json makes intentional fuzzy matches explicit and
+  //     auditable; if the query is a known alias, look up the canonical city
+  //     name and find it in the index via exact match.
+  if (!match && aliasMap[q] !== undefined) {
+    const canonicalNorm = normalise(aliasMap[q]);
+    match = index.find(function (c) { return c._normCity === canonicalNorm; });
+  }
+
+  // 2b. Prefix / contained match — only fires when the normalised query is at
+  //     least 4 characters (guards against very-short inputs like "W" or "San"
+  //     returning a confidently-wrong result).
+  //     When multiple cities share the same prefix the query is ambiguous: we
+  //     return served:false + a suggestions list instead of picking the first.
   if (!match && q.length >= 4) {
     const prefixMatches = index.filter(function (c) {
       return c._normCity.startsWith(q) || q.startsWith(c._normCity);

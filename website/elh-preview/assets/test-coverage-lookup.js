@@ -360,8 +360,43 @@ function assert(label, condition, detail) {
     `got served:${westCovina.body.served}, city="${westCovina.body.city}"`
   );
 
-  // ── 6. List mode sanity check ────────────────────────────────────────────────
-  console.log("\n6. List mode (?list=true)");
+  // ── 6. Alias map — every alias resolves to exactly one city ─────────────────
+  console.log("\n6. Alias map — every alias resolves to exactly one published city");
+
+  const aliasFile = require(path.resolve(__dirname, "../../city-aliases.json"));
+  const aliasEntries = Object.entries(aliasFile.aliases || {});
+
+  assert(
+    "city-aliases.json has at least one alias",
+    aliasEntries.length > 0,
+    "aliases object is empty"
+  );
+
+  for (const [aliasKey, targetCity] of aliasEntries) {
+    // The target city must exist in the published index exactly once
+    const matchingCities = published.filter(c => c.city === targetCity);
+    assert(
+      `alias "${aliasKey}" → "${targetCity}" exists exactly once in city-data.json`,
+      matchingCities.length === 1,
+      matchingCities.length === 0 ? "city not found in published list" : `found ${matchingCities.length} times`
+    );
+
+    // Querying by the alias key must return served:true for the right city
+    const { status, body } = await query(aliasKey);
+    assert(
+      `alias "${aliasKey}" → served:true`,
+      status === 200 && body.served === true,
+      body.served === false ? (body.ambiguous ? "ambiguous" : "not served") : `status ${status}`
+    );
+    assert(
+      `alias "${aliasKey}" → resolves to "${targetCity}"`,
+      body.city === targetCity,
+      `got "${body.city}"`
+    );
+  }
+
+  // ── 7. List mode sanity check ────────────────────────────────────────────────
+  console.log("\n7. List mode (?list=true)");
 
   const list = await queryList();
   assert(
