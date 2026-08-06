@@ -51,6 +51,25 @@ Before any recommendation ask: *Will this increase referrals or admissions?* If 
 
 The website is a **referral-generation platform**, not a brochure. Every page must answer: Why Eternal? Why now? What happens next? How do I refer? How quickly will someone respond? Why should I trust Eternal?
 
+## How to verify city coverage data
+
+Run the coverage lookup regression test after any edit to `website/city-data.json`:
+
+```
+node website/elh-preview/assets/test-coverage-lookup.js
+```
+
+Or use the **coverage-lookup-test** workflow in the Replit workflow panel — it runs the same command and surfaces pass/fail in the console output.
+
+The test checks:
+- All published cities resolve to `served: true` with the correct city name
+- Exact-match priority (e.g. "Bell" ≠ "Bell Gardens", "El Monte" ≠ "South El Monte")
+- Normalisation (diacritics, case, extra whitespace)
+- Non-served cities and edge inputs return correct negative responses
+- List mode (`?list=true`) returns the right count and structure
+
+If any assertion fails the process exits with code 1 and prints the failing checks.
+
 ## User preferences
 - **Keep everything well organized as the work grows** — clear, predictable
   folder structure and descriptive filenames; file each deliverable in its proper

@@ -43,6 +43,10 @@ args = "translate-bar-city-pages"
 task = "workflow.run"
 args = "city-script-regression-check"
 
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "coverage-lookup-test"
+
 [[workflows.workflow]]
 name = "Start application"
 author = "agent"
@@ -118,6 +122,17 @@ author = "agent"
 [[workflows.workflow.tasks]]
 task = "shell.exec"
 args = "python3 website/check-city-scripts.py"
+
+[workflows.workflow.metadata]
+outputType = "console"
+
+[[workflows.workflow]]
+name = "coverage-lookup-test"
+author = "agent"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "node website/elh-preview/assets/test-coverage-lookup.js"
 
 [workflows.workflow.metadata]
 outputType = "console"
