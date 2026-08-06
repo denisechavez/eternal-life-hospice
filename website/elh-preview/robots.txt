@@ -1,4 +1,5 @@
 User-agent: *
 Allow: /
 Disallow: /assets/search-index.json
+Content-Signal: training=no; search=yes; ai-input=yes
 Sitemap: https://eternallifehospice.com/sitemap.xml
