@@ -3,6 +3,23 @@
   "site": "https://eternallifehospice.com",
   "name": "Eternal Life Hospice",
   "description": "Medicare-certified, ACHC-accredited hospice care serving Ventura and Los Angeles counties. Same-day admissions, 24/7 nursing, whole-person comfort care.",
+  "tools": [
+    {
+      "name": "coverage-lookup",
+      "description": "Check whether Eternal Life Hospice serves a given city in Ventura or Los Angeles County. Returns a structured yes/no answer with county, subregion, and a link to the city-specific hospice care page.",
+      "endpoint": "https://eternallifehospice.com/.netlify/functions/coverage",
+      "method": "GET",
+      "parameters": {
+        "city": {
+          "type": "string",
+          "required": true,
+          "description": "City name to check (case-insensitive; diacritics optional).",
+          "example": "Pasadena"
+        }
+      },
+      "openapi": "https://eternallifehospice.com/.well-known/openapi.json"
+    }
+  ],
   "surfaces": [
     {
       "name": "care-guide",
