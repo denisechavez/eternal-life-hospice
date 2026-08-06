@@ -74,7 +74,34 @@ exports.handler = async function (event) {
     };
   }
 
-  const raw = (event.queryStringParameters && event.queryStringParameters.city) || "";
+  const params = event.queryStringParameters || {};
+
+  // ── List mode: ?list=true returns all published cities in one payload ─────────
+  if (params.list === "true") {
+    const listHeaders = Object.assign({}, headers, {
+      "Cache-Control": "public, max-age=86400" // 1 day; list changes only on new city-page publish
+    });
+    const counties = Array.from(new Set(index.map(function (c) { return c.county; }))).sort();
+    return {
+      statusCode: 200,
+      headers: listHeaders,
+      body: JSON.stringify({
+        cities: index.map(function (c) {
+          return {
+            city: c.city,
+            county: c.county,
+            subregion: c.subregion,
+            pageUrl: c.canonicalUrl
+          };
+        }),
+        total: index.length,
+        counties: counties,
+        phone: PHONE
+      })
+    };
+  }
+
+  const raw = params.city || "";
   const trimmed = raw.trim();
 
   if (!trimmed) {
@@ -83,7 +110,8 @@ exports.handler = async function (event) {
       headers: headers,
       body: JSON.stringify({
         error: "Missing required query parameter: city",
-        example: "/.netlify/functions/coverage?city=Pasadena"
+        example: "/.netlify/functions/coverage?city=Pasadena",
+        tip: "To fetch all published cities at once use: /.netlify/functions/coverage?list=true"
       })
     };
   }

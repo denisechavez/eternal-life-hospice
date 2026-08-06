@@ -24,29 +24,40 @@
     "/coverage": {
       "get": {
         "operationId": "checkCoverage",
-        "summary": "Check service area coverage for a city",
-        "description": "Returns whether Eternal Life Hospice serves the specified city. Matching is case-insensitive and tolerates missing diacritics (e.g. 'La Canada' matches 'La Cañada Flintridge'). If the city is not found in the published list, the response still returns HTTP 200 with served=false and a message directing callers to phone for confirmation.",
+        "summary": "Check service area coverage for a city, or list all served cities",
+        "description": "Two modes:\n\n**City lookup** (`city` parameter): Returns whether Eternal Life Hospice serves the specified city. Matching is case-insensitive and tolerates missing diacritics (e.g. 'La Canada' matches 'La Cañada Flintridge'). If the city is not found in the published list, the response still returns HTTP 200 with served=false and a message directing callers to phone for confirmation.\n\n**Full list** (`list=true` parameter): Returns all published cities in a single payload — useful for pre-loading a complete service-area context into an agent system prompt or knowledge base.",
         "parameters": [
           {
             "name": "city",
             "in": "query",
-            "required": true,
-            "description": "City name to look up (e.g. 'Pasadena', 'Thousand Oaks', 'La Canada').",
+            "required": false,
+            "description": "City name to look up (e.g. 'Pasadena', 'Thousand Oaks', 'La Canada'). Required unless `list=true` is supplied.",
             "schema": {
               "type": "string",
               "example": "Pasadena"
+            }
+          },
+          {
+            "name": "list",
+            "in": "query",
+            "required": false,
+            "description": "Set to `true` to return all published cities in one call instead of looking up a single city. The response is cached for 24 hours.",
+            "schema": {
+              "type": "string",
+              "enum": ["true"]
             }
           }
         ],
         "responses": {
           "200": {
-            "description": "Coverage check result. Check the `served` boolean to determine whether ELH serves this city.",
+            "description": "Coverage check result (city lookup) or full city list (`list=true`). Check the `served` boolean for city-lookup responses; use the `cities` array for list responses.",
             "content": {
               "application/json": {
                 "schema": {
                   "oneOf": [
                     { "$ref": "#/components/schemas/CoveredCity" },
-                    { "$ref": "#/components/schemas/UncoveredCity" }
+                    { "$ref": "#/components/schemas/UncoveredCity" },
+                    { "$ref": "#/components/schemas/CityList" }
                   ]
                 },
                 "examples": {
@@ -68,20 +79,43 @@
                       "city": "San Francisco",
                       "message": "Eternal Life Hospice does not have a published service-area page for \u201cSan Francisco\u201d. Please call 805.953.7273 to confirm coverage \u2014 our service area across Ventura and Los Angeles counties may extend beyond our published city pages."
                     }
+                  },
+                  "city-list": {
+                    "summary": "Full list of all published service-area cities (list=true)",
+                    "value": {
+                      "cities": [
+                        {
+                          "city": "Agoura Hills",
+                          "county": "Los Angeles County",
+                          "subregion": "Conejo Valley and nearby communities",
+                          "pageUrl": "https://eternallifehospice.com/hospice-agoura-hills-ca"
+                        },
+                        {
+                          "city": "Thousand Oaks",
+                          "county": "Ventura County",
+                          "subregion": "Conejo Valley and nearby communities",
+                          "pageUrl": "https://eternallifehospice.com/hospice-thousand-oaks-ca"
+                        }
+                      ],
+                      "total": 58,
+                      "counties": ["Los Angeles County", "Ventura County"],
+                      "phone": "805.953.7273"
+                    }
                   }
                 }
               }
             }
           },
           "400": {
-            "description": "Missing or empty `city` parameter.",
+            "description": "Missing or empty `city` parameter (when `list=true` is not supplied).",
             "content": {
               "application/json": {
                 "schema": {
                   "type": "object",
                   "properties": {
                     "error": { "type": "string" },
-                    "example": { "type": "string" }
+                    "example": { "type": "string" },
+                    "tip": { "type": "string" }
                   }
                 }
               }
@@ -160,6 +194,60 @@
           "message": {
             "type": "string",
             "description": "Human-readable explanation directing the caller to phone for confirmation."
+          }
+        }
+      },
+      "CityListEntry": {
+        "type": "object",
+        "required": ["city", "county", "subregion", "pageUrl"],
+        "properties": {
+          "city": {
+            "type": "string",
+            "description": "Canonical city name.",
+            "example": "Agoura Hills"
+          },
+          "county": {
+            "type": "string",
+            "description": "County the city belongs to.",
+            "example": "Los Angeles County"
+          },
+          "subregion": {
+            "type": "string",
+            "description": "Subregion label used by ELH for the area.",
+            "example": "Conejo Valley and nearby communities"
+          },
+          "pageUrl": {
+            "type": "string",
+            "format": "uri",
+            "description": "Canonical URL for the city-specific hospice care page.",
+            "example": "https://eternallifehospice.com/hospice-agoura-hills-ca"
+          }
+        }
+      },
+      "CityList": {
+        "type": "object",
+        "required": ["cities", "total", "counties", "phone"],
+        "properties": {
+          "cities": {
+            "type": "array",
+            "description": "All published service-area cities.",
+            "items": { "$ref": "#/components/schemas/CityListEntry" }
+          },
+          "total": {
+            "type": "integer",
+            "description": "Total number of published cities.",
+            "example": 58
+          },
+          "counties": {
+            "type": "array",
+            "description": "Distinct counties in the service area, sorted alphabetically.",
+            "items": { "type": "string" },
+            "example": ["Los Angeles County", "Ventura County"]
+          },
+          "phone": {
+            "type": "string",
+            "description": "ELH 24/7 intake and nursing line.",
+            "example": "805.953.7273"
           }
         }
       }

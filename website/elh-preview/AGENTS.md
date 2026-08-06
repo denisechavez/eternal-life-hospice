@@ -12,7 +12,7 @@ The site is pre-rendered HTML with no REST or GraphQL interface. Contact and ref
 
 ## Live endpoints
 
-### Coverage lookup
+### Coverage lookup — single city
 Check whether ELH serves a specific city — returns structured JSON, no auth required.
 
 ```
@@ -42,6 +42,39 @@ GET https://eternallifehospice.com/.netlify/functions/coverage?city=Pasadena
 
 - Matching is case-insensitive and diacritic-tolerant (`La Canada` → `La Cañada Flintridge`)
 - A `served: false` response does not mean the city is definitively unserved — callers should direct to the phone number for confirmation
+
+### Coverage lookup — full service area list
+Fetch all published cities in a single call. Use this to pre-load ELH's complete service area into a system prompt, knowledge base, or geographic filter — instead of making 58 individual city lookups.
+
+```
+GET https://eternallifehospice.com/.netlify/functions/coverage?list=true
+```
+
+**Response:**
+```json
+{
+  "cities": [
+    {
+      "city": "Agoura Hills",
+      "county": "Los Angeles County",
+      "subregion": "Conejo Valley and nearby communities",
+      "pageUrl": "https://eternallifehospice.com/hospice-agoura-hills-ca"
+    },
+    {
+      "city": "Thousand Oaks",
+      "county": "Ventura County",
+      "subregion": "Conejo Valley and nearby communities",
+      "pageUrl": "https://eternallifehospice.com/hospice-thousand-oaks-ca"
+    }
+  ],
+  "total": 58,
+  "counties": ["Los Angeles County", "Ventura County"],
+  "phone": "805.953.7273"
+}
+```
+
+- Response is cached for 24 hours (`Cache-Control: public, max-age=86400`) — the list changes only when a new city page is published
+- Callers can filter the `cities` array by `county` or `subregion` as needed
 - Full OpenAPI spec: `https://eternallifehospice.com/.well-known/openapi.json`
 
 ## How to connect
