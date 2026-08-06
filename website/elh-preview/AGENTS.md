@@ -1,7 +1,9 @@
 # Eternal Life Hospice — Agent Guide
 
 ## What this site is
-Eternal Life Hospice (eternallifehospice.com) is a Medicare-certified, CDPH-licensed, ACHC-accredited hospice provider serving Ventura and Los Angeles Counties in California.
+Eternal Life Hospice (eternallifehospice.com) is a **static informational website** for a Medicare-certified, CDPH-licensed, ACHC-accredited hospice provider serving Ventura and Los Angeles Counties in California.
+
+This site has **no API, no real-time data feed, and no programmatic endpoints**. All content is pre-rendered HTML. Contact and referral forms submit to Netlify Forms; there is no REST or GraphQL interface.
 
 ## Who it serves
 - Families and patients considering or beginning hospice care
@@ -18,8 +20,13 @@ Eternal Life Hospice (eternallifehospice.com) is a Medicare-certified, CDPH-lice
 - Resources for families: https://eternallifehospice.com/resources
 - Care Kit: https://eternallifehospice.com/media-kit
 - Journal (blog): https://eternallifehospice.com/blog
+- Referral: https://eternallifehospice.com/refer
 
 ## Structured data
-JSON-LD structured data (including LocalBusiness, FAQPage, and WebSite schema) is present on the homepage and key landing pages.
+JSON-LD structured data (LocalBusiness, FAQPage, WebSite schema) is present on the homepage and key landing pages.
 Sitemap: https://eternallifehospice.com/sitemap.xml
 llms.txt: https://eternallifehospice.com/llms.txt
+
+## Crawl policy
+Search and answer assistants: allowed.
+Training data collection: not permitted (see robots.txt).
