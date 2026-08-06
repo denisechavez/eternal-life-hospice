@@ -123,12 +123,32 @@ exports.handler = async function (event) {
     return c._normCity === q || c._normSlug === q;
   });
 
-  // 2. Prefix / contained match (e.g. "thousand oaks" matches "thousand oaks")
-  //    and handles partial names like "west hollywood" vs "west hollywood ca"
-  if (!match) {
-    match = index.find(function (c) {
+  // 2. Prefix / contained match — only fires when the normalised query is at
+  //    least 4 characters (guards against very-short inputs like "W" or "San"
+  //    returning a confidently-wrong result).
+  //    When multiple cities share the same prefix the query is ambiguous: we
+  //    return served:false + a suggestions list instead of picking the first.
+  if (!match && q.length >= 4) {
+    const prefixMatches = index.filter(function (c) {
       return c._normCity.startsWith(q) || q.startsWith(c._normCity);
     });
+    if (prefixMatches.length === 1) {
+      match = prefixMatches[0];
+    } else if (prefixMatches.length > 1) {
+      return {
+        statusCode: 200,
+        headers: headers,
+        body: JSON.stringify({
+          served: false,
+          city: trimmed,
+          ambiguous: true,
+          message:
+            "\u201c" + trimmed + "\u201d matches multiple cities. " +
+            "Please use the full city name so we can give you an accurate answer.",
+          suggestions: prefixMatches.map(function (c) { return c.city; })
+        })
+      };
+    }
   }
 
   if (match) {

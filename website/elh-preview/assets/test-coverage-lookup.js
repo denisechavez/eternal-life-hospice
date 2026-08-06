@@ -286,8 +286,82 @@ function assert(label, condition, detail) {
     `got status ${empty.status}`
   );
 
-  // ── 5. List mode sanity check ────────────────────────────────────────────────
-  console.log("\n5. List mode (?list=true)");
+  // ── 5. Ambiguous prefix queries → suggestions, not a wrong served:true ────────
+  console.log("\n5. Ambiguous prefix queries → served:false + suggestions");
+
+  // "West" matches West Covina, West Hills, West Hollywood → ambiguous
+  const westAmbig = await query("West");
+  assert(
+    '"West" (ambiguous prefix) → served:false with ambiguous:true',
+    !westAmbig.body.served && westAmbig.body.ambiguous === true,
+    `got served:${westAmbig.body.served}, ambiguous:${westAmbig.body.ambiguous}`
+  );
+  assert(
+    '"West" → suggestions includes West Covina, West Hills, West Hollywood',
+    Array.isArray(westAmbig.body.suggestions) &&
+      westAmbig.body.suggestions.includes("West Covina") &&
+      westAmbig.body.suggestions.includes("West Hills") &&
+      westAmbig.body.suggestions.includes("West Hollywood"),
+    `got suggestions: ${JSON.stringify(westAmbig.body.suggestions)}`
+  );
+
+  // "North" matches North Hills + North Hollywood → ambiguous
+  const northAmbig = await query("North");
+  assert(
+    '"North" (ambiguous prefix) → served:false with ambiguous:true',
+    !northAmbig.body.served && northAmbig.body.ambiguous === true,
+    `got served:${northAmbig.body.served}, ambiguous:${northAmbig.body.ambiguous}`
+  );
+  assert(
+    '"North" → suggestions includes North Hills and North Hollywood',
+    Array.isArray(northAmbig.body.suggestions) &&
+      northAmbig.body.suggestions.includes("North Hills") &&
+      northAmbig.body.suggestions.includes("North Hollywood"),
+    `got suggestions: ${JSON.stringify(northAmbig.body.suggestions)}`
+  );
+
+  // Very short queries (< 4 chars) below minimum length → served:false, no ambiguous flag
+  const shortQuery = await query("We");
+  assert(
+    '"We" (2 chars, below minimum) → served:false without ambiguous flag',
+    !shortQuery.body.served && shortQuery.body.ambiguous == null,
+    `got served:${shortQuery.body.served}, ambiguous:${shortQuery.body.ambiguous}`
+  );
+
+  const threeChar = await query("San");
+  assert(
+    '"San" (3 chars, below minimum) → served:false without ambiguous flag',
+    !threeChar.body.served && threeChar.body.ambiguous == null,
+    `got served:${threeChar.body.served}, ambiguous:${threeChar.body.ambiguous}`
+  );
+
+  // A unique 4-char prefix still resolves to served:true (single match)
+  // "Thou" → only Thousand Oaks starts with "thou"
+  const thou = await query("Thou");
+  assert(
+    '"Thou" (unique 4-char prefix) → served:true as Thousand Oaks',
+    thou.body.served && thou.body.city === "Thousand Oaks",
+    `got served:${thou.body.served}, city="${thou.body.city}"`
+  );
+
+  // "Thousand" prefix (unique) → still resolves correctly
+  const thousand = await query("Thousand");
+  assert(
+    '"Thousand" (unique prefix) → served:true as Thousand Oaks',
+    thousand.body.served && thousand.body.city === "Thousand Oaks",
+    `got served:${thousand.body.served}, city="${thousand.body.city}"`
+  );
+
+  // Full city names that share prefixes still resolve via step 1 (exact match), unaffected
+  const westCovina = await query("West Covina");
+  assert(
+    '"West Covina" (full name) → served:true, exact match unaffected',
+    westCovina.body.served && westCovina.body.city === "West Covina",
+    `got served:${westCovina.body.served}, city="${westCovina.body.city}"`
+  );
+
+  // ── 6. List mode sanity check ────────────────────────────────────────────────
+  console.log("\n6. List mode (?list=true)");
 
   const list = await queryList();
   assert(
