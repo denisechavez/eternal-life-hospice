@@ -51,6 +51,8 @@
   // in their own words in the box below.
   var STARTERS = [GUIDED[0], GUIDED[1], GUIDED[6]];
 
+  var COVERAGE_ENDPOINT = "/.netlify/functions/coverage";
+
   var EMERGENCY = /(emergenc|call 911|\b911\b|can'?t breathe|cannot breathe|chest pain|suicid|kill myself|end my life|overdose|unconscious|not breathing|severe bleeding)/i;
 
   // Clinical / health-detail questions are for a nurse, not the bot. We never
@@ -60,6 +62,136 @@
   // When someone asks to be phoned back, we offer a small in-chat form rather
   // than sending it to the AI.
   var CALLBACK = /(call me|call back|callback|have (someone|somebody) call|someone to call|request a call|can you call|could you call|please call me)/i;
+
+  // Returns a candidate city name when the message looks like a coverage / service-area
+  // question, or null when it clearly is not. The regex is intentionally loose so partial
+  // names like "West" or "Thousand" are passed to the coverage endpoint, which handles
+  // ambiguity more reliably than a frontend heuristic.
+  function extractCityQuery(text) {
+    var COVERAGE_INTENT = /\b(serve|cover|coverage|service.?area|do you (?:have|go|come|serve|cover)|available in|care in|in your area|your area|your service|your coverage)\b/i;
+    if (!COVERAGE_INTENT.test(text)) return null;
+    // Grab a city-like phrase (1–4 words) following a preposition or action word.
+    var m = text.match(
+      /\b(?:in|for|to|near|around|serve(?:d|s)?|cover(?:s|ed)?)\s+([A-Za-z][A-Za-z\s]{1,38}?)(?:[?\.,!]|\s+(?:ca|california)\b|$)/i
+    );
+    if (m) return m[1].replace(/\s+/g, " ").trim();
+    return null;
+  }
+
+  // Show a bot "did you mean?" message with one chip per suggestion.
+  // Clicking a chip sends that full city name back through the coverage check.
+  function showAmbiguousReply(city, suggestions) {
+    var intro = "\u201c" + city + "\u201d matches several cities in our area. Did you mean:";
+    addMsg(intro, "bot");
+    var wrap = el("div", "elhc-chips");
+    suggestions.forEach(function (sug, i) {
+      var c = el("button", "elhc-chip");
+      c.type = "button";
+      c.textContent = sug;
+      c.style.animationDelay = (0.08 * i + 0.1).toFixed(2) + "s";
+      c.addEventListener("click", function () {
+        // Treat it as a fresh user message so the conversation stays coherent.
+        var q = "Do you serve " + sug + "?";
+        addMsg(q, "user");
+        history.push({ role: "user", content: q });
+        if (history.length > 16) history = history.slice(-16);
+        doCoverageCheck(sug, true);
+      });
+      wrap.appendChild(c);
+    });
+    log.appendChild(wrap);
+    scrollDown();
+  }
+
+  // Call the coverage endpoint for `city`.
+  //
+  // fromChip = false (default): called from the initial user message.
+  //   - ambiguous  → show did-you-mean chips (only local action taken).
+  //   - served / not-served → fall through to AI so it gives a rich, on-brand
+  //     answer.  This prevents false positives like "Do you serve Medicare
+  //     patients?" from getting a misleading "no published page" reply.
+  //
+  // fromChip = true: user explicitly clicked a city suggestion.
+  //   - ambiguous  → show refined did-you-mean chips.
+  //   - served / not-served → show a direct local reply (intent is unambiguous).
+  //
+  // On any network error → always fall through to AI.
+  function doCoverageCheck(city, fromChip) {
+    sendBtn.disabled = true;
+    var typing = showTyping();
+
+    fetch(COVERAGE_ENDPOINT + "?city=" + encodeURIComponent(city))
+      .then(function (r) { return r.ok ? r.json() : Promise.reject(new Error("bad status")); })
+      .then(function (data) {
+        if (typing.parentNode) typing.parentNode.removeChild(typing);
+        sendBtn.disabled = false;
+
+        if (data.ambiguous && data.suggestions && data.suggestions.length > 0) {
+          // Ambiguous match — always show did-you-mean chips.
+          showAmbiguousReply(city, data.suggestions);
+
+        } else if (fromChip) {
+          // User chose a specific city from the chip list — reply directly.
+          if (data.served) {
+            var countyNote = data.county ? " in " + data.county : "";
+            var reply =
+              "Yes\u2014we do serve " + data.city + countyNote + "." +
+              " We\u2019d love to talk through how we can support your family." +
+              " Please call us at " + PHONE_DISPLAY + " any time\u2014we\u2019re available 24/7.";
+            addMsg(reply, "bot", true);
+            history.push({ role: "assistant", content: reply });
+          } else {
+            var notServedReply =
+              "We don\u2019t have a published service page for \u201c" + (data.city || city) +
+              "\u201d just yet, but our area across Ventura and Los Angeles counties may extend further than our page list." +
+              " Please call " + PHONE_DISPLAY + " to confirm\u2014our team will be glad to help.";
+            addMsg(notServedReply, "bot", true);
+            history.push({ role: "assistant", content: notServedReply });
+          }
+
+        } else {
+          // Non-ambiguous result from the initial user message (served or not):
+          // let the AI answer so it can give a warm, contextual reply instead of
+          // a blunt coverage-lookup string.  This also handles false positives
+          // like "Do you serve Medicare patients?" correctly.
+          sendToAI();
+        }
+      })
+      .catch(function () {
+        // Coverage endpoint unreachable — fall through to AI.
+        if (typing.parentNode) typing.parentNode.removeChild(typing);
+        sendBtn.disabled = false;
+        sendToAI();
+      });
+  }
+
+  // Send the current history to the AI chat endpoint and render the reply.
+  // Extracted so both the normal path and the coverage-error fallback can call it.
+  function sendToAI() {
+    sendBtn.disabled = true;
+    var typing = showTyping();
+    fetch(ENDPOINT, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ messages: history })
+    })
+      .then(function (r) {
+        return r.ok ? r.json() : Promise.reject(new Error("bad status"));
+      })
+      .then(function (data) {
+        if (typing.parentNode) typing.parentNode.removeChild(typing);
+        sendBtn.disabled = false;
+        var reply = data && data.reply ? String(data.reply).trim() : "";
+        if (!reply) { localFallback(); return; }
+        addMsg(reply, "bot", true);
+        history.push({ role: "assistant", content: reply });
+      })
+      .catch(function () {
+        if (typing.parentNode) typing.parentNode.removeChild(typing);
+        sendBtn.disabled = false;
+        localFallback();
+      });
+  }
 
   var history = []; // {role, content} pairs for the AI
   var panel, log, openBtn, dock, inputEl, sendBtn, teaser, backdrop, opened = false, aiAvailable = true;
@@ -488,30 +620,16 @@
       return;
     }
 
-    var typing = showTyping();
-    sendBtn.disabled = true;
+    // Coverage interception: if this looks like a service-area question with a
+    // city name, call the coverage endpoint first. When the result is ambiguous
+    // the widget shows a "did you mean?" prompt instead of a generic AI reply.
+    var cityQuery = extractCityQuery(text);
+    if (cityQuery) {
+      window.setTimeout(function () { doCoverageCheck(cityQuery); }, 200);
+      return;
+    }
 
-    fetch(ENDPOINT, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ messages: history })
-    })
-      .then(function (r) {
-        return r.ok ? r.json() : Promise.reject(new Error("bad status"));
-      })
-      .then(function (data) {
-        if (typing.parentNode) typing.parentNode.removeChild(typing);
-        sendBtn.disabled = false;
-        var reply = data && data.reply ? String(data.reply).trim() : "";
-        if (!reply) { localFallback(); return; }
-        addMsg(reply, "bot", true);
-        history.push({ role: "assistant", content: reply });
-      })
-      .catch(function () {
-        if (typing.parentNode) typing.parentNode.removeChild(typing);
-        sendBtn.disabled = false;
-        localFallback();
-      });
+    window.setTimeout(sendToAI, 200);
   }
 
   /* ---------- build UI ---------- */
