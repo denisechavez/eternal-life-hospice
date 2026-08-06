@@ -1,0 +1,229 @@
+ts
+Report from Aug 6, 2026, 2:11:03 PM
+https://eternallifehospice.com/
+Enter a valid URL
+
+
+smartphone
+Mobile
+
+computer
+Desktop
+
+Discover what your real users are experiencing
+No Data
+
+Diagnose performance issues
+Performance
+Accessibility
+Best Practices
+SEO
+0/6
+Agentic Browsing
+0–49
+50–89
+90–100
+Performance
+Values are estimated and may vary. The performance score is calculated directly from these metrics.See calculator.
+
+Metrics
+Collapse view
+First Contentful Paint
+Error!
+The page provided is not HTML (served as MIME type text/plain).
+Largest Contentful Paint
+Error!
+The page provided is not HTML (served as MIME type text/plain).
+Total Blocking Time
+Error!
+The page provided is not HTML (served as MIME type text/plain).
+Cumulative Layout Shift
+Error!
+The page provided is not HTML (served as MIME type text/plain).
+Speed Index
+Error!
+The page provided is not HTML (served as MIME type text/plain).
+Captured at Aug 6, 2026, 2:10 PM PDT
+Emulated Moto G Power with Lighthouse 13.4.1
+Single page session
+Initial page load
+Slow 4G throttling
+Using HeadlessChromium 150.0.7871.186 with lr
+Insights
+Use efficient cache lifetimes Error!
+Layout shift culprits Error!
+Document request latency Error!
+Optimize DOM size Error!
+Font display Error!
+Forced reflow Error!
+Improve image delivery Error!
+INP breakdown Error!
+LCP breakdown Error!
+LCP request discovery Error!
+Render-blocking requests Error!
+3rd parties Error!
+Optimize viewport for mobile Error!
+Duplicated JavaScript Error!
+Legacy JavaScript Error!
+Network dependency tree Error!
+These insights are also available in the Chrome DevTools Performance Panel - record a trace to view more detailed information.
+Diagnostics
+Image elements have explicit width and height Error!
+Minify CSS Error!
+Minify JavaScript Error!
+User Timing marks and measures Error!
+Avoid non-composited animations Error!
+Reduce unused CSS Error!
+Reduce unused JavaScript Error!
+Avoids enormous network payloads Error!
+JavaScript execution time Error!
+Minimizes main-thread work Error!
+Avoid long main-thread tasks Error!
+More information about the performance of your application. These numbers don't directly affect the Performance score.
+Accessibility
+These checks highlight opportunities to improve the accessibility of your web app. Automatic detection can only detect a subset of issues and does not guarantee the accessibility of your web app, so manual testing is also encouraged.
+Interactive controls are keyboard focusable Error!
+Interactive elements indicate their purpose and state Error!
+The page has a logical tab order Error!
+Visual order on the page follows DOM order Error!
+User focus is not accidentally trapped in a region Error!
+The user's focus is directed to new content added to the page Error!
+HTML5 landmark elements are used to improve navigation Error!
+Offscreen content is hidden from assistive technology Error!
+Custom controls have associated labels Error!
+Custom controls have ARIA roles Error!
+ARIA
+[aria-*] attributes match their roles Error!
+[aria-hidden="true"] is not present on the document <body> Error!
+[role]s have all required [aria-*] attributes Error!
+Elements with an ARIA [role] that require children to contain a specific [role] have all required children. Error!
+[role]s are contained by their required parent element Error!
+[role] values are valid Error!
+[aria-*] attributes have valid values Error!
+[aria-*] attributes are valid and not misspelled Error!
+ARIA IDs are unique Error!
+button, link, and menuitem elements have accessible names Error!
+ARIA attributes are used as specified for the element's role Error!
+Elements with role="dialog" or role="alertdialog" have accessible names. Error!
+[aria-hidden="true"] elements do not contain focusable descendents Error!
+ARIA input fields have accessible names Error!
+ARIA meter elements have accessible names Error!
+ARIA progressbar elements have accessible names Error!
+Elements use only permitted ARIA attributes Error!
+Elements with the role=text attribute do not have focusable descendents. Error!
+ARIA toggle fields have accessible names Error!
+ARIA tooltip elements have accessible names Error!
+ARIA treeitem elements have accessible names Error!
+Deprecated ARIA roles were not used Error!
+These are opportunities to improve the usage of ARIA in your application which may enhance the experience for users of assistive technology, like a screen reader.
+Names and labels
+Buttons have an accessible name Error!
+Image elements have [alt] attributes Error!
+Input buttons have discernible text. Error!
+<input type="image"> elements have [alt] text Error!
+Form elements have associated labels Error!
+Select elements have associated label elements. Error!
+Document has a <title> element Error!
+<frame> or <iframe> elements have a title Error!
+Links have a discernible name Error!
+<object> elements have alternate text Error!
+No form fields have multiple labels Error!
+Skip links are focusable. Error!
+Image elements do not have [alt] attributes that are redundant text. Error!
+These are opportunities to improve the semantics of the controls in your application. This may enhance the experience for users of assistive technology, like a screen reader.
+Best practices
+The document does not use <meta http-equiv="refresh"> Error!
+[user-scalable="no"] is not used in the <meta name="viewport"> element and the [maximum-scale] attribute is not less than 5. Error!
+Touch targets have sufficient size and spacing. Error!
+Document has a main landmark. Error!
+autocomplete attributes are used correctly Error!
+Elements with role="none" or role="presentation" do not have conflicts Error!
+SVG elements with an img role have an accessible text alternative Error!
+Tables have different content in the summary attribute and <caption>. Error!
+All heading elements contain content. Error!
+Uses ARIA roles only on compatible elements Error!
+Identical links have the same purpose. Error!
+These items highlight common accessibility best practices.
+Audio and video
+<video> elements contain a <track> element with [kind="captions"] Error!
+These are opportunities to provide alternative content for audio and video. This may improve the experience for users with hearing or vision impairments.
+Navigation
+[accesskey] values are unique Error!
+The page contains a heading, skip link, or landmark region Error!
+No element has a [tabindex] value greater than 0 Error!
+Heading elements appear in a sequentially-descending order Error!
+These are opportunities to improve keyboard navigation in your application.
+Contrast
+Background and foreground colors have a sufficient contrast ratio Error!
+Links are distinguishable without relying on color. Error!
+These are opportunities to improve the legibility of your content.
+Tables and lists
+<dl>'s contain only properly-ordered <dt> and <dd> groups, <script>, <template> or <div> elements. Error!
+Definition list items are wrapped in <dl> elements Error!
+Lists contain only <li> elements and script supporting elements (<script> and <template>). Error!
+List items (<li>) are contained within <ul>, <ol> or <menu> parent elements Error!
+Cells in a <table> element that use the [headers] attribute refer to table cells within the same table. Error!
+<th> elements and elements with [role="columnheader"/"rowheader"] have data cells they describe. Error!
+These are opportunities to improve the experience of reading tabular or list data using assistive technology, like a screen reader.
+Internationalization and localization
+<html> element has a [lang] attribute Error!
+<html> element has a valid value for its [lang] attribute Error!
+[lang] attributes have a valid value Error!
+<html> element has an [xml:lang] attribute with the same base language as the [lang] attribute. Error!
+These are opportunities to improve the interpretation of your content by users in different locales.
+Best Practices
+Trust and Safety
+Uses HTTPS Error!
+Redirects HTTP traffic to HTTPS Error!
+Avoids requesting the geolocation permission on page load Error!
+Avoids requesting the notification permission on page load Error!
+Ensure CSP is effective against XSS attacks Error!
+Use a strong HSTS policy Error!
+Ensure proper origin isolation with COOP Error!
+Mitigate clickjacking with XFO or CSP Error!
+Mitigate DOM-based XSS with Trusted Types Error!
+General
+Avoids deprecated APIs Error!
+Avoids third-party cookies Error!
+No browser errors logged to the console Error!
+No issues in the Issues panel in Chrome Devtools Error!
+Detected JavaScript libraries Error!
+Page has valid source maps Error!
+User Experience
+Allows users to paste into input fields Error!
+Displays images with correct aspect ratio Error!
+Serves images with appropriate resolution Error!
+Browser Compatibility
+Page has the HTML doctype Error!
+Properly defines charset Error!
+Baseline Features Error!
+SEO
+These checks ensure that your page is following basic search engine optimization advice. There are many additional factors Lighthouse does not score here that may affect your search ranking, including performance on Core Web Vitals. Learn more about Google Search Essentials.
+Structured data is valid Error!
+Crawling and Indexing
+Page isn’t blocked from indexing Error!
+Page has successful HTTP status code Error!
+Links are crawlable Error!
+robots.txt is valid Error!
+To appear in search results, crawlers need access to your app.
+Content Best Practices
+Document has a <title> element Error!
+Document has a meta description Error!
+Links have descriptive text Error!
+Image elements have [alt] attributes Error!
+Document has a valid hreflang Error!
+Document has a valid rel=canonical Error!
+Format your HTML in a way that enables crawlers to better understand your app’s content.
+0/6
+Agentic Browsing
+These checks ensure high-quality, browsable websites for AI agents and validate the correctness of WebMCP integrations. This category is still under development and subject to change.
+Cumulative Layout Shift Error!
+Agent Accessibility
+Accessibility tree is well-formed Error!
+llms.txt follows recommendations Error!
+These audits highlight best practices for improving the accessibility of the website for AI agents.
+WebMCP
+WebMCP form coverage Error!
+WebMCP tools registered Error!
+WebMCP schemas are valid Error!
+Audits validating WebMCP integration.
