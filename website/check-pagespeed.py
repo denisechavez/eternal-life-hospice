@@ -82,9 +82,13 @@ THRESHOLD_DEFAULT = 80
 # The ELH homepage was optimised to ~1.9 s mobile; 2500 ms gives a
 # 600 ms regression buffer while keeping us firmly in the "Good" band.
 LCP_BUDGET_MS_DEFAULT = 2500
+# LCP strict mode: when True (the default), a missing LCP numericValue is
+# treated as a failure.  Set LCP_BUDGET_STRICT=false (env) or pass
+# --no-lcp-strict (CLI) to revert to the old warn-and-continue behaviour.
+LCP_BUDGET_STRICT_DEFAULT = True
 
 
-def check_single_url(url: str, strategy: str, key: str, threshold: int, lcp_budget: int) -> bool:
+def check_single_url(url: str, strategy: str, key: str, threshold: int, lcp_budget: int, lcp_strict: bool = True) -> bool:
     """
     Run the PSI check for one URL. Prints results and returns True on pass,
     False on any failure. Never raises — errors are printed and treated as failures.
@@ -168,7 +172,16 @@ def check_single_url(url: str, strategy: str, key: str, threshold: int, lcp_budg
         else:
             print(f"✓ LCP {lcp_display} ({lcp_ms} ms) is within the {lcp_budget} ms budget.")
     else:
-        print("WARNING: LCP numericValue not present in PSI response — skipping LCP budget check.", file=sys.stderr)
+        missing_msg = (
+            f"LCP numericValue not present in PSI response for {url} — "
+            f"PSI may be returning a partial result due to a timeout or lab-data gap. "
+            f"Pass --no-lcp-strict or set LCP_BUDGET_STRICT=false to warn instead of failing."
+        )
+        if lcp_strict:
+            print(f"FAIL: {missing_msg}", file=sys.stderr)
+            passed = False
+        else:
+            print(f"WARNING: {missing_msg}", file=sys.stderr)
 
     if passed:
         print(f"✓ {url} — performance score {perf}/100 meets threshold {threshold}/100.")
@@ -207,7 +220,31 @@ def main():
         dest="lcp_budget",
         help=f"Maximum acceptable LCP in milliseconds. Exit 1 if exceeded. Default: {LCP_BUDGET_MS_DEFAULT}",
     )
+    # LCP_BUDGET_STRICT env var is the canonical control; --lcp-strict /
+    # --no-lcp-strict let callers override it from the command line.
+    env_strict = os.environ.get("LCP_BUDGET_STRICT", "").strip().lower()
+    env_strict_default = env_strict != "false"  # anything other than "false" → True
+    strict_group = parser.add_mutually_exclusive_group()
+    strict_group.add_argument(
+        "--lcp-strict",
+        action="store_true",
+        default=None,
+        dest="lcp_strict",
+        help=(
+            "Treat a missing LCP numericValue as a hard failure (default when "
+            "LCP_BUDGET_STRICT != 'false')."
+        ),
+    )
+    strict_group.add_argument(
+        "--no-lcp-strict",
+        action="store_false",
+        dest="lcp_strict",
+        help="Warn but continue when LCP numericValue is missing from the PSI response.",
+    )
     args = parser.parse_args()
+    # Resolve final strict mode: CLI flag takes precedence over env var.
+    if args.lcp_strict is None:
+        args.lcp_strict = env_strict_default
 
     key = os.environ.get("GOOGLE_API_KEY", "")
     if not key:
@@ -232,6 +269,7 @@ def main():
             key=key,
             threshold=args.threshold,
             lcp_budget=args.lcp_budget,
+            lcp_strict=args.lcp_strict,
         )
         if not ok:
             failures.append(url)

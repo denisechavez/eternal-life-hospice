@@ -17,6 +17,12 @@
  *                    The ELH homepage was optimised to ~1.9 s (mobile); 2.5 s
  *                    gives a 600 ms regression buffer before failing the build,
  *                    keeping us firmly in the "Good" band on Core Web Vitals.
+ * Optional env var : LCP_BUDGET_STRICT   ("true" | "false", default "true")
+ *                    When "true" (the default), a missing LCP numericValue in
+ *                    the PSI response is treated as a build failure so that a
+ *                    flaky or partial API response cannot silently bypass the
+ *                    LCP budget.  Set to "false" to revert to the old
+ *                    warn-and-continue behaviour.
  *
  * Alert env vars (at least one recommended):
  *   SLACK_WEBHOOK_URL  — Slack incoming webhook URL; set in Netlify env vars
@@ -126,6 +132,8 @@ async function sendSlackAlert({ webhookUrl, score, threshold, deployLogUrl, site
     ? `${emoji} *PageSpeed check failed* — no performance score returned`
     : reason === "lcp-over-budget"
     ? `${emoji} *PageSpeed check failed* — LCP budget exceeded`
+    : reason === "lcp-missing"
+    ? `${emoji} *PageSpeed check failed* — LCP numericValue missing from PSI response (strict mode)`
     : `${emoji} *PageSpeed check failed* — score ${score}/100 (threshold ${threshold}/100)`;
 
   const body = {
@@ -160,6 +168,8 @@ async function sendBrevoAlert({ apiKey, to, from, score, threshold, deployLogUrl
     ? "⚠️ PageSpeed check failed — no score returned"
     : reason === "lcp-over-budget"
     ? "⚠️ PageSpeed check failed — LCP budget exceeded"
+    : reason === "lcp-missing"
+    ? "⚠️ PageSpeed check failed — LCP numericValue missing from PSI response (strict mode)"
     : `⚠️ PageSpeed score ${score}/100 is below threshold (${threshold}/100)`;
 
   const htmlContent = `
@@ -264,7 +274,7 @@ async function sendAlert(opts) {
 // Check a single URL — returns null on pass, or an error string on failure.
 // Sends alerts for each individual failure.
 // ---------------------------------------------------------------------------
-async function checkUrl({ siteUrl, strategy, apiKey, threshold, lcpBudget, deployLogUrl }) {
+async function checkUrl({ siteUrl, strategy, apiKey, threshold, lcpBudget, lcpStrict, deployLogUrl }) {
   console.log(`\n${"=".repeat(60)}`);
   console.log(`  PageSpeed Insights post-deploy check`);
   console.log(`  URL      : ${siteUrl}`);
@@ -330,7 +340,16 @@ async function checkUrl({ siteUrl, strategy, apiKey, threshold, lcpBudget, deplo
   const lcpDisplay = lcpAudit.displayValue ?? (lcpMs != null ? `${(lcpMs / 1000).toFixed(1)} s` : "n/a");
 
   if (lcpMs == null) {
-    console.log("  [LCP] numericValue not present in PSI response — skipping LCP budget check.");
+    const msg =
+      `LCP numericValue missing from PSI response for ${siteUrl} — ` +
+      `PSI may be returning a partial result due to a timeout or lab-data gap. ` +
+      `A missing LCP value cannot be evaluated against the budget, so this is ` +
+      `treated as a failure in strict mode. Set LCP_BUDGET_STRICT=false to warn instead.`;
+    if (lcpStrict) {
+      await sendAlert({ score: perf, threshold, deployLogUrl, siteUrl, reason: "lcp-missing" });
+      return msg;
+    }
+    console.warn(`  [LCP] WARNING: ${msg}`);
   } else if (lcpMs > lcpBudget) {
     const msg =
       `LCP ${lcpDisplay} (${lcpMs} ms) exceeds budget of ${lcpBudget} ms for ${siteUrl}. ` +
@@ -376,6 +395,9 @@ module.exports = {
 
     const threshold = parseInt(process.env.PSI_THRESHOLD  || String(DEFAULT_THRESHOLD),    10);
     const lcpBudget = parseInt(process.env.LCP_BUDGET_MS  || String(DEFAULT_LCP_BUDGET_MS), 10);
+    // LCP_BUDGET_STRICT defaults to true — a missing numericValue is treated as
+    // a failure so a flaky PSI response cannot silently bypass the LCP budget.
+    const lcpStrict = (process.env.LCP_BUDGET_STRICT ?? "true").trim().toLowerCase() !== "false";
     const strategy  = "mobile";
 
     // Build a link to the Netlify deploy log for this exact deploy
@@ -391,7 +413,7 @@ module.exports = {
     // We run them sequentially to avoid hammering the PSI API concurrently.
     const failures = [];
     for (const siteUrl of urlsToCheck) {
-      const failure = await checkUrl({ siteUrl, strategy, apiKey, threshold, lcpBudget, deployLogUrl });
+      const failure = await checkUrl({ siteUrl, strategy, apiKey, threshold, lcpBudget, lcpStrict, deployLogUrl });
       if (failure) {
         failures.push(failure);
       }
