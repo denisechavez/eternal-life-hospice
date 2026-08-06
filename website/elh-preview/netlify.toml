@@ -1,6 +1,9 @@
 # Netlify configuration for Eternal Life Hospice
 # Site files live at the repo root; no build step (static site).
 [build]
+  # Regenerate city-data.json from city HTML pages before every deploy so the
+  # /coverage?list=true endpoint is always in sync with published city pages.
+  command = "node netlify/scripts/sync-city-data.js"
   publish = "."
 
 # Pretty URLs (serving /page from page.html) are enabled by default.
