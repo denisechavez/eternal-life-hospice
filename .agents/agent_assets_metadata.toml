@@ -1355,3 +1355,24 @@ id = "JxlQkcO461NgAj6BYqrnC"
 uri = "file://exports/social/post-founder-linkedin-1200x627.jpg"
 type = "image"
 title = "LinkedIn Post — Founder Quote (1200×627)"
+
+[[outputs]]
+id = "-fTaGWL_S6wKw2HaCoi0q"
+uri = "file://exports/social-graphics/elh-same-day-gbp-1080x1080.png"
+type = "image"
+title = "GBP — Same-Day Admissions (1080×1080)"
+description = "Google Business Profile. Post directly to your GBP listing."
+
+[[outputs]]
+id = "Mmi5yqJPd6XbW8OFjPIpS"
+uri = "file://exports/social-graphics/elh-same-day-facebook-1080x1080.png"
+type = "image"
+title = "Facebook — Same-Day Admissions (1080×1080)"
+description = "Warm, family-facing. Pair with the Facebook caption."
+
+[[outputs]]
+id = "WYiC0HNHpxns3h6YA3fYI"
+uri = "file://exports/social-graphics/elh-same-day-linkedin-1200x627.png"
+type = "image"
+title = "LinkedIn — Same-Day Admissions (1200×627)"
+description = "Professional layout for provider/referral partner audience."
