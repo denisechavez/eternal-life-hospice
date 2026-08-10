@@ -1376,3 +1376,10 @@ uri = "file://exports/social-graphics/elh-same-day-linkedin-1200x627.png"
 type = "image"
 title = "LinkedIn — Same-Day Admissions (1200×627)"
 description = "Professional layout for provider/referral partner audience."
+
+[[outputs]]
+id = "xcYxpyT7p4eb2Y0LFosrm"
+uri = "file://exports/social-graphics/elh-hero-clean-1440x900.png"
+type = "image"
+title = "Homepage Hero — Clean (1440×900)"
+description = "Hero photo + tagline only. No body copy or CTAs."
