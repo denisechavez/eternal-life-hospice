@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>ELH Social Manager — 3-Month Calendar</title>
+<title>ELH Social Planner — Public Channels</title>
 <style>
   :root{
     --deep:#3C1C3B;--plum:#5B2E59;--gold:#C9B07E;--cream:#F5F0EB;
@@ -161,9 +161,9 @@
 <div class="topbar">
   <div class="tb-brand">
     <div class="tb-leaf">🌿</div>
-    <span class="tb-name">ELH Social Manager</span>
+    <span class="tb-name">ELH Social Planner</span>
     <span class="tb-dot"></span>
-    <span class="tb-sub">Eternal Life Hospice</span>
+    <span class="tb-sub">Public Channels · Eternal Life Hospice</span>
   </div>
   <div class="tb-week">
     <button class="tb-nav" onclick="navWeek(-1)">‹</button>
@@ -172,7 +172,6 @@
   </div>
   <span class="tb-theme" id="wtheme">Myth-Busting + Medicare</span>
   <span class="tb-badge" id="wbadge">Week 1 of 13</span>
-  <span class="tb-brief-badge" id="brief-badge" style="display:none">★ Care Brief Week</span>
 </div>
 
 <!-- Progress strip -->
@@ -181,7 +180,7 @@
   <div class="ps-stat"><span class="ps-num" id="ps-draft">0</span>&nbsp;Draft</div>
   <div class="ps-stat"><span class="ps-num" id="ps-pub">0</span>&nbsp;Published</div>
   <div class="ps-bar"><div class="ps-fill" id="ps-fill"></div></div>
-  <div class="ps-stat"><span class="ps-num" id="ps-total">0</span>&nbsp;posts this week · 7 platforms</div>
+  <div class="ps-stat"><span class="ps-num" id="ps-total">0</span>&nbsp;posts this week · 6 platforms</div>
 </div>
 
 <div class="shell">
@@ -239,13 +238,6 @@
       YouTube <span class="cnt" id="cnt-yt">0</span>
     </button>
 
-    <button class="pfilt" onclick="filt('em',this)">
-      <span class="ico ico-em">
-        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#C9B07E" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 4 10 9 10-9"/></svg>
-      </span>
-      Email — Care Ally <span class="cnt" id="cnt-em">0</span>
-    </button>
-
     <div class="sb-div"></div>
     <button class="ai-btn">✦ Generate with AI</button>
     <div class="sb-spacer"></div>
@@ -254,8 +246,6 @@
       <div class="sb-status-row hi"><span>Scheduled</span><span id="sb-sched">0</span></div>
       <div class="sb-status-row"><span>Draft</span><span id="sb-draft">0</span></div>
       <div class="sb-status-row"><span>Published</span><span id="sb-pub">0</span></div>
-      <div class="sb-div" style="margin:5px 0"></div>
-      <div class="sb-status-row"><span>Care Brief</span><span style="color:var(--gold)" id="sb-brief">Issue 2 · Sep 9</span></div>
     </div>
     <div class="week-counter" id="week-counter">Week 1 of 13 · Aug–Nov 2026</div>
   </aside>
@@ -852,7 +842,7 @@ const POSTS = {
 };
 
 // ─── PLATFORM LABELS ────────────────────────────────────────────────────────
-const PLAT_LABELS = { gbp:'Google Business', fb:'Facebook', li:'LinkedIn', tw:'Twitter / X', tt:'TikTok', yt:'YouTube', em:'Email — Care Ally' };
+const PLAT_LABELS = { gbp:'Google Business', fb:'Facebook', li:'LinkedIn', tw:'Twitter / X', tt:'TikTok', yt:'YouTube' };
 
 // ─── STATE ───────────────────────────────────────────────────────────────────
 let currentWeek = 0;
@@ -864,19 +854,10 @@ function renderWeek(w) {
   document.getElementById('wlabel').textContent = week.label;
   document.getElementById('wtheme').textContent = week.theme;
   document.getElementById('wbadge').textContent = `Week ${w+1} of ${WEEKS.length}`;
-  document.getElementById('brief-badge').style.display = week.brief ? 'inline-flex' : 'none';
   document.getElementById('week-counter').textContent = `Week ${w+1} of 13 · Aug–Nov 2026`;
 
   const main = document.getElementById('cal-main');
   main.innerHTML = '';
-
-  // Brief banner
-  if (week.brief) {
-    const b = document.createElement('div');
-    b.className = 'brief-banner';
-    b.innerHTML = `<span class="brief-banner-icon">★</span><div><div class="brief-banner-text">The Eternal Care Brief — Launch Week</div><div class="brief-banner-sub">${w===4?'Issue 2 · Tuesday Sep 9, 2026':'Issue 3 · Tuesday Nov 4, 2026'} · Distribute to all subscribers + SYMPLR Network</div></div>`;
-    main.appendChild(b);
-  }
 
   // Day headers
   const days = ['mon','tue','wed','thu','fri'];
@@ -887,8 +868,8 @@ function renderWeek(w) {
   hdr.innerHTML = '<div></div>' + dayLabels.map(d=>`<div class="dh">${d}</div>`).join('');
   main.appendChild(hdr);
 
-  // Platform rows
-  const plats = ['gbp','fb','li','tw','tt','yt','em'];
+  // Platform rows — public social channels only
+  const plats = ['gbp','fb','li','tw','tt','yt'];
   const plat_icons = {
     gbp:`<svg width="13" height="13" viewBox="0 0 24 24" fill="white"><path d="M21.8 10.2h-.8V10H12v4h5.7A6 6 0 1 1 12 6c1.6 0 3 .6 4.1 1.6L19 4.8A10 10 0 1 0 22 12c0-.6-.1-1.2-.2-1.8z"/></svg>`,
     fb:`<svg width="12" height="12" viewBox="0 0 24 24" fill="white"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>`,
@@ -900,7 +881,7 @@ function renderWeek(w) {
   };
 
   let totalSched=0, totalDraft=0, totalPub=0;
-  const cnts = {gbp:0,fb:0,li:0,tw:0,tt:0,yt:0,em:0};
+  const cnts = {gbp:0,fb:0,li:0,tw:0,tt:0,yt:0};
 
   plats.forEach(p => {
     const row = document.createElement('div');
@@ -951,10 +932,6 @@ function renderWeek(w) {
   const totalCount = Object.values(cnts).reduce((a,b)=>a+b,0);
   document.getElementById('cnt-all').textContent = totalCount;
   Object.keys(cnts).forEach(k=>{ document.getElementById('cnt-'+k).textContent = cnts[k]; });
-
-  // Upcoming care brief in sidebar
-  const nextBrief = currentWeek < 4 ? 'Issue 2 · Sep 9' : currentWeek < 12 ? 'Issue 3 · Nov 4' : 'Issue 3 · Sent';
-  document.getElementById('sb-brief').textContent = nextBrief;
 
   // Reapply filter
   applyFilter(currentFilter);
