@@ -354,11 +354,49 @@ else:
     mutation_errors.append(msg)
 _hero_checks += 1
 
+# ── [ 6 ] Stale alias check — aliases whose target city is not published ───────
+
+print("\n[ 6 ] Stale alias check — every alias target must exist in city-data.json …")
+
+_alias_file = os.path.join(os.path.dirname(__file__), "city-aliases.json")
+_stale_alias_errors = []
+
+try:
+    with open(_alias_file, encoding="utf-8") as _af:
+        _alias_data = json.load(_af)
+
+    _published_city_names = {c["city"] for c in _published}
+    _aliases = _alias_data.get("aliases", {})
+
+    _stale = [
+        (alias_key, target)
+        for alias_key, target in _aliases.items()
+        if target not in _published_city_names
+    ]
+
+    if _stale:
+        for alias_key, target in _stale:
+            msg = (
+                f'stale-alias: "{alias_key}" → "{target}" — '
+                f'target city is absent from the published index; '
+                f'remove or update this alias in website/city-aliases.json '
+                f'(run python3 website/clean-stale-aliases.py to auto-remove)'
+            )
+            print(f"  ✗  {msg}")
+            _stale_alias_errors.append(("city-aliases.json", msg))
+    else:
+        print(f"  ✓  all {len(_aliases)} alias(es) point to published cities")
+
+except FileNotFoundError:
+    print("  ⚠  city-aliases.json not found — skipping stale-alias check")
+except (KeyError, ValueError) as _exc:
+    print(f"  ⚠  could not parse city-aliases.json: {_exc} — skipping stale-alias check")
+
 # ── Summary ───────────────────────────────────────────────────────────────────
 
 print()
 
-combined_errors = all_errors + [(f"mutation/{_base_slug}", e) for e in mutation_errors]
+combined_errors = all_errors + [(f"mutation/{_base_slug}", e) for e in mutation_errors] + _stale_alias_errors
 
 if combined_errors:
     print("❌  FAIL — city-script regression check found issues:")
