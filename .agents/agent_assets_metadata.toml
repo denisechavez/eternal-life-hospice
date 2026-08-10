@@ -1383,3 +1383,31 @@ uri = "file://exports/social-graphics/elh-hero-clean-1440x900.png"
 type = "image"
 title = "Homepage Hero — Clean (1440×900)"
 description = "Hero photo + tagline only. No body copy or CTAs."
+
+[[outputs]]
+id = "vAOAHDMU_A9H-BdfXFm3U"
+uri = "file://exports/social-graphics/elh-stitch-panel1-tagline-1080x1080.png"
+type = "image"
+title = "Panel 1 — Tagline (post first)"
+description = "Upload this first. Sets the brand tone."
+
+[[outputs]]
+id = "42z74fVw-REfFO158uo1x"
+uri = "file://exports/social-graphics/elh-stitch-panel2-photo-1080x1080.png"
+type = "image"
+title = "Panel 2 — The Hands (post second)"
+description = "The silent, emotional center of the triptych."
+
+[[outputs]]
+id = "tg2pFYN2hoEZPGDfP3yQT"
+uri = "file://exports/social-graphics/elh-stitch-panel3-cities-1080x1080.png"
+type = "image"
+title = "Panel 3 — Communities (post third)"
+description = "Thousand Oaks · Simi Valley · Calabasas · both counties."
+
+[[outputs]]
+id = "BrzPCrlmJrCTDaFaqkQoF"
+uri = "file://exports/social-graphics/elh-stitch-panoramic-3240x1080.png"
+type = "image"
+title = "Full Panoramic — reference file"
+description = "The complete 3-panel image. Use for Stories or print reference."

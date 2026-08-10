@@ -27,6 +27,8 @@
 <link rel="preload" as="font" href="assets/fonts/inline-3c986c6628.woff2" type="font/woff2" crossorigin>
 <link rel="preload" as="font" href="assets/fonts/fraunces-latin.woff2" type="font/woff2" crossorigin fetchpriority="high">
 <link rel="preload" as="font" href="assets/fonts/fraunces-italic-latin.woff2" type="font/woff2" crossorigin fetchpriority="high">
+<link rel="preload" as="font" href="assets/fonts/inline-a3c2438bfe.woff2" type="font/woff2" crossorigin>
+<link rel="preload" as="font" href="assets/fonts/inline-b6346d671c.woff2" type="font/woff2" crossorigin>
 <!-- Google Search Console verification (URL-prefix property for https://eternallifehospice.com/) -->
 <meta name="google-site-verification" content="HcHJe-U9QF8swQzKciQQs2GwuI8gdtrjLHYSo8VdBzE">
 <script defer src="/assets/analytics.js?v=20260727h"></script>
@@ -355,7 +357,7 @@ nav a:hover{color:var(--gold)}
 .mod-card[data-mod="soundbath"] .mod-img::before,.mod-card[data-mod="soundbath"] .mod-img::after{content:'';position:absolute;z-index:1;top:34%;left:21%;width:18px;height:18px;border-radius:50%;border:1.5px solid rgba(255,255,255,.6);opacity:0;pointer-events:none;transform:translate(-50%,-50%)}
 .mod-card[data-mod="soundbath"]:hover .mod-img::before{animation:rippleOut 2.6s ease-out infinite}
 .mod-card[data-mod="soundbath"]:hover .mod-img::after{animation:rippleOut 2.6s ease-out 1.3s infinite}
-@keyframes rippleOut{0%{opacity:.6;width:18px;height:18px}100%{opacity:0;width:140px;height:140px}}
+@keyframes rippleOut{0%{opacity:.6;transform:translate(-50%,-50%) scale(1)}100%{opacity:0;transform:translate(-50%,-50%) scale(7.78)}}
 .mod-card[data-mod="music"] .mod-img::before,.mod-card[data-mod="music"] .mod-img::after{content:'\266A';position:absolute;z-index:1;bottom:8px;left:40%;color:rgba(255,255,255,.72);font-size:20px;opacity:0;pointer-events:none}
 .mod-card[data-mod="music"] .mod-img::after{content:'\266B';left:56%;font-size:16px}
 .mod-card[data-mod="music"]:hover .mod-img::before{animation:noteRise 3s ease-out infinite}
@@ -375,7 +377,7 @@ nav a:hover{color:var(--gold)}
 .mod-card[data-mod="audiology"] .mod-img::before,.mod-card[data-mod="audiology"] .mod-img::after{content:'';position:absolute;z-index:1;top:55%;left:58%;width:14px;height:14px;border-radius:50%;border:1.5px solid rgba(255,255,255,.62);opacity:0;pointer-events:none;transform:translate(-50%,-50%)}
 .mod-card[data-mod="audiology"]:hover .mod-img::before{animation:soundPing 2.4s ease-out infinite}
 .mod-card[data-mod="audiology"]:hover .mod-img::after{animation:soundPing 2.4s ease-out 1.2s infinite}
-@keyframes soundPing{0%{opacity:.7;width:14px;height:14px}100%{opacity:0;width:92px;height:92px}}
+@keyframes soundPing{0%{opacity:.7;transform:translate(-50%,-50%) scale(1)}100%{opacity:0;transform:translate(-50%,-50%) scale(6.57)}}
 .mod-card[data-mod="holistic"] .mod-img::before,.mod-card[data-mod="holistic"] .mod-img::after{content:'';position:absolute;z-index:1;bottom:10px;left:46%;width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.72);box-shadow:0 0 6px rgba(255,255,255,.5);opacity:0;pointer-events:none}
 .mod-card[data-mod="holistic"] .mod-img::after{left:58%;width:4px;height:4px}
 .mod-card[data-mod="holistic"]:hover .mod-img::before{animation:moteDrift 4.6s ease-in-out infinite}
@@ -1291,14 +1293,14 @@ p,li,blockquote{text-wrap:pretty}
   <picture class="hero-bg-pic" style="position:absolute;inset:0;z-index:0">
     <source media="(max-width:768px)" srcset="assets/img/hero-mobile-640.webp" type="image/webp">
     <source srcset="assets/img/inline-cdca7d25f7.webp" type="image/webp">
-    <img src="assets/img/inline-cdca7d25f7.jpg" alt="Clasped hands in caring gesture" style="width:100%;height:100%;object-fit:cover;object-position:65% center">
+    <img src="assets/img/inline-cdca7d25f7.jpg" alt="Clasped hands in caring gesture" fetchpriority="high" style="width:100%;height:100%;object-fit:cover;object-position:65% center">
   </picture>
   <div class="hero-overlay"></div>
     <div class="hero-content">
     <div class="hero-inner">
-      <span class="eyebrow gold-c">Eternal Life Hospice · Ventura &amp; Los Angeles County, CA</span>
+      <span class="eyebrow gold-c">Thousand Oaks, Simi Valley, Calabasas &middot; Ventura County &amp; Los Angeles County</span>
       <h1 class="hero-tagline">Hospice Care That<br><em>Honors Life</em></h1>
-      <p class="hero-lead">Eternal Life Hospice provides physician-supported hospice care at home throughout Ventura County and Los Angeles County — including Thousand Oaks, Westlake Village, Camarillo, Oxnard, Ventura and Simi Valley. Our interdisciplinary team supports patients in private homes, assisted living communities, residential care settings and skilled nursing facilities.</p>
+      <p class="hero-lead">Eternal Life Hospice provides physician-supported hospice care at home in Thousand Oaks, Westlake, Camarillo, Oxnard, Ventura, Simi Valley and throughout Ventura County and Los Angeles County. Our interdisciplinary team supports patients in private homes, assisted living communities, residential care settings and skilled nursing facilities.</p>
 
       <div class="hero-btns">
         <a href="tel:18059537273" class="btn btn-gold">Request Care — 805.953.7273</a>
@@ -1620,7 +1622,7 @@ p,li,blockquote{text-wrap:pretty}
     <div class="cs-item"><div class="cs-num" style="font-size:1.4rem;line-height:1.15">Low<br>cost</div><div class="cs-lbl">For most covered hospice services</div></div>
   </div>
   <div class="coverage-map reveal">
-    <a href="hospice-ventura-and-los-angeles-county-ca" class="coverage-map-img" aria-label="View our full coverage area across Ventura and Los Angeles County"><img loading="lazy" decoding="async" src="assets/img/service-hero-map.webp" alt="Map of Ventura County and Los Angeles County showing the communities Eternal Life Hospice serves"></a>
+    <a href="hospice-ventura-and-los-angeles-county-ca" class="coverage-map-img" aria-label="View our full coverage area across Ventura and Los Angeles County"><img loading="lazy" decoding="async" src="assets/img/service-hero-map.webp" alt="Map of Ventura County and Los Angeles County showing the communities Eternal Life Hospice serves" width="1095" height="773"></a>
     <div style="text-align:center"><a href="hospice-ventura-and-los-angeles-county-ca" class="coverage-cta">View our full coverage area <span class="cta-arrow">&#8594;</span></a></div>
   </div>
 </section>
