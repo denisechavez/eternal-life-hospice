@@ -11,7 +11,7 @@
  *   browser. Set both for full resilience; with neither, this function returns
  *   a graceful message and the website falls back to guided answers + phone.
  *
- * Optional: ANTHROPIC_MODEL (defaults to claude-sonnet-4-0; if that model is
+ * Optional: ANTHROPIC_MODEL (defaults to claude-sonnet-4-5; if that model is
  *   unavailable, the function auto-discovers a working one) and OPENAI_MODEL
  *   (defaults to gpt-4o).
  */
@@ -166,19 +166,25 @@ exports.handler = async function (event) {
 
 // Claude (Anthropic) — primary. Warm and personable. Returns reply text or throws.
 async function callClaude(messages) {
-  const preferred = process.env.ANTHROPIC_MODEL || "claude-sonnet-4-0";
+  const preferred = process.env.ANTHROPIC_MODEL || "claude-sonnet-4-5";
   let model = preferred;
   let result = await postClaude(model, messages);
 
-  // If the configured model is unavailable (retired, renamed, or not enabled on
-  // this account), ask Anthropic which models this account CAN use and retry
-  // once with a sensible pick. This keeps the chat working even as Anthropic
-  // rotates model names over time, so we never have to hard-code a moving target.
-  if (result.status === 404) {
+  // If the configured model is unavailable (retired, renamed, not enabled on
+  // this account, or the API is overloaded), ask Anthropic which models this
+  // account CAN use and retry once with a sensible pick. Covers:
+  //   404 — model not found / never existed
+  //   400 — invalid model id (Anthropic returns 400 for unknown model names)
+  //   529 — API overloaded (retry with next available model as a best-effort)
+  // This keeps the chat working even as Anthropic rotates model names over time.
+  if (result.status === 404 || result.status === 400 || result.status === 529) {
+    console.error(
+      "Anthropic model '" + model + "' returned HTTP " + result.status + "; auto-discovering a working model."
+    );
     const fallbackModel = await pickAvailableClaudeModel();
     if (fallbackModel && fallbackModel !== preferred) {
       console.error(
-        "Anthropic model '" + preferred + "' unavailable; auto-selected '" + fallbackModel + "'."
+        "Auto-selected model '" + fallbackModel + "' (was '" + preferred + "', status " + result.status + ")."
       );
       model = fallbackModel;
       result = await postClaude(model, messages);
