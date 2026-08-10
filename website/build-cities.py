@@ -5,11 +5,30 @@ Eternal Life Hospice — City Page Generator
 Reads city-data.json, writes one HTML file per published city
 into website/elh-preview/.
 
-Run from repo root:
-    python3 website/build-cities.py
+CANONICAL SOURCE RULE
+---------------------
+city-data.json is the single source of truth for all city page content.
+The generated HTML files in elh-preview/ are build artifacts — do not
+hand-edit them.  Any prose changes (summaries, intro paragraphs, nearby
+city text, FAQ answers) must be made in city-data.json first, then the
+HTML regenerated.
 
-Or for a single city:
+OVERWRITE PROTECTION
+--------------------
+By default, this script will NOT overwrite an HTML file that already
+exists on disk.  This prevents accidentally clobbering hand-crafted
+edits that have not yet been merged back into city-data.json.
+
+To overwrite existing files, pass --force explicitly:
+
+    python3 website/build-cities.py --force
+    python3 website/build-cities.py --slug thousand-oaks --force
+
+Run from repo root:
+    python3 website/build-cities.py            # skips cities that already have HTML
+    python3 website/build-cities.py --force    # overwrites all published cities
     python3 website/build-cities.py --slug thousand-oaks
+    python3 website/build-cities.py --dry-run  # show what would be written without writing
 """
 
 import json, os, re, sys, textwrap, argparse
@@ -248,6 +267,17 @@ def care_settings_html(settings):
 
 # ── Full page renderer ─────────────────────────────────────────────────────────
 
+def intro_html(intro: str) -> str:
+    """Render localIntroduction as one or more <p> tags.
+
+    city-data.json stores multi-paragraph intros joined with double-newline.
+    Each segment becomes its own <p> so the HTML output matches hand-authored
+    pages that had multiple paragraphs in the intro section.
+    """
+    segments = [s.strip() for s in intro.split("\n\n") if s.strip()]
+    return "\n".join(f"  <p>{s}</p>" for s in segments)
+
+
 def render_page(c):
     slug        = c["slug"]
     city        = c["city"]
@@ -324,7 +354,7 @@ def render_page(c):
 
 <section class="sec wrap">
   <h2>Hospice care at home in {city}, California</h2>
-  <p>{intro}</p>
+{intro_html(intro)}
   {"<p>" + nearby_para + "</p>" if nearby_para else ""}
   {"<p>" + nearby_html + "</p>" if nearby_html else ""}
 </section>
@@ -425,21 +455,75 @@ def render_page(c):
 
 # ── Main ───────────────────────────────────────────────────────────────────────
 
+def _normalise(html: str) -> str:
+    """Collapse whitespace for drift comparison (ignores indent/newline noise)."""
+    return re.sub(r"\s+", " ", html).strip()
+
+
 def main():
-    parser = argparse.ArgumentParser()
+    parser = argparse.ArgumentParser(
+        description="Generate city HTML pages from city-data.json."
+    )
     parser.add_argument("--slug", help="Build only this city slug")
-    parser.add_argument("--dry-run", action="store_true", help="Print filenames only, do not write")
+    parser.add_argument("--dry-run", action="store_true",
+                        help="Print filenames only, do not write")
+    parser.add_argument("--check", action="store_true",
+                        help="Drift-detection mode: generate HTML in memory and "
+                             "compare with on-disk files. Exit non-zero if any "
+                             "city page is out of sync with city-data.json. "
+                             "Does not write any files.")
+    parser.add_argument("--force", action="store_true",
+                        help="(Deprecated — no longer needed. Kept for backward "
+                             "compatibility. Builds always write output now that "
+                             "city-data.json is the canonical source.)")
     args = parser.parse_args()
 
     with open(DATA_FILE, encoding="utf-8") as f:
         cities = json.load(f)
 
-    built = []
-    skipped = []
+    if args.check:
+        # ── Drift-check mode ──────────────────────────────────────────────────
+        # Generate HTML from JSON in memory and compare with on-disk pages.
+        # Reports any city where the two diverge; exits 1 if drift is found.
+        drifted = []
+        missing = []
+        for c in cities:
+            if c.get("publishStatus") != "published":
+                continue
+            if args.slug and c["slug"] != args.slug:
+                continue
+            out = os.path.join(OUT_DIR, f"hospice-{c['slug']}-ca.html")
+            if not os.path.exists(out):
+                missing.append(c["slug"])
+                continue
+            generated = _normalise(render_page(c))
+            on_disk   = _normalise(open(out, encoding="utf-8").read())
+            if generated != on_disk:
+                drifted.append(c["slug"])
+                print(f"  DRIFT: {c['slug']}")
+        if missing:
+            print(f"\nMissing HTML (not yet built): {', '.join(missing)}")
+        if drifted:
+            print(f"\nDrift detected in {len(drifted)} city page(s).")
+            print("Run  python3 website/build-cities.py  to regenerate.")
+            sys.exit(1)
+        else:
+            checked = len([c for c in cities
+                           if c.get("publishStatus") == "published"
+                           and (not args.slug or c["slug"] == args.slug)
+                           and os.path.exists(
+                               os.path.join(OUT_DIR, f"hospice-{c['slug']}-ca.html")
+                           )])
+            print(f"OK — {checked} city page(s) match city-data.json.")
+        return
+
+    # ── Normal build mode ─────────────────────────────────────────────────────
+    built         = []
+    skipped_draft = []
 
     for c in cities:
         if c.get("publishStatus") != "published":
-            skipped.append(c["slug"])
+            skipped_draft.append(c["slug"])
             continue
         if args.slug and c["slug"] != args.slug:
             continue
@@ -448,7 +532,8 @@ def main():
         out  = os.path.join(OUT_DIR, f"hospice-{c['slug']}-ca.html")
 
         if args.dry_run:
-            print(f"  [DRY] would write {out}")
+            action = "overwrite" if os.path.exists(out) else "write"
+            print(f"  [DRY] would {action} {out}")
         else:
             with open(out, "w", encoding="utf-8") as f:
                 f.write(html)
@@ -456,9 +541,9 @@ def main():
             print(f"  ✓ hospice-{c['slug']}-ca.html")
 
     print(f"\nBuilt: {len(built)} pages")
-    print(f"Skipped (draft/future): {len(skipped)} cities")
-    if skipped:
-        print("  Drafts:", ", ".join(skipped[:20]))
+    print(f"Skipped (draft/future): {len(skipped_draft)} cities")
+    if skipped_draft:
+        print("  Drafts:", ", ".join(skipped_draft[:20]))
 
 if __name__ == "__main__":
     main()
