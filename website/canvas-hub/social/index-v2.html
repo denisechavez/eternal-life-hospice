@@ -3,144 +3,156 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>ELH Social Manager v2</title>
+<title>ELH Social Manager — 3-Month Calendar</title>
 <style>
   :root{
     --deep:#3C1C3B;--plum:#5B2E59;--gold:#C9B07E;--cream:#F5F0EB;
     --muted:#9B8A99;--border:rgba(92,46,89,.12);
     --gbp:#4285F4;--fb:#1877F2;--li:#0A66C2;
+    --tw:#000000;--tt:#2B2B2B;--yt:#FF0000;--em:#5B2E59;
     --card:#fff;--bg:#F0EBE5;
   }
   *{box-sizing:border-box;margin:0;padding:0}
   body{font-family:-apple-system,'Segoe UI',sans-serif;background:var(--bg);color:var(--deep);height:100vh;overflow:hidden;display:flex;flex-direction:column}
 
   /* ── Top bar ── */
-  .topbar{background:var(--deep);color:var(--cream);height:48px;display:flex;align-items:center;padding:0 16px;gap:0;flex-shrink:0}
-  .tb-brand{display:flex;align-items:center;gap:8px;margin-right:auto}
-  .tb-leaf{width:28px;height:28px;border-radius:50%;background:rgba(201,176,126,.2);border:1px solid rgba(201,176,126,.4);display:flex;align-items:center;justify-content:center;font-size:13px}
-  .tb-name{font-size:.82rem;font-weight:600;letter-spacing:.02em}
-  .tb-dot{width:4px;height:4px;border-radius:50%;background:rgba(245,240,235,.25);margin:0 10px}
-  .tb-sub{font-size:.72rem;opacity:.45;letter-spacing:.01em}
+  .topbar{background:var(--deep);color:var(--cream);height:46px;display:flex;align-items:center;padding:0 14px;gap:0;flex-shrink:0}
+  .tb-brand{display:flex;align-items:center;gap:7px;margin-right:auto}
+  .tb-leaf{width:26px;height:26px;border-radius:50%;background:rgba(201,176,126,.2);border:1px solid rgba(201,176,126,.4);display:flex;align-items:center;justify-content:center;font-size:12px}
+  .tb-name{font-size:.8rem;font-weight:600;letter-spacing:.02em}
+  .tb-dot{width:3px;height:3px;border-radius:50%;background:rgba(245,240,235,.25);margin:0 8px}
+  .tb-sub{font-size:.7rem;opacity:.45}
   .tb-week{display:flex;align-items:center;gap:6px}
-  .tb-nav{background:none;border:none;color:rgba(245,240,235,.5);cursor:pointer;font-size:.9rem;padding:4px 6px;border-radius:4px;transition:color .15s}
+  .tb-nav{background:none;border:none;color:rgba(245,240,235,.5);cursor:pointer;font-size:.9rem;padding:4px 7px;border-radius:4px;transition:color .15s}
   .tb-nav:hover{color:var(--cream)}
-  .tb-wlabel{font-size:.75rem;font-weight:600;letter-spacing:.04em;color:rgba(245,240,235,.75);min-width:128px;text-align:center}
-  .tb-badge{background:rgba(201,176,126,.18);border:1px solid rgba(201,176,126,.3);color:var(--gold);font-size:.62rem;font-weight:700;padding:.2rem .55rem;border-radius:99px;letter-spacing:.07em;margin-left:12px}
+  .tb-wlabel{font-size:.73rem;font-weight:600;letter-spacing:.04em;color:rgba(245,240,235,.8);min-width:160px;text-align:center}
+  .tb-theme{font-size:.62rem;opacity:.5;margin-left:6px;font-style:italic}
+  .tb-badge{background:rgba(201,176,126,.18);border:1px solid rgba(201,176,126,.3);color:var(--gold);font-size:.6rem;font-weight:700;padding:.18rem .5rem;border-radius:99px;letter-spacing:.07em;margin-left:10px;white-space:nowrap}
+  .tb-brief-badge{background:rgba(201,176,126,.35);border:1px solid var(--gold);color:var(--gold);font-size:.6rem;font-weight:700;padding:.18rem .5rem;border-radius:99px;letter-spacing:.07em;margin-left:6px;animation:pulse 2s infinite}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.65}}
 
   /* ── Progress strip ── */
-  .progress-strip{background:var(--plum);height:36px;display:flex;align-items:center;padding:0 16px;gap:0;flex-shrink:0}
-  .ps-stat{display:flex;align-items:center;gap:6px;padding:0 14px;border-right:1px solid rgba(255,255,255,.1);font-size:.72rem;color:rgba(245,240,235,.7)}
+  .progress-strip{background:var(--plum);height:30px;display:flex;align-items:center;padding:0 14px;gap:0;flex-shrink:0}
+  .ps-stat{display:flex;align-items:center;gap:5px;padding:0 12px;border-right:1px solid rgba(255,255,255,.1);font-size:.67rem;color:rgba(245,240,235,.7);white-space:nowrap}
   .ps-stat:first-child{padding-left:0}
   .ps-stat:last-child{border:none;margin-left:auto;padding-right:0}
-  .ps-num{font-weight:700;color:var(--gold);font-size:.82rem}
-  .ps-bar{flex:1;margin:0 24px;height:4px;background:rgba(255,255,255,.1);border-radius:2px;overflow:hidden}
-  .ps-fill{height:100%;background:var(--gold);border-radius:2px;width:86%}
+  .ps-num{font-weight:700;color:var(--gold);font-size:.77rem}
+  .ps-bar{flex:1;margin:0 20px;height:3px;background:rgba(255,255,255,.1);border-radius:2px;overflow:hidden}
+  .ps-fill{height:100%;background:var(--gold);border-radius:2px;transition:width .4s}
 
   /* ── Shell ── */
-  .shell{display:grid;grid-template-columns:192px 1fr;flex:1;overflow:hidden}
+  .shell{display:grid;grid-template-columns:172px 1fr;flex:1;overflow:hidden}
 
   /* ── Sidebar ── */
-  .sidebar{background:var(--deep);display:flex;flex-direction:column;padding:12px 10px;overflow:hidden}
-  .sb-section{font-size:.6rem;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:rgba(245,240,235,.3);padding:0 6px;margin-bottom:6px;margin-top:4px}
-  .pfilt{display:flex;align-items:center;gap:8px;padding:7px 8px;border-radius:7px;cursor:pointer;color:rgba(245,240,235,.75);font-size:.8rem;transition:background .14s;border:none;background:none;width:100%;text-align:left}
+  .sidebar{background:var(--deep);display:flex;flex-direction:column;padding:10px 8px;overflow:hidden}
+  .sb-section{font-size:.58rem;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:rgba(245,240,235,.3);padding:0 6px;margin-bottom:5px;margin-top:4px}
+  .pfilt{display:flex;align-items:center;gap:7px;padding:5px 7px;border-radius:6px;cursor:pointer;color:rgba(245,240,235,.75);font-size:.75rem;transition:background .14s;border:none;background:none;width:100%;text-align:left}
   .pfilt:hover{background:rgba(255,255,255,.07)}
   .pfilt.on{background:rgba(255,255,255,.11);color:var(--cream)}
-  .pfilt .ico{width:22px;height:22px;border-radius:5px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+  .pfilt .ico{width:20px;height:20px;border-radius:5px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
   .ico-all{background:rgba(201,176,126,.25)}
   .ico-gbp{background:#4285F4}
   .ico-fb{background:#1877F2}
   .ico-li{background:#0A66C2}
-  .pfilt .cnt{margin-left:auto;font-size:.65rem;font-weight:700;color:rgba(245,240,235,.4);background:rgba(255,255,255,.1);border-radius:99px;padding:.1rem .4rem}
+  .ico-tw{background:#000}
+  .ico-tt{background:linear-gradient(135deg,#010101 50%,#69C9D0)}
+  .ico-yt{background:#FF0000}
+  .ico-em{background:var(--plum);border:1px solid rgba(201,176,126,.4)}
+  .pfilt .cnt{margin-left:auto;font-size:.6rem;font-weight:700;color:rgba(245,240,235,.4);background:rgba(255,255,255,.1);border-radius:99px;padding:.08rem .38rem}
   .pfilt.on .cnt{color:var(--gold)}
-  .sb-div{border:none;border-top:1px solid rgba(255,255,255,.07);margin:10px 0}
-  .ai-btn{width:100%;background:var(--gold);color:var(--deep);border:none;border-radius:8px;padding:8px 10px;font-size:.78rem;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:5px;transition:opacity .14s;letter-spacing:.01em}
+  .sb-div{border:none;border-top:1px solid rgba(255,255,255,.07);margin:7px 0}
+  .ai-btn{width:100%;background:var(--gold);color:var(--deep);border:none;border-radius:7px;padding:7px 8px;font-size:.73rem;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:4px;transition:opacity .14s}
   .ai-btn:hover{opacity:.88}
-  .ai-sparkle{font-size:.9rem}
   .sb-spacer{flex:1}
-  .sb-status{background:rgba(0,0,0,.25);border-radius:8px;padding:10px;margin-top:10px}
-  .sb-status-row{display:flex;justify-content:space-between;align-items:center;font-size:.72rem;color:rgba(245,240,235,.5);padding:3px 0}
+  .sb-status{background:rgba(0,0,0,.25);border-radius:7px;padding:8px;margin-top:8px}
+  .sb-status-row{display:flex;justify-content:space-between;align-items:center;font-size:.67rem;color:rgba(245,240,235,.5);padding:2px 0}
   .sb-status-row span:last-child{font-weight:600;color:rgba(245,240,235,.8)}
   .sb-status-row.hi span:last-child{color:var(--gold)}
+  .week-counter{font-size:.6rem;color:rgba(245,240,235,.35);text-align:center;margin-top:6px}
 
   /* ── Main ── */
-  .main{overflow:hidden;display:flex;flex-direction:column;padding:12px 14px;gap:8px}
-  .day-header{display:grid;grid-template-columns:52px repeat(5,1fr);gap:6px;flex-shrink:0}
-  .dh{text-align:center;font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.09em;color:var(--muted);padding:3px 0}
+  .main{overflow-y:auto;display:flex;flex-direction:column;padding:8px 12px;gap:5px}
+  .day-header{display:grid;grid-template-columns:44px repeat(5,1fr);gap:5px;flex-shrink:0;position:sticky;top:0;background:var(--bg);z-index:10;padding-bottom:3px}
+  .dh{text-align:center;font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);padding:2px 0}
 
   /* ── Calendar rows ── */
-  .cal-row{display:grid;grid-template-columns:52px repeat(5,1fr);gap:6px;flex:1}
-  .row-icon{display:flex;align-items:center;justify-content:center}
-  .ri{width:30px;height:30px;border-radius:7px;display:flex;align-items:center;justify-content:center}
+  .cal-row{display:grid;grid-template-columns:44px repeat(5,1fr);gap:5px;min-height:90px}
+  .row-icon{display:flex;align-items:center;justify-content:center;padding-top:4px}
+  .ri{width:28px;height:28px;border-radius:6px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
   .ri-gbp{background:#4285F4}
   .ri-fb{background:#1877F2}
   .ri-li{background:#0A66C2}
+  .ri-tw{background:#000}
+  .ri-tt{background:linear-gradient(135deg,#010101 50%,#69C9D0)}
+  .ri-yt{background:#FF0000}
+  .ri-em{background:var(--plum);border:1px solid rgba(201,176,126,.5)}
 
   /* ── Post cell ── */
-  .cell{background:var(--card);border:1px solid var(--border);border-radius:9px;padding:9px 10px;cursor:pointer;transition:box-shadow .16s,transform .16s;position:relative;display:flex;flex-direction:column;overflow:hidden}
-  .cell::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;border-radius:9px 0 0 9px}
+  .cell{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:7px 9px;cursor:pointer;transition:box-shadow .16s,transform .16s;position:relative;display:flex;flex-direction:column;overflow:hidden}
+  .cell::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;border-radius:8px 0 0 8px}
   .cell[data-platform="gbp"]::before{background:var(--gbp)}
   .cell[data-platform="fb"]::before{background:var(--fb)}
   .cell[data-platform="li"]::before{background:var(--li)}
-  .cell:hover{box-shadow:0 4px 18px rgba(60,28,59,.12);transform:translateY(-1px)}
-  .c-title{font-size:.75rem;font-weight:700;color:var(--deep);line-height:1.3;margin-bottom:4px;padding-left:4px}
-  .c-preview{font-size:.67rem;color:var(--muted);line-height:1.45;flex:1;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;padding-left:4px}
-  .c-foot{display:flex;align-items:center;justify-content:space-between;margin-top:6px;padding-left:4px}
-  .st{font-size:.59rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;padding:.16rem .42rem;border-radius:99px}
+  .cell[data-platform="tw"]::before{background:var(--tw)}
+  .cell[data-platform="tt"]::before{background:#69C9D0}
+  .cell[data-platform="yt"]::before{background:var(--yt)}
+  .cell[data-platform="em"]::before{background:var(--gold)}
+  .cell:hover{box-shadow:0 3px 14px rgba(60,28,59,.12);transform:translateY(-1px)}
+  .c-title{font-size:.7rem;font-weight:700;color:var(--deep);line-height:1.3;margin-bottom:3px;padding-left:4px}
+  .c-preview{font-size:.63rem;color:var(--muted);line-height:1.4;flex:1;overflow:hidden;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;padding-left:4px}
+  .c-foot{display:flex;align-items:center;justify-content:space-between;margin-top:5px;padding-left:4px}
+  .st{font-size:.55rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;padding:.13rem .38rem;border-radius:99px}
   .st-sched{background:#EBF3FF;color:#1155CC}
   .st-draft{background:#FFF7E6;color:#92600A}
   .st-pub{background:#E6F4EA;color:#1A6E35}
-  .c-time{font-size:.62rem;color:var(--muted)}
+  .st-brief{background:rgba(201,176,126,.25);color:#7A5C00;border:1px solid rgba(201,176,126,.5)}
+  .c-time{font-size:.58rem;color:var(--muted)}
 
   /* ── Empty cell ── */
-  .empty{background:rgba(255,255,255,.35);border:1px dashed rgba(92,46,89,.08);cursor:default;align-items:center;justify-content:center}
+  .empty{background:rgba(255,255,255,.3);border:1px dashed rgba(92,46,89,.08);cursor:default;align-items:center;justify-content:center}
   .empty:hover{box-shadow:none;transform:none}
   .empty::before{display:none}
-  .empty-plus{font-size:1.1rem;color:rgba(92,46,89,.15);line-height:1}
+  .empty-plus{font-size:1rem;color:rgba(92,46,89,.13);line-height:1}
+
+  /* ── Brief banner ── */
+  .brief-banner{background:linear-gradient(135deg,rgba(201,176,126,.15),rgba(201,176,126,.08));border:1px solid rgba(201,176,126,.4);border-radius:8px;padding:6px 12px;display:flex;align-items:center;gap:8px;margin-bottom:4px;flex-shrink:0}
+  .brief-banner-icon{font-size:1rem}
+  .brief-banner-text{font-size:.7rem;color:var(--deep);font-weight:600}
+  .brief-banner-sub{font-size:.62rem;color:var(--muted);margin-top:1px}
 
   /* ── Modal ── */
   .overlay{display:none;position:fixed;inset:0;background:rgba(20,5,20,.6);z-index:100;align-items:center;justify-content:center}
   .overlay.open{display:flex}
-  .modal{background:#fff;border-radius:14px;width:100%;max-width:580px;max-height:88vh;overflow-y:auto;box-shadow:0 20px 60px rgba(20,5,20,.35);display:flex;flex-direction:column}
-  .mhead{background:var(--deep);color:var(--cream);padding:14px 18px;border-radius:14px 14px 0 0;display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+  .modal{background:#fff;border-radius:12px;width:100%;max-width:560px;max-height:88vh;overflow-y:auto;box-shadow:0 20px 60px rgba(20,5,20,.35)}
+  .mhead{background:var(--deep);color:var(--cream);padding:12px 16px;border-radius:12px 12px 0 0;display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
   .mhead-left{flex:1}
-  .mhead h2{font-size:.9rem;font-weight:700;line-height:1.3}
-  .mpills{display:flex;gap:5px;flex-wrap:wrap;margin-top:6px}
-  .mpill{font-size:.62rem;font-weight:600;padding:.18rem .5rem;border-radius:99px;background:rgba(255,255,255,.12);letter-spacing:.04em}
-  .mclose{background:none;border:none;color:rgba(245,240,235,.6);font-size:1.1rem;cursor:pointer;flex-shrink:0}
-  .mclose:hover{color:var(--cream)}
-  .mbody{padding:16px 18px;display:flex;flex-direction:column;gap:12px}
-  .field-label{font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:4px}
-  .copy-area{width:100%;min-height:140px;border:1.5px solid var(--border);border-radius:8px;padding:10px 12px;font-size:.8rem;line-height:1.65;color:var(--deep);resize:vertical;font-family:inherit;background:var(--cream)}
+  .mhead h2{font-size:.85rem;font-weight:700;line-height:1.3}
+  .mpills{display:flex;gap:4px;flex-wrap:wrap;margin-top:5px}
+  .mpill{font-size:.58rem;font-weight:600;padding:.15rem .45rem;border-radius:99px;background:rgba(255,255,255,.12);letter-spacing:.04em}
+  .mpill-brief{background:rgba(201,176,126,.3);color:var(--gold)}
+  .mclose{background:none;border:none;color:rgba(245,240,235,.6);font-size:1rem;cursor:pointer;flex-shrink:0}
+  .mbody{padding:14px 16px;display:flex;flex-direction:column;gap:11px}
+  .field-label{font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:3px}
+  .copy-area{width:100%;min-height:120px;border:1.5px solid var(--border);border-radius:7px;padding:9px 11px;font-size:.77rem;line-height:1.65;color:var(--deep);resize:vertical;font-family:inherit;background:var(--cream)}
   .copy-area:focus{outline:none;border-color:var(--plum)}
-  .tags-wrap{display:flex;gap:5px;flex-wrap:wrap}
-  .ht{font-size:.67rem;background:rgba(91,46,89,.07);color:var(--plum);padding:.18rem .45rem;border-radius:5px}
-  .img-note{background:rgba(92,46,89,.04);border:1px solid var(--border);border-radius:7px;padding:8px 10px;font-size:.7rem;color:var(--muted);display:flex;align-items:center;gap:6px}
-  .mfooter{display:flex;gap:7px;padding:12px 18px;border-top:1px solid var(--border)}
-  .btn{padding:7px 14px;border-radius:7px;font-size:.78rem;font-weight:700;cursor:pointer;border:none;transition:opacity .14s;letter-spacing:.01em}
+  .tags-wrap{display:flex;gap:4px;flex-wrap:wrap}
+  .ht{font-size:.63rem;background:rgba(91,46,89,.07);color:var(--plum);padding:.15rem .4rem;border-radius:4px}
+  .img-note{background:rgba(92,46,89,.04);border:1px solid var(--border);border-radius:6px;padding:7px 9px;font-size:.67rem;color:var(--muted);display:flex;align-items:center;gap:5px}
+  .mfooter{display:flex;gap:6px;padding:10px 16px;border-top:1px solid var(--border)}
+  .btn{padding:6px 12px;border-radius:6px;font-size:.73rem;font-weight:700;cursor:pointer;border:none;transition:opacity .14s}
   .btn:hover{opacity:.87}
   .bp{background:var(--plum);color:#fff}
   .bg{background:var(--gold);color:var(--deep)}
   .bo{background:none;border:1.5px solid var(--border);color:var(--muted)}
 
-  /* ── AI panel ── */
-  .ai-overlay{display:none;position:fixed;inset:0;background:rgba(20,5,20,.6);z-index:200;align-items:center;justify-content:center}
-  .ai-overlay.open{display:flex}
-  .ai-box{background:#fff;border-radius:14px;width:100%;max-width:480px;box-shadow:0 20px 60px rgba(20,5,20,.35)}
-  .ai-hd{background:linear-gradient(135deg,var(--gold),#D4BC92);color:var(--deep);padding:14px 18px;border-radius:14px 14px 0 0;display:flex;align-items:center;justify-content:space-between}
-  .ai-hd h2{font-size:.9rem;font-weight:700}
-  .ai-bd{padding:16px 18px;display:flex;flex-direction:column;gap:10px}
-  .ai-inp{width:100%;border:1.5px solid var(--border);border-radius:8px;padding:8px 11px;font-size:.82rem;font-family:inherit;color:var(--deep);background:var(--cream)}
-  .ai-inp:focus{outline:none;border-color:var(--plum)}
-  .ai-sel{width:100%;border:1.5px solid var(--border);border-radius:8px;padding:8px 11px;font-size:.82rem;font-family:inherit;color:var(--deep);background:var(--cream)}
-  .gen-spinner{display:none;text-align:center;padding:20px;color:var(--muted);font-size:.8rem}
-  .gen-spinner.show{display:block}
-  .spin{width:24px;height:24px;border:2.5px solid var(--border);border-top-color:var(--plum);border-radius:50%;animation:sp .65s linear infinite;margin:0 auto 8px}
-  @keyframes sp{to{transform:rotate(360deg)}}
-  .ai-actions{display:flex;gap:7px}
-
   /* ── Toast ── */
-  .toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);background:var(--deep);color:var(--cream);padding:7px 16px;border-radius:99px;font-size:.78rem;font-weight:600;z-index:999;opacity:0;transition:opacity .25s;pointer-events:none;white-space:nowrap}
+  .toast{position:fixed;bottom:14px;left:50%;transform:translateX(-50%);background:var(--deep);color:var(--cream);padding:6px 14px;border-radius:99px;font-size:.73rem;font-weight:600;z-index:999;opacity:0;transition:opacity .25s;pointer-events:none;white-space:nowrap}
   .toast.on{opacity:1}
+
+  /* ── Scrollbar ── */
+  .main::-webkit-scrollbar{width:4px}
+  .main::-webkit-scrollbar-track{background:transparent}
+  .main::-webkit-scrollbar-thumb{background:rgba(92,46,89,.2);border-radius:2px}
 </style>
 </head>
 <body>
@@ -154,20 +166,22 @@
     <span class="tb-sub">Eternal Life Hospice</span>
   </div>
   <div class="tb-week">
-    <button class="tb-nav">‹</button>
-    <span class="tb-wlabel">Aug 4 – 8, 2026</span>
-    <button class="tb-nav">›</button>
+    <button class="tb-nav" onclick="navWeek(-1)">‹</button>
+    <span class="tb-wlabel" id="wlabel">Aug 10 – 14, 2026</span>
+    <button class="tb-nav" onclick="navWeek(1)">›</button>
   </div>
-  <span class="tb-badge">1-WEEK DEMO</span>
+  <span class="tb-theme" id="wtheme">Myth-Busting + Medicare</span>
+  <span class="tb-badge" id="wbadge">Week 1 of 13</span>
+  <span class="tb-brief-badge" id="brief-badge" style="display:none">★ Care Brief Week</span>
 </div>
 
 <!-- Progress strip -->
 <div class="progress-strip">
-  <div class="ps-stat"><span class="ps-num">6</span>&nbsp;Scheduled</div>
-  <div class="ps-stat"><span class="ps-num">1</span>&nbsp;Draft</div>
-  <div class="ps-stat"><span class="ps-num">0</span>&nbsp;Published</div>
-  <div class="ps-bar"><div class="ps-fill"></div></div>
-  <div class="ps-stat"><span class="ps-num">3</span>&nbsp;platforms · 7 posts this week</div>
+  <div class="ps-stat"><span class="ps-num" id="ps-sched">0</span>&nbsp;Scheduled</div>
+  <div class="ps-stat"><span class="ps-num" id="ps-draft">0</span>&nbsp;Draft</div>
+  <div class="ps-stat"><span class="ps-num" id="ps-pub">0</span>&nbsp;Published</div>
+  <div class="ps-bar"><div class="ps-fill" id="ps-fill"></div></div>
+  <div class="ps-stat"><span class="ps-num" id="ps-total">0</span>&nbsp;posts this week · 7 platforms</div>
 </div>
 
 <div class="shell">
@@ -178,126 +192,77 @@
 
     <button class="pfilt on" onclick="filt('all',this)">
       <span class="ico ico-all">
-        <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="5" stroke="#C9B07E" stroke-width="1.5"/><circle cx="6" cy="6" r="2" fill="#C9B07E"/></svg>
+        <svg width="11" height="11" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="5" stroke="#C9B07E" stroke-width="1.5"/><circle cx="6" cy="6" r="2" fill="#C9B07E"/></svg>
       </span>
-      All Platforms <span class="cnt">7</span>
+      All Platforms <span class="cnt" id="cnt-all">0</span>
     </button>
 
     <button class="pfilt" onclick="filt('gbp',this)">
       <span class="ico ico-gbp">
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="white"><path d="M21.8 10.2h-.8V10H12v4h5.7A6 6 0 1 1 12 6c1.6 0 3 .6 4.1 1.6L19 4.8A10 10 0 1 0 22 12c0-.6-.1-1.2-.2-1.8z"/></svg>
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="white"><path d="M21.8 10.2h-.8V10H12v4h5.7A6 6 0 1 1 12 6c1.6 0 3 .6 4.1 1.6L19 4.8A10 10 0 1 0 22 12c0-.6-.1-1.2-.2-1.8z"/></svg>
       </span>
-      Google Business <span class="cnt">3</span>
+      Google Business <span class="cnt" id="cnt-gbp">0</span>
     </button>
 
     <button class="pfilt" onclick="filt('fb',this)">
       <span class="ico ico-fb">
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="white"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="white"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
       </span>
-      Facebook <span class="cnt">2</span>
+      Facebook <span class="cnt" id="cnt-fb">0</span>
     </button>
 
     <button class="pfilt" onclick="filt('li',this)">
       <span class="ico ico-li">
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="white"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg>
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="white"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2" fill="white"/></svg>
       </span>
-      LinkedIn <span class="cnt">2</span>
+      LinkedIn <span class="cnt" id="cnt-li">0</span>
+    </button>
+
+    <button class="pfilt" onclick="filt('tw',this)">
+      <span class="ico ico-tw">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="white"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+      </span>
+      Twitter / X <span class="cnt" id="cnt-tw">0</span>
+    </button>
+
+    <button class="pfilt" onclick="filt('tt',this)">
+      <span class="ico ico-tt">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="white"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.17 8.17 0 0 0 4.78 1.52V6.76a4.84 4.84 0 0 1-1.01-.07z"/></svg>
+      </span>
+      TikTok <span class="cnt" id="cnt-tt">0</span>
+    </button>
+
+    <button class="pfilt" onclick="filt('yt',this)">
+      <span class="ico ico-yt">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="white"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46a2.78 2.78 0 0 0-1.95 1.96A29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58 2.78 2.78 0 0 0 1.95 1.95C5.12 20 12 20 12 20s6.88 0 8.59-.47a2.78 2.78 0 0 0 1.95-1.95A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z"/><polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02" fill="#FF0000"/></svg>
+      </span>
+      YouTube <span class="cnt" id="cnt-yt">0</span>
+    </button>
+
+    <button class="pfilt" onclick="filt('em',this)">
+      <span class="ico ico-em">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#C9B07E" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 4 10 9 10-9"/></svg>
+      </span>
+      Email — Care Ally <span class="cnt" id="cnt-em">0</span>
     </button>
 
     <div class="sb-div"></div>
-
-    <button class="ai-btn" onclick="openAI()">
-      <span class="ai-sparkle">✦</span> Generate with AI
-    </button>
-
+    <button class="ai-btn">✦ Generate with AI</button>
     <div class="sb-spacer"></div>
 
     <div class="sb-status">
-      <div class="sb-status-row hi"><span>Scheduled</span><span>6</span></div>
-      <div class="sb-status-row"><span>Draft</span><span>1</span></div>
-      <div class="sb-status-row"><span>Published</span><span>0</span></div>
-      <div class="sb-div" style="margin:6px 0"></div>
-      <div class="sb-status-row"><span>Reach est.</span><span style="color:rgba(245,240,235,.5)">—</span></div>
+      <div class="sb-status-row hi"><span>Scheduled</span><span id="sb-sched">0</span></div>
+      <div class="sb-status-row"><span>Draft</span><span id="sb-draft">0</span></div>
+      <div class="sb-status-row"><span>Published</span><span id="sb-pub">0</span></div>
+      <div class="sb-div" style="margin:5px 0"></div>
+      <div class="sb-status-row"><span>Care Brief</span><span style="color:var(--gold)" id="sb-brief">Issue 2 · Sep 9</span></div>
     </div>
+    <div class="week-counter" id="week-counter">Week 1 of 13 · Aug–Nov 2026</div>
   </aside>
 
   <!-- Calendar -->
-  <main class="main">
-
-    <!-- Day headers -->
-    <div class="day-header">
-      <div></div>
-      <div class="dh">Mon · 4</div>
-      <div class="dh">Tue · 5</div>
-      <div class="dh">Wed · 6</div>
-      <div class="dh">Thu · 7</div>
-      <div class="dh">Fri · 8</div>
-    </div>
-
-    <!-- GBP row -->
-    <div class="cal-row">
-      <div class="row-icon"><div class="ri ri-gbp">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="white"><path d="M21.8 10.2h-.8V10H12v4h5.7A6 6 0 1 1 12 6c1.6 0 3 .6 4.1 1.6L19 4.8A10 10 0 1 0 22 12c0-.6-.1-1.2-.2-1.8z"/></svg>
-      </div></div>
-      <div class="cell" data-platform="gbp" onclick="openPost('gbp-mon')">
-        <div class="c-title">What Medicare Actually Covers</div>
-        <div class="c-preview">Families ask: "Can we afford this?" In almost every case — yes. Medicare covers 100%.</div>
-        <div class="c-foot"><span class="st st-sched">Scheduled</span><span class="c-time">9:00 AM</span></div>
-      </div>
-      <div class="cell empty" data-platform="gbp"><div class="empty-plus">+</div></div>
-      <div class="cell" data-platform="gbp" onclick="openPost('gbp-wed')">
-        <div class="c-title">The First 48 Hours</div>
-        <div class="c-preview">The first 48 hours set everything that follows. Here's what they look like at ELH.</div>
-        <div class="c-foot"><span class="st st-sched">Scheduled</span><span class="c-time">9:00 AM</span></div>
-      </div>
-      <div class="cell empty" data-platform="gbp"><div class="empty-plus">+</div></div>
-      <div class="cell" data-platform="gbp" onclick="openPost('gbp-fri')">
-        <div class="c-title">ACHC Accreditation — Why It Matters</div>
-        <div class="c-preview">Three credentials. One is required. One is state law. One is a choice. We explain all three.</div>
-        <div class="c-foot"><span class="st st-sched">Scheduled</span><span class="c-time">9:00 AM</span></div>
-      </div>
-    </div>
-
-    <!-- Facebook row -->
-    <div class="cal-row">
-      <div class="row-icon"><div class="ri ri-fb">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="white"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
-      </div></div>
-      <div class="cell" data-platform="fb" onclick="openPost('fb-mon')">
-        <div class="c-title">5 Hospice Myths That Cost Families Months</div>
-        <div class="c-preview">Most families wait too long — because of myths that just won't die. Here are the 5 biggest.</div>
-        <div class="c-foot"><span class="st st-sched">Scheduled</span><span class="c-time">11:00 AM</span></div>
-      </div>
-      <div class="cell empty" data-platform="fb"><div class="empty-plus">+</div></div>
-      <div class="cell empty" data-platform="fb"><div class="empty-plus">+</div></div>
-      <div class="cell" data-platform="fb" onclick="openPost('fb-thu')">
-        <div class="c-title">The End-of-Life Doula</div>
-        <div class="c-preview">Most hospices don't include a doula. We do. A trained companion for the dying process.</div>
-        <div class="c-foot"><span class="st st-draft">Draft</span><span class="c-time">11:00 AM</span></div>
-      </div>
-      <div class="cell empty" data-platform="fb"><div class="empty-plus">+</div></div>
-    </div>
-
-    <!-- LinkedIn row -->
-    <div class="cal-row">
-      <div class="row-icon"><div class="ri ri-li">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="white"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2" fill="white"/></svg>
-      </div></div>
-      <div class="cell empty" data-platform="li"><div class="empty-plus">+</div></div>
-      <div class="cell" data-platform="li" onclick="openPost('li-tue')">
-        <div class="c-title">Why I Started Eternal Life Hospice</div>
-        <div class="c-preview">Families kept getting the prognosis — and then being left to figure out the rest alone.</div>
-        <div class="c-foot"><span class="st st-sched">Scheduled</span><span class="c-time">8:00 AM</span></div>
-      </div>
-      <div class="cell empty" data-platform="li"><div class="empty-plus">+</div></div>
-      <div class="cell empty" data-platform="li"><div class="empty-plus">+</div></div>
-      <div class="cell" data-platform="li" onclick="openPost('li-fri')">
-        <div class="c-title">Choosing Hospice Is Not Giving Up</div>
-        <div class="c-preview">It's a real, deliberate, loving choice — to spend remaining time exactly as the person wants.</div>
-        <div class="c-foot"><span class="st st-sched">Scheduled</span><span class="c-time">8:00 AM</span></div>
-      </div>
-    </div>
-
+  <main class="main" id="cal-main">
+    <!-- Rendered by JS -->
   </main>
 </div>
 
@@ -313,8 +278,8 @@
   </div>
   <div class="mbody">
     <div>
-      <div class="field-label">Post Copy</div>
-      <textarea class="copy-area" id="mcopy"></textarea>
+      <div class="field-label">Post Copy / Brief</div>
+      <textarea class="copy-area" id="mcopy" rows="8"></textarea>
     </div>
     <div>
       <div class="field-label">Hashtags</div>
@@ -330,91 +295,736 @@
 </div>
 </div>
 
-<!-- AI panel -->
-<div class="ai-overlay" id="ai-overlay" onclick="if(event.target===this)closeAI()">
-<div class="ai-box">
-  <div class="ai-hd">
-    <h2>✦ Generate Post with AI</h2>
-    <button style="background:none;border:none;cursor:pointer;font-size:1rem;color:var(--deep)" onclick="closeAI()">✕</button>
-  </div>
-  <div class="ai-bd">
-    <div>
-      <div class="field-label">Topic</div>
-      <input class="ai-inp" id="ai-topic" placeholder="e.g. Our music therapy program for dementia patients" />
-    </div>
-    <div>
-      <div class="field-label">Platform</div>
-      <select class="ai-sel" id="ai-plat">
-        <option value="gbp">Google Business Profile</option>
-        <option value="fb">Facebook</option>
-        <option value="li">LinkedIn</option>
-      </select>
-    </div>
-    <div>
-      <div class="field-label">Tone</div>
-      <select class="ai-sel">
-        <option>Warm &amp; educational</option>
-        <option>Professional — referral partners</option>
-        <option>Founder voice (Aleksandra)</option>
-      </select>
-    </div>
-    <div class="gen-spinner" id="gen">
-      <div class="spin"></div>Generating in your brand voice…
-    </div>
-    <div class="ai-actions" id="ai-acts">
-      <button class="btn bp" style="flex:1" onclick="genPost()">Generate</button>
-      <button class="btn bo" onclick="closeAI()">Cancel</button>
-    </div>
-  </div>
-</div>
-</div>
-
 <div class="toast" id="toast"></div>
 
 <script>
-const P={
-  'gbp-mon':{title:'What Medicare Actually Covers',plat:'GBP',day:'Mon Aug 4',time:'9:00 AM',status:'Scheduled',img:'first-48-hours.jpg or comfort-therapies.jpg',tags:['#HospiceCare','#Medicare','#VenturaCounty','#EndOfLifeCare','#EternalLifeHospice'],copy:`One of the most common questions families ask us: "Can we really afford this?"\n\nThe answer, in almost every case, is yes.\n\nMedicare Part A covers the hospice benefit completely. No deductible. No copay. No bill for nursing visits, aide support, social work, chaplaincy, medications, or medical equipment related to the terminal diagnosis.\n\nThe benefit was designed to remove the financial barrier from end-of-life care entirely. Our admissions team verifies eligibility, coordinates directly with Medicare, and ensures your family never receives a surprise bill.\n\nIf your loved one has Medicare Part A and a physician's prognosis of six months or less, they are very likely eligible — at no cost to you.\n\nCall us: 805.953.7273\nEternal Life Hospice · Ventura & Los Angeles County`},
-  'gbp-wed':{title:'The First 48 Hours',plat:'GBP',day:'Wed Aug 6',time:'9:00 AM',status:'Scheduled',img:'first-48-hours.jpg',tags:['#HospiceCare','#EternalLifeHospice','#VenturaCounty','#CareThatHonorsLife'],copy:`The first 48 hours of hospice care set everything that follows.\n\nWithin hours of admission, the interdisciplinary team is established — physician oversight, nursing, social work, spiritual care, and aide support. Medications and equipment are coordinated and delivered to the home.\n\nA registered nurse completes an initial assessment — not just clinical, but human. Who is this person? What are they afraid of? What does comfort mean, specifically, to them?\n\nA care plan is built around those answers. Not a template. A plan for this person.\n\nWe aim to have everything in place within 24 hours, not 48.\n\n805.953.7273 · Serving Ventura & Los Angeles County`},
-  'gbp-fri':{title:'ACHC Accreditation — Why It Matters',plat:'GBP',day:'Fri Aug 8',time:'9:00 AM',status:'Scheduled',img:'Office exterior or team photo',tags:['#ACHC','#HospiceCare','#EternalLifeHospice','#QualityCare'],copy:`Eternal Life Hospice holds three credentials.\n\nMedicare certification is required by law.\nCDPH licensure is required by the State of California.\nACHC accreditation is different. It is voluntary.\n\nThe Accreditation Commission for Health Care conducts an independent, on-site review of our clinical standards, policies, staff competencies, and patient outcomes. They do not take our word for anything. They verify.\n\nWe pursued ACHC accreditation because families deserve to know that an independent body has reviewed our care.\n\n805.953.7273 · eternallifehospice.com`},
-  'fb-mon':{title:'5 Hospice Myths That Cost Families Months',plat:'Facebook',day:'Mon Aug 4',time:'11:00 AM',status:'Scheduled',img:'Carousel: 5 slides, plum background gold text',tags:['#HospiceCare','#HospiceMyths','#Medicare','#CareThatHonorsLife','#EternalLifeHospice'],copy:`Care That Honors Life — and that starts with the truth.\n\n1. "Hospice means giving up." → It's a continuation of care.\n2. "It's only for the last few days." → Eligible patients often have months.\n3. "All treatment stops." → Goals shift to comfort — not abandonment.\n4. "It's only for cancer." → Heart, COPD, dementia, ALS all qualify.\n5. "It costs too much." → Medicare covers 100%.\n\nFull guide → eternallifehospice.com/blog/five-hospice-myths`},
-  'fb-thu':{title:'The End-of-Life Doula',plat:'Facebook',day:'Thu Aug 7',time:'11:00 AM',status:'Draft',img:'comfort-therapies.jpg or aromatherapy.jpg',tags:['#EndOfLifeDoula','#HospiceCare','#EternalLifeHospice','#CareThatHonorsLife'],copy:`Most hospices don't include an end-of-life doula.\n\nWe do.\n\nA doula is a trained companion for the dying process. Not clinical. Not spiritual. Human.\n\nOur doula helps patients and families understand what to expect. She guides legacy conversations — the letter to a grandchild, the things a person has always meant to say. She helps families learn how to be present for what is coming without being afraid of it.\n\nDying is not a medical event. It is a human one.\n\n805.953.7273 · eternallifehospice.com`},
-  'li-tue':{title:'Why I Started Eternal Life Hospice',plat:'LinkedIn',day:'Tue Aug 5',time:'8:00 AM',status:'Scheduled',img:'Aleksandra headshot — warm window light',tags:['#HospiceCare','#HealthcareLeadership','#EndOfLifeCare','#CareThatHonorsLife','#HospiceFounder'],copy:`I started Eternal Life Hospice because I kept seeing the same thing.\n\nFamilies getting the call — the prognosis, the timeline — and then being left to figure out the rest on their own.\n\nWhat comes next deserves the same level of care as everything that came before.\n\nWhat I didn't expect was how sacred it would feel. Not sad — sacred. To be trusted with a family at the most tender moment of their lives.\n\n— Aleksandra Lekovic\nFounder & CEO · Certified Hospice Administrator`},
-  'li-fri':{title:'Choosing Hospice Is Not Giving Up',plat:'LinkedIn',day:'Fri Aug 8',time:'8:00 AM',status:'Scheduled',img:'Aleksandra headshot or branded quote graphic',tags:['#HospiceCare','#EndOfLifeCare','#PalliativeCare','#CareThatHonorsLife','#EternalLifeHospice'],copy:`I want to say something clearly, because I hear the opposite every week.\n\nChoosing hospice is not giving up.\n\nIt is a choice — a real, deliberate, loving choice — to spend the time that remains the way the person wants to spend it. At home. With family nearby. With pain managed.\n\nThe families who call us early tell us the same thing, every time: they wish they'd called sooner. Not because hospice hurried anything. Because hospice made the time they had better.\n\n— Aleksandra Lekovic\nFounder & CEO, Eternal Life Hospice`}
+// ─── WEEK DEFINITIONS ────────────────────────────────────────────────────────
+const WEEKS = [
+  { label:'Aug 10 – 14, 2026', theme:'Myth-Busting + Medicare',        brief:false },
+  { label:'Aug 17 – 21, 2026', theme:'The First 48 Hours',             brief:false },
+  { label:'Aug 24 – 28, 2026', theme:'Whole-Person Comfort',            brief:false },
+  { label:'Aug 31 – Sep 4, 2026',theme:'Care Brief Preview',            brief:false },
+  { label:'Sep 7 – 11, 2026',  theme:'★ Care Brief Issue 2 Launch',    brief:true  },
+  { label:'Sep 14 – 18, 2026', theme:'Caregiver Support',               brief:false },
+  { label:'Sep 21 – 25, 2026', theme:'Team & Trust',                    brief:false },
+  { label:'Sep 28 – Oct 2, 2026',theme:'Service Area & Community',      brief:false },
+  { label:'Oct 5 – 9, 2026',   theme:'Sound Bath & Integrative',        brief:false },
+  { label:'Oct 12 – 16, 2026', theme:'Family Stories & Testimonials',   brief:false },
+  { label:'Oct 19 – 23, 2026', theme:'Referral Partner Focus',          brief:false },
+  { label:'Oct 26 – 30, 2026', theme:'Year-End Planning',               brief:false },
+  { label:'Nov 2 – 6, 2026',   theme:'★ Care Brief Issue 3 Launch',    brief:true  },
+];
+
+// ─── POST DATA ───────────────────────────────────────────────────────────────
+// Key format: "{weekIndex}-{platform}-{day}"
+// Platforms: gbp fb li tw tt yt em
+// Days: mon tue wed thu fri
+const POSTS = {
+
+// ════════════════════════════════════════════════
+// WEEK 0 — AUG 10–14 | Myth-Busting + Medicare
+// ════════════════════════════════════════════════
+'0-gbp-mon':{title:'What Medicare Really Covers',plat:'Google Business',day:'Mon Aug 10',time:'9:00 AM',status:'Scheduled',
+  img:'Comfort setting — clasped hands or family at bedside',
+  tags:['#HospiceCare','#Medicare','#VenturaCounty','#EternalLifeHospice','#EndOfLifeCare'],
+  copy:`One of the most common questions families ask: "Can we really afford this?"\n\nIn almost every case — yes.\n\nMedicare Part A covers the hospice benefit completely. No deductible. No copay. No bill for nursing visits, aide support, social work, chaplaincy, medications, or equipment related to the terminal diagnosis.\n\nOur admissions team verifies eligibility and coordinates directly with Medicare. Your family will never receive a surprise bill.\n\nCall us 24/7: 805.953.7273\nEternal Life Hospice · Ventura & Los Angeles County`},
+
+'0-fb-mon':{title:'5 Hospice Myths That Cost Families Months',plat:'Facebook',day:'Mon Aug 10',time:'11:00 AM',status:'Scheduled',
+  img:'Carousel: 5 slides, plum bg, gold headline, cream truth text. Designer to produce.',
+  tags:['#HospiceCare','#HospiceMyths','#Medicare','#CareThatHonorsLife','#EternalLifeHospice'],
+  copy:`Care That Honors Life — and that starts with the truth.\n\nMost families wait too long to call hospice. Not because they don't want help — because of myths that just won't die.\n\n1. "Hospice means giving up." → It's a continuation of care.\n2. "It's only for the last few days." → Eligible patients often have months.\n3. "All treatment stops." → Goals shift to comfort — not abandonment.\n4. "It's only for cancer." → Heart, COPD, dementia, ALS, and more qualify.\n5. "It costs too much." → Medicare covers 100%.\n\nFull guide → eternallifehospice.com/blog/five-hospice-myths\n\n805.953.7273 | eternallifehospice.com\n\n#HospiceCare #HospiceMyths #Medicare #CareThatHonorsLife #VenturaCounty #LosAngelesCounty`},
+
+'0-li-mon':{title:'Why I Started Eternal Life Hospice',plat:'LinkedIn',day:'Mon Aug 10',time:'8:00 AM',status:'Scheduled',
+  img:'Aleksandra headshot — warm window light, no clinical setting',
+  tags:['#HospiceCare','#HealthcareLeadership','#EndOfLifeCare','#CareThatHonorsLife','#HospiceFounder'],
+  copy:`I started Eternal Life Hospice because I kept seeing the same thing.\n\nFamilies getting the call — the prognosis, the timeline — and then being left to figure out the rest on their own.\n\nWhat comes next deserves the same level of care as everything that came before.\n\nWhat I didn't expect was how sacred it would feel. Not sad — sacred. To be trusted with a family at the most tender moment of their lives.\n\nIf you work in healthcare and you've ever given a family that news and wondered what happens next — I'd love to connect.\n\n— Aleksandra Dubina\nFounder & CEO, Eternal Life Hospice\nCertified Hospice Administrator\n\n#HospiceCare #EndOfLifeCare #HealthcareLeadership #CareThatHonorsLife`},
+
+'0-em-tue':{title:'Care Ally Email: Welcome + What Happens After You Refer',plat:'Email — Care Ally',day:'Tue Aug 11',time:'9:00 AM',status:'Scheduled',
+  img:'Email header: ELH plum banner, gold rule, Aleksandra signature block. Designer to produce.',
+  tags:['Referral partners','Discharge planners','Case managers','Hospital social workers'],
+  copy:`SUBJECT: What happens after you refer to Eternal Life Hospice\n\nDear [First Name],\n\nWhen you refer a patient to us, here's exactly what happens next.\n\nWithin 2 hours: Our admissions nurse reaches out to the family to begin the intake process.\nWithin 4 hours: Care plan is drafted, medications coordinated, durable medical equipment ordered.\nWithin 24 hours: First registered nurse visit — care is in place, family is educated.\nWithin 48 hours: Full interdisciplinary team engaged — social worker, chaplain, aide.\n\nOur goal: take the next call off your plate completely.\n\nWe accept same-day referrals when clinically appropriate. One call — 805.953.7273 — or refer online at eternallifehospice.com/refer.\n\nWith gratitude,\nAleksandra Dubina\nFounder & CEO, Eternal Life Hospice`},
+
+'0-tw-tue':{title:'Thread: The 5 Hospice Myths',plat:'Twitter / X',day:'Tue Aug 11',time:'10:00 AM',status:'Scheduled',
+  img:'Text-based thread. Optional: plum/gold quote card for tweet 1.',
+  tags:['#HospiceCare','#HospiceMyths','#Medicare','#EndOfLifeCare'],
+  copy:`1/ Most families wait too long to call hospice — not because they don't want help, but because of myths that just won't die. A thread. 🧵\n\n2/ Myth 1: "Hospice means giving up." It's a continuation of care. The goal shifts to comfort and dignity — not abandonment.\n\n3/ Myth 2: "It's only for the last few days." The Medicare hospice benefit covers patients with a 6-month prognosis. Earlier is better.\n\n4/ Myth 3: "All treatment stops." Treatment continues — it shifts to comfort-focused goals. Pain management, symptom control, quality of life.\n\n5/ Myth 4: "Only for cancer patients." Heart failure, COPD, dementia, ALS, renal disease — any terminal diagnosis qualifies.\n\n6/ Myth 5: "It's too expensive." Medicare covers hospice 100%. No deductible, no copay. Most families pay $0.\n\n7/ The full family guide is at eternallifehospice.com/blog/five-hospice-myths — share it with anyone navigating this conversation.`},
+
+'0-tt-wed':{title:'TikTok: 5 Myths — 60-Second Rapid Fire',plat:'TikTok',day:'Wed Aug 12',time:'12:00 PM',status:'Scheduled',
+  img:'FORMAT: Text cards on plum bg, gold myth / cream truth. Rapid-fire cuts every 6 sec. Calm acoustic audio. Hook text: "5 hospice myths that cost families months of comfort."',
+  tags:['#HospiceCare','#HospiceMyths','#Medicare','#EndOfLifeCare','#CareThatHonorsLife'],
+  copy:`[HOOK 0–3s] "5 hospice myths that cost families months of comfort."\n\n[MYTH 1 3–10s] Myth: "Giving up" → Truth: A continuation of care\n[MYTH 2 10–18s] Myth: "Only last days" → Truth: Months of support\n[MYTH 3 18–26s] Myth: "All treatment stops" → Truth: Goals shift to comfort\n[MYTH 4 26–34s] Myth: "Only for cancer" → Truth: Any terminal diagnosis\n[MYTH 5 34–42s] Myth: "Too expensive" → Truth: Medicare covers 100%\n\n[CTA 42–55s] "Follow for more hospice truths. Care pros — subscribe to The Eternal Care Brief. Link in bio."\n\nCAPTION: 5 hospice myths that cost families months of comfort. Full guide in bio. Care pros: The Eternal Care Brief → eternallifehospice.com/care-brief`},
+
+'0-gbp-wed':{title:'The First 48 Hours of Hospice Care',plat:'Google Business',day:'Wed Aug 12',time:'9:00 AM',status:'Scheduled',
+  img:'Home setting — nurse with family or equipment delivery',
+  tags:['#HospiceCare','#EternalLifeHospice','#VenturaCounty','#CareThatHonorsLife'],
+  copy:`The first 48 hours set everything that follows.\n\nHour 2: Admissions assessment begins. Not just clinical — human. Who is this person? What does comfort mean to them?\nHour 4: Care plan drafted. Medications coordinated. Equipment delivered.\nHour 24: First RN visit. Comfort measures in place.\nHour 48: Social worker and chaplain connect with the family.\n\nWe aim to have everything in place within 24 hours — not 48.\n\n805.953.7273 · eternallifehospice.com`},
+
+'0-yt-wed':{title:'YouTube: 5 Hospice Myths Debunked',plat:'YouTube',day:'Wed Aug 12',time:'10:00 AM',status:'Draft',
+  img:'THUMBNAIL: Aleksandra on left, "5 MYTHS" large gold text on plum bg, "BUSTED" below in cream. Warm studio setting.',
+  tags:['#HospiceCare','#HospiceMyths','#Medicare','#PalliativeCare','#EternalLifeHospice'],
+  copy:`TITLE: "5 Hospice Myths Debunked — What Every Family Should Know"\nLENGTH: 5–7 minutes\n\n0:00 Hook: "I hear these 5 myths every single week. They cost families months of comfort."\n0:30 Myth 1: Giving up — clinical truth + emotional reframe\n1:30 Myth 2: Only last days — Medicare 6-month prognosis explained\n2:30 Myth 3: All treatment stops — comfort-focused goals explained\n3:30 Myth 4: Only for cancer — qualifying diagnoses list\n4:30 Myth 5: Too expensive — Medicare benefit breakdown, $0 copay\n5:30 When to call + what families say when they waited too long\n6:15 CTA: Subscribe + Care Brief link\n\nDESCRIPTION: Full blog guide link, Care Brief link, 805.953.7273, chapter timestamps.`},
+
+'0-gbp-fri':{title:'ACHC Accreditation — Why It Matters',plat:'Google Business',day:'Fri Aug 14',time:'9:00 AM',status:'Scheduled',
+  img:'Team photo or credential plaque — professional, warm',
+  tags:['#ACHC','#HospiceCare','#EternalLifeHospice','#QualityCare','#VenturaCounty'],
+  copy:`Eternal Life Hospice holds three credentials.\n\nMedicare certification is required by law.\nCDPH licensure is required by California.\nACHC accreditation is different. It is voluntary.\n\nThe Accreditation Commission for Health Care conducts an independent, on-site review of our clinical standards, policies, staff competencies, and patient outcomes. They do not take our word for anything. They verify.\n\nWe pursued ACHC accreditation because families deserve an independent guarantee.\n\n805.953.7273 · eternallifehospice.com`},
+
+'0-li-fri':{title:'Choosing Hospice Is Not Giving Up',plat:'LinkedIn',day:'Fri Aug 14',time:'8:00 AM',status:'Scheduled',
+  img:'Aleksandra headshot or branded quote card — gold text on plum',
+  tags:['#HospiceCare','#EndOfLifeCare','#PalliativeCare','#CareThatHonorsLife','#EternalLifeHospice'],
+  copy:`I want to say something clearly, because I hear the opposite every week.\n\nChoosing hospice is not giving up.\n\nIt is a real, deliberate, loving choice — to spend the time that remains the way the person wants to spend it. At home. With family nearby. With pain managed and dignity protected.\n\nThe families who call us early tell us the same thing, every time: they wish they'd called sooner. Not because hospice hurried anything. Because hospice made the time they had better.\n\nFor physicians and discharge planners: early referral is an act of advocacy. Not an ending.\n\n— Aleksandra Dubina\nFounder & CEO, Eternal Life Hospice\n\n#HospiceCare #EndOfLifeCare #CareThatHonorsLife`},
+
+// ════════════════════════════════════════════════
+// WEEK 1 — AUG 17–21 | The First 48 Hours
+// ════════════════════════════════════════════════
+'1-gbp-mon':{title:'Same-Day Admissions — How It Works',plat:'Google Business',day:'Mon Aug 17',time:'9:00 AM',status:'Scheduled',
+  img:'Nurse arriving at front door or family greeting care team',
+  tags:['#HospiceCare','#SameDayAdmission','#VenturaCounty','#EternalLifeHospice'],
+  copy:`When a family is ready, we move fast.\n\nEternal Life Hospice accepts same-day referrals when clinically appropriate. One call triggers our admissions process — nurse assessment, care plan, medications, and equipment — all coordinated before the day ends.\n\nFamilies should not have to wait when they are ready to receive care.\n\nRefer a patient: 805.953.7273\nOnline: eternallifehospice.com/refer`},
+
+'1-fb-mon':{title:'The First 48 Hours — A Timeline',plat:'Facebook',day:'Mon Aug 17',time:'11:00 AM',status:'Scheduled',
+  img:'Carousel 6 slides: timeline format, hour markers, plum/gold/cream. Each slide = one milestone.',
+  tags:['#HospiceCare','#First48Hours','#CareThatHonorsLife','#EternalLifeHospice','#VenturaCounty'],
+  copy:`The first 48 hours of hospice care — hour by hour.\n\nMost families don't know the timeline. And the unknown is the hardest part.\n\nHour 0: Your call is answered by a hospice nurse — 24/7, no voicemail trees.\nHour 2: Admissions assessment. Vitals, symptoms, goals, fears.\nHour 4: Care plan drafted. Medications ordered. Equipment delivered.\nHour 8: Family education. What to expect, who to call, when.\nHour 24: First RN visit. Comfort measures in place.\nHour 48: Social worker + chaplain connect. The full team is present.\n\nEvery family deserves a plan — not panic.\n\nFull guide: eternallifehospice.com/resources/first-48-hours\n805.953.7273 | eternallifehospice.com`},
+
+'1-em-tue':{title:'Care Ally Email: Medicare 100% — How to Explain It to Families',plat:'Email — Care Ally',day:'Tue Aug 18',time:'9:00 AM',status:'Scheduled',
+  img:'Email header: ELH plum/gold. Simple layout. Aleksandra signature.',
+  tags:['Discharge planners','Hospital social workers','Case managers','Referral partners'],
+  copy:`SUBJECT: How to explain the Medicare hospice benefit to families (a quick guide)\n\nDear [First Name],\n\nOne of the most common blockers to timely referral is the family's assumption that hospice is expensive. Here's a simple script you can adapt:\n\n"The Medicare hospice benefit covers everything related to the terminal diagnosis — nursing visits, aide support, social work, chaplaincy, medications, and medical equipment. There is no deductible, no copay, and no bill sent to the family. For most families, the cost is $0."\n\nKey facts for families:\n• Medicare Part A covers the hospice benefit\n• Eligibility: physician prognosis of 6 months or less if the illness runs its natural course\n• Coverage includes: medications, DME, RN visits, aide, social work, chaplain, bereavement\n• Family members are not billed\n\nWe verify eligibility for every admission and handle all Medicare coordination.\n\nDownload the full family guide: eternallifehospice.com/family-guide\n\nAlways here,\nAleksandra Dubina`},
+
+'1-li-tue':{title:'What Discharge Planners Should Know: The First 24 Hours',plat:'LinkedIn',day:'Tue Aug 18',time:'8:00 AM',status:'Scheduled',
+  img:'Professional setting — clipboard, care team meeting, or clinical environment',
+  tags:['#HospiceCare','#DischargePlanning','#CaseManagement','#HealthcareProfessionals','#EndOfLifeCare'],
+  copy:`For discharge planners and case managers: here's what happens within 24 hours of a referral to Eternal Life Hospice.\n\nHour 0–2: Admissions nurse contacts the family. Insurance verified, eligibility confirmed.\nHour 2–4: Comprehensive symptom assessment. Goals-of-care documentation. Advance directive review.\nHour 4–6: Personalized care plan drafted. DME ordered and delivery scheduled. Pharmacy coordination for comfort medications.\nHour 6–24: First RN visit completed. Family caregiver education: what medications do, what to expect, who to call.\n\nA smooth admission reduces readmission risk and builds family confidence.\n\nWe accept same-day referrals. One call: 805.953.7273\nRefer online: eternallifehospice.com/refer\n\n#HospiceCare #DischargePlanning #CaseManagement`},
+
+'1-tt-wed':{title:'TikTok: Day 1 of Hospice — What Really Happens',plat:'TikTok',day:'Wed Aug 19',time:'12:00 PM',status:'Scheduled',
+  img:'FORMAT: "Day in the life" text cards or clock animation. Calm, not sad. Brand colors. 45–60 seconds.',
+  tags:['#HospiceCare','#First48Hours','#EndOfLifeCare','#CareThatHonorsLife'],
+  copy:`[HOOK] "What actually happens on Day 1 of hospice care? Most families have no idea."\n\n[Hour 0] "The call. A real nurse answers — 24 hours a day."\n[Hour 2] "Assessment begins. Not just clinical. Human. What does comfort mean to you?"\n[Hour 4] "Care plan drafted. Meds ordered. Equipment on its way."\n[Hour 8] "Family education. What to expect. Who to call. What the medications do."\n[Hour 24] "First nurse visit. Comfort is in place."\n\n[CTA] "That's The Eternal Standard. Follow for more."\n\nCAPTION: Most families don't know what to expect from Day 1. Here's the full timeline. #HospiceCare #First48Hours`},
+
+'1-gbp-wed':{title:'Our Interdisciplinary Care Team',plat:'Google Business',day:'Wed Aug 19',time:'9:00 AM',status:'Scheduled',
+  img:'Team photo — warm, non-clinical setting or illustrated team roles graphic',
+  tags:['#HospiceCare','#CareTeam','#EternalLifeHospice','#VenturaCounty'],
+  copy:`Hospice is not one nurse. It is a team.\n\nYour care team at Eternal Life Hospice includes:\n— A medical director overseeing your care plan\n— Registered nurses for clinical visits and 24/7 support\n— A social worker for family counseling and resources\n— A chaplain for spiritual support (per your preference)\n— A home health aide for personal care\n— Volunteers for companionship and respite\n\nEveryone on this team knows your loved one by name.\n\n805.953.7273 · eternallifehospice.com`},
+
+'1-yt-thu':{title:'YouTube: The First 48 Hours of Hospice Care',plat:'YouTube',day:'Thu Aug 20',time:'10:00 AM',status:'Draft',
+  img:'THUMBNAIL: Split screen — clock at 00:00 and 48:00, gold arrow, "THE ETERNAL STANDARD" in cream.',
+  tags:['#HospiceCare','#First48Hours','#EndOfLifeCare','#PalliativeCare'],
+  copy:`TITLE: "The First 48 Hours of Hospice — What Families and Providers Should Expect"\nLENGTH: 6–8 minutes\n\n0:00 Hook: "The first 48 hours are everything. Here's what excellence looks like."\n0:45 Hour 0–2: The admission call, what nurses assess, what families should have ready\n2:00 Hour 2–4: Care plan, equipment, medications — the logistics\n3:30 Hour 4–24: First RN visit, what families learn, comfort measures\n5:00 Hour 24–48: Social worker, chaplain, aide — the full team\n6:00 Why early hospice matters — outcomes, satisfaction, family readiness\n6:45 CTA: Full guide link + Care Brief for professionals`},
+
+'1-tw-fri':{title:'Thread: Fast Facts on Hospice Eligibility',plat:'Twitter / X',day:'Fri Aug 21',time:'10:00 AM',status:'Scheduled',
+  img:'Text thread. Optional: eligibility checklist card image.',
+  tags:['#HospiceCare','#Medicare','#EndOfLifeCare','#HealthcareProfessionals'],
+  copy:`1/ A lot of families don't know if their loved one qualifies for hospice. Quick eligibility guide. 🧵\n\n2/ The core requirement: a physician certifies that if the illness runs its natural course, the patient has a prognosis of 6 months or less.\n\n3/ Qualifying diagnoses include: cancer, heart failure, COPD, end-stage renal disease, dementia, ALS, Parkinson's, stroke, liver failure — and more.\n\n4/ Medicare Part A covers the full benefit. No deductible. No copay. Medications, equipment, nursing, aide, social work, chaplain — all covered.\n\n5/ You can elect hospice and re-elect it. If a patient improves, they can come off hospice and re-enroll later.\n\n6/ The earlier the conversation, the more hospice can do. Calling us doesn't commit anyone to anything. We answer questions too.\n\n7/ 805.953.7273 or eternallifehospice.com/refer. We're available 24/7.`},
+
+'1-gbp-fri':{title:'Family Education — What We Teach',plat:'Google Business',day:'Fri Aug 21',time:'9:00 AM',status:'Scheduled',
+  img:'Family in living room with hospice nurse — gentle, warm',
+  tags:['#HospiceCare','#FamilySupport','#EternalLifeHospice','#CaregiverSupport'],
+  copy:`One of the most important things we do is teach.\n\nFamilies who understand what to expect are less afraid. They know what the medications do, what changes to watch for, and when to call us versus when to call 911.\n\nOur nurses and social workers spend time educating every family — not because it's required, but because it makes everything that follows better.\n\n"They explained everything. Nothing surprised us." — Family in Thousand Oaks\n\n805.953.7273 · eternallifehospice.com`},
+
+// ════════════════════════════════════════════════
+// WEEK 2 — AUG 24–28 | Whole-Person Comfort
+// ════════════════════════════════════════════════
+'2-gbp-mon':{title:'Sound Bath Therapy — Comfort for Mind and Body',plat:'Google Business',day:'Mon Aug 24',time:'9:00 AM',status:'Scheduled',
+  img:'Singing bowl close-up — warm light, hands holding bowl',
+  tags:['#SoundBath','#HospiceCare','#EternalLifeHospice','#VenturaCounty','#IntegrativeTherapy'],
+  copy:`Anxiety and restlessness are some of the most distressing symptoms in the final stages of illness.\n\nOur sound bath sessions — using Himalayan singing bowls and guided resonance — provide measurable relief without additional medication. Particularly effective for patients with dementia who respond to non-verbal, sensory comfort.\n\nAll integrative therapies are included at no additional expense to families.\n\n805.953.7273 · eternallifehospice.com/sound-bath`},
+
+'2-fb-mon':{title:'Hospice Is More Than Medicine',plat:'Facebook',day:'Mon Aug 24',time:'11:00 AM',status:'Scheduled',
+  img:'Carousel 5 slides: one therapy per slide. Beautiful imagery. Designer to source/produce.',
+  tags:['#HospiceCare','#WholePersonCare','#IntegrativeTherapies','#CareThatHonorsLife','#EternalLifeHospice'],
+  copy:`Care That Honors Life — the whole life.\n\nHospice isn't just medicine. It's the sound of a singing bowl when anxiety won't quiet. It's music at the bedside when words fail. It's the scent of lavender when nausea won't pass. It's a therapy dog's warmth when loneliness weighs heavy. It's a volunteer's presence when the room feels too big.\n\nAt Eternal Life Hospice, integrative therapies are part of The Eternal Standard. Provided at no additional expense to families.\n\nBecause every person deserves comfort that honors who they are.\n\nLearn more: eternallifehospice.com/resources/comfort-therapies\n805.953.7273 | eternallifehospice.com`},
+
+'2-em-tue':{title:'Care Ally Email: Our Integrative Therapy Program',plat:'Email — Care Ally',day:'Tue Aug 25',time:'9:00 AM',status:'Scheduled',
+  img:'Email with sound bowl image or therapy collage header.',
+  tags:['Referral partners','Case managers','Palliative care teams'],
+  copy:`SUBJECT: Beyond medication — integrative therapies at Eternal Life Hospice\n\nDear [First Name],\n\nWhen you refer a patient to us, they receive more than clinical care.\n\nOur integrative therapy program — included at no additional expense — provides:\n\n• Sound baths (singing bowls) — for anxiety, agitation, and restlessness. Especially effective in dementia.\n• Music at the bedside — live or recorded, tailored to patient preference. Reduces PRN medication need.\n• Aromatherapy — lavender, peppermint, chamomile. Contraindication-screened against current medications.\n• Pet therapy — certified therapy dogs, infection-control protocols, patient consent.\n• Volunteer presence — trained companionship, respite for family caregivers.\n\nAll modalities are clinically assessed, documented in the EMR, and coordinated with the medical director.\n\nThese are part of why families report higher satisfaction with hospice care.\n\nWith gratitude,\nAleksandra Dubina`},
+
+'2-li-tue':{title:'Whole-Person Comfort: The Clinical Case for Integrative Therapies',plat:'LinkedIn',day:'Tue Aug 25',time:'8:00 AM',status:'Scheduled',
+  img:'Professional infographic: 5 therapy categories with clinical rationale. Designer to produce.',
+  tags:['#HospiceCare','#IntegrativeMedicine','#PalliativeCare','#WholePersonCare','#ClinicalExcellence'],
+  copy:`In hospice, symptom management is the floor. Whole-person comfort is the ceiling.\n\nAt Eternal Life Hospice, integrative therapies are not extras. They are clinically assessed and delivered as part of the interdisciplinary care plan.\n\nSound-Based Comfort — singing bowls for anxiety and agitation, particularly effective in dementia patients responding to non-verbal stimuli.\n\nMusic at the Bedside — reduces perception of pain and decreases need for PRN medications. Tailored to patient preference.\n\nAromatherapy — essential oils for nausea, anxiety, and sleep disruption. Contraindicated against current meds.\n\nPet Therapy — certified therapy dogs, infection control protocols, documented in care plan.\n\nVolunteer Presence — trained companionship and respite for family caregivers.\n\nAll included in the Medicare hospice benefit. All at no additional expense to families.\n\n— Aleksandra Dubina, Certified Hospice Administrator\n\n#HospiceCare #IntegrativeMedicine #PalliativeCare`},
+
+'2-tt-wed':{title:'TikTok: Hospice Is More Than Medicine',plat:'TikTok',day:'Wed Aug 26',time:'12:00 PM',status:'Scheduled',
+  img:'FORMAT: Aesthetic B-roll montage. Singing bowl, music, lavender, therapy dog, volunteer hands. Spa-like audio. 30–45 seconds. NOT sad — warm and life-affirming.',
+  tags:['#HospiceCare','#WholePersonCare','#SoundBath','#IntegrativeTherapies','#CareThatHonorsLife'],
+  copy:`[HOOK] "Hospice care that treats the whole person — not just the diagnosis."\n\n[MONTAGE with text overlays]\n"Sound baths for anxiety"\n"Music at the bedside"\n"Aromatherapy for comfort"\n"Pet therapy for connection"\n"Volunteer presence — no clipboard, just being"\n"All at no additional expense to families."\n\n[CTA] "Care That Honors Life. Link in bio."\n\nCAPTION: Hospice isn't just medicine. It's comfort that honors who you are. #HospiceCare #WholePersonCare #SoundBath`},
+
+'2-gbp-wed':{title:'Music at the Bedside',plat:'Google Business',day:'Wed Aug 26',time:'9:00 AM',status:'Scheduled',
+  img:'Acoustic guitar player at bedside — warm, intimate. Or hands on a keyboard.',
+  tags:['#MusicTherapy','#HospiceCare','#EternalLifeHospice','#ComfortCare'],
+  copy:`Music reaches people when words can't.\n\nAt Eternal Life Hospice, we provide live and recorded music at the bedside — tailored to each patient's preferences and cultural background. Research shows music therapy reduces the perception of pain and decreases the need for PRN medications.\n\nIt is one of the most quietly powerful things we do.\n\nAll at no additional expense to families.\n\n805.953.7273 · eternallifehospice.com`},
+
+'2-fb-thu':{title:'Pet Therapy — Connection When It Matters Most',plat:'Facebook',day:'Thu Aug 27',time:'11:00 AM',status:'Scheduled',
+  img:'Certified therapy dog with patient — warm, joyful moment. Designer to source.',
+  tags:['#PetTherapy','#HospiceCare','#CareThatHonorsLife','#EternalLifeHospice'],
+  copy:`There is something a therapy dog can do that no medication can.\n\nJoy. Connection. Presence without agenda.\n\nOur certified therapy dogs visit patients who want them — with infection control protocols and patient consent always in place. For patients without local family, or those who simply love animals, a therapy dog visit can shift the whole tenor of a day.\n\nAll at no additional expense to families.\n\n"He smiled for the first time in weeks." — Family member, Ventura County\n\n805.953.7273 | eternallifehospice.com`},
+
+'2-yt-thu':{title:'YouTube: Whole-Person Comfort — Beyond Medicine',plat:'YouTube',day:'Thu Aug 27',time:'10:00 AM',status:'Draft',
+  img:'THUMBNAIL: Split screen — stethoscope (left) vs singing bowl + flowers (right). "BEYOND MEDICINE" in gold text.',
+  tags:['#HospiceCare','#WholePersonCare','#IntegrativeTherapies','#PalliativeCare'],
+  copy:`TITLE: "Whole-Person Comfort in Hospice: Sound, Music, Aromatherapy & Presence"\nLENGTH: 5–7 minutes\n\n0:00 Hook: "Hospice is more than medicine. Here's what whole-person comfort actually means."\n0:45 Sound baths — demonstration, clinical rationale, patient response\n2:00 Music at bedside — live example, family impact\n3:00 Aromatherapy — oils, when used, safety\n4:00 Pet therapy + volunteer presence\n5:00 "All at no additional expense. Part of the Medicare benefit."\n5:45 CTA + Care Brief invitation`},
+
+'2-gbp-fri':{title:'Volunteer Presence — The Gift of Being There',plat:'Google Business',day:'Fri Aug 28',time:'9:00 AM',status:'Scheduled',
+  img:'Volunteer holding patient hand — warm, no clinical equipment visible',
+  tags:['#HospiceVolunteer','#HospiceCare','#EternalLifeHospice','#VenturaCounty'],
+  copy:`Some of the most important care requires no credentials.\n\nOur trained hospice volunteers provide companionship — reading, conversation, or simply being present. They also give family caregivers a break when they need one most.\n\nNo clipboard. No checklist. Just a human being showing up for another human being.\n\nIf you or someone you love would benefit from this kind of presence, we're here.\n\n805.953.7273 · eternallifehospice.com`},
+
+'2-li-fri':{title:'Aromatherapy in Hospice — What the Evidence Shows',plat:'LinkedIn',day:'Fri Aug 28',time:'8:00 AM',status:'Scheduled',
+  img:'Essential oils and lavender — clean, clinical-adjacent visual',
+  tags:['#HospiceCare','#Aromatherapy','#IntegrativeMedicine','#PalliativeCare','#HealthcareProfessionals'],
+  copy:`Essential oils are not alternative medicine. In hospice, they are a clinically-assessed adjunct to symptom management.\n\nAt Eternal Life Hospice, our aromatherapy protocol:\n— Lavender for anxiety and sleep disruption\n— Peppermint for nausea and appetite stimulation\n— Chamomile for agitation and restlessness\n\nEvery patient's medication list is reviewed for contraindications before aromatherapy is offered. It is documented in the EMR and coordinated with the medical director.\n\nFor referring providers: these therapies are included in the Medicare hospice benefit and provided at no additional expense.\n\n— Aleksandra Dubina\nCertified Hospice Administrator\n\n#HospiceCare #IntegrativeMedicine #PalliativeCare`},
+
+// ════════════════════════════════════════════════
+// WEEK 3 — AUG 31–SEP 4 | Care Brief Preview
+// ════════════════════════════════════════════════
+'3-gbp-mon':{title:'What Sets Eternal Life Hospice Apart',plat:'Google Business',day:'Mon Aug 31',time:'9:00 AM',status:'Scheduled',
+  img:'Team or founder photo — warm, trustworthy',
+  tags:['#HospiceCare','#EternalLifeHospice','#VenturaCounty','#CareThatHonorsLife'],
+  copy:`Three things that define how we work:\n\n1. Same-day admissions when clinically appropriate. We don't ask families to wait.\n2. The Eternal Standard — a set of care commitments that go beyond Medicare requirements.\n3. The Eternal Care Brief — a clinical publication for the professionals we work alongside, because great referrals start with great information.\n\nIf you're a family wondering what to look for in a hospice — or a care professional looking for a partner — we'd love to talk.\n\n805.953.7273 · eternallifehospice.com`},
+
+'3-tw-mon':{title:'Tweet: We're 24/7 — Including Holidays',plat:'Twitter / X',day:'Mon Aug 31',time:'10:00 AM',status:'Scheduled',
+  img:'Simple text post. Optional: branded card with "24/7" in gold on plum.',
+  tags:['#HospiceCare','#EternalLifeHospice','#LaborDay'],
+  copy:`Hospice care doesn't pause for Labor Day — or any holiday.\n\nOur nurses, aides, and on-call team are available 24/7, 365 days a year. If a family needs us at 2am on a holiday weekend, we answer.\n\nThat's The Eternal Standard.\n\n805.953.7273 | eternallifehospice.com`},
+
+'3-em-tue':{title:'Care Ally Email: The Eternal Care Brief — Issue 2 Preview',plat:'Email — Care Ally',day:'Tue Sep 1',time:'9:00 AM',status:'Scheduled',
+  img:'Email with Care Brief cover preview. Gold/plum header. Preview of Issue 2 table of contents.',
+  tags:['Referral partners','Physicians','Case managers','Social workers'],
+  copy:`SUBJECT: Issue 2 of The Eternal Care Brief arrives next week\n\nDear [First Name],\n\nIssue 2 of The Eternal Care Brief publishes September 9th.\n\nInside Issue 2:\n→ The caregiver burnout crisis — what it costs families and how hospice helps\n→ Compliance update: 2026 Medicare hospice audit trends\n→ Case study: A same-day admission that changed a family's final weeks\n→ Integrative therapies — the clinical evidence and documentation requirements\n→ Founder note from Aleksandra: "What I didn't expect"\n\nThe Care Brief is free for care professionals. If a colleague would benefit, forward this email — they can subscribe at eternallifehospice.com/care-brief.\n\nIssue 2 arrives in your inbox next Tuesday.\n\nWith gratitude,\nAleksandra Dubina`},
+
+'3-li-tue':{title:'The Eternal Care Brief — Why We Publish It',plat:'LinkedIn',day:'Tue Sep 1',time:'8:00 AM',status:'Scheduled',
+  img:'Care Brief cover mockup or editorial graphic — plum/gold/cream, Issue 2 preview',
+  tags:['#EternalCareBrief','#HospiceCare','#HealthcareProfessionals','#CareCoordination'],
+  copy:`We publish The Eternal Care Brief because great referrals start with great information.\n\nIssue 1 reached physicians, discharge planners, and case managers across Ventura and Los Angeles County. The response surprised us — not just reads, but conversations. Real questions. Real follow-up.\n\nIssue 2 publishes September 9th.\n\nInside: caregiver burnout, compliance updates, a same-day admission case study, and integrative therapy documentation.\n\nIf you work in healthcare and you care about what happens to patients after discharge — this is for you. Free, always.\n\nSubscribe: eternallifehospice.com/care-brief\n\n— Aleksandra Dubina\n\n#EternalCareBrief #HospiceCare #HealthcareProfessionals`},
+
+'3-tt-wed':{title:'TikTok: Hospice Care Team — Who Does What',plat:'TikTok',day:'Wed Sep 2',time:'12:00 PM',status:'Scheduled',
+  img:'FORMAT: Text card per role on cream bg with plum header. Each card 5–6 sec. 30–45 seconds total.',
+  tags:['#HospiceCare','#CareTeam','#EndOfLifeCare','#HospiceNurse'],
+  copy:`[HOOK] "Most people don't know who's on a hospice care team. Here's everyone."\n\n[Cards]\n"Medical Director — oversees your care plan"\n"Registered Nurse — 24/7 support + clinical visits"\n"Social Worker — family counseling + resources"\n"Chaplain — spiritual support, your way"\n"Home Health Aide — personal care + dignity"\n"Volunteer — presence + respite for caregivers"\n\n[CTA] "Every one of them knows your loved one by name."\n\nCAPTION: Hospice is not one nurse. It's a whole team that shows up for you. #HospiceCare #CareTeam`},
+
+'3-gbp-wed':{title:'Coverage Area — Ventura & LA County',plat:'Google Business',day:'Wed Sep 2',time:'9:00 AM',status:'Scheduled',
+  img:'Service area map graphic or city list on branded card',
+  tags:['#HospiceCare','#VenturaCounty','#LosAngelesCounty','#EternalLifeHospice','#ThousandOaks'],
+  copy:`Eternal Life Hospice serves families throughout Ventura County and Los Angeles County.\n\nVentura County: Thousand Oaks, Westlake Village, Camarillo, Oxnard, Ventura, Simi Valley, Moorpark, Fillmore, and surrounding communities.\n\nLos Angeles County: Calabasas, Agoura Hills, Woodland Hills, Encino, Sherman Oaks, Tarzana, Chatsworth, and many more.\n\nSame-day service when clinically appropriate.\n\n805.953.7273 · eternallifehospice.com`},
+
+'3-fb-thu':{title:'The Eternal Care Brief — Subscribe Free',plat:'Facebook',day:'Thu Sep 3',time:'11:00 AM',status:'Scheduled',
+  img:'Care Brief cover mockup — magazine-style, plum/gold/cream. "Issue 2 — September 2026"',
+  tags:['#EternalCareBrief','#HospiceCare','#HealthcareProfessionals','#EternalLifeHospice'],
+  copy:`For nurses, physicians, discharge planners, social workers, and care coordinators:\n\nThe Eternal Care Brief is a free clinical publication from Eternal Life Hospice, published every other month.\n\nIssue 2 arrives September 9th.\n\nInside: caregiver burnout crisis, Medicare compliance updates, a real case study, integrative therapy documentation, and a founder note.\n\nThis is not marketing. This is knowledge shared.\n\nSubscribe free: eternallifehospice.com/care-brief\n\n805.953.7273 | eternallifehospice.com`},
+
+'3-yt-thu':{title:'YouTube: Why We Publish The Eternal Care Brief',plat:'YouTube',day:'Thu Sep 3',time:'10:00 AM',status:'Draft',
+  img:'THUMBNAIL: Care Brief cover on left, Aleksandra on right, "FREE FOR CARE PROFESSIONALS" in gold.',
+  tags:['#EternalCareBrief','#HospiceCare','#HealthcareProfessionals'],
+  copy:`TITLE: "The Eternal Care Brief — A Clinical Publication for Healthcare Professionals"\nLENGTH: 4–5 minutes\n\n0:00 Hook: "Most marketing talks at professionals. This is different."\n0:45 What the Care Brief is and who it's for\n1:30 What's inside Issue 2 — walkthrough of key sections\n3:00 Why we created it — Aleksandra's perspective\n3:45 How to subscribe (free)\n4:15 CTA: Subscribe + refer a patient`},
+
+'3-gbp-fri':{title:'Refer a Patient — What to Expect',plat:'Google Business',day:'Fri Sep 4',time:'9:00 AM',status:'Scheduled',
+  img:'Nurse with referral paperwork or online referral form graphic',
+  tags:['#HospiceReferral','#HospiceCare','#EternalLifeHospice','#VenturaCounty'],
+  copy:`Referring to Eternal Life Hospice is simple.\n\nCall 805.953.7273 or visit eternallifehospice.com/refer.\n\nFrom there:\n→ We contact the patient or family within 2 hours\n→ Admissions assessment completed same day or next morning\n→ Care plan, medications, and equipment coordinated\n→ You receive confirmation of admission\n\nNo paperwork burden on your end. We handle the rest.\n\nAvailable 24/7 for urgent referrals.`},
+
+// ════════════════════════════════════════════════
+// WEEK 4 — SEP 7–11 | ★ CARE BRIEF ISSUE 2 LAUNCH
+// ════════════════════════════════════════════════
+'4-gbp-mon':{title:'The Eternal Care Brief Issue 2 — Tomorrow',plat:'Google Business',day:'Mon Sep 7',time:'9:00 AM',status:'Scheduled',
+  img:'Care Brief Issue 2 cover — bold announcement style, plum/gold',
+  tags:['#EternalCareBrief','#HospiceCare','#EternalLifeHospice'],
+  copy:`The Eternal Care Brief Issue 2 arrives tomorrow.\n\nFree for care professionals — physicians, nurses, discharge planners, social workers, and case managers.\n\nSubscribe today: eternallifehospice.com/care-brief\n\n805.953.7273 · eternallifehospice.com`},
+
+'4-em-tue':{title:'★ CARE BRIEF ISSUE 2 — SEND DAY (Sep 9)',plat:'Email — Care Ally',day:'Tue Sep 9',time:'8:00 AM',status:'Scheduled',
+  img:'The Eternal Care Brief Issue 2 full email layout. Designer to produce from content brief provided separately.',
+  tags:['All Care Brief subscribers','Master Verified list','SYMPLR Network'],
+  copy:`★ THIS IS THE ETERNAL CARE BRIEF ISSUE 2 — SEND\n\nSUBJECT: The Eternal Care Brief | Issue 2 | September 2026\n\nINSIDE THIS ISSUE:\n1. The Caregiver Burnout Crisis — what it costs families and how hospice helps\n2. 2026 Medicare Hospice Compliance Update — audit trends and documentation best practices\n3. Case Study: A same-day admission that changed a family's final weeks\n4. Integrative Therapies — evidence base and clinical documentation requirements\n5. Founder Note — "What I didn't expect about this work"\n6. Referral Resources — updated referral card, coverage map, fast-admit line\n\nDESIGNER NOTE: Match Issue 1 layout and typography. 8–10 pages. Plum/gold/cream palette. Fraunces headers, Jost body. Include Care Brief masthead, issue number, date, and subscriber opt-out footer.\n\nCONTENT TO FOLLOW IN SEPARATE BRIEF FROM ALEKSANDRA.`},
+
+'4-li-tue':{title:'The Eternal Care Brief Issue 2 — Out Now',plat:'LinkedIn',day:'Tue Sep 9',time:'8:00 AM',status:'Scheduled',
+  img:'Care Brief Issue 2 cover — full spread. "Out Now" treatment.',
+  tags:['#EternalCareBrief','#HospiceCare','#HealthcareProfessionals','#CareCoordination'],
+  copy:`Issue 2 of The Eternal Care Brief is out today.\n\nFor the care professionals who refer, discharge, coordinate, and advocate — this issue is for you.\n\nInside: caregiver burnout, Medicare compliance, a same-day admission case study, integrative therapy documentation, and a founder note on what I didn't expect about this work.\n\nFree. Always.\n\nRead it: eternallifehospice.com/care-brief\n\n— Aleksandra Dubina\nFounder & CEO, Eternal Life Hospice\n\n#EternalCareBrief #HospiceCare #HealthcareProfessionals`},
+
+'4-tw-tue':{title:'Thread: Care Brief Issue 2 Highlights',plat:'Twitter / X',day:'Tue Sep 9',time:'9:00 AM',status:'Scheduled',
+  img:'Issue 2 cover card for tweet 1.',
+  tags:['#EternalCareBrief','#HospiceCare','#HealthcareProfessionals'],
+  copy:`1/ The Eternal Care Brief Issue 2 is out today. Free for care professionals. Here's what's inside. 🧵\n\n2/ The caregiver burnout crisis — and how hospice reduces it. 65% of family caregivers report clinically significant burnout before hospice. We cover what changes after admission.\n\n3/ 2026 Medicare hospice compliance — audit trends, documentation red flags, and how to protect your referral relationships.\n\n4/ Case study: a same-day admission in Thousand Oaks. The call came at 4pm. Care was in place by 9pm. The family stayed home.\n\n5/ Integrative therapies — evidence base, documentation requirements, and why they belong in the care plan, not the footnotes.\n\n6/ Read it free: eternallifehospice.com/care-brief — and subscribe so Issue 3 lands in November.`},
+
+'4-tt-wed':{title:'TikTok: What\'s Inside the Care Brief',plat:'TikTok',day:'Wed Sep 10',time:'12:00 PM',status:'Scheduled',
+  img:'FORMAT: Screen recording or designed cards showing Care Brief pages. 30 seconds. Calm, professional tone.',
+  tags:['#EternalCareBrief','#HospiceCare','#HealthcareProfessionals'],
+  copy:`[HOOK] "We publish a free clinical magazine for care professionals. Here's what's inside Issue 2."\n\n[Cards scrolling through issues]\n"Caregiver burnout — the data"\n"Medicare compliance update"\n"A same-day admission case study"\n"Integrative therapy documentation"\n"Founder note from Aleksandra"\n\n[CTA] "Free. Every other month. Link in bio."\n\nCAPTION: The Eternal Care Brief — built for the professionals who refer, discharge, and coordinate. Issue 2 is out now. #EternalCareBrief #HospiceCare`},
+
+'4-gbp-wed':{title:'Care Brief Issue 2 — Read It Free',plat:'Google Business',day:'Wed Sep 10',time:'9:00 AM',status:'Scheduled',
+  img:'Care Brief cover — link to eternallifehospice.com/care-brief',
+  tags:['#EternalCareBrief','#HospiceCare','#EternalLifeHospice'],
+  copy:`The Eternal Care Brief Issue 2 is live.\n\nFree for nurses, physicians, discharge planners, social workers, and case managers.\n\nIssue 2 covers: caregiver burnout, Medicare compliance, a same-day admission case study, integrative therapy documentation, and a founder note.\n\nRead free: eternallifehospice.com/care-brief\n805.953.7273`},
+
+'4-fb-thu':{title:'Care Brief Issue 2 — Key Takeaways',plat:'Facebook',day:'Thu Sep 11',time:'11:00 AM',status:'Scheduled',
+  img:'Graphic: top 3 takeaways from Issue 2, branded card design',
+  tags:['#EternalCareBrief','#HospiceCare','#CaregiverSupport','#HealthcareProfessionals'],
+  copy:`Three things we learned from the data in Issue 2 of The Eternal Care Brief:\n\n1. 65% of family caregivers show clinically significant burnout before hospice admission. That number drops sharply within the first week of care.\n\n2. Same-day admissions are possible — and they change outcomes. The case study in Issue 2 shows what a 4pm call looks like by 9pm.\n\n3. Integrative therapies reduce PRN medication use. Not just comfort — measurable clinical impact.\n\nFree for care professionals: eternallifehospice.com/care-brief\n\n805.953.7273 | eternallifehospice.com`},
+
+'4-li-fri':{title:'Care Brief Issue 2 — Professional Reflection',plat:'LinkedIn',day:'Fri Sep 11',time:'8:00 AM',status:'Scheduled',
+  img:'Aleksandra headshot or Care Brief spread',
+  tags:['#EternalCareBrief','#HospiceCare','#HealthcareLeadership'],
+  copy:`After Issue 1, eight leaders at PIH Health read deeply enough that the issue apparently circulated internally.\n\nWe didn't expect that.\n\nWe published Issue 2 with the same intention: not to market, but to share what we know. The caregiver burnout data. The compliance updates. The real case study. The founder note I almost didn't write.\n\nIf something in Issue 2 starts a conversation at your organization — that's enough.\n\nRead it free: eternallifehospice.com/care-brief\n\n— Aleksandra Dubina\n\n#EternalCareBrief #HospiceCare #HealthcareLeadership`},
+
+// ════════════════════════════════════════════════
+// WEEK 5 — SEP 14–18 | Caregiver Support
+// ════════════════════════════════════════════════
+'5-gbp-mon':{title:'We Support the Whole Family',plat:'Google Business',day:'Mon Sep 14',time:'9:00 AM',status:'Scheduled',
+  img:'Family around a loved one — multi-generational, warm',
+  tags:['#HospiceCare','#CaregiverSupport','#FamilySupport','#EternalLifeHospice'],
+  copy:`Hospice care is not just for the patient. It is for everyone who loves them.\n\nOur social workers, chaplain, and volunteers support family caregivers throughout the hospice journey — and for up to 13 months after loss through our bereavement program.\n\nCaregiver burnout is real. We help prevent it.\n\n805.953.7273 · eternallifehospice.com`},
+
+'5-em-tue':{title:'Care Ally Email: Same-Day Admissions — Our Process',plat:'Email — Care Ally',day:'Tue Sep 15',time:'9:00 AM',status:'Scheduled',
+  img:'Email: clean layout, ELH header. Process flow diagram: call → assessment → care in place.',
+  tags:['Discharge planners','ER social workers','Hospital case managers'],
+  copy:`SUBJECT: How our same-day admission process works — step by step\n\nDear [First Name],\n\nWhen you call us with an urgent referral, here's what happens:\n\n4:00 PM — You call 805.953.7273 with patient details\n4:15 PM — Our admissions nurse calls the patient or family\n4:30 PM — Insurance verified, clinical eligibility confirmed\n5:00 PM — Nurse arrives for admissions assessment\n6:30 PM — Care plan drafted, medications ordered, DME en route\n8:00 PM — First comfort measures in place. Family briefed.\n9:00 PM — Patient is home, under care.\n\nThis is a real timeline. Not a best case. Our standard.\n\nFor urgent admissions: 805.953.7273 (answered 24/7)\nFor routine referrals: eternallifehospice.com/refer\n\nAleksandra Dubina`},
+
+'5-li-tue':{title:'What Case Managers Should Know About Caregiver Burnout',plat:'LinkedIn',day:'Tue Sep 15',time:'8:00 AM',status:'Scheduled',
+  img:'Data graphic: burnout stats before vs. after hospice admission',
+  tags:['#HospiceCare','#CaregiverBurnout','#CaseManagement','#HealthcareProfessionals'],
+  copy:`65% of family caregivers show clinically significant burnout before hospice admission.\n\nThis matters to case managers and discharge planners for one reason: burnout increases readmission risk, reduces medication adherence, and accelerates patient decline.\n\nWhen a family reaches out to hospice, they are often at a breaking point. Our social workers conduct a caregiver needs assessment on admission and begin formal support within 48 hours.\n\nWhat changes after hospice: respite care, volunteer companionship, and 24/7 nursing on-call reduce the load that has been entirely on family members.\n\nEarly referral is the most powerful intervention available for caregiver burnout.\n\nOne call: 805.953.7273\nRefer: eternallifehospice.com/refer\n\n#HospiceCare #CaregiverBurnout #CaseManagement`},
+
+'5-tt-wed':{title:'TikTok: Caregiver Respite — What It Means',plat:'TikTok',day:'Wed Sep 16',time:'12:00 PM',status:'Scheduled',
+  img:'FORMAT: Talking head or text cards. Warm, empathetic tone. 45 seconds.',
+  tags:['#CaregiverSupport','#HospiceCare','#Respite','#FamilyCaregiving'],
+  copy:`[HOOK] "If you're taking care of a loved one on hospice, this is for you."\n\n"You're carrying something enormous."\n"You're not supposed to do it alone."\n"Hospice includes respite care — temporary relief so you can rest."\n"Our volunteers sit with your loved one so you can step out."\n"Our nurses handle the medical questions at 2am so you can sleep."\n"That's not a bonus. That's part of the benefit."\n\n[CTA] "If you're a family caregiver, call us. We can help. 805.953.7273"\n\nCAPTION: Caregiver burnout is real. Hospice helps. #CaregiverSupport #HospiceCare`},
+
+'5-gbp-wed':{title:'Respite Care — What It Covers',plat:'Google Business',day:'Wed Sep 16',time:'9:00 AM',status:'Scheduled',
+  img:'Family caregiver resting — peaceful, relief depicted',
+  tags:['#RespiteCare','#HospiceCare','#CaregiverSupport','#EternalLifeHospice'],
+  copy:`Family caregivers carry an enormous weight. Hospice helps share it.\n\nRespite care — covered by Medicare as part of the hospice benefit — provides short-term relief for family caregivers. Our volunteers also provide companionship so family members can rest, run errands, or simply breathe.\n\nThis is not an add-on. It is part of The Eternal Standard.\n\n805.953.7273 · eternallifehospice.com`},
+
+'5-yt-thu':{title:'YouTube: Supporting Family Caregivers Through Hospice',plat:'YouTube',day:'Thu Sep 18',time:'10:00 AM',status:'Draft',
+  img:'THUMBNAIL: Family caregiver looking exhausted, then at peace. Before/after split. "HOSPICE HELPS" in gold.',
+  tags:['#HospiceCare','#CaregiverSupport','#FamilyCaregiving','#Respite'],
+  copy:`TITLE: "Caregiver Burnout and Hospice — What Changes After You Call"\nLENGTH: 5–6 minutes\n\n0:00 Hook: "If you're caring for a loved one at home, this is what I want you to know."\n0:45 What caregiver burnout looks like — physical and emotional signs\n2:00 What changes when hospice begins — respite, volunteers, 24/7 on-call\n3:30 Bereavement support — 13 months after loss\n4:30 What families say about calling us\n5:15 CTA: 805.953.7273 + care brief`},
+
+'5-tw-fri':{title:'Thread: 5 Signs a Family Needs Hospice Now',plat:'Twitter / X',day:'Fri Sep 18',time:'10:00 AM',status:'Scheduled',
+  img:'Text thread. Optional: simple checklist card.',
+  tags:['#HospiceCare','#CaregiverSupport','#EndOfLifeCare','#HealthcareProfessionals'],
+  copy:`1/ Five signs that a family is ready for hospice — even if they haven't used that word yet. 🧵\n\n2/ The primary caregiver hasn't slept through the night in weeks. Pain management at home is no longer working.\n\n3/ The patient has had two or more ER visits in the last 30 days for symptom crises that could have been managed at home.\n\n4/ The patient or family has said (or implied): "We don't want to go back to the hospital."\n\n5/ Goals of care have shifted — but no one has made the formal transition from curative to comfort treatment.\n\n6/ The family is managing everything alone and is visibly overwhelmed. The patient's quality of life is declining faster than anyone expected.\n\n7/ If any of these sound familiar: 805.953.7273. We answer 24/7. Calling us doesn't commit anyone to anything.`},
+
+// ════════════════════════════════════════════════
+// WEEK 6 — SEP 21–25 | Team & Trust
+// ════════════════════════════════════════════════
+'6-gbp-mon':{title:'Meet Our Interdisciplinary Team',plat:'Google Business',day:'Mon Sep 21',time:'9:00 AM',status:'Scheduled',
+  img:'Team photo — warm outdoor or office setting, not clinical. Smiling.',
+  tags:['#HospiceCare','#CareTeam','#EternalLifeHospice','#VenturaCounty'],
+  copy:`Behind every care plan is a team that knows your family by name.\n\nAt Eternal Life Hospice, every patient has a dedicated care team — medical director, registered nurse, social worker, chaplain, home health aide, and volunteers — meeting regularly to align around that person's specific goals.\n\nThis isn't coordination. It's relationship.\n\n805.953.7273 · eternallifehospice.com`},
+
+'6-em-tue':{title:'Care Ally Email: ACHC Accreditation — What It Means for Your Patients',plat:'Email — Care Ally',day:'Tue Sep 22',time:'9:00 AM',status:'Scheduled',
+  img:'Email: ACHC seal prominent. ELH header. Clean layout.',
+  tags:['Physicians','Hospital administrators','Discharge planners','Quality teams'],
+  copy:`SUBJECT: Why ACHC accreditation matters when you refer\n\nDear [First Name],\n\nEvery hospice in California must hold two credentials: Medicare certification and CDPH licensure. We hold both.\n\nACHC accreditation is different. It is voluntary.\n\nThe Accreditation Commission for Health Care conducts an independent, on-site review of clinical standards, policies, staff competencies, patient outcomes, and organizational governance. They verify what other credentials only require us to assert.\n\nWhen you refer a patient to us, ACHC accreditation means:\n• An independent body has reviewed our clinical protocols\n• Our staff competencies have been externally validated\n• Our documentation and care planning meet standards above the minimum\n• You can explain our credentials to families with confidence\n\nAccreditation details: eternallifehospice.com/about\n\nAleksandra Dubina`},
+
+'6-li-tue':{title:'Why We Pursued ACHC Accreditation Voluntarily',plat:'LinkedIn',day:'Tue Sep 22',time:'8:00 AM',status:'Scheduled',
+  img:'ACHC seal with ELH branding. Or Aleksandra with credential.',
+  tags:['#ACHC','#HospiceCare','#HealthcareQuality','#ClinicalExcellence','#EternalLifeHospice'],
+  copy:`Three credentials. Two required. One chosen.\n\nMedicare certification is required to operate.\nCDPH licensure is required by California.\nACHC accreditation is voluntary.\n\nWe pursued it anyway — because families deserve more than the minimum, and because referring providers deserve the ability to say, with confidence, that the hospice they send patients to has been independently reviewed.\n\nACHC sends surveyors on-site. They review our clinical protocols, staff competencies, documentation, governance, and patient outcomes. They don't take our word for anything.\n\nFor discharge planners and physicians: our ACHC status is verifiable at achc.org.\n\n— Aleksandra Dubina\nCertified Hospice Administrator\n\n#ACHC #HospiceCare #ClinicalExcellence`},
+
+'6-tt-wed':{title:'TikTok: Who Oversees Hospice Quality?',plat:'TikTok',day:'Wed Sep 23',time:'12:00 PM',status:'Scheduled',
+  img:'FORMAT: Text card explainer. Clean and simple. 30 seconds.',
+  tags:['#HospiceCare','#ACHC','#HospiceQuality'],
+  copy:`[HOOK] "How do you know a hospice is actually good?"\n\n"Medicare certification — required. Minimum standard."\n"State licensure — required. Another minimum."\n"ACHC accreditation — voluntary. This one counts."\n\n"An independent body reviews our clinical protocols, our staff, our outcomes, our documentation."\n"They show up on-site. They verify."\n"We pursued this voluntarily — because families deserve more than the minimum."\n\n[CTA] "eternallifehospice.com to learn more."\n\nCAPTION: Not all hospices are the same. Here's how to tell the difference. #HospiceCare #ACHC`},
+
+'6-gbp-fri':{title:'A Note on Trust',plat:'Google Business',day:'Fri Sep 25',time:'9:00 AM',status:'Scheduled',
+  img:'Aleksandra portrait — warm, direct, trustworthy',
+  tags:['#HospiceCare','#EternalLifeHospice','#CareThatHonorsLife','#VenturaCounty'],
+  copy:`When a family calls us, they are trusting us with the most sacred time of their lives.\n\nWe take that seriously. Not as a responsibility to manage — as a privilege.\n\nEvery policy, every credential, every standard we hold ourselves to exists because of that trust.\n\n— Aleksandra Dubina\nFounder & CEO, Eternal Life Hospice\n\n805.953.7273 · eternallifehospice.com`},
+
+// ════════════════════════════════════════════════
+// WEEK 7 — SEP 28–OCT 2 | Service Area & Community
+// ════════════════════════════════════════════════
+'7-gbp-mon':{title:'Serving Ventura County — 24/7',plat:'Google Business',day:'Mon Sep 28',time:'9:00 AM',status:'Scheduled',
+  img:'Ventura County landscape or city skyline — recognizable, beautiful',
+  tags:['#VenturaCounty','#HospiceCare','#ThousandOaks','#EternalLifeHospice'],
+  copy:`Eternal Life Hospice is rooted in Ventura County.\n\nThousand Oaks · Westlake Village · Camarillo · Oxnard · Ventura · Simi Valley · Moorpark · Newbury Park · Fillmore · Santa Paula and surrounding communities.\n\nSame-day service when clinically appropriate. Available 24/7.\n\n805.953.7273 · eternallifehospice.com`},
+
+'7-em-tue':{title:'Care Ally Email: Fall Planning for Families Facing Hard Conversations',plat:'Email — Care Ally',day:'Tue Sep 29',time:'9:00 AM',status:'Scheduled',
+  img:'Email: seasonal warm header. ELH plum/gold. Simple layout.',
+  tags:['Discharge planners','Hospital social workers','Palliative care teams','Physicians'],
+  copy:`SUBJECT: Fall planning guide for families facing end-of-life conversations\n\nDear [First Name],\n\nAs the season changes, families often face an important question: do we want to be home for the holidays?\n\nFor patients nearing the end of life, the answer is often yes — if the right support is in place.\n\nHospice makes it possible. Here's what we can offer families who are planning ahead:\n\n• Advance care planning support — goals of care, advance directives, POLST completion\n• Family meeting facilitation — our social workers help navigate hard conversations\n• Same-day admissions when the time is right — no waiting\n• 24/7 nursing support so families can sleep\n\nFor patients who are on a curative path but may be approaching a transition: now is a good time to introduce the hospice conversation.\n\nWe're available to consult, even before a formal referral: 805.953.7273\n\nAleksandra Dubina`},
+
+'7-li-tue':{title:'Discharge Coordination in LA County — How We Work',plat:'LinkedIn',day:'Tue Sep 29',time:'8:00 AM',status:'Scheduled',
+  img:'LA County hospital exterior or discharge scene — professional',
+  tags:['#DischargePlanning','#HospiceCare','#LosAngelesCounty','#CaseManagement','#HealthcareProfessionals'],
+  copy:`For discharge planners, case managers, and social workers in Los Angeles County:\n\nHere's how we make your referral easy.\n\n1. One call: 805.953.7273 or online at eternallifehospice.com/refer\n2. We contact the patient and family within 2 hours\n3. We handle all insurance verification and eligibility confirmation\n4. Admissions assessment completed same day or next morning\n5. You receive admission confirmation — and the next call is no longer yours\n\nWe serve Calabasas, Agoura Hills, Woodland Hills, Encino, Sherman Oaks, Tarzana, Chatsworth, Chatsworth, Lancaster, Hawthorne, Inglewood, and throughout Los Angeles County.\n\nSame-day when clinically appropriate.\n\n#DischargePlanning #HospiceCare #LosAngelesCounty`},
+
+'7-tw-mon':{title:'Tweet: Cities We Serve — Ventura & LA County',plat:'Twitter / X',day:'Mon Sep 28',time:'10:00 AM',status:'Scheduled',
+  img:'Service area map card.',
+  tags:['#HospiceCare','#VenturaCounty','#LosAngelesCounty','#EternalLifeHospice'],
+  copy:`We serve families throughout Ventura and Los Angeles County.\n\nVentura County: Thousand Oaks, Westlake, Camarillo, Oxnard, Ventura, Simi Valley, Moorpark, Fillmore.\n\nLA County: Calabasas, Woodland Hills, Encino, Sherman Oaks, Chatsworth, Hawthorne, Inglewood, Lancaster + more.\n\nSame-day service when clinically appropriate. 805.953.7273`},
+
+'7-tt-wed':{title:'TikTok: Hospital to Home — How Hospice Works',plat:'TikTok',day:'Wed Sep 30',time:'12:00 PM',status:'Scheduled',
+  img:'FORMAT: Simple animation or text cards. Hospital icon → home icon. 30–40 seconds.',
+  tags:['#HospiceCare','#HomeHospice','#HospitalToHome','#EndOfLifeCare'],
+  copy:`[HOOK] "From hospital to home — how hospice makes it happen."\n\n"You get the call. The prognosis."\n"Most families don't know what comes next."\n"Here's how it works:"\n\n"1. You call hospice."\n"2. An admissions nurse visits within hours."\n"3. Equipment arrives at your home."\n"4. A care team shows up. And stays."\n"5. Your loved one is home. Comfortable. Surrounded by family."\n\n[CTA] "That transition from hospital to home — we make it happen. 805.953.7273"\n\nCAPTION: The transition from hospital to home is possible with the right support. #HospiceCare #HomeHospice`},
+
+'7-yt-fri':{title:'YouTube: How to Refer a Patient to Hospice — A Guide for Providers',plat:'YouTube',day:'Fri Oct 2',time:'10:00 AM',status:'Draft',
+  img:'THUMBNAIL: Aleksandra with "REFERRAL GUIDE" in gold. Professional, clear.',
+  tags:['#HospiceCare','#DischargePlanning','#HospiceReferral','#HealthcareProfessionals'],
+  copy:`TITLE: "How to Refer a Patient to Hospice — A Guide for Discharge Planners and Case Managers"\nLENGTH: 5–6 minutes\n\n0:00 Hook: "Referral shouldn't be complicated. Here's exactly how it works."\n0:45 Who qualifies — clinical criteria, prognosis, diagnoses\n2:00 How to make the referral — phone, online, what information we need\n3:00 What happens after you refer — our process, your peace of mind\n4:15 Same-day admissions — when and how\n5:00 CTA: 805.953.7273 + care brief`},
+
+// ════════════════════════════════════════════════
+// WEEK 8 — OCT 5–9 | Sound Bath & Integrative
+// ════════════════════════════════════════════════
+'8-gbp-mon':{title:'Our Sound Bath Program — What It Is',plat:'Google Business',day:'Mon Oct 5',time:'9:00 AM',status:'Scheduled',
+  img:'Sound bath setup — singing bowls, warm candlelight, hands',
+  tags:['#SoundBath','#HospiceCare','#EternalLifeHospice','#IntegrativeTherapy'],
+  copy:`Anxiety, restlessness, and agitation are among the most distressing symptoms at the end of life — and among the hardest to address with medication alone.\n\nOur sound bath sessions use Himalayan singing bowls to create a field of resonance that reduces anxiety and induces calm. Particularly effective for patients with dementia, who respond to sensory experience even when verbal communication has faded.\n\nAll at no additional expense to families.\n\nLearn more: eternallifehospice.com/sound-bath\n805.953.7273`},
+
+'8-em-tue':{title:'Care Ally Email: Our Sound Bath & Music Therapy Program',plat:'Email — Care Ally',day:'Tue Oct 6',time:'9:00 AM',status:'Scheduled',
+  img:'Email: sound bowl photo header. ELH branding. Clean layout.',
+  tags:['Palliative care teams','Social workers','Physicians','Case managers'],
+  copy:`SUBJECT: How we use sound and music in hospice care — a clinical overview\n\nDear [First Name],\n\nThis month's brief from our clinical team covers our sound bath and music therapy program.\n\nSound Baths (Singing Bowls)\nFor: Anxiety, agitation, restlessness — particularly in dementia patients\nEvidence: Reduces cortisol markers; effective in non-verbal patients\nAdministered by: Trained volunteers under RN supervision\nDocumented: In EMR as part of the care plan\n\nMusic Therapy\nFor: Pain perception, mood, connection\nEvidence: Reduces PRN pain medication use in observational studies\nFormat: Live or recorded, tailored to patient preference and cultural background\nAdministered by: Music therapists and trained volunteers\n\nAll modalities are assessed for patient appropriateness, screened for contraindications, and documented in the clinical record.\n\nFree resource: eternallifehospice.com/sound-bath\n\nAleksandra Dubina`},
+
+'8-li-tue':{title:'Integrative Modalities: The Clinical Rationale',plat:'LinkedIn',day:'Tue Oct 6',time:'8:00 AM',status:'Scheduled',
+  img:'Clean infographic: 5 modalities, brief evidence note for each. Designer to produce.',
+  tags:['#HospiceCare','#IntegrativeMedicine','#PalliativeCare','#ClinicalExcellence'],
+  copy:`"Integrative therapies" is not a soft term. In hospice, these are evidence-informed interventions with measurable outcomes.\n\nAt Eternal Life Hospice, here's what our clinical team documents:\n\nSound Baths — reduces anxiety markers in dementia patients. Non-pharmacological, non-invasive.\n\nMusic Therapy — observational evidence shows reduction in PRN medication use. Cultural tailoring improves patient connection.\n\nAromatherapy — lavender reduces self-reported anxiety and sleep disruption. Screened for medication contraindications.\n\nPet Therapy — mood elevation and pain perception reduction. Infection control protocols enforced.\n\nVolunteer Presence — reduces caregiver burden, documented in care plan for continuity.\n\nAll documented in EMR. All included in the Medicare benefit. All at no additional expense.\n\n#HospiceCare #IntegrativeMedicine #PalliativeCare`},
+
+'8-tt-wed':{title:'TikTok: What a Sound Bath Actually Does',plat:'TikTok',day:'Wed Oct 7',time:'12:00 PM',status:'Scheduled',
+  img:'FORMAT: B-roll of singing bowl + calm patient. Spa-like audio. 30–40 seconds.',
+  tags:['#SoundBath','#HospiceCare','#AnxietyRelief','#IntegrativeTherapy'],
+  copy:`[HOOK] "We use sound baths in hospice care. Here's why it works."\n\n"At end of life, anxiety and restlessness can be as distressing as physical pain."\n"Medication helps. But it doesn't always reach the part that needs calming."\n"Sound does."\n"The resonance of a singing bowl slows the nervous system."\n"For patients with dementia — who've lost words — it still reaches them."\n"We see it every time."\n\n[CTA] "All at no cost to families. Learn more at eternallifehospice.com/sound-bath"\n\nCAPTION: The most quiet kind of medicine. #SoundBath #HospiceCare #Dementia`},
+
+'8-gbp-wed':{title:'Aromatherapy — The Gentle Standard',plat:'Google Business',day:'Wed Oct 7',time:'9:00 AM',status:'Scheduled',
+  img:'Lavender, essential oils, gentle hands',
+  tags:['#Aromatherapy','#HospiceCare','#EternalLifeHospice','#ComfortCare'],
+  copy:`Nausea, anxiety, sleeplessness — these are the symptoms that medication sometimes can't fully address.\n\nOur aromatherapy protocol uses lavender, peppermint, and chamomile — screened for each patient's medication profile and administered with family education.\n\nSmall things, carefully done, make an enormous difference.\n\nAll at no additional expense to families.\n\n805.953.7273 · eternallifehospice.com`},
+
+'8-yt-thu':{title:'YouTube: Our Sound Bath Program — Full Tour',plat:'YouTube',day:'Thu Oct 8',time:'10:00 AM',status:'Draft',
+  img:'THUMBNAIL: Singing bowl in gold light, "SOUND BATH IN HOSPICE" headline. Calm, curious visual.',
+  tags:['#SoundBath','#HospiceCare','#IntegrativeTherapies','#AnxietyRelief'],
+  copy:`TITLE: "Sound Baths in Hospice Care — What They Are and Why They Work"\nLENGTH: 5–6 minutes\n\n0:00 Hook: "We use singing bowls in hospice care. Let me show you why."\n0:45 What a sound bath is — demonstration with singing bowl\n1:30 Who benefits most — anxiety, agitation, dementia\n2:30 The evidence — what research shows and what we observe\n3:30 A patient story (anonymized)\n4:30 How to access this care — Medicare covers it\n5:15 CTA + Care Brief`},
+
+'8-tw-fri':{title:'Thread: Pet Therapy in Hospice — What the Research Shows',plat:'Twitter / X',day:'Fri Oct 9',time:'10:00 AM',status:'Scheduled',
+  img:'Thread. Optional: therapy dog photo card.',
+  tags:['#PetTherapy','#HospiceCare','#AnimalAssistedTherapy','#EndOfLifeCare'],
+  copy:`1/ We have certified therapy dogs visit our patients. Here's what the research actually shows. 🧵\n\n2/ Animal-assisted interventions in palliative care have shown reductions in pain perception, anxiety, and depression in multiple studies.\n\n3/ For hospice patients specifically: therapy dog visits increase social engagement and mood, particularly in patients who are withdrawn or non-verbal.\n\n4/ Our protocol: certified therapy dogs only, infection control standards enforced, patient and family consent required before every visit.\n\n5/ The less-clinical truth: some patients smile for the first time in weeks. That matters. Full stop.\n\n6/ All at no additional expense to families. Part of The Eternal Standard. eternallifehospice.com`},
+
+'8-gbp-fri':{title:'Pet Therapy — Joy at the Bedside',plat:'Google Business',day:'Fri Oct 9',time:'9:00 AM',status:'Scheduled',
+  img:'Therapy dog with patient — joyful, warm moment',
+  tags:['#PetTherapy','#HospiceCare','#EternalLifeHospice','#ComfortCare'],
+  copy:`Some of the best medicine has four legs.\n\nOur certified therapy dogs visit patients who want them — bringing joy, connection, and warmth that no medication can replicate.\n\nInfection control protocols are always followed. Patient and family consent is always obtained.\n\nAll at no additional expense to families.\n\n805.953.7273 · eternallifehospice.com`},
+
+// ════════════════════════════════════════════════
+// WEEK 9 — OCT 12–16 | Family Stories & Testimonials
+// ════════════════════════════════════════════════
+'9-gbp-mon':{title:'What Families Tell Us',plat:'Google Business',day:'Mon Oct 12',time:'9:00 AM',status:'Scheduled',
+  img:'Warm testimonial quote card — plum/gold. Family photo if consent obtained.',
+  tags:['#HospiceCare','#Testimonial','#EternalLifeHospice','#CareThatHonorsLife'],
+  copy:`"They explained everything. Nothing surprised us. For the first time in months, we didn't feel alone."\n— Family in Thousand Oaks\n\n"The nurse arrived within hours. She knew what to do and she was calm. That calm transferred to all of us."\n— Family in Camarillo\n\n"I wish we had called sooner. Not because anything would have changed — but because we would have had more peace, earlier."\n— Family in Woodland Hills\n\n805.953.7273 · eternallifehospice.com`},
+
+'9-em-tue':{title:'Care Ally Email: How We Support Family Caregivers',plat:'Email — Care Ally',day:'Tue Oct 13',time:'9:00 AM',status:'Scheduled',
+  img:'Email with family caregiver image. ELH header. Clean layout.',
+  tags:['Hospital social workers','Case managers','Discharge planners'],
+  copy:`SUBJECT: How hospice supports the people caring for your patients' families\n\nDear [First Name],\n\nWhen you refer a patient to us, you're also referring their caregivers.\n\nHere's what our team does for family members from day one:\n\n• Caregiver needs assessment on admission — burnout screening, resource identification\n• Education: what to expect, how to manage medications, when to call\n• 24/7 on-call nursing — the 3am question gets answered\n• Volunteer companionship and respite care\n• Social worker support — counseling, resource navigation, family meeting facilitation\n• Chaplain support for spiritual and existential needs\n• Bereavement program — 13 months of support after loss\n\nFor many families, the caregiver is also in crisis. We treat that as part of the care.\n\nAleksandra Dubina`},
+
+'9-li-tue':{title:'The ROI of Excellent Discharge Coordination',plat:'LinkedIn',day:'Tue Oct 13',time:'8:00 AM',status:'Scheduled',
+  img:'Data-oriented graphic or simple stat cards — readmission reduction',
+  tags:['#DischargePlanning','#HospiceCare','#HospitalMetrics','#ReadmissionReduction'],
+  copy:`For hospital administrators and quality teams: here's what a smooth hospice transition produces.\n\nReadmission reduction: Patients admitted to hospice with a well-coordinated care plan are significantly less likely to return to the ER within 30 days.\n\nFamily satisfaction: CAHPS hospice scores correlate directly with the quality of admission within the first 48 hours.\n\nLower total cost of care: Early hospice admission reduces ICU utilization and aggressive end-of-life interventions that families often don't want but don't know how to refuse.\n\nThe referral relationship you choose reflects your organization's quality standards.\n\nWe are accepting referrals from all major hospital systems in Ventura and Los Angeles County.\n\nOne call: 805.953.7273\n\n#DischargePlanning #HospiceCare #HospitalQuality`},
+
+'9-tt-wed':{title:'TikTok: "I Wish We Had Called Sooner"',plat:'TikTok',day:'Wed Oct 14',time:'12:00 PM',status:'Scheduled',
+  img:'FORMAT: Slow, emotional. Text on cream bg. Soft music. 45 seconds. No medical visuals.',
+  tags:['#HospiceCare','#FamilyStory','#EndOfLifeCare','#CareThatHonorsLife'],
+  copy:`[HOOK] "The most common thing families tell us."\n\n"'I wish we had called sooner.'"\n\n"Not because it would have changed the timeline."\n"Because it changed the time they had."\n\n"Less pain. More presence."\n"Fewer emergencies. More sleep."\n"Someone else answering at 3am."\n"A team that knew them by name."\n\n"Calling doesn't commit you to anything."\n"We answer questions too."\n\n[CTA] "805.953.7273. 24/7."\n\nCAPTION: The most common thing families tell us. #HospiceCare #EndOfLifeCare`},
+
+'9-fb-thu':{title:'A Thank-You We Received',plat:'Facebook',day:'Thu Oct 15',time:'11:00 AM',status:'Scheduled',
+  img:'Handwritten note or family photo with permission — or elegant quote card',
+  tags:['#HospiceCare','#Gratitude','#CareThatHonorsLife','#EternalLifeHospice'],
+  copy:`We received a note last week from a family in Ventura County.\n\n"Our mother spent her last weeks at home, surrounded by family, with care that never felt clinical. The nurse knew her favorite music. The chaplain asked the right questions. The aide made her laugh.\n\nWe didn't know hospice could feel like this. We wish we'd known sooner."\n\nThis is why we do this work.\n\nIf you have a family member who needs this kind of care, we're here.\n\n805.953.7273 | eternallifehospice.com\n\n#HospiceCare #CareThatHonorsLife #VenturaCounty`},
+
+'9-tw-fri':{title:'Thread: 5 Things Families Wish They\'d Known',plat:'Twitter / X',day:'Fri Oct 16',time:'10:00 AM',status:'Scheduled',
+  img:'Text thread. Optional: quote card for tweet 1.',
+  tags:['#HospiceCare','#FamilySupport','#EndOfLifeCare'],
+  copy:`1/ Five things families tell us they wish they'd known before calling hospice. 🧵\n\n2/ "We didn't know we could call before we were ready to decide anything. We thought calling meant committing." You can call just to ask questions. No obligation.\n\n3/ "We didn't know hospice wasn't about giving up. We thought calling would upset our father." Most patients feel relief when hospice begins — not resignation.\n\n4/ "We didn't know Medicare covered everything. We were budgeting for it." It's fully covered. No copay, no deductible, no bill.\n\n5/ "We didn't know we'd get a team — not just a nurse." You get a physician, RN, social worker, chaplain, aide, and volunteers.\n\n6/ "We didn't know they'd answer at 3am." We do. Every call, every time.\n\n7/ Share this with anyone navigating this conversation. 805.953.7273 | eternallifehospice.com`},
+
+// ════════════════════════════════════════════════
+// WEEK 10 — OCT 19–23 | Referral Partner Focus
+// ════════════════════════════════════════════════
+'10-gbp-mon':{title:'Our Referral Process — Simple and Fast',plat:'Google Business',day:'Mon Oct 19',time:'9:00 AM',status:'Scheduled',
+  img:'Phone on desk or online referral form — clean, professional',
+  tags:['#HospiceReferral','#HospiceCare','#EternalLifeHospice','#VenturaCounty'],
+  copy:`Referring to Eternal Life Hospice takes one call.\n\n1. Call 805.953.7273 or visit eternallifehospice.com/refer\n2. We reach the patient or family within 2 hours\n3. Admissions assessment completed same day or next morning\n4. Care plan, medications, and equipment coordinated\n5. You receive admission confirmation\n\nNo excessive paperwork. No delays. We handle the rest.\n\nAvailable 24/7 for urgent referrals.`},
+
+'10-em-tue':{title:'Care Ally Email: Our Coverage Map — Where We Serve',plat:'Email — Care Ally',day:'Tue Oct 20',time:'9:00 AM',status:'Scheduled',
+  img:'Email with service area map. List of key cities by county. ELH header.',
+  tags:['Discharge planners','Hospital social workers','Case managers','Physicians'],
+  copy:`SUBJECT: Updated service area map — Ventura and Los Angeles County\n\nDear [First Name],\n\nAs we head into Q4, I wanted to share our current service area map and confirm where we can accept referrals.\n\nVENTURA COUNTY\nThousand Oaks, Westlake Village, Camarillo, Oxnard, Ventura, Simi Valley, Moorpark, Newbury Park, Fillmore, Santa Paula, Ojai, Port Hueneme, Santa Rosa Valley, Conejo Valley\n\nLOS ANGELES COUNTY\nCalabasas, Agoura Hills, Woodland Hills, West Hills, Tarzana, Encino, Sherman Oaks, Chatsworth, Reseda, Canoga Park, Granada Hills, Northridge, Lancaster, Palmdale, Glendora, La Cañada Flintridge, Monterey Park, Hawthorne, Inglewood, Pacific Palisades, and surrounding communities\n\nIf you have a patient in a city not listed, call us — our service area continues to expand.\n\n805.953.7273 | eternallifehospice.com/refer\n\nAleksandra Dubina`},
+
+'10-li-tue':{title:'For Discharge Planners: What We Do in the First 24 Hours',plat:'LinkedIn',day:'Tue Oct 20',time:'8:00 AM',status:'Scheduled',
+  img:'Process flow infographic: call to care in 24 hours. Designer to produce.',
+  tags:['#DischargePlanning','#HospiceCare','#CaseManagement','#HealthcareProfessionals'],
+  copy:`For discharge planners who have placed a referral with us — here's what happens on your behalf.\n\nHour 0–2: Admissions nurse contacts patient/family. We introduce ourselves and begin the eligibility conversation.\nHour 2–4: Insurance verified. Clinical eligibility confirmed. Pre-authorization initiated if required.\nHour 4–6: Comprehensive intake assessment. Symptom review, goals of care, advance directive verification.\nHour 6–12: Care plan drafted, signed by medical director. DME ordered. Pharmacy contacted for comfort medications.\nHour 12–24: First RN visit. Family education completed. 24/7 on-call number provided.\n\nYou don't need to follow up. We'll send you admission confirmation.\n\nRefer: 805.953.7273 or eternallifehospice.com/refer\n\n#DischargePlanning #HospiceCare #CaseManagement`},
+
+'10-tt-wed':{title:'TikTok: How Does a Hospice Referral Work?',plat:'TikTok',day:'Wed Oct 21',time:'12:00 PM',status:'Scheduled',
+  img:'FORMAT: Simple process flow animation or text cards. 30 seconds. Clear and calm.',
+  tags:['#HospiceReferral','#HospiceCare','#HealthcareProfessionals','#DischargePlanning'],
+  copy:`[HOOK] "How does a hospice referral actually work? Here's the whole process in 30 seconds."\n\n"Step 1: Call 805.953.7273 or go to eternallifehospice.com/refer"\n"Step 2: We call the family within 2 hours"\n"Step 3: Assessment same day or next morning"\n"Step 4: Care plan, medications, equipment — all coordinated"\n"Step 5: You get a confirmation. The family has a team."\n\n[CTA] "That's it. One call. 24/7."\n\nCAPTION: For care professionals: here's how simple a referral is. #HospiceReferral #HospiceCare`},
+
+'10-yt-thu':{title:'YouTube: A Guide for Discharge Planners and Case Managers',plat:'YouTube',day:'Thu Oct 22',time:'10:00 AM',status:'Draft',
+  img:'THUMBNAIL: Aleksandra with clipboard or referral form. "FOR CARE PROFESSIONALS" in gold subtitle.',
+  tags:['#HospiceCare','#DischargePlanning','#CaseManagement','#HealthcareProfessionals'],
+  copy:`TITLE: "Referring to Hospice — A Practical Guide for Discharge Planners and Case Managers"\nLENGTH: 6–7 minutes\n\n0:00 Hook: "If you're a discharge planner or case manager, this is the guide I wish existed when I started."\n1:00 Who qualifies — clinical criteria, common diagnoses\n2:15 How to make the referral — what information we need, what we handle\n3:30 Same-day admissions — how they work and when to request them\n4:30 What happens after you refer — confirmation, timeline, follow-up\n5:30 Common questions from care teams\n6:15 CTA: 805.953.7273 + care brief`},
+
+'10-li-fri':{title:'Why Early Referral Matters',plat:'LinkedIn',day:'Fri Oct 23',time:'8:00 AM',status:'Scheduled',
+  img:'Aleksandra headshot or data graphic showing outcomes curve',
+  tags:['#HospiceCare','#EarlyReferral','#PalliativeCare','#HealthcareProfessionals'],
+  copy:`The most impactful thing a referring provider can do is refer early.\n\nNot because hospice hurries anything. Because hospice gives families more of what matters — time at home, pain managed, presence over panic.\n\nThe research is consistent: patients who enter hospice three months before death have better symptom control, less depression, and higher family satisfaction than those who enter in the final two weeks.\n\nAnd yet the median hospice length of stay in California is still under 20 days.\n\nThe conversation about hospice is not the same as choosing hospice. Starting it early gives families time to make the right decision for themselves.\n\n— Aleksandra Dubina\nCertified Hospice Administrator\n\n#HospiceCare #EarlyReferral #PalliativeCare`},
+
+// ════════════════════════════════════════════════
+// WEEK 11 — OCT 26–30 | Year-End Planning
+// ════════════════════════════════════════════════
+'11-gbp-mon':{title:'Year-End: Planning for What Comes Next',plat:'Google Business',day:'Mon Oct 26',time:'9:00 AM',status:'Scheduled',
+  img:'Autumn warmth — leaves, warm light, home',
+  tags:['#HospiceCare','#YearEndPlanning','#EternalLifeHospice','#VenturaCounty'],
+  copy:`As the year winds down, many families face a question they've been putting off:\n\nShould we be looking at hospice before the holidays?\n\nThe answer depends on the clinical picture — but the conversation doesn't hurt. A phone call costs nothing. And knowing your options before you need them changes everything.\n\nWe're here, 24/7, including every holiday.\n\n805.953.7273 · eternallifehospice.com`},
+
+'11-em-tue':{title:'Care Ally Email: Year-End — Planning for Families in Q4',plat:'Email — Care Ally',day:'Tue Oct 27',time:'9:00 AM',status:'Scheduled',
+  img:'Email: warm autumn-toned header. ELH plum/gold. Clean layout.',
+  tags:['Hospital social workers','Discharge planners','Case managers','Palliative care'],
+  copy:`SUBJECT: Year-end hospice planning — a checklist for care teams\n\nDear [First Name],\n\nAs we move into Q4, a few things worth keeping on your radar:\n\n1. Families often want to be home for the holidays. If a patient on your caseload has been declining and is likely eligible for hospice, now is a good time to start the conversation — before the holiday crunch.\n\n2. Medicare hospice benefit periods reset. Some patients who exhausted an earlier benefit period may have re-established eligibility. We can verify.\n\n3. Advance care planning — year-end is a natural moment for families to complete advance directives, POLST forms, and goals-of-care documentation. Our social workers support this.\n\n4. Same-day admissions remain available through the holiday season. We do not reduce capacity.\n\n5. The Eternal Care Brief Issue 3 arrives November 4th — with a year-end planning guide for care professionals.\n\nAlways here,\nAleksandra Dubina`},
+
+'11-fb-mon':{title:'Hospice Before the Holidays — What Families Ask',plat:'Facebook',day:'Mon Oct 26',time:'11:00 AM',status:'Scheduled',
+  img:'Warm family gathering image — multi-generational, autumn light',
+  tags:['#HospiceCare','#HolidayPlanning','#FamilySupport','#CareThatHonorsLife'],
+  copy:`This time of year, we hear a question from a lot of families:\n\n"Should we start hospice before the holidays, or wait until after?"\n\nOur honest answer: if your loved one is eligible now, waiting doesn't help them. It gives them fewer weeks of the support they need.\n\nHospice doesn't change what the holidays look like. It makes them more possible — at home, with pain managed, with a team on call if anything changes.\n\n"We're so glad we started before Thanksgiving. They spent Christmas at home." — Family in Thousand Oaks\n\nWe're here 24/7, including every holiday.\n\n805.953.7273 | eternallifehospice.com`},
+
+'11-tt-wed':{title:'TikTok: Hospice Through the Holidays',plat:'TikTok',day:'Wed Oct 28',time:'12:00 PM',status:'Scheduled',
+  img:'FORMAT: Warm autumn/winter aesthetic. Text cards over warm background. 30–40 seconds.',
+  tags:['#HospiceCare','#HolidayHospice','#FamilySupport','#EndOfLifeCare'],
+  copy:`[HOOK] "The question we hear most this time of year."\n\n"Should we start hospice before the holidays?"\n\n"If your loved one qualifies now — yes."\n"Not because hospice rushes anything."\n"But because it makes the holidays possible."\n\n"At home. Pain managed."\n"A team on call if anything changes."\n"Sleep, for the first time in months."\n\n[CTA] "We are here 24/7. Including every holiday. 805.953.7273"\n\nCAPTION: If you've been asking this question, this is your sign. #HospiceCare #HolidayPlanning`},
+
+'11-li-thu':{title:'For Case Managers: Year-End Census Planning',plat:'LinkedIn',day:'Thu Oct 29',time:'8:00 AM',status:'Scheduled',
+  img:'Professional planning graphic — calendar, checklist, Q4 focus',
+  tags:['#HospiceCare','#CaseManagement','#DischargePlanning','#YearEnd','#HealthcareProfessionals'],
+  copy:`For case managers and discharge planners heading into Q4:\n\nA few year-end considerations that affect your hospice referrals.\n\n1. Benefit period timing: Patients who began a Medicare hospice benefit period in Q1 or Q2 may be approaching a benefit period transition. We can verify eligibility and recertification status.\n\n2. Goal-of-care alignment: Year-end is a natural time for patients and families to revisit goals. If conversations have been deferred, this is a good moment to re-engage.\n\n3. Home for the holidays: Many families express a strong preference to remain home through the holiday season. If a patient is clinically appropriate for hospice, earlier enrollment gives them more time at home before the holiday period.\n\n4. Same-day capacity: We maintain same-day admission availability through the holiday season. Capacity does not reduce.\n\nThe Eternal Care Brief Issue 3 — publishing November 4th — includes a year-end planning guide for care teams.\n\nSubscribe: eternallifehospice.com/care-brief\n\n#HospiceCare #CaseManagement #YearEndPlanning`},
+
+'11-tw-fri':{title:'Tweet: Hospice Doesn\'t Pause for Holidays',plat:'Twitter / X',day:'Fri Oct 30',time:'10:00 AM',status:'Scheduled',
+  img:'Simple text post or "24/7/365" branded card.',
+  tags:['#HospiceCare','#EternalLifeHospice','#HolidaySupport'],
+  copy:`Hospice doesn't pause for the holidays.\n\nChristmas Eve, Thanksgiving, New Year's — our nurses, aides, and on-call team are here. The phone gets answered. The symptoms get managed. The family doesn't face it alone.\n\nThat's The Eternal Standard.\n\n805.953.7273 | eternallifehospice.com #HospiceCare #CareThatHonorsLife`},
+
+// ════════════════════════════════════════════════
+// WEEK 12 — NOV 2–6 | ★ CARE BRIEF ISSUE 3 LAUNCH
+// ════════════════════════════════════════════════
+'12-gbp-mon':{title:'Care Brief Issue 3 — Arriving This Week',plat:'Google Business',day:'Mon Nov 2',time:'9:00 AM',status:'Scheduled',
+  img:'Issue 3 teaser card — "Coming Tuesday" treatment, plum/gold',
+  tags:['#EternalCareBrief','#HospiceCare','#EternalLifeHospice'],
+  copy:`The Eternal Care Brief Issue 3 arrives Tuesday.\n\nFree for care professionals. This issue: year-end planning, Medicare audit trends, caregiver support research, and a case study on transitions from palliative to hospice care.\n\nSubscribe: eternallifehospice.com/care-brief\n805.953.7273`},
+
+'12-tw-mon':{title:'Tweet: Care Brief Issue 3 Preview',plat:'Twitter / X',day:'Mon Nov 2',time:'10:00 AM',status:'Scheduled',
+  img:'Issue 3 cover preview card.',
+  tags:['#EternalCareBrief','#HospiceCare','#HealthcareProfessionals'],
+  copy:`Issue 3 of The Eternal Care Brief arrives tomorrow.\n\nFor the care professionals who refer, discharge, and coordinate: this one's built for year-end planning.\n\nFree. Always. eternallifehospice.com/care-brief`},
+
+'12-em-tue':{title:'★ CARE BRIEF ISSUE 3 — SEND DAY (Nov 4)',plat:'Email — Care Ally',day:'Tue Nov 4',time:'8:00 AM',status:'Scheduled',
+  img:'The Eternal Care Brief Issue 3 full email layout. Designer to produce from content brief provided separately. Match Issue 1 and 2 layout.',
+  tags:['All Care Brief subscribers','Master Verified list','SYMPLR Network'],
+  copy:`★ THIS IS THE ETERNAL CARE BRIEF ISSUE 3 — SEND\n\nSUBJECT: The Eternal Care Brief | Issue 3 | November 2026\n\nINSIDE THIS ISSUE:\n1. Year-End Planning Guide — for care professionals navigating Q4 hospice conversations\n2. The Palliative-to-Hospice Transition — a case study on timing, conversation, and what changes\n3. 2026 Medicare Hospice Audit Update — what's being scrutinized and how to document cleanly\n4. Caregiver Burnout Research — new data from Q3 and what it means for referral timing\n5. Integrative Therapies — expanded program update and access guide\n6. Founder Note — "What three issues of the Care Brief have taught me"\n7. 2027 Preview — what's coming, what families will need\n\nDESIGNER NOTE: Match Issue 1 and 2 layout. 8–10 pages. Plum/gold/cream. Fraunces headers, Jost body. Include issue number, date, subscriber opt-out. Content brief from Aleksandra to follow.\n\nCONTENT TO FOLLOW IN SEPARATE BRIEF FROM ALEKSANDRA.`},
+
+'12-li-tue':{title:'The Eternal Care Brief Issue 3 — Out Now',plat:'LinkedIn',day:'Tue Nov 4',time:'8:00 AM',status:'Scheduled',
+  img:'Issue 3 cover — full spread. "Out Now" treatment.',
+  tags:['#EternalCareBrief','#HospiceCare','#HealthcareProfessionals','#YearEnd'],
+  copy:`Issue 3 of The Eternal Care Brief is live.\n\nThis issue is built for year-end: planning guides, palliative-to-hospice case study, Medicare audit updates, caregiver burnout data, and a founder note on what three issues have taught me.\n\nFree. Always. For the professionals who do this work every day.\n\nRead it: eternallifehospice.com/care-brief\n\n— Aleksandra Dubina\nFounder & CEO, Eternal Life Hospice\n\n#EternalCareBrief #HospiceCare #HealthcareProfessionals`},
+
+'12-tt-wed':{title:'TikTok: Issue 3 — What\'s Inside',plat:'TikTok',day:'Wed Nov 5',time:'12:00 PM',status:'Scheduled',
+  img:'FORMAT: Page-flip or card reveal of Issue 3 sections. 30 seconds.',
+  tags:['#EternalCareBrief','#HospiceCare','#HealthcareProfessionals'],
+  copy:`[HOOK] "Issue 3 of our free clinical magazine for care professionals is out. Here's what's inside."\n\n"Year-end planning guide"\n"Palliative-to-hospice case study"\n"Medicare audit update"\n"Caregiver burnout research"\n"Founder note: what three issues have taught me"\n\n[CTA] "Free. Subscribe at eternallifehospice.com/care-brief"\n\nCAPTION: The Eternal Care Brief Issue 3 — for the professionals we work alongside. #EternalCareBrief`},
+
+'12-gbp-wed':{title:'Care Brief Issue 3 — Read It Free',plat:'Google Business',day:'Wed Nov 5',time:'9:00 AM',status:'Scheduled',
+  img:'Issue 3 cover — link prominent',
+  tags:['#EternalCareBrief','#HospiceCare','#EternalLifeHospice'],
+  copy:`The Eternal Care Brief Issue 3 is live.\n\nFree for nurses, physicians, discharge planners, social workers, and case managers.\n\nThis issue: year-end planning, palliative-to-hospice transitions, Medicare compliance, and caregiver burnout research.\n\nRead free: eternallifehospice.com/care-brief\n805.953.7273`},
+
+'12-fb-thu':{title:'Care Brief Issue 3 — Year-End Planning',plat:'Facebook',day:'Thu Nov 6',time:'11:00 AM',status:'Scheduled',
+  img:'Issue 3 cover or year-end planning graphic',
+  tags:['#EternalCareBrief','#HospiceCare','#YearEnd','#HealthcareProfessionals'],
+  copy:`Issue 3 of The Eternal Care Brief is here — and it's built for year-end.\n\nIf you're a healthcare professional navigating Q4 hospice conversations, this one is for you.\n\nInside: planning guide, case study, Medicare updates, caregiver research, and a founder note from Aleksandra.\n\nFree. Always.\n\nRead it: eternallifehospice.com/care-brief\n\n805.953.7273 | eternallifehospice.com`},
+
+'12-li-fri':{title:'Three Issues of the Care Brief — What I\'ve Learned',plat:'LinkedIn',day:'Fri Nov 7',time:'8:00 AM',status:'Scheduled',
+  img:'Aleksandra headshot — warm, reflective',
+  tags:['#EternalCareBrief','#HospiceCare','#HealthcareLeadership','#Reflection'],
+  copy:`When I sent Issue 1 of The Eternal Care Brief, I didn't know if anyone would read it.\n\nThen 8 people at PIH Health read it deeply enough that it apparently circulated internally. That was enough to publish Issue 2.\n\nIssue 3 is out today. Three issues. Hundreds of care professionals in Ventura and Los Angeles County.\n\nWhat I've learned: care professionals are hungry for information that is honest, clinical, and not trying to sell them anything. They share things that matter with colleagues. They remember the organizations that treated them as peers.\n\nWe will keep publishing. Because this is not marketing. This is how we want to show up in the communities we serve.\n\nIssue 3: eternallifehospice.com/care-brief\n\n— Aleksandra Dubina\n\n#EternalCareBrief #HospiceCare #HealthcareLeadership`}
 };
 
-let cur=null;
-function openPost(id){
-  const p=P[id]; if(!p)return; cur=id;
-  document.getElementById('mtitle').textContent=p.title;
-  document.getElementById('mpills').innerHTML=`<span class="mpill">${p.plat}</span><span class="mpill">${p.day} · ${p.time}</span><span class="mpill">${p.status}</span>`;
-  document.getElementById('mcopy').value=p.copy;
-  document.getElementById('mtags').innerHTML=p.tags.map(t=>`<span class="ht">${t}</span>`).join('');
-  document.getElementById('mimg').textContent=p.img;
-  document.getElementById('overlay').classList.add('open');
-}
-function closeModal(){document.getElementById('overlay').classList.remove('open');cur=null;}
-function doSchedule(){closeModal();toast('✓ Scheduled');}
-function doPublish(){closeModal();toast('▶ Connecting to platform API… (add credentials to go live)');}
+// ─── PLATFORM LABELS ────────────────────────────────────────────────────────
+const PLAT_LABELS = { gbp:'Google Business', fb:'Facebook', li:'LinkedIn', tw:'Twitter / X', tt:'TikTok', yt:'YouTube', em:'Email — Care Ally' };
 
-function filt(p,el){
-  document.querySelectorAll('.pfilt').forEach(b=>b.classList.remove('on'));
-  el.classList.add('on');
-  document.querySelectorAll('.cell[data-platform]').forEach(c=>{
-    c.style.opacity=(p==='all'||c.dataset.platform===p)?'1':'.25';
+// ─── STATE ───────────────────────────────────────────────────────────────────
+let currentWeek = 0;
+let currentFilter = 'all';
+
+// ─── RENDER ──────────────────────────────────────────────────────────────────
+function renderWeek(w) {
+  const week = WEEKS[w];
+  document.getElementById('wlabel').textContent = week.label;
+  document.getElementById('wtheme').textContent = week.theme;
+  document.getElementById('wbadge').textContent = `Week ${w+1} of ${WEEKS.length}`;
+  document.getElementById('brief-badge').style.display = week.brief ? 'inline-flex' : 'none';
+  document.getElementById('week-counter').textContent = `Week ${w+1} of 13 · Aug–Nov 2026`;
+
+  const main = document.getElementById('cal-main');
+  main.innerHTML = '';
+
+  // Brief banner
+  if (week.brief) {
+    const b = document.createElement('div');
+    b.className = 'brief-banner';
+    b.innerHTML = `<span class="brief-banner-icon">★</span><div><div class="brief-banner-text">The Eternal Care Brief — Launch Week</div><div class="brief-banner-sub">${w===4?'Issue 2 · Tuesday Sep 9, 2026':'Issue 3 · Tuesday Nov 4, 2026'} · Distribute to all subscribers + SYMPLR Network</div></div>`;
+    main.appendChild(b);
+  }
+
+  // Day headers
+  const days = ['mon','tue','wed','thu','fri'];
+  const [start] = week.label.split(' – ');
+  const dayLabels = getDayLabels(w);
+  const hdr = document.createElement('div');
+  hdr.className = 'day-header';
+  hdr.innerHTML = '<div></div>' + dayLabels.map(d=>`<div class="dh">${d}</div>`).join('');
+  main.appendChild(hdr);
+
+  // Platform rows
+  const plats = ['gbp','fb','li','tw','tt','yt','em'];
+  const plat_icons = {
+    gbp:`<svg width="13" height="13" viewBox="0 0 24 24" fill="white"><path d="M21.8 10.2h-.8V10H12v4h5.7A6 6 0 1 1 12 6c1.6 0 3 .6 4.1 1.6L19 4.8A10 10 0 1 0 22 12c0-.6-.1-1.2-.2-1.8z"/></svg>`,
+    fb:`<svg width="12" height="12" viewBox="0 0 24 24" fill="white"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>`,
+    li:`<svg width="12" height="12" viewBox="0 0 24 24" fill="white"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2" fill="white"/></svg>`,
+    tw:`<svg width="12" height="12" viewBox="0 0 24 24" fill="white"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>`,
+    tt:`<svg width="12" height="12" viewBox="0 0 24 24" fill="white"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.17 8.17 0 0 0 4.78 1.52V6.76a4.84 4.84 0 0 1-1.01-.07z"/></svg>`,
+    yt:`<svg width="12" height="12" viewBox="0 0 24 24" fill="white"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46a2.78 2.78 0 0 0-1.95 1.96A29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58 2.78 2.78 0 0 0 1.95 1.95C5.12 20 12 20 12 20s6.88 0 8.59-.47a2.78 2.78 0 0 0 1.95-1.95A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z"/><polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02" fill="#FF0000"/></svg>`,
+    em:`<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#C9B07E" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 4 10 9 10-9"/></svg>`
+  };
+
+  let totalSched=0, totalDraft=0, totalPub=0;
+  const cnts = {gbp:0,fb:0,li:0,tw:0,tt:0,yt:0,em:0};
+
+  plats.forEach(p => {
+    const row = document.createElement('div');
+    row.className = 'cal-row';
+    row.dataset.platform = p;
+
+    const iconDiv = document.createElement('div');
+    iconDiv.className = 'row-icon';
+    iconDiv.innerHTML = `<div class="ri ri-${p}">${plat_icons[p]}</div>`;
+    row.appendChild(iconDiv);
+
+    days.forEach(d => {
+      const key = `${w}-${p}-${d}`;
+      const post = POSTS[key];
+      const cell = document.createElement('div');
+      if (post) {
+        cell.className = 'cell';
+        cell.dataset.platform = p;
+        const stClass = post.status==='Scheduled'?'st-sched':post.status==='Draft'?'st-draft':post.status==='Published'?'st-pub':'st-brief';
+        const isBrief = post.title.startsWith('★');
+        cell.innerHTML = `<div class="c-title">${post.title}</div><div class="c-preview">${post.copy.split('\n')[0]}</div><div class="c-foot"><span class="st ${stClass}">${post.status}</span><span class="c-time">${post.time}</span></div>`;
+        cell.onclick = () => openPost(key);
+        if(post.status==='Scheduled') totalSched++;
+        else if(post.status==='Draft') totalDraft++;
+        else if(post.status==='Published') totalPub++;
+        cnts[p]++;
+      } else {
+        cell.className = 'cell empty';
+        cell.dataset.platform = p;
+        cell.innerHTML = '<div class="empty-plus">+</div>';
+      }
+      row.appendChild(cell);
+    });
+    main.appendChild(row);
+  });
+
+  // Update counts
+  const total = totalSched+totalDraft+totalPub;
+  document.getElementById('ps-sched').textContent = totalSched;
+  document.getElementById('ps-draft').textContent = totalDraft;
+  document.getElementById('ps-pub').textContent = totalPub;
+  document.getElementById('ps-total').textContent = total;
+  document.getElementById('ps-fill').style.width = (total/14*100)+'%';
+  document.getElementById('sb-sched').textContent = totalSched;
+  document.getElementById('sb-draft').textContent = totalDraft;
+  document.getElementById('sb-pub').textContent = totalPub;
+
+  const totalCount = Object.values(cnts).reduce((a,b)=>a+b,0);
+  document.getElementById('cnt-all').textContent = totalCount;
+  Object.keys(cnts).forEach(k=>{ document.getElementById('cnt-'+k).textContent = cnts[k]; });
+
+  // Upcoming care brief in sidebar
+  const nextBrief = currentWeek < 4 ? 'Issue 2 · Sep 9' : currentWeek < 12 ? 'Issue 3 · Nov 4' : 'Issue 3 · Sent';
+  document.getElementById('sb-brief').textContent = nextBrief;
+
+  // Reapply filter
+  applyFilter(currentFilter);
+}
+
+function getDayLabels(w) {
+  // Hardcoded day labels per week
+  const labels = [
+    ['Mon · 10','Tue · 11','Wed · 12','Thu · 13','Fri · 14'],
+    ['Mon · 17','Tue · 18','Wed · 19','Thu · 20','Fri · 21'],
+    ['Mon · 24','Tue · 25','Wed · 26','Thu · 27','Fri · 28'],
+    ['Mon · 31','Tue · 1','Wed · 2','Thu · 3','Fri · 4'],
+    ['Mon · 7','Tue · 9','Wed · 10','Thu · 11','Fri · 12'],  // Sep — Tue is Sep 9 (Care Brief)
+    ['Mon · 14','Tue · 15','Wed · 16','Thu · 17','Fri · 18'],
+    ['Mon · 21','Tue · 22','Wed · 23','Thu · 24','Fri · 25'],
+    ['Mon · 28','Tue · 29','Wed · 30','Thu · 1','Fri · 2'],  // Sep 28 – Oct 2
+    ['Mon · 5','Tue · 6','Wed · 7','Thu · 8','Fri · 9'],
+    ['Mon · 12','Tue · 13','Wed · 14','Thu · 15','Fri · 16'],
+    ['Mon · 19','Tue · 20','Wed · 21','Thu · 22','Fri · 23'],
+    ['Mon · 26','Tue · 27','Wed · 28','Thu · 29','Fri · 30'],
+    ['Mon · 2','Tue · 4','Wed · 5','Thu · 6','Fri · 7'],    // Nov — Tue is Nov 4 (Care Brief)
+  ];
+  return labels[w] || ['Mon','Tue','Wed','Thu','Fri'];
+}
+
+function navWeek(dir) {
+  const nw = currentWeek + dir;
+  if (nw < 0 || nw >= WEEKS.length) return;
+  currentWeek = nw;
+  renderWeek(currentWeek);
+}
+
+function applyFilter(p) {
+  currentFilter = p;
+  document.querySelectorAll('.cal-row[data-platform]').forEach(row => {
+    if (p === 'all' || row.dataset.platform === p) {
+      row.style.display = 'grid';
+    } else {
+      row.style.display = 'none';
+    }
   });
 }
 
-function openAI(){document.getElementById('ai-overlay').classList.add('open');}
-function closeAI(){document.getElementById('ai-overlay').classList.remove('open');document.getElementById('gen').classList.remove('show');document.getElementById('ai-acts').style.display='flex';}
-function genPost(){
-  const t=document.getElementById('ai-topic').value.trim();
-  if(!t){alert('Enter a topic first.');return;}
-  document.getElementById('ai-acts').style.display='none';
-  document.getElementById('gen').classList.add('show');
-  setTimeout(()=>{closeAI();toast('✦ Post generated — connect OpenAI key to activate');},2000);
+function filt(p, el) {
+  document.querySelectorAll('.pfilt').forEach(b => b.classList.remove('on'));
+  el.classList.add('on');
+  applyFilter(p);
 }
 
+// ─── MODAL ───────────────────────────────────────────────────────────────────
+let curKey = null;
+function openPost(key) {
+  const p = POSTS[key]; if(!p) return; curKey = key;
+  document.getElementById('mtitle').textContent = p.title;
+  const stClass = p.status==='Scheduled'?'st-sched':p.status==='Draft'?'st-draft':'st-pub';
+  const briefPill = p.title.startsWith('★') ? '<span class="mpill mpill-brief">★ Care Brief</span>' : '';
+  document.getElementById('mpills').innerHTML = `${briefPill}<span class="mpill">${p.plat}</span><span class="mpill">${p.day} · ${p.time}</span><span class="mpill st ${stClass}" style="background:none;border:1px solid rgba(255,255,255,.2)">${p.status}</span>`;
+  document.getElementById('mcopy').value = p.copy;
+  document.getElementById('mtags').innerHTML = (p.tags||[]).map(t=>`<span class="ht">${t}</span>`).join('');
+  document.getElementById('mimg').textContent = p.img || 'No image note specified.';
+  document.getElementById('overlay').classList.add('open');
+}
+function closeModal(){document.getElementById('overlay').classList.remove('open');curKey=null;}
+function doSchedule(){closeModal();toast('✓ Scheduled');}
+function doPublish(){closeModal();toast('▶ Connecting to platform API… (add credentials to go live)');}
+
 function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('on');setTimeout(()=>t.classList.remove('on'),3000);}
+
+// ─── INIT ─────────────────────────────────────────────────────────────────────
+renderWeek(0);
 </script>
 </body>
 </html>
