@@ -324,6 +324,11 @@ async function callOpenAI(messages) {
   });
   if (!resp.ok) {
     const detail = await resp.text();
+    if (resp.status === 401 || resp.status === 403) {
+      console.error(
+        "OPENAI_API_KEY invalid or revoked (HTTP " + resp.status + ") — check Netlify env vars."
+      );
+    }
     throw new Error("OpenAI " + resp.status + ": " + detail.slice(0, 300));
   }
   const data = await resp.json();
