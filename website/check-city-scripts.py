@@ -360,6 +360,16 @@ print("\n[ 6 ] Stale alias check — every alias target must exist in city-data.
 
 _alias_file = os.path.join(os.path.dirname(__file__), "city-aliases.json")
 _stale_alias_errors = []
+_redundant_alias_warnings = []   # warnings only — do not block CI
+
+
+def _normalise(s):
+    """Mirror of coverage.js normalise(): strip diacritics, lowercase, remove punctuation."""
+    import unicodedata as _ud
+    nfd = _ud.normalize("NFD", str(s or ""))
+    stripped = "".join(c for c in nfd if _ud.category(c) != "Mn")
+    return re.sub(r"\s+", " ", re.sub(r"[^a-z0-9\s]", "", stripped.lower())).strip()
+
 
 try:
     with open(_alias_file, encoding="utf-8") as _af:
@@ -386,6 +396,32 @@ try:
             _stale_alias_errors.append(("city-aliases.json", msg))
     else:
         print(f"  ✓  all {len(_aliases)} alias(es) point to published cities")
+
+    # Redundant alias check (warning only — does not fail CI)
+    # An alias is redundant when its key already resolves to the correct city
+    # via coverage.js step-1 exact-match logic (city name OR slug-derived name)
+    # without needing the alias entry.
+    for alias_key, target in _aliases.items():
+        if target not in _published_city_names:
+            continue  # already flagged as stale; skip
+        norm_key = _normalise(alias_key)
+        by_name = any(_normalise(c["city"]) == norm_key and c["city"] == target
+                      for c in _published)
+        by_slug = any(c.get("slug", "").replace("-", " ") == norm_key and c["city"] == target
+                      for c in _published)
+        if by_name or by_slug:
+            via = "city name" if by_name else "slug"
+            warn = (
+                f'redundant-alias: "{alias_key}" → "{target}" already resolves '
+                f'via exact match ({via}) without this alias entry — '
+                f'consider removing it from website/city-aliases.json'
+            )
+            print(f"  ⚠  {warn}")
+            _redundant_alias_warnings.append(warn)
+
+    if _redundant_alias_warnings:
+        print(f"\n  ({len(_redundant_alias_warnings)} redundant alias warning(s) above — "
+              f"these are informational and do not fail this check)")
 
 except FileNotFoundError:
     print("  ⚠  city-aliases.json not found — skipping stale-alias check")
