@@ -297,9 +297,9 @@ async function pickAvailableClaudeModel() {
 }
 
 // OpenAI — automatic fallback. Uses the same warm SYSTEM_PROMPT and settings,
-// and defaults to the fuller gpt-4o (not the mini) so the tone stays human.
+// and defaults to gpt-5.4-mini so the tone stays human.
 async function callOpenAI(messages) {
-  const model = process.env.OPENAI_MODEL || "gpt-4o";
+  const model = process.env.OPENAI_MODEL || "gpt-5.4-mini";
   const resp = await fetch("https://api.openai.com/v1/chat/completions", {
     method: "POST",
     headers: {
