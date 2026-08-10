@@ -36,6 +36,18 @@ const patchedLoad = function (request, parent, isMain, options) {
 const handler = require(path.join(fnDir, "coverage.js")).handler;
 const cityData = require(path.resolve(__dirname, "../../city-data.json"));
 
+// ── Local normalise (mirrors coverage.js — keep in sync) ───────────────────────
+// Strips accents, lowercases, removes punctuation, collapses whitespace.
+function normalise(s) {
+  return String(s || "")
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .replace(/[^a-z0-9\s]/g, "")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
 // ── Helpers ────────────────────────────────────────────────────────────────────
 
 async function query(city) {
@@ -419,6 +431,66 @@ function assert(label, condition, detail) {
     Array.isArray(list.body.counties) && list.body.counties.length > 0,
     `got ${list.body.counties}`
   );
+
+  // ── 8. Alias collision check ─────────────────────────────────────────────────
+  // Detects the scenario where a new city is added to city-data.json whose
+  // normalised name matches an existing alias key but points to a DIFFERENT
+  // city than the alias target.  If that happened, coverage.js step 1 (exact
+  // match) would shadow the alias, silently serving the wrong city.
+  console.log("\n8. Alias collision check — no city name shadows an alias key");
+
+  // coverage.js step 1 accepts two exact-match forms for every city:
+  //   a) normalise(c.city)          — diacritic-stripped city name
+  //   b) c.slug.replace(/-/g, " ") — slug-derived name (already ASCII, no normalise needed)
+  // An alias key that collides with EITHER form for a DIFFERENT city will be
+  // silently bypassed by step 1 before the alias map is consulted.
+
+  for (const [aliasKey, targetCity] of aliasEntries) {
+    const normKey = normalise(aliasKey); // keys are pre-normalised but guard anyway
+
+    // (a) city-name collision
+    const nameCols = published.filter(
+      c => normalise(c.city) === normKey && c.city !== targetCity
+    );
+    assert(
+      `alias key "${aliasKey}" not shadowed (city-name path) by a different city`,
+      nameCols.length === 0,
+      nameCols.length > 0
+        ? `"${nameCols[0].city}" normalises to the alias key but is not the alias ` +
+          `target ("${targetCity}") — step-1 exact match would serve the wrong city`
+        : ""
+    );
+
+    // (b) slug-derived collision
+    // coverage.js: _normSlug = c.slug.replace(/-/g, " ")
+    const slugCols = published.filter(
+      c => c.slug && c.slug.replace(/-/g, " ") === normKey && c.city !== targetCity
+    );
+    assert(
+      `alias key "${aliasKey}" not shadowed (slug path) by a different city`,
+      slugCols.length === 0,
+      slugCols.length > 0
+        ? `city "${slugCols[0].city}" (slug "${slugCols[0].slug}") has a slug-derived ` +
+          `name matching this alias key but is not the alias target ("${targetCity}") — ` +
+          `step-1 slug match would serve the wrong city`
+        : ""
+    );
+
+    // Informational: alias is redundant when the key already resolves via exact match
+    // to the intended target (both city-name and slug paths checked).
+    const redundantByName = published.some(
+      c => normalise(c.city) === normKey && c.city === targetCity
+    );
+    const redundantBySlug = published.some(
+      c => c.slug && c.slug.replace(/-/g, " ") === normKey && c.city === targetCity
+    );
+    if (redundantByName || redundantBySlug) {
+      process.stdout.write(
+        `  ℹ alias "${aliasKey}" is redundant — city "${targetCity}" already ` +
+        `resolves via exact match (${redundantByName ? "city name" : "slug"}) without the alias\n`
+      );
+    }
+  }
 
   // ── Summary ──────────────────────────────────────────────────────────────────
   console.log(`\n${"─".repeat(50)}`);
