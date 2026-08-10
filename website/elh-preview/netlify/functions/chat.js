@@ -191,6 +191,13 @@ async function callClaude(messages) {
     }
   }
 
+  if (result.status === 401 || result.status === 403) {
+    console.error(
+      "ANTHROPIC_API_KEY invalid or revoked (HTTP " + result.status + ") — check Netlify env vars."
+    );
+    throw new Error("Anthropic " + result.status + ": API key invalid or revoked");
+  }
+
   if (!result.ok) {
     throw new Error("Anthropic " + result.status + ": " + (result.detail || "").slice(0, 300));
   }
