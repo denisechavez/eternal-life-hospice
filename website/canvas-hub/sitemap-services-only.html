@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Sitemap + Services Only — Preview</title>
+<style>
+  :root {
+    --plum:#5B2E59; --deep:#3C1C3B; --gold:#C9B07E;
+    --cream:#F5F0EB; --cream-mid:#EDE6DE; --cream-dark:#D8CDBF;
+    --slate:#6793AC; --green:#3a6640; --text:#2C1A2B; --mid:#5A4057;
+    --ff-d:'Georgia',serif; --ff-b:system-ui,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:var(--ff-b);background:var(--cream-mid);color:var(--text)}
+
+  /* Mock header — same as live site nav */
+  .mock-hdr{background:var(--deep);padding:14px 32px;display:flex;align-items:center;gap:2rem}
+  .mock-logo{font-family:var(--ff-d);font-size:18px;color:var(--cream);margin-right:auto}
+  .mock-nav{display:flex;gap:22px}
+  .mock-nav a{font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:rgba(245,240,235,.65);text-decoration:none}
+  .mock-nav a:hover{color:var(--gold)}
+  .mock-nav .cta{background:var(--gold);color:var(--deep);padding:7px 16px;border-radius:20px}
+
+  /* Hero */
+  .hero{background:var(--deep);padding:80px 2rem 56px;text-align:center;position:relative;overflow:hidden}
+  .hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 65% 40%,rgba(91,46,89,.45) 0%,transparent 65%)}
+  .eyebrow{position:relative;font-size:11px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:12px}
+  .hero h1{position:relative;font-family:var(--ff-d);font-weight:300;font-size:clamp(2rem,5vw,3rem);color:var(--cream);line-height:1.08;margin-bottom:14px}
+  .hero p{position:relative;font-size:.95rem;color:rgba(245,240,235,.62);max-width:560px;margin:0 auto}
+
+  /* Body */
+  .body{max-width:1100px;margin:0 auto;padding:52px 2rem 60px}
+
+  /* Section */
+  .section{margin-bottom:48px}
+  .sec-head{display:flex;align-items:center;gap:12px;padding-bottom:12px;border-bottom:2px solid var(--cream-dark);margin-bottom:18px}
+  .sec-icon{width:34px;height:34px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0}
+  .sec-head h2{font-family:var(--ff-d);font-weight:400;font-size:1.25rem;color:var(--deep)}
+  .sec-head .sub{font-size:11.5px;color:var(--mid);margin-top:2px}
+
+  /* Card grid */
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:11px}
+  .card{background:#fff;border:1px solid var(--cream-dark);border-radius:10px;padding:15px 16px;display:flex;align-items:flex-start;gap:11px;text-decoration:none;transition:border-color .18s,box-shadow .18s,transform .16s;position:relative}
+  .card:hover{border-color:var(--gold);box-shadow:0 4px 16px rgba(91,46,89,.1);transform:translateY(-1px)}
+  .card .arrow{position:absolute;right:14px;top:50%;transform:translateY(-50%);color:var(--gold);opacity:0;transition:opacity .18s,transform .18s;font-size:.85rem}
+  .card:hover .arrow{opacity:1;transform:translateY(-50%) translateX(3px)}
+  .icon{font-size:17px;flex-shrink:0;margin-top:1px}
+  .title{font-size:.88rem;font-weight:700;color:var(--deep);line-height:1.25;display:block}
+  .desc{font-size:.77rem;color:var(--mid);margin-top:3px;line-height:1.5}
+
+  /* Featured card (Home) */
+  .card.feat{background:linear-gradient(135deg,var(--plum),var(--deep));border-color:transparent;grid-column:span 2}
+  .card.feat .title{color:var(--cream);font-size:.95rem}
+  .card.feat .desc{color:rgba(245,240,235,.65)}
+  .card.feat .arrow{color:var(--gold);opacity:1}
+  @media(max-width:600px){.card.feat{grid-column:span 1}}
+
+  /* NEW highlight */
+  .card.new-page{border-color:#b8dfc8;border-width:2px;background:#f6fdf9}
+  .card.new-page .title{color:var(--green)}
+  .new-tag{position:absolute;top:-10px;left:14px;background:var(--green);color:#fff;font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:2px 8px;border-radius:10px}
+
+  /* Pills (cities) */
+  .pills{display:flex;flex-wrap:wrap;gap:8px}
+  .pill{background:#fff;border:1px solid var(--cream-dark);border-radius:20px;padding:6px 14px;font-size:12px;color:var(--mid);text-decoration:none;transition:border-color .18s,color .18s}
+  .pill:hover{border-color:var(--slate);color:var(--slate)}
+  .pill::before{content:'📍';font-size:10px;margin-right:4px}
+  .pill.more{background:var(--slate);border-color:var(--slate);color:#fff;font-weight:600}
+  .pill.more::before{content:''}
+
+  /* Creds */
+  .creds{text-align:center;padding:2rem;border-top:1px solid var(--cream-dark);margin-top:.5rem;font-size:.78rem;color:var(--text-light);letter-spacing:.06em;text-transform:uppercase;color:var(--mid)}
+  .creds span{color:var(--gold);margin:0 .4rem}
+
+  /* Notice bar */
+  .notice-bar{background:var(--gold);color:var(--deep);text-align:center;padding:8px;font-size:11.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase}
+
+  /* Callout showing what changed */
+  .callout{background:#f0fbf4;border:1.5px solid #b8dfc8;border-radius:10px;padding:14px 18px;margin-bottom:28px;font-size:13px;color:#2a5c38;display:flex;align-items:center;gap:10px}
+  .callout strong{color:var(--green)}
+</style>
+</head>
+<body>
+
+<div class="notice-bar">⚠ Preview only — no site changes made</div>
+
+<!-- Mock nav — current structure unchanged -->
+<div class="mock-hdr">
+  <span class="mock-logo">Eternal Life Hospice</span>
+  <div class="mock-nav">
+    <a href="#">The Eternal Standard</a>
+    <a href="#">The First 48 Hours</a>
+    <a href="#">Integrative Therapies</a>
+    <a href="#">Insurance &amp; Medicare</a>
+    <a href="#">Coverage Area</a>
+    <a href="#">About Eternal</a>
+    <a href="#">For Providers</a>
+    <a href="#" class="cta">805.953.7273</a>
+  </div>
+</div>
+
+<!-- Hero — unchanged -->
+<section class="hero">
+  <div class="eyebrow">Eternal Life Hospice &middot; eternallifehospice.com</div>
+  <h1>Everything, in one place</h1>
+  <p>A complete guide to every page on our site &mdash; whether you&rsquo;re a family navigating a hard moment, a physician looking to refer, or simply exploring who we are.</p>
+</section>
+
+<div class="body">
+
+  <div class="callout">
+    ✦ <span><strong>One change only:</strong> The new /services page has been added to Care &amp; Referral. The site nav and all other sections remain exactly as they are today.</span>
+  </div>
+
+  <!-- ① CARE & REFERRAL — Services added here -->
+  <section class="section">
+    <div class="sec-head">
+      <div class="sec-icon" style="background:var(--plum)">🕊️</div>
+      <div><h2>Care &amp; Referral</h2><div class="sub">Start here — for families beginning their journey and providers looking to refer</div></div>
+    </div>
+    <div class="grid">
+      <a class="card feat" href="/">
+        <span class="icon">🏠</span>
+        <div>
+          <span class="title">Home — Eternal Life Hospice</span>
+          <span class="desc">Our mission, our four pillars, the first 48 hours, and how to begin.</span>
+        </div>
+        <span class="arrow">→</span>
+      </a>
+      <!-- NEW Services card -->
+      <a class="card new-page" href="/services">
+        <span class="new-tag">New</span>
+        <span class="icon">📋</span>
+        <div>
+          <span class="title">Our Services</span>
+          <span class="desc">Every service we offer — core hospice care, integrative comfort therapies, and specialist mobile services — in one clear place.</span>
+        </div>
+        <span class="arrow" style="opacity:1;color:var(--green)">→</span>
+      </a>
+      <a class="card" href="/refer">
+        <span class="icon">📋</span>
+        <div>
+          <span class="title">Refer a Patient</span>
+          <span class="desc">For physicians and case managers. Same-day admissions, secure referral, direct line to our team.</span>
+        </div>
+        <span class="arrow">→</span>
+      </a>
+      <a class="card" href="/family-guide">
+        <span class="icon">📖</span>
+        <div>
+          <span class="title">Family eGuide</span>
+          <span class="desc">A complete digital guide for families new to hospice — what to expect, who is on the team, and how to get support.</span>
+        </div>
+        <span class="arrow">→</span>
+      </a>
+      <a class="card" href="/sound-bath">
+        <span class="icon">🎶</span>
+        <div>
+          <span class="title">Sound Bath Therapy</span>
+          <span class="desc">Ancient comfort, offered at no additional cost. How sound and vibration support ease and quality of life.</span>
+        </div>
+        <span class="arrow">→</span>
+      </a>
+      <a class="card" href="/volunteer">
+        <span class="icon">🤝</span>
+        <div>
+          <span class="title">Become a Volunteer</span>
+          <span class="desc">Bring companionship, respite and presence. Training provided. No medical background required.</span>
+        </div>
+        <span class="arrow">→</span>
+      </a>
+      <a class="card" href="/careers">
+        <span class="icon">💼</span>
+        <div>
+          <span class="title">Careers</span>
+          <span class="desc">Join a team built around purpose. Open roles across clinical and administrative functions.</span>
+        </div>
+        <span class="arrow">→</span>
+      </a>
+      <a class="card" href="/media-kit">
+        <span class="icon">📁</span>
+        <div>
+          <span class="title">Media &amp; Press Kit</span>
+          <span class="desc">Brand materials, photography, credentials and story for media and partner use.</span>
+        </div>
+        <span class="arrow">→</span>
+      </a>
+      <a class="card" href="/care-brief">
+        <span class="icon">✉️</span>
+        <div>
+          <span class="title">The Care Brief</span>
+          <span class="desc">Our newsletter for families and community. In-depth stories on comfort, trust and care.</span>
+        </div>
+        <span class="arrow">→</span>
+      </a>
+    </div>
+  </section>
+
+  <!-- ② RESOURCES — unchanged -->
+  <section class="section">
+    <div class="sec-head">
+      <div class="sec-icon" style="background:#7A5C28">📚</div>
+      <div><h2>Resources for Families</h2><div class="sub">Guides written for the questions families ask most in their first difficult weeks</div></div>
+    </div>
+    <div class="grid">
+      <a class="card" href="/resources"><span class="icon">🗂️</span><div><span class="title">Resources Overview</span><span class="desc">All family guides in one place.</span></div><span class="arrow">→</span></a>
+      <a class="card" href="/resources/when-is-it-time"><span class="icon">🕰️</span><div><span class="title">When Is It Time?</span><span class="desc">The signs and how to begin that conversation with a doctor.</span></div><span class="arrow">→</span></a>
+      <a class="card" href="/resources/medicare-hospice-benefit"><span class="icon">🛡️</span><div><span class="title">The Medicare Hospice Benefit</span><span class="desc">What Medicare covers and how to verify eligibility.</span></div><span class="arrow">→</span></a>
+      <a class="card" href="/resources/first-48-hours"><span class="icon">🌅</span><div><span class="title">The First 48 Hours</span><span class="desc">What happens when hospice begins — who visits, what to expect.</span></div><span class="arrow">→</span></a>
+      <a class="card" href="/resources/how-to-choose-a-hospice"><span class="icon">✔️</span><div><span class="title">How to Choose a Hospice</span><span class="desc">The questions every family should ask — and how to verify credentials.</span></div><span class="arrow">→</span></a>
+      <a class="card" href="/resources/comfort-therapies"><span class="icon">🌿</span><div><span class="title">Integrative Comfort Therapies</span><span class="desc">Music, massage, sound, aromatherapy and more — offered at no additional cost.</span></div><span class="arrow">→</span></a>
+      <a class="card" href="/resources/the-circle-around-you"><span class="icon">⭕</span><div><span class="title">The Circle Around You</span><span class="desc">The full interdisciplinary team and the role each member plays.</span></div><span class="arrow">→</span></a>
+      <a class="card" href="/resources/back-to-the-earth"><span class="icon">🌱</span><div><span class="title">Back to the Earth</span><span class="desc">A thoughtful guide to end-of-life arrangements.</span></div><span class="arrow">→</span></a>
+    </div>
+  </section>
+
+  <!-- ③ ETERNAL JOURNAL — unchanged -->
+  <section class="section">
+    <div class="sec-head">
+      <div class="sec-icon" style="background:var(--green)">✍️</div>
+      <div><h2>The Eternal Journal</h2><div class="sub">Long-form stories on comfort, caregiving and the human experience of end-of-life care</div></div>
+    </div>
+    <div class="grid">
+      <a class="card" href="/blog"><span class="icon">📰</span><div><span class="title">Journal — All Posts</span><span class="desc">Every story we've published, in one place.</span></div><span class="arrow">→</span></a>
+      <a class="card" href="/blog/caring-for-the-caregiver"><span class="icon">🫶</span><div><span class="title">Caring for the Caregiver</span><span class="desc">This one is for the person at the center.</span></div><span class="arrow">→</span></a>
+      <a class="card" href="/blog/five-hospice-myths-that-cause-families-to-wait"><span class="icon">🚫</span><div><span class="title">Five Myths That Cause Families to Wait</span><span class="desc">Misunderstandings that delay comfort — answered plainly.</span></div><span class="arrow">→</span></a>
+      <a class="card" href="/blog/music-at-the-bedside"><span class="icon">🎵</span><div><span class="title">Music at the Bedside</span><span class="desc">How music works in hospice — and how to begin.</span></div><span class="arrow">→</span></a>
+      <a class="card" href="/blog/talking-with-children-when-a-loved-one-is-seriously-ill"><span class="icon">👦</span><div><span class="title">Talking with Children</span><span class="desc">Honest words for one of the hardest conversations.</span></div><span class="arrow">→</span></a>
+      <a class="card" href="/blog/the-quiet-work-of-hospice-volunteers"><span class="icon">🤍</span><div><span class="title">The Quiet Work of Volunteers</span><span class="desc">What volunteers actually do, and why Medicare requires it.</span></div><span class="arrow">→</span></a>
+      <a class="card" href="/blog/sound-baths-ancient-comfort-for-body-and-spirit"><span class="icon">🔔</span><div><span class="title">Sound Baths: Ancient Comfort</span><span class="desc">Origins and how it's offered today at no additional cost.</span></div><span class="arrow">→</span></a>
+    </div>
+  </section>
+
+  <!-- ④ LOCATIONS — unchanged -->
+  <section class="section">
+    <div class="sec-head">
+      <div class="sec-icon" style="background:var(--slate)">📍</div>
+      <div><h2>Service Area</h2><div class="sub">Ventura and Los Angeles County — care in any setting, wherever family is</div></div>
+    </div>
+    <div class="grid" style="margin-bottom:14px">
+      <a class="card" href="/hospice-ventura-and-los-angeles-county-ca">
+        <span class="icon">🗺️</span>
+        <div><span class="title">Full Service Area — Ventura &amp; LA County</span><span class="desc">Our complete coverage area, care settings, and how to reach us from anywhere we serve.</span></div>
+        <span class="arrow">→</span>
+      </a>
+    </div>
+    <div class="pills">
+      <a class="pill" href="/hospice-thousand-oaks-ca">Thousand Oaks</a>
+      <a class="pill" href="/hospice-westlake-village-ca">Westlake Village</a>
+      <a class="pill" href="/hospice-simi-valley-ca">Simi Valley</a>
+      <a class="pill" href="/hospice-calabasas-ca">Calabasas</a>
+      <a class="pill" href="/hospice-ventura-ca">Ventura</a>
+      <a class="pill" href="/hospice-oxnard-ca">Oxnard</a>
+      <a class="pill" href="/hospice-malibu-ca">Malibu</a>
+      <a class="pill" href="/hospice-beverly-hills-ca">Beverly Hills</a>
+      <a class="pill" href="/hospice-santa-monica-ca">Santa Monica</a>
+      <a class="pill" href="/hospice-pasadena-ca">Pasadena</a>
+      <span class="pill more">+ 120 more cities →</span>
+    </div>
+  </section>
+
+  <!-- ⑤ LEGAL — unchanged -->
+  <section class="section">
+    <div class="sec-head">
+      <div class="sec-icon" style="background:#555">⚖️</div>
+      <div><h2>Legal &amp; Policy</h2><div class="sub">Privacy, terms and your rights as a visitor</div></div>
+    </div>
+    <div class="grid">
+      <a class="card" href="/privacy-policy"><span class="icon">🔒</span><div><span class="title">Privacy Policy</span><span class="desc">How we collect, use and protect information on this site.</span></div><span class="arrow">→</span></a>
+      <a class="card" href="/terms"><span class="icon">📄</span><div><span class="title">Terms &amp; Conditions</span><span class="desc">The terms governing use of eternallifehospice.com.</span></div><span class="arrow">→</span></a>
+    </div>
+  </section>
+
+  <div class="creds">Medicare-Certified <span>&middot;</span> CDPH-Licensed <span>&middot;</span> ACHC-Accredited <span>&middot;</span> Serving Ventura &amp; Los Angeles County</div>
+
+</div>
+</body>
+</html>
