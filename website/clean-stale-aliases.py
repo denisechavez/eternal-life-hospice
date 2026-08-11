@@ -7,14 +7,16 @@ in the published index of city-data.json.
 
 Also warns about *redundant* aliases — entries whose key already resolves to
 the correct city via coverage.js exact-match logic (city name or slug) without
-needing the alias entry.  Redundant aliases are printed as warnings but are
-NOT removed automatically; an editor must decide whether to keep or drop them.
+needing the alias entry.  With --remove-redundant, these are removed too.
 
 Usage (from repo root):
-    python3 website/clean-stale-aliases.py [--dry-run]
+    python3 website/clean-stale-aliases.py [--dry-run] [--remove-redundant]
 
 Options:
-    --dry-run   Print what would be removed without writing any changes.
+    --dry-run           Print what would be removed without writing any changes.
+    --remove-redundant  Also remove aliases whose key already resolves via exact
+                        match (city name or slug).  Safe to run after confirming
+                        the city-data.json entries will not be renamed.
 
 Exits 0 when the file is clean (or was successfully cleaned).
 Exits 1 if a file cannot be read or parsed.
@@ -26,7 +28,8 @@ import re
 import sys
 import unicodedata
 
-DRY_RUN = "--dry-run" in sys.argv
+DRY_RUN          = "--dry-run"          in sys.argv
+REMOVE_REDUNDANT = "--remove-redundant" in sys.argv
 
 
 # ── Normalisation (mirrors coverage.js — keep in sync) ────────────────────────
@@ -95,44 +98,78 @@ for key, target in aliases.items():
 # ── Report stale aliases ───────────────────────────────────────────────────────
 
 if stale:
-    print(f"{'[DRY RUN] ' if DRY_RUN else ''}Found {len(stale)} stale alias(es):\n")
+    prefix = "[DRY RUN] " if DRY_RUN else ""
+    print(f"{prefix}Found {len(stale)} stale alias(es) to remove:\n")
     for key, target in stale.items():
-        print(f'  "{key}" → "{target}"  (target not in published city-data.json)')
+        print(f'  ✂  "{key}" → "{target}"  (target not in published city-data.json)')
 
-# ── Report redundant aliases (always, before any write) ───────────────────────
+# ── Report redundant aliases ───────────────────────────────────────────────────
 
 if redundant:
-    print(f"\n⚠️   Found {len(redundant)} redundant alias(es) "
-          f"(key already resolves via exact match — alias not needed):\n")
-    for key, target, via in redundant:
-        print(f'  ⚠  "{key}" → "{target}"  (resolves via {via} without alias)')
-    print(
-        "\n    These aliases are harmless but add noise to city-aliases.json.\n"
-        "    Remove them manually if the city-data.json entry will not be renamed."
-    )
+    if REMOVE_REDUNDANT:
+        prefix = "[DRY RUN] " if DRY_RUN else ""
+        print(f"\n{prefix}Found {len(redundant)} redundant alias(es) to remove:\n")
+        for key, target, via in redundant:
+            print(f'  ✂  "{key}" → "{target}"  (resolves via {via} — alias not needed)')
+    else:
+        print(f"\n⚠️   Found {len(redundant)} redundant alias(es) "
+              f"(key already resolves via exact match — alias not needed):\n")
+        for key, target, via in redundant:
+            print(f'  ⚠  "{key}" → "{target}"  (resolves via {via} without alias)')
+        print(
+            "\n    These aliases are harmless but add noise to city-aliases.json.\n"
+            "    Run with --remove-redundant to remove them automatically,\n"
+            "    or delete them manually if the city-data.json entry will not be renamed."
+        )
 
-# ── Early exit for dry-run or nothing-to-remove ───────────────────────────────
+# ── Early exit: nothing to do ─────────────────────────────────────────────────
 
-if not stale:
-    if not redundant:
+nothing_to_remove = not stale and (not redundant or not REMOVE_REDUNDANT)
+if nothing_to_remove:
+    if not stale and not redundant:
         print(f"✅  city-aliases.json is clean — all {len(aliases)} alias(es) point to "
               f"published cities and none are redundant.")
     sys.exit(0)
 
+# ── Dry-run exit ───────────────────────────────────────────────────────────────
+
 if DRY_RUN:
+    parts = []
+    if stale:
+        parts.append(f"{len(stale)} stale")
+    if redundant and REMOVE_REDUNDANT:
+        parts.append(f"{len(redundant)} redundant")
     print(f"\nDry run complete — no changes written.")
-    print(f"Run without --dry-run to remove the {len(stale)} stale alias(es).")
+    print(f"Run without --dry-run to remove the {' and '.join(parts)} alias(es).")
     sys.exit(0)
 
-# ── Remove stale entries and rewrite the file ──────────────────────────────────
+# ── Remove stale entries (always) and redundant entries (with flag) ────────────
 
-clean_aliases = {k: v for k, v in aliases.items() if k not in stale}
+redundant_keys = {key for key, _target, _via in redundant} if REMOVE_REDUNDANT else set()
+
+clean_aliases = {
+    k: v for k, v in aliases.items()
+    if k not in stale and k not in redundant_keys
+}
 alias_data["aliases"] = clean_aliases
 
 with open(_alias_file_path, "w", encoding="utf-8") as f:
     json.dump(alias_data, f, indent=2, ensure_ascii=False)
     f.write("\n")
 
-print(f"\n✅  Removed {len(stale)} stale alias(es) from city-aliases.json.")
+# ── Summary ────────────────────────────────────────────────────────────────────
+
+removed_stale     = len(stale)
+removed_redundant = len(redundant_keys)
+total_removed     = removed_stale + removed_redundant
+
+if removed_stale and removed_redundant:
+    print(f"\n✅  Removed {removed_stale} stale alias(es) and "
+          f"{removed_redundant} redundant alias(es) from city-aliases.json.")
+elif removed_stale:
+    print(f"\n✅  Removed {removed_stale} stale alias(es) from city-aliases.json.")
+else:
+    print(f"\n✅  Removed {removed_redundant} redundant alias(es) from city-aliases.json.")
+
 print(f"    Remaining: {len(clean_aliases)} alias(es).")
 sys.exit(0)
