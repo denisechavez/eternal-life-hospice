@@ -11,6 +11,7 @@ needing the alias entry.  With --remove-redundant, these are removed too.
 
 Usage (from repo root):
     python3 website/clean-stale-aliases.py [--dry-run] [--remove-redundant] [--check]
+    python3 website/clean-stale-aliases.py --simulate-rename "Old City" "New City"
 
 Options:
     --dry-run           Print what would be removed without writing any changes.
@@ -21,10 +22,36 @@ Options:
                         any stale aliases are found.  Does not modify the file.
                         Combine with --remove-redundant to also fail on redundant
                         aliases.
+    --simulate-rename OLD NEW
+                        Pre-edit safety check: given that you are about to rename
+                        a city from OLD to NEW in city-data.json, report every
+                        alias that would become stale as a result.  Does not
+                        modify any file.  Run this BEFORE editing city-data.json.
+                        Exits non-zero if any aliases would break.
+
+        Example:
+            python3 website/clean-stale-aliases.py \\
+                --simulate-rename "La Cañada Flintridge" "La Canada Flintridge"
 
 Exits 0 when the file is clean (or was successfully cleaned).
-Exits 1 if a file cannot be read or parsed, OR (in --check mode) if problems
-are found.
+Exits 1 if a file cannot be read or parsed, OR (in --check / --simulate-rename
+mode) if problems are found.
+
+── Rename safety workflow ──────────────────────────────────────────────────────
+Whenever you rename a `city` field in city-data.json:
+
+  1. BEFORE the edit, run:
+         python3 website/clean-stale-aliases.py --simulate-rename "Old" "New"
+     This lists every alias that will break.
+
+  2. Update those alias *values* (targets) in city-aliases.json to match the
+     new name.
+
+  3. Edit city-data.json.
+
+  4. Verify with:
+         python3 website/clean-stale-aliases.py --check
+────────────────────────────────────────────────────────────────────────────────
 """
 
 import json
@@ -36,6 +63,22 @@ import unicodedata
 DRY_RUN          = "--dry-run"          in sys.argv
 REMOVE_REDUNDANT = "--remove-redundant" in sys.argv
 CHECK_MODE       = "--check"            in sys.argv
+
+# ── --simulate-rename OLD NEW ─────────────────────────────────────────────────
+
+SIMULATE_RENAME = "--simulate-rename" in sys.argv
+_sim_old = None
+_sim_new = None
+
+if SIMULATE_RENAME:
+    _sr_idx = sys.argv.index("--simulate-rename")
+    try:
+        _sim_old = sys.argv[_sr_idx + 1]
+        _sim_new = sys.argv[_sr_idx + 2]
+    except IndexError:
+        print("ERROR: --simulate-rename requires two arguments: OLD_NAME NEW_NAME",
+              file=sys.stderr)
+        sys.exit(1)
 
 
 # ── Normalisation (mirrors coverage.js — keep in sync) ────────────────────────
@@ -75,6 +118,44 @@ except (FileNotFoundError, json.JSONDecodeError) as exc:
     sys.exit(1)
 
 aliases = alias_data.get("aliases", {})
+
+# ── --simulate-rename: pre-edit impact check ───────────────────────────────────
+# Run BEFORE editing city-data.json to see which aliases will break.
+
+if SIMULATE_RENAME:
+    old_name = _sim_old
+    new_name = _sim_new
+
+    # Validate: old name must exist in current published cities
+    if old_name not in published_cities:
+        close = [c for c in published_cities if c.lower() == old_name.lower()]
+        hint = f"  Did you mean: {close[0]!r}?" if close else ""
+        print(f"ERROR: {old_name!r} is not a published city in city-data.json.{hint}",
+              file=sys.stderr)
+        sys.exit(1)
+
+    # Find every alias whose target matches the old name
+    affected = {key: target for key, target in aliases.items() if target == old_name}
+
+    if affected:
+        print(f"⚠️   Renaming {old_name!r} → {new_name!r} would break "
+              f"{len(affected)} alias(es):\n")
+        for key in affected:
+            print(f'  ✂  "{key}" → "{old_name}"  (target will no longer exist)')
+        print(
+            f"\n  Fix: update those alias values in city-aliases.json from\n"
+            f"       {old_name!r}  →  {new_name!r}\n"
+            f"  before (or at the same time as) you rename the city in city-data.json.\n"
+            f"\n  Rename workflow:\n"
+            f"    1. Update alias targets in city-aliases.json.\n"
+            f"    2. Edit city-data.json.\n"
+            f"    3. Verify: python3 website/clean-stale-aliases.py --check"
+        )
+        sys.exit(1)
+    else:
+        print(f"✅  Renaming {old_name!r} → {new_name!r} would not break any aliases.\n"
+              f"    (No alias currently targets {old_name!r}.)")
+        sys.exit(0)
 
 # ── Find stale aliases ─────────────────────────────────────────────────────────
 # A stale alias points to a city that is no longer in the published index.
@@ -145,6 +226,14 @@ if CHECK_MODE:
         print(f"\n❌  city-aliases.json has {' and '.join(problems)} — "
               f"run `{fix_cmd}` to fix.",
               file=sys.stderr)
+        if stale:
+            print(
+                "\n   Tip: stale aliases are often caused by a city rename in\n"
+                "   city-data.json.  Before renaming a city, run:\n"
+                "     python3 website/clean-stale-aliases.py "
+                "--simulate-rename \"Old Name\" \"New Name\"\n"
+                "   to see which aliases need updating first.",
+                file=sys.stderr)
         sys.exit(1)
     if not stale and not redundant:
         print(f"✅  city-aliases.json is clean — all {len(aliases)} alias(es) point to "
