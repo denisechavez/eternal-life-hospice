@@ -4,7 +4,6 @@
   "comment3": "Values must exactly match the `city` field in city-data.json.",
   "comment4": "Add an alias here whenever a prefix match is intentional and you want it to be auditable.",
   "aliases": {
-    "la canada flintridge": "La Cañada Flintridge",
     "la canada flintridge ca": "La Cañada Flintridge",
     "la canana flintridge": "La Cañada Flintridge",
     "thousand oaks ca": "Thousand Oaks",

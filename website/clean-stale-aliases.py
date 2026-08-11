@@ -10,16 +10,21 @@ the correct city via coverage.js exact-match logic (city name or slug) without
 needing the alias entry.  With --remove-redundant, these are removed too.
 
 Usage (from repo root):
-    python3 website/clean-stale-aliases.py [--dry-run] [--remove-redundant]
+    python3 website/clean-stale-aliases.py [--dry-run] [--remove-redundant] [--check]
 
 Options:
     --dry-run           Print what would be removed without writing any changes.
     --remove-redundant  Also remove aliases whose key already resolves via exact
                         match (city name or slug).  Safe to run after confirming
                         the city-data.json entries will not be renamed.
+    --check             CI/validation mode: report problems and exit non-zero if
+                        any stale aliases are found.  Does not modify the file.
+                        Combine with --remove-redundant to also fail on redundant
+                        aliases.
 
 Exits 0 when the file is clean (or was successfully cleaned).
-Exits 1 if a file cannot be read or parsed.
+Exits 1 if a file cannot be read or parsed, OR (in --check mode) if problems
+are found.
 """
 
 import json
@@ -30,6 +35,7 @@ import unicodedata
 
 DRY_RUN          = "--dry-run"          in sys.argv
 REMOVE_REDUNDANT = "--remove-redundant" in sys.argv
+CHECK_MODE       = "--check"            in sys.argv
 
 
 # ── Normalisation (mirrors coverage.js — keep in sync) ────────────────────────
@@ -121,6 +127,33 @@ if redundant:
             "    Run with --remove-redundant to remove them automatically,\n"
             "    or delete them manually if the city-data.json entry will not be renamed."
         )
+
+# ── Check mode: report and exit non-zero if problems exist ────────────────────
+# --check is designed for CI / pre-commit / validation gates.  It never writes
+# the file; it only audits and returns an appropriate exit code.
+
+if CHECK_MODE:
+    problems = []
+    if stale:
+        problems.append(f"{len(stale)} stale alias(es)")
+    if redundant and REMOVE_REDUNDANT:
+        problems.append(f"{len(redundant)} redundant alias(es)")
+    if problems:
+        fix_cmd = "python3 website/clean-stale-aliases.py"
+        if REMOVE_REDUNDANT:
+            fix_cmd += " --remove-redundant"
+        print(f"\n❌  city-aliases.json has {' and '.join(problems)} — "
+              f"run `{fix_cmd}` to fix.",
+              file=sys.stderr)
+        sys.exit(1)
+    if not stale and not redundant:
+        print(f"✅  city-aliases.json is clean — all {len(aliases)} alias(es) point to "
+              f"published cities and none are redundant.")
+    elif redundant and not REMOVE_REDUNDANT:
+        # Warn but don't fail — redundant aliases are harmless unless the flag is set
+        print(f"✅  No stale aliases found. "
+              f"({len(redundant)} redundant alias(es) noted; pass --remove-redundant to fail on these too.)")
+    sys.exit(0)
 
 # ── Early exit: nothing to do ─────────────────────────────────────────────────
 

@@ -47,6 +47,10 @@ args = "city-script-regression-check"
 task = "workflow.run"
 args = "coverage-lookup-test"
 
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "alias-check"
+
 [[workflows.workflow]]
 name = "Start application"
 author = "agent"
@@ -136,6 +140,17 @@ args = "node website/elh-preview/assets/test-coverage-lookup.js"
 
 [workflows.workflow.metadata]
 outputType = "console"
+
+[[workflows.workflow]]
+name = "alias-check"
+author = "agent"
+
+[workflows.workflow.metadata]
+isValidation = true
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "python3 website/clean-stale-aliases.py --check --remove-redundant"
 
 [[ports]]
 localPort = 3000
