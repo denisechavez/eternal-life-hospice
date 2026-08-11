@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Services Page — Preview Only</title>
+<style>
+  :root {
+    --plum:#5B2E59; --deep:#3C1C3B; --gold:#C9B07E;
+    --cream:#F5F0EB; --cream-mid:#EDE6DE; --cream-dark:#D8CDBF;
+    --slate:#6793AC; --green:#3a6640; --text:#2C1A2B; --mid:#5A4057;
+    --ff-d:'Georgia',serif; --ff-b:system-ui,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:var(--ff-b);background:var(--cream);color:var(--text)}
+
+  /* ── HERO ── */
+  .hero{background:var(--deep);padding:90px 2rem 64px;text-align:center;position:relative;overflow:hidden}
+  .hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 65% 50%,rgba(91,46,89,.5) 0%,transparent 65%)}
+  .hero .eyebrow{position:relative;font-size:11px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:14px}
+  .hero h1{position:relative;font-family:var(--ff-d);font-weight:300;font-size:clamp(2.2rem,5vw,3.4rem);color:var(--cream);line-height:1.08;margin-bottom:18px}
+  .hero p{position:relative;font-size:1.05rem;color:rgba(245,240,235,.62);max-width:580px;margin:0 auto 32px;line-height:1.65}
+  .hero-btns{position:relative;display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+  .btn-gold{background:var(--gold);color:var(--deep);font-weight:700;font-size:14px;padding:13px 28px;border-radius:30px;text-decoration:none;letter-spacing:.03em}
+  .btn-ghost{border:1.5px solid rgba(245,240,235,.35);color:rgba(245,240,235,.8);font-size:14px;padding:12px 26px;border-radius:30px;text-decoration:none}
+
+  /* ── CREDS BAR ── */
+  .creds{background:#fff;border-bottom:1px solid var(--cream-dark);padding:14px 2rem;display:flex;gap:2rem;justify-content:center;align-items:center;flex-wrap:wrap;font-size:12px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--mid)}
+  .creds span{color:var(--gold)}
+
+  /* ── SECTION WRAPPER ── */
+  .wrap{max-width:1100px;margin:0 auto;padding:0 2rem}
+
+  /* ── SECTION INTRO ── */
+  .sec{padding:64px 0 56px}
+  .sec-intro{text-align:center;max-width:680px;margin:0 auto 48px}
+  .sec-intro .eyebrow{font-size:11px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);margin-bottom:10px}
+  .sec-intro h2{font-family:var(--ff-d);font-weight:300;font-size:clamp(1.7rem,3.5vw,2.4rem);color:var(--deep);line-height:1.1;margin-bottom:14px}
+  .sec-intro p{font-size:.95rem;color:var(--mid);line-height:1.7}
+
+  /* ── DIVIDER ── */
+  .divider{height:1px;background:var(--cream-dark);margin:0 2rem}
+
+  /* ── CORE CARE CARDS ── */
+  .core-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px}
+  .core-card{background:#fff;border:1px solid var(--cream-dark);border-radius:14px;padding:24px 24px 22px;border-top:3px solid var(--plum);transition:box-shadow .2s,transform .18s}
+  .core-card:hover{box-shadow:0 6px 24px rgba(91,46,89,.12);transform:translateY(-2px)}
+  .core-card.gold{border-top-color:var(--gold)}
+  .core-card.slate{border-top-color:var(--slate)}
+  .core-card.green{border-top-color:var(--green)}
+  .core-icon{font-size:26px;margin-bottom:12px}
+  .core-card h3{font-family:var(--ff-d);font-weight:400;font-size:1.12rem;color:var(--deep);margin-bottom:8px;line-height:1.2}
+  .core-card p{font-size:.85rem;color:var(--mid);line-height:1.6}
+
+  /* ── MODALITIES SECTION ── */
+  .mod-bg{background:var(--cream-mid)}
+  .mod-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px}
+  .mod-card{background:#fff;border:1px solid var(--cream-dark);border-radius:12px;padding:18px 18px 16px;display:flex;align-items:flex-start;gap:12px;transition:border-color .18s,box-shadow .2s}
+  .mod-card:hover{border-color:var(--gold);box-shadow:0 3px 14px rgba(91,46,89,.09)}
+  .mod-icon{font-size:20px;flex-shrink:0;margin-top:1px}
+  .mod-card h3{font-size:.88rem;font-weight:700;color:var(--deep);margin-bottom:4px;line-height:1.2}
+  .mod-card p{font-size:.78rem;color:var(--mid);line-height:1.5}
+  .mod-note{margin-top:20px;padding:14px 18px;background:#fff;border-left:4px solid var(--gold);border-radius:0 10px 10px 0;font-size:.82rem;color:var(--mid);line-height:1.7}
+  .mod-note strong{color:var(--deep)}
+
+  /* ── CLINICAL GRID ── */
+  .clin-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:10px}
+  .clin-pill{background:#fff;border:1px solid var(--cream-dark);border-radius:10px;padding:13px 16px;display:flex;align-items:center;gap:10px;font-size:.85rem;color:var(--mid);transition:border-color .18s}
+  .clin-pill:hover{border-color:var(--slate);color:var(--slate)}
+  .clin-pill::before{content:'✦';color:var(--slate);font-size:.7rem;flex-shrink:0}
+
+  /* ── SETTINGS STRIP ── */
+  .settings{background:var(--deep);padding:48px 2rem;text-align:center}
+  .settings h2{font-family:var(--ff-d);font-weight:300;font-size:1.8rem;color:var(--cream);margin-bottom:12px}
+  .settings p{font-size:.9rem;color:rgba(245,240,235,.6);margin-bottom:28px;max-width:540px;margin-left:auto;margin-right:auto}
+  .set-pills{display:flex;flex-wrap:wrap;gap:10px;justify-content:center}
+  .set-pill{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.18);color:rgba(245,240,235,.8);border-radius:24px;padding:9px 20px;font-size:.83rem;letter-spacing:.03em}
+
+  /* ── CTA ── */
+  .cta-sec{padding:60px 2rem;text-align:center;background:var(--cream-mid)}
+  .cta-sec h2{font-family:var(--ff-d);font-weight:300;font-size:2rem;color:var(--deep);margin-bottom:12px}
+  .cta-sec p{font-size:.95rem;color:var(--mid);margin-bottom:28px}
+
+  /* notice */
+  .preview-notice{background:var(--gold);color:var(--deep);text-align:center;padding:9px;font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase}
+</style>
+</head>
+<body>
+
+<div class="preview-notice">⚠ Preview only — no site changes made</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="eyebrow">Eternal Life Hospice &middot; Care That Honors Life</div>
+  <h1>Compassionate care,<br>in every dimension</h1>
+  <p>From skilled nursing and physician oversight to integrative comfort therapies — every service we offer is designed around one person: your loved one.</p>
+  <div class="hero-btns">
+    <a class="btn-gold" href="#">Refer a Patient</a>
+    <a class="btn-ghost" href="#">Call 805.953.7273</a>
+  </div>
+</section>
+
+<!-- CREDS -->
+<div class="creds">
+  <span>✦</span> Medicare-Certified &nbsp;<span>·</span>&nbsp; CDPH-Licensed &nbsp;<span>·</span>&nbsp; ACHC-Accredited &nbsp;<span>·</span>&nbsp; Same-Day Admissions &nbsp;<span>·</span>&nbsp; 24/7 Nursing <span>✦</span>
+</div>
+
+<!-- ① CORE CARE -->
+<section class="sec">
+  <div class="wrap">
+    <div class="sec-intro">
+      <div class="eyebrow">The Foundation</div>
+      <h2>Skilled hospice care,<br>wherever home is</h2>
+      <p>Every patient receives a coordinated, physician-directed care plan — clinical excellence and human presence woven together from the first day.</p>
+    </div>
+    <div class="core-grid">
+      <div class="core-card">
+        <div class="core-icon">🩺</div>
+        <h3>Physician &amp; Nursing Care</h3>
+        <p>Hospice-experienced physicians and skilled nurses manage advanced symptom control, respiratory care, wound care and medication coordination — in the home, around the clock.</p>
+      </div>
+      <div class="core-card gold">
+        <div class="core-icon">🕐</div>
+        <h3>Same-Day Admissions &amp; 24/7 Response</h3>
+        <p>When care is needed, it arrives. Our on-call nurses are available every hour of every day, with same-day admission when clinically appropriate.</p>
+      </div>
+      <div class="core-card slate">
+        <div class="core-icon">🤝</div>
+        <h3>Interdisciplinary Team</h3>
+        <p>Physician, nurse, social worker, chaplain, certified aide and volunteer — a full circle of care around every patient and every family, coordinated under one plan.</p>
+      </div>
+      <div class="core-card green">
+        <div class="core-icon">💛</div>
+        <h3>Bereavement Support</h3>
+        <p>Our care does not end at the last breath. Counselors and chaplains walk with families for up to 13 months after a loss — because grief has no fixed timeline.</p>
+      </div>
+      <div class="core-card">
+        <div class="core-icon">🛡️</div>
+        <h3>Medicare &amp; Coverage Coordination</h3>
+        <p>We verify Medicare, Medi-Cal and private insurance, coordinate all covered services, and confirm costs — so families can focus on what matters.</p>
+      </div>
+      <div class="core-card gold">
+        <div class="core-icon">🏠</div>
+        <h3>Care in Any Setting</h3>
+        <p>Home, assisted living, skilled nursing, residential board-and-care — we come to wherever the patient lives. Care moves with the patient, not the other way around.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ② INTEGRATIVE COMFORT -->
+<section class="sec mod-bg">
+  <div class="wrap">
+    <div class="sec-intro">
+      <div class="eyebrow">Whole-Person Care</div>
+      <h2>Integrative comfort therapies</h2>
+      <p>Offered alongside the clinical care plan — at no additional expense to families — to ease the body, quiet the mind, and bring comfort to the spirit.</p>
+    </div>
+    <div class="mod-grid">
+      <div class="mod-card">
+        <span class="mod-icon">🎵</span>
+        <div>
+          <h3>Music Therapy</h3>
+          <p>Board-certified music therapist. Live music chosen around each patient's history and preferences.</p>
+        </div>
+      </div>
+      <div class="mod-card">
+        <span class="mod-icon">🙌</span>
+        <div>
+          <h3>Therapeutic Massage</h3>
+          <p>Gentle, adaptive massage for comfort and circulation, modified for each patient's condition.</p>
+        </div>
+      </div>
+      <div class="mod-card">
+        <span class="mod-icon">✨</span>
+        <div>
+          <h3>Reiki</h3>
+          <p>Non-invasive sessions for relaxation, quiet rest, and a sense of calm without demands.</p>
+        </div>
+      </div>
+      <div class="mod-card">
+        <span class="mod-icon">🌿</span>
+        <div>
+          <h3>Aromatherapy</h3>
+          <p>Botanical essences selected to ease distress and support comfort — guided by preferences and sensitivities.</p>
+        </div>
+      </div>
+      <div class="mod-card">
+        <span class="mod-icon">🐾</span>
+        <div>
+          <h3>Pet Therapy</h3>
+          <p>Certified therapy animals visit patients at home — especially meaningful in advanced illness.</p>
+        </div>
+      </div>
+      <div class="mod-card">
+        <span class="mod-icon">🔔</span>
+        <div>
+          <h3>Sound Bath</h3>
+          <p>Tibetan and crystal singing bowls at the bedside — sustained tones for rest, stillness and presence.</p>
+        </div>
+      </div>
+      <div class="mod-card">
+        <span class="mod-icon">👂</span>
+        <div>
+          <h3>Audiology Support</h3>
+          <p>Hearing assessment and support so patients can remain connected to their loved ones. Communication is care.</p>
+        </div>
+      </div>
+      <div class="mod-card">
+        <span class="mod-icon">🌱</span>
+        <div>
+          <h3>Holistic Medicine</h3>
+          <p>Integrative approaches coordinated with the clinical team, addressing the whole person.</p>
+        </div>
+      </div>
+      <div class="mod-card">
+        <span class="mod-icon">🕯️</span>
+        <div>
+          <h3>End-of-Life Doula</h3>
+          <p>A trained companion offering presence, legacy conversations and steady support through the final passage.</p>
+        </div>
+      </div>
+    </div>
+    <div class="mod-note">
+      <strong>A note on these therapies:</strong> Integrative comfort modalities are offered as complementary care for ease and quality of life. They are not intended to diagnose, treat, cure or prevent any medical condition, and they accompany — never replace — the clinical care plan. Most are provided at no additional expense to families when included in the individualized plan of care.
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ③ CLINICAL & MOBILE -->
+<section class="sec">
+  <div class="wrap">
+    <div class="sec-intro">
+      <div class="eyebrow">Skilled &amp; Mobile Services</div>
+      <h2>Specialist care that comes to you</h2>
+      <p>Coordinated by the care team and delivered wherever the patient lives — when clinically indicated, at no additional expense to families.</p>
+    </div>
+    <div class="clin-grid">
+      <div class="clin-pill">Physical Therapy</div>
+      <div class="clin-pill">Occupational Therapy</div>
+      <div class="clin-pill">Speech Therapy</div>
+      <div class="clin-pill">Dietitian</div>
+      <div class="clin-pill">Mobile Podiatry</div>
+      <div class="clin-pill">Mobile Optometry</div>
+      <div class="clin-pill">Dialysis Coordination</div>
+      <div class="clin-pill">In-Home Lab Testing</div>
+      <div class="clin-pill">Licensed Gerontologist</div>
+    </div>
+  </div>
+</section>
+
+<!-- ④ SETTINGS -->
+<div class="settings">
+  <h2>Care wherever home is</h2>
+  <p>We come to the patient. Our team provides care across every setting where families live.</p>
+  <div class="set-pills">
+    <span class="set-pill">🏠 Private Home</span>
+    <span class="set-pill">🏢 Assisted Living</span>
+    <span class="set-pill">🏥 Skilled Nursing Facility</span>
+    <span class="set-pill">🛏️ Board &amp; Care Home</span>
+    <span class="set-pill">🏨 Residential Care</span>
+  </div>
+</div>
+
+<!-- ⑤ CTA -->
+<div class="cta-sec">
+  <h2>Ready to begin?</h2>
+  <p>A nurse is available to answer questions, verify coverage, and start the admission process — any time, any day.</p>
+  <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap">
+    <a class="btn-gold" href="#" style="text-decoration:none;background:var(--gold);color:var(--deep);font-weight:700;font-size:14px;padding:14px 30px;border-radius:30px">Call 805.953.7273</a>
+    <a href="#" style="text-decoration:none;border:1.5px solid var(--plum);color:var(--plum);font-size:14px;padding:13px 28px;border-radius:30px;font-weight:600">Refer a Patient →</a>
+  </div>
+</div>
+
+</body>
+</html>
