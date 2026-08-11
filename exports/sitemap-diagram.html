@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ELH Sitemap — Proposed Structure</title>
+<style>
+  :root {
+    --plum:#5B2E59; --deep:#3C1C3B; --gold:#C9B07E;
+    --cream:#F5F0EB; --cream-mid:#EDE6DE; --cream-dark:#D8CDBF;
+    --slate:#6793AC; --text:#2C1A2B; --mid:#5A4057;
+  }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { font-family:system-ui,sans-serif; background:var(--cream-mid); color:var(--text); padding:40px 32px; min-width:900px; }
+  h1 { font-family:Georgia,serif; font-weight:400; font-size:26px; color:var(--deep); margin-bottom:5px; }
+  .sub { font-size:12.5px; color:var(--mid); margin-bottom:36px; }
+
+  /* Root */
+  .root-wrap { display:flex; justify-content:center; }
+  .root-node {
+    background:var(--deep); color:var(--cream); border-radius:14px;
+    padding:14px 36px; font-size:15px; font-weight:600; letter-spacing:.04em;
+    text-align:center; box-shadow:0 4px 18px rgba(60,28,59,.25);
+  }
+  .root-node .url { font-size:11px; opacity:.55; margin-top:3px; }
+
+  /* Vertical trunk */
+  .v-line { width:2px; background:var(--gold); margin:0 auto; }
+  .trunk { height:28px; }
+
+  /* Horizontal connector */
+  .h-connector { position:relative; height:2px; background:var(--gold); margin:0 auto; }
+  .h-connector::before,.h-connector::after { content:''; position:absolute; top:0; width:2px; height:14px; background:var(--gold); }
+  .h-connector::before { left:0; }
+  .h-connector::after { right:0; }
+
+  /* Section wrapper */
+  .sections { display:flex; gap:16px; align-items:flex-start; justify-content:center; }
+
+  .sec { display:flex; flex-direction:column; align-items:center; flex:1; min-width:0; max-width:210px; }
+
+  .sec-line { width:2px; height:14px; background:var(--gold); }
+
+  .sec-head {
+    border-radius:9px; padding:9px 14px; text-align:center; width:100%;
+    font-size:10.5px; font-weight:700; letter-spacing:.1em; text-transform:uppercase;
+  }
+  .sec-head.core  { background:var(--plum); color:var(--cream); }
+  .sec-head.loc   { background:var(--slate); color:#fff; }
+  .sec-head.res   { background:#7A5C28; color:var(--cream); }
+  .sec-head.blog  { background:#3a6640; color:#fff; }
+  .sec-head.legal { background:#555; color:#fff; }
+
+  .sec-pages { display:flex; flex-direction:column; gap:5px; padding-top:8px; width:100%; }
+
+  .page {
+    background:#fff; border:1px solid var(--cream-dark); border-radius:7px;
+    padding:6px 10px; font-size:11px; color:var(--mid);
+    display:flex; align-items:center; gap:6px;
+    box-shadow:0 1px 3px rgba(60,28,59,.05);
+  }
+  .dot { width:7px; height:7px; border-radius:50%; flex-shrink:0; }
+  .dot.plum  { background:var(--plum); }
+  .dot.gold  { background:var(--gold); }
+  .dot.slate { background:var(--slate); }
+  .dot.green { background:#3a6640; }
+  .dot.grey  { background:#999; }
+
+  .pri {
+    font-size:9px; font-weight:700; padding:2px 5px; border-radius:8px;
+    margin-left:auto; flex-shrink:0; white-space:nowrap;
+  }
+  .pri.h { background:#f0e8d0; color:#7A5C28; }
+  .pri.m { background:var(--cream-mid); color:var(--mid); }
+  .pri.l { background:#f0f0f0; color:#999; }
+
+  .pill {
+    background:var(--cream); border:1px solid var(--cream-dark); border-radius:7px;
+    padding:6px 10px; font-size:11px; color:var(--mid); font-style:italic;
+    display:flex; align-items:center; gap:6px;
+  }
+  .count {
+    font-size:9.5px; font-weight:700; background:var(--slate); color:#fff;
+    padding:1px 6px; border-radius:8px; font-style:normal;
+  }
+
+  /* XML note */
+  .xml-note {
+    margin-top:28px; padding:14px 18px; background:#fff;
+    border-left:4px solid var(--gold); border-radius:0 10px 10px 0;
+    font-size:12px; color:var(--mid); line-height:1.75;
+    max-width:900px; margin-left:auto; margin-right:auto;
+  }
+  .xml-note strong { color:var(--deep); }
+
+  /* Legend */
+  .legend {
+    margin-top:16px; display:flex; flex-wrap:wrap; gap:16px; align-items:center;
+    padding:14px 18px; background:#fff; border-radius:10px;
+    border:1px solid var(--cream-dark); font-size:11.5px; color:var(--mid);
+    max-width:900px; margin-left:auto; margin-right:auto;
+  }
+  .li { display:flex; align-items:center; gap:6px; }
+  .ld { width:9px; height:9px; border-radius:50%; }
+
+  .notice {
+    margin-top:16px; text-align:center; font-size:11px; color:#aaa; font-style:italic;
+  }
+</style>
+</head>
+<body>
+
+<h1>Eternal Life Hospice — Sitemap Redesign</h1>
+<p class="sub">Proposed structure &nbsp;·&nbsp; For review only &nbsp;·&nbsp; No files changed yet</p>
+
+<!-- Root node -->
+<div class="root-wrap">
+  <div class="root-node">
+    🏠 &nbsp;eternallifehospice.com
+    <div class="url">/ &nbsp;·&nbsp; Priority 1.0</div>
+  </div>
+</div>
+
+<!-- Trunk down -->
+<div class="v-line trunk"></div>
+
+<!-- Horizontal connector bar spanning all 5 columns -->
+<div style="max-width:900px;margin:0 auto;">
+  <div class="h-connector" style="width:calc(100% - 40px);margin:0 auto;"></div>
+</div>
+
+<!-- 5 section columns -->
+<div style="max-width:900px;margin:0 auto;">
+<div class="sections">
+
+  <!-- CORE -->
+  <div class="sec">
+    <div class="sec-line"></div>
+    <div class="sec-head core">Core Pages</div>
+    <div class="sec-pages">
+      <div class="page"><span class="dot plum"></span>/refer<span class="pri h">1.0</span></div>
+      <div class="page"><span class="dot plum"></span>/resources<span class="pri h">0.9</span></div>
+      <div class="page"><span class="dot plum"></span>/family-guide<span class="pri h">0.9</span></div>
+      <div class="page"><span class="dot plum"></span>/sound-bath<span class="pri m">0.8</span></div>
+      <div class="page"><span class="dot plum"></span>/media-kit<span class="pri m">0.8</span></div>
+      <div class="page"><span class="dot plum"></span>/volunteer<span class="pri m">0.8</span></div>
+      <div class="page"><span class="dot plum"></span>/careers<span class="pri m">0.7</span></div>
+      <div class="page"><span class="dot gold"></span>/care-brief<span class="pri m">0.7</span></div>
+    </div>
+  </div>
+
+  <!-- LOCATIONS -->
+  <div class="sec">
+    <div class="sec-line"></div>
+    <div class="sec-head loc">Locations</div>
+    <div class="sec-pages">
+      <div class="page"><span class="dot slate"></span>County hub<span class="pri h">0.9</span></div>
+      <div class="pill"><span class="dot slate"></span>Ventura cities<span class="count">18</span><span class="pri m">0.7</span></div>
+      <div class="pill"><span class="dot slate"></span>LA County cities<span class="count">110+</span><span class="pri l">0.6</span></div>
+    </div>
+  </div>
+
+  <!-- RESOURCES -->
+  <div class="sec">
+    <div class="sec-line"></div>
+    <div class="sec-head res">Resources</div>
+    <div class="sec-pages">
+      <div class="page"><span class="dot gold"></span>when-is-it-time<span class="pri m">0.7</span></div>
+      <div class="page"><span class="dot gold"></span>medicare-benefit<span class="pri m">0.7</span></div>
+      <div class="page"><span class="dot gold"></span>first-48-hours<span class="pri m">0.7</span></div>
+      <div class="page"><span class="dot gold"></span>how-to-choose<span class="pri m">0.7</span></div>
+      <div class="page"><span class="dot gold"></span>comfort-therapies<span class="pri l">0.6</span></div>
+      <div class="page"><span class="dot gold"></span>circle-around-you<span class="pri l">0.6</span></div>
+      <div class="page"><span class="dot gold"></span>back-to-the-earth<span class="pri l">0.6</span></div>
+      <div class="page"><span class="dot gold"></span>volunteer<span class="pri l">0.6</span></div>
+    </div>
+  </div>
+
+  <!-- BLOG -->
+  <div class="sec">
+    <div class="sec-line"></div>
+    <div class="sec-head blog">Eternal Journal</div>
+    <div class="sec-pages">
+      <div class="page"><span class="dot green"></span>/blog index<span class="pri h">0.9</span></div>
+      <div class="page"><span class="dot green"></span>caring-for-caregiver<span class="pri m">0.7</span></div>
+      <div class="page"><span class="dot green"></span>five-hospice-myths<span class="pri m">0.7</span></div>
+      <div class="page"><span class="dot green"></span>music-at-bedside<span class="pri m">0.7</span></div>
+      <div class="page"><span class="dot green"></span>talking-with-children<span class="pri m">0.7</span></div>
+      <div class="page"><span class="dot green"></span>quiet-work-volunteers<span class="pri l">0.6</span></div>
+      <div class="page"><span class="dot green"></span>sound-baths<span class="pri l">0.6</span></div>
+    </div>
+  </div>
+
+  <!-- LEGAL -->
+  <div class="sec">
+    <div class="sec-line"></div>
+    <div class="sec-head legal">Legal</div>
+    <div class="sec-pages">
+      <div class="page"><span class="dot grey"></span>/privacy-policy<span class="pri l">0.3</span></div>
+      <div class="page"><span class="dot grey"></span>/terms<span class="pri l">0.3</span></div>
+      <div class="page"><span class="dot grey"></span>/404<span class="pri l">—</span></div>
+    </div>
+  </div>
+
+</div>
+</div>
+
+<!-- XML sitemap split note -->
+<div class="xml-note">
+  <strong>XML sitemap index (new):</strong> Currently one flat file with 130+ URLs. Proposed split into a
+  <strong>sitemap.xml</strong> index pointing to three sub-files —
+  <strong>sitemap-core.xml</strong> (core pages, resources, blog) &nbsp;·&nbsp;
+  <strong>sitemap-cities-ventura.xml</strong> (18 cities) &nbsp;·&nbsp;
+  <strong>sitemap-cities-la.xml</strong> (110+ cities).
+  Google handles large sites more reliably this way and can crawl each group at its own rate.
+</div>
+
+<!-- Legend -->
+<div class="legend">
+  <strong style="color:var(--deep)">Priority:</strong>
+  <div class="li"><span class="ld" style="background:#f0e8d0;border:1px solid #C9B07E"></span> High 0.8–1.0 — crawled most often</div>
+  <div class="li"><span class="ld" style="background:var(--cream-mid);border:1px solid var(--cream-dark)"></span> Mid 0.6–0.7 — standard</div>
+  <div class="li"><span class="ld" style="background:#f0f0f0;border:1px solid #ddd"></span> Low ≤0.5 — crawled least often</div>
+</div>
+
+<p class="notice">Nothing has been built or changed — this is a plan diagram for your approval.</p>
+
+</body>
+</html>

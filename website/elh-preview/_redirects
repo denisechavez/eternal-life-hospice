@@ -35,3 +35,6 @@ http://eternallifehospiceinc.com/*       https://eternallifehospice.com/:splat  
 # Digital business cards
 /aleksandra   /card-aleksandra-dubina   301
 /denise       /card-denise-chavez       301
+
+# Sitemap page
+/sitemap      /sitemap.html             200
