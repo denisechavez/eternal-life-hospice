@@ -1,0 +1,1344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ELH Marketing & Census Dashboard</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+  :root {
+    --plum: #3d1a4f;
+    --plum-mid: #5a2a72;
+    --plum-light: #7b4a96;
+    --gold: #c9a84c;
+    --gold-light: #e8c96a;
+    --cream: #fdf8f0;
+    --cream-dark: #f0e8d8;
+    --charcoal: #2a2a2a;
+    --muted: #6b6b6b;
+    --border: #e0d4c8;
+    --green: #2e7d52;
+    --green-light: #e8f5ee;
+    --red: #b03030;
+    --red-light: #fdeaea;
+    --blue: #1a5276;
+    --blue-light: #eaf2fb;
+    --shadow: 0 2px 12px rgba(61,26,79,0.10);
+    --shadow-lg: 0 6px 32px rgba(61,26,79,0.16);
+    --radius: 12px;
+    --radius-sm: 8px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Georgia', 'Times New Roman', serif;
+    background: var(--cream);
+    color: var(--charcoal);
+    font-size: 14px;
+    line-height: 1.5;
+    min-height: 100vh;
+  }
+
+  /* ── HEADER ── */
+  .header {
+    background: var(--plum);
+    color: white;
+    padding: 16px 28px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: var(--shadow-lg);
+  }
+  .header-left { display: flex; align-items: center; gap: 14px; }
+  .header-logo {
+    width: 36px; height: 36px;
+    background: var(--gold);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px; font-weight: bold; color: var(--plum);
+    flex-shrink: 0;
+  }
+  .header h1 { font-size: 18px; font-weight: normal; letter-spacing: 0.02em; }
+  .header h1 span { color: var(--gold-light); }
+  .header-right { display: flex; align-items: center; gap: 16px; }
+  .date-range {
+    display: flex; align-items: center; gap: 8px;
+    background: rgba(255,255,255,0.10);
+    border: 1px solid rgba(255,255,255,0.20);
+    border-radius: var(--radius-sm);
+    padding: 6px 12px;
+    cursor: pointer;
+    font-size: 13px; color: rgba(255,255,255,0.90);
+  }
+  .date-range select {
+    background: transparent; border: none; color: white;
+    font-size: 13px; cursor: pointer; outline: none;
+    font-family: inherit;
+  }
+  .date-range select option { background: var(--plum); }
+  .last-updated { font-size: 12px; color: rgba(255,255,255,0.55); }
+
+  /* ── NAV TABS ── */
+  .nav {
+    background: white;
+    border-bottom: 2px solid var(--border);
+    padding: 0 28px;
+    display: flex;
+    gap: 0;
+    overflow-x: auto;
+    position: sticky;
+    top: 69px;
+    z-index: 90;
+  }
+  .nav-tab {
+    padding: 14px 22px;
+    cursor: pointer;
+    font-size: 13px;
+    color: var(--muted);
+    border-bottom: 3px solid transparent;
+    margin-bottom: -2px;
+    white-space: nowrap;
+    display: flex; align-items: center; gap: 8px;
+    transition: all 0.18s;
+    font-family: inherit;
+    background: none; border-top: none; border-left: none; border-right: none;
+    letter-spacing: 0.01em;
+  }
+  .nav-tab:hover { color: var(--plum); }
+  .nav-tab.active {
+    color: var(--plum);
+    border-bottom-color: var(--gold);
+    font-weight: bold;
+  }
+  .nav-icon { font-size: 15px; }
+
+  /* ── MAIN ── */
+  .main { padding: 28px; max-width: 1400px; margin: 0 auto; }
+  .section { display: none; }
+  .section.active { display: block; }
+  .section-title {
+    font-size: 22px; color: var(--plum);
+    margin-bottom: 22px;
+    display: flex; align-items: center; gap: 10px;
+    font-weight: normal; letter-spacing: 0.01em;
+  }
+  .section-title::after {
+    content: ''; flex: 1; height: 1px; background: var(--border);
+  }
+
+  /* ── KPI GRID ── */
+  .kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 16px;
+    margin-bottom: 28px;
+  }
+  .kpi-card {
+    background: white;
+    border-radius: var(--radius);
+    padding: 18px 20px;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border);
+    position: relative;
+    overflow: hidden;
+  }
+  .kpi-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0;
+    height: 3px;
+    background: var(--gold);
+  }
+  .kpi-card.green::before { background: var(--green); }
+  .kpi-card.blue::before { background: var(--blue); }
+  .kpi-card.red::before { background: var(--red); }
+  .kpi-card.plum::before { background: var(--plum); }
+
+  .kpi-label { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 8px; }
+  .kpi-value { font-size: 28px; color: var(--plum); font-weight: bold; line-height: 1; margin-bottom: 6px; }
+  .kpi-value.green { color: var(--green); }
+  .kpi-value.red { color: var(--red); }
+  .kpi-delta {
+    font-size: 11px;
+    display: inline-flex; align-items: center; gap: 3px;
+    padding: 2px 7px; border-radius: 20px;
+  }
+  .kpi-delta.up { background: var(--green-light); color: var(--green); }
+  .kpi-delta.down { background: var(--red-light); color: var(--red); }
+  .kpi-delta.neutral { background: var(--cream-dark); color: var(--muted); }
+  .kpi-sub { font-size: 11px; color: var(--muted); margin-top: 4px; }
+
+  /* ── CHARTS ROW ── */
+  .charts-row {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 20px;
+    margin-bottom: 24px;
+  }
+  .charts-row.thirds {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+  .charts-row.half {
+    grid-template-columns: 1fr 1fr;
+  }
+  .chart-card {
+    background: white;
+    border-radius: var(--radius);
+    padding: 20px 22px;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border);
+  }
+  .chart-title {
+    font-size: 13px; color: var(--plum);
+    font-weight: bold; margin-bottom: 16px;
+    letter-spacing: 0.02em;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .chart-title .badge {
+    font-size: 10px; background: var(--cream-dark); color: var(--muted);
+    padding: 2px 8px; border-radius: 12px; font-weight: normal;
+  }
+  .chart-wrap { position: relative; }
+
+  /* ── TABLES ── */
+  .table-card {
+    background: white;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border);
+    overflow: hidden;
+    margin-bottom: 24px;
+  }
+  .table-header {
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .table-title { font-size: 13px; font-weight: bold; color: var(--plum); }
+  .table-action {
+    font-size: 11px; color: var(--gold);
+    cursor: pointer; background: none; border: none;
+    font-family: inherit; letter-spacing: 0.03em;
+    text-decoration: underline;
+  }
+  table { width: 100%; border-collapse: collapse; }
+  thead th {
+    background: var(--cream);
+    padding: 10px 16px;
+    text-align: left;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--muted);
+    font-weight: normal;
+    border-bottom: 1px solid var(--border);
+  }
+  thead th.num { text-align: right; }
+  tbody tr { border-bottom: 1px solid var(--cream-dark); }
+  tbody tr:last-child { border-bottom: none; }
+  tbody tr:hover { background: var(--cream); }
+  tbody td {
+    padding: 11px 16px;
+    font-size: 13px;
+    color: var(--charcoal);
+  }
+  tbody td.num { text-align: right; font-variant-numeric: tabular-nums; }
+  tbody td.strong { font-weight: bold; color: var(--plum); }
+  .pill {
+    display: inline-flex; align-items: center;
+    padding: 2px 9px; border-radius: 20px;
+    font-size: 11px; font-weight: bold;
+  }
+  .pill.green { background: var(--green-light); color: var(--green); }
+  .pill.red { background: var(--red-light); color: var(--red); }
+  .pill.gold { background: #fdf3dc; color: #8a6520; }
+  .pill.blue { background: var(--blue-light); color: var(--blue); }
+  .pill.plum { background: #f3eaf8; color: var(--plum); }
+
+  /* ── FUNNEL ── */
+  .funnel-card {
+    background: white;
+    border-radius: var(--radius);
+    padding: 24px;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border);
+    margin-bottom: 24px;
+  }
+  .funnel-stages {
+    display: flex;
+    align-items: stretch;
+    gap: 0;
+    margin: 20px 0;
+  }
+  .funnel-stage {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+  }
+  .funnel-stage:not(:last-child)::after {
+    content: '›';
+    position: absolute;
+    right: -10px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 22px;
+    color: var(--border);
+    z-index: 2;
+  }
+  .funnel-bar-wrap {
+    width: 100%;
+    padding: 0 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+  }
+  .funnel-bar {
+    width: 100%;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 20px;
+    font-weight: bold;
+    transition: all 0.3s;
+    cursor: default;
+    min-height: 48px;
+  }
+  .funnel-label {
+    font-size: 11px;
+    color: var(--muted);
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+  .funnel-conv {
+    font-size: 11px;
+    color: var(--green);
+    font-weight: bold;
+  }
+  .funnel-lost {
+    margin-top: 24px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+
+  /* ── REFERRAL SOURCE GRID ── */
+  .source-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+  .source-card {
+    background: white;
+    border-radius: var(--radius);
+    padding: 20px 16px;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border);
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .source-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-lg); }
+  .source-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0;
+    height: 4px;
+  }
+  .source-card.physician::before { background: #7b4a96; }
+  .source-card.hospital::before { background: #c9a84c; }
+  .source-card.rcfe::before { background: #2e7d52; }
+  .source-card.snf::before { background: #1a5276; }
+  .source-card.pro::before { background: #8b3a3a; }
+  .source-icon { font-size: 26px; margin-bottom: 8px; }
+  .source-type { font-size: 10px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin-bottom: 6px; }
+  .source-count { font-size: 32px; font-weight: bold; color: var(--plum); line-height: 1; }
+  .source-label { font-size: 11px; color: var(--muted); margin-top: 2px; }
+  .source-trend { font-size: 11px; margin-top: 8px; }
+
+  /* ── EDITABLE FIELDS ── */
+  .editable {
+    cursor: pointer;
+    border-bottom: 1px dashed var(--gold);
+    transition: background 0.15s;
+    border-radius: 2px;
+    padding: 0 2px;
+    outline: none;
+  }
+  .editable:focus {
+    background: #fdf3dc;
+    border-bottom-color: var(--plum);
+    outline: none;
+  }
+
+  /* ── SOCIAL PLATFORM BARS ── */
+  .platform-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--cream-dark);
+  }
+  .platform-row:last-child { border-bottom: none; }
+  .platform-icon {
+    width: 32px; height: 32px;
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px; font-weight: bold; color: white;
+    flex-shrink: 0;
+  }
+  .platform-name { width: 80px; font-size: 13px; font-weight: bold; }
+  .platform-bar-wrap { flex: 1; }
+  .platform-bar-bg { height: 6px; background: var(--cream-dark); border-radius: 3px; }
+  .platform-bar-fill { height: 6px; border-radius: 3px; transition: width 1s ease; }
+  .platform-stats { display: flex; gap: 16px; width: 200px; justify-content: flex-end; }
+  .pstat { text-align: right; }
+  .pstat-val { font-size: 13px; font-weight: bold; color: var(--plum); }
+  .pstat-lbl { font-size: 10px; color: var(--muted); }
+
+  /* ── LOSS REASONS ── */
+  .loss-card {
+    background: white;
+    border-radius: var(--radius);
+    padding: 20px;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border);
+  }
+  .loss-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--cream-dark);
+  }
+  .loss-row:last-child { border-bottom: none; }
+  .loss-reason { flex: 1; font-size: 13px; }
+  .loss-count { font-size: 15px; font-weight: bold; color: var(--red); width: 32px; text-align: right; }
+  .loss-pct { font-size: 11px; color: var(--muted); width: 36px; text-align: right; }
+  .loss-bar-wrap { flex: 1; max-width: 160px; }
+  .loss-bar { height: 5px; background: var(--red); border-radius: 3px; opacity: 0.6; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 900px) {
+    .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+    .charts-row { grid-template-columns: 1fr; }
+    .source-grid { grid-template-columns: repeat(2, 1fr); }
+    .funnel-stages { flex-direction: column; }
+    .funnel-stage::after { display: none; }
+  }
+
+  /* ── ADD ENTRY BTN ── */
+  .add-btn {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: var(--plum);
+    color: white; border: none; border-radius: var(--radius-sm);
+    padding: 8px 16px; font-size: 12px; cursor: pointer;
+    font-family: inherit; letter-spacing: 0.03em;
+    transition: background 0.15s;
+  }
+  .add-btn:hover { background: var(--plum-mid); }
+  .add-btn.ghost {
+    background: transparent; color: var(--plum);
+    border: 1px solid var(--border);
+  }
+  .add-btn.ghost:hover { background: var(--cream-dark); }
+
+  /* ── EMPTY STATE ── */
+  .empty { color: var(--muted); font-size: 12px; font-style: italic; }
+
+  /* ── TOOLTIP ── */
+  .tip {
+    position: relative;
+    cursor: help;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 14px; height: 14px;
+    background: var(--cream-dark);
+    border-radius: 50%;
+    font-size: 10px;
+    color: var(--muted);
+    margin-left: 4px;
+  }
+</style>
+</head>
+<body>
+
+<!-- ══ HEADER ══════════════════════════════════════════════════════════════ -->
+<div class="header">
+  <div class="header-left">
+    <div class="header-logo">E</div>
+    <h1>Eternal Life Hospice &nbsp;·&nbsp; <span>Marketing & Census Dashboard</span></h1>
+  </div>
+  <div class="header-right">
+    <div class="date-range">
+      <span>📅</span>
+      <select id="dateRange" onchange="updateRange(this.value)">
+        <option value="this_month">This Month</option>
+        <option value="last_month">Last Month</option>
+        <option value="last_30">Last 30 Days</option>
+        <option value="last_90">Last 90 Days</option>
+        <option value="ytd">Year to Date</option>
+      </select>
+    </div>
+    <span class="last-updated" id="lastUpdated">Updated today</span>
+  </div>
+</div>
+
+<!-- ══ NAV TABS ════════════════════════════════════════════════════════════ -->
+<nav class="nav">
+  <button class="nav-tab active" onclick="switchTab('seo',this)">
+    <span class="nav-icon">🔍</span> SEO
+  </button>
+  <button class="nav-tab" onclick="switchTab('ads',this)">
+    <span class="nav-icon">📣</span> Advertising
+  </button>
+  <button class="nav-tab" onclick="switchTab('social',this)">
+    <span class="nav-icon">📱</span> Social
+  </button>
+  <button class="nav-tab" onclick="switchTab('referral',this)">
+    <span class="nav-icon">🤝</span> Referral Development
+  </button>
+  <button class="nav-tab" onclick="switchTab('census',this)">
+    <span class="nav-icon">📊</span> Census Pipeline
+  </button>
+</nav>
+
+<!-- ══ MAIN ════════════════════════════════════════════════════════════════ -->
+<div class="main">
+
+  <!-- ─── SEO ─────────────────────────────────────────────────────────── -->
+  <div class="section active" id="section-seo">
+    <div class="section-title">🔍 Search Engine Optimization</div>
+
+    <div class="kpi-grid">
+      <div class="kpi-card">
+        <div class="kpi-label">Avg. Position</div>
+        <div class="kpi-value" id="seo-rank">14.2</div>
+        <div class="kpi-delta up">↑ 3.1 vs last period</div>
+        <div class="kpi-sub">Google Search Console</div>
+      </div>
+      <div class="kpi-card green">
+        <div class="kpi-label">Impressions</div>
+        <div class="kpi-value green" id="seo-imp">8,340</div>
+        <div class="kpi-delta up">↑ 12% vs last period</div>
+        <div class="kpi-sub">Total search appearances</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Clicks</div>
+        <div class="kpi-value" id="seo-clicks">612</div>
+        <div class="kpi-delta up">↑ 8% vs last period</div>
+        <div class="kpi-sub">Organic click-throughs</div>
+      </div>
+      <div class="kpi-card blue">
+        <div class="kpi-label">Click-Through Rate</div>
+        <div class="kpi-value" id="seo-ctr">7.3%</div>
+        <div class="kpi-delta down">↓ 0.4% vs last period</div>
+        <div class="kpi-sub">Clicks ÷ Impressions</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Indexed Pages</div>
+        <div class="kpi-value" id="seo-pages">68</div>
+        <div class="kpi-delta up">↑ 6 new pages</div>
+        <div class="kpi-sub">City + core pages</div>
+      </div>
+      <div class="kpi-card plum">
+        <div class="kpi-label">Top Keyword Rank</div>
+        <div class="kpi-value" id="seo-toprank">#3</div>
+        <div class="kpi-delta neutral">Stable</div>
+        <div class="kpi-sub">"hospice Thousand Oaks"</div>
+      </div>
+    </div>
+
+    <div class="charts-row">
+      <div class="chart-card">
+        <div class="chart-title">Impressions Over Time <span class="badge">Last 90 days</span></div>
+        <div class="chart-wrap"><canvas id="seoImpChart" height="90"></canvas></div>
+      </div>
+      <div class="chart-card">
+        <div class="chart-title">Clicks Over Time</div>
+        <div class="chart-wrap"><canvas id="seoClickChart" height="90"></canvas></div>
+      </div>
+    </div>
+
+    <div class="table-card">
+      <div class="table-header">
+        <div class="table-title">Top Queries</div>
+        <button class="table-action" onclick="addRow('queries-table')">+ Add row</button>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th>Query</th>
+            <th class="num">Impressions</th>
+            <th class="num">Clicks</th>
+            <th class="num">CTR</th>
+            <th class="num">Avg. Position</th>
+          </tr>
+        </thead>
+        <tbody id="queries-table">
+          <tr><td class="strong">hospice care Thousand Oaks</td><td class="num">1,240</td><td class="num">98</td><td class="num">7.9%</td><td class="num">3.2</td></tr>
+          <tr><td class="strong">hospice Ventura County</td><td class="num">980</td><td class="num">72</td><td class="num">7.3%</td><td class="num">5.8</td></tr>
+          <tr><td class="strong">hospice care Camarillo</td><td class="num">740</td><td class="num">61</td><td class="num">8.2%</td><td class="num">4.1</td></tr>
+          <tr><td class="strong">hospice Simi Valley</td><td class="num">620</td><td class="num">44</td><td class="num">7.1%</td><td class="num">7.3</td></tr>
+          <tr><td class="strong">hospice Woodland Hills</td><td class="num">580</td><td class="num">38</td><td class="num">6.5%</td><td class="num">9.1</td></tr>
+          <tr><td class="strong">what does hospice cover Medicare</td><td class="num">510</td><td class="num">29</td><td class="num">5.7%</td><td class="num">12.4</td></tr>
+          <tr><td class="strong">hospice care Oxnard</td><td class="num">490</td><td class="num">35</td><td class="num">7.1%</td><td class="num">6.8</td></tr>
+          <tr><td class="strong">eternal life hospice</td><td class="num">420</td><td class="num">81</td><td class="num">19.3%</td><td class="num">1.2</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="charts-row half">
+      <div class="table-card" style="margin-bottom:0">
+        <div class="table-header">
+          <div class="table-title">City Page Performance</div>
+          <button class="table-action" onclick="addRow('city-table')">+ Add row</button>
+        </div>
+        <table>
+          <thead>
+            <tr><th>City</th><th class="num">Impressions</th><th class="num">Clicks</th><th class="num">Pos.</th></tr>
+          </thead>
+          <tbody id="city-table">
+            <tr><td class="strong">Thousand Oaks</td><td class="num">1,240</td><td class="num">98</td><td class="num">3.2</td></tr>
+            <tr><td class="strong">Camarillo</td><td class="num">740</td><td class="num">61</td><td class="num">4.1</td></tr>
+            <tr><td class="strong">Simi Valley</td><td class="num">620</td><td class="num">44</td><td class="num">7.3</td></tr>
+            <tr><td class="strong">Woodland Hills</td><td class="num">580</td><td class="num">38</td><td class="num">9.1</td></tr>
+            <tr><td class="strong">Oxnard</td><td class="num">490</td><td class="num">35</td><td class="num">6.8</td></tr>
+            <tr><td class="strong">Calabasas</td><td class="num">380</td><td class="num">27</td><td class="num">11.2</td></tr>
+            <tr><td class="strong">Ventura</td><td class="num">360</td><td class="num">22</td><td class="num">14.5</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="table-card" style="margin-bottom:0">
+        <div class="table-header">
+          <div class="table-title">Landing Page Performance</div>
+          <button class="table-action" onclick="addRow('lp-table')">+ Add row</button>
+        </div>
+        <table>
+          <thead>
+            <tr><th>Page</th><th class="num">Clicks</th><th class="num">CTR</th></tr>
+          </thead>
+          <tbody id="lp-table">
+            <tr><td class="strong">/</td><td class="num">188</td><td class="num">9.1%</td></tr>
+            <tr><td class="strong">/hospice-thousand-oaks-ca</td><td class="num">98</td><td class="num">7.9%</td></tr>
+            <tr><td class="strong">/resources</td><td class="num">74</td><td class="num">6.2%</td></tr>
+            <tr><td class="strong">/hospice-camarillo-ca</td><td class="num">61</td><td class="num">8.2%</td></tr>
+            <tr><td class="strong">/sound-bath</td><td class="num">48</td><td class="num">5.4%</td></tr>
+            <tr><td class="strong">/care-brief</td><td class="num">42</td><td class="num">11.8%</td></tr>
+            <tr><td class="strong">/blog</td><td class="num">38</td><td class="num">4.7%</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── ADVERTISING ───────────────────────────────────────────────── -->
+  <div class="section" id="section-ads">
+    <div class="section-title">📣 Advertising</div>
+
+    <div class="kpi-grid">
+      <div class="kpi-card red">
+        <div class="kpi-label">Total Spend</div>
+        <div class="kpi-value red" id="ads-spend">$3,840</div>
+        <div class="kpi-delta neutral">On budget</div>
+        <div class="kpi-sub">This period</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Avg. CPC</div>
+        <div class="kpi-value" id="ads-cpc">$12.40</div>
+        <div class="kpi-delta down">↓ $1.20 vs last period</div>
+        <div class="kpi-sub">Cost per click</div>
+      </div>
+      <div class="kpi-card green">
+        <div class="kpi-label">Phone Calls</div>
+        <div class="kpi-value green" id="ads-calls">48</div>
+        <div class="kpi-delta up">↑ 11 vs last period</div>
+        <div class="kpi-sub">Ad-attributed calls</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Form Submissions</div>
+        <div class="kpi-value" id="ads-forms">31</div>
+        <div class="kpi-delta up">↑ 7 vs last period</div>
+        <div class="kpi-sub">Web form completions</div>
+      </div>
+      <div class="kpi-card plum">
+        <div class="kpi-label">Qualified Leads</div>
+        <div class="kpi-value" id="ads-leads">22</div>
+        <div class="kpi-delta up">↑ 5 vs last period</div>
+        <div class="kpi-sub">Reviewed + eligible</div>
+      </div>
+      <div class="kpi-card blue">
+        <div class="kpi-label">Cost Per Lead</div>
+        <div class="kpi-value" id="ads-cpl">$175</div>
+        <div class="kpi-delta down">↓ $24 vs last period</div>
+        <div class="kpi-sub">Spend ÷ Qualified Leads</div>
+      </div>
+    </div>
+
+    <div class="charts-row">
+      <div class="chart-card">
+        <div class="chart-title">Spend vs Qualified Leads <span class="badge">Weekly</span></div>
+        <div class="chart-wrap"><canvas id="adsSpendChart" height="90"></canvas></div>
+      </div>
+      <div class="chart-card">
+        <div class="chart-title">Leads by Type</div>
+        <div class="chart-wrap"><canvas id="adsLeadsChart" height="90"></canvas></div>
+      </div>
+    </div>
+
+    <div class="table-card">
+      <div class="table-header">
+        <div class="table-title">Campaign Performance</div>
+        <button class="add-btn ghost" onclick="addRow('ads-table')">+ Add campaign</button>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th>Campaign</th>
+            <th class="num">Spend</th>
+            <th class="num">Clicks</th>
+            <th class="num">CPC</th>
+            <th class="num">Calls</th>
+            <th class="num">Forms</th>
+            <th class="num">Qual. Leads</th>
+            <th class="num">CPL</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody id="ads-table">
+          <tr>
+            <td class="strong">Hospice Care — Ventura County</td>
+            <td class="num">$1,640</td><td class="num">132</td><td class="num">$12.42</td>
+            <td class="num">21</td><td class="num">14</td><td class="num">10</td><td class="num">$164</td>
+            <td><span class="pill green">Active</span></td>
+          </tr>
+          <tr>
+            <td class="strong">Hospice Care — LA County West</td>
+            <td class="num">$1,200</td><td class="num">96</td><td class="num">$12.50</td>
+            <td class="num">15</td><td class="num">10</td><td class="num">7</td><td class="num">$171</td>
+            <td><span class="pill green">Active</span></td>
+          </tr>
+          <tr>
+            <td class="strong">Brand — Eternal Life Hospice</td>
+            <td class="num">$480</td><td class="num">62</td><td class="num">$7.74</td>
+            <td class="num">8</td><td class="num">5</td><td class="num">4</td><td class="num">$120</td>
+            <td><span class="pill green">Active</span></td>
+          </tr>
+          <tr>
+            <td class="strong">Medicare Hospice Benefit</td>
+            <td class="num">$320</td><td class="num">18</td><td class="num">$17.78</td>
+            <td class="num">3</td><td class="num">2</td><td class="num">1</td><td class="num">$320</td>
+            <td><span class="pill gold">Paused</span></td>
+          </tr>
+          <tr>
+            <td class="strong">Retargeting — Site Visitors</td>
+            <td class="num">$200</td><td class="num">–</td><td class="num">–</td>
+            <td class="num">1</td><td class="num">0</td><td class="num">0</td><td class="num">–</td>
+            <td><span class="pill blue">Testing</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ─── SOCIAL ────────────────────────────────────────────────────── -->
+  <div class="section" id="section-social">
+    <div class="section-title">📱 Social Media</div>
+
+    <div class="kpi-grid">
+      <div class="kpi-card plum">
+        <div class="kpi-label">Posts Published</div>
+        <div class="kpi-value" id="soc-output">38</div>
+        <div class="kpi-delta up">↑ 12 vs last period</div>
+        <div class="kpi-sub">Across 6 platforms</div>
+      </div>
+      <div class="kpi-card green">
+        <div class="kpi-label">Total Reach</div>
+        <div class="kpi-value green" id="soc-reach">24,180</div>
+        <div class="kpi-delta up">↑ 18% vs last period</div>
+        <div class="kpi-sub">Unique accounts reached</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Social Traffic</div>
+        <div class="kpi-value" id="soc-traffic">284</div>
+        <div class="kpi-delta up">↑ 9% vs last period</div>
+        <div class="kpi-sub">Sessions from social</div>
+      </div>
+      <div class="kpi-card blue">
+        <div class="kpi-label">Engagement Rate</div>
+        <div class="kpi-value" id="soc-eng">4.2%</div>
+        <div class="kpi-delta up">↑ 0.8% vs last period</div>
+        <div class="kpi-sub">Interactions ÷ Reach</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Followers Gained</div>
+        <div class="kpi-value" id="soc-followers">+142</div>
+        <div class="kpi-delta up">↑ 31 vs last period</div>
+        <div class="kpi-sub">Net new followers</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Care Brief Clicks</div>
+        <div class="kpi-value" id="soc-brief">96</div>
+        <div class="kpi-delta up">↑ 24 vs last period</div>
+        <div class="kpi-sub">Link-in-bio + post links</div>
+      </div>
+    </div>
+
+    <div class="charts-row">
+      <div class="chart-card">
+        <div class="chart-title">Reach Over Time — All Platforms <span class="badge">Last 90 days</span></div>
+        <div class="chart-wrap"><canvas id="socReachChart" height="90"></canvas></div>
+      </div>
+      <div class="chart-card">
+        <div class="chart-title">Engagement by Platform</div>
+        <div class="chart-wrap"><canvas id="socEngChart" height="90"></canvas></div>
+      </div>
+    </div>
+
+    <div class="chart-card" style="margin-bottom:24px">
+      <div class="chart-title">Platform Breakdown <span class="badge">This period</span></div>
+      <div id="platform-rows">
+        <!-- GBP -->
+        <div class="platform-row">
+          <div class="platform-icon" style="background:#4285f4">G</div>
+          <div class="platform-name">GBP</div>
+          <div class="platform-bar-wrap">
+            <div class="platform-bar-bg"><div class="platform-bar-fill" style="width:82%;background:#4285f4"></div></div>
+          </div>
+          <div class="platform-stats">
+            <div class="pstat"><div class="pstat-val">9,840</div><div class="pstat-lbl">Reach</div></div>
+            <div class="pstat"><div class="pstat-val">3.8%</div><div class="pstat-lbl">Eng.</div></div>
+            <div class="pstat"><div class="pstat-val">27</div><div class="pstat-lbl">Posts</div></div>
+          </div>
+        </div>
+        <!-- LinkedIn -->
+        <div class="platform-row">
+          <div class="platform-icon" style="background:#0077b5">in</div>
+          <div class="platform-name">LinkedIn</div>
+          <div class="platform-bar-wrap">
+            <div class="platform-bar-bg"><div class="platform-bar-fill" style="width:58%;background:#0077b5"></div></div>
+          </div>
+          <div class="platform-stats">
+            <div class="pstat"><div class="pstat-val">6,920</div><div class="pstat-lbl">Reach</div></div>
+            <div class="pstat"><div class="pstat-val">5.1%</div><div class="pstat-lbl">Eng.</div></div>
+            <div class="pstat"><div class="pstat-val">18</div><div class="pstat-lbl">Posts</div></div>
+          </div>
+        </div>
+        <!-- TikTok -->
+        <div class="platform-row">
+          <div class="platform-icon" style="background:#010101">TT</div>
+          <div class="platform-name">TikTok</div>
+          <div class="platform-bar-wrap">
+            <div class="platform-bar-bg"><div class="platform-bar-fill" style="width:42%;background:#010101"></div></div>
+          </div>
+          <div class="platform-stats">
+            <div class="pstat"><div class="pstat-val">4,980</div><div class="pstat-lbl">Views</div></div>
+            <div class="pstat"><div class="pstat-val">6.4%</div><div class="pstat-lbl">Eng.</div></div>
+            <div class="pstat"><div class="pstat-val">13</div><div class="pstat-lbl">Posts</div></div>
+          </div>
+        </div>
+        <!-- Twitter/X -->
+        <div class="platform-row">
+          <div class="platform-icon" style="background:#000000">𝕏</div>
+          <div class="platform-name">X</div>
+          <div class="platform-bar-wrap">
+            <div class="platform-bar-bg"><div class="platform-bar-fill" style="width:28%;background:#000"></div></div>
+          </div>
+          <div class="platform-stats">
+            <div class="pstat"><div class="pstat-val">1,640</div><div class="pstat-lbl">Impressions</div></div>
+            <div class="pstat"><div class="pstat-val">2.8%</div><div class="pstat-lbl">Eng.</div></div>
+            <div class="pstat"><div class="pstat-val">10</div><div class="pstat-lbl">Posts</div></div>
+          </div>
+        </div>
+        <!-- Facebook -->
+        <div class="platform-row">
+          <div class="platform-icon" style="background:#1877f2">f</div>
+          <div class="platform-name">Facebook</div>
+          <div class="platform-bar-wrap">
+            <div class="platform-bar-bg"><div class="platform-bar-fill" style="width:20%;background:#1877f2"></div></div>
+          </div>
+          <div class="platform-stats">
+            <div class="pstat"><div class="pstat-val">480</div><div class="pstat-lbl">Reach</div></div>
+            <div class="pstat"><div class="pstat-val">3.2%</div><div class="pstat-lbl">Eng.</div></div>
+            <div class="pstat"><div class="pstat-val">9</div><div class="pstat-lbl">Posts</div></div>
+          </div>
+        </div>
+        <!-- YouTube -->
+        <div class="platform-row">
+          <div class="platform-icon" style="background:#ff0000">▶</div>
+          <div class="platform-name">YouTube</div>
+          <div class="platform-bar-wrap">
+            <div class="platform-bar-bg"><div class="platform-bar-fill" style="width:10%;background:#ff0000"></div></div>
+          </div>
+          <div class="platform-stats">
+            <div class="pstat"><div class="pstat-val">320</div><div class="pstat-lbl">Views</div></div>
+            <div class="pstat"><div class="pstat-val">4.6%</div><div class="pstat-lbl">Eng.</div></div>
+            <div class="pstat"><div class="pstat-val">8</div><div class="pstat-lbl">Videos</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="table-card">
+      <div class="table-header">
+        <div class="table-title">Top Posts This Period</div>
+        <button class="table-action" onclick="addRow('top-posts-table')">+ Add post</button>
+      </div>
+      <table>
+        <thead>
+          <tr><th>Post</th><th>Platform</th><th class="num">Reach</th><th class="num">Eng.</th><th class="num">Link Clicks</th><th>Date</th></tr>
+        </thead>
+        <tbody id="top-posts-table">
+          <tr><td class="strong">5 Hospice Myths That Cost Families Months</td><td><span class="pill blue">Facebook</span></td><td class="num">1,840</td><td class="num">7.2%</td><td class="num">48</td><td>Aug 10</td></tr>
+          <tr><td class="strong">Why I Started Eternal Life Hospice</td><td><span class="pill blue">LinkedIn</span></td><td class="num">1,620</td><td class="num">8.4%</td><td class="num">36</td><td>Aug 10</td></tr>
+          <tr><td class="strong">TikTok: Did You Know Hospice Is Free?</td><td><span class="pill plum">TikTok</span></td><td class="num">1,280</td><td class="num">9.1%</td><td class="num">–</td><td>Aug 10</td></tr>
+          <tr><td class="strong">What Medicare Pays For</td><td><span class="pill green">GBP</span></td><td class="num">940</td><td class="num">4.8%</td><td class="num">22</td><td>Aug 12</td></tr>
+          <tr><td class="strong">Thread: The 5 Hospice Myths</td><td><span class="pill gold">X</span></td><td class="num">620</td><td class="num">3.4%</td><td class="num">14</td><td>Aug 11</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ─── REFERRAL DEVELOPMENT ──────────────────────────────────────── -->
+  <div class="section" id="section-referral">
+    <div class="section-title">🤝 Referral Development</div>
+
+    <div class="kpi-grid">
+      <div class="kpi-card plum">
+        <div class="kpi-label">Total Referrals</div>
+        <div class="kpi-value" id="ref-total">34</div>
+        <div class="kpi-delta up">↑ 6 vs last period</div>
+        <div class="kpi-sub">All sources</div>
+      </div>
+      <div class="kpi-card green">
+        <div class="kpi-label">Active Partners</div>
+        <div class="kpi-value green" id="ref-partners">28</div>
+        <div class="kpi-delta up">↑ 3 new</div>
+        <div class="kpi-sub">Referred ≥1 this quarter</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">New Partners</div>
+        <div class="kpi-value" id="ref-new">5</div>
+        <div class="kpi-delta neutral">First-time referrers</div>
+        <div class="kpi-sub">This period</div>
+      </div>
+      <div class="kpi-card blue">
+        <div class="kpi-label">Outreach Visits</div>
+        <div class="kpi-value" id="ref-visits">42</div>
+        <div class="kpi-delta up">↑ 8 vs last period</div>
+        <div class="kpi-sub">Field visits logged</div>
+      </div>
+    </div>
+
+    <div class="source-grid">
+      <div class="source-card physician">
+        <div class="source-icon">👨‍⚕️</div>
+        <div class="source-type">Physician</div>
+        <div class="source-count" id="ref-physician">12</div>
+        <div class="source-label">referrals</div>
+        <div class="source-trend"><span class="kpi-delta up" style="font-size:11px">↑ 3</span></div>
+      </div>
+      <div class="source-card hospital">
+        <div class="source-icon">🏥</div>
+        <div class="source-type">Hospital</div>
+        <div class="source-count" id="ref-hospital">9</div>
+        <div class="source-label">referrals</div>
+        <div class="source-trend"><span class="kpi-delta up" style="font-size:11px">↑ 1</span></div>
+      </div>
+      <div class="source-card rcfe">
+        <div class="source-icon">🏠</div>
+        <div class="source-type">RCFE</div>
+        <div class="source-count" id="ref-rcfe">7</div>
+        <div class="source-label">referrals</div>
+        <div class="source-trend"><span class="kpi-delta up" style="font-size:11px">↑ 2</span></div>
+      </div>
+      <div class="source-card snf">
+        <div class="source-icon">🏨</div>
+        <div class="source-type">SNF</div>
+        <div class="source-count" id="ref-snf">4</div>
+        <div class="source-label">referrals</div>
+        <div class="source-trend"><span class="kpi-delta neutral" style="font-size:11px">→ 0</span></div>
+      </div>
+      <div class="source-card pro">
+        <div class="source-icon">💼</div>
+        <div class="source-type">Professional</div>
+        <div class="source-count" id="ref-pro">2</div>
+        <div class="source-label">referrals</div>
+        <div class="source-trend"><span class="kpi-delta neutral" style="font-size:11px">→ 0</span></div>
+      </div>
+    </div>
+
+    <div class="charts-row half">
+      <div class="chart-card">
+        <div class="chart-title">Referrals by Source Type</div>
+        <div class="chart-wrap"><canvas id="refSourceChart" height="120"></canvas></div>
+      </div>
+      <div class="chart-card">
+        <div class="chart-title">Referral Trend — Monthly</div>
+        <div class="chart-wrap"><canvas id="refTrendChart" height="120"></canvas></div>
+      </div>
+    </div>
+
+    <div class="table-card">
+      <div class="table-header">
+        <div class="table-title">Top Referral Partners</div>
+        <button class="add-btn ghost" onclick="addRow('ref-table')">+ Add partner</button>
+      </div>
+      <table>
+        <thead>
+          <tr><th>Partner / Organization</th><th>Type</th><th class="num">Referrals (Period)</th><th class="num">YTD</th><th>Last Contact</th><th>Status</th></tr>
+        </thead>
+        <tbody id="ref-table">
+          <tr><td class="strong">Los Robles Regional Medical Center</td><td>Hospital</td><td class="num">4</td><td class="num">11</td><td>Aug 8</td><td><span class="pill green">Active</span></td></tr>
+          <tr><td class="strong">Dr. M. Patel — Internal Medicine</td><td>Physician</td><td class="num">3</td><td class="num">9</td><td>Aug 5</td><td><span class="pill green">Active</span></td></tr>
+          <tr><td class="strong">Sunrise Senior Living — T.O.</td><td>RCFE</td><td class="num">3</td><td class="num">7</td><td>Jul 29</td><td><span class="pill green">Active</span></td></tr>
+          <tr><td class="strong">Dr. J. Kim — Oncology</td><td>Physician</td><td class="num">2</td><td class="num">8</td><td>Aug 12</td><td><span class="pill green">Active</span></td></tr>
+          <tr><td class="strong">Ventura County Medical Center</td><td>Hospital</td><td class="num">2</td><td class="num">6</td><td>Aug 1</td><td><span class="pill green">Active</span></td></tr>
+          <tr><td class="strong">The Orchards at Camarillo</td><td>SNF</td><td class="num">2</td><td class="num">4</td><td>Jul 22</td><td><span class="pill gold">Warm</span></td></tr>
+          <tr><td class="strong">Dr. S. Rodriguez — Family Med</td><td>Physician</td><td class="num">1</td><td class="num">5</td><td>Aug 10</td><td><span class="pill green">Active</span></td></tr>
+          <tr><td class="strong">Aegis of Thousand Oaks</td><td>RCFE</td><td class="num">1</td><td class="num">3</td><td>Aug 6</td><td><span class="pill green">Active</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ─── CENSUS PIPELINE ────────────────────────────────────────────── -->
+  <div class="section" id="section-census">
+    <div class="section-title">📊 Census Pipeline</div>
+
+    <div class="kpi-grid">
+      <div class="kpi-card plum">
+        <div class="kpi-label">Current Census</div>
+        <div class="kpi-value" id="cen-census">18</div>
+        <div class="kpi-delta up">↑ 3 vs last period</div>
+        <div class="kpi-sub">Active patients</div>
+      </div>
+      <div class="kpi-card green">
+        <div class="kpi-label">Admissions (Period)</div>
+        <div class="kpi-value green" id="cen-admissions">8</div>
+        <div class="kpi-delta up">↑ 2 vs last period</div>
+        <div class="kpi-sub">Admitted this period</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Inquiries</div>
+        <div class="kpi-value" id="cen-inquiries">34</div>
+        <div class="kpi-delta up">↑ 6 vs last period</div>
+        <div class="kpi-sub">Total incoming</div>
+      </div>
+      <div class="kpi-card blue">
+        <div class="kpi-label">Conversion Rate</div>
+        <div class="kpi-value" id="cen-conv">23.5%</div>
+        <div class="kpi-delta up">↑ 2.1% vs last period</div>
+        <div class="kpi-sub">Inquiry → Admission</div>
+      </div>
+      <div class="kpi-card red">
+        <div class="kpi-label">Lost Referrals</div>
+        <div class="kpi-value red" id="cen-lost">11</div>
+        <div class="kpi-delta down">↑ 2 vs last period</div>
+        <div class="kpi-sub">Did not admit</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">In Evaluation</div>
+        <div class="kpi-value" id="cen-eval">6</div>
+        <div class="kpi-delta neutral">Active now</div>
+        <div class="kpi-sub">Pending decision</div>
+      </div>
+    </div>
+
+    <!-- FUNNEL -->
+    <div class="funnel-card">
+      <div class="chart-title" style="margin-bottom:8px">Admission Funnel <span class="badge">This period</span></div>
+      <p style="font-size:12px;color:var(--muted);margin-bottom:4px">Tap any stage to drill down</p>
+      <div class="funnel-stages">
+        <div class="funnel-stage">
+          <div class="funnel-bar-wrap">
+            <div class="funnel-bar" style="background:var(--plum);height:80px">34</div>
+            <div class="funnel-label">Inquiry</div>
+            <div class="funnel-conv">100%</div>
+          </div>
+        </div>
+        <div class="funnel-stage">
+          <div class="funnel-bar-wrap">
+            <div class="funnel-bar" style="background:var(--plum-mid);height:64px">26</div>
+            <div class="funnel-label">Qualified Referral</div>
+            <div class="funnel-conv">76.5%</div>
+          </div>
+        </div>
+        <div class="funnel-stage">
+          <div class="funnel-bar-wrap">
+            <div class="funnel-bar" style="background:var(--plum-light);height:48px">18</div>
+            <div class="funnel-label">Evaluation</div>
+            <div class="funnel-conv">52.9%</div>
+          </div>
+        </div>
+        <div class="funnel-stage">
+          <div class="funnel-bar-wrap">
+            <div class="funnel-bar" style="background:var(--gold);height:32px;color:var(--plum)">8</div>
+            <div class="funnel-label">Admission</div>
+            <div class="funnel-conv" style="color:var(--gold)">23.5%</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="funnel-lost">
+        <div class="loss-card">
+          <div class="chart-title" style="margin-bottom:12px">Loss Reasons <span class="badge">11 lost this period</span></div>
+          <div class="loss-row">
+            <div class="loss-reason">Patient chose another hospice</div>
+            <div class="loss-bar-wrap"><div class="loss-bar" style="width:100%"></div></div>
+            <div class="loss-count">4</div>
+            <div class="loss-pct">36%</div>
+          </div>
+          <div class="loss-row">
+            <div class="loss-reason">Patient improved / ineligible</div>
+            <div class="loss-bar-wrap"><div class="loss-bar" style="width:75%"></div></div>
+            <div class="loss-count">3</div>
+            <div class="loss-pct">27%</div>
+          </div>
+          <div class="loss-row">
+            <div class="loss-reason">Family not ready / declined</div>
+            <div class="loss-bar-wrap"><div class="loss-bar" style="width:50%"></div></div>
+            <div class="loss-count">2</div>
+            <div class="loss-pct">18%</div>
+          </div>
+          <div class="loss-row">
+            <div class="loss-reason">Patient hospitalized</div>
+            <div class="loss-bar-wrap"><div class="loss-bar" style="width:25%"></div></div>
+            <div class="loss-count">1</div>
+            <div class="loss-pct">9%</div>
+          </div>
+          <div class="loss-row">
+            <div class="loss-reason">Out of service area</div>
+            <div class="loss-bar-wrap"><div class="loss-bar" style="width:25%"></div></div>
+            <div class="loss-count">1</div>
+            <div class="loss-pct">9%</div>
+          </div>
+        </div>
+        <div class="chart-card" style="box-shadow:none;border:1px solid var(--border);padding:20px">
+          <div class="chart-title" style="margin-bottom:12px">Pipeline Over Time</div>
+          <div class="chart-wrap"><canvas id="cenTrendChart" height="140"></canvas></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="table-card">
+      <div class="table-header">
+        <div class="table-title">Active Pipeline</div>
+        <button class="add-btn" onclick="addRow('census-table')">+ Add entry</button>
+      </div>
+      <table>
+        <thead>
+          <tr><th>Patient (ID)</th><th>Source</th><th>Stage</th><th>Diagnosis</th><th>Inquiry Date</th><th>Days in Stage</th><th>Next Action</th></tr>
+        </thead>
+        <tbody id="census-table">
+          <tr><td class="strong">P-2608</td><td>Physician</td><td><span class="pill plum">Evaluation</span></td><td>Heart Failure</td><td>Aug 9</td><td class="num">2</td><td>RN assessment Aug 13</td></tr>
+          <tr><td class="strong">P-2607</td><td>Hospital</td><td><span class="pill plum">Evaluation</span></td><td>End-stage COPD</td><td>Aug 8</td><td class="num">3</td><td>Goals-of-care call Aug 12</td></tr>
+          <tr><td class="strong">P-2606</td><td>RCFE</td><td><span class="pill plum">Evaluation</span></td><td>Dementia (FAST 7)</td><td>Aug 7</td><td class="num">4</td><td>Family meeting Aug 14</td></tr>
+          <tr><td class="strong">P-2605</td><td>Physician</td><td><span class="pill blue">Qual. Referral</span></td><td>Lung cancer</td><td>Aug 6</td><td class="num">5</td><td>Eligibility review</td></tr>
+          <tr><td class="strong">P-2604</td><td>Hospital</td><td><span class="pill blue">Qual. Referral</span></td><td>ALS</td><td>Aug 5</td><td class="num">6</td><td>Physician cert. pending</td></tr>
+          <tr><td class="strong">P-2603</td><td>Family</td><td><span class="pill blue">Qual. Referral</span></td><td>End-stage renal</td><td>Aug 4</td><td class="num">7</td><td>Insurance verification</td></tr>
+          <tr><td class="strong">P-2602</td><td>Physician</td><td><span class="pill green">Admitted</span></td><td>Pancreatic cancer</td><td>Aug 2</td><td class="num">–</td><td>First RN visit completed</td></tr>
+          <tr><td class="strong">P-2601</td><td>Hospital</td><td><span class="pill green">Admitted</span></td><td>Heart Failure</td><td>Aug 1</td><td class="num">–</td><td>Care plan established</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div><!-- /main -->
+
+<script>
+// ── TAB SWITCHING ─────────────────────────────────────────────────────────
+function switchTab(id, btn) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('section-' + id).classList.add('active');
+  btn.classList.add('active');
+}
+
+// ── DATE RANGE ────────────────────────────────────────────────────────────
+function updateRange(val) {
+  const labels = {
+    this_month: 'August 2026',
+    last_month: 'July 2026',
+    last_30: 'Last 30 Days',
+    last_90: 'Last 90 Days',
+    ytd: 'Year to Date 2026'
+  };
+  document.getElementById('lastUpdated').textContent = 'Showing: ' + (labels[val] || val);
+}
+
+// ── ADD ROW ───────────────────────────────────────────────────────────────
+function addRow(tableId) {
+  const tb = document.getElementById(tableId);
+  if (!tb) return;
+  const colCount = tb.closest('table').querySelector('thead tr').children.length;
+  const tr = document.createElement('tr');
+  for (let i = 0; i < colCount; i++) {
+    const td = document.createElement('td');
+    td.contentEditable = 'true';
+    td.className = i === 0 ? 'strong editable' : 'editable';
+    td.textContent = i === 0 ? 'New entry' : '—';
+    tr.appendChild(td);
+  }
+  tb.appendChild(tr);
+  tr.firstChild.focus();
+}
+
+// ── CHART PALETTE ─────────────────────────────────────────────────────────
+const PLUM = '#3d1a4f';
+const PLUM2 = '#7b4a96';
+const GOLD = '#c9a84c';
+const GREEN = '#2e7d52';
+const RED = '#b03030';
+const BLUE = '#1a5276';
+const CREAM = '#f0e8d8';
+
+const MONTHS = ['May','Jun','Jul','Aug'];
+const WEEKS = ['W1','W2','W3','W4','W5','W6','W7','W8','W9','W10','W11','W12','W13'];
+const WEEK_LABELS = ['Aug 10','Aug 17','Aug 24','Aug 31','Sep 7','Sep 14','Sep 21','Sep 28','Oct 5','Oct 12','Oct 19','Oct 26','Nov 2'];
+
+function mkLine(ctx, labels, datasets, opts = {}) {
+  return new Chart(ctx, {
+    type: 'line',
+    data: { labels, datasets },
+    options: {
+      responsive: true, maintainAspectRatio: true,
+      plugins: { legend: { display: datasets.length > 1, labels: { font: { size: 11 }, boxWidth: 10 } } },
+      scales: {
+        x: { grid: { color: CREAM }, ticks: { font: { size: 10 }, color: '#6b6b6b', maxTicksLimit: 8 } },
+        y: { grid: { color: CREAM }, ticks: { font: { size: 10 }, color: '#6b6b6b' }, beginAtZero: true, ...( opts.y || {}) }
+      },
+      elements: { line: { tension: 0.35 }, point: { radius: 2, hoverRadius: 5 } },
+      ...opts
+    }
+  });
+}
+
+function mkBar(ctx, labels, datasets, opts = {}) {
+  return new Chart(ctx, {
+    type: 'bar',
+    data: { labels, datasets },
+    options: {
+      responsive: true, maintainAspectRatio: true,
+      plugins: { legend: { display: datasets.length > 1, labels: { font: { size: 11 }, boxWidth: 10 } } },
+      scales: {
+        x: { grid: { display: false }, ticks: { font: { size: 10 }, color: '#6b6b6b' } },
+        y: { grid: { color: CREAM }, ticks: { font: { size: 10 }, color: '#6b6b6b' }, beginAtZero: true }
+      },
+      ...opts
+    }
+  });
+}
+
+function mkDoughnut(ctx, labels, data, colors) {
+  return new Chart(ctx, {
+    type: 'doughnut',
+    data: { labels, datasets: [{ data, backgroundColor: colors, borderWidth: 2, borderColor: '#fff' }] },
+    options: {
+      responsive: true, maintainAspectRatio: true,
+      plugins: { legend: { position: 'right', labels: { font: { size: 11 }, boxWidth: 12 } } },
+      cutout: '60%'
+    }
+  });
+}
+
+// ── SEO CHARTS ────────────────────────────────────────────────────────────
+window.addEventListener('DOMContentLoaded', () => {
+
+  const seoLabels = ['May','Jun 1','Jun 8','Jun 15','Jun 22','Jul 1','Jul 8','Jul 15','Jul 22','Aug 1','Aug 8'];
+  const seoImp = [3200,3600,4100,4400,4800,5200,5800,6400,7100,7800,8340];
+  const seoClicks = [210,240,278,306,340,378,418,472,540,582,612];
+
+  mkLine(document.getElementById('seoImpChart'), seoLabels, [{
+    label: 'Impressions', data: seoImp,
+    borderColor: PLUM, backgroundColor: 'rgba(61,26,79,0.08)',
+    fill: true, borderWidth: 2
+  }]);
+
+  mkLine(document.getElementById('seoClickChart'), seoLabels, [{
+    label: 'Clicks', data: seoClicks,
+    borderColor: GREEN, backgroundColor: 'rgba(46,125,82,0.08)',
+    fill: true, borderWidth: 2
+  }]);
+
+  // ── ADS CHARTS ──────────────────────────────────────────────────────────
+  const adsWeeks = ['W1','W2','W3','W4','W5','W6','W7','W8'];
+  mkLine(document.getElementById('adsSpendChart'), adsWeeks, [
+    { label: 'Spend ($)', data: [380,420,460,500,480,540,520,540],
+      borderColor: RED, backgroundColor: 'rgba(176,48,48,0.08)', fill: true, borderWidth: 2, yAxisID: 'y' },
+    { label: 'Qual. Leads', data: [2,2,3,3,2,4,3,3],
+      borderColor: GOLD, backgroundColor: 'transparent', borderWidth: 2, yAxisID: 'y2',
+      type: 'line' }
+  ], {
+    scales: {
+      x: { grid: { display: false }, ticks: { font: { size: 10 } } },
+      y: { grid: { color: CREAM }, ticks: { font: { size: 10 }, callback: v => '$'+v }, beginAtZero: true },
+      y2: { position: 'right', grid: { display: false }, ticks: { font: { size: 10 } }, beginAtZero: true }
+    }
+  });
+
+  mkDoughnut(document.getElementById('adsLeadsChart'),
+    ['Phone Calls','Form Submissions','Qualified Leads'],
+    [48, 31, 22],
+    [PLUM, GOLD, GREEN]
+  );
+
+  // ── SOCIAL CHARTS ────────────────────────────────────────────────────────
+  mkLine(document.getElementById('socReachChart'), seoLabels, [{
+    label: 'Total Reach', data: [4200,5100,6800,8200,10400,13800,16200,18400,20100,22400,24180],
+    borderColor: PLUM, backgroundColor: 'rgba(61,26,79,0.08)',
+    fill: true, borderWidth: 2
+  }]);
+
+  mkBar(document.getElementById('socEngChart'),
+    ['GBP','LinkedIn','TikTok','X','Facebook','YouTube'],
+    [{
+      label: 'Engagement Rate %',
+      data: [3.8, 5.1, 6.4, 2.8, 3.2, 4.6],
+      backgroundColor: [PLUM, BLUE, '#010101', '#555', '#1877f2', RED],
+      borderRadius: 4
+    }]
+  );
+
+  // ── REFERRAL CHARTS ──────────────────────────────────────────────────────
+  mkDoughnut(document.getElementById('refSourceChart'),
+    ['Physician','Hospital','RCFE','SNF','Professional'],
+    [12, 9, 7, 4, 2],
+    [PLUM, GOLD, GREEN, BLUE, RED]
+  );
+
+  mkLine(document.getElementById('refTrendChart'),
+    ['Apr','May','Jun','Jul','Aug'],
+    [
+      { label: 'Physician', data: [7,8,9,9,12], borderColor: PLUM, borderWidth: 2, tension: 0.3 },
+      { label: 'Hospital', data: [5,6,7,8,9], borderColor: GOLD, borderWidth: 2, tension: 0.3 },
+      { label: 'RCFE', data: [3,4,4,5,7], borderColor: GREEN, borderWidth: 2, tension: 0.3 },
+      { label: 'SNF', data: [2,3,3,4,4], borderColor: BLUE, borderWidth: 2, tension: 0.3 },
+    ]
+  );
+
+  // ── CENSUS CHART ─────────────────────────────────────────────────────────
+  mkLine(document.getElementById('cenTrendChart'),
+    ['Apr','May','Jun','Jul','Aug'],
+    [
+      { label: 'Inquiries', data: [18,22,24,28,34], borderColor: PLUM, borderWidth: 2, tension: 0.3, fill: false },
+      { label: 'Admissions', data: [4,5,5,6,8], borderColor: GREEN, borderWidth: 2, tension: 0.3, fill: false },
+      { label: 'Lost', data: [6,7,8,9,11], borderColor: RED, borderWidth: 2, tension: 0.3, fill: false },
+    ]
+  );
+
+});
+</script>
+</body>
+</html>
