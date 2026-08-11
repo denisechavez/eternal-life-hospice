@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Sitemap Preview — Your Structure</title>
+<style>
+  :root {
+    --plum:#5B2E59; --deep:#3C1C3B; --gold:#C9B07E;
+    --cream:#F5F0EB; --cream-mid:#EDE6DE; --cream-dark:#D8CDBF;
+    --slate:#6793AC; --text:#2C1A2B; --mid:#5A4057;
+  }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { font-family:system-ui,sans-serif; background:var(--cream-mid); color:var(--text); }
+
+  /* Mock header */
+  .mock-hdr {
+    background:var(--deep); padding:14px 32px;
+    display:flex; align-items:center; gap:24px;
+    font-size:12px; color:rgba(245,240,235,.5); letter-spacing:.1em; text-transform:uppercase;
+  }
+  .mock-hdr .logo { color:var(--cream); font-family:Georgia,serif; font-size:18px; letter-spacing:.02em; margin-right:auto; }
+  .mock-nav { display:flex; gap:20px; }
+  .mock-nav span { color:rgba(245,240,235,.65); font-size:11px; font-weight:600; letter-spacing:.08em; text-transform:uppercase; }
+  .mock-nav span.active { color:var(--gold); }
+
+  /* Hero */
+  .mock-hero {
+    background:var(--deep); padding:52px 32px 40px; text-align:center;
+  }
+  .mock-hero .eyebrow { font-size:11px; font-weight:700; letter-spacing:.18em; text-transform:uppercase; color:var(--gold); margin-bottom:10px; }
+  .mock-hero h1 { font-family:Georgia,serif; font-weight:300; font-size:36px; color:var(--cream); margin-bottom:10px; }
+  .mock-hero p { font-size:14px; color:rgba(245,240,235,.6); max-width:500px; margin:0 auto; }
+
+  /* Body */
+  .body { max-width:1060px; margin:0 auto; padding:44px 32px 56px; }
+
+  /* Section */
+  .section { margin-bottom:44px; }
+  .sec-head {
+    display:flex; align-items:center; gap:12px;
+    padding-bottom:12px; border-bottom:2px solid var(--cream-dark);
+    margin-bottom:16px;
+  }
+  .sec-icon {
+    width:34px; height:34px; border-radius:9px;
+    display:flex; align-items:center; justify-content:center;
+    font-size:15px; flex-shrink:0;
+  }
+  .sec-head h2 { font-family:Georgia,serif; font-weight:400; font-size:20px; color:var(--deep); }
+  .sec-head .sub { font-size:12px; color:var(--mid); margin-top:2px; }
+
+  /* Cards grid */
+  .cards { display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:10px; }
+  .card {
+    background:#fff; border:1px solid var(--cream-dark); border-radius:10px;
+    padding:14px 16px; display:flex; align-items:flex-start; gap:10px;
+    transition:border-color .18s, box-shadow .18s;
+  }
+  .card:hover { border-color:var(--gold); box-shadow:0 3px 12px rgba(91,46,89,.09); }
+  .card-icon { font-size:16px; flex-shrink:0; margin-top:1px; }
+  .card-title { font-size:13px; font-weight:600; color:var(--deep); line-height:1.3; }
+  .card-desc { font-size:11.5px; color:var(--mid); margin-top:3px; line-height:1.45; }
+  .card.feature { background:linear-gradient(135deg,var(--plum),var(--deep)); border-color:transparent; }
+  .card.feature .card-title { color:var(--cream); font-size:14px; }
+  .card.feature .card-desc { color:rgba(245,240,235,.65); }
+
+  /* City pills */
+  .pills { display:flex; flex-wrap:wrap; gap:8px; margin-top:4px; }
+  .pill {
+    background:#fff; border:1px solid var(--cream-dark); border-radius:20px;
+    padding:5px 13px; font-size:12px; color:var(--mid);
+    display:flex; align-items:center; gap:5px;
+  }
+  .pill::before { content:'📍'; font-size:10px; }
+  .pill.more { background:var(--slate); border-color:var(--slate); color:#fff; font-weight:600; }
+  .pill.more::before { content:''; }
+
+  /* Notice */
+  .notice {
+    margin-top:48px; text-align:center; padding:16px;
+    font-size:11.5px; color:#aaa; font-style:italic;
+    border-top:1px solid var(--cream-dark);
+  }
+  .notice strong { color:var(--mid); font-style:normal; }
+</style>
+</head>
+<body>
+
+<!-- Mock nav showing your structure -->
+<div class="mock-hdr">
+  <span class="logo">Eternal Life Hospice</span>
+  <div class="mock-nav">
+    <span>About</span>
+    <span>Hospice Care</span>
+    <span>Resources</span>
+    <span>Locations</span>
+    <span>For Professionals</span>
+    <span class="active">Contact</span>
+  </div>
+</div>
+
+<!-- Hero -->
+<div class="mock-hero">
+  <div class="eyebrow">Eternal Life Hospice &middot; eternallifehospice.com</div>
+  <h1>Everything, in one place</h1>
+  <p>A complete guide to every page — for families, physicians, and anyone exploring who we are.</p>
+</div>
+
+<div class="body">
+
+  <!-- HOME -->
+  <div class="section">
+    <div class="sec-head">
+      <div class="sec-icon" style="background:var(--deep)">🏠</div>
+      <div>
+        <h2>Home</h2>
+        <div class="sub">Start here</div>
+      </div>
+    </div>
+    <div class="cards">
+      <div class="card feature">
+        <span class="card-icon">∞</span>
+        <div>
+          <div class="card-title">eternallifehospice.com</div>
+          <div class="card-desc">Our mission, our care, and how to begin. The full story of Eternal Life Hospice.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ABOUT -->
+  <div class="section">
+    <div class="sec-head">
+      <div class="sec-icon" style="background:var(--plum)">👤</div>
+      <div>
+        <h2>About</h2>
+        <div class="sub">Who we are and what we stand for</div>
+      </div>
+    </div>
+    <div class="cards">
+      <div class="card">
+        <span class="card-icon">⭐</span>
+        <div>
+          <div class="card-title">The Eternal Standard</div>
+          <div class="card-desc">Our four pillars of care — the promise every family can hold us to.</div>
+        </div>
+      </div>
+      <div class="card">
+        <span class="card-icon">👩‍⚕️</span>
+        <div>
+          <div class="card-title">Aleksandra Dubina</div>
+          <div class="card-desc">Founder &amp; CEO. Her story, her credentials, and why she built Eternal Life Hospice.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- HOSPICE CARE -->
+  <div class="section">
+    <div class="sec-head">
+      <div class="sec-icon" style="background:#4a7a5c">🕊️</div>
+      <div>
+        <h2>Hospice Care</h2>
+        <div class="sub">What we do and how we do it</div>
+      </div>
+    </div>
+    <div class="cards">
+      <div class="card">
+        <span class="card-icon">🏥</span>
+        <div>
+          <div class="card-title">Hospice Care</div>
+          <div class="card-desc">What hospice is, who it serves, and what the care team looks like day to day.</div>
+        </div>
+      </div>
+      <div class="card">
+        <span class="card-icon">🌅</span>
+        <div>
+          <div class="card-title">First 48 Hours</div>
+          <div class="card-desc">A plain-language guide to what happens the moment hospice begins.</div>
+        </div>
+      </div>
+      <div class="card">
+        <span class="card-icon">🌿</span>
+        <div>
+          <div class="card-title">Integrative &amp; Whole-Person Care</div>
+          <div class="card-desc">Music, sound, massage, aromatherapy — comfort for the body, mind and spirit.</div>
+        </div>
+      </div>
+      <div class="card">
+        <span class="card-icon">🛡️</span>
+        <div>
+          <div class="card-title">Medicare &amp; Coverage</div>
+          <div class="card-desc">What Medicare covers, what families can expect, and how to verify eligibility.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RESOURCES -->
+  <div class="section">
+    <div class="sec-head">
+      <div class="sec-icon" style="background:#7A5C28">📚</div>
+      <div>
+        <h2>Resources</h2>
+        <div class="sub">Guides for families navigating hospice for the first time</div>
+      </div>
+    </div>
+    <div class="cards">
+      <div class="card">
+        <span class="card-icon">📖</span>
+        <div>
+          <div class="card-title">Family Guide</div>
+          <div class="card-desc">The complete digital guide — who is on the team, what to expect, how to ask for help.</div>
+        </div>
+      </div>
+      <div class="card">
+        <span class="card-icon">🕰️</span>
+        <div>
+          <div class="card-title">When Is It Time for Hospice?</div>
+          <div class="card-desc">The signs, the conversation to have with a doctor, and what comes next.</div>
+        </div>
+      </div>
+      <div class="card">
+        <span class="card-icon">✔️</span>
+        <div>
+          <div class="card-title">What Hospice Covers</div>
+          <div class="card-desc">A clear breakdown of services, medications, and what Medicare pays for in full.</div>
+        </div>
+      </div>
+      <div class="card">
+        <span class="card-icon">❓</span>
+        <div>
+          <div class="card-title">FAQs</div>
+          <div class="card-desc">The questions families ask most — answered plainly and without judgment.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- LOCATIONS -->
+  <div class="section">
+    <div class="sec-head">
+      <div class="sec-icon" style="background:var(--slate)">📍</div>
+      <div>
+        <h2>Locations</h2>
+        <div class="sub">Ventura and Los Angeles County — care wherever home is</div>
+      </div>
+    </div>
+    <div class="pills">
+      <span class="pill">Thousand Oaks</span>
+      <span class="pill">Simi Valley</span>
+      <span class="pill">Calabasas</span>
+      <span class="pill">Westlake Village</span>
+      <span class="pill">Ventura</span>
+      <span class="pill">Oxnard</span>
+      <span class="pill">Camarillo</span>
+      <span class="pill">Moorpark</span>
+      <span class="pill">Malibu</span>
+      <span class="pill">Beverly Hills</span>
+      <span class="pill">Santa Monica</span>
+      <span class="pill">Pasadena</span>
+      <span class="pill more">+ 118 more cities →</span>
+    </div>
+  </div>
+
+  <!-- FOR PROFESSIONALS -->
+  <div class="section">
+    <div class="sec-head">
+      <div class="sec-icon" style="background:#2a5472">🩺</div>
+      <div>
+        <h2>For Professionals</h2>
+        <div class="sub">For physicians, discharge planners and case managers</div>
+      </div>
+    </div>
+    <div class="cards">
+      <div class="card">
+        <span class="card-icon">👩‍⚕️</span>
+        <div>
+          <div class="card-title">Providers</div>
+          <div class="card-desc">Our compliance posture, credentials, and what referral partners can count on from our team.</div>
+        </div>
+      </div>
+      <div class="card feature">
+        <span class="card-icon">📋</span>
+        <div>
+          <div class="card-title">Refer a Patient</div>
+          <div class="card-desc">Same-day admissions. Secure referral form. Direct line to our clinical team.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CONTACT -->
+  <div class="section">
+    <div class="sec-head">
+      <div class="sec-icon" style="background:#555">📞</div>
+      <div>
+        <h2>Contact</h2>
+        <div class="sub">Reach us any time — 24 hours a day, 7 days a week</div>
+      </div>
+    </div>
+    <div class="cards">
+      <div class="card">
+        <span class="card-icon">📞</span>
+        <div>
+          <div class="card-title">Call Us — 805.953.7273</div>
+          <div class="card-desc">A nurse is available 24/7. For admissions, questions, or urgent needs.</div>
+        </div>
+      </div>
+      <div class="card">
+        <span class="card-icon">✉️</span>
+        <div>
+          <div class="card-title">Email</div>
+          <div class="card-desc">info@eternallifehospice.com — for non-urgent enquiries and general information.</div>
+        </div>
+      </div>
+      <div class="card">
+        <span class="card-icon">📍</span>
+        <div>
+          <div class="card-title">Office Address</div>
+          <div class="card-desc">4165 E Thousand Oaks Blvd, Suite 325B, Westlake Village, CA 91362</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="notice">
+    <strong>This is a preview only.</strong> No changes have been made to the live site. Approve this layout and I'll build it.
+  </div>
+
+</div>
+</body>
+</html>
