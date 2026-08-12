@@ -503,9 +503,10 @@ if _services_sync_errors:
 # ── [ 8 ] resources.html hero ↔ card-grid sync ────────────────────────────────
 #
 # The hero <p> on resources.html describes the resource hub. A machine-readable
-# comment <!-- RESOURCES-HERO-SYNC count="N" --> sits just above that paragraph;
-# its count must equal the number of <a class="rc"> resource cards in the page.
-# When a card is added or removed the count will fall out of sync, which fails
+# comment <!-- RESOURCES-HERO-SYNC count="N" tc-count="M" --> sits just above
+# that paragraph; count must equal the number of <a class="rc"> resource cards
+# and tc-count must equal the number of <a class="tc"> themed cards in the page.
+# When a card is added or removed either count will fall out of sync, which fails
 # this check — that's the signal to also update the hero copy.
 
 print("\n[ 8 ] resources.html — hero ↔ card-grid sync check …")
@@ -518,39 +519,77 @@ try:
         _rhtml = _rf.read()
 
     # Strip HTML comments before counting so the RESOURCES-HERO-SYNC comment
-    # itself (which contains the literal text <a class="rc">) doesn't pollute
-    # the card count.
+    # itself (which may contain the literal text <a class="rc"> or <a class="tc">)
+    # doesn't pollute the card counts.
     _rhtml_no_comments = re.sub(r'<!--.*?-->', '', _rhtml, flags=re.DOTALL)
 
-    # Count actual resource cards
+    # Count actual resource (rc) cards and themed (tc) cards
     _res_card_count = len(re.findall(
         r'<a\b[^>]*\bclass=["\'][^"\']*\brc\b', _rhtml_no_comments, re.IGNORECASE))
+    _res_tc_count = len(re.findall(
+        r'<a\b[^>]*\bclass=["\'][^"\']*\btc\b', _rhtml_no_comments, re.IGNORECASE))
 
-    # Read the declared count from the RESOURCES-HERO-SYNC comment
+    # Read the declared counts from the RESOURCES-HERO-SYNC comment
     _res_sync_m = re.search(
-        r'<!--\s*RESOURCES-HERO-SYNC\s+count=["\'](\d+)["\']',
-        _rhtml, re.IGNORECASE)
+        r'<!--\s*RESOURCES-HERO-SYNC\b([^-]|-(?!->))*-->',
+        _rhtml, re.IGNORECASE | re.DOTALL)
 
     if _res_sync_m is None:
         _resources_sync_errors.append(
             "resources-hero-sync-marker-missing: the "
-            "<!-- RESOURCES-HERO-SYNC count=\"N\" --> comment is absent from "
-            "resources.html — add it above the hero <p> and set N to the "
-            "number of <a class=\"rc\"> cards in the page"
+            "<!-- RESOURCES-HERO-SYNC count=\"N\" tc-count=\"M\" --> comment is "
+            "absent from resources.html — add it above the hero <p> and set N to "
+            "the number of <a class=\"rc\"> cards and M to the number of "
+            "<a class=\"tc\"> cards in the page"
         )
     else:
-        _res_declared = int(_res_sync_m.group(1))
-        if _res_declared != _res_card_count:
+        _res_sync_text = _res_sync_m.group(0)
+
+        # rc-card count (count="N")
+        _rc_declared_m = re.search(
+            r'\bcount=["\'](\d+)["\']', _res_sync_text, re.IGNORECASE)
+        if _rc_declared_m is None:
             _resources_sync_errors.append(
-                f"resources-hero-out-of-sync: RESOURCES-HERO-SYNC declares "
-                f"{_res_declared} card(s) but {_res_card_count} <a class=\"rc\"> "
-                f"card(s) are present in the page — "
-                f"update the hero <p> to reflect the new/removed resource, then "
-                f"set count=\"{_res_card_count}\" in the RESOURCES-HERO-SYNC comment"
+                "resources-hero-sync-rc-missing: the RESOURCES-HERO-SYNC comment "
+                "is present but has no count=\"N\" attribute — add count=\"N\" "
+                "where N is the number of <a class=\"rc\"> cards in the page"
             )
         else:
-            print(f"  ✓  hero paragraph declares {_res_declared} resource card(s) "
-                  f"— matches the {_res_card_count} card(s) in the page")
+            _res_declared = int(_rc_declared_m.group(1))
+            if _res_declared != _res_card_count:
+                _resources_sync_errors.append(
+                    f"resources-hero-out-of-sync: RESOURCES-HERO-SYNC count declares "
+                    f"{_res_declared} rc card(s) but {_res_card_count} <a class=\"rc\"> "
+                    f"card(s) are present in the page — "
+                    f"update the hero <p> to reflect the new/removed resource, then "
+                    f"set count=\"{_res_card_count}\" in the RESOURCES-HERO-SYNC comment"
+                )
+            else:
+                print(f"  ✓  hero paragraph declares {_res_declared} rc card(s) "
+                      f"— matches the {_res_card_count} rc card(s) in the page")
+
+        # tc-card count (tc-count="M")
+        _tc_declared_m = re.search(
+            r'\btc-count=["\'](\d+)["\']', _res_sync_text, re.IGNORECASE)
+        if _tc_declared_m is None:
+            _resources_sync_errors.append(
+                "resources-hero-sync-tc-missing: the RESOURCES-HERO-SYNC comment "
+                "is present but has no tc-count=\"M\" attribute — add tc-count=\"M\" "
+                "where M is the number of <a class=\"tc\"> themed cards in the page"
+            )
+        else:
+            _res_tc_declared = int(_tc_declared_m.group(1))
+            if _res_tc_declared != _res_tc_count:
+                _resources_sync_errors.append(
+                    f"resources-hero-tc-out-of-sync: RESOURCES-HERO-SYNC tc-count declares "
+                    f"{_res_tc_declared} tc card(s) but {_res_tc_count} <a class=\"tc\"> "
+                    f"themed card(s) are present in the page — "
+                    f"update the hero <p> to reflect the new/removed themed card, then "
+                    f"set tc-count=\"{_res_tc_count}\" in the RESOURCES-HERO-SYNC comment"
+                )
+            else:
+                print(f"  ✓  hero paragraph declares {_res_tc_declared} tc card(s) "
+                      f"— matches the {_res_tc_count} tc card(s) in the page")
 
 except FileNotFoundError:
     _resources_sync_errors.append(
