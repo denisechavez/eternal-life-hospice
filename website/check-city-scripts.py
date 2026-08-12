@@ -438,11 +438,76 @@ except FileNotFoundError:
 except (KeyError, ValueError) as _exc:
     print(f"  ⚠  could not parse city-aliases.json: {_exc} — skipping stale-alias check")
 
+# ── [ 7 ] services.html hero ↔ card-grid sync ─────────────────────────────────
+#
+# The hero <p> on services.html names each service by prose. A machine-readable
+# comment <!-- SERVICES-HERO-SYNC count="N" --> sits just above that paragraph;
+# its count must equal the number of <a class="rc"> service cards in the grid.
+# When a card is added or removed the count will fall out of sync, which fails
+# this check — that's the signal to also update the hero copy.
+
+print("\n[ 7 ] services.html — hero ↔ card-grid sync check …")
+
+_services_path = os.path.join(os.path.dirname(__file__), "elh-preview", "services.html")
+_services_sync_errors = []
+
+try:
+    with open(_services_path, encoding="utf-8") as _sf:
+        _shtml = _sf.read()
+
+    # Strip HTML comments before counting so mentions inside comments don't
+    # pollute the card count (e.g. the SERVICES-HERO-SYNC comment itself uses
+    # the literal text <a class="rc"> as an example).
+    _shtml_no_comments = re.sub(r'<!--.*?-->', '', _shtml, flags=re.DOTALL)
+
+    # Count actual service cards
+    _card_count = len(re.findall(
+        r'<a\b[^>]*\bclass=["\'][^"\']*\brc\b', _shtml_no_comments, re.IGNORECASE))
+
+    # Read the declared count from the SERVICES-HERO-SYNC comment
+    _sync_m = re.search(
+        r'<!--\s*SERVICES-HERO-SYNC\s+count=["\'](\d+)["\']',
+        _shtml, re.IGNORECASE)
+
+    if _sync_m is None:
+        _services_sync_errors.append(
+            "services-hero-sync-marker-missing: the "
+            "<!-- SERVICES-HERO-SYNC count=\"N\" --> comment is absent from "
+            "services.html — add it above the hero <p> and set N to the "
+            "number of service cards in the grid"
+        )
+    else:
+        _declared = int(_sync_m.group(1))
+        if _declared != _card_count:
+            _services_sync_errors.append(
+                f"services-hero-out-of-sync: SERVICES-HERO-SYNC declares "
+                f"{_declared} card(s) but {_card_count} <a class=\"rc\"> "
+                f"card(s) are present in the grid — "
+                f"update the hero <p> to name the new/removed service, then "
+                f"set count=\"{_card_count}\" in the SERVICES-HERO-SYNC comment"
+            )
+        else:
+            print(f"  ✓  hero paragraph declares {_declared} service card(s) "
+                  f"— matches the {_card_count} card(s) in the grid")
+
+except FileNotFoundError:
+    _services_sync_errors.append(
+        f"services-file-missing: {_services_path} not found — "
+        "cannot run hero sync check"
+    )
+
+if _services_sync_errors:
+    for _e in _services_sync_errors:
+        print(f"  ✗  {_e}")
+
 # ── Summary ───────────────────────────────────────────────────────────────────
 
 print()
 
-combined_errors = all_errors + [(f"mutation/{_base_slug}", e) for e in mutation_errors] + _stale_alias_errors
+combined_errors = (all_errors
+                   + [(f"mutation/{_base_slug}", e) for e in mutation_errors]
+                   + _stale_alias_errors
+                   + [("services.html", e) for e in _services_sync_errors])
 
 if combined_errors:
     print("❌  FAIL — city-script regression check found issues:")
