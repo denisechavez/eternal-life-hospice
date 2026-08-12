@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Option A vs Option B — Outline</title>
+<style>
+  :root {
+    --plum:#5B2E59; --deep:#3C1C3B; --gold:#C9B07E;
+    --cream:#F5F0EB; --cream-mid:#EDE6DE; --cream-dark:#D8CDBF;
+    --slate:#6793AC; --green:#3a6640; --text:#2C1A2B; --mid:#5A4057;
+    --ff-d:'Georgia',serif; --ff-b:system-ui,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:var(--ff-b);background:var(--cream-mid);color:var(--text);padding:32px 24px 60px}
+
+  h1{font-family:var(--ff-d);font-weight:400;font-size:22px;color:var(--deep);margin-bottom:4px}
+  .sub{font-size:12px;color:var(--mid);margin-bottom:28px}
+
+  /* Side-by-side columns */
+  .compare{display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:start}
+
+  /* Column card */
+  .col{background:#fff;border:1px solid var(--cream-dark);border-radius:14px;overflow:hidden}
+  .col-head{padding:16px 20px 14px;border-bottom:2px solid var(--cream-dark)}
+  .col-head .opt{font-size:10px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;margin-bottom:4px}
+  .col-head h2{font-family:var(--ff-d);font-weight:400;font-size:1.2rem;color:var(--deep);line-height:1.2}
+  .col-head .effort{margin-top:6px;font-size:11px;color:var(--mid)}
+  .col-head .effort strong{color:var(--deep)}
+
+  .col-a .col-head{border-top:4px solid var(--slate)}
+  .col-b .col-head{border-top:4px solid var(--plum)}
+
+  /* Nav bar mock */
+  .nav-bar{background:var(--deep);padding:8px 14px;font-size:9.5px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:rgba(245,240,235,.55);display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+  .nav-bar span{color:var(--gold)}
+  .nav-bar .new{color:#7ecf9f;position:relative}
+  .nav-bar .new::after{content:'NEW';font-size:7px;background:#3a6640;color:#fff;padding:1px 4px;border-radius:4px;margin-left:4px;vertical-align:middle}
+  .nav-bar .logo{color:var(--cream);font-family:var(--ff-d);font-weight:400;letter-spacing:0;text-transform:none;font-size:11px;margin-right:auto}
+
+  /* Sections */
+  .sections{padding:14px 16px;display:flex;flex-direction:column;gap:8px}
+
+  .sec-row{border-radius:8px;overflow:hidden;border:1px solid var(--cream-dark)}
+  .sec-row.changed{border-color:#b8dfc8;border-width:1.5px}
+  .sec-row.new-sec{border-color:#b8dfc8;border-width:1.5px;background:#f6fdf9}
+
+  .sec-label{padding:9px 12px;display:flex;align-items:center;gap:8px;font-size:12px;font-weight:700;color:var(--deep);background:var(--cream-mid)}
+  .sec-label .icon{font-size:13px}
+  .sec-label .count{margin-left:auto;font-size:10px;color:var(--mid);font-weight:400}
+  .sec-label .tag{font-size:8.5px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;padding:2px 6px;border-radius:6px;margin-left:6px}
+  .tag-new{background:#e8f5ee;color:var(--green);border:1px solid #b8dfc8}
+  .tag-same{background:var(--cream-mid);color:var(--mid);border:1px solid var(--cream-dark)}
+  .tag-changed{background:#fff8ea;color:#9a6c00;border:1px solid #e8d898}
+  .tag-removed{background:#fef0f0;color:#c0392b;border:1px solid #f5c6c6;text-decoration:line-through}
+
+  .pages-list{padding:5px 12px 9px 32px;display:flex;flex-direction:column;gap:3px}
+  .page-item{font-size:11px;color:var(--mid);display:flex;align-items:center;gap:6px;padding:2px 0}
+  .page-item::before{content:'—';color:var(--cream-dark);font-size:10px;flex-shrink:0}
+  .page-item.new-page{color:var(--green);font-weight:600}
+  .page-item.new-page::before{content:'✦';color:var(--green)}
+  .page-item.gone{color:#e0b0b0;text-decoration:line-through}
+  .page-item.gone::before{content:'✕';color:#e0b0b0}
+
+  /* Stats row */
+  .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--cream-dark);border-top:1px solid var(--cream-dark)}
+  .stat{background:#fff;padding:12px;text-align:center}
+  .stat-num{font-family:var(--ff-d);font-size:22px;color:var(--plum);font-weight:400;line-height:1}
+  .stat-lbl{font-size:9.5px;color:var(--mid);margin-top:3px;text-transform:uppercase;letter-spacing:.06em}
+
+  /* Decision bar */
+  .decision{margin-top:20px;background:#fff;border:1px solid var(--cream-dark);border-radius:12px;padding:16px 20px;font-size:13px}
+  .decision h3{font-family:var(--ff-d);font-weight:400;font-size:1rem;color:var(--deep);margin-bottom:10px}
+  .decision-row{display:flex;gap:10px;margin-bottom:6px;font-size:12.5px;color:var(--mid);align-items:flex-start}
+  .decision-row .lbl{font-weight:700;color:var(--deep);min-width:66px;flex-shrink:0}
+
+  .notice{font-size:10.5px;color:#aaa;text-align:center;margin-top:18px;font-style:italic}
+</style>
+</head>
+<body>
+
+<h1>Option A vs Option B — Outline</h1>
+<p class="sub">What each option builds and what changes on the site</p>
+
+<div class="compare">
+
+  <!-- ═══ OPTION A ═══ -->
+  <div class="col col-a">
+    <div class="col-head">
+      <div class="opt" style="color:var(--slate)">Option A</div>
+      <h2>Just Services — minimum change</h2>
+      <div class="effort">Build: <strong>1 page</strong> &nbsp;·&nbsp; Nav changes: <strong>none</strong> &nbsp;·&nbsp; Sitemap update: <strong>+1 card</strong></div>
+    </div>
+
+    <!-- Nav mock -->
+    <div class="nav-bar">
+      <span class="logo">ELH</span>
+      <span>The Eternal Standard</span>
+      <span>The First 48 Hours</span>
+      <span>Integrative Therapies</span>
+      <span>Insurance & Medicare</span>
+      <span>Coverage Area</span>
+      <span>About</span>
+      <span>For Providers</span>
+    </div>
+
+    <!-- Sections -->
+    <div class="sections">
+
+      <div class="sec-row changed">
+        <div class="sec-label"><span class="icon">🕊️</span> Care &amp; Referral <span class="tag tag-changed">+1 page</span><span class="count">was 8 → now 9</span></div>
+        <div class="pages-list">
+          <div class="page-item">Home</div>
+          <div class="page-item new-page">Our Services &nbsp;/services</div>
+          <div class="page-item">Refer a Patient</div>
+          <div class="page-item">Family eGuide</div>
+          <div class="page-item">Sound Bath Therapy</div>
+          <div class="page-item">Volunteer</div>
+          <div class="page-item">Careers</div>
+          <div class="page-item">Media Kit</div>
+          <div class="page-item">The Care Brief</div>
+        </div>
+      </div>
+
+      <div class="sec-row">
+        <div class="sec-label"><span class="icon">📚</span> Resources for Families <span class="tag tag-same">unchanged</span><span class="count">8 pages</span></div>
+      </div>
+
+      <div class="sec-row">
+        <div class="sec-label"><span class="icon">✍️</span> The Eternal Journal <span class="tag tag-same">unchanged</span><span class="count">7 posts</span></div>
+      </div>
+
+      <div class="sec-row">
+        <div class="sec-label"><span class="icon">📍</span> Service Area <span class="tag tag-same">unchanged</span><span class="count">130+ cities</span></div>
+      </div>
+
+      <div class="sec-row">
+        <div class="sec-label"><span class="icon">⚖️</span> Legal &amp; Policy <span class="tag tag-same">unchanged</span><span class="count">2 pages</span></div>
+      </div>
+
+    </div>
+
+    <div class="stats">
+      <div class="stat"><div class="stat-num">1</div><div class="stat-lbl">Page to build</div></div>
+      <div class="stat"><div class="stat-num">0</div><div class="stat-lbl">Nav changes</div></div>
+      <div class="stat"><div class="stat-num">1</div><div class="stat-lbl">Card added</div></div>
+    </div>
+  </div>
+
+  <!-- ═══ OPTION B ═══ -->
+  <div class="col col-b">
+    <div class="col-head">
+      <div class="opt" style="color:var(--plum)">Option B</div>
+      <h2>Services + restructured nav &amp; sitemap</h2>
+      <div class="effort">Build: <strong>1 page</strong> &nbsp;·&nbsp; Nav: <strong>restructured</strong> &nbsp;·&nbsp; Sitemap: <strong>rebuilt 7 sections</strong></div>
+    </div>
+
+    <!-- Nav mock -->
+    <div class="nav-bar">
+      <span class="logo">ELH</span>
+      <span>About</span>
+      <span>Hospice Care</span>
+      <span class="new">Services</span>
+      <span>Resources</span>
+      <span>Locations</span>
+      <span>For Professionals</span>
+      <span>Contact</span>
+    </div>
+
+    <!-- Sections -->
+    <div class="sections">
+
+      <div class="sec-row">
+        <div class="sec-label"><span class="icon">🏠</span> Home <span class="tag tag-same">unchanged</span><span class="count">1 page</span></div>
+      </div>
+
+      <div class="sec-row">
+        <div class="sec-label"><span class="icon">👤</span> About <span class="tag tag-same">unchanged</span><span class="count">2 pages</span></div>
+        <div class="pages-list">
+          <div class="page-item">The Eternal Standard</div>
+          <div class="page-item">Aleksandra Dubina</div>
+        </div>
+      </div>
+
+      <div class="sec-row new-sec">
+        <div class="sec-label"><span class="icon">🕊️</span> Hospice Care <span class="tag tag-new">restructured</span><span class="count">5 pages</span></div>
+        <div class="pages-list">
+          <div class="page-item">Hospice Care Overview</div>
+          <div class="page-item new-page">Our Services &nbsp;/services</div>
+          <div class="page-item">The First 48 Hours</div>
+          <div class="page-item">Integrative &amp; Whole-Person Care</div>
+          <div class="page-item">Medicare &amp; Coverage</div>
+        </div>
+      </div>
+
+      <div class="sec-row changed">
+        <div class="sec-label"><span class="icon">📚</span> Resources <span class="tag tag-changed">+ Journal merged in</span><span class="count">13 pages</span></div>
+        <div class="pages-list">
+          <div class="page-item">Resources Overview</div>
+          <div class="page-item">Family Guide</div>
+          <div class="page-item">When Is It Time?</div>
+          <div class="page-item">What Hospice Covers</div>
+          <div class="page-item">FAQs</div>
+          <div class="page-item">+ 4 other resource articles</div>
+          <div class="page-item">Eternal Journal (blog) — sub-section</div>
+          <div class="page-item">The Care Brief</div>
+        </div>
+      </div>
+
+      <div class="sec-row">
+        <div class="sec-label"><span class="icon">📍</span> Locations <span class="tag tag-same">unchanged</span><span class="count">130+ cities</span></div>
+      </div>
+
+      <div class="sec-row new-sec">
+        <div class="sec-label"><span class="icon">🩺</span> For Professionals <span class="tag tag-changed">renamed</span><span class="count">2 pages</span></div>
+        <div class="pages-list">
+          <div class="page-item">Providers</div>
+          <div class="page-item">Refer a Patient</div>
+        </div>
+      </div>
+
+      <div class="sec-row new-sec">
+        <div class="sec-label"><span class="icon">📞</span> Contact <span class="tag tag-new">new section</span><span class="count">1 page</span></div>
+        <div class="pages-list">
+          <div class="page-item new-page">/contact — phone, email, address, form</div>
+        </div>
+      </div>
+
+      <div class="sec-row">
+        <div class="sec-label" style="opacity:.6"><span class="icon">✍️</span> Eternal Journal <span class="tag tag-removed">removed as top section</span></div>
+        <div class="pages-list">
+          <div class="page-item gone">Separate Journal section (moved into Resources)</div>
+        </div>
+      </div>
+
+      <div class="sec-row">
+        <div class="sec-label"><span class="icon">⚖️</span> Utility / Legal <span class="tag tag-same">unchanged</span><span class="count">4 pages</span></div>
+      </div>
+
+    </div>
+
+    <div class="stats">
+      <div class="stat"><div class="stat-num">2</div><div class="stat-lbl">Pages to build</div></div>
+      <div class="stat"><div class="stat-num" style="color:var(--plum)">Yes</div><div class="stat-lbl">Nav changes</div></div>
+      <div class="stat"><div class="stat-num">7</div><div class="stat-lbl">Sitemap sections</div></div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Decision helper -->
+<div class="decision">
+  <h3>The practical difference</h3>
+  <div class="decision-row"><span class="lbl">Option A</span> Build /services, add one card to the sitemap. 30 minutes. Nothing else moves.</div>
+  <div class="decision-row"><span class="lbl">Option B</span> Build /services + /contact, restructure the sitemap page into 7 sections, and rework the site nav labels. The Eternal Journal folds into Resources. Half a day.</div>
+  <div class="decision-row"><span class="lbl">Note</span> Option B does NOT change any existing URLs or page content — only how they're grouped and labelled in the nav and sitemap page.</div>
+</div>
+
+<p class="notice">Outline only — no changes made to the live site</p>
+
+</body>
+</html>
