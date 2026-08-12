@@ -33,14 +33,6 @@ args = "focus-ring-check"
 
 [[workflows.workflow.tasks]]
 task = "workflow.run"
-args = "translate-smoke-test"
-
-[[workflows.workflow.tasks]]
-task = "workflow.run"
-args = "translate-bar-city-pages"
-
-[[workflows.workflow.tasks]]
-task = "workflow.run"
 args = "city-script-regression-check"
 
 [[workflows.workflow.tasks]]
@@ -100,28 +92,6 @@ args = "cd exports/outreach-tracker-src && node test-rechint-focus.js"
 
 [workflows.workflow.metadata]
 outputType = "console"
-
-[[workflows.workflow]]
-name = "translate-smoke-test"
-author = "agent"
-
-[[workflows.workflow.tasks]]
-task = "shell.exec"
-args = "cd website/elh-preview && node assets/translate-smoke-test.js"
-
-[workflows.workflow.metadata]
-isValidation = true
-
-[[workflows.workflow]]
-name = "translate-bar-city-pages"
-author = "agent"
-
-[[workflows.workflow.tasks]]
-task = "shell.exec"
-args = "node website/elh-preview/assets/test-city-pages-batch.js"
-
-[workflows.workflow.metadata]
-isValidation = true
 
 [[workflows.workflow]]
 name = "city-script-regression-check"

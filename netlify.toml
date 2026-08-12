@@ -13,9 +13,6 @@
 #      both deferred-loader patterns present, plus three mutation self-tests.
 #      Exits 1 and cancels the deploy if the template is broken.
 #
-# Note: translate-smoke-test.js and translate-visibility-check.js removed —
-# Google Translate widget has been replaced with an alternative approach.
-#
 # We set `base` to the site folder so Netlify runs entirely inside it. This
 # isolates the deploy from the repo-root package.json (which belongs to the
 # internal Outreach Tracker, not the website). Without this, Netlify would try
