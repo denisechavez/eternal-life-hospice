@@ -51,6 +51,10 @@ args = "coverage-lookup-test"
 task = "workflow.run"
 args = "alias-check"
 
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "rebuild-search-index"
+
 [[workflows.workflow]]
 name = "Start application"
 author = "agent"
@@ -151,6 +155,17 @@ isValidation = true
 [[workflows.workflow.tasks]]
 task = "shell.exec"
 args = "python3 website/clean-stale-aliases.py --check --remove-redundant"
+
+[[workflows.workflow]]
+name = "rebuild-search-index"
+author = "agent"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "node website/elh-preview/assets/build-search-index.js"
+
+[workflows.workflow.metadata]
+outputType = "console"
 
 [[ports]]
 localPort = 3000

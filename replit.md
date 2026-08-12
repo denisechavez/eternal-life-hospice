@@ -51,6 +51,32 @@ Before any recommendation ask: *Will this increase referrals or admissions?* If 
 
 The website is a **referral-generation platform**, not a brochure. Every page must answer: Why Eternal? Why now? What happens next? How do I refer? How quickly will someone respond? Why should I trust Eternal?
 
+## Search index — keeping it in sync
+
+`website/elh-preview/assets/search-index.json` is now generated automatically.
+**Never edit it by hand** — your changes will be overwritten on the next run.
+
+The script `website/elh-preview/assets/build-search-index.js` crawls every
+HTML page under `website/elh-preview/`, extracts the title, meta description,
+and canonical URL, and rebuilds the index. It:
+
+- **Preserves hand-authored `kw` fields** for pages already in the index
+- **Infers the `cat` category** from the URL for newly discovered pages
+- **Skips** utility/noindex pages (404, privacy-policy, terms, card pages, etc.)
+- Is **idempotent** — safe to run repeatedly
+
+To regenerate locally after adding a new page:
+
+```
+node website/elh-preview/assets/build-search-index.js
+```
+
+Or use the **rebuild-search-index** workflow in the Replit workflow panel.
+
+The script also runs automatically as part of the **Netlify build command**
+(`netlify.toml`) before every production deploy, so new pages are indexed
+without any manual step.
+
 ## How to verify city coverage data
 
 Run the coverage lookup regression test after any edit to `website/city-data.json`:
