@@ -13,6 +13,7 @@
 [functions]
   directory = "netlify/functions"
   node_bundler = "esbuild"
+  ignored_files = ["**/*.test.js"]
 
 # ── Post-deploy PageSpeed check ─────────────────────────────────────────────
 # Runs on every successful production deploy via the onSuccess lifecycle hook.
