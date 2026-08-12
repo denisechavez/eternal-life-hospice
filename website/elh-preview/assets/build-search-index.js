@@ -47,6 +47,35 @@ const SKIP_FILES = new Set([
   'terms.html',
 ]);
 
+// ── City keyword auto-generator ───────────────────────────────────────────────
+/**
+ * Builds a baseline `kw` string for a city page from its title and description.
+ * Only used when the existing index entry has an empty kw field.
+ *
+ * Extracts:
+ *   - City name  from title  e.g. "Hospice Care in Long Beach, CA" → "long beach"
+ *   - Subregion  from desc   e.g. "… — South Bay, Los Angeles County. …" → "south bay"
+ *   - County     from desc   e.g. "Los Angeles County" → "los angeles county"
+ */
+function generateCityKw(title, desc) {
+  const parts = [];
+
+  // City name
+  const cityMatch = title && title.match(/Hospice Care in (.+?),?\s*CA\b/i);
+  if (cityMatch) parts.push(cityMatch[1].trim().toLowerCase());
+
+  // Subregion + county from the em-dash clause: "— Subregion, County."
+  const regionMatch = desc && desc.match(/—\s*(.+?),\s*((Los Angeles|Ventura|Orange|San Bernardino|Riverside)\s+County)/i);
+  if (regionMatch) {
+    const subregion = regionMatch[1].trim().toLowerCase();
+    const county    = regionMatch[2].trim().toLowerCase();
+    if (subregion && !parts.includes(subregion)) parts.push(subregion);
+    if (county    && !parts.includes(county))    parts.push(county);
+  }
+
+  return parts.join(', ');
+}
+
 // ── Category inference from URL ───────────────────────────────────────────────
 function inferCat(url) {
   if (url === '/')                         return 'Home';
@@ -171,14 +200,20 @@ function main() {
 
     if (!title && !desc) continue;  // Nothing useful
 
-    const prev = existingByUrl.get(canonical);
+    const prev         = existingByUrl.get(canonical);
+    const resolvedTitle = title || prev?.title || '';
+    const resolvedDesc  = desc  || prev?.desc  || '';
+    const cat           = prev?.cat ?? inferCat(canonical);
+    // Preserve any hand-authored kw; auto-generate for city pages with blank kw.
+    const autoKw        = (cat === 'City') ? generateCityKw(resolvedTitle, resolvedDesc) : '';
+    const kw            = prev?.kw || autoKw;
 
     discovered.set(canonical, {
       url:   canonical,
-      title: title || prev?.title || '',
-      desc:  desc  || prev?.desc  || '',
-      cat:   prev?.cat ?? inferCat(canonical),
-      kw:    prev?.kw  ?? '',
+      title: resolvedTitle,
+      desc:  resolvedDesc,
+      cat,
+      kw,
     });
   }
 
