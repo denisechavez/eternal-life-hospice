@@ -21,7 +21,7 @@
 [build]
   base = "website/elh-preview"
   publish = "."
-  command = "bash ../check-cookie-settings.sh && node assets/test-chat-teaser.js && python3 ../check-city-scripts.py"
+  command = "git fetch --unshallow 2>/dev/null || true && bash ../check-cookie-settings.sh && node assets/test-chat-teaser.js && python3 ../check-city-scripts.py && node assets/build-search-index.js && node assets/update-sitemap-dates.js"
 
 [functions]
   directory = "netlify/functions"
