@@ -47,17 +47,31 @@ const SKIP_FILES = new Set([
   'terms.html',
 ]);
 
+// ── Neighborhood keyword data ─────────────────────────────────────────────────
+// Maps city page URL → comma-separated list of notable neighborhoods / nearby cities
+// to append to the auto-generated baseline keywords.
+// Edit city-neighborhoods.json to add or update entries for any city page.
+let CITY_NEIGHBORHOODS = {};
+try {
+  CITY_NEIGHBORHOODS = JSON.parse(
+    fs.readFileSync(path.resolve(__dirname, 'city-neighborhoods.json'), 'utf8')
+  );
+} catch {
+  // File optional — silently ignored if missing
+}
+
 // ── City keyword auto-generator ───────────────────────────────────────────────
 /**
- * Builds a baseline `kw` string for a city page from its title and description.
+ * Builds a `kw` string for a city page.
  * Only used when the existing index entry has an empty kw field.
  *
  * Extracts:
  *   - City name  from title  e.g. "Hospice Care in Long Beach, CA" → "long beach"
  *   - Subregion  from desc   e.g. "… — South Bay, Los Angeles County. …" → "south bay"
  *   - County     from desc   e.g. "Los Angeles County" → "los angeles county"
+ *   - Neighborhoods from city-neighborhoods.json (keyed by page URL)
  */
-function generateCityKw(title, desc) {
+function generateCityKw(title, desc, url) {
   const parts = [];
 
   // City name
@@ -71,6 +85,13 @@ function generateCityKw(title, desc) {
     const county    = regionMatch[2].trim().toLowerCase();
     if (subregion && !parts.includes(subregion)) parts.push(subregion);
     if (county    && !parts.includes(county))    parts.push(county);
+  }
+
+  // Neighborhood-level keywords from data file
+  if (url && CITY_NEIGHBORHOODS[url]) {
+    for (const nbhd of CITY_NEIGHBORHOODS[url].split(',').map(s => s.trim()).filter(Boolean)) {
+      if (!parts.includes(nbhd)) parts.push(nbhd);
+    }
   }
 
   return parts.join(', ');
@@ -205,8 +226,21 @@ function main() {
     const resolvedDesc  = desc  || prev?.desc  || '';
     const cat           = prev?.cat ?? inferCat(canonical);
     // Preserve any hand-authored kw; auto-generate for city pages with blank kw.
-    const autoKw        = (cat === 'City') ? generateCityKw(resolvedTitle, resolvedDesc) : '';
-    const kw            = prev?.kw || autoKw;
+    const autoKw        = (cat === 'City') ? generateCityKw(resolvedTitle, resolvedDesc, canonical) : '';
+    let   kw            = prev?.kw || autoKw;
+
+    // For City pages: always merge in neighborhood keywords from city-neighborhoods.json.
+    // This enriches both blank kw (new pages) and thin auto-generated kw (existing pages)
+    // without clobbering any hand-authored neighborhoods already present.
+    if (cat === 'City' && canonical && CITY_NEIGHBORHOODS[canonical]) {
+      const kwSet = new Set(kw.split(',').map(s => s.trim()).filter(Boolean));
+      for (const nbhd of CITY_NEIGHBORHOODS[canonical].split(',').map(s => s.trim()).filter(Boolean)) {
+        if (!kwSet.has(nbhd)) {
+          kw = kw ? kw + ', ' + nbhd : nbhd;
+          kwSet.add(nbhd);
+        }
+      }
+    }
 
     discovered.set(canonical, {
       url:   canonical,
