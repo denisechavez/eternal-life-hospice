@@ -61,13 +61,13 @@ function extractCanonical(html) {
 }
 
 function extractLangs(html) {
-  // Find all <a class="ft-lang" data-lang="..."> (order preserved)
-  const re = /<a[^>]+class=["'][^"']*ft-lang[^"']*["'][^>]+data-lang=["']([^"']+)["'][^>]*>/gi;
+  // Find all .ft-lang pills — both <a> (legacy) and <button> (current) elements
+  const re = /<(?:a|button)[^>]+class=["'][^"']*ft-lang[^"']*["'][^>]+data-lang=["']([^"']+)["'][^>]*>/gi;
   const langs = [];
   let m;
   while ((m = re.exec(html)) !== null) langs.push(m[1]);
   // also handle reversed attribute order
-  const re2 = /<a[^>]+data-lang=["']([^"']+)["'][^>]+class=["'][^"']*ft-lang[^"']*["'][^>]*>/gi;
+  const re2 = /<(?:a|button)[^>]+data-lang=["']([^"']+)["'][^>]+class=["'][^"']*ft-lang[^"']*["'][^>]*>/gi;
   while ((m = re2.exec(html)) !== null) {
     if (!langs.includes(m[1])) langs.push(m[1]);
   }
@@ -166,6 +166,7 @@ const EXCLUDED_FILES = new Set([
   'card-denise-chavez.html',
   'aleksandradubina.html',
   'family-guide.html',
+  'sitemap.html',      // custom compact footer, no translate bar by design
 ]);
 
 function walkHtml(dir, baseLen) {

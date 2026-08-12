@@ -464,6 +464,8 @@ body.booklet .page{transition:transform 1.2s cubic-bezier(.3,.4,.2,1),opacity .5
   <!-- UserWay (accessibility) and WhatConverts (call-tracking) loaded by analytics.js -->
 </head>
 <body class="booklet">
+<a class="skip-link" href="#main-content">Skip to main content</a>
+
 <div id="bootveil"><div class="bv-logo" role="img" aria-label="Eternal Life Hospice"></div></div>
 
 <div class="toolbar">
@@ -488,7 +490,7 @@ body.booklet .page{transition:transform 1.2s cubic-bezier(.3,.4,.2,1),opacity .5
 </div>
 <div class="fg-toast" id="fgToast" role="status" aria-live="polite">Link copied &mdash; ready to paste anywhere</div>
 
-<div class="stage">
+<main id="main-content" tabindex="-1"><div class="stage">
   <button class="navbtn" id="prevBtn" aria-label="Previous page">&#8249;</button>
   <div class="pages" id="pages">
 
@@ -953,5 +955,6 @@ body.booklet .page{transition:transform 1.2s cubic-bezier(.3,.4,.2,1),opacity .5
   </div>
 </div>
 <div style="text-align:center;padding:10px 1rem 14px;font-size:11px;color:rgba(245,240,235,.38);background:#3C1C3B"><a href="#" onclick="window.elhCookieSettings&&window.elhCookieSettings();return false;" style="color:inherit;text-decoration:none;border-bottom:1px solid rgba(245,240,235,.18)">Cookie Settings</a></div>
+</main>
 </body>
 </html>

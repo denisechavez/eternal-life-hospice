@@ -31,28 +31,37 @@
   /* slug without leading slash, e.g. 'hospice-torrance-ca' */
   var slug = basePath.replace(/^\//, '');
 
-  document.querySelectorAll('.ft-lang').forEach(function (a) {
-    var lang = a.dataset.lang;
+  document.querySelectorAll('.ft-lang').forEach(function (btn) {
+    var lang = btn.dataset.lang;
     if (!lang) return;
 
     var isStatic = STATIC_LANGS.indexOf(lang) !== -1 && STATIC_PAGES.indexOf(slug) !== -1;
+    var url, openBlank;
 
     if (isStatic) {
       /* Static pre-translated page */
-      a.href = '/' + lang + basePath;
+      url = '/' + lang + basePath;
+      openBlank = false;
     } else {
       /* Google Translate fallback — always a working link */
       var englishUrl = location.origin + basePath;
-      a.href   = 'https://translate.google.com/translate?sl=en&tl=' +
-                 encodeURIComponent(lang) + '&u=' + encodeURIComponent(englishUrl);
-      a.target = '_blank';
-      a.rel    = 'noopener';
+      url = 'https://translate.google.com/translate?sl=en&tl=' +
+            encodeURIComponent(lang) + '&u=' + encodeURIComponent(englishUrl);
+      openBlank = true;
     }
+
+    btn.addEventListener('click', function () {
+      if (openBlank) {
+        window.open(url, '_blank', 'noopener');
+      } else {
+        window.location.href = url;
+      }
+    });
 
     /* Highlight the pill that matches the current page language */
     if (lang === curLang) {
-      a.classList.add('ft-lang--active');
-      a.setAttribute('aria-current', 'true');
+      btn.classList.add('ft-lang--active');
+      btn.setAttribute('aria-current', 'true');
     }
   });
 }());

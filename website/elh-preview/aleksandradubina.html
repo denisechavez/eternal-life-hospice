@@ -32,7 +32,8 @@ body{display:flex;flex-direction:column;align-items:center;justify-content:cente
   <!-- UserWay (accessibility) and WhatConverts (call-tracking) loaded by analytics.js -->
 </head>
 <body>
-
+<a class="skip-link" href="#main-content">Skip to main content</a>
+<main id="main-content" tabindex="-1">
 <div class="wrap">
 
   <div class="flip-scene" id="flipScene" role="button" aria-label="Flip business card" tabindex="0">
@@ -54,6 +55,7 @@ body{display:flex;flex-direction:column;align-items:center;justify-content:cente
   <a class="save-btn" href="/assets/aleksandra-dubina.vcf" download="Aleksandra-Dubina-ELH.vcf">+ Save Contact to Phone</a>
 
 </div>
+</main>
 
 <script>
 const scene = document.getElementById('flipScene');
