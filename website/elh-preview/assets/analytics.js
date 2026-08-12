@@ -67,6 +67,33 @@
     };
     document.head.appendChild(mc);
 
+    // WhatConverts call-tracking (marketing consent required)
+    // bootAnalytics() only runs after window load, so inject directly — no listener needed.
+    (function () {
+      var f = function (a) { return JSON.parse(JSON.stringify(a)); };
+      window.$wc_leads = window.$wc_leads || { doc: { url: f(document.URL), ref: f(document.referrer), search: f(location.search), hash: f(location.hash) } };
+      var wc = document.createElement('script');
+      wc.src = '//s.ksrndkehqnwntyxlhgto.com/172406.js';
+      document.body.appendChild(wc);
+    }());
+
+  }
+
+  /* ── UserWay accessibility widget (essential — always loads) ─────────── */
+  function loadUserWay() {
+    var load = function () {
+      var s = document.createElement('script');
+      s.setAttribute('data-color', '#6793AC');
+      s.setAttribute('data-trigger', 'elh-ada-trigger');
+      s.setAttribute('data-account', 'puHleOAe1C');
+      s.src = 'https://cdn.userway.org/widget.js';
+      document.body.appendChild(s);
+    };
+    if ('requestIdleCallback' in window) {
+      window.requestIdleCallback(load);
+    } else {
+      window.addEventListener('load', load);
+    }
   }
 
   /* ── Save preference + act on it ───────────────────────────────────── */
@@ -164,15 +191,11 @@
           '<span class="elh-tog-tr"></span></label>' +
         '</div>' +
         '<div class="elh-cc-row">' +
-          '<div class="elh-cc-row-lbl"><strong>Analytics</strong>' +
-          '<span>Google Analytics &amp; Microsoft Clarity — help us understand how the site is used.</span></div>' +
-          '<label class="elh-tog"><input type="checkbox" id="elh-tog-a"' + (analyticsOn ? ' checked' : '') + '>' +
-          '<span class="elh-tog-tr"></span></label>' +
-        '</div>' +
-        '<div class="elh-cc-row">' +
-          '<div class="elh-cc-row-lbl"><strong>Marketing</strong>' +
-          '<span>Brevo visitor tracking — only active for newsletter subscribers.</span></div>' +
-          '<label class="elh-tog"><input type="checkbox" id="elh-tog-m"' + (analyticsOn ? ' checked' : '') + '>' +
+          '<div class="elh-cc-row-lbl"><strong>Analytics &amp; Tracking</strong>' +
+          '<span>Google Analytics, Microsoft Clarity, Brevo, and call-tracking — ' +
+          'help us understand how the site is used and how visitors find us. ' +
+          'All non-essential tracking is enabled or disabled together.</span></div>' +
+          '<label class="elh-tog"><input type="checkbox" id="elh-tog-all"' + (analyticsOn ? ' checked' : '') + '>' +
           '<span class="elh-tog-tr"></span></label>' +
         '</div>' +
         '<div id="elh-cc-mbtns">' +
@@ -186,9 +209,8 @@
       if (e.target === modal) { modal.classList.remove('elh-cc-open'); }
     });
     document.getElementById('elh-cc-save').addEventListener('click', function () {
-      var a = document.getElementById('elh-tog-a').checked;
-      var m = document.getElementById('elh-tog-m').checked;
-      saveConsent((a || m) ? 'all' : 'essential');
+      var all = document.getElementById('elh-tog-all').checked;
+      saveConsent(all ? 'all' : 'essential');
     });
     document.getElementById('elh-cc-decl').addEventListener('click', function () {
       saveConsent('essential');
@@ -250,5 +272,8 @@
     }
   }
   // consent === 'essential' → analytics suppressed, no banner
+
+  // UserWay is an accessibility tool — load it unconditionally on every page
+  loadUserWay();
 
 })();

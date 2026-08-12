@@ -33,7 +33,7 @@
   .timer{font-size:12.5px;color:var(--text-light);font-variant-numeric:tabular-nums}
   @media(max-width:480px){.player{gap:.55rem;padding:.6rem .6rem}.player-desc{font-size:12.5px}}
   .freq-disclaimer{font-size:12px;color:var(--text-light);font-style:italic;margin-top:.6rem;line-height:1.5}
-  .sb-hero{position:relative;overflow:hidden;background:radial-gradient(120% 120% at 50% 0%,rgba(74,37,72,.82) 0%,rgba(60,28,59,.85) 55%,rgba(42,19,42,.93) 100%),url(assets/img/sound-bath-hero.jpg) center/cover;color:var(--cream);text-align:center;padding:94px 20px 80px;isolation:isolate}
+  .sb-hero{position:relative;overflow:hidden;background:radial-gradient(120% 120% at 50% 0%,rgba(74,37,72,.82) 0%,rgba(60,28,59,.85) 55%,rgba(42,19,42,.93) 100%),image-set(url('assets/img/sound-bath-hero.webp') type('image/webp'),url('assets/img/sound-bath-hero.jpg') type('image/jpeg')) center/cover;color:var(--cream);text-align:center;padding:94px 20px 80px;isolation:isolate}
   .sb-rings{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;z-index:-1;pointer-events:none}
   .sb-rings span{position:absolute;width:120px;height:120px;border-radius:50%;border:1px solid rgba(201,176,126,.30);animation:sbpulse 7s ease-out infinite}
   .sb-rings span:nth-child(2){animation-delay:1.75s}
@@ -123,11 +123,8 @@
   ]
 }</script>
   <script async src="/assets/analytics.js?v=20260727h"></script>
-<script>(function(d){var load=function(){var s=d.createElement('script');s.setAttribute('data-color','#6793AC');s.setAttribute('data-trigger','elh-ada-trigger');s.setAttribute('data-account','puHleOAe1C');s.src='https://cdn.userway.org/widget.js';d.body.appendChild(s)};'requestIdleCallback'in window?window.requestIdleCallback(load):window.addEventListener('load',load)})(document)</script>
-  <noscript>Please ensure Javascript is enabled for purposes of <a href="https://userway.org">website accessibility</a></noscript>
 
-
-<script>window.addEventListener('load',function(){var f=function(a){return JSON.parse(JSON.stringify(a))};window.$wc_leads=window.$wc_leads||{doc:{url:f(document.URL),ref:f(document.referrer),search:f(location.search),hash:f(location.hash)}};var s=document.createElement('script');s.src='//s.ksrndkehqnwntyxlhgto.com/172406.js';document.body.appendChild(s)});</script>
+  <!-- UserWay (accessibility) and WhatConverts (call-tracking) loaded by analytics.js -->
 </head><body>
   <header id="hdr">
   <div class="hdr-in">
@@ -312,7 +309,6 @@
   <p class="search-hint">Press Enter to open the first result, or Escape to close</p>
   <div class="search-results" id="searchResults"></div>
 </div>
-
 
 <script defer src="/assets/translate.js?v=20260805"></script>
 </body></html>

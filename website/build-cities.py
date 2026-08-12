@@ -34,15 +34,15 @@ Run from repo root:
 import json, os, re, sys, textwrap, argparse
 
 def _hero_img_tag(slug: str, city: str) -> str:
-    """Return a <picture> element for the city hero image.
+    """Return a responsive <picture> element for the city hero image.
 
-    Always emits the full WebP-source + JPEG-fallback <picture> so every
-    generated page has an <img class="hero-bg"> in the hero section.
-    Hero images (assets/img/city/{slug}.webp and .jpg) are deployed
+    Emits a mobile 640px variant (<= 768 px) and the full-size WebP for
+    wider screens, with a JPEG fallback.  Hero images are deployed
     separately; their on-disk presence is NOT checked here.
     """
     return (
         f'<picture class="hero-bg">'
+        f'<source srcset="assets/img/city/{slug}-mobile.webp" media="(max-width:768px)" type="image/webp">'
         f'<source srcset="assets/img/city/{slug}.webp" type="image/webp">'
         f'<img class="hero-bg" src="assets/img/city/{slug}.jpg"'
         f' alt="{city}, California" width="1536" height="1024"'
@@ -51,17 +51,19 @@ def _hero_img_tag(slug: str, city: str) -> str:
     )
 
 def _hero_preload_tag(slug: str) -> str:
-    """Return the <link rel="preload"> tag for the city hero image.
+    """Return responsive <link rel="preload"> tags for the city hero image.
 
-    Always emits a WebP preload so browsers begin fetching the hero image
-    before the CSS is parsed.  The JPEG is the fallback inside the <picture>
-    element; the preload always targets the WebP variant.
+    Emits two preload hints: a mobile 640px WebP for narrow screens and the
+    full-size WebP for wider screens, mirroring the homepage hero pattern.
     Hero images are deployed separately; on-disk presence is NOT checked here.
     """
     return (
         f'<link rel="preload" as="image" '
+        f'href="assets/img/city/{slug}-mobile.webp" '
+        f'media="(max-width:768px)" type="image/webp" fetchpriority="high">\n  '
+        f'<link rel="preload" as="image" '
         f'href="assets/img/city/{slug}.webp" '
-        f'type="image/webp" fetchpriority="high">'
+        f'media="(min-width:769px)" type="image/webp" fetchpriority="high">'
     )
 
 BASE = os.path.dirname(__file__)
@@ -71,24 +73,9 @@ OUT_DIR   = os.path.join(BASE, "elh-preview")
 # ── Deferred script snippets (must NOT be inside an f-string — JS braces clash) ─
 
 HEAD_SCRIPTS = (
-    '<script defer src="/assets/analytics.js?v=20260727h"></script>\n'
-    # UserWay accessibility widget — requestIdleCallback deferred (never DOMContentLoaded)
-    '<script>(function(d){var load=function(){var s=d.createElement(\'script\');'
-    's.setAttribute(\'data-color\',\'#6793AC\');'
-    's.setAttribute(\'data-trigger\',\'elh-ada-trigger\');'
-    's.setAttribute(\'data-account\',\'puHleOAe1C\');'
-    's.src=\'https://cdn.userway.org/widget.js\';d.body.appendChild(s)};'
-    '\'requestIdleCallback\'in window?window.requestIdleCallback(load):window.addEventListener(\'load\',load)})(document)'
-    '</script>\n'
-    '<noscript>Please ensure Javascript is enabled for purposes of '
-    '<a href="https://userway.org">website accessibility</a></noscript>\n'
-    # WhatConverts lead tracking — window load deferred (never inline async)
-    '<script>window.addEventListener(\'load\',function(){'
-    'var f=function(a){return JSON.parse(JSON.stringify(a))};'
-    'window.$wc_leads=window.$wc_leads||{doc:{url:f(document.URL),ref:f(document.referrer),'
-    'search:f(location.search),hash:f(location.hash)}};'
-    'var s=document.createElement(\'script\');'
-    's.src=\'//s.ksrndkehqnwntyxlhgto.com/172406.js\';document.body.appendChild(s)});</script>'
+    '<script defer src="/assets/analytics.js?v=20260727h"></script>'
+    # UserWay (accessibility, essential) and WhatConverts (call-tracking, marketing)
+    # are both bootstrapped by analytics.js to respect the cookie consent gate.
 )
 
 # ── Shared HTML fragments ──────────────────────────────────────────────────────
@@ -331,6 +318,9 @@ def render_page(c):
   {_hero_preload_tag(slug)}
   <link rel="preload" as="font" href="assets/fonts/fraunces-latin.woff2" type="font/woff2" crossorigin fetchpriority="high">
   <link rel="preload" as="font" href="assets/fonts/fraunces-italic-latin.woff2" type="font/woff2" crossorigin fetchpriority="high">
+  <link rel="preload" as="font" href="assets/fonts/JostELH-Regular.woff2" type="font/woff2" crossorigin>
+  <link rel="preload" as="font" href="assets/fonts/JostELH-SemiBold.woff2" type="font/woff2" crossorigin>
+  <link rel="preload" href="assets/elh.css?v=20260714c" as="style">
   <link rel="stylesheet" href="assets/elh.css?v=20260714c">
 {schema_tags}
 {HEAD_SCRIPTS}

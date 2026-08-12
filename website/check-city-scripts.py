@@ -66,17 +66,22 @@ def src_value(attrs):
 
 
 def find_city_hero_preload(head_html, slug):
-    """Return the first <link> tag that is rel=preload as=image for *slug*'s city hero.
+    """Return the desktop <link rel=preload as=image> for slug's full-size city hero WebP.
 
     Searches each <link> tag as a unit so all required attributes must appear
     on the same element — a decoy WebP link elsewhere in <head> cannot satisfy
     the assertions that use this helper.
+
+    Two preload tags are now emitted per city page (mobile + desktop).  This
+    function returns the DESKTOP tag whose href is exactly
+    ``assets/img/city/{slug}.webp`` — not the ``-mobile`` variant — so that
+    the href and type attribute checks below operate on a predictable tag.
     """
     for tag in re.findall(r'<link\b[^>]*>', head_html, re.IGNORECASE):
         if (re.search(r'\brel\s*=\s*["\']preload["\']', tag, re.IGNORECASE) and
                 re.search(r'\bas\s*=\s*["\']image["\']', tag, re.IGNORECASE) and
                 re.search(
-                    r'href\s*=\s*["\']assets/img/city/' + re.escape(slug),
+                    r'href\s*=\s*["\']assets/img/city/' + re.escape(slug) + r'\.webp["\']',
                     tag, re.IGNORECASE)):
             return tag
     return None
@@ -89,15 +94,16 @@ FORBIDDEN_BARE_SRC_SUBSTRINGS = [
     'ksrndkehqnwntyxlhgto.com',   # WhatConverts CDN domain
 ]
 
-# Patterns that MUST appear somewhere in the full rendered HTML
-# (belt-and-suspenders: ensures the deferred loaders are actually present).
+# Patterns that MUST appear somewhere in the full rendered HTML.
+# UserWay and WhatConverts are now bootstrapped exclusively by analytics.js,
+# so the check verifies that the analytics.js deferred script is present
+# (ensuring the consent-aware loaders will execute) rather than looking for
+# the old inline loader snippets that were removed from city page templates.
 REQUIRED_PATTERNS = [
-    ("requestIdleCallback",
-     "UserWay widget deferred via requestIdleCallback — must never revert to "
-     "inline/DOMContentLoaded"),
-    ("window.addEventListener('load'",
-     "WhatConverts tracker deferred via window load event — must never revert "
-     "to inline async"),
+    ('/assets/analytics.js',
+     "analytics.js deferred script must be present — it bootstraps UserWay "
+     "(accessibility widget, always-on) and WhatConverts (call-tracking, "
+     "consent-gated) centrally. Never inline these loaders on individual pages."),
 ]
 
 
@@ -232,13 +238,13 @@ else:
     print(f"  ✗  {msg}")
     mutation_errors.append(msg)
 
-# Mutation C — deferred-loader pattern stripped from HEAD_SCRIPTS
-_mutant_c = _base_html.replace("requestIdleCallback", "REMOVED_PATTERN")
+# Mutation C — analytics.js deferred script removed (simulates accidental deletion)
+_mutant_c = _base_html.replace("/assets/analytics.js", "/assets/REMOVED_analytics.js")
 _errs_c = collect_errors(_mutant_c)
 if any('missing-deferred-pattern' in e for e in _errs_c):
-    print("  ✓  Mutation C: removed requestIdleCallback is caught")
+    print("  ✓  Mutation C: removed analytics.js script is caught")
 else:
-    msg = "Mutation C FAILED: guard did not catch removal of requestIdleCallback"
+    msg = "Mutation C FAILED: guard did not catch removal of analytics.js deferred script"
     print(f"  ✗  {msg}")
     mutation_errors.append(msg)
 
@@ -313,11 +319,15 @@ else:
     mutation_errors.append(msg)
 _hero_checks += 1
 
-# Mutation E — replace WebP preload with a JPEG preload; guard must catch it ---
+# Mutation E — replace ALL city-hero WebP preloads with a JPEG preload; guard must catch it.
+# Two preload tags are now emitted (mobile + desktop), so count=1 would leave the
+# second WebP preload intact and incorrectly satisfy check [5].  Replace every
+# preload whose href contains the slug's city image path.
 _mutant_e = re.sub(
-    r'<link\b[^>]*\brel\s*=\s*["\']preload["\'][^>]*\.webp[^>]*>',
+    r'<link\b[^>]*\brel\s*=\s*["\']preload["\'][^>]*assets/img/city/'
+    + re.escape(_base_slug) + r'[^>]*\.webp[^>]*>',
     f'<link rel="preload" as="image" href="assets/img/city/{_base_slug}.jpg" fetchpriority="high">',
-    _base_html, count=1, flags=re.IGNORECASE,
+    _base_html, flags=re.IGNORECASE,
 )
 _errs_e = collect_errors(_mutant_e)
 if any('missing-webp-preload' in e for e in _errs_e):

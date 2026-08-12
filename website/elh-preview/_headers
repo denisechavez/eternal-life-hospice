@@ -20,23 +20,24 @@
   Cache-Control: public, max-age=31536000, immutable
 
 /assets/site.js
-  Cache-Control: public, max-age=31536000, immutable
+  Cache-Control: public, max-age=604800
 
 /assets/header.js
-  Cache-Control: public, max-age=31536000, immutable
+  Cache-Control: public, max-age=604800
 
 /assets/chat.js
-  Cache-Control: public, max-age=31536000, immutable
+  Cache-Control: public, max-age=604800
 
 /assets/share.js
-  Cache-Control: public, max-age=31536000, immutable
-
-
+  Cache-Control: public, max-age=604800
 
 /assets/analytics.js
-  Cache-Control: public, max-age=31536000, immutable
+  Cache-Control: public, max-age=604800
 
 /assets/translate.js
+  Cache-Control: public, max-age=604800
+
+/assets/search-index.json
   Cache-Control: public, max-age=31536000, immutable
 
 /assets/img/*
