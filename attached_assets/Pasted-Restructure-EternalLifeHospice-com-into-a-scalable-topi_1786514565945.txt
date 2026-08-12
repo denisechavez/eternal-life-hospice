@@ -1,0 +1,522 @@
+Restructure EternalLifeHospice.com into a scalable topic-based information architecture that improves:
+
+* User experience
+* SEO
+* AI crawlability
+* Internal linking
+* Local search visibility
+* Referral conversion
+* Future content expansion
+
+This is an architecture and organization project first.
+
+Do NOT redesign the visual system.
+Do NOT manually tweak individual images.
+Do NOT delete existing pages.
+Do NOT rename existing production URLs unless specifically approved.
+Do NOT change canonicals unless specifically approved.
+Do NOT remove existing schema analytics tracking forms or conversion functionality.
+Do NOT create duplicate pages where relevant content already exists.
+
+## FIRST — AUDIT BEFORE CHANGES
+
+Before implementation:
+
+1. Inventory every current production URL.
+2. Identify current canonical URLs.
+3. Identify pages included in the XML sitemap.
+4. Identify current internal links.
+5. Identify orphan pages.
+6. Identify duplicate or overlapping content.
+7. Map all existing pages into the proposed new topic structure.
+8. Identify any structural change that could affect an existing URL.
+9. Produce a before-and-after site architecture map.
+10. Flag any proposed redirect before creating it.
+
+Default rule:
+
+KEEP EXISTING URLS.
+
+Navigation hierarchy does not require URLs to change.
+
+## APPROVED PRIMARY NAVIGATION
+
+Use this top-level structure:
+
+HOSPICE CARE
+
+SERVICES
+
+RESOURCES
+
+LOCATIONS
+
+FOR PROFESSIONALS
+
+ABOUT
+
+Persistent CTA:
+
+REQUEST CARE
+
+The Eternal Life Hospice logo should continue linking to the homepage.
+
+On mobile use the same information architecture inside a clean accessible hamburger menu.
+
+Do not hide important sections only on mobile.
+
+Keep Request Care highly visible on mobile.
+
+---
+
+# 1. HOSPICE CARE
+
+Purpose:
+
+This is the primary educational cluster for families trying to understand hospice and make a care decision.
+
+Structure:
+
+* What Is Hospice Care?
+* When Is It Time for Hospice?
+* First 48 Hours of Hospice Care
+* Hospice vs. Palliative Care
+* Levels of Hospice Care
+* What Hospice Covers
+* Medicare Hospice Benefit
+
+Use existing pages wherever possible.
+
+Do not duplicate existing content.
+
+If a relevant page already exists preserve its current URL and connect it to this hub through:
+
+* navigation
+* contextual internal links
+* breadcrumbs
+* sitemap relationships
+* schema where appropriate
+
+Intent distinction:
+
+WHAT HOSPICE COVERS
+= plain-language family explanation of what is generally included in hospice care.
+
+MEDICARE HOSPICE BENEFIT
+= more formal explanation of Medicare hospice eligibility benefit periods covered services and patient responsibilities.
+
+These two pages should cross-link but should not repeat the same copy.
+
+Review all coverage claims for accuracy before expanding them.
+
+Do not make absolute financial claims unless fully supported.
+
+---
+
+# 2. SERVICES
+
+Purpose:
+
+This cluster explains what Eternal Life Hospice actually provides and how Eternal delivers care.
+
+Structure:
+
+* Integrative / Whole-Person Care
+* Pain & Symptom Management
+* Respiratory Comfort
+* Dementia & Alzheimer's Hospice Care
+* Physician Care
+* Medication & Equipment Coordination
+
+IMPORTANT:
+
+Do not globally change current physician positioning language yet.
+
+Audit existing use of:
+
+* Physician-Led
+* Physician-Supported
+* Physician Support
+* Hospice-Trained Physicians
+
+Report every current occurrence.
+
+Do not standardize the terminology until the approved clinical positioning is confirmed.
+
+Use a neutral working label such as "Physician Care" in architecture planning until final terminology is approved.
+
+Services pages should describe actual Eternal capabilities.
+
+Do not imply services levels modalities physician availability equipment or clinical capabilities that Eternal does not operationally provide.
+
+---
+
+# 3. RESOURCES
+
+Purpose:
+
+Resources should contain tools reference material and family support assets.
+
+Structure:
+
+* Family Guide
+* FAQs
+* Hospice Glossary
+* Caregiver Resources
+
+Do not duplicate the evergreen educational content that belongs under Hospice Care.
+
+The rule is:
+
+HOSPICE CARE
+= primary educational pages intended to rank and answer major hospice questions.
+
+RESOURCES
+= tools guides downloadable material references and supporting education.
+
+FAQs should link to primary pillar pages instead of recreating long duplicate answers.
+
+If an existing Family Guide page or file is live make sure it is clearly linked and no longer orphaned.
+
+---
+
+# 4. LOCATIONS
+
+Purpose:
+
+Strengthen local SEO while keeping the primary navigation clean.
+
+Feature:
+
+* Thousand Oaks
+* Simi Valley
+* Calabasas
+* All Service Areas
+
+The All Service Areas hub should provide crawlable HTML links to all approved cities and coverage areas.
+
+Do NOT delete or orphan existing city pages.
+
+Do NOT move existing city URLs unless specifically approved.
+
+Primary local priorities:
+
+1. Thousand Oaks
+2. Simi Valley
+3. Calabasas
+
+Secondary geographic authority:
+
+* Ventura County
+* Los Angeles County
+
+Strengthen the three priority city pages with substantive useful local content.
+
+Avoid:
+
+* thin location pages
+* doorway pages
+* copied city templates
+* keyword swapping
+* duplicate local content
+
+Every location page should provide legitimate user value.
+
+---
+
+# 5. FOR PROFESSIONALS
+
+Purpose:
+
+Create a clear referral pathway for healthcare and senior-care professionals.
+
+Structure:
+
+* Providers
+* Refer a Patient
+
+Audience may include:
+
+* physicians
+* discharge planners
+* case managers
+* RCFEs
+* ALFs
+* SNFs
+* home health organizations
+* geriatric professionals
+* other referral partners
+
+Preserve existing referral functionality.
+
+Do not modify forms workflows or tracking without identifying the impact first.
+
+Referral pathways should be easy to find on desktop and mobile.
+
+---
+
+# 6. ABOUT
+
+Structure:
+
+* The Eternal Standard
+* Aleksandra Dubina
+
+The Eternal Standard should clearly explain:
+
+* Clinical Confidence
+* Guided Presence
+* Whole-Person Comfort
+* Compliance-Led Care
+
+Any Aleksandra Dubina page must be written specifically for Eternal Life Hospice.
+
+Do not automatically reuse biography content from another organization or business.
+
+Do not make the founder page the dominant conversion surface of the website.
+
+It should provide trust leadership context and brand story.
+
+---
+
+# 7. FUTURE CONDITIONS ARCHITECTURE
+
+Prepare the technical architecture now for a future Conditions cluster.
+
+Do NOT add Conditions to the main navigation yet.
+
+Potential future content:
+
+/conditions/
+
+Possible future pages:
+
+* Dementia & Alzheimer's
+* COPD / Pulmonary Disease
+* Heart Disease / CHF
+* Cancer
+* Neurological Conditions
+* Renal Disease
+* Other qualifying terminal diagnoses
+
+IMPORTANT:
+
+Do not move existing Dementia or Respiratory pages simply to fit this future structure.
+
+Preserve existing URLs now.
+
+Architect future content so Conditions can become its own hub later without requiring a major site rebuild.
+
+Avoid creating condition pages that imply hospice eligibility based on diagnosis alone.
+
+Content should explain that hospice eligibility depends on clinical decline prognosis and individual circumstances.
+
+---
+
+# 8. INTERNAL LINKING
+
+Build deliberate topic relationships.
+
+Examples:
+
+What Is Hospice Care?
+→ When Is It Time for Hospice?
+→ What Hospice Covers
+→ Medicare Hospice Benefit
+→ First 48 Hours
+→ Request Care
+
+Integrative / Whole-Person Care
+→ Pain & Symptom Management
+→ Respiratory Comfort
+→ Family Guide
+→ Request Care
+
+Dementia & Alzheimer's Hospice Care
+→ Hospice Care
+→ When Is It Time for Hospice?
+→ Family Guide
+→ Request Care
+
+Thousand Oaks
+→ Hospice Care
+→ Services
+→ When Is It Time for Hospice?
+→ Request Care
+
+For Professionals
+→ Refer a Patient
+→ Hospice Care
+→ Services
+→ Locations
+
+Use descriptive anchor text.
+
+Avoid excessive repetitive exact-match anchor text.
+
+Do not use generic "click here" links when a descriptive link can be used.
+
+---
+
+# 9. BREADCRUMBS
+
+Add consistent breadcrumbs to appropriate interior pages.
+
+Examples:
+
+Home > Hospice Care > First 48 Hours
+
+Home > Services > Integrative / Whole-Person Care
+
+Home > Resources > Family Guide
+
+Home > Locations > Thousand Oaks
+
+Home > About > The Eternal Standard
+
+Use BreadcrumbList structured data where appropriate.
+
+Breadcrumb implementation must not require existing URLs to change.
+
+---
+
+# 10. SEO + AI CRAWLABILITY
+
+Preserve or improve:
+
+* semantic HTML
+* crawlable anchor links
+* heading hierarchy
+* page titles
+* meta descriptions
+* canonical tags
+* XML sitemap
+* robots.txt
+* internal linking
+* breadcrumb markup
+* structured data
+* MedicalOrganization schema
+* LocalBusiness schema where appropriate
+* FAQ schema where appropriate
+* BreadcrumbList schema
+* image alt text
+* accessible navigation
+* clean DOM structure
+
+Make the relationship between hubs and supporting pages obvious to Google and AI crawlers.
+
+Do not use JavaScript-only navigation that prevents standard link discovery.
+
+Do not create content solely for crawlers.
+
+Do not keyword stuff.
+
+Do not create thin pages to increase page count.
+
+---
+
+# 11. PERFORMANCE
+
+The architecture change must not reduce site speed.
+
+Protect or improve:
+
+* LCP
+* INP
+* CLS
+* FCP
+* Total Blocking Time
+* Lighthouse Performance
+* Lighthouse SEO
+* Lighthouse Accessibility
+* Lighthouse Best Practices
+
+Navigation must remain lightweight.
+
+Do not introduce a large menu library if the current site can support accessible dropdown navigation with existing code.
+
+Do not load all submenu content through heavy JavaScript.
+
+---
+
+# 12. DESIGN SYSTEM
+
+Use the existing Eternal Life Hospice design system.
+
+No new:
+
+* colors
+* fonts
+* button styles
+* image treatments
+* card treatments
+* visual effects
+* one-off layouts
+
+Build new pages using reusable existing components.
+
+The purpose of this architecture is to make content expansion faster and more consistent without repeated manual design work.
+
+---
+
+# 13. PROTECT EXISTING SEO EQUITY
+
+Existing URLs are assets.
+
+If you believe an existing URL should change:
+
+STOP.
+
+Do not change it automatically.
+
+Report:
+
+* current URL
+* proposed URL
+* reason for change
+* SEO benefit
+* SEO risk
+* required 301 redirect
+* affected internal links
+* affected sitemap entry
+* affected canonical
+* affected structured data
+
+Wait for approval.
+
+---
+
+# REQUIRED OUTPUT BEFORE IMPLEMENTATION
+
+Produce:
+
+1. Current primary navigation
+2. Proposed primary navigation
+3. Complete existing URL inventory
+4. Existing pages mapped to the new architecture
+5. Missing future-content pages
+6. Duplicate or overlapping content
+7. Orphan pages
+8. Existing URLs that should remain unchanged
+9. Any URL changes you recommend
+10. Required redirects if any
+11. Internal linking plan
+12. Breadcrumb plan
+13. Sitemap changes
+14. Schema changes
+15. Mobile navigation behavior
+16. Performance risks
+17. SEO risks
+18. AI crawlability improvements
+19. Recommended implementation sequence
+
+Classify each recommendation:
+
+CRITICAL
+HIGH
+MEDIUM
+LOW
+
+Do not deploy structural changes to production until this architecture audit and impact report are reviewed and approved.
+
+The objective is to expand EternalLifeHospice.com into a scalable hospice knowledge and referral platform without undoing the SEO technical design or conversion work already completed.

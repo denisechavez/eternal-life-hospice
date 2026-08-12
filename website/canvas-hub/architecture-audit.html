@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ELH Architecture Audit — Pre-Implementation Report</title>
+<style>
+  :root {
+    --plum:#5B2E59;--deep:#3C1C3B;--gold:#C9B07E;
+    --cream:#F5F0EB;--cream-mid:#EDE6DE;--cream-dark:#D8CDBF;
+    --slate:#6793AC;--green:#3a6640;--text:#2C1A2B;--mid:#5A4057;
+    --red:#c0392b;--amber:#9a6c00;
+    --ff-d:'Georgia',serif;--ff-b:system-ui,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:var(--ff-b);background:var(--cream-mid);color:var(--text);font-size:14px;line-height:1.6}
+
+  /* Layout */
+  .page{max-width:960px;margin:0 auto;padding:40px 24px 80px}
+
+  /* Header */
+  .doc-header{background:var(--deep);color:var(--cream);padding:32px 36px;border-radius:14px;margin-bottom:32px}
+  .doc-header .eyebrow{font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);margin-bottom:8px}
+  .doc-header h1{font-family:var(--ff-d);font-weight:300;font-size:1.9rem;color:var(--cream);line-height:1.1;margin-bottom:10px}
+  .doc-header p{font-size:13px;color:rgba(245,240,235,.6);max-width:600px}
+  .doc-header .meta{margin-top:14px;display:flex;gap:20px;flex-wrap:wrap;font-size:11px;color:rgba(245,240,235,.45)}
+  .doc-header .meta strong{color:rgba(245,240,235,.75)}
+
+  /* Nav */
+  .toc{background:#fff;border:1px solid var(--cream-dark);border-radius:10px;padding:16px 20px;margin-bottom:28px}
+  .toc h2{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--mid);margin-bottom:10px}
+  .toc-list{display:flex;flex-wrap:wrap;gap:6px}
+  .toc-list a{font-size:11.5px;color:var(--slate);text-decoration:none;padding:3px 10px;background:var(--cream-mid);border-radius:14px;border:1px solid var(--cream-dark)}
+  .toc-list a:hover{background:var(--slate);color:#fff;border-color:var(--slate)}
+
+  /* Section */
+  .section{background:#fff;border:1px solid var(--cream-dark);border-radius:12px;margin-bottom:20px;overflow:hidden}
+  .sec-head{padding:14px 20px;border-bottom:1px solid var(--cream-dark);display:flex;align-items:center;gap:10px;background:var(--cream-mid)}
+  .sec-num{width:26px;height:26px;border-radius:50%;background:var(--plum);color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+  .sec-head h2{font-size:13px;font-weight:700;color:var(--deep);flex:1}
+  .sec-body{padding:18px 20px}
+
+  /* Priority badges */
+  .badge{display:inline-block;font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:2px 7px;border-radius:6px;vertical-align:middle;margin-left:5px}
+  .b-critical{background:#fde8e8;color:var(--red);border:1px solid #f5c6c6}
+  .b-high{background:#fff3e0;color:#b85c00;border:1px solid #f5d5a0}
+  .b-medium{background:#eaf2fb;color:var(--slate);border:1px solid #b8d4ea}
+  .b-low{background:#f0f8f0;color:var(--green);border:1px solid #b8dfc8}
+  .b-none{background:var(--cream-mid);color:var(--mid);border:1px solid var(--cream-dark)}
+
+  /* Tables */
+  table{width:100%;border-collapse:collapse;font-size:12.5px;margin-bottom:12px}
+  th{background:var(--cream-mid);color:var(--mid);font-weight:700;font-size:10px;letter-spacing:.07em;text-transform:uppercase;padding:7px 10px;text-align:left;border-bottom:2px solid var(--cream-dark)}
+  td{padding:7px 10px;border-bottom:1px solid var(--cream-mid);vertical-align:top;color:var(--text)}
+  tr:last-child td{border-bottom:0}
+  tr:hover td{background:var(--cream-mid)}
+  .mono{font-family:monospace;font-size:11.5px;color:var(--plum)}
+  .green{color:var(--green);font-weight:600}
+  .amber{color:var(--amber)}
+  .red{color:var(--red)}
+  .muted{color:#aaa}
+
+  /* Nav comparison */
+  .nav-compare{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:12px}
+  .nav-block{border:1px solid var(--cream-dark);border-radius:10px;overflow:hidden}
+  .nav-block-head{padding:9px 14px;font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#fff}
+  .nav-item-row{padding:8px 14px;border-bottom:1px solid var(--cream-mid);font-size:12.5px;display:flex;align-items:center;gap:6px}
+  .nav-item-row:last-child{border-bottom:0}
+  .nav-item-row .sub-note{font-size:10.5px;color:var(--mid);margin-left:auto}
+  .nav-item-row.new-item{background:#f0fbf4}
+  .nav-item-row.removed-item{background:#fef5f5;opacity:.7}
+  .nav-item-row.changed-item{background:#fffbf0}
+
+  /* Callout boxes */
+  .callout{border-radius:8px;padding:12px 14px;margin-bottom:10px;font-size:13px;line-height:1.6}
+  .callout-warn{background:#fff8ea;border-left:4px solid #e8c84a;color:#5a4000}
+  .callout-info{background:#eaf2fb;border-left:4px solid var(--slate);color:#1a3550}
+  .callout-ok{background:#f0fbf4;border-left:4px solid var(--green);color:#1a3820}
+  .callout-red{background:#fef0f0;border-left:4px solid var(--red);color:#5a1000}
+  .callout strong{font-weight:700}
+
+  /* Pills */
+  .pill-row{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+  .pill{font-size:11px;padding:3px 10px;border-radius:12px;border:1px solid var(--cream-dark);background:var(--cream-mid);color:var(--mid)}
+  .pill.new{background:#e8f5ee;color:var(--green);border-color:#b8dfc8}
+  .pill.live{background:#eaf2fb;color:var(--slate);border-color:#b8d4ea}
+  .pill.gap{background:#fff8ea;color:var(--amber);border-color:#e8d898}
+  .pill.warn{background:#fef0f0;color:var(--red);border-color:#f5c6c6}
+
+  /* Sequence steps */
+  .steps{display:flex;flex-direction:column;gap:10px}
+  .step{display:flex;gap:12px;align-items:flex-start}
+  .step-num{width:24px;height:24px;border-radius:50%;background:var(--plum);color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+  .step-body{flex:1}
+  .step-title{font-weight:700;font-size:13px;color:var(--deep);margin-bottom:3px}
+  .step-desc{font-size:12px;color:var(--mid)}
+
+  h3{font-size:12px;font-weight:700;letter-spacing:.05em;color:var(--deep);margin:14px 0 6px;text-transform:uppercase}
+  p{margin-bottom:8px;font-size:13px;color:var(--mid)}
+  ul{padding-left:18px;margin-bottom:10px}
+  li{font-size:12.5px;color:var(--mid);margin-bottom:3px}
+  li strong{color:var(--text)}
+
+  .notice{text-align:center;font-size:11px;color:#aaa;font-style:italic;margin-top:32px;padding-top:20px;border-top:1px solid var(--cream-dark)}
+</style>
+</head>
+<body>
+<div class="page">
+
+<!-- Header -->
+<div class="doc-header">
+  <div class="eyebrow">Pre-Implementation Audit</div>
+  <h1>EternalLifeHospice.com<br>Architecture Restructure Report</h1>
+  <p>Full audit of existing site structure mapped to proposed information architecture. No changes have been made to the site. This report must be reviewed and approved before implementation begins.</p>
+  <div class="meta">
+    <span><strong>Status:</strong> Awaiting approval</span>
+    <span><strong>Prepared:</strong> August 2026</span>
+    <span><strong>Pages audited:</strong> ~185 (core + 146 city pages)</span>
+    <span><strong>URLs changing:</strong> 0 proposed</span>
+  </div>
+</div>
+
+<!-- TOC -->
+<div class="toc">
+  <h2>Jump to section</h2>
+  <div class="toc-list">
+    <a href="#s1">1. Current Nav</a>
+    <a href="#s2">2. Proposed Nav</a>
+    <a href="#s3">3. URL Inventory</a>
+    <a href="#s4">4. Architecture Mapping</a>
+    <a href="#s5">5. Missing Pages</a>
+    <a href="#s6">6. Duplicate Content</a>
+    <a href="#s7">7. Orphan Pages</a>
+    <a href="#s8">8. URLs — No Change</a>
+    <a href="#s9">9. URL Changes</a>
+    <a href="#s10">10. Redirects</a>
+    <a href="#s11">11. Internal Linking Plan</a>
+    <a href="#s12">12. Breadcrumb Plan</a>
+    <a href="#s13">13. Sitemap Changes</a>
+    <a href="#s14">14. Schema Changes</a>
+    <a href="#s15">15. Mobile Nav</a>
+    <a href="#s16">16. Performance Risks</a>
+    <a href="#s17">17. SEO Risks</a>
+    <a href="#s18">18. AI Crawlability</a>
+    <a href="#s19">19. Implementation Sequence</a>
+    <a href="#physician">Physician Terminology Audit</a>
+  </div>
+</div>
+
+<!-- 1 -->
+<div class="section" id="s1">
+  <div class="sec-head"><span class="sec-num">1</span><h2>Current Primary Navigation</h2></div>
+  <div class="sec-body">
+    <div class="nav-block" style="max-width:540px">
+      <div class="nav-block-head" style="background:var(--deep)">Current nav — eternallifehospice.com</div>
+      <div class="nav-item-row">The Eternal Standard <span class="sub-note">→ /#standard · has sub-items</span></div>
+      <div class="nav-item-row">The First 48 Hours <span class="sub-note">→ /#first48 · has sub-items</span></div>
+      <div class="nav-item-row">Integrative Therapies <span class="sub-note">→ /#modalities · has sub-items</span></div>
+      <div class="nav-item-row">Insurance &amp; Medicare <span class="sub-note">→ /#medicare · no sub-items</span></div>
+      <div class="nav-item-row">Coverage Area <span class="sub-note">→ /#coverage · has sub-items</span></div>
+      <div class="nav-item-row">About Eternal <span class="sub-note">→ /#founder · has sub-items</span></div>
+      <div class="nav-item-row">For Providers <span class="sub-note">→ /refer · has sub-items</span></div>
+      <div class="nav-item-row" style="background:var(--cream-mid);color:var(--gold);font-weight:600">📞 805.953.7273 <span class="sub-note muted">Persistent CTA</span></div>
+    </div>
+    <div class="callout callout-warn" style="margin-top:12px">
+      <strong>Observation:</strong> Most current top-level labels describe homepage sections (#anchors), not independent page destinations. A family or referral partner arriving from Google cannot easily orient themselves to the site's scope from the nav alone.
+    </div>
+  </div>
+</div>
+
+<!-- 2 -->
+<div class="section" id="s2">
+  <div class="sec-head"><span class="sec-num">2</span><h2>Proposed Primary Navigation</h2></div>
+  <div class="sec-body">
+    <div class="nav-compare">
+      <div class="nav-block">
+        <div class="nav-block-head" style="background:#555">Current</div>
+        <div class="nav-item-row removed-item">The Eternal Standard</div>
+        <div class="nav-item-row removed-item">The First 48 Hours</div>
+        <div class="nav-item-row removed-item">Integrative Therapies</div>
+        <div class="nav-item-row removed-item">Insurance &amp; Medicare</div>
+        <div class="nav-item-row removed-item">Coverage Area</div>
+        <div class="nav-item-row removed-item">About Eternal</div>
+        <div class="nav-item-row">For Providers</div>
+        <div class="nav-item-row" style="color:var(--gold)">📞 805.953.7273</div>
+      </div>
+      <div class="nav-block">
+        <div class="nav-block-head" style="background:var(--plum)">Proposed</div>
+        <div class="nav-item-row new-item">Hospice Care ▾</div>
+        <div class="nav-item-row new-item">Services ▾</div>
+        <div class="nav-item-row new-item">Resources ▾</div>
+        <div class="nav-item-row new-item">Locations ▾</div>
+        <div class="nav-item-row">For Professionals ▾ <span class="sub-note">(renamed)</span></div>
+        <div class="nav-item-row new-item">About ▾</div>
+        <div class="nav-item-row" style="color:var(--green);font-weight:700;background:#f0fbf4">REQUEST CARE <span class="sub-note green">Persistent CTA</span></div>
+      </div>
+    </div>
+    <p>No existing URLs change as a result of this nav restructure. Items move from homepage anchors to proper hub pages. "For Providers" becomes "For Professionals." Persistent CTA changes from phone number to a call-to-action button (phone number moves to footer / contact cluster).</p>
+  </div>
+</div>
+
+<!-- 3 -->
+<div class="section" id="s3">
+  <div class="sec-head"><span class="sec-num">3</span><h2>Complete Existing URL Inventory</h2></div>
+  <div class="sec-body">
+    <h3>Core pages (39 URLs)</h3>
+    <table>
+      <tr><th>URL</th><th>Page title</th><th>In XML sitemap</th><th>In nav</th></tr>
+      <tr><td class="mono">/</td><td>Eternal Life Hospice — Home</td><td class="green">✓</td><td class="green">Logo link</td></tr>
+      <tr><td class="mono">/aleksandradubina</td><td>Aleksandra Dubina</td><td class="green">✓</td><td class="amber">No</td></tr>
+      <tr><td class="mono">/blog</td><td>The Eternal Journal</td><td class="green">✓</td><td class="amber">No</td></tr>
+      <tr><td class="mono">/blog/caring-for-the-caregiver</td><td>Caring for the Caregiver</td><td class="green">✓</td><td class="amber">No</td></tr>
+      <tr><td class="mono">/blog/five-hospice-myths-…</td><td>Five Myths That Cause Families to Wait</td><td class="green">✓</td><td class="amber">No</td></tr>
+      <tr><td class="mono">/blog/music-at-the-bedside</td><td>Music at the Bedside</td><td class="green">✓</td><td class="amber">No</td></tr>
+      <tr><td class="mono">/blog/sound-baths-ancient-comfort-…</td><td>Sound Baths: Ancient Comfort</td><td class="green">✓</td><td class="amber">No</td></tr>
+      <tr><td class="mono">/blog/talking-with-children-…</td><td>Talking With Children</td><td class="green">✓</td><td class="amber">No</td></tr>
+      <tr><td class="mono">/blog/the-quiet-work-of-hospice-volunteers</td><td>The Quiet Work of Volunteers</td><td class="green">✓</td><td class="amber">No</td></tr>
+      <tr><td class="mono">/care-brief</td><td>The Care Brief</td><td class="amber">No</td><td class="amber">No</td></tr>
+      <tr><td class="mono">/care-brief/hospice-is-part-of-life-…</td><td>Care Brief article</td><td class="green">✓</td><td class="amber">No</td></tr>
+      <tr><td class="mono">/careers</td><td>Careers at ELH</td><td class="green">✓</td><td class="amber">No</td></tr>
+      <tr><td class="mono">/family-guide</td><td>Family eGuide</td><td class="green">✓</td><td>Sub-item</td></tr>
+      <tr><td class="mono">/hospice-ventura-and-los-angeles-county-ca</td><td>Ventura &amp; LA County Hub</td><td class="green">✓</td><td class="amber">No</td></tr>
+      <tr><td class="mono">/media-kit</td><td>Media Kit</td><td class="green">✓</td><td class="amber">No</td></tr>
+      <tr><td class="mono">/privacy-policy</td><td>Privacy Policy</td><td class="amber">No</td><td class="amber">No</td></tr>
+      <tr><td class="mono">/refer</td><td>Refer a Patient</td><td class="green">✓</td><td>Top-level</td></tr>
+      <tr><td class="mono">/referral-card</td><td>Referral Card</td><td class="amber">No</td><td class="amber">No</td></tr>
+      <tr><td class="mono">/resources</td><td>Resources Overview</td><td class="green">✓</td><td>Sub-item</td></tr>
+      <tr><td class="mono">/resources/back-to-the-earth</td><td>Back to the Earth</td><td class="green">✓</td><td class="amber">No</td></tr>
+      <tr><td class="mono">/resources/comfort-therapies</td><td>Integrative Comfort Therapies</td><td class="green">✓</td><td class="amber">No</td></tr>
+      <tr><td class="mono">/resources/first-48-hours</td><td>The First 48 Hours</td><td class="green">✓</td><td class="amber">No</td></tr>
+      <tr><td class="mono">/resources/how-to-choose-a-hospice</td><td>How to Choose a Hospice</td><td class="green">✓</td><td class="amber">No</td></tr>
+      <tr><td class="mono">/resources/medicare-hospice-benefit</td><td>Medicare Hospice Benefit</td><td class="green">✓</td><td class="amber">No</td></tr>
+      <tr><td class="mono">/resources/the-circle-around-you</td><td>The Circle Around You</td><td class="green">✓</td><td class="amber">No</td></tr>
+      <tr><td class="mono">/resources/volunteer</td><td>Giving Time, Giving Presence</td><td class="green">✓</td><td class="amber">No</td></tr>
+      <tr><td class="mono">/resources/when-is-it-time</td><td>When Is It Time?</td><td class="green">✓</td><td class="amber">No</td></tr>
+      <tr><td class="mono">/sitemap</td><td>Site Map</td><td class="green">✓</td><td class="amber">No</td></tr>
+      <tr><td class="mono">/sound-bath</td><td>Sound Bath Therapy</td><td class="green">✓</td><td>Sub-item</td></tr>
+      <tr><td class="mono">/terms</td><td>Terms &amp; Conditions</td><td class="amber">No</td><td class="amber">No</td></tr>
+      <tr><td class="mono">/volunteer</td><td>Become a Volunteer</td><td class="green">✓</td><td>Sub-item</td></tr>
+    </table>
+    <h3>City pages (146 URLs)</h3>
+    <p>All follow the pattern <span class="mono">/hospice-[city]-ca</span>. All 146 are in the XML sitemap. None appear in the main nav (accessible via the county hub page). <strong>No changes proposed to any city URL.</strong></p>
+  </div>
+</div>
+
+<!-- 4 -->
+<div class="section" id="s4">
+  <div class="sec-head"><span class="sec-num">4</span><h2>Existing Pages Mapped to New Architecture</h2></div>
+  <div class="sec-body">
+    <table>
+      <tr><th>New cluster</th><th>Existing page → maps to</th><th>Action needed</th></tr>
+      <tr><td><strong>HOSPICE CARE</strong></td><td>/resources/when-is-it-time</td><td>Connect via nav sub-item + breadcrumb</td></tr>
+      <tr><td></td><td>/resources/first-48-hours</td><td>Connect via nav sub-item + breadcrumb</td></tr>
+      <tr><td></td><td>/resources/medicare-hospice-benefit</td><td>Connect via nav sub-item + breadcrumb</td></tr>
+      <tr><td></td><td>/resources/how-to-choose-a-hospice</td><td>Connect via nav sub-item + breadcrumb</td></tr>
+      <tr><td></td><td>/#faq anchor on homepage</td><td>Future: standalone /resources/faq (LOW)</td></tr>
+      <tr><td><strong>SERVICES</strong></td><td>/resources/comfort-therapies</td><td>Connect via Services nav + internal links</td></tr>
+      <tr><td></td><td>/sound-bath</td><td>Connect via Services nav + internal links</td></tr>
+      <tr><td></td><td>Homepage #clinical-mobile section</td><td>Source content for new services pages</td></tr>
+      <tr><td><strong>RESOURCES</strong></td><td>/resources (hub)</td><td>Keep as hub, update internal links</td></tr>
+      <tr><td></td><td>/family-guide</td><td>Connect via Resources nav sub-item</td></tr>
+      <tr><td></td><td>/resources/the-circle-around-you</td><td>Connect via Resources nav</td></tr>
+      <tr><td></td><td>/resources/back-to-the-earth</td><td>Connect via Resources nav</td></tr>
+      <tr><td></td><td>/blog (Eternal Journal)</td><td>Sub-section under Resources</td></tr>
+      <tr><td></td><td>/care-brief</td><td>Sub-section under Resources</td></tr>
+      <tr><td><strong>LOCATIONS</strong></td><td>/hospice-ventura-and-los-angeles-county-ca</td><td>Use as "All Service Areas" hub</td></tr>
+      <tr><td></td><td>All 146 /hospice-[city]-ca pages</td><td>No URL change; reachable from hub</td></tr>
+      <tr><td><strong>FOR PROFESSIONALS</strong></td><td>/refer</td><td>Keep URL; rename nav label only</td></tr>
+      <tr><td><strong>ABOUT</strong></td><td>/aleksandradubina</td><td>Connect via About nav sub-item</td></tr>
+      <tr><td></td><td>/#standard (homepage section)</td><td>Future: consider standalone /about/the-eternal-standard (LOW)</td></tr>
+      <tr><td><strong>UTILITY</strong></td><td>/sitemap, /privacy-policy, /terms</td><td>No change — footer links</td></tr>
+      <tr><td></td><td>/media-kit, /careers, /volunteer, /referral-card</td><td>No change — accessible via footer / direct links</td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- 5 -->
+<div class="section" id="s5">
+  <div class="sec-head"><span class="sec-num">5</span><h2>Missing Pages — Future Content Required</h2></div>
+  <div class="sec-body">
+    <table>
+      <tr><th>Proposed URL</th><th>Cluster</th><th>Priority</th><th>Notes</th></tr>
+      <tr><td class="mono">/hospice-care</td><td>Hospice Care</td><td><span class="badge b-high">HIGH</span></td><td>Hub page needed for nav to point to. Could redirect to /#standard or be a new page.</td></tr>
+      <tr><td class="mono">/hospice-care/what-is-hospice</td><td>Hospice Care</td><td><span class="badge b-high">HIGH</span></td><td>Core SEO page. No equivalent currently exists standalone.</td></tr>
+      <tr><td class="mono">/hospice-care/hospice-vs-palliative</td><td>Hospice Care</td><td><span class="badge b-medium">MEDIUM</span></td><td>High-volume search intent. No current page.</td></tr>
+      <tr><td class="mono">/hospice-care/levels-of-hospice-care</td><td>Hospice Care</td><td><span class="badge b-medium">MEDIUM</span></td><td>No current page.</td></tr>
+      <tr><td class="mono">/services</td><td>Services</td><td><span class="badge b-high">HIGH</span></td><td>Hub page. Already previewed and approved in this session.</td></tr>
+      <tr><td class="mono">/services/integrative-whole-person-care</td><td>Services</td><td><span class="badge b-high">HIGH</span></td><td>Existing content at /resources/comfort-therapies — new URL or connect old one.</td></tr>
+      <tr><td class="mono">/services/pain-symptom-management</td><td>Services</td><td><span class="badge b-high">HIGH</span></td><td>No current page. Core clinical offering.</td></tr>
+      <tr><td class="mono">/services/respiratory-comfort</td><td>Services</td><td><span class="badge b-medium">MEDIUM</span></td><td>No current page.</td></tr>
+      <tr><td class="mono">/services/dementia-alzheimers</td><td>Services</td><td><span class="badge b-high">HIGH</span></td><td>High search volume diagnosis. No current page. Also seeds future /conditions/ cluster.</td></tr>
+      <tr><td class="mono">/services/physician-care</td><td>Services</td><td><span class="badge b-medium">MEDIUM</span></td><td>Hold for physician terminology approval (see §Physician Audit).</td></tr>
+      <tr><td class="mono">/services/medication-equipment</td><td>Services</td><td><span class="badge b-low">LOW</span></td><td>No current page. Mentioned across city pages.</td></tr>
+      <tr><td class="mono">/resources/faq</td><td>Resources</td><td><span class="badge b-medium">MEDIUM</span></td><td>Currently only a /#faq anchor. Standalone page needed for proper internal linking.</td></tr>
+      <tr><td class="mono">/resources/glossary</td><td>Resources</td><td><span class="badge b-low">LOW</span></td><td>No current page. Good for AI crawlability + long-tail SEO.</td></tr>
+      <tr><td class="mono">/resources/caregiver-resources</td><td>Resources</td><td><span class="badge b-low">LOW</span></td><td>No current page.</td></tr>
+      <tr><td class="mono">/about</td><td>About</td><td><span class="badge b-medium">MEDIUM</span></td><td>Hub page for About cluster. Could be lightweight with links to The Eternal Standard + Aleksandra Dubina.</td></tr>
+      <tr><td class="mono">/conditions/</td><td>Future cluster</td><td><span class="badge b-none">FUTURE</span></td><td>Do NOT add to nav yet. Reserve URL structure. Architecture seeds with dementia + respiratory pages now.</td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- 6 -->
+<div class="section" id="s6">
+  <div class="sec-head"><span class="sec-num">6</span><h2>Duplicate or Overlapping Content</h2></div>
+  <div class="sec-body">
+    <table>
+      <tr><th>Issue</th><th>URLs involved</th><th>Priority</th><th>Recommendation</th></tr>
+      <tr>
+        <td><strong>Volunteer: two different pages</strong></td>
+        <td class="mono">/volunteer<br>/resources/volunteer</td>
+        <td><span class="badge b-medium">MEDIUM</span></td>
+        <td>These are DIFFERENT pages, not true duplicates. /volunteer = action page ("Become a Volunteer"). /resources/volunteer = informational article ("Giving Time, Giving Presence"). Keep both. Cross-link them. Ensure canonicals are correct (they are).</td>
+      </tr>
+      <tr>
+        <td><strong>First 48 Hours: homepage section + standalone article</strong></td>
+        <td class="mono">/#first48<br>/resources/first-48-hours</td>
+        <td><span class="badge b-low">LOW</span></td>
+        <td>Homepage is a summary; article is full detail. Not a problem. Add canonical on article. Ensure internal links go to the article, not the anchor, for SEO value.</td>
+      </tr>
+      <tr>
+        <td><strong>Comfort therapies: homepage + resource article</strong></td>
+        <td class="mono">/#modalities<br>/resources/comfort-therapies</td>
+        <td><span class="badge b-low">LOW</span></td>
+        <td>Same pattern as above. No action required beyond linking. Under new structure, /resources/comfort-therapies connects to Services cluster.</td>
+      </tr>
+      <tr>
+        <td><strong>Medicare / Coverage: two resources exist</strong></td>
+        <td class="mono">/resources/medicare-hospice-benefit<br>/#medicare on homepage</td>
+        <td><span class="badge b-low">LOW</span></td>
+        <td>Brief explicitly distinguishes "What Hospice Covers" (plain-language) from "Medicare Hospice Benefit" (formal). Brief requires a new "What Hospice Covers" page. These two should cross-link but not repeat copy. Flag for content review.</td>
+      </tr>
+    </table>
+    <div class="callout callout-ok">
+      <strong>No true duplicate pages found.</strong> Apparent overlaps are either complementary pages serving different intents, or homepage anchor sections with standalone article counterparts. No deletions required.
+    </div>
+  </div>
+</div>
+
+<!-- 7 -->
+<div class="section" id="s7">
+  <div class="sec-head"><span class="sec-num">7</span><h2>Orphan Pages</h2></div>
+  <div class="sec-body">
+    <table>
+      <tr><th>URL</th><th>In sitemap</th><th>Linked from nav</th><th>Status</th><th>Action</th></tr>
+      <tr><td class="mono">/card-aleksandra-dubina</td><td class="red">No</td><td class="red">No</td><td><span class="badge b-high">Orphan</span></td><td>Internal design/print asset. Add noindex or link from /aleksandradubina.</td></tr>
+      <tr><td class="mono">/card-denise-chavez</td><td class="red">No</td><td class="red">No</td><td><span class="badge b-high">Orphan</span></td><td>Internal design asset. Add noindex.</td></tr>
+      <tr><td class="mono">/referral-card</td><td class="red">No</td><td class="red">No</td><td><span class="badge b-medium">Orphan</span></td><td>Linked from homepage href. Add to sitemap or noindex if print-only.</td></tr>
+      <tr><td class="mono">/care-brief</td><td class="red">No</td><td class="red">No</td><td><span class="badge b-medium">Orphan</span></td><td>Newsletter hub. Add to sitemap. Link from Resources nav under new structure.</td></tr>
+      <tr><td class="mono">/blog</td><td class="green">✓</td><td class="red">No</td><td><span class="badge b-medium">Partially orphaned</span></td><td>In sitemap but not reachable from nav. Connect via Resources cluster in new structure.</td></tr>
+      <tr><td class="mono">/aleksandradubina</td><td class="green">✓</td><td class="amber">Sub-item only</td><td><span class="badge b-low">Low visibility</span></td><td>Connect via About nav in new structure.</td></tr>
+      <tr><td class="mono">/careers</td><td class="green">✓</td><td class="red">No</td><td><span class="badge b-low">Low visibility</span></td><td>Link from footer. Not nav-level. Keep as-is.</td></tr>
+      <tr><td class="mono">/media-kit</td><td class="green">✓</td><td class="red">No</td><td><span class="badge b-low">Utility page</span></td><td>Footer link. Keep as-is.</td></tr>
+      <tr><td class="mono">/privacy-policy</td><td class="red">No</td><td class="red">No</td><td><span class="badge b-medium">Missing sitemap</span></td><td>Add to sitemap. Footer link exists.</td></tr>
+      <tr><td class="mono">/terms</td><td class="red">No</td><td class="red">No</td><td><span class="badge b-medium">Missing sitemap</span></td><td>Add to sitemap. Footer link exists.</td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- 8 -->
+<div class="section" id="s8">
+  <div class="sec-head"><span class="sec-num">8</span><h2>Existing URLs That Must Remain Unchanged</h2></div>
+  <div class="sec-body">
+    <div class="callout callout-ok">
+      <strong>All existing URLs are preserved.</strong> The proposed architecture restructures navigation labels and hub relationships only. Zero URL changes are required.
+    </div>
+    <div class="pill-row">
+      <span class="pill live">/</span>
+      <span class="pill live">/aleksandradubina</span>
+      <span class="pill live">/blog + 6 posts</span>
+      <span class="pill live">/family-guide</span>
+      <span class="pill live">/refer</span>
+      <span class="pill live">/resources + 8 sub-pages</span>
+      <span class="pill live">/sound-bath</span>
+      <span class="pill live">/volunteer</span>
+      <span class="pill live">/careers</span>
+      <span class="pill live">/media-kit</span>
+      <span class="pill live">/sitemap</span>
+      <span class="pill live">All 146 /hospice-[city]-ca URLs</span>
+      <span class="pill live">/hospice-ventura-and-los-angeles-county-ca</span>
+    </div>
+  </div>
+</div>
+
+<!-- 9 -->
+<div class="section" id="s9">
+  <div class="sec-head"><span class="sec-num">9</span><h2>URL Changes Recommended</h2></div>
+  <div class="sec-body">
+    <div class="callout callout-ok">
+      <strong>None recommended at this time.</strong> Per brief instructions: existing URLs are assets. No URL changes have been identified that would produce a benefit outweighing the SEO risk of a redirect chain. All new pages will be built at fresh URLs.
+    </div>
+  </div>
+</div>
+
+<!-- 10 -->
+<div class="section" id="s10">
+  <div class="sec-head"><span class="sec-num">10</span><h2>Required Redirects</h2></div>
+  <div class="sec-body">
+    <div class="callout callout-ok">
+      <strong>No redirects required.</strong> No existing URLs are moving. New pages are additive. If in a future phase any URL is approved to change, a 301 redirect report will be produced at that time per the brief's approval process.
+    </div>
+  </div>
+</div>
+
+<!-- 11 -->
+<div class="section" id="s11">
+  <div class="sec-head"><span class="sec-num">11</span><h2>Internal Linking Plan</h2></div>
+  <div class="sec-body">
+    <table>
+      <tr><th>Source page</th><th>Links to add</th><th>Priority</th></tr>
+      <tr><td class="mono">/hospice-care (new hub)</td><td>/hospice-care/what-is-hospice, /resources/when-is-it-time, /resources/medicare-hospice-benefit, /resources/first-48-hours, /services, REQUEST CARE</td><td><span class="badge b-high">HIGH</span></td></tr>
+      <tr><td class="mono">/services (new hub)</td><td>/resources/comfort-therapies, /sound-bath, /services/pain-symptom-management, /services/dementia-alzheimers, /refer, REQUEST CARE</td><td><span class="badge b-high">HIGH</span></td></tr>
+      <tr><td class="mono">/resources/when-is-it-time</td><td>/hospice-care, /resources/medicare-hospice-benefit, /resources/first-48-hours, REQUEST CARE</td><td><span class="badge b-high">HIGH</span></td></tr>
+      <tr><td class="mono">/resources/first-48-hours</td><td>/services, /resources/when-is-it-time, /family-guide, REQUEST CARE</td><td><span class="badge b-high">HIGH</span></td></tr>
+      <tr><td class="mono">/resources/medicare-hospice-benefit</td><td>/hospice-care/what-is-hospice (future), /services, REQUEST CARE</td><td><span class="badge b-high">HIGH</span></td></tr>
+      <tr><td class="mono">/sound-bath</td><td>/services, /resources/comfort-therapies, REQUEST CARE</td><td><span class="badge b-medium">MEDIUM</span></td></tr>
+      <tr><td class="mono">/aleksandradubina</td><td>/hospice-care, /services, REQUEST CARE</td><td><span class="badge b-medium">MEDIUM</span></td></tr>
+      <tr><td class="mono">/refer</td><td>/hospice-care, /services, /resources/when-is-it-time, /hospice-ventura-and-los-angeles-county-ca</td><td><span class="badge b-medium">MEDIUM</span></td></tr>
+      <tr><td class="mono">All 146 city pages</td><td>/hospice-care, /services, /resources/when-is-it-time, REQUEST CARE (already have these mostly)</td><td><span class="badge b-medium">MEDIUM</span></td></tr>
+      <tr><td class="mono">/blog (all posts)</td><td>Link to relevant hub page per post topic</td><td><span class="badge b-low">LOW</span></td></tr>
+    </table>
+    <div class="callout callout-info">Use descriptive anchor text throughout. Avoid generic "click here." Avoid excessive exact-match keyword anchors. Each page should have at least one contextual link to REQUEST CARE.</div>
+  </div>
+</div>
+
+<!-- 12 -->
+<div class="section" id="s12">
+  <div class="sec-head"><span class="sec-num">12</span><h2>Breadcrumb Plan</h2></div>
+  <div class="sec-body">
+    <table>
+      <tr><th>Page</th><th>Breadcrumb trail</th><th>BreadcrumbList schema</th></tr>
+      <tr><td class="mono">/resources/first-48-hours</td><td>Home › Hospice Care › First 48 Hours</td><td><span class="badge b-high">Add</span></td></tr>
+      <tr><td class="mono">/resources/when-is-it-time</td><td>Home › Hospice Care › When Is It Time?</td><td><span class="badge b-high">Add</span></td></tr>
+      <tr><td class="mono">/resources/medicare-hospice-benefit</td><td>Home › Hospice Care › Medicare Hospice Benefit</td><td><span class="badge b-high">Add</span></td></tr>
+      <tr><td class="mono">/services</td><td>Home › Services</td><td><span class="badge b-high">Add</span></td></tr>
+      <tr><td class="mono">/resources/comfort-therapies</td><td>Home › Services › Integrative &amp; Whole-Person Care</td><td><span class="badge b-high">Add</span></td></tr>
+      <tr><td class="mono">/sound-bath</td><td>Home › Services › Sound Bath</td><td><span class="badge b-medium">Add</span></td></tr>
+      <tr><td class="mono">/family-guide</td><td>Home › Resources › Family Guide</td><td><span class="badge b-medium">Add</span></td></tr>
+      <tr><td class="mono">/volunteer</td><td>Home › Resources › Volunteer</td><td><span class="badge b-medium">Add</span></td></tr>
+      <tr><td class="mono">/aleksandradubina</td><td>Home › About › Aleksandra Dubina</td><td><span class="badge b-medium">Add</span></td></tr>
+      <tr><td class="mono">/refer</td><td>Home › For Professionals › Refer a Patient</td><td><span class="badge b-medium">Add</span></td></tr>
+      <tr><td class="mono">/hospice-[city]-ca</td><td>Home › Locations › [City Name]</td><td><span class="badge b-high">Add to all 146</span></td></tr>
+      <tr><td class="mono">/blog/[post]</td><td>Home › Resources › Journal › [Post Title]</td><td><span class="badge b-low">Add</span></td></tr>
+    </table>
+    <div class="callout callout-warn">Breadcrumb implementation must NOT change any existing URL. Breadcrumbs are purely navigational UI + schema — they reflect cluster membership, not URL structure.</div>
+  </div>
+</div>
+
+<!-- 13 -->
+<div class="section" id="s13">
+  <div class="sec-head"><span class="sec-num">13</span><h2>Sitemap Changes</h2></div>
+  <div class="sec-body">
+    <table>
+      <tr><th>Change</th><th>Priority</th></tr>
+      <tr><td>Add /privacy-policy to XML sitemap <span class="badge b-medium">currently missing</span></td><td><span class="badge b-medium">MEDIUM</span></td></tr>
+      <tr><td>Add /terms to XML sitemap <span class="badge b-medium">currently missing</span></td><td><span class="badge b-medium">MEDIUM</span></td></tr>
+      <tr><td>Add /care-brief to XML sitemap <span class="badge b-medium">currently missing</span></td><td><span class="badge b-medium">MEDIUM</span></td></tr>
+      <tr><td>Add new pages as they are built (/services, /hospice-care, etc.)</td><td><span class="badge b-high">HIGH</span></td></tr>
+      <tr><td>Update HTML sitemap page (/sitemap) to reflect new structure</td><td><span class="badge b-medium">MEDIUM</span></td></tr>
+      <tr><td>Add noindex meta to /card-aleksandra-dubina, /card-denise-chavez</td><td><span class="badge b-medium">MEDIUM</span></td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- 14 -->
+<div class="section" id="s14">
+  <div class="sec-head"><span class="sec-num">14</span><h2>Schema Changes</h2></div>
+  <div class="sec-body">
+    <table>
+      <tr><th>Schema type</th><th>Action</th><th>Priority</th></tr>
+      <tr><td>BreadcrumbList</td><td>Add to all interior pages per breadcrumb plan (§12)</td><td><span class="badge b-high">HIGH</span></td></tr>
+      <tr><td>MedicalOrganization</td><td>Already present on homepage. Verify it references new hub URLs when live.</td><td><span class="badge b-medium">MEDIUM</span></td></tr>
+      <tr><td>FAQPage</td><td>Add to /resources/faq when that page is built. Do not add to homepage anchor alone.</td><td><span class="badge b-medium">MEDIUM</span></td></tr>
+      <tr><td>WebPage / Article</td><td>Confirm all blog posts and resource articles have Article schema</td><td><span class="badge b-medium">MEDIUM</span></td></tr>
+      <tr><td>LocalBusiness</td><td>Confirm /hospice-[city]-ca pages have LocalBusiness schema with correct city</td><td><span class="badge b-medium">MEDIUM</span></td></tr>
+      <tr><td>Service</td><td>Add Service schema to /services hub and each services sub-page as built</td><td><span class="badge b-high">HIGH</span></td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- 15 -->
+<div class="section" id="s15">
+  <div class="sec-head"><span class="sec-num">15</span><h2>Mobile Navigation Behavior</h2></div>
+  <div class="sec-body">
+    <p>The proposed hamburger menu structure for Option B (approved nav) is:</p>
+    <ul>
+      <li><strong>Hospice Care</strong> ▾ → sub: What Is Hospice Care, When Is It Time, First 48 Hours, What Hospice Covers, Medicare Benefit</li>
+      <li><strong>Services</strong> ▾ → sub: Integrative &amp; Whole-Person Care, Pain &amp; Symptom Management, Sound Bath, + more as pages are built</li>
+      <li><strong>Resources</strong> ▾ → sub: Family Guide, FAQs, Glossary, Caregiver Resources, The Eternal Journal</li>
+      <li><strong>Locations</strong> ▾ → sub: Thousand Oaks, Simi Valley, Calabasas, All Service Areas</li>
+      <li><strong>For Professionals</strong> ▾ → sub: Providers, Refer a Patient</li>
+      <li><strong>About</strong> ▾ → sub: The Eternal Standard, Aleksandra Dubina</li>
+      <li><strong>REQUEST CARE</strong> — prominent button, always visible at bottom of drawer and in header</li>
+    </ul>
+    <div class="callout callout-info">The existing hamburger drawer mechanism (CSS nav-open class, no heavy JS library) is sufficient for this structure. No new nav library required. Performance impact: negligible.</div>
+  </div>
+</div>
+
+<!-- 16 -->
+<div class="section" id="s16">
+  <div class="sec-head"><span class="sec-num">16</span><h2>Performance Risks</h2></div>
+  <div class="sec-body">
+    <table>
+      <tr><th>Risk</th><th>Level</th><th>Mitigation</th></tr>
+      <tr><td>New hub pages adding render-blocking resources</td><td><span class="badge b-low">LOW</span></td><td>Build all new pages using existing CSS/JS pattern. No new libraries.</td></tr>
+      <tr><td>Expanded nav sub-menus on mobile</td><td><span class="badge b-low">LOW</span></td><td>Use existing CSS hover/focus-within pattern. No JS accordion library needed.</td></tr>
+      <tr><td>Breadcrumbs adding DOM weight</td><td><span class="badge b-none">NEGLIGIBLE</span></td><td>Pure HTML nav element. No measurable LCP or CLS impact.</td></tr>
+      <tr><td>Additional internal links on each page</td><td><span class="badge b-none">NEGLIGIBLE</span></td><td>Text links. Zero performance impact.</td></tr>
+    </table>
+    <div class="callout callout-ok">Current site is at 97 PageSpeed mobile. Architecture changes carry no meaningful performance risk if new pages follow the established pattern.</div>
+  </div>
+</div>
+
+<!-- 17 -->
+<div class="section" id="s17">
+  <div class="sec-head"><span class="sec-num">17</span><h2>SEO Risks</h2></div>
+  <div class="sec-body">
+    <table>
+      <tr><th>Risk</th><th>Level</th><th>Mitigation</th></tr>
+      <tr><td>Nav label changes confusing Google's understanding of site structure</td><td><span class="badge b-low">LOW</span></td><td>URLs unchanged. Google re-reads nav structure within 1–2 crawl cycles. No equity lost.</td></tr>
+      <tr><td>New hub pages cannibalizing existing page rankings</td><td><span class="badge b-medium">MEDIUM</span></td><td>Each new page must target distinct intent. Hub = navigation. Sub-pages = detailed answers. Brief explicitly states this — follow it.</td></tr>
+      <tr><td>Breadcrumb cluster re-assignment confusing existing signals</td><td><span class="badge b-low">LOW</span></td><td>Breadcrumbs are additive. No existing signals removed.</td></tr>
+      <tr><td>Missing pages creating broken nav links</td><td><span class="badge b-high">HIGH</span></td><td>Do not add nav items pointing to pages that don't exist yet. Build pages before wiring nav sub-items.</td></tr>
+      <tr><td>Thin new pages hurting site quality signals</td><td><span class="badge b-high">HIGH</span></td><td>Follow brief explicitly: no thin pages, no keyword swapping, every page must provide legitimate user value.</td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- 18 -->
+<div class="section" id="s18">
+  <div class="sec-head"><span class="sec-num">18</span><h2>AI Crawlability Improvements</h2></div>
+  <div class="sec-body">
+    <p>The restructured architecture improves AI crawler understanding in the following ways:</p>
+    <ul>
+      <li><strong>Clear topic clusters</strong> — Hospice Care, Services, Resources are semantically distinct buckets. AI models reading the nav can infer the site's scope and authority instantly.</li>
+      <li><strong>Hub → spoke linking</strong> — Each hub page links explicitly to its sub-pages. AI crawlers following internal links get a complete topic map.</li>
+      <li><strong>BreadcrumbList schema</strong> — Structured data declares cluster membership in machine-readable format. Google's AI-powered Search Generative Experience uses this for attribution.</li>
+      <li><strong>Descriptive anchor text</strong> — Moving from "click here" or generic labels to descriptive anchors signals topical relevance to language models indexing the site.</li>
+      <li><strong>No JS-only nav</strong> — All navigation remains in crawlable anchor tags. Googlebot and AI crawlers can discover all pages without executing JavaScript.</li>
+      <li><strong>/conditions/ architecture prep</strong> — Reserving the URL structure now means future condition pages slot into a pre-established cluster without orphan risk.</li>
+    </ul>
+  </div>
+</div>
+
+<!-- 19 -->
+<div class="section" id="s19">
+  <div class="sec-head"><span class="sec-num">19</span><h2>Recommended Implementation Sequence</h2></div>
+  <div class="sec-body">
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <div class="step-title">Approve this audit <span class="badge b-critical">REQUIRED FIRST</span></div>
+          <div class="step-desc">No implementation until this report is reviewed and approved. Flag any item for clarification before build begins.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <div class="step-title">Build /services hub <span class="badge b-high">HIGH</span></div>
+          <div class="step-desc">Already previewed this session. Approved design ready to build. One page, minimal risk, immediate value.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <div class="step-title">Update primary navigation <span class="badge b-high">HIGH</span></div>
+          <div class="step-desc">Swap nav labels to the approved 6-item structure. Only wire sub-items to pages that exist. Stub-out items that point to pages not yet built.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-body">
+          <div class="step-title">Add /privacy-policy and /terms to sitemap + noindex card pages <span class="badge b-medium">MEDIUM</span></div>
+          <div class="step-desc">Quick wins. Fix sitemap gaps. 15-minute task.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">5</div>
+        <div class="step-body">
+          <div class="step-title">Build /hospice-care hub page <span class="badge b-high">HIGH</span></div>
+          <div class="step-desc">Hub page for the largest nav cluster. Links to all existing Hospice Care sub-pages. No new content required — connects existing pages.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">6</div>
+        <div class="step-body">
+          <div class="step-title">Add breadcrumbs to interior pages <span class="badge b-high">HIGH</span></div>
+          <div class="step-desc">Add BreadcrumbList schema + visible breadcrumb UI to all resource, services, and location pages. No URL changes. Pure addition.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">7</div>
+        <div class="step-body">
+          <div class="step-title">Build priority new content pages <span class="badge b-high">HIGH</span></div>
+          <div class="step-desc">In order: /hospice-care/what-is-hospice → /services/pain-symptom-management → /services/dementia-alzheimers → /hospice-care/hospice-vs-palliative.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">8</div>
+        <div class="step-body">
+          <div class="step-title">Update HTML sitemap page <span class="badge b-medium">MEDIUM</span></div>
+          <div class="step-desc">Rebuild /sitemap to reflect the new 6-section structure once nav and hub pages are live.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">9</div>
+        <div class="step-body">
+          <div class="step-title">Add internal links across existing pages <span class="badge b-medium">MEDIUM</span></div>
+          <div class="step-desc">Add contextual links from existing resource pages, blog posts, and city pages to the new hub pages. Follow the internal linking plan in §11.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">10</div>
+        <div class="step-body">
+          <div class="step-title">Build remaining medium/low priority pages <span class="badge b-low">LOW</span></div>
+          <div class="step-desc">/about hub, /resources/faq, /resources/glossary, /services/physician-care (pending terminology approval), /resources/caregiver-resources.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Physician Audit -->
+<div class="section" id="physician">
+  <div class="sec-head"><span class="sec-num">✦</span><h2>Physician Terminology Audit (as required by brief)</h2></div>
+  <div class="sec-body">
+    <div class="callout callout-warn">
+      <strong>Brief instruction:</strong> Audit existing use of Physician-Led, Physician-Supported, Physician Support, Hospice-Trained Physicians. Report every occurrence. Do not standardize until approved clinical positioning is confirmed.
+    </div>
+    <table>
+      <tr><th>Term found</th><th>Occurrence count</th><th>Where used</th></tr>
+      <tr><td><strong>physician-supported</strong></td><td class="amber">~294 occurrences</td><td>All 146 city pages (×2 each: body paragraph + at-a-glance summary). Also /resources/how-to-choose-a-hospice (1) and /blog/five-hospice-myths (1).</td></tr>
+      <tr><td>Physician-Led</td><td class="green">0</td><td>Not found anywhere on the site.</td></tr>
+      <tr><td>Physician-Led (lowercase)</td><td class="green">0</td><td>Not found.</td></tr>
+      <tr><td>Hospice-Trained Physicians</td><td class="green">0</td><td>Not found.</td></tr>
+      <tr><td>Physician Support (standalone)</td><td class="green">0</td><td>Not found.</td></tr>
+    </table>
+    <div class="callout callout-info">
+      <strong>Finding:</strong> The site uses a single consistent term — <strong>"physician-supported"</strong> — across all 146 city pages and 2 resource pages. It does not use any of the other variants listed in the brief. No standardization is needed at this time. The term "Physician Care" (brief's suggested working label) would be the only addition — on the new /services/physician-care page, once approved.
+    </div>
+    <p><strong>Awaiting approval:</strong> Confirm whether "physician-supported" is the approved clinical positioning language before the new physician services page is written.</p>
+  </div>
+</div>
+
+<div class="notice">Architecture Audit Report — EternalLifeHospice.com · No changes made to the live site · Awaiting approval to proceed</div>
+
+</div>
+</body>
+</html>
