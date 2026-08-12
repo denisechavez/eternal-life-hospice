@@ -15,9 +15,13 @@
     hdr.classList.remove('nav-open');
     if (mb) mb.setAttribute('aria-expanded', 'false');
   }
+  function collapseAllGroups() {
+    if (nav) nav.querySelectorAll('.nav-group').forEach(function (g) { g.classList.remove('expanded'); });
+  }
   function toggleMenu() {
     var open = hdr.classList.toggle('nav-open');
     if (mb) mb.setAttribute('aria-expanded', open ? 'true' : 'false');
+    if (open) collapseAllGroups(); // always open with sections collapsed
   }
 
   if (mb) {
@@ -38,10 +42,40 @@
   });
 
   if (nav) {
-    nav.querySelectorAll('a').forEach(function (a) {
+    // Sub-menu links close the menu on click (they navigate away)
+    nav.querySelectorAll('a:not(.nav-parent)').forEach(function (a) {
       a.addEventListener('click', closeMenu);
     });
+    // Nav-parent links: accordion toggle on mobile, normal link on desktop
+    nav.querySelectorAll('.nav-parent').forEach(function (parent) {
+      parent.addEventListener('click', function (e) {
+        if (!hdr.classList.contains('nav-open')) return; // desktop: navigate normally
+        e.preventDefault(); // mobile: block navigation, toggle sub-menu instead
+        var group = parent.parentElement;
+        var wasExpanded = group.classList.contains('expanded');
+        collapseAllGroups();
+        if (!wasExpanded) group.classList.add('expanded');
+      });
+    });
   }
+
+  // Protect the primary phone number in the footer from WhatConverts replacement
+  window.addEventListener('load', function () {
+    var PRIMARY_TEXT = '805.953.7273';
+    var PRIMARY_HREF = 'tel:18059537273';
+    function protectFooterPhone() {
+      var footer = document.getElementById('site-footer');
+      if (!footer) return;
+      footer.querySelectorAll('a[href^="tel:"]').forEach(function (a) {
+        var sp = a.querySelector('span');
+        if (sp && sp.textContent !== PRIMARY_TEXT) sp.textContent = PRIMARY_TEXT;
+        if (a.getAttribute('href') !== PRIMARY_HREF) a.setAttribute('href', PRIMARY_HREF);
+      });
+    }
+    protectFooterPhone();
+    setTimeout(protectFooterPhone, 800);
+    setTimeout(protectFooterPhone, 2500);
+  });
 
   var ctaPill = hdr.querySelector('.hdr-cta');
   if (ctaPill) {
