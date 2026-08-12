@@ -76,5 +76,22 @@ class PrettyURLHandler(http.server.SimpleHTTPRequestHandler):
         self.wfile.write(body)
 
 
+class QuietHTTPServer(http.server.ThreadingHTTPServer):
+    """Suppress client-disconnect noise that Python logs as full tracebacks.
+
+    BrokenPipeError and ConnectionResetError mean the client closed the
+    connection before we finished sending — common with uptime monitors,
+    browser tab closes, and bulk-file operations.  They are not server
+    errors; logging them as tracebacks causes false outage alerts.
+    Real server errors still surface via the default handler.
+    """
+    def handle_error(self, request, client_address):
+        import sys
+        exc = sys.exc_info()[1]
+        if isinstance(exc, (BrokenPipeError, ConnectionResetError)):
+            return  # harmless client disconnect — ignore silently
+        super().handle_error(request, client_address)
+
+
 if __name__ == "__main__":
-    http.server.ThreadingHTTPServer(("0.0.0.0", 5000), PrettyURLHandler).serve_forever()
+    QuietHTTPServer(("0.0.0.0", 5000), PrettyURLHandler).serve_forever()
