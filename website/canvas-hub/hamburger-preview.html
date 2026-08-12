@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Hamburger Nav — Option A vs B</title>
+<style>
+  :root {
+    --plum:#5B2E59; --deep:#3C1C3B; --gold:#C9B07E;
+    --cream:#F5F0EB; --cream-mid:#EDE6DE; --cream-dark:#D8CDBF;
+    --slate:#6793AC; --green:#3a6640; --text:#2C1A2B; --mid:#5A4057;
+    --ff-d:'Georgia',serif; --ff-b:system-ui,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:var(--ff-b);background:#1a1a2e;min-height:100vh;padding:36px 24px 48px;display:flex;flex-direction:column;align-items:center}
+
+  h1{font-family:var(--ff-d);font-weight:400;font-size:18px;color:rgba(255,255,255,.7);margin-bottom:4px;text-align:center}
+  .sub{font-size:11px;color:rgba(255,255,255,.35);margin-bottom:32px;text-align:center;letter-spacing:.04em}
+
+  /* Phone frames side by side */
+  .phones{display:flex;gap:32px;align-items:flex-start;justify-content:center;flex-wrap:wrap}
+
+  .phone-wrap{display:flex;flex-direction:column;align-items:center;gap:10px}
+  .phone-label{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.5)}
+  .phone-sublabel{font-size:10px;color:rgba(255,255,255,.3);text-align:center;max-width:220px;line-height:1.4}
+
+  /* Phone shell */
+  .phone{width:260px;border-radius:36px;background:#111;padding:10px;box-shadow:0 30px 80px rgba(0,0,0,.6),inset 0 0 0 1px rgba(255,255,255,.1)}
+  .phone-screen{border-radius:28px;overflow:hidden;background:var(--deep);position:relative}
+
+  /* Header bar */
+  .hdr{background:var(--deep);height:56px;display:flex;align-items:center;padding:0 16px;gap:10px;flex-shrink:0;border-bottom:1px solid rgba(255,255,255,.06)}
+  .hdr-logo{font-family:var(--ff-d);font-size:13px;color:var(--cream);flex:1;letter-spacing:.01em}
+  .hdr-icons{display:flex;gap:10px;align-items:center}
+  .hdr-icon{width:28px;height:28px;display:flex;align-items:center;justify-content:center;opacity:.7}
+  .hamburger-lines{display:flex;flex-direction:column;gap:4px;width:20px}
+  .hamburger-lines span{display:block;height:1.5px;background:var(--cream);border-radius:2px}
+  .hamburger-lines span:last-child{width:14px}
+
+  /* Page peek behind drawer */
+  .page-peek{height:80px;background:linear-gradient(var(--deep),#2a1228);opacity:.4}
+
+  /* Nav drawer */
+  .drawer{background:var(--deep);flex:1}
+
+  /* Phone A — call bar at top */
+  .call-bar{background:var(--plum);padding:10px 16px;display:flex;align-items:center;justify-content:space-between}
+  .call-bar .num{font-size:13px;font-weight:700;color:var(--gold);letter-spacing:.04em}
+  .call-bar .note{font-family:var(--ff-d);font-style:italic;font-size:10px;color:rgba(245,240,235,.6)}
+
+  /* Nav items */
+  .nav-items{padding:6px 0 16px}
+  .nav-item{display:flex;align-items:center;padding:11px 16px;border-bottom:1px solid rgba(245,240,235,.07);position:relative}
+  .nav-item.parent{cursor:pointer}
+  .nav-item-label{font-size:13px;color:rgba(245,240,235,.82);flex:1;line-height:1.2}
+  .nav-item-label.call{color:var(--gold);font-weight:600;font-size:14px}
+  .nav-item-label.new{color:#7ecf9f}
+  .chevron{font-size:9px;color:rgba(245,240,235,.35);margin-left:4px}
+  .new-dot{width:5px;height:5px;background:#7ecf9f;border-radius:50%;margin-right:6px;flex-shrink:0}
+
+  /* Sub items */
+  .sub-items{background:rgba(0,0,0,.2);border-bottom:1px solid rgba(245,240,235,.07)}
+  .sub-item{display:flex;align-items:center;padding:8px 16px 8px 28px;border-bottom:1px solid rgba(245,240,235,.05)}
+  .sub-item:last-child{border-bottom:0}
+  .sub-item-label{font-size:11.5px;color:rgba(245,240,235,.52);line-height:1.3}
+  .sub-item-label.new{color:#7ecf9f}
+  .sub-dash{font-size:9px;color:rgba(245,240,235,.2);margin-right:7px;flex-shrink:0}
+
+  /* Bottom phone info */
+  .phone-indicator{width:80px;height:4px;background:rgba(255,255,255,.2);border-radius:2px;margin:8px auto 4px}
+
+  /* Comparison note */
+  .diff-note{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:14px 20px;margin-top:28px;max-width:580px;width:100%}
+  .diff-note h3{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.5);margin-bottom:10px}
+  .diff-row{display:flex;gap:10px;font-size:12px;color:rgba(255,255,255,.5);margin-bottom:6px;align-items:flex-start}
+  .diff-row .lbl{font-weight:700;color:rgba(255,255,255,.75);min-width:70px;flex-shrink:0}
+  .diff-row .green{color:#7ecf9f}
+
+  .notice{font-size:10px;color:rgba(255,255,255,.2);margin-top:20px;font-style:italic}
+</style>
+</head>
+<body>
+
+<h1>Hamburger Navigation — Option A vs Option B</h1>
+<p class="sub">Preview only &nbsp;·&nbsp; No site changes made</p>
+
+<div class="phones">
+
+  <!-- ═══ PHONE A — Current nav, unchanged ═══ -->
+  <div class="phone-wrap">
+    <div class="phone-label" style="color:rgba(103,147,172,.9)">Option A</div>
+    <div class="phone-sublabel" style="color:rgba(103,147,172,.6)">Current nav — unchanged</div>
+    <div class="phone">
+      <div class="phone-screen">
+        <!-- Header -->
+        <div class="hdr">
+          <div class="hdr-logo">Eternal Life Hospice</div>
+          <div class="hdr-icons">
+            <div class="hdr-icon">
+              <svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="rgba(245,240,235,.7)" stroke-width="2" stroke-linecap="round"><circle cx="9" cy="9" r="7"/><line x1="15" y1="15" x2="19" y2="19"/></svg>
+            </div>
+            <div class="hdr-icon">
+              <div class="hamburger-lines"><span></span><span></span><span style="width:14px"></span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Drawer open -->
+        <div class="drawer">
+          <div class="call-bar">
+            <span class="num">805.953.7273</span>
+            <span class="note">Here in Moments That Matter Most</span>
+          </div>
+          <div class="nav-items">
+
+            <div class="nav-item parent">
+              <span class="nav-item-label">The Eternal Standard</span>
+              <span class="chevron">▾</span>
+            </div>
+            <div class="sub-items">
+              <div class="sub-item"><span class="sub-dash">—</span><span class="sub-item-label">Four Pillars : One Standard</span></div>
+            </div>
+
+            <div class="nav-item parent">
+              <span class="nav-item-label">The First 48 Hours</span>
+              <span class="chevron">▾</span>
+            </div>
+            <div class="sub-items">
+              <div class="sub-item"><span class="sub-dash">—</span><span class="sub-item-label">Common Questions Answered</span></div>
+              <div class="sub-item"><span class="sub-dash">—</span><span class="sub-item-label">Family eGuide</span></div>
+            </div>
+
+            <div class="nav-item parent">
+              <span class="nav-item-label">Integrative Therapies</span>
+              <span class="chevron">▾</span>
+            </div>
+            <div class="sub-items">
+              <div class="sub-item"><span class="sub-dash">—</span><span class="sub-item-label">The Sound Bath</span></div>
+              <div class="sub-item"><span class="sub-dash">—</span><span class="sub-item-label">Clinical &amp; Mobile Services</span></div>
+            </div>
+
+            <div class="nav-item">
+              <span class="nav-item-label">Insurance &amp; Medicare</span>
+            </div>
+
+            <div class="nav-item parent">
+              <span class="nav-item-label">Coverage Area</span>
+              <span class="chevron">▾</span>
+            </div>
+            <div class="sub-items">
+              <div class="sub-item"><span class="sub-dash">—</span><span class="sub-item-label">Care Wherever Home Is</span></div>
+            </div>
+
+            <div class="nav-item parent">
+              <span class="nav-item-label">About Eternal</span>
+              <span class="chevron">▾</span>
+            </div>
+            <div class="sub-items">
+              <div class="sub-item"><span class="sub-dash">—</span><span class="sub-item-label">A Founder's Welcome</span></div>
+              <div class="sub-item"><span class="sub-dash">—</span><span class="sub-item-label">Our Origin</span></div>
+              <div class="sub-item"><span class="sub-dash">—</span><span class="sub-item-label">Resources</span></div>
+              <div class="sub-item"><span class="sub-dash">—</span><span class="sub-item-label">Volunteer</span></div>
+            </div>
+
+            <div class="nav-item parent">
+              <span class="nav-item-label">For Providers</span>
+              <span class="chevron">▾</span>
+            </div>
+            <div class="sub-items">
+              <div class="sub-item"><span class="sub-dash">—</span><span class="sub-item-label">Refer With Confidence</span></div>
+              <div class="sub-item"><span class="sub-dash">—</span><span class="sub-item-label">Schedule an Educational Session</span></div>
+            </div>
+
+          </div>
+        </div>
+        <div class="phone-indicator"></div>
+      </div>
+    </div>
+    <div class="phone-sublabel" style="color:rgba(255,255,255,.2);margin-top:6px">6 top-level items + call bar</div>
+  </div>
+
+  <!-- ═══ PHONE B — Restructured nav ═══ -->
+  <div class="phone-wrap">
+    <div class="phone-label" style="color:rgba(201,176,126,.9)">Option B</div>
+    <div class="phone-sublabel" style="color:rgba(201,176,126,.6)">Restructured nav — cleaner hierarchy</div>
+    <div class="phone">
+      <div class="phone-screen">
+        <!-- Header -->
+        <div class="hdr">
+          <div class="hdr-logo">Eternal Life Hospice</div>
+          <div class="hdr-icons">
+            <div class="hdr-icon">
+              <svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="rgba(245,240,235,.7)" stroke-width="2" stroke-linecap="round"><circle cx="9" cy="9" r="7"/><line x1="15" y1="15" x2="19" y2="19"/></svg>
+            </div>
+            <div class="hdr-icon">
+              <div class="hamburger-lines"><span></span><span></span><span style="width:14px"></span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Drawer open -->
+        <div class="drawer">
+          <div class="nav-items" style="padding-top:10px">
+
+            <div class="nav-item" style="padding:10px 16px 8px;border-bottom:0">
+              <span style="font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:rgba(245,240,235,.28)">Menu</span>
+            </div>
+
+            <div class="nav-item parent">
+              <span class="nav-item-label">About</span>
+              <span class="chevron">▾</span>
+            </div>
+            <div class="sub-items">
+              <div class="sub-item"><span class="sub-dash">—</span><span class="sub-item-label">The Eternal Standard</span></div>
+              <div class="sub-item"><span class="sub-dash">—</span><span class="sub-item-label">Aleksandra Dubina</span></div>
+            </div>
+
+            <div class="nav-item parent">
+              <span class="nav-item-label">Hospice Care</span>
+              <span class="chevron">▾</span>
+            </div>
+            <div class="sub-items">
+              <div class="sub-item"><span class="sub-dash">—</span><span class="sub-item-label">Hospice Care Overview</span></div>
+              <div class="sub-item"><span class="sub-dash">—</span><span class="sub-item-label">The First 48 Hours</span></div>
+              <div class="sub-item"><span class="sub-dash">—</span><span class="sub-item-label">Integrative &amp; Whole-Person Care</span></div>
+              <div class="sub-item"><span class="sub-dash">—</span><span class="sub-item-label">Medicare &amp; Coverage</span></div>
+            </div>
+
+            <div class="nav-item" style="background:rgba(62,128,80,.12)">
+              <div class="new-dot"></div>
+              <span class="nav-item-label new">Services</span>
+            </div>
+
+            <div class="nav-item parent">
+              <span class="nav-item-label">Resources</span>
+              <span class="chevron">▾</span>
+            </div>
+            <div class="sub-items">
+              <div class="sub-item"><span class="sub-dash">—</span><span class="sub-item-label">Family Guide</span></div>
+              <div class="sub-item"><span class="sub-dash">—</span><span class="sub-item-label">When Is It Time?</span></div>
+              <div class="sub-item"><span class="sub-dash">—</span><span class="sub-item-label">What Hospice Covers</span></div>
+              <div class="sub-item"><span class="sub-dash">—</span><span class="sub-item-label">FAQs</span></div>
+              <div class="sub-item"><span class="sub-dash">—</span><span class="sub-item-label">The Eternal Journal</span></div>
+            </div>
+
+            <div class="nav-item parent">
+              <span class="nav-item-label">Locations</span>
+              <span class="chevron">▾</span>
+            </div>
+            <div class="sub-items">
+              <div class="sub-item"><span class="sub-dash">—</span><span class="sub-item-label">Thousand Oaks</span></div>
+              <div class="sub-item"><span class="sub-dash">—</span><span class="sub-item-label">Simi Valley</span></div>
+              <div class="sub-item"><span class="sub-dash">—</span><span class="sub-item-label">Calabasas</span></div>
+              <div class="sub-item"><span class="sub-dash">—</span><span class="sub-item-label">+ All Service Areas</span></div>
+            </div>
+
+            <div class="nav-item parent">
+              <span class="nav-item-label">For Professionals</span>
+              <span class="chevron">▾</span>
+            </div>
+            <div class="sub-items">
+              <div class="sub-item"><span class="sub-dash">—</span><span class="sub-item-label">Providers</span></div>
+              <div class="sub-item"><span class="sub-dash">—</span><span class="sub-item-label">Refer a Patient</span></div>
+            </div>
+
+            <div class="nav-item" style="border-bottom:0;margin-top:4px;padding-top:12px">
+              <span class="nav-item-label call">📞 &nbsp;805.953.7273</span>
+            </div>
+            <div class="nav-item" style="border-bottom:0;padding-top:4px">
+              <span class="nav-item-label" style="color:rgba(245,240,235,.45);font-size:12px">Contact Us →</span>
+            </div>
+
+          </div>
+        </div>
+        <div class="phone-indicator"></div>
+      </div>
+    </div>
+    <div class="phone-sublabel" style="color:rgba(255,255,255,.2);margin-top:6px">7 top-level items · cleaner labels</div>
+  </div>
+
+</div>
+
+<!-- Notes -->
+<div class="diff-note">
+  <h3>Key differences</h3>
+  <div class="diff-row"><span class="lbl">Option A</span> Nav stays exactly as is. 6 items — some names describe sections of the homepage (e.g. "The First 48 Hours"), not standalone pages.</div>
+  <div class="diff-row"><span class="lbl">Option B</span> 7 items — plain, descriptive labels (About, Hospice Care, Resources, Locations). Easier to scan. <span class="green">Services</span> gets its own top-level slot.</div>
+  <div class="diff-row"><span class="lbl">Both</span> Same hamburger icon, same drawer animation, same plum/gold/cream brand — the visual design doesn't change.</div>
+</div>
+
+<p class="notice">Preview only — no changes made to the live site</p>
+
+</body>
+</html>
