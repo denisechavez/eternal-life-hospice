@@ -500,6 +500,68 @@ if _services_sync_errors:
     for _e in _services_sync_errors:
         print(f"  ✗  {_e}")
 
+# ── [ 8 ] resources.html hero ↔ card-grid sync ────────────────────────────────
+#
+# The hero <p> on resources.html describes the resource hub. A machine-readable
+# comment <!-- RESOURCES-HERO-SYNC count="N" --> sits just above that paragraph;
+# its count must equal the number of <a class="rc"> resource cards in the page.
+# When a card is added or removed the count will fall out of sync, which fails
+# this check — that's the signal to also update the hero copy.
+
+print("\n[ 8 ] resources.html — hero ↔ card-grid sync check …")
+
+_resources_path = os.path.join(os.path.dirname(__file__), "elh-preview", "resources.html")
+_resources_sync_errors = []
+
+try:
+    with open(_resources_path, encoding='utf-8') as _rf:
+        _rhtml = _rf.read()
+
+    # Strip HTML comments before counting so the RESOURCES-HERO-SYNC comment
+    # itself (which contains the literal text <a class="rc">) doesn't pollute
+    # the card count.
+    _rhtml_no_comments = re.sub(r'<!--.*?-->', '', _rhtml, flags=re.DOTALL)
+
+    # Count actual resource cards
+    _res_card_count = len(re.findall(
+        r'<a\b[^>]*\bclass=["\'][^"\']*\brc\b', _rhtml_no_comments, re.IGNORECASE))
+
+    # Read the declared count from the RESOURCES-HERO-SYNC comment
+    _res_sync_m = re.search(
+        r'<!--\s*RESOURCES-HERO-SYNC\s+count=["\'](\d+)["\']',
+        _rhtml, re.IGNORECASE)
+
+    if _res_sync_m is None:
+        _resources_sync_errors.append(
+            "resources-hero-sync-marker-missing: the "
+            "<!-- RESOURCES-HERO-SYNC count=\"N\" --> comment is absent from "
+            "resources.html — add it above the hero <p> and set N to the "
+            "number of <a class=\"rc\"> cards in the page"
+        )
+    else:
+        _res_declared = int(_res_sync_m.group(1))
+        if _res_declared != _res_card_count:
+            _resources_sync_errors.append(
+                f"resources-hero-out-of-sync: RESOURCES-HERO-SYNC declares "
+                f"{_res_declared} card(s) but {_res_card_count} <a class=\"rc\"> "
+                f"card(s) are present in the page — "
+                f"update the hero <p> to reflect the new/removed resource, then "
+                f"set count=\"{_res_card_count}\" in the RESOURCES-HERO-SYNC comment"
+            )
+        else:
+            print(f"  ✓  hero paragraph declares {_res_declared} resource card(s) "
+                  f"— matches the {_res_card_count} card(s) in the page")
+
+except FileNotFoundError:
+    _resources_sync_errors.append(
+        f"resources-file-missing: {_resources_path} not found — "
+        "cannot run hero sync check"
+    )
+
+if _resources_sync_errors:
+    for _e in _resources_sync_errors:
+        print(f"  ✗  {_e}")
+
 # ── Summary ───────────────────────────────────────────────────────────────────
 
 print()
@@ -507,7 +569,8 @@ print()
 combined_errors = (all_errors
                    + [(f"mutation/{_base_slug}", e) for e in mutation_errors]
                    + _stale_alias_errors
-                   + [("services.html", e) for e in _services_sync_errors])
+                   + [("services.html", e) for e in _services_sync_errors]
+                   + [("resources.html", e) for e in _resources_sync_errors])
 
 if combined_errors:
     print("❌  FAIL — city-script regression check found issues:")
