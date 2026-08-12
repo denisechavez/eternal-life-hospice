@@ -38,3 +38,4 @@ http://eternallifehospiceinc.com/*       https://eternallifehospice.com/:splat  
 
 # Sitemap page
 /sitemap      /sitemap.html             200
+/services     /services.html            200
