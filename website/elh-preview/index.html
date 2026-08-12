@@ -936,169 +936,137 @@ p,li,blockquote{text-wrap:pretty}
 
 <script type="application/ld+json">{
   "@context": "https://schema.org",
-  "@type": [
-    "MedicalOrganization",
-    "LocalBusiness"
-  ],
-  "@id": "https://eternallifehospice.com/#organization",
-  "name": "Eternal Life Hospice, Inc.",
-  "alternateName": "Eternal Life Hospice",
-  "url": "https://eternallifehospice.com",
-  "logo": "https://eternallifehospice.com/assets/logo-cream.png",
-  "image": "https://eternallifehospice.com/assets/og-image-v2.jpg",
-  "telephone": "+18059537273",
-  "email": "info@eternallifehospice.com",
-  "hasMap": "https://maps.google.com/?cid=9771388271577679785",
-  "sameAs": [
-    "https://www.facebook.com/eternallifehospiceinc",
-    "https://www.instagram.com/eternallifehospice/",
-    "https://www.linkedin.com/company/eternal-life-hospice/",
-    "https://www.youtube.com/@EternalLifeHospice", "https://yelp.to/uEz7kTDDl6",
-    "https://www.pinterest.com/eternallifehospice/",
-    "https://x.com/eternallifehosp",
-    "https://maps.google.com/?cid=9771388271577679785"
-  ],
-  "medicalSpecialty": "https://schema.org/Hospice",
-  "isAccreditedBy": [
+  "@graph": [
     {
-      "@type": "Organization",
-      "name": "Centers for Medicare & Medicaid Services"
+      "@type": ["MedicalOrganization", "LocalBusiness"],
+      "@id": "https://eternallifehospice.com/#organization",
+      "name": "Eternal Life Hospice, Inc.",
+      "alternateName": "Eternal Life Hospice",
+      "url": "https://eternallifehospice.com",
+      "logo": "https://eternallifehospice.com/assets/logo-cream.png",
+      "image": "https://eternallifehospice.com/assets/og-image-v2.jpg",
+      "telephone": "+18059537273",
+      "email": "info@eternallifehospice.com",
+      "hasMap": "https://maps.google.com/?cid=9771388271577679785",
+      "priceRange": "$",
+      "foundingDate": "2022",
+      "sameAs": [
+        "https://www.facebook.com/eternallifehospiceinc",
+        "https://www.instagram.com/eternallifehospice/",
+        "https://www.linkedin.com/company/eternal-life-hospice/",
+        "https://www.youtube.com/@EternalLifeHospice",
+        "https://yelp.to/uEz7kTDDl6",
+        "https://www.pinterest.com/eternallifehospice/",
+        "https://x.com/eternallifehosp",
+        "https://maps.google.com/?cid=9771388271577679785"
+      ],
+      "medicalSpecialty": "https://schema.org/Hospice",
+      "isAccreditedBy": [
+        { "@type": "Organization", "name": "Centers for Medicare & Medicaid Services" },
+        { "@type": "Organization", "name": "California Department of Public Health" },
+        { "@type": "Organization", "name": "Accreditation Commission for Health Care (ACHC)" }
+      ],
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "4165 E Thousand Oaks Blvd, Suite 325B",
+        "addressLocality": "Westlake Village",
+        "addressRegion": "CA",
+        "postalCode": "91362",
+        "addressCountry": "US"
+      },
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": 34.1386,
+        "longitude": -118.8198
+      },
+      "areaServed": [
+        { "@type": "AdministrativeArea", "name": "Ventura County, California" },
+        { "@type": "AdministrativeArea", "name": "Los Angeles County, California" },
+        { "@type": "City", "name": "Thousand Oaks, California" },
+        { "@type": "City", "name": "Westlake Village, California" },
+        { "@type": "City", "name": "Camarillo, California" },
+        { "@type": "City", "name": "Oxnard, California" },
+        { "@type": "City", "name": "Ventura, California" },
+        { "@type": "City", "name": "Simi Valley, California" },
+        { "@type": "City", "name": "Moorpark, California" },
+        { "@type": "City", "name": "Newbury Park, California" },
+        { "@type": "City", "name": "Ojai, California" },
+        { "@type": "City", "name": "Santa Paula, California" },
+        { "@type": "City", "name": "Port Hueneme, California" },
+        { "@type": "City", "name": "Oak Park, California" },
+        { "@type": "City", "name": "Woodland Hills, California" },
+        { "@type": "City", "name": "Calabasas, California" },
+        { "@type": "City", "name": "Agoura Hills, California" },
+        { "@type": "City", "name": "Encino, California" },
+        { "@type": "City", "name": "Tarzana, California" },
+        { "@type": "City", "name": "Sherman Oaks, California" },
+        { "@type": "City", "name": "Malibu, California" },
+        { "@type": "City", "name": "Santa Monica, California" },
+        { "@type": "City", "name": "Beverly Hills, California" },
+        { "@type": "City", "name": "Burbank, California" },
+        { "@type": "City", "name": "Glendale, California" },
+        { "@type": "City", "name": "Pasadena, California" },
+        { "@type": "City", "name": "Long Beach, California" },
+        { "@type": "City", "name": "Northridge, California" },
+        { "@type": "City", "name": "Chatsworth, California" },
+        { "@type": "City", "name": "Canoga Park, California" }
+      ],
+      "availableService": [
+        {
+          "@type": "MedicalTherapy",
+          "name": "Hospice Care",
+          "description": "Physician-directed, nurse-coordinated end-of-life comfort care delivered wherever the patient calls home."
+        },
+        {
+          "@type": "MedicalTherapy",
+          "name": "Pain and Symptom Management",
+          "description": "Expert management of pain and distressing symptoms to keep patients comfortable and present."
+        },
+        {
+          "@type": "MedicalTherapy",
+          "name": "Integrative and Comfort Therapies",
+          "description": "Complementary comfort offerings including music therapy, aromatherapy, massage, reiki, sound bath and pet therapy."
+        },
+        {
+          "@type": "MedicalTherapy",
+          "name": "Spiritual and Emotional Support",
+          "description": "Chaplain, social work and counseling support for the patient and the whole family."
+        },
+        {
+          "@type": "MedicalTherapy",
+          "name": "Bereavement and Grief Support",
+          "description": "Ongoing grief and bereavement support for families following the death of a loved one."
+        }
+      ],
+      "openingHoursSpecification": {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"],
+        "opens": "00:00",
+        "closes": "23:59"
+      }
     },
     {
-      "@type": "Organization",
-      "name": "California Department of Public Health"
+      "@type": "WebSite",
+      "@id": "https://eternallifehospice.com/#website",
+      "name": "Eternal Life Hospice",
+      "url": "https://eternallifehospice.com",
+      "publisher": { "@id": "https://eternallifehospice.com/#organization" },
+      "dateModified": "2026-08-06"
     },
     {
-      "@type": "Organization",
-      "name": "Accreditation Commission for Health Care (ACHC)"
-    }
-  ],
-  "address": {
-    "@type": "PostalAddress",
-    "streetAddress": "4165 E Thousand Oaks Blvd, Suite 325B",
-    "addressLocality": "Westlake Village",
-    "addressRegion": "CA",
-    "postalCode": "91362",
-    "addressCountry": "US"
-  },
-  "geo": {
-    "@type": "GeoCoordinates",
-    "latitude": 34.1386,
-    "longitude": -118.8198
-  },
-  "areaServed": [
-    { "@type": "AdministrativeArea", "name": "Ventura County, California" },
-    { "@type": "AdministrativeArea", "name": "Los Angeles County, California" },
-    { "@type": "City", "name": "Thousand Oaks, California" },
-    { "@type": "City", "name": "Westlake Village, California" },
-    { "@type": "City", "name": "Camarillo, California" },
-    { "@type": "City", "name": "Oxnard, California" },
-    { "@type": "City", "name": "Ventura, California" },
-    { "@type": "City", "name": "Simi Valley, California" },
-    { "@type": "City", "name": "Moorpark, California" },
-    { "@type": "City", "name": "Newbury Park, California" },
-    { "@type": "City", "name": "Ojai, California" },
-    { "@type": "City", "name": "Santa Paula, California" },
-    { "@type": "City", "name": "Port Hueneme, California" },
-    { "@type": "City", "name": "Oak Park, California" },
-    { "@type": "City", "name": "Woodland Hills, California" },
-    { "@type": "City", "name": "Calabasas, California" },
-    { "@type": "City", "name": "Agoura Hills, California" },
-    { "@type": "City", "name": "Encino, California" },
-    { "@type": "City", "name": "Tarzana, California" },
-    { "@type": "City", "name": "Sherman Oaks, California" },
-    { "@type": "City", "name": "Malibu, California" },
-    { "@type": "City", "name": "Santa Monica, California" },
-    { "@type": "City", "name": "Beverly Hills, California" },
-    { "@type": "City", "name": "Burbank, California" },
-    { "@type": "City", "name": "Glendale, California" },
-    { "@type": "City", "name": "Pasadena, California" },
-    { "@type": "City", "name": "Long Beach, California" },
-    { "@type": "City", "name": "Northridge, California" },
-    { "@type": "City", "name": "Chatsworth, California" },
-    { "@type": "City", "name": "Canoga Park, California" }
-  ],
-  "availableService": [
-    {
-      "@type": "MedicalTherapy",
-      "name": "Hospice Care",
-      "description": "Physician-directed, nurse-coordinated end-of-life comfort care delivered wherever the patient calls home."
+      "@type": "Person",
+      "@id": "https://eternallifehospice.com/#founder",
+      "name": "Aleksandra Dubina",
+      "jobTitle": "Founder & CEO",
+      "honorificSuffix": "RN, BSN",
+      "description": "Aleksandra Dubina, RN, BSN, is the Founder and CEO of Eternal Life Hospice, Inc. With more than two decades in healthcare — eleven years in hospice — she is an ACHC Certified Consultant and Certified Hospice Administrator who knows every patient by name.",
+      "worksFor": { "@id": "https://eternallifehospice.com/#organization" },
+      "url": "https://eternallifehospice.com/aleksandra",
+      "sameAs": "https://eternallifehospice.com/aleksandra"
     },
     {
-      "@type": "MedicalTherapy",
-      "name": "Pain and Symptom Management",
-      "description": "Expert management of pain and distressing symptoms to keep patients comfortable and present."
-    },
-    {
-      "@type": "MedicalTherapy",
-      "name": "Integrative and Comfort Therapies",
-      "description": "Complementary comfort offerings including music therapy, aromatherapy, massage, reiki, sound bath and pet therapy."
-    },
-    {
-      "@type": "MedicalTherapy",
-      "name": "Spiritual and Emotional Support",
-      "description": "Chaplain, social work and counseling support for the patient and the whole family."
-    },
-    {
-      "@type": "MedicalTherapy",
-      "name": "Bereavement and Grief Support",
-      "description": "Ongoing grief and bereavement support for families following the death of a loved one."
-    }
-  ],
-  "openingHoursSpecification": {
-    "@type": "OpeningHoursSpecification",
-    "dayOfWeek": [
-      "Monday",
-      "Tuesday",
-      "Wednesday",
-      "Thursday",
-      "Friday",
-      "Saturday",
-      "Sunday"
-    ],
-    "opens": "00:00",
-    "closes": "23:59"
-  },
-  "author": {
-    "@type": "Person",
-    "name": "Aleksandra Dubina",
-    "honorificSuffix": "RN, BSN",
-    "jobTitle": "Founder & CEO / Certified Hospice Administrator",
-    "worksFor": { "@id": "https://eternallifehospice.com/#organization" }
-  }
-}</script>
-<script type="application/ld+json">{
-  "@context": "https://schema.org",
-  "@type": "WebSite",
-  "@id": "https://eternallifehospice.com/#website",
-  "name": "Eternal Life Hospice",
-  "url": "https://eternallifehospice.com",
-  "dateModified": "2026-08-06",
-  "potentialAction": {
-    "@type": "SearchAction",
-    "target": "https://eternallifehospice.com/?s={search_term_string}",
-    "query-input": "required name=search_term_string"
-  }
-}</script>
-<script type="application/ld+json">{
-  "@context": "https://schema.org",
-  "@type": "Person",
-  "name": "Aleksandra Dubina",
-  "jobTitle": "Founder & CEO",
-  "honorificSuffix": "RN, BSN",
-  "description": "Aleksandra Dubina, RN, BSN, is the Founder and CEO of Eternal Life Hospice, Inc. With more than two decades in healthcare — eleven years in hospice — she is an ACHC Certified Consultant and Certified Hospice Administrator who knows every patient by name.",
-  "worksFor": {
-    "@type": "Organization",
-    "name": "Eternal Life Hospice, Inc.",
-    "url": "https://eternallifehospice.com"
-  },
-  "url": "https://eternallifehospice.com/aleksandra",
-  "sameAs": "https://eternallifehospice.com/aleksandra"
-}</script>
-<script type="application/ld+json">{
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  "mainEntity": [
+      "@type": "FAQPage",
+      "mainEntity": [
     {
       "@type": "Question",
       "name": "What is hospice care?",
@@ -1186,6 +1154,8 @@ p,li,blockquote{text-wrap:pretty}
         "@type": "Answer",
         "text": "To begin, we need the patient's name, primary diagnosis, your direct contact information, and a brief description of the clinical situation. Our intake coordinator will follow up to obtain physician orders, face-to-face documentation where required, and insurance information. Most referrals can move to admission rapidly once a signed order is received."
       }
+    }
+      ]
     }
   ]
 }</script>
