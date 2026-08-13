@@ -1,0 +1,267 @@
+You are working directly in the Eternal Life Hospice production repository.
+
+## Objective
+
+Create one authoritative. indexable founder page for **Aleksandra Dubina** and clean up the duplicate founder/card routes without changing unrelated site architecture.
+
+This sprint is about **entity resolution for Google and AI systems**.
+
+Do not redesign the site.
+Do not change the main navigation structure.
+Do not alter unrelated content.
+Do not expand into broader schema cleanup outside the Aleksandra entity scope.
+
+## Current known state
+
+The live site has multiple Aleksandra-related routes:
+
+* `/aleksandradubina`
+* `/aleksandra`
+* `/card-aleksandra-dubina`
+
+Previous audit findings indicate:
+
+* `/aleksandradubina` may be `noindex,nofollow`
+* it may function mainly as a sparse digital card rather than a real biography page
+* `/aleksandra` may redirect to `/card-aleksandra-dubina`
+* one card route may expose Aleksandra’s direct cell number
+* the strongest founder biography currently lives on the homepage rather than on a dedicated indexable URL
+
+Do not assume any of this. Inspect the repository and confirm the actual implementation first.
+
+---
+
+## Task 1 — Map every Aleksandra route
+
+Search the entire production repository for:
+
+* `aleksandra`
+* `aleksandradubina`
+* `card-aleksandra-dubina`
+* `Aleksandra Dubina`
+* founder-related links in header. footer. homepage. resource pages and cards
+
+Report:
+
+* every route/file found
+* indexability state
+* canonical
+* redirects
+* visible content
+* phone numbers
+* email addresses
+* internal links pointing to each route
+
+Do not modify anything until the route map is complete.
+
+---
+
+## Task 2 — Establish one canonical founder URL
+
+Use this as the preferred authoritative route:
+
+`/about/aleksandra-dubina`
+
+Create it only if it does not already exist.
+
+This page must be:
+
+* HTTP 200
+* indexable
+* followable
+* self-canonical
+* linked internally
+* clearly about Aleksandra Dubina
+* structurally consistent with the Eternal Life Hospice design system
+
+### Recommended page structure
+
+**Title tag:**
+`Aleksandra Dubina | Founder of Eternal Life Hospice`
+
+**H1:**
+`Aleksandra Dubina`
+
+**Subhead:**
+`Founder & Chief Executive Officer of Eternal Life Hospice`
+
+Then include concise sections for:
+
+1. Leadership at Eternal Life Hospice
+2. Healthcare and hospice experience
+3. Why hospice became personal
+4. The Eternal Standard
+5. Approach to dignity. family guidance and whole-person care
+6. Credentials currently verified in the repository/site
+7. Relationship to Eternal Life Hospice
+8. Optional media / speaking / educational role only if already supported by existing site content
+
+## Content rule
+
+Reuse and consolidate the strongest existing founder copy already present on the live site or in the repository.
+
+Do not invent:
+
+* degrees
+* licenses
+* certifications
+* years of experience
+* awards
+* affiliations
+* media appearances
+* speaking credentials
+* medical qualifications
+
+If two existing sources conflict. flag it rather than choosing silently.
+
+---
+
+## Task 3 — Person schema
+
+Add a valid `Person` JSON-LD entity to the new founder page.
+
+Include only facts that are already verified in the site/repository.
+
+At minimum where supported:
+
+* `@type`: `Person`
+* `name`: `Aleksandra Dubina`
+* `url`: canonical founder URL
+* `jobTitle`
+* `worksFor`
+* `affiliation` only if appropriate
+* `sameAs` only for confirmed official profiles
+* image if a canonical official founder image already exists
+
+Connect `worksFor` to Eternal Life Hospice consistently.
+
+Do not add unsupported schema properties merely to make the markup larger.
+
+---
+
+## Task 4 — Consolidate old founder URLs
+
+Once the authoritative page exists:
+
+### `/aleksandradubina`
+
+If this is currently a sparse/noindex digital card page:
+
+* 301 redirect it to `/about/aleksandra-dubina`
+* unless there is a compelling operational reason it must remain separate
+
+### `/aleksandra`
+
+If this only redirects to a card page:
+
+* point it directly to `/about/aleksandra-dubina`
+
+### `/card-aleksandra-dubina`
+
+Determine whether this serves a legitimate business-card/vCard use case.
+
+If it is needed operationally:
+
+* keep it separate
+* keep it `noindex`
+* remove unnecessary `nofollow` if internal crawling does not need to be blocked
+* make sure it clearly identifies itself as a contact card rather than the authoritative biography
+* do not canonicalize the biography to the card
+
+If it is not needed:
+
+* 301 it to `/about/aleksandra-dubina`
+
+Do not create redirect chains.
+
+All old founder URLs should resolve in one hop.
+
+---
+
+## Task 5 — Direct cell/privacy review
+
+Audit every Aleksandra page for:
+
+* personal cell number
+* public business number
+* email address
+* vCard fields
+
+Do not remove contact information automatically.
+
+Report clearly:
+
+* where the direct cell is exposed
+* whether that route is publicly fetchable
+* whether it is indexed
+* whether the same number appears elsewhere
+
+If a personal cell appears only on the digital card. preserve it for now unless there is an existing repository rule indicating it should be removed.
+
+Flag the decision for us.
+
+---
+
+## Task 6 — Internal linking
+
+Update relevant internal links so that references such as:
+
+* Aleksandra Dubina
+* Founder
+* About Aleksandra
+* leadership bio
+
+point to:
+
+`/about/aleksandra-dubina`
+
+Do not replace contact-card links where the explicit user intent is clearly “download contact” or “save vCard.”
+
+Make sure the new founder page is reachable from at least:
+
+* About section or About page
+* homepage founder section
+* footer or another persistent institutional path if appropriate
+
+Do not change the top-level navigation labels.
+
+---
+
+## Validation
+
+Before committing confirm:
+
+1. `/about/aleksandra-dubina` returns 200.
+2. Page has exactly one clear H1.
+3. Page has a unique title and meta description.
+4. Page is `index,follow`.
+5. Page has a self-referencing canonical.
+6. `Person` schema validates structurally.
+7. `worksFor` correctly references Eternal Life Hospice.
+8. No unsupported credentials were introduced.
+9. Old Aleksandra routes do not create redirect chains.
+10. No internal links continue to point to an obsolete sparse/noindex founder page unless intentionally required for contact-card use.
+11. Any public direct-cell exposure is explicitly reported.
+12. No unrelated site navigation. forms. city pages or resource content changed.
+
+## Commit scope
+
+Commit only files required for:
+
+* new founder page
+* founder-specific schema
+* founder redirects
+* founder internal-link updates
+
+Return:
+
+* route map before changes
+* files changed
+* old URL → final URL behavior
+* exact indexability changes
+* schema added
+* contact/privacy findings
+* validation results
+* anything requiring a decision from us before deployment
+
+Do not begin footer normalization. community-count cleanup or broader schema work in this sprint.
