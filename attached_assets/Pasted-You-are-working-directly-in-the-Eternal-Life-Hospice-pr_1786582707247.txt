@@ -1,0 +1,62 @@
+You are working directly in the Eternal Life Hospice production repository.
+
+## Objective
+
+Close the one remaining malformed homepage form field identified during Sprint 1.
+
+Do not make any other changes.
+
+## Known defect
+
+In the `elh-family` form on the homepage the textarea currently contains malformed markup similar to:
+
+`placeholder="Tell us a little about your situation." data-clarity-mask="True" No medical details needed right now.">`
+
+The intended phrase:
+
+`No medical details needed right now.`
+
+has been stranded outside the quoted placeholder value and is being interpreted as malformed HTML attributes.
+
+## Required fix
+
+Correct the textarea so:
+
+* the HTML is valid
+* `data-clarity-mask="True"` remains intact
+* the intended placeholder reads naturally
+* no field names change
+* no form action changes
+* no Netlify attributes change
+* no styling changes
+* no unrelated form markup changes
+
+Use this final placeholder unless the repository clearly shows a different intended wording:
+
+`Tell us a little about your situation. No medical details needed right now.`
+
+## Validation
+
+Before committing confirm:
+
+1. The `elh-family` textarea opening tag is valid HTML.
+2. The full intended placeholder is contained inside the `placeholder` attribute.
+3. `data-clarity-mask="True"` remains a separate valid attribute.
+4. There is no stranded visible or malformed text.
+5. The `elh-family` form still contains its original field names and submission configuration.
+6. Search the homepage for any other malformed `placeholder`, `data-clarity-mask` or stray attribute fragments created by the same pattern.
+7. Do not modify additional instances unless they are definitively malformed.
+8. Report anything suspicious separately rather than expanding scope.
+
+## Commit
+
+Commit only the file or files required for this repair.
+
+Return:
+
+* file changed
+* before → after markup
+* validation results
+* whether any similar malformed attributes remain on the homepage
+
+Do not begin the Aleksandra page or any other SEO work in this sprint.
