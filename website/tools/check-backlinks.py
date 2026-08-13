@@ -272,21 +272,48 @@ def apply_opr(results: List[DomainResult], api_key: str) -> None:
 # Google Safe Browsing API
 # ---------------------------------------------------------------------------
 
+def _host_from_url(url: str) -> str:
+    """
+    Parse the hostname from a URL and normalise it the same way normalise_domain()
+    does: strip scheme, strip leading www., strip port, lower-case.
+
+    Examples:
+        http://www.spam.com/path  -> spam.com
+        https://notexample.com/   -> notexample.com
+        example.com               -> example.com
+    """
+    try:
+        netloc = urllib.parse.urlparse(url).netloc
+    except Exception:
+        netloc = ''
+    host = (netloc or url).lower()
+    host = re.sub(r'^www\.', '', host)
+    host = host.split(':')[0]  # strip port
+    host = host.split('/')[0]  # guard against bare url with no scheme
+    return host.strip()
+
+
 def fetch_gsb(domains: List[str], api_key: str) -> dict:
     """
     Query Google Safe Browsing v4 Lookup API.
     Returns dict: domain -> list of threat types found.
+
+    Threat URLs returned by the API are matched back to the requested domain
+    by exact hostname comparison (after stripping scheme/www/port) — NOT by
+    substring search — so 'notexample.com' can never pollute 'example.com'.
     """
-    threats = {}
+    threats: dict = {}
     urls_to_check = [f"http://{d}/" for d in domains]
+    # Build a lookup set for O(1) exact matching
+    domain_set = set(domains)
 
     for i in range(0, len(urls_to_check), GSB_BATCH):
         batch_urls = urls_to_check[i:i + GSB_BATCH]
-        batch_doms = domains[i:i + GSB_BATCH]
         payload = {
             "client": {"clientId": "elh-backlink-checker", "clientVersion": "1.0"},
             "threatInfo": {
-                "threatTypes":      ["MALWARE", "SOCIAL_ENGINEERING", "UNWANTED_SOFTWARE", "POTENTIALLY_HARMFUL_APPLICATION"],
+                "threatTypes":      ["MALWARE", "SOCIAL_ENGINEERING",
+                                     "UNWANTED_SOFTWARE", "POTENTIALLY_HARMFUL_APPLICATION"],
                 "platformTypes":    ["ANY_PLATFORM"],
                 "threatEntryTypes": ["URL"],
                 "threatEntries":    [{"url": u} for u in batch_urls],
@@ -303,12 +330,12 @@ def fetch_gsb(domains: List[str], api_key: str) -> dict:
             with urllib.request.urlopen(req, timeout=30) as resp:
                 data = json.loads(resp.read())
             for match in data.get('matches', []):
-                matched_url = match.get('threat', {}).get('url', '')
-                threat_type = match.get('threatType', 'UNKNOWN')
-                # Map back to domain
-                for dom in batch_doms:
-                    if dom in matched_url:
-                        threats.setdefault(dom, []).append(threat_type)
+                matched_url  = match.get('threat', {}).get('url', '')
+                threat_type  = match.get('threatType', 'UNKNOWN')
+                matched_host = _host_from_url(matched_url)
+                # Exact domain match only — substring collisions are impossible
+                if matched_host in domain_set:
+                    threats.setdefault(matched_host, []).append(threat_type)
         except urllib.error.HTTPError as exc:
             body = exc.read().decode()
             print(f"  GSB batch {i//GSB_BATCH + 1} HTTP {exc.code}: {body[:120]}", file=sys.stderr)
