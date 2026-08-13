@@ -33,7 +33,7 @@ http://eternallifehospiceinc.com/*       https://eternallifehospice.com/:splat  
 /media       /media-kit   301
 
 # Digital business cards
-/aleksandra   /card-aleksandra-dubina   301
+/aleksandra   /about/aleksandra-dubina   301
 /denise       /card-denise-chavez       301
 
 # Sitemap page
@@ -42,3 +42,6 @@ http://eternallifehospiceinc.com/*       https://eternallifehospice.com/:splat  
 
 # What Hospice Covers — legacy path corrected to canonical
 /resources/what-hospice-covers  /resources/medicare-hospice-benefit  301
+
+# Legacy sparse founder card — canonical biography is at /about/aleksandra-dubina
+/aleksandradubina   /about/aleksandra-dubina   301
