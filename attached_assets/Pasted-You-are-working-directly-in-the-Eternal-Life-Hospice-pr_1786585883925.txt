@@ -1,0 +1,525 @@
+You are working directly in the Eternal Life Hospice production repository.
+
+## Objective
+
+Normalize the repeated global components and factual signals across the Eternal Life Hospice website.
+
+This sprint is about **consistency. crawl hygiene. entity clarity and template integrity**.
+
+Do not redesign the site.
+
+Do not add new pages.
+
+Do not change the approved top-level navigation architecture.
+
+Do not rewrite city-page body content.
+
+Do not begin broader schema expansion.
+
+Do not change the physical address based on assumptions.
+
+Do not change legitimate departmental email addresses without evidence.
+
+Map first. Then make only safe mechanical corrections.
+
+---
+
+# Phase 1 — Build a global drift map
+
+Search the entire production repository and inventory all variants of:
+
+* header
+* footer
+* credential rail
+* review/testimonial carousel
+* community/service-area count
+* `24/7 Admissions`
+* `24/7 Nurse Access`
+* `24/7 Clinical Intake`
+* same-day admission wording
+* X/Twitter profile URL
+* `twitter:site`
+* `twitter:creator`
+* Organization `sameAs`
+* phone
+* fax
+* physical address
+* ZIP code
+* public email addresses
+* About / founder destination
+* service-area links
+* review count
+* credential wording
+* accreditation wording
+
+Before changing anything determine:
+
+1. how many variants exist
+2. which files/templates use each variant
+3. whether differences are intentional
+4. whether desktop/mobile duplicate markup is intentionally hidden or semantically duplicated
+5. which conflicts require human review
+
+Do not modify anything until this mapping is complete.
+
+---
+
+# Phase 2 — Normalize community counts
+
+Previous audits found conflicting visible community totals including:
+
+* `135 Communities`
+* `145 Communities`
+
+There may also be a Ventura County count that does not match the actual list.
+
+Determine the actual number of **unique public service-area community pages intended to represent communities**.
+
+Do not trust any existing label.
+
+Calculate from the production inventory.
+
+Separate:
+
+* Ventura County communities
+* Los Angeles County communities
+* regional / hub pages such as Conejo Valley
+
+Do not count a regional hub as a city unless the site explicitly treats it as a community.
+
+Then normalize visible counts everywhere.
+
+Where practical use one source of truth rather than repeated hard-coded numbers.
+
+Return:
+
+* Ventura County count
+* Los Angeles County count
+* regional/hub count
+* final public community count
+* calculation methodology
+
+---
+
+# Phase 3 — Normalize 24/7 language
+
+Search globally for:
+
+`24/7 Admissions`
+
+Preferred public language:
+
+`24/7 Nurse Access`
+
+Where context specifically refers to intake availability use:
+
+`24/7 Clinical Intake`
+
+Preserve the approved qualifying language:
+
+`Same-day admission when clinically appropriate and operationally available.`
+
+Do not blindly replace every 24/7 phrase.
+
+Review context first.
+
+Required outcome:
+
+No unsupported blanket `24/7 Admissions` wording remains.
+
+Return every replacement with:
+
+* page/file
+* before
+* after
+* reason
+
+---
+
+# Phase 4 — Normalize X / Twitter metadata
+
+Audit:
+
+* `twitter:site`
+* `twitter:creator`
+* X profile hrefs
+* footer X links
+* Organization `sameAs`
+* old Twitter URLs
+
+Previous audit flagged:
+
+`@EternalLifeHospice`
+
+as potentially invalid.
+
+Determine the confirmed official Eternal Life Hospice X account from existing production data.
+
+Do not invent a handle.
+
+If a confirmed valid account exists:
+
+normalize sitewide to one:
+
+* profile URL
+* `twitter:site`
+* Organization reference
+
+If no confirmed account exists:
+
+remove invalid metadata rather than fabricate one.
+
+Return the final confirmed X handle and URL.
+
+---
+
+# Phase 5 — Normalize footer content
+
+Audit every footer variant.
+
+Identify differences in:
+
+* social profiles
+* About/founder links
+* resource links
+* phone
+* fax
+* email
+* address
+* credentials
+* disclaimers
+* Care Brief signup
+* service area
+* review references
+
+Determine whether any variation is intentional.
+
+For all standard public pages establish one canonical footer content set.
+
+Requirements:
+
+* consistent NAP values where facts are already agreed
+* consistent social-profile set
+* canonical founder URL:
+  `/about/aleksandra-dubina`
+* no old `/aleksandradubina`
+* no broken resource URLs
+* no personal cell number
+* same approved credentials
+* same approved disclaimer copy
+* one consistent primary footer email
+
+Special-purpose digital card pages may retain specialized footer behavior if operationally necessary.
+
+Do not redesign the footer.
+
+---
+
+# Phase 6 — Normalize header destinations
+
+Approved top-level navigation remains:
+
+* Hospice Care
+* Services
+* Resources
+* Locations
+* For Professionals
+* About
+
+Do not replace this with the older question-led navigation concept.
+
+Audit header variants for:
+
+* label differences
+* destination differences
+* stale founder links
+* stale resource links
+* desktop/mobile inconsistencies
+* duplicate markup
+
+Normalize URL destinations while preserving:
+
+* current labels
+* current information architecture
+* visual styling
+
+Return variant count before and after.
+
+---
+
+# Phase 7 — Duplicate DOM audit
+
+Previous crawl found possible duplication of:
+
+* credential rail
+* testimonial/review carousel
+
+Determine whether this is:
+
+A. intentional desktop/mobile markup that is correctly hidden by CSS
+
+or
+
+B. accidental semantic duplication in the rendered DOM
+
+Do not delete anything until confirmed.
+
+If accidental:
+
+* consolidate to one implementation
+* preserve responsive behavior
+* preserve accessibility
+* preserve content
+* preserve design
+* do not add review schema
+
+Return:
+
+* occurrence count before
+* occurrence count after
+* files changed
+
+---
+
+# Phase 8 — Normalize Organization sameAs
+
+Audit every Organization-level `sameAs`.
+
+Create one confirmed official Eternal Life Hospice set.
+
+Use only official organization profiles.
+
+Do not include:
+
+* Aleksandra personal LinkedIn
+* digital business cards
+* unverified directories
+* duplicate internal URLs
+
+Apply the same confirmed set wherever Organization schema repeats.
+
+Return final `sameAs` set.
+
+---
+
+# Phase 9 — NAP consistency audit
+
+Audit all production occurrences of:
+
+## Primary business phone
+
+`805.953.7273`
+
+Report formatting variants.
+
+## Fax
+
+Audit all fax values.
+
+## Physical address
+
+Audit all address and ZIP variants.
+
+Known production usage includes:
+
+`4165 E Thousand Oaks Blvd`
+`Suite 325B`
+`Westlake Village CA 91362`
+
+Do not assume this is the authoritative regulatory address merely because it is common.
+
+Do not change conflicting address values in this sprint.
+
+Report them.
+
+## Email addresses
+
+Audit all public addresses including:
+
+* `info@eternallifehospice.com`
+* `support@eternallifehospice.com`
+* `aleksandra@eternallifehospice.com`
+* any other role-based addresses
+
+Do not collapse legitimate departmental inboxes into one address.
+
+Normalize only cases where the same function uses conflicting addresses.
+
+Return:
+
+* address
+* purpose
+* files using it
+* whether consistent
+* whether human confirmation is required
+
+---
+
+# Phase 10 — Credential wording consistency
+
+Audit sitewide for:
+
+* Medicare-Certified
+* CDPH-Licensed
+* ACHC-Accredited
+* Certified Hospice Administrator
+* ACHC Certified Consultant
+* CCN B31709
+* other credential/accreditation language
+
+Normalize punctuation and capitalization where the underlying credential is already supported.
+
+Do not add new credentials.
+
+Do not remove supported credentials without evidence.
+
+Flag any credential that appears only in isolated locations and may need verification.
+
+---
+
+# Phase 11 — Review count audit
+
+Search for all references to:
+
+* `5.0`
+* review counts
+* stars
+* testimonials
+* hard-coded rating values
+
+Determine whether review counts are manually hard-coded.
+
+Do not update numbers by assumption.
+
+If conflicting values exist:
+
+* identify each value
+* identify where it appears
+* identify likely source
+* recommend dynamic sourcing or removal if appropriate
+
+Do not add `AggregateRating` schema.
+
+Do not alter review text.
+
+---
+
+# Phase 12 — Internal-link safety pass
+
+After all normalization run a full internal-link check for:
+
+* 404s
+* old founder URLs
+* `/resources/what-hospice-covers`
+* redirect chains
+* stale navigation paths
+* stale footer paths
+* malformed relative links
+
+Required outcome:
+
+* zero internal links to known dead routes
+* zero internal links to `/aleksandradubina`
+* zero internal links to `/resources/what-hospice-covers`
+* no new redirect chains
+
+---
+
+# Phase 13 — Validation
+
+Before committing confirm:
+
+1. Approved six-item navigation remains intact.
+2. No new pages were created.
+3. No city-page body content was rewritten.
+4. Community counts are consistent.
+5. Unsupported `24/7 Admissions` wording is gone.
+6. Same-day admission qualification remains intact.
+7. X metadata uses one confirmed valid account or invalid metadata is removed.
+8. Standard public pages use a consistent footer content set.
+9. Standard public pages use consistent header destinations.
+10. Founder links use `/about/aleksandra-dubina`.
+11. No personal cell number reappeared.
+12. Organization `sameAs` is consistent.
+13. Credential wording is consistent.
+14. Duplicate credential/review DOM output is resolved where confirmed accidental.
+15. NAP conflicts are reported but not guessed at.
+16. Departmental emails are not changed without evidence.
+17. No known dead internal links remain.
+18. No unrelated design changes were made.
+
+---
+
+# Commit strategy
+
+Keep every change mechanical and reversible.
+
+If many static HTML files must change because repeated global content is hard-coded across the site explain the scope before committing.
+
+Do not perform a framework-level refactor unless it is required to safely correct a confirmed issue.
+
+Prefer the smallest safe change set.
+
+---
+
+# Final report
+
+Return:
+
+## 1. Global variant map before
+
+Show each repeated component and number of variants.
+
+## 2. Files changed
+
+Group large static-file changes logically.
+
+## 3. Community count
+
+Show exact calculation and normalized value.
+
+## 4. 24/7 language
+
+Show every wording change.
+
+## 5. X / Twitter
+
+Show confirmed account and metadata.
+
+## 6. Header/footer
+
+Show variant count before and after.
+
+## 7. Duplicate DOM findings
+
+Explain whether duplicates were intentional or accidental.
+
+## 8. Organization sameAs
+
+Show final official set.
+
+## 9. NAP report
+
+Show every address. phone. fax and email variant.
+
+## 10. Credential audit
+
+Show inconsistencies and corrections.
+
+## 11. Review-count audit
+
+Show all values and recommendation.
+
+## 12. Internal-link validation
+
+Show final broken-link status.
+
+## 13. Validation
+
+Pass/fail every Sprint 3 requirement.
+
+## 14. Human decisions required
+
+Flag anything that should not be guessed.
+
+Do not begin city-page uniqueness work. broader schema implementation. Core Web Vitals optimization. government NAP reconciliation or new content creation in this sprint.
