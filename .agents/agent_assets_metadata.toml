@@ -1411,3 +1411,10 @@ uri = "file://exports/social-graphics/elh-stitch-panoramic-3240x1080.png"
 type = "image"
 title = "Full Panoramic — reference file"
 description = "The complete 3-panel image. Use for Stories or print reference."
+
+[[outputs]]
+id = "TUFTbWDrqGzDjUgduVePW"
+uri = "file://exports/ELH-SEO-AI-Meta-Report-Aug13-2026.pdf"
+type = "pdf"
+title = "ELH — SEO, AI & Site Report · August 13, 2026"
+description = "8-page branded report for Aleksandra: founder identity & Knowledge Graph, navigation consistency across 185 pages, email authentication, automated QA infrastructure, and what's coming next."
