@@ -59,24 +59,6 @@
     });
   }
 
-  // Protect the primary phone number in the footer from WhatConverts replacement
-  window.addEventListener('load', function () {
-    var PRIMARY_TEXT = '805.953.7273';
-    var PRIMARY_HREF = 'tel:18059537273';
-    function protectFooterPhone() {
-      var footer = document.getElementById('site-footer');
-      if (!footer) return;
-      footer.querySelectorAll('a[href^="tel:"]').forEach(function (a) {
-        var sp = a.querySelector('span');
-        if (sp && sp.textContent !== PRIMARY_TEXT) sp.textContent = PRIMARY_TEXT;
-        if (a.getAttribute('href') !== PRIMARY_HREF) a.setAttribute('href', PRIMARY_HREF);
-      });
-    }
-    protectFooterPhone();
-    setTimeout(protectFooterPhone, 800);
-    setTimeout(protectFooterPhone, 2500);
-  });
-
   var ctaPill = hdr.querySelector('.hdr-cta');
   if (ctaPill) {
     var ctaHues = ['cta-hue1', 'cta-hue2', 'cta-hue3'], ctaIdx = 0;

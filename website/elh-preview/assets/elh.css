@@ -356,7 +356,8 @@ p,li,blockquote{text-wrap:pretty}
   #site-footer .fc-line.fc-addr,#site-footer .foot-col a.fc-addr{align-items:flex-start;font-size:12px;line-height:1.55}
   #site-footer .fc-addr span{white-space:nowrap}
   #site-footer .fc-addr .fci{margin-top:4px}
-  #site-footer .fc-fax{cursor:default}
+  #site-footer .fc-fax,#site-footer .fc-direct{cursor:default}
+  #site-footer .fc-direct{color:rgba(245,240,235,.45);font-size:12.5px}
   #site-footer .foot-disclaimer{max-width:1140px;margin:2rem auto 0;padding-top:1.5rem;border-top:1px solid rgba(255,255,255,.08);font-size:13px;color:rgba(245,240,235,.60);line-height:1.7}
   #site-footer .foot-bottom{max-width:1140px;margin:1.5rem auto 0;display:flex;justify-content:space-between;flex-wrap:wrap;gap:.5rem;font-size:13px;color:rgba(245,240,235,.60)}
   #site-footer .foot-bottom a{color:rgba(245,240,235,.55);text-decoration:none}
