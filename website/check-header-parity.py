@@ -317,12 +317,40 @@ for rel, reason in results["exception"]:
     print(f"       {reason}")
 
 # ── _redirects validation ──────────────────────────────────────────────────
-# Parse elh-preview/_redirects and verify every local destination exists.
-# External URLs (http/https) and Netlify placeholder destinations (containing
-# a colon, e.g. /:splat) are skipped — only local paths are checked.
+# Parse elh-preview/_redirects and:
+#   1. Detect self-loop rules (source resolves to the same path as destination)
+#      for ALL local rules, including wildcard/placeholder rules such as
+#      ``/foo/*  /foo/:splat  301``.
+#   2. Verify that every plain (non-placeholder) local destination exists on disk.
+#
+# External URLs (http/https) are skipped entirely.
+# Placeholder destinations (containing a colon, e.g. /:splat) are excluded
+# from the existence check but are still inspected for self-loops.
 
 REDIRECTS_FILE = os.path.join(ROOT, "_redirects")
 broken_netlify_rules = []  # (line_no, line, dest) tuples
+self_loop_rules = []       # (line_no, line) tuples — source == destination after normalisation
+
+import re as _re2  # _re already imported above; alias to avoid shadowing
+
+def _loop_normalize(p: str) -> str:
+    """Normalise a Netlify path for self-loop comparison.
+
+    Handles both plain paths and wildcard/placeholder paths:
+      ``/foo/*``       → ``/foo``   (wildcard suffix removed)
+      ``/foo/:splat``  → ``/foo``   (named-param segments removed)
+      ``/refer/``      → ``/refer`` (trailing slash removed)
+      ``/refer``       → ``/refer``
+
+    Trailing ``.html`` is intentionally preserved: ``/foo → /foo.html`` is a
+    legitimate path-form redirect (the file exists on disk), not a self-loop.
+    """
+    # Remove a trailing wildcard segment (/*  or  /*)
+    p = _re2.sub(r"/\*$", "", p)
+    # Remove named-parameter segments (/:param)
+    p = _re2.sub(r"/:[^/]+", "", p)
+    # Strip trailing slashes
+    return p.rstrip("/")
 
 def _netlify_dest_exists(dest: str) -> bool:
     """Return True if *dest* resolves to a file under elh-preview/.
@@ -353,16 +381,27 @@ if os.path.isfile(REDIRECTS_FILE):
             _parts = _line.split()
             if len(_parts) < 2:
                 continue
-            _dest = _parts[1]
-            # Skip external URLs
-            if _dest.startswith("http://") or _dest.startswith("https://"):
+            _src, _dest = _parts[0], _parts[1]
+            # Skip rules whose source or destination is an external URL
+            if _src.startswith(("http://", "https://")) or _dest.startswith(("http://", "https://")):
                 continue
-            # Skip Netlify placeholder destinations (contain a colon, e.g. /:splat)
+            # ── Self-loop check (runs for ALL local rules, including placeholders) ──
+            if _loop_normalize(_src) == _loop_normalize(_dest):
+                self_loop_rules.append((_lineno, _line))
+            # ── Existence check (plain destinations only — skip placeholders) ──
+            # Placeholder destinations contain a colon (e.g. /:splat, /:id).
             if ":" in _dest:
                 continue
-            # Local destination — verify it resolves to a real file
             if not _netlify_dest_exists(_dest):
                 broken_netlify_rules.append((_lineno, _line, _dest))
+
+if self_loop_rules:
+    print("── SELF-LOOP REDIRECT RULES (source == destination) ─────────────")
+    for lineno, line in self_loop_rules:
+        print(f"  🚨  Line {lineno}: {line}")
+        print(f"       source and destination resolve to the same path — browsers will loop forever")
+        print(f"       → fix the destination or remove this rule")
+    print()
 
 if broken_netlify_rules:
     print("── BROKEN NETLIFY REDIRECT RULES (destination not found) ────────")
@@ -385,10 +424,13 @@ if broken_redirects:
 if missing_redirect_targets:
     print(f"\n🚨  {len(missing_redirect_targets)} redirect stub(s) point to a file that does not exist — fix the target URL.\n")
     exit_code = 1
+if self_loop_rules:
+    print(f"\n🚨  {len(self_loop_rules)} _redirects rule(s) loop back to themselves — fix before deploying.\n")
+    exit_code = 1
 if broken_netlify_rules:
     print(f"\n🚨  {len(broken_netlify_rules)} _redirects rule(s) point to a destination that does not exist — fix before deploying.\n")
     exit_code = 1
-if not failures and not stale_exceptions and not broken_redirects and not missing_redirect_targets and not broken_netlify_rules:
+if not failures and not stale_exceptions and not broken_redirects and not missing_redirect_targets and not self_loop_rules and not broken_netlify_rules:
     print(f"\n✅  All standard pages pass header parity check.\n")
 if redundant_exceptions:
     print(f"🔔  {len(redundant_exceptions)} exception(s) may be redundant — review INTENTIONAL_EXCEPTIONS.\n")
