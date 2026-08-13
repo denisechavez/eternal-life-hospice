@@ -11,23 +11,25 @@ Usage:
     python3 website/tools/check-backlinks.py --input referring-domains.csv
     python3 website/tools/check-backlinks.py --input domains.txt --dry-run
     python3 website/tools/check-backlinks.py --input domains.csv --output-dir /tmp/reports
+    python3 website/tools/check-backlinks.py --input domains.csv --no-cache
 
 Optional environment variables (tool runs in heuristic-only mode if absent):
     GOOGLE_API_KEY  — enables Google Safe Browsing threat check (key already in
                       Replit Secrets for this project)
-    OPR_API_KEY     — enables Open PageRank domain authority check
+    OPR_API_KEY     — enables Open PageRank domain authority check; takes
+                      precedence over Tranco when set
                       (free key at https://www.domcop.com/openpagerank/signup)
 
 Outputs (written to exports/seo/ by default, or --output-dir):
     backlink-report-YYYY-MM-DD.html   — colour-coded domain health report
     disavow-YYYY-MM-DD.txt            — Google disavow file (red-flagged domains)
 
-Scoring:
-    Each domain starts neutral, then gains/loses points:
-      +5  Known authoritative domain (gov, accreditation bodies, major platforms)
-      +3  OPR score ≥ 7  (high domain authority)
-       0  OPR score 3–6  (medium)
-      -3  OPR score < 3  (low domain authority)
+Authority scoring (Tranco is used automatically; OPR takes precedence if key is set):
+    The tool downloads the Tranco top-1M domain list on first run and caches it
+    in /tmp/tranco-cache.csv for 7 days.  No API key or signup required.
+      +3  OPR score ≥ 7 OR Tranco rank ≤ 100 000  (high authority)
+       0  OPR score 3–6 OR Tranco rank 100 001–1 000 000  (medium)
+      -3  OPR score < 3  (low — Tranco absence is not penalised)
       -3  Spammy TLD (.xyz, .tk, .click, etc.)
       -2  Suspicious domain name pattern (heavy hyphens, numbers, keyword stuffing)
      -10  Google Safe Browsing threat (malware / phishing / unwanted software)
@@ -41,6 +43,7 @@ import argparse
 import csv
 import datetime
 import html as html_lib
+import io
 import json
 import os
 import re
@@ -49,8 +52,9 @@ import time
 import urllib.error
 import urllib.parse
 import urllib.request
+import zipfile
 from dataclasses import dataclass, field
-from typing import List, Optional
+from typing import Dict, List, Optional
 
 # ---------------------------------------------------------------------------
 # Constants
@@ -78,6 +82,12 @@ OPR_BATCH     = 100
 GSB_BATCH     = 500
 DELAY         = 0.25   # seconds between API batches
 
+TRANCO_URL        = "https://tranco-list.eu/top-1m.csv.zip"
+TRANCO_CACHE_PATH = "/tmp/tranco-cache.csv"
+TRANCO_CACHE_DAYS = 7
+TRANCO_HIGH_RANK  = 100_000    # rank ≤ this → high authority
+TRANCO_MED_RANK   = 1_000_000  # rank ≤ this → medium authority
+
 # ---------------------------------------------------------------------------
 # Data model
 # ---------------------------------------------------------------------------
@@ -95,6 +105,10 @@ class DomainResult:
     opr_error:  str             = ""
     gsb_threats: List[str]      = field(default_factory=list)
     gsb_checked: bool           = False
+
+    # Tranco authority (free fallback when OPR key is absent)
+    tranco_rank: Optional[int] = None   # 1 = most popular; None = not in top-1M
+    tranco_tier: str           = ""     # "high" | "medium" | ""
 
     # Heuristic flags
     spammy_tld:    bool = False
@@ -269,6 +283,105 @@ def apply_opr(results: List[DomainResult], api_key: str) -> None:
             r.opr_error = 'not in OPR index'
 
 # ---------------------------------------------------------------------------
+# Tranco top-1M list (free, no API key required)
+# ---------------------------------------------------------------------------
+
+def _cache_is_fresh(path: str) -> bool:
+    """Return True if the cache file exists and is younger than TRANCO_CACHE_DAYS."""
+    try:
+        age = datetime.datetime.now() - datetime.datetime.fromtimestamp(os.path.getmtime(path))
+        return age.days < TRANCO_CACHE_DAYS
+    except OSError:
+        return False
+
+
+def fetch_tranco(no_cache: bool = False) -> Dict[str, int]:
+    """
+    Download (or load from cache) the Tranco top-1M domain list.
+    Returns dict: domain -> rank  (1 = most popular).
+    The cache lives at TRANCO_CACHE_PATH and is refreshed every TRANCO_CACHE_DAYS days.
+    Pass no_cache=True to force a fresh download regardless of cache age.
+    """
+    if not no_cache and _cache_is_fresh(TRANCO_CACHE_PATH):
+        print(f"  Loading Tranco list from cache ({TRANCO_CACHE_PATH})…")
+        return _load_tranco_csv(TRANCO_CACHE_PATH)
+
+    print(f"  Downloading Tranco top-1M list from {TRANCO_URL} …")
+    try:
+        req = urllib.request.Request(
+            TRANCO_URL,
+            headers={'User-Agent': 'ELH-backlink-checker/1.0'},
+        )
+        with urllib.request.urlopen(req, timeout=60) as resp:
+            raw = resp.read()
+
+        with zipfile.ZipFile(io.BytesIO(raw)) as zf:
+            # The zip contains a single CSV named top-1m.csv
+            csv_name = next(n for n in zf.namelist() if n.endswith('.csv'))
+            csv_bytes = zf.read(csv_name)
+
+        with open(TRANCO_CACHE_PATH, 'wb') as fh:
+            fh.write(csv_bytes)
+        print(f"  Tranco list cached → {TRANCO_CACHE_PATH}")
+        return _load_tranco_csv(TRANCO_CACHE_PATH)
+
+    except Exception as exc:
+        print(f"  WARNING: Could not fetch Tranco list: {exc}", file=sys.stderr)
+        # Try stale cache as a last resort
+        if os.path.exists(TRANCO_CACHE_PATH):
+            print(f"  Falling back to stale Tranco cache.", file=sys.stderr)
+            return _load_tranco_csv(TRANCO_CACHE_PATH)
+        return {}
+
+
+def _load_tranco_csv(path: str) -> Dict[str, int]:
+    """Parse the cached Tranco CSV (rank,domain) and return {domain: rank}."""
+    data: Dict[str, int] = {}
+    try:
+        with open(path, newline='', encoding='utf-8') as fh:
+            for line in fh:
+                line = line.strip()
+                if not line:
+                    continue
+                parts = line.split(',', 1)
+                if len(parts) != 2:
+                    continue
+                try:
+                    rank = int(parts[0])
+                    domain = parts[1].strip().lower()
+                    if domain:
+                        data[domain] = rank
+                except ValueError:
+                    continue
+    except OSError as exc:
+        print(f"  WARNING: Cannot read Tranco cache: {exc}", file=sys.stderr)
+    return data
+
+
+def apply_tranco(results: List[DomainResult], tranco_data: Dict[str, int],
+                 opr_active: bool) -> None:
+    """
+    Check each non-authoritative domain against the Tranco list and set
+    tranco_rank / tranco_tier.  When OPR is active, Tranco still populates
+    tranco_rank but compute_scores() will prefer the OPR signal.
+    """
+    if not tranco_data:
+        return
+    matched = 0
+    non_auth = [r for r in results if not r.authoritative]
+    for r in non_auth:
+        rank = tranco_data.get(r.domain)
+        if rank is not None:
+            r.tranco_rank = rank
+            if rank <= TRANCO_HIGH_RANK:
+                r.tranco_tier = 'high'
+            else:
+                r.tranco_tier = 'medium'
+            matched += 1
+    source_note = " (OPR takes precedence)" if opr_active else ""
+    print(f"  Tranco: {matched}/{len(non_auth)} domain(s) found in top-1M list{source_note}.")
+
+# ---------------------------------------------------------------------------
 # Google Safe Browsing API
 # ---------------------------------------------------------------------------
 
@@ -390,7 +503,9 @@ def compute_scores(results: List[DomainResult]) -> None:
 
         score = 5.0
 
-        # OPR contribution
+        # Authority contribution — OPR score takes precedence when available.
+        # When OPR has no score for a domain, Tranco is tried next.
+        # The OPR-missing penalty only applies when neither source has a signal.
         if r.opr_score is not None:
             if r.opr_score >= 7:
                 score += 3
@@ -400,9 +515,17 @@ def compute_scores(results: List[DomainResult]) -> None:
             else:
                 score -= 3
                 r.flags.append(f'OPR {r.opr_score:.1f}/10 — low authority')
+        elif r.tranco_tier == 'high':
+            score += 3
+            r.flags.append(f'Tranco rank #{r.tranco_rank:,} — high authority (top 100k)')
+        elif r.tranco_tier == 'medium':
+            r.flags.append(f'Tranco rank #{r.tranco_rank:,} — medium authority (top 1M)')
         elif r.opr_error:
+            # OPR was queried but has no data for this domain, and Tranco has no signal either
             score -= 1
             r.flags.append(f'OPR: {r.opr_error}')
+        # Absent from Tranco with no OPR data: no penalty — many legitimate niche sites
+        # aren't in the top 1M
 
         # Safe Browsing
         if r.gsb_checked and r.gsb_threats:
@@ -443,7 +566,7 @@ VERDICT_COLOR = {
 
 
 def render_html(results: List[DomainResult], input_file: str, today: str,
-                opr_active: bool, gsb_active: bool) -> str:
+                opr_active: bool, gsb_active: bool, tranco_active: bool = False) -> str:
     green = sum(1 for r in results if r.verdict == 'GREEN')
     amber = sum(1 for r in results if r.verdict == 'AMBER')
     red   = sum(1 for r in results if r.verdict == 'RED')
@@ -455,10 +578,16 @@ def render_html(results: List[DomainResult], input_file: str, today: str,
     rows_html = []
     for r in results:
         color, bg, label = VERDICT_COLOR[r.verdict]
-        opr_cell = (
-            f'<b>{r.opr_score:.1f}</b>/10'  if r.opr_score is not None
-            else '<span style="color:#999">—</span>'
-        )
+        if r.opr_score is not None:
+            authority_cell = f'<b>{r.opr_score:.1f}</b>/10 <span style="color:#999;font-size:11px">OPR</span>'
+        elif r.tranco_rank is not None:
+            tier_label = 'high' if r.tranco_tier == 'high' else 'mid'
+            authority_cell = (
+                f'#{r.tranco_rank:,} '
+                f'<span style="color:#999;font-size:11px">Tranco·{tier_label}</span>'
+            )
+        else:
+            authority_cell = '<span style="color:#999">—</span>'
         gsb_cell = (
             '🚫 ' + ', '.join(t.replace('_', ' ').title() for t in r.gsb_threats) if r.gsb_threats
             else ('✅ clean' if r.gsb_checked else '<span style="color:#999">—</span>')
@@ -469,7 +598,7 @@ def render_html(results: List[DomainResult], input_file: str, today: str,
         <tr style="background:{bg}">
           <td><a href="https://{esc(r.domain)}" target="_blank" rel="noopener noreferrer"
                  style="color:{color};font-weight:600;word-break:break-all">{esc(r.domain)}</a></td>
-          <td style="text-align:center">{opr_cell}</td>
+          <td style="text-align:center">{authority_cell}</td>
           <td style="text-align:center">{gsb_cell}</td>
           <td style="font-size:12px;color:#444">{flags_cell}</td>
           <td style="text-align:center">{lp}</td>
@@ -477,9 +606,10 @@ def render_html(results: List[DomainResult], input_file: str, today: str,
         </tr>""")
 
     apis_note = []
-    if opr_active: apis_note.append('Open PageRank')
-    if gsb_active: apis_note.append('Google Safe Browsing')
-    if not apis_note: apis_note.append('heuristics only — set OPR_API_KEY and GOOGLE_API_KEY for full analysis')
+    if opr_active:     apis_note.append('Open PageRank')
+    if tranco_active:  apis_note.append('Tranco top-1M')
+    if gsb_active:     apis_note.append('Google Safe Browsing')
+    if not apis_note:  apis_note.append('heuristics only — set GOOGLE_API_KEY for Safe Browsing; Tranco used automatically')
     apis_str = esc(', '.join(apis_note))
 
     return f"""<!DOCTYPE html>
@@ -530,7 +660,7 @@ def render_html(results: List[DomainResult], input_file: str, today: str,
 <thead>
   <tr>
     <th onclick="sortTable(0)">Domain ↕</th>
-    <th onclick="sortTable(1)" style="width:90px">OPR Score ↕</th>
+    <th onclick="sortTable(1)" style="width:120px">Authority Score ↕</th>
     <th onclick="sortTable(2)" style="width:130px">Safe Browsing ↕</th>
     <th>Signals</th>
     <th onclick="sortTable(4)" style="width:90px">Linking pages ↕</th>
@@ -542,9 +672,11 @@ def render_html(results: List[DomainResult], input_file: str, today: str,
 </tbody>
 </table>
 
-<p class="legend">Scoring: OPR ≥ 7 = high authority (+3); OPR 3–6 = medium; OPR &lt; 3 = low (−3);
+<p class="legend">Authority scoring: OPR ≥ 7 or Tranco rank ≤ 100k = high (+3); OPR 3–6 or Tranco rank 100k–1M = medium (0);
+OPR &lt; 3 = low (−3); absent from Tranco = no penalty.
 Google Safe Browsing threat = instant red (−10); spammy TLD (−3); suspicious name pattern (−2).
-Green = score ≥ 6, no threat. Amber = score ≥ 3. Red = score &lt; 3 or threat detected.</p>
+Green = score ≥ 6, no threat. Amber = score ≥ 3. Red = score &lt; 3 or threat detected.
+Authority source shown as <i>OPR</i> (Open PageRank, if key set) or <i>Tranco</i> (free, no signup needed).</p>
 
 <script>
 let sortDir = {{}};
@@ -621,6 +753,8 @@ def main():
                         help='Directory for report outputs (default: exports/seo)')
     parser.add_argument('--dry-run',    action='store_true',
                         help='Check first 5 domains, print to terminal, write no files')
+    parser.add_argument('--no-cache',   action='store_true',
+                        help='Force a fresh Tranco list download, ignoring the local cache')
     args = parser.parse_args()
 
     opr_key = os.environ.get('OPR_API_KEY', '').strip()
@@ -647,8 +781,12 @@ def main():
     if opr_key:
         apply_opr(results, opr_key)
     else:
-        print("  OPR_API_KEY not set — skipping Open PageRank check.")
-        print("  (Get a free key at https://www.domcop.com/openpagerank/signup)")
+        print("  OPR_API_KEY not set — Tranco will provide authority scores (no signup required).")
+
+    # Tranco: always attempted as a free authority signal; OPR takes precedence when set
+    tranco_data = fetch_tranco(no_cache=args.no_cache)
+    tranco_active = bool(tranco_data)
+    apply_tranco(results, tranco_data, opr_active=bool(opr_key))
 
     if gsb_key:
         apply_gsb(results, gsb_key)
@@ -688,7 +826,8 @@ def main():
     disavow_path = os.path.join(args.output_dir, f"disavow-{today}.txt")
 
     html_content = render_html(results, args.input, today,
-                               opr_active=bool(opr_key), gsb_active=bool(gsb_key))
+                               opr_active=bool(opr_key), gsb_active=bool(gsb_key),
+                               tranco_active=tranco_active)
     with open(report_path, 'w', encoding='utf-8') as fh:
         fh.write(html_content)
 
