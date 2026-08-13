@@ -1,0 +1,87 @@
+You are working directly in the Eternal Life Hospice production repository.
+
+## Objective
+
+Audit Aleksandra Dubina's public email-domain usage before Sprint 3.
+
+The preferred canonical public address is:
+
+`aleksandra@eternallifehospice.com`
+
+because it matches the current production domain:
+
+`eternallifehospice.com`
+
+Do not assume the older address is invalid.
+
+## Task 1 — Audit
+
+Search the entire production repository for:
+
+* `aleksandra@eternalhospice.com`
+* `aleksandra@eternallifehospice.com`
+* `@eternalhospice.com`
+* `@eternallifehospice.com`
+
+Report every occurrence grouped by:
+
+* founder biography
+* digital card
+* vCard
+* schema
+* footer
+* contact forms
+* metadata
+* other public pages
+
+## Task 2 — Normalize Aleksandra's public email
+
+For Aleksandra-specific public website references use:
+
+`aleksandra@eternallifehospice.com`
+
+Update only conflicting Aleksandra references.
+
+Do not globally change other departmental email addresses yet because Sprint 3 will audit those separately.
+
+Preserve:
+
+* digital contact card functionality
+* vCard functionality
+* mailto links
+* founder page
+* existing visual presentation
+
+## Task 3 — Validate
+
+Confirm:
+
+1. All Aleksandra public website references use `aleksandra@eternallifehospice.com`.
+2. All Aleksandra `mailto:` links use the same address.
+3. The downloadable vCard uses the same address.
+4. No founder schema contains a conflicting email.
+5. No unrelated departmental email addresses were changed.
+6. No design or navigation changes were made.
+
+## Important
+
+Repository inspection cannot prove mailbox deliverability or DNS email authentication.
+
+Report separately that the following must be verified outside the codebase:
+
+* mailbox receives mail
+* outbound mail uses the address correctly
+* SPF
+* DKIM
+* DMARC
+* whether `aleksandra@eternalhospice.com` should forward to the canonical address
+
+Commit only if conflicting Aleksandra references are found.
+
+Return:
+
+* occurrences found
+* files changed
+* final canonical Aleksandra email
+* validation results
+* any remaining email-domain inconsistencies for Sprint 3
