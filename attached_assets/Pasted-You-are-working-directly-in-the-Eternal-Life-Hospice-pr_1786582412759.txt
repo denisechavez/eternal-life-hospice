@@ -1,0 +1,100 @@
+You are working directly in the Eternal Life Hospice production repository.
+
+## Objective
+
+Complete **Sprint 1: Critical Repair** only.
+
+Do **not** redesign the site.
+Do **not** change navigation architecture.
+Do **not** add new city pages.
+Do **not** rewrite unrelated content.
+Do **not** make speculative SEO changes outside this scope.
+
+This sprint is strictly mechanical and reversible.
+
+## Task 1 — Fix the Care Brief form on the homepage
+
+The live homepage is currently rendering this malformed text visibly in the DOM above the Care Brief / “Share Your Voice” form:
+
+`method="POST" data-netlify="true" netlify-honeypot="bot-field" action="/">`
+
+Find the malformed opening form markup and correct it.
+
+Requirements:
+
+* Restore a valid opening `<form>` element
+* Preserve Netlify form handling if that is the intended implementation
+* Preserve the honeypot field if currently intended
+* Preserve existing field names and visual design
+* Remove the visible raw markup from rendered page content
+* Do not alter unrelated forms
+* Confirm the HTML is valid after the fix
+* Confirm the form has a clear submit action and valid closing `</form>`
+
+If the current implementation uses Netlify Forms then ensure the final markup is structurally correct for Netlify form detection.
+
+## Task 2 — Fix the broken “What Hospice Covers” internal link
+
+The live site has internal links pointing to:
+
+`/resources/what-hospice-covers`
+
+That destination has been reported as a hard 404 and appears across city-page templates.
+
+First inspect the repository and determine whether:
+
+1. a real `/resources/what-hospice-covers` page already exists under a different filename/path
+2. the intended canonical destination is `/resources/medicare-hospice-benefit`
+3. the page is missing entirely
+
+### Preferred resolution
+
+If a completed “What Hospice Covers” page already exists in the repository then restore the intended route.
+
+If it does **not** exist then:
+
+* redirect `/resources/what-hospice-covers` → `/resources/medicare-hospice-benefit`
+* update internal links so they point directly to the canonical destination rather than relying on the redirect
+* preserve the user-facing label only where it accurately describes the destination
+
+Do not create a new content page during this sprint.
+
+## Task 3 — Search for the defect globally
+
+Search the entire production site for:
+
+* `/resources/what-hospice-covers`
+* malformed Netlify form markup
+* visible raw strings beginning with `method="POST"`
+* any identical Care Brief form implementation
+
+Fix only instances related to these two defects.
+
+## Validation
+
+Before finishing:
+
+1. Confirm homepage Care Brief form markup is valid.
+2. Confirm no raw form attributes render as visible page text.
+3. Confirm there are **zero internal links** pointing to a 404 `/resources/what-hospice-covers`.
+4. Confirm the replacement resource destination returns a valid page.
+5. Confirm no unrelated layout, navigation or content changed.
+6. Report every file modified.
+7. Report the exact before → after behavior.
+8. Flag anything you could not safely resolve rather than guessing.
+
+## Important
+
+Do not commit broad cleanup while you are in these files.
+
+I want this deployment to answer one question:
+
+**Can we repair the two highest-impact defects cleanly without introducing collateral changes?**
+
+When complete give me:
+
+* files changed
+* exact fixes made
+* validation results
+* any remaining risk
+* recommended test steps after deployment
