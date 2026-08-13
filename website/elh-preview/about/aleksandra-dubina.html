@@ -55,56 +55,61 @@
 }</script>
 
 <style>
-/* ── Founder profile page ── */
-.founder-hero{background:var(--deep);padding:0;overflow:hidden}
-.founder-hero-in{display:grid;grid-template-columns:1fr 1.1fr;min-height:520px;align-items:stretch;max-width:1200px;margin:0 auto}
-.founder-hero-copy{padding:3.8rem 3.2rem 3.8rem 2.6rem;display:flex;flex-direction:column;justify-content:center;color:var(--cream)}
-.founder-hero-copy .eyebrow{color:var(--gold);margin-bottom:.8rem}
-.founder-hero-h1{font-family:var(--ff-d);font-size:clamp(2rem,4vw,3rem);color:#fff;line-height:1.08;margin:0 0 .55rem}
-.founder-hero-sub{font-family:var(--ff-b);font-size:1rem;font-weight:500;color:var(--gold);letter-spacing:.04em;margin:0 0 1.4rem;line-height:1.4}
-.founder-hero-pills{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:2rem}
-.founder-hero-pills span{font-family:var(--ff-b);font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:rgba(245,240,235,.75);background:rgba(255,255,255,.07);border:1px solid rgba(201,176,126,.28);border-radius:999px;padding:.35rem .9rem}
-.founder-hero-links{display:flex;flex-wrap:wrap;gap:.75rem;align-items:center}
-.founder-hero-links a{display:inline-flex;align-items:center;gap:.5rem;font-family:var(--ff-b);font-size:13.5px;font-weight:600;text-decoration:none;border-radius:8px;padding:.6rem 1.2rem;transition:background .2s,color .2s}
-.fhl-primary{background:var(--gold);color:var(--deep)}
-.fhl-primary:hover{background:#b89a5a;color:var(--deep)}
-.fhl-secondary{background:rgba(255,255,255,.09);color:var(--cream);border:1px solid rgba(201,176,126,.3)}
-.fhl-secondary:hover{background:rgba(255,255,255,.16)}
-.founder-hero-photo{position:relative;min-height:420px;background:linear-gradient(160deg,#3C1C3B,#1a0a1a)}
-.founder-hero-photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 10%;display:block}
-.founder-hero-photo::after{content:"";position:absolute;left:0;right:0;bottom:0;height:50%;background:linear-gradient(transparent,rgba(26,10,26,.6));pointer-events:none}
-@media(max-width:820px){
-  .founder-hero-in{grid-template-columns:1fr}
-  .founder-hero-photo{min-height:340px;order:-1}
-  .founder-hero-copy{padding:2.2rem 1.6rem 2.8rem}
-}
+/* ── Homepage-matched founder layout ── */
+.founder{display:grid;grid-template-columns:42% 58%;background:var(--cream);min-height:580px;align-items:stretch;overflow:hidden}
+@media(max-width:850px){.founder{grid-template-columns:1fr}}
 
-/* Bio sections */
-.bio-section{padding:3.2rem 0 2.8rem}
-.bio-section+.bio-section{border-top:1px solid var(--cream-dark)}
-.bio-section .wrap-narrow{max-width:760px;margin:0 auto;padding:0 1.4rem}
-.bio-section h2{font-family:var(--ff-d);font-size:1.55rem;color:var(--deep);margin:0 0 1rem}
-.bio-section p{font-size:1.025rem;line-height:1.75;color:var(--ink);margin:0 0 1rem}
-.bio-section p:last-child{margin-bottom:0}
+/* Left — portrait */
+.founder-photo{background:linear-gradient(150deg,var(--plum),var(--deep));position:relative;min-height:420px}
+.founder-portrait{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 12%;display:block;z-index:0}
+.founder-photo.has-portrait{position:relative;min-height:520px;overflow:hidden}
+.founder-photo.has-portrait::after{content:"";position:absolute;left:0;right:0;bottom:0;height:66%;background:linear-gradient(transparent,rgba(36,16,40,.14) 18%,rgba(36,16,40,.74) 66%,rgba(36,16,40,.92));z-index:1;pointer-events:none}
+@media(max-width:850px){.founder-photo.has-portrait{min-height:380px;order:-1}}
 
-/* Pull quote */
-.founder-pull{background:var(--cream);border-left:4px solid var(--gold);border-radius:0 12px 12px 0;margin:2.8rem 0 1rem;padding:1.6rem 2rem}
-.founder-pull blockquote{font-family:var(--ff-d);font-style:italic;font-size:1.38rem;line-height:1.55;color:var(--deep);margin:0 0 .6rem}
-.founder-pull cite{font-family:var(--ff-b);font-size:12.5px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--plum);font-style:normal}
+/* Overlay: audio + caption */
+.founder-overlay{position:absolute;z-index:2;left:0;right:0;bottom:0;display:flex;flex-direction:column;align-items:flex-start;gap:1rem;padding:2.4rem 2.4rem 1.6rem}
+.founder-words{margin:0 0 0 5rem;color:rgba(245,240,235,.97);font-family:var(--ff-d);font-style:italic;font-weight:500;font-size:25px;line-height:1.42;text-shadow:0 2px 16px rgba(0,0,0,.6);transition:opacity .2s ease;transform:translateY(.6rem)}
+.founder-words.is-fading{opacity:0}
+.founder-play{display:inline-flex;align-items:center;gap:.55rem;background:rgba(201,176,126,.96);color:var(--deep);border:0;border-radius:999px;padding:.52rem 1.1rem;font-family:var(--ff-b);font-size:13px;font-weight:600;letter-spacing:.02em;cursor:pointer;box-shadow:0 8px 22px rgba(0,0,0,.3);transition:transform .18s,background .18s}
+.founder-play:hover{transform:translateY(-1px);background:var(--gold)}
+.founder-play .ico{display:inline-block;width:0;height:0;border-style:solid;border-width:5px 0 5px 9px;border-color:transparent transparent transparent var(--deep)}
+.founder-play.is-playing .ico{width:9px;height:10px;border:0;border-left:3px solid var(--deep);border-right:3px solid var(--deep);box-sizing:border-box}
+.founder-vcap{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:rgba(245,240,235,.72);font-family:var(--ff-b)}
+@media(max-width:850px){.founder-words{font-size:21px;margin-left:2.6rem}.founder-overlay{padding:2rem 1.6rem 1.3rem;gap:.85rem}}
 
-/* Credentials band */
-.cred-band{background:var(--deep);padding:2.8rem 0}
-.cred-band .wrap-narrow{max-width:760px;margin:0 auto;padding:0 1.4rem}
-.cred-band .eyebrow{color:var(--gold);text-align:center;margin-bottom:.6rem}
-.cred-band h2{font-family:var(--ff-d);font-size:1.4rem;color:#fff;text-align:center;margin:0 0 1.4rem}
-.cred-pills{display:flex;flex-wrap:wrap;gap:.6rem;justify-content:center}
-.cred-pills span{font-family:var(--ff-b);font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);background:rgba(201,176,126,.1);border:1px solid rgba(201,176,126,.35);border-radius:999px;padding:.45rem 1.1rem}
+/* Right — editorial copy column */
+.founder-copy{padding:3rem 3.5rem 3.5rem;display:flex;flex-direction:column;justify-content:flex-start;min-width:0;background:var(--cream)}
+.founder-copy h1{font-family:var(--ff-d);font-weight:300;font-size:clamp(2.2rem,4vw,3rem);color:var(--deep);line-height:1.08;margin:0 0 .3rem}
+.founder-role{font-family:var(--ff-b);font-size:.95rem;font-weight:500;color:var(--text-mid);letter-spacing:.02em;line-height:1.5;margin:0 0 1.2rem}
+.founder-dbc{display:inline-flex;align-items:center;gap:7px;margin:0 0 1.4rem;padding:6px 14px 6px 10px;background:#F5F0EB;border:1px solid rgba(160,124,54,.35);border-radius:999px;font-size:12.5px;font-family:var(--ff-b);letter-spacing:.4px;color:#7A5C1E;text-decoration:none;font-weight:500;transition:background .2s;width:fit-content;align-self:flex-start}
+.founder-dbc:hover{background:#EDE8DF}
+.pl-body{font-size:1rem;line-height:1.75;color:var(--ink);margin:0 0 .9rem}
+.pl-body:last-of-type{margin-bottom:0}
+.founder-copy .pull{font-family:var(--ff-d);font-style:italic;font-size:1.15rem;line-height:1.55;color:var(--plum);border-left:3px solid var(--gold);padding-left:1.1rem;margin:1.4rem 0 1.2rem}
+.founder-cred-line{font-family:var(--ff-b);font-size:11.5px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--text-mid);margin:0 0 1.6rem;line-height:1.7}
+.founder-cred-line span{color:var(--gold);margin:0 .4em}
+@media(max-width:850px){.founder-copy{padding:2rem 1.6rem 2.6rem}}
 
-/* Connect section */
-.founder-connect-section{padding:3rem 0}
-.founder-connect-section .wrap-narrow{max-width:680px;margin:0 auto;padding:0 1.4rem;text-align:center}
-.founder-connect-section h2{font-family:var(--ff-d);font-size:1.4rem;color:var(--deep);margin:0 0 .5rem}
-.founder-connect-section p{color:var(--text-mid);margin:0 0 1.6rem;font-size:.98rem;line-height:1.65}
+/* ── Below-hero editorial sections ── */
+.bio-band{background:#fff}
+.bio-band:nth-child(even){background:var(--cream)}
+.bio-sec{max-width:760px;margin:0 auto;padding:3rem 1.6rem}
+.bio-sec h2{font-family:var(--ff-d);font-weight:300;font-size:clamp(1.4rem,2.5vw,1.85rem);color:var(--deep);margin:0 0 .9rem;line-height:1.2}
+.bio-sec p{font-size:1rem;line-height:1.75;color:var(--ink);margin:0 0 .9rem}
+.bio-sec p:last-child{margin-bottom:0}
+.bio-sec .pull{font-family:var(--ff-d);font-style:italic;font-size:1.2rem;line-height:1.55;color:var(--plum);border-left:3px solid var(--gold);padding-left:1.1rem;margin:1.6rem 0 .4rem}
+.bio-sec .pull cite{display:block;font-family:var(--ff-b);font-size:11.5px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--text-mid);font-style:normal;margin-top:.5rem}
+.bio-divider{border:none;border-top:1px solid var(--cream-dark);margin:0}
+
+/* ── Credential row (editorial, not dashboard) ── */
+.cred-row{background:var(--cream);border-top:1px solid var(--cream-dark);border-bottom:1px solid var(--cream-dark);padding:2rem 1.6rem;text-align:center}
+.cred-chips{display:flex;flex-wrap:wrap;gap:.5rem;justify-content:center;max-width:760px;margin:.8rem auto 0}
+.cred-chips span{font-family:var(--ff-b);font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--plum);background:transparent;border:1px solid rgba(91,46,89,.28);border-radius:999px;padding:.4rem 1rem}
+
+/* ── Connect section ── */
+.connect-sec{padding:3rem 1.6rem;text-align:center;max-width:680px;margin:0 auto}
+.connect-sec h2{font-family:var(--ff-d);font-weight:300;font-size:clamp(1.3rem,2.2vw,1.7rem);color:var(--deep);margin:0 0 .4rem}
+.connect-sec p{color:var(--text-mid);font-size:.95rem;line-height:1.65;margin:0 0 1.6rem}
 .connect-links{display:flex;flex-wrap:wrap;gap:.75rem;justify-content:center}
 .connect-links a{display:inline-flex;align-items:center;gap:.5rem;font-family:var(--ff-b);font-size:14px;font-weight:600;text-decoration:none;border-radius:8px;padding:.7rem 1.4rem;transition:background .2s,color .2s}
 .cl-plum{background:var(--plum);color:var(--cream)}
@@ -116,134 +121,141 @@
 </style>
 
 <script async src="/assets/analytics.js?v=20260727h"></script>
-  <!-- UserWay (accessibility) and WhatConverts (call-tracking) loaded by analytics.js -->
 </head>
 <body>
 <a class="skip-link" href="#main-content">Skip to main content</a>
 <header id="site-header"></header>
 <main id="main-content" tabindex="-1">
 
-<!-- FOUNDER HERO -->
-<section class="founder-hero" aria-label="Aleksandra Dubina — founder profile">
-  <div class="founder-hero-in">
-    <div class="founder-hero-copy">
-      <div class="eyebrow">Heart-Centered Leadership</div>
-      <h1 class="founder-hero-h1">Aleksandra Dubina</h1>
-      <p class="founder-hero-sub">Founder &amp; Chief Executive Officer<br>Eternal Life Hospice, Inc.</p>
-      <div class="founder-hero-pills">
-        <span>ACHC Certified Consultant</span>
-        <span>Certified Hospice Administrator</span>
-        <span>20+ Years in Healthcare</span>
-        <span>11 Years in Hospice</span>
-      </div>
-      <div class="founder-hero-links">
-        <a class="fhl-primary" href="tel:18059537273">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-          Call 805.953.7273
-        </a>
-        <a class="fhl-secondary" href="https://www.linkedin.com/in/aleksandra-dubina-a78b1a117/" target="_blank" rel="noopener">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
-          LinkedIn
-        </a>
-      </div>
+<!-- FOUNDER HERO — mirrors homepage .founder layout -->
+<section class="founder" id="founder-welcome" aria-label="Aleksandra Dubina — Founder of Eternal Life Hospice">
+
+  <!-- LEFT: Portrait -->
+  <figure class="founder-photo has-portrait">
+    <img class="founder-portrait" src="../assets/img/aleksandra-dubina-founder.jpg"
+         alt="Aleksandra Dubina, Founder and CEO of Eternal Life Hospice"
+         width="600" height="750" fetchpriority="high" decoding="async">
+    <div class="founder-overlay">
+      <blockquote class="founder-words"></blockquote>
+      <button type="button" class="founder-play" aria-pressed="false">
+        <span class="ico" aria-hidden="true"></span>
+        <span class="lbl">Hear her welcome</span>
+      </button>
+      <div class="founder-vcap">A welcome from our founder, Aleksandra Dubina</div>
     </div>
-    <div class="founder-hero-photo">
-      <img src="../assets/img/aleksandra-dubina-founder.jpg" alt="Aleksandra Dubina, Founder and CEO of Eternal Life Hospice" width="600" height="750" fetchpriority="high">
+    <audio class="founder-audio" preload="none">
+      <source src="../assets/audio/aleksandra-welcome.mp3" type="audio/mpeg">
+    </audio>
+  </figure>
+
+  <!-- RIGHT: Editorial copy -->
+  <div class="founder-copy">
+    <div class="eyebrow">Heart-Centered Leadership</div>
+    <h1>Aleksandra Dubina</h1>
+    <p class="founder-role">Founder &amp; Chief Executive Officer<br>Eternal Life Hospice, Inc.</p>
+
+    <a class="founder-dbc" href="/card-aleksandra-dubina" target="_blank" rel="noopener">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M16 5v14M8 5v14M2 12h20"/></svg>
+      Digital Business Card
+    </a>
+
+    <p class="pl-body">Aleksandra Dubina founded Eternal Life Hospice from a place most administrators never reach: personal knowledge of what it means to sit at a loved one's side during the final chapter of their life.</p>
+    <p class="pl-body">Her grandmother passed on hospice. That experience — the profound relief of attentive, dignified end-of-life care — became the reason she entered this field, and the standard she sets for every member of her team.</p>
+    <p class="pl-body">As a young child, Aleksandra underwent open-heart surgery, brought to the United States for advanced care. Having once been the patient — wholly dependent on the skill and compassion of others — she leads with a rare understanding of what it means to be on the receiving end of care.</p>
+    <p class="pl-body">With more than two decades in healthcare — eleven of those years in hospice — and credentials as an ACHC Certified Consultant, she remains a hands-on administrator who knows every patient by name.</p>
+
+    <div class="pull">"My mission is that every patient is treated with dignity, every family feels supported and every moment of care reflects the standard I would want for my own."</div>
+
+    <p class="founder-cred-line">ACHC Certified Consultant<span aria-hidden="true">·</span>Certified Hospice Administrator<span aria-hidden="true">·</span>20+ years in healthcare<span aria-hidden="true">·</span>11 years in hospice</p>
+
+    <div class="founder-connect">
+      <label class="fc-label" for="founderConnect">Schedule a Time to Connect</label>
+      <div class="fc-row">
+        <select id="founderConnect" class="fc-select" aria-label="Schedule a time to connect — choose a reason">
+          <option value="">Select…</option>
+          <option>Share my voice in The Eternal Care Brief</option>
+          <option>Be featured in a future issue</option>
+          <option>Schedule an education session with The Eternal Team</option>
+          <option>Schedule a speaking engagement with Aleksandra</option>
+          <option>Set up a time to connect</option>
+          <option>All of the above</option>
+        </select>
+        <button type="button" class="fc-go" id="founderConnectGo">Continue &#8594;</button>
+      </div>
     </div>
   </div>
+
 </section>
 
-<!-- BIO SECTIONS -->
-<div style="background:#fff">
+<!-- EDITORIAL EXPANSION — additional depth beyond the homepage section -->
 
-  <!-- 1. Leadership at Eternal Life Hospice -->
-  <div class="bio-section">
-    <div class="wrap-narrow">
-      <div class="eyebrow">Leadership at Eternal Life Hospice</div>
-      <h2>An Agency Built on Personal Purpose</h2>
-      <p>Aleksandra Dubina founded Eternal Life Hospice from a place most administrators never reach: personal knowledge of what it means to sit at a loved one's side during the final chapter of their life.</p>
-      <p>Eternal Life Hospice is an independent, Medicare-certified and ACHC-accredited agency serving families across Ventura County and Los Angeles County. As founder and chief executive, Aleksandra sets the clinical, operational and ethical standard for every member of the care team — and remains a hands-on presence who knows every patient by name.</p>
-    </div>
+<div class="bio-band">
+  <div class="bio-sec">
+    <div class="eyebrow">Leadership at Eternal Life Hospice</div>
+    <h2>An Agency Built on Personal Purpose</h2>
+    <p>Eternal Life Hospice is an independent, Medicare-certified and ACHC-accredited agency serving families across Ventura County and Los Angeles County. As founder and chief executive, Aleksandra sets the clinical, operational and ethical standard for every member of the care team — and remains a hands-on presence who knows every patient by name.</p>
   </div>
-
-  <!-- 2 & 3. Why hospice became personal -->
-  <div class="bio-section" style="background:var(--cream)">
-    <div class="wrap-narrow">
-      <div class="eyebrow">Why Hospice Became Personal</div>
-      <h2>Two Experiences That Shaped a Career</h2>
-      <p>Her grandmother passed on hospice. That experience — the profound relief of attentive, dignified end-of-life care — became the reason she entered this field, and the standard she sets for every member of her team.</p>
-      <p>As a young child, Aleksandra underwent open-heart surgery, brought to the United States for advanced care. Having once been the patient — wholly dependent on the skill and compassion of others — she leads with a rare understanding of what it means to be on the receiving end of care.</p>
-    </div>
-  </div>
-
-  <!-- 4. Healthcare and hospice experience -->
-  <div class="bio-section">
-    <div class="wrap-narrow">
-      <div class="eyebrow">Healthcare &amp; Hospice Experience</div>
-      <h2>More Than Two Decades in Care</h2>
-      <p>With more than two decades in healthcare — eleven of those years in hospice — Aleksandra brings a depth of direct patient experience that shapes every policy, protocol and care plan at Eternal Life Hospice.</p>
-      <p>As an ACHC Certified Consultant and Certified Hospice Administrator, she holds the operational and clinical credentials that govern hospice quality and safety — and she leads an agency that holds Medicare certification, CDPH licensure and ACHC accreditation.</p>
-
-      <div class="founder-pull">
-        <blockquote>"My mission is that every patient is treated with dignity, every family feels supported and every moment of care reflects the standard I would want for my own."</blockquote>
-        <cite>— Aleksandra Dubina, Founder &amp; CEO</cite>
-      </div>
-    </div>
-  </div>
-
-  <!-- 5. The Eternal Standard -->
-  <div class="bio-section" style="background:var(--cream)">
-    <div class="wrap-narrow">
-      <div class="eyebrow">The Eternal Standard</div>
-      <h2>A Higher Standard of Care</h2>
-      <p>Care at Eternal Life Hospice is built around The Eternal Standard — clinical confidence, guided presence, whole-person comfort and compliance-led care — with integrative comfort therapies available when appropriate, at no additional expense to the family.</p>
-      <p>It is the clinical depth of a nationally accredited agency, carried with a personal and human presence on the days that matter most. <a href="/#standard" style="color:var(--plum);font-weight:600;text-decoration:none">Learn about The Eternal Standard &#8594;</a></p>
-    </div>
-  </div>
-
-  <!-- 6. Approach to dignity -->
-  <div class="bio-section">
-    <div class="wrap-narrow">
-      <div class="eyebrow">Approach to Care</div>
-      <h2>Dignity, Family Guidance, and Whole-Person Care</h2>
-      <p>Aleksandra's approach begins with a conviction that end-of-life care is not an event — it is a relationship. Every admission begins a relationship that extends to the patient, the family and the full circle of support around them.</p>
-      <p>Whole-person care at Eternal Life Hospice encompasses nursing, physician oversight, medical social work, chaplaincy, hospice aide services and integrative comfort modalities — each coordinated by a team that Aleksandra personally recruits and trains to the Eternal Standard.</p>
-    </div>
-  </div>
-
 </div>
 
-<!-- CREDENTIALS BAND -->
-<div class="cred-band">
-  <div class="wrap-narrow">
-    <div class="eyebrow">Verified &amp; Accountable</div>
-    <h2>Credentials Under Aleksandra's Leadership</h2>
-    <div class="cred-pills">
-      <span>ACHC Certified Consultant</span>
-      <span>Certified Hospice Administrator</span>
-      <span>Medicare-Certified Agency</span>
-      <span>CDPH-Licensed</span>
-      <span>ACHC-Accredited</span>
-      <span>CCN B31709</span>
+<hr class="bio-divider">
+
+<div class="bio-band">
+  <div class="bio-sec">
+    <div class="eyebrow">The Eternal Standard</div>
+    <h2>A Higher Standard of Care</h2>
+    <p>Care at Eternal Life Hospice is built around The Eternal Standard — clinical confidence, guided presence, whole-person comfort and compliance-led care — with integrative comfort therapies available when appropriate, at no additional expense to the family.</p>
+    <p>It is the clinical depth of a nationally accredited agency, carried with a personal and human presence on the days that matter most. <a href="/#standard" style="color:var(--plum);font-weight:600;text-decoration:none">Learn about The Eternal Standard &#8594;</a></p>
+  </div>
+</div>
+
+<hr class="bio-divider">
+
+<div class="bio-band">
+  <div class="bio-sec">
+    <div class="eyebrow">Approach to Care</div>
+    <h2>Dignity, Family Guidance, and Whole-Person Care</h2>
+    <p>Aleksandra's approach begins with a conviction that end-of-life care is not an event — it is a relationship. Every admission begins a relationship that extends to the patient, the family and the full circle of support around them.</p>
+    <p>Whole-person care at Eternal Life Hospice encompasses nursing, physician oversight, medical social work, chaplaincy, hospice aide services and integrative comfort modalities — each coordinated by a team that Aleksandra personally recruits and trains to the Eternal Standard.</p>
+
+    <div class="pull">
+      "Every patient deserves care that honors their life. That is not an aspiration — it is the operating standard."
+      <cite>— Aleksandra Dubina, Founder &amp; CEO</cite>
     </div>
+  </div>
+</div>
+
+<!-- CREDENTIALS — editorial chips, visually subordinate -->
+<div class="cred-row">
+  <div class="eyebrow" style="text-align:center">Verified &amp; Accountable</div>
+  <div class="cred-chips">
+    <span>ACHC Certified Consultant</span>
+    <span>Certified Hospice Administrator</span>
+    <span>Medicare-Certified Agency</span>
+    <span>CDPH-Licensed</span>
+    <span>ACHC-Accredited</span>
+    <span>CCN B31709</span>
   </div>
 </div>
 
 <!-- CONNECT -->
-<div class="founder-connect-section">
-  <div class="wrap-narrow">
+<div style="background:#fff">
+  <div class="connect-sec">
     <div class="eyebrow" style="text-align:center">Connect</div>
     <h2>Speak with Our Team</h2>
     <p>To learn more about Eternal Life Hospice, request a consultation, or connect for an educational session, reach us directly.</p>
     <div class="connect-links">
-      <a class="cl-plum" href="tel:18059537273">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-        Call 805.953.7273
-      </a>
       <a class="cl-outline" href="/?lead=family#leadcap">Request a Free Evaluation</a>
       <a class="cl-card" href="/card-aleksandra-dubina">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M16 5v14M8 5v14M2 12h20"/></svg>
         Digital Business Card
+      </a>
+      <a class="cl-outline" href="https://www.linkedin.com/in/aleksandra-dubina-a78b1a117/" target="_blank" rel="noopener">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+        LinkedIn
+      </a>
+      <a class="cl-plum" href="tel:18059537273">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+        805.953.7273
       </a>
     </div>
   </div>
@@ -258,8 +270,48 @@
   <div class="foot-disclaimer"><strong style="color:rgba(245,240,235,.5)">Disclaimer:</strong> Eternal Life Hospice Inc. is a licensed and Medicare-certified hospice care provider. We do not sell, prescribe, dispense or ship prescription medications, and we do not operate an online pharmacy or telemedicine prescribing service. All hospice services are provided in person by licensed healthcare professionals. Any references to Medicare coverage, medication support or medical coordination relate solely to patient care delivered under physician direction and do not constitute prescription drug sales or online medical services. The integrative modalities described are complementary care offered for patient comfort and wellbeing; they are not intended to diagnose, treat, cure or prevent any medical condition. Medicare coverage details are subject to change; confirm current eligibility with your care team or call <a href="tel:18006334227" style="color:inherit;text-decoration:none">1.800.MEDICARE</a>.</div>
   <div class="foot-bottom"><span>© 2026 Eternal Life Hospice Inc. All rights reserved.</span><span class="foot-bottom-links"><a href="/privacy-policy" style="text-decoration:none">Privacy Policy</a> &nbsp;·&nbsp; <a href="/terms" style="text-decoration:none">Terms &amp; Conditions</a> &nbsp;&middot;&nbsp; <a href="#" onclick="window.elhCookieSettings&&window.elhCookieSettings();return false;" style="color:inherit;text-decoration:none">Cookie Settings</a></span></div>
 </footer>
+
 <script src="../assets/header.js?v=20260805" defer></script>
 <script src="/assets/chat.js?v=20260805" defer></script>
+
+<!-- Audio: Hear her welcome — same behaviour as homepage -->
+<script>
+(function(){
+  var btn=document.querySelector('.founder-play');
+  var audio=document.querySelector('.founder-audio');
+  var wordsEl=document.querySelector('.founder-words');
+  if(!btn||!audio)return;
+  var lbl=btn.querySelector('.lbl');
+  var SEG=[
+    {t:'\u201cWelcome to Eternal Life Hospice.\u201d',s:0},
+    {t:'\u201cEvery patient is known by name.\u201d',s:6},
+    {t:'\u201cCare that honors life.\u201d',s:12}
+  ];
+  var cur=-1,swapT;
+  function show(i){if(i===cur||!wordsEl)return;cur=i;wordsEl.classList.add('is-fading');clearTimeout(swapT);swapT=setTimeout(function(){wordsEl.textContent=SEG[i].t;wordsEl.classList.remove('is-fading');},180);}
+  function reset(){btn.classList.remove('is-playing');btn.setAttribute('aria-pressed','false');if(lbl)lbl.textContent='Hear her welcome';}
+  audio.addEventListener('play',function(){btn.classList.add('is-playing');btn.setAttribute('aria-pressed','true');if(lbl)lbl.textContent='Pause';});
+  audio.addEventListener('pause',reset);
+  audio.addEventListener('ended',function(){reset();cur=-1;if(wordsEl){wordsEl.classList.add('is-fading');swapT=setTimeout(function(){wordsEl.textContent='';wordsEl.classList.remove('is-fading');},180);}});
+  audio.addEventListener('timeupdate',function(){var t=audio.currentTime;for(var i=SEG.length-1;i>=0;i--){if(t>=SEG[i].s){show(i);break;}}});
+  btn.addEventListener('click',function(){if(audio.paused){show(0);audio.play().catch(function(){});}else{audio.pause();}});
+})();
+</script>
+
+<!-- Connect widget: route select to contact form -->
+<script>
+(function(){
+  var go=document.getElementById('founderConnectGo');
+  var sel=document.getElementById('founderConnect');
+  if(!go||!sel)return;
+  go.addEventListener('click',function(){
+    var v=sel.value;
+    if(!v)return;
+    window.location.href='/?lead=voice#leadcap';
+  });
+})();
+</script>
+
 <!-- SEARCH OVERLAY -->
 <div class="search-overlay" id="searchOverlay" role="dialog" aria-modal="true" aria-label="Site search" aria-hidden="true">
   <div class="search-box">
