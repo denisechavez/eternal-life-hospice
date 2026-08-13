@@ -74,6 +74,7 @@ failures = []
 stale_exceptions = []      # exception keys whose file is missing from disk
 redundant_exceptions = []  # exception keys whose file now passes all parity checks
 broken_redirects = []      # redirect stubs that no longer contain a redirect to their documented target
+missing_redirect_targets = []  # redirect stubs whose target file does not exist under elh-preview/
 
 for dirpath, dirs, files in os.walk(ROOT):
     dirs.sort()
@@ -245,8 +246,13 @@ for exc_rel, exc_reason in INTENTIONAL_EXCEPTIONS.items():
         redundant_exceptions.append((exc_rel, exc_reason))
     # For redirect stubs: verify the file still contains a redirect to its target
     redirect_target = _extract_redirect_target(exc_reason)
-    if redirect_target and not _stub_still_redirects(html, redirect_target):
-        broken_redirects.append((exc_rel, exc_reason, redirect_target))
+    if redirect_target:
+        if not _stub_still_redirects(html, redirect_target):
+            broken_redirects.append((exc_rel, exc_reason, redirect_target))
+        # Verify the target file actually exists under elh-preview/
+        target_path = os.path.join(ROOT, redirect_target.lstrip('/'))
+        if not os.path.exists(target_path):
+            missing_redirect_targets.append((exc_rel, exc_reason, redirect_target))
 
 # ── Report ─────────────────────────────────────────────────────────────────
 total = len(results["pass"]) + len(results["fail"]) + len(results["exception"])
@@ -258,6 +264,8 @@ if stale_exceptions:
     print(f"  🚨  Stale exceptions (file missing):        {len(stale_exceptions)}")
 if broken_redirects:
     print(f"  🚨  Broken redirect stubs (no redirect):    {len(broken_redirects)}")
+if missing_redirect_targets:
+    print(f"  🚨  Redirect stubs with missing target file: {len(missing_redirect_targets)}")
 if redundant_exceptions:
     print(f"  🔔  Redundant exceptions (now passes):      {len(redundant_exceptions)}")
 print()
@@ -286,6 +294,15 @@ if broken_redirects:
         print(f"       → add meta-refresh/JS redirect or remove from INTENTIONAL_EXCEPTIONS")
     print()
 
+if missing_redirect_targets:
+    print("── REDIRECT STUBS WITH MISSING TARGET FILE ──────────────────────")
+    for rel, reason, target in missing_redirect_targets:
+        print(f"  🚨  {rel}")
+        print(f"       redirects to: {target}")
+        print(f"       but {target} does not exist under elh-preview/")
+        print(f"       → fix the target URL or create the missing page")
+    print()
+
 if redundant_exceptions:
     print("── REDUNDANT EXCEPTIONS (file now passes all parity checks) ─────")
     for rel, reason in redundant_exceptions:
@@ -309,7 +326,10 @@ if stale_exceptions:
 if broken_redirects:
     print(f"\n🚨  {len(broken_redirects)} redirect stub(s) no longer redirect — fix or reclassify.\n")
     exit_code = 1
-if not failures and not stale_exceptions and not broken_redirects:
+if missing_redirect_targets:
+    print(f"\n🚨  {len(missing_redirect_targets)} redirect stub(s) point to a file that does not exist — fix the target URL.\n")
+    exit_code = 1
+if not failures and not stale_exceptions and not broken_redirects and not missing_redirect_targets:
     print(f"\n✅  All standard pages pass header parity check.\n")
 if redundant_exceptions:
     print(f"🔔  {len(redundant_exceptions)} exception(s) may be redundant — review INTENTIONAL_EXCEPTIONS.\n")
