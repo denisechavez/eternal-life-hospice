@@ -134,6 +134,7 @@ SENTINELS=(
   "SENTINEL: test-chat-teaser.js self-test OK"
   "SENTINEL: check-city-scripts.py self-test OK"
   "SENTINEL: check-header-parity.py self-test OK"
+  "SENTINEL: check-footer-parity.py self-test OK"
 )
 
 SENTINEL_FAIL=0

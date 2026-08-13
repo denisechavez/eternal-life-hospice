@@ -39,6 +39,7 @@ set +o pipefail
   node assets/test-chat-teaser.js
   python3 ../check-city-scripts.py
   python3 ../check-header-parity.py
+  python3 ../check-footer-parity.py
   node assets/build-search-index.js
   node assets/update-sitemap-dates.js
 ) 2>&1 | tee "$TMPOUT"
@@ -69,6 +70,7 @@ SENTINELS=(
   "SENTINEL: test-chat-teaser.js self-test OK"
   "SENTINEL: check-city-scripts.py self-test OK"
   "SENTINEL: check-header-parity.py self-test OK"
+  "SENTINEL: check-footer-parity.py self-test OK"
 )
 
 SENTINEL_FAIL=0
