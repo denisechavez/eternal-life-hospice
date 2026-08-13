@@ -8,8 +8,14 @@
 <meta name="robots" content="noindex">
 <link rel="icon" href="/assets/favicon.png">
 <style>
+@font-face{font-family:'Fraunces ELH';font-weight:100 900;font-style:normal;font-display:swap;src:url('/assets/fonts/fraunces-latin.woff2') format('woff2')}
+@font-face{font-family:'Fraunces ELH';font-weight:100 900;font-style:italic;font-display:swap;src:url('/assets/fonts/fraunces-italic-latin.woff2') format('woff2')}
+@font-face{font-family:'Jost ELH';font-weight:300;font-display:swap;src:url('/assets/fonts/JostELH-Light.woff2') format('woff2')}
+@font-face{font-family:'Jost ELH';font-weight:400;font-display:swap;src:url('/assets/fonts/JostELH-Regular.woff2') format('woff2')}
+@font-face{font-family:'Jost ELH';font-weight:500;font-display:swap;src:url('/assets/fonts/JostELH-Medium.woff2') format('woff2')}
+@font-face{font-family:'Jost ELH';font-weight:600;font-display:swap;src:url('/assets/fonts/JostELH-SemiBold.woff2') format('woff2')}
 *{margin:0;padding:0;box-sizing:border-box}
-body{background:#F5F0EB;font-family:Arial,Helvetica,sans-serif;min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:0 0 48px;}
+body{background:#F5F0EB;font-family:'Jost ELH',system-ui,sans-serif;min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:0 0 48px;}
 
 .card{width:100%;max-width:420px;background:#fff;box-shadow:0 4px 32px rgba(61,20,84,.13);}
 
@@ -26,7 +32,7 @@ body{background:#F5F0EB;font-family:Arial,Helvetica,sans-serif;min-height:100vh;
 
 /* Identity */
 .identity{text-align:center;padding:14px 24px 0;}
-.name{font-family:Georgia,'Times New Roman',serif;font-size:24px;color:#3C1C3B;line-height:1.1;font-weight:bold;}
+.name{font-family:'Fraunces ELH',Georgia,serif;font-size:24px;color:#3C1C3B;line-height:1.1;font-weight:bold;}
 .title-main{font-size:11px;font-weight:bold;letter-spacing:1.8px;text-transform:uppercase;color:#A07C36;margin-top:6px;line-height:1.4;}
 .title-sub{font-size:10px;font-weight:bold;letter-spacing:1.4px;text-transform:uppercase;color:#8A7080;margin-top:3px;line-height:1.4;}
 
