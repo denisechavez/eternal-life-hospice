@@ -1,0 +1,143 @@
+You are working directly in the Eternal Life Hospice production repository.
+
+## Objective
+
+Restore the **standard Eternal Life Hospice global header** on:
+
+`/about/aleksandra-dubina`
+
+The founder page currently contains:
+
+`<header id="site-header"></header>`
+
+with no inline navigation markup.
+
+The existing site behavior script does **not** inject the header. It expects existing markup and only adds behavior.
+
+This page should use the same standard header implementation as the rest of the public site.
+
+Do not redesign the header.
+
+Do not change the approved navigation architecture.
+
+Do not alter the founder-page body content.
+
+---
+
+## Task 1 — Identify the canonical header
+
+Use a current standard production page as the source of truth.
+
+Prefer the live homepage or another current page using the approved navigation:
+
+* Hospice Care
+* Services
+* Resources
+* Locations
+* For Professionals
+* About
+
+Copy the complete header/nav structure already used successfully elsewhere.
+
+Do not invent new markup if a canonical working implementation already exists.
+
+---
+
+## Task 2 — Replace the empty founder-page header
+
+Replace:
+
+`<header id="site-header"></header>`
+
+with the full standard header markup.
+
+Preserve the expected IDs/classes/data attributes required by the existing header behavior scripts.
+
+Do not change `header.js` unless there is a confirmed bug that affects the rest of the site.
+
+This should be a page-level repair.
+
+---
+
+## Task 3 — Adjust paths for `/about/`
+
+Because the founder page lives under:
+
+`/about/`
+
+confirm all relative asset paths work correctly.
+
+Check:
+
+* logo image
+* icons
+* CSS references if embedded in the header
+* links
+* menu controls
+* search control
+* Request Care CTA
+
+Prefer root-relative URLs where the existing site standard already uses them.
+
+Do not introduce brittle `../` paths if root-relative production paths are already available.
+
+---
+
+## Task 4 — Current-page state
+
+If the standard header supports an active/current page state:
+
+* mark **About** as the current section
+* use the same accessibility convention used elsewhere such as `aria-current="page"` if already established
+
+Do not create a new visual treatment solely for the founder page.
+
+---
+
+## Task 5 — Hamburger/menu behavior
+
+Confirm the founder page now includes and supports:
+
+* hamburger/menu icon
+* open/close behavior
+* mobile menu
+* keyboard interaction if already supported by the global implementation
+* same menu destinations as other public pages
+
+The founder page should not behave like a microsite.
+
+---
+
+## Validation
+
+Before committing confirm:
+
+1. Founder page displays the same standard header as the rest of the public site.
+2. Eternal logo renders correctly.
+3. `Here in Moments That Matter Most` treatment remains correct if part of the standard header.
+4. Request Care button works.
+5. Search control renders and functions.
+6. Hamburger/menu control renders and functions.
+7. Desktop nav matches the approved six-item architecture.
+8. Mobile menu matches standard site behavior.
+9. About is marked as the current section where supported.
+10. No broken image or asset paths.
+11. No JavaScript console errors caused by the header.
+12. Founder-page body layout remains unchanged.
+13. No other page is modified.
+14. No global header redesign or refactor is performed.
+
+## Return
+
+Report:
+
+* file changed
+* source page/template used for the canonical header
+* exact empty-header → full-header replacement
+* path adjustments made for `/about/`
+* current-page state applied
+* desktop validation
+* mobile/hamburger validation
+* confirmation that no other pages changed
+
+Commit only this founder-page header repair.
