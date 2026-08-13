@@ -449,9 +449,10 @@ except (KeyError, ValueError) as _exc:
 # ── [ 7 ] services.html hero ↔ card-grid sync ─────────────────────────────────
 #
 # The hero <p> on services.html names each service by prose. A machine-readable
-# comment <!-- SERVICES-HERO-SYNC count="N" --> sits just above that paragraph;
-# its count must equal the number of <a class="rc"> service cards in the grid.
-# When a card is added or removed the count will fall out of sync, which fails
+# comment <!-- SERVICES-HERO-SYNC count="N" tc-count="M" --> sits just above
+# that paragraph; count must equal the number of <a class="rc"> service cards
+# and tc-count must equal the number of <a class="tc"> themed cards in the page.
+# When a card is added or removed either count will fall out of sync, which fails
 # this check — that's the signal to also update the hero copy.
 
 print("\n[ 7 ] services.html — hero ↔ card-grid sync check …")
@@ -464,39 +465,77 @@ try:
         _shtml = _sf.read()
 
     # Strip HTML comments before counting so mentions inside comments don't
-    # pollute the card count (e.g. the SERVICES-HERO-SYNC comment itself uses
-    # the literal text <a class="rc"> as an example).
+    # pollute the card counts (e.g. the SERVICES-HERO-SYNC comment itself uses
+    # the literal text <a class="rc"> and <a class="tc"> as examples).
     _shtml_no_comments = re.sub(r'<!--.*?-->', '', _shtml, flags=re.DOTALL)
 
-    # Count actual service cards
+    # Count actual service (rc) cards and themed (tc) cards
     _card_count = len(re.findall(
         r'<a\b[^>]*\bclass=["\'][^"\']*\brc\b', _shtml_no_comments, re.IGNORECASE))
+    _tc_card_count = len(re.findall(
+        r'<a\b[^>]*\bclass=["\'][^"\']*\btc\b', _shtml_no_comments, re.IGNORECASE))
 
-    # Read the declared count from the SERVICES-HERO-SYNC comment
+    # Read the declared counts from the SERVICES-HERO-SYNC comment
     _sync_m = re.search(
-        r'<!--\s*SERVICES-HERO-SYNC\s+count=["\'](\d+)["\']',
-        _shtml, re.IGNORECASE)
+        r'<!--\s*SERVICES-HERO-SYNC\b([^-]|-(?!->))*-->',
+        _shtml, re.IGNORECASE | re.DOTALL)
 
     if _sync_m is None:
         _services_sync_errors.append(
             "services-hero-sync-marker-missing: the "
-            "<!-- SERVICES-HERO-SYNC count=\"N\" --> comment is absent from "
-            "services.html — add it above the hero <p> and set N to the "
-            "number of service cards in the grid"
+            "<!-- SERVICES-HERO-SYNC count=\"N\" tc-count=\"M\" --> comment is "
+            "absent from services.html — add it above the hero <p> and set N to "
+            "the number of <a class=\"rc\"> cards and M to the number of "
+            "<a class=\"tc\"> themed cards in the page"
         )
     else:
-        _declared = int(_sync_m.group(1))
-        if _declared != _card_count:
+        _sync_text = _sync_m.group(0)
+
+        # rc-card count (count="N")
+        _rc_declared_m = re.search(
+            r'\bcount=["\'](\d+)["\']', _sync_text, re.IGNORECASE)
+        if _rc_declared_m is None:
             _services_sync_errors.append(
-                f"services-hero-out-of-sync: SERVICES-HERO-SYNC declares "
-                f"{_declared} card(s) but {_card_count} <a class=\"rc\"> "
-                f"card(s) are present in the grid — "
-                f"update the hero <p> to name the new/removed service, then "
-                f"set count=\"{_card_count}\" in the SERVICES-HERO-SYNC comment"
+                "services-hero-sync-rc-missing: the SERVICES-HERO-SYNC comment "
+                "is present but has no count=\"N\" attribute — add count=\"N\" "
+                "where N is the number of <a class=\"rc\"> cards in the page"
             )
         else:
-            print(f"  ✓  hero paragraph declares {_declared} service card(s) "
-                  f"— matches the {_card_count} card(s) in the grid")
+            _declared = int(_rc_declared_m.group(1))
+            if _declared != _card_count:
+                _services_sync_errors.append(
+                    f"services-hero-out-of-sync: SERVICES-HERO-SYNC declares "
+                    f"{_declared} card(s) but {_card_count} <a class=\"rc\"> "
+                    f"card(s) are present in the grid — "
+                    f"update the hero <p> to name the new/removed service, then "
+                    f"set count=\"{_card_count}\" in the SERVICES-HERO-SYNC comment"
+                )
+            else:
+                print(f"  ✓  hero paragraph declares {_declared} service rc card(s) "
+                      f"— matches the {_card_count} rc card(s) in the grid")
+
+        # tc-card count (tc-count="M")
+        _tc_declared_m = re.search(
+            r'\btc-count=["\'](\d+)["\']', _sync_text, re.IGNORECASE)
+        if _tc_declared_m is None:
+            _services_sync_errors.append(
+                "services-hero-sync-tc-missing: the SERVICES-HERO-SYNC comment "
+                "is present but has no tc-count=\"M\" attribute — add tc-count=\"M\" "
+                "where M is the number of <a class=\"tc\"> themed cards in the page"
+            )
+        else:
+            _tc_declared = int(_tc_declared_m.group(1))
+            if _tc_declared != _tc_card_count:
+                _services_sync_errors.append(
+                    f"services-hero-tc-out-of-sync: SERVICES-HERO-SYNC tc-count declares "
+                    f"{_tc_declared} tc card(s) but {_tc_card_count} <a class=\"tc\"> "
+                    f"themed card(s) are present in the page — "
+                    f"update the hero <p> to reflect the new/removed themed card, then "
+                    f"set tc-count=\"{_tc_card_count}\" in the SERVICES-HERO-SYNC comment"
+                )
+            else:
+                print(f"  ✓  hero paragraph declares {_tc_declared} service tc card(s) "
+                      f"— matches the {_tc_card_count} tc card(s) in the page")
 
 except FileNotFoundError:
     _services_sync_errors.append(
