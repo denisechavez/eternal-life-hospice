@@ -316,6 +316,62 @@ for rel, reason in results["exception"]:
     print(f"  ⚠️  {rel}")
     print(f"       {reason}")
 
+# ── _redirects validation ──────────────────────────────────────────────────
+# Parse elh-preview/_redirects and verify every local destination exists.
+# External URLs (http/https) and Netlify placeholder destinations (containing
+# a colon, e.g. /:splat) are skipped — only local paths are checked.
+
+REDIRECTS_FILE = os.path.join(ROOT, "_redirects")
+broken_netlify_rules = []  # (line_no, line, dest) tuples
+
+def _netlify_dest_exists(dest: str) -> bool:
+    """Return True if *dest* resolves to a file under elh-preview/.
+
+    Mirrors Netlify's own resolution order:
+      1. Exact path (file on disk)
+      2. dest + '.html'
+      3. dest.rstrip('/') + '/index.html'
+    """
+    bare = dest.rstrip("/")
+    candidates = [
+        bare,
+        bare + ".html",
+        bare + "/index.html",
+    ]
+    for candidate in candidates:
+        if os.path.isfile(os.path.join(ROOT, candidate.lstrip("/"))):
+            return True
+    return False
+
+if os.path.isfile(REDIRECTS_FILE):
+    with open(REDIRECTS_FILE, encoding="utf-8", errors="replace") as _rf:
+        for _lineno, _raw in enumerate(_rf, 1):
+            _line = _raw.strip()
+            # Skip blank lines and comments
+            if not _line or _line.startswith("#"):
+                continue
+            _parts = _line.split()
+            if len(_parts) < 2:
+                continue
+            _dest = _parts[1]
+            # Skip external URLs
+            if _dest.startswith("http://") or _dest.startswith("https://"):
+                continue
+            # Skip Netlify placeholder destinations (contain a colon, e.g. /:splat)
+            if ":" in _dest:
+                continue
+            # Local destination — verify it resolves to a real file
+            if not _netlify_dest_exists(_dest):
+                broken_netlify_rules.append((_lineno, _line, _dest))
+
+if broken_netlify_rules:
+    print("── BROKEN NETLIFY REDIRECT RULES (destination not found) ────────")
+    for lineno, line, dest in broken_netlify_rules:
+        print(f"  🚨  Line {lineno}: {line}")
+        print(f"       destination '{dest}' does not exist under elh-preview/")
+        print(f"       → fix the destination path or create the missing page")
+    print()
+
 exit_code = 0
 if failures:
     print(f"\n❌  {len(failures)} page(s) failed — fix before deploying.\n")
@@ -329,7 +385,10 @@ if broken_redirects:
 if missing_redirect_targets:
     print(f"\n🚨  {len(missing_redirect_targets)} redirect stub(s) point to a file that does not exist — fix the target URL.\n")
     exit_code = 1
-if not failures and not stale_exceptions and not broken_redirects and not missing_redirect_targets:
+if broken_netlify_rules:
+    print(f"\n🚨  {len(broken_netlify_rules)} _redirects rule(s) point to a destination that does not exist — fix before deploying.\n")
+    exit_code = 1
+if not failures and not stale_exceptions and not broken_redirects and not missing_redirect_targets and not broken_netlify_rules:
     print(f"\n✅  All standard pages pass header parity check.\n")
 if redundant_exceptions:
     print(f"🔔  {len(redundant_exceptions)} exception(s) may be redundant — review INTENTIONAL_EXCEPTIONS.\n")
