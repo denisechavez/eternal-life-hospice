@@ -1,15 +1,300 @@
 <!DOCTYPE html>
-<html><head><meta charset="utf-8">
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Zone 3 — Publications &amp; Collateral | ELH</title>
 <style>
-*{margin:0;padding:0;box-sizing:border-box}
-html,body{width:100%;height:100%;overflow:hidden}
-body{background:#d4a800;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:6%}
-.num{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:7vw;font-weight:700;color:rgba(0,0,0,0.45);letter-spacing:.15em;text-transform:uppercase;margin-bottom:1vw}
-.name{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:14vw;font-weight:900;color:#1a1000;letter-spacing:-.02em;text-align:center;line-height:1;text-transform:uppercase}
-.desc{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:4vw;font-weight:500;color:rgba(0,0,0,0.6);margin-top:4vw;text-align:center;line-height:1.5}
-</style></head>
+:root{--plum:#5B2E59;--deep:#3C1C3B;--gold:#C9B07E;--gold-dark:#A07C36;--cream:#F5F0EB;--cream-dark:#D8CDBF;--cream-mid:#EDE6DE;--slate:#6793AC;--ink:#3a2b39;--ink-soft:#6b5d68;--muted:#8a7a8a;--green:#1A6E35;--green-bg:#e8f5ee;--border:rgba(91,46,89,.12);--card:#fff;--shadow:0 2px 10px rgba(60,28,59,.07)}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--cream-mid);color:var(--ink);font-size:13px;min-height:100vh}
+/* ── Header ── */
+.hdr{background:var(--deep);padding:14px 20px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50;box-shadow:0 2px 12px rgba(60,28,59,.18)}
+.hdr-title{font-size:.72rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--gold)}
+.hdr-sub{font-size:.62rem;color:rgba(245,240,235,.5);margin-top:2px}
+.hdr-badge{font-size:.58rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;background:rgba(201,176,126,.15);border:1px solid rgba(201,176,126,.3);color:var(--gold);padding:.2rem .6rem;border-radius:99px}
+/* ── Layout ── */
+.wrap{padding:16px 18px;display:flex;flex-direction:column;gap:14px}
+/* ── Section heads ── */
+.sec-head{display:flex;align-items:center;gap:8px;padding-bottom:6px;border-bottom:1px solid var(--border);margin-bottom:2px}
+.sec-label{font-size:.62rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+.sec-badge{font-size:.57rem;font-weight:700;padding:.15rem .45rem;border-radius:99px;white-space:nowrap}
+.sb-new{background:rgba(201,176,126,.2);color:var(--gold-dark);border:1px solid rgba(201,176,126,.35)}
+.sb-ready{background:rgba(26,110,53,.12);color:var(--green);border:1px solid rgba(26,110,53,.25)}
+.sb-plan{background:rgba(91,46,89,.09);color:var(--plum);border:1px solid rgba(91,46,89,.18)}
+/* ── Featured card (Issue 3 email) ── */
+.feat{background:var(--deep);border-radius:12px;overflow:hidden;box-shadow:0 4px 18px rgba(60,28,59,.18)}
+.feat-band{background:var(--gold);height:3px}
+.feat-head{padding:12px 14px;display:flex;align-items:flex-start;gap:10px}
+.feat-ico{width:36px;height:36px;border-radius:8px;background:rgba(201,176,126,.18);border:1px solid rgba(201,176,126,.3);display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0}
+.feat-info{flex:1}
+.feat-kicker{font-size:.57rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);margin-bottom:3px}
+.feat-title{font-size:.8rem;font-weight:700;color:var(--cream);line-height:1.3}
+.feat-meta{font-size:.62rem;color:rgba(245,240,235,.5);margin-top:2px}
+.feat-status{font-size:.55rem;font-weight:700;padding:.15rem .4rem;border-radius:99px;background:rgba(201,176,126,.22);color:var(--gold);border:1px solid rgba(201,176,126,.35);white-space:nowrap;align-self:flex-start}
+.feat-body{padding:0 14px 14px;display:flex;flex-direction:column;gap:8px}
+.feat-subj{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:7px;padding:8px 10px}
+.feat-subj-lbl{font-size:.55rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:rgba(201,176,126,.7);margin-bottom:3px}
+.feat-subj-val{font-size:.73rem;font-weight:600;color:var(--cream);line-height:1.3}
+.feat-subj-pre{font-size:.63rem;color:rgba(245,240,235,.55);margin-top:3px;line-height:1.5;font-style:italic}
+.feat-actions{display:flex;gap:6px;flex-wrap:wrap}
+.btn-gold{display:inline-block;background:var(--gold);color:var(--deep);font-weight:700;font-size:.68rem;padding:.45rem .9rem;border-radius:20px;text-decoration:none;letter-spacing:.02em;transition:opacity .14s}
+.btn-gold:hover{opacity:.88}
+.btn-ghost{display:inline-block;background:rgba(255,255,255,.07);color:rgba(245,240,235,.8);border:1px solid rgba(255,255,255,.15);font-weight:600;font-size:.68rem;padding:.43rem .9rem;border-radius:20px;text-decoration:none;transition:background .14s}
+.btn-ghost:hover{background:rgba(255,255,255,.12)}
+.feat-note{font-size:.62rem;color:rgba(245,240,235,.45);line-height:1.6;background:rgba(255,255,255,.04);border-radius:7px;padding:7px 10px;border:1px solid rgba(255,255,255,.07)}
+.feat-note strong{color:rgba(201,176,126,.8)}
+/* ── Standard pub card ── */
+.pub-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.pub{background:var(--card);border:1.5px solid var(--border);border-radius:10px;overflow:hidden;display:flex;flex-direction:column}
+.pub-head{padding:9px 11px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:7px}
+.pub-ico{font-size:.85rem;flex-shrink:0}
+.pub-name{font-size:.7rem;font-weight:700;color:var(--deep);line-height:1.2}
+.pub-date{font-size:.59rem;color:var(--muted);margin-top:1px}
+.pub-body{padding:8px 11px;flex:1;display:flex;flex-direction:column;gap:6px}
+.pub-desc{font-size:.64rem;color:var(--ink-soft);line-height:1.55}
+.pub-link{display:inline-block;font-size:.63rem;font-weight:600;color:var(--plum);text-decoration:none;border-bottom:1.5px solid var(--gold);padding-bottom:1px;margin-top:auto;padding-top:4px}
+.pub-link:hover{color:var(--gold-dark)}
+/* ── Print grid ── */
+.print-list{display:flex;flex-direction:column;gap:5px}
+.print-row{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:8px 10px;display:flex;align-items:center;gap:8px}
+.print-ico{font-size:.8rem;flex-shrink:0}
+.print-name{font-size:.67rem;font-weight:600;color:var(--deep);flex:1}
+.print-tag{font-size:.55rem;font-weight:700;padding:.12rem .38rem;border-radius:99px;background:rgba(91,46,89,.08);color:var(--plum);white-space:nowrap}
+.print-link{font-size:.6rem;font-weight:600;color:var(--gold-dark);text-decoration:none;white-space:nowrap;flex-shrink:0}
+.print-link:hover{text-decoration:underline}
+</style>
+</head>
 <body>
-  <div class="num">Zone 3</div>
-  <div class="name">Publications &amp; Collateral</div>
-  <div class="desc">Media Kit · Business Card · Medicare Reel · Press Kit · Referral Cards · Brand Images</div>
-</body></html>
+
+<div class="hdr">
+  <div>
+    <div class="hdr-title">Zone 3 — Publications &amp; Collateral</div>
+    <div class="hdr-sub">Care Brief · Emails · Newsletter · Print · Press</div>
+  </div>
+  <div class="hdr-badge">Aug 2026</div>
+</div>
+
+<div class="wrap">
+
+  <!-- ── FEATURED: Issue 3 Email ── -->
+  <div>
+    <div class="sec-head">
+      <span class="sec-label">Care Brief Announcement — Ready to Send</span>
+      <span class="sec-badge sb-new">✦ New Today</span>
+    </div>
+    <div class="feat">
+      <div class="feat-band"></div>
+      <div class="feat-head">
+        <div class="feat-ico">✉</div>
+        <div class="feat-info">
+          <div class="feat-kicker">The Eternal Care Brief · Issue Three · August 2026</div>
+          <div class="feat-title">Care Brief Issue 3 — Announcement Email</div>
+          <div class="feat-meta">All lists (7 · 8 · 10) · Brevo · Ready to upload</div>
+        </div>
+        <span class="feat-status">Ready</span>
+      </div>
+      <div class="feat-body">
+        <div class="feat-subj">
+          <div class="feat-subj-lbl">Subject line</div>
+          <div class="feat-subj-val">The person holding the vigil needs holding too.</div>
+          <div class="feat-subj-pre">Preview: Issue Three is here — for the caregivers who arrived, stayed, and are still here. 5-minute read.</div>
+        </div>
+        <div class="feat-actions">
+          <a class="btn-gold" href="/canvas-hub/emails/care-brief-issue3-announcement.html" target="_blank">Preview Email ↗</a>
+          <a class="btn-ghost" href="/canvas-hub/emails/eternal-care-brief-new-issue-template.html" target="_blank">View Template</a>
+        </div>
+        <div class="feat-note">
+          <strong>Before sending:</strong> the issue page at <code style="font-size:.6rem;background:rgba(255,255,255,.08);padding:1px 4px;border-radius:3px">/care-brief/caring-for-the-caregiver</code> must be live first. Git → Sync, confirm URL loads, then upload this HTML to Brevo → Create Campaign → paste code → test send.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── CARE BRIEF ISSUES ── -->
+  <div>
+    <div class="sec-head">
+      <span class="sec-label">Care Brief — All Issues</span>
+      <span class="sec-badge sb-plan">Bi-Monthly</span>
+    </div>
+    <div class="pub-grid">
+      <div class="pub">
+        <div class="pub-head">
+          <span class="pub-ico">★</span>
+          <div>
+            <div class="pub-name">Issue 1 — Hospice Is Part of Life</div>
+            <div class="pub-date">Sent Jul 14, 2026 · 1,873 delivered · 54.9% open</div>
+          </div>
+        </div>
+        <div class="pub-body">
+          <div class="pub-desc">Introduction issue. Whole-person comfort, the first 48 hours, compliance-led admissions. Launched the Care Brief brand.</div>
+          <a class="pub-link" href="/care-brief/hospice-is-part-of-life-a-continuation-of-care" target="_blank">View issue page ↗</a>
+        </div>
+      </div>
+      <div class="pub">
+        <div class="pub-head">
+          <span class="pub-ico">★</span>
+          <div>
+            <div class="pub-name">Issue 2 — Caregiver Burnout &amp; Compliance</div>
+            <div class="pub-date">Planned Sep 9, 2026 · Status: Planning</div>
+          </div>
+        </div>
+        <div class="pub-body">
+          <div class="pub-desc">Caregiver burnout crisis, 2026 Medicare compliance update, same-day admission case study, integrative therapies evidence.</div>
+          <a class="pub-link" href="/canvas-hub/internal/index.html" target="_blank">View in hub ↗</a>
+        </div>
+      </div>
+      <div class="pub">
+        <div class="pub-head">
+          <span class="pub-ico">★</span>
+          <div>
+            <div class="pub-name">Issue 3 — Caring for the Caregiver</div>
+            <div class="pub-date">Email written Aug 13, 2026 · Issue page needed</div>
+          </div>
+        </div>
+        <div class="pub-body">
+          <div class="pub-desc">The person holding the vigil needs holding too. Practical caregiver support, team handoffs, respite care. Email ready to send.</div>
+          <a class="pub-link" href="/canvas-hub/emails/care-brief-issue3-announcement.html" target="_blank">Preview email ↗</a>
+        </div>
+      </div>
+      <div class="pub">
+        <div class="pub-head">
+          <span class="pub-ico">★</span>
+          <div>
+            <div class="pub-name">Issue 4 — Year-End Planning</div>
+            <div class="pub-date">Planned Nov 4, 2026 · Status: Future</div>
+          </div>
+        </div>
+        <div class="pub-body">
+          <div class="pub-desc">Q4 hospice conversations, palliative-to-hospice timing, 2026 audit update, integrative program expansion.</div>
+          <a class="pub-link" href="/canvas-hub/internal/index.html" target="_blank">View in hub ↗</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── EMAILS ── -->
+  <div>
+    <div class="sec-head">
+      <span class="sec-label">Email Library</span>
+      <span class="sec-badge sb-ready">Live Files</span>
+    </div>
+    <div class="pub-grid">
+      <div class="pub">
+        <div class="pub-head">
+          <span class="pub-ico">✉</span>
+          <div>
+            <div class="pub-name">Care Brief Intro Email</div>
+            <div class="pub-date">One-time · Sent Jul 14, 2026</div>
+          </div>
+        </div>
+        <div class="pub-body">
+          <div class="pub-desc">Magazine-cover edition announcing The Eternal Care Brief and Issue One. Launched the series.</div>
+          <a class="pub-link" href="/canvas-hub/emails/eternal-care-brief-introduction-email.html" target="_blank">Preview ↗</a>
+        </div>
+      </div>
+      <div class="pub">
+        <div class="pub-head">
+          <span class="pub-ico">✉</span>
+          <div>
+            <div class="pub-name">New Issue Template</div>
+            <div class="pub-date">Reusable · Use each issue cycle</div>
+          </div>
+        </div>
+        <div class="pub-body">
+          <div class="pub-desc">6 SWAP-ME fields. Reusable for every Care Brief issue. Instructions in the file header.</div>
+          <a class="pub-link" href="/canvas-hub/emails/eternal-care-brief-new-issue-template.html" target="_blank">Preview ↗</a>
+        </div>
+      </div>
+      <div class="pub">
+        <div class="pub-head">
+          <span class="pub-ico">✉</span>
+          <div>
+            <div class="pub-name">Family Guide Email</div>
+            <div class="pub-date">Sent Jul 30, 2026 · 28% open rate</div>
+          </div>
+        </div>
+        <div class="pub-body">
+          <div class="pub-desc">"When a family asks how to choose a hospice." 2,003 sent. List 8 opened at 48.9%. 21 clicks.</div>
+          <a class="pub-link" href="/canvas-hub/emails/elh-family-guide-email-2.html" target="_blank">Preview ↗</a>
+        </div>
+      </div>
+      <div class="pub">
+        <div class="pub-head">
+          <span class="pub-ico">✍</span>
+          <div>
+            <div class="pub-name">Email Signatures</div>
+            <div class="pub-date">Aleksandra · Denise · Template</div>
+          </div>
+        </div>
+        <div class="pub-body">
+          <div class="pub-desc">HTML email signatures. Table + inline CSS + web-safe fonts. Logo via live URL only.</div>
+          <a class="pub-link" href="/canvas-hub/emails/eternal-life-email-signature-aleksandra-dubina.html" target="_blank">Preview Aleksandra ↗</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── PRINT ── -->
+  <div>
+    <div class="sec-head">
+      <span class="sec-label">Print — Referral Cards &amp; Business Cards</span>
+      <span class="sec-badge sb-ready">Press-Ready PDFs</span>
+    </div>
+    <div class="print-list">
+      <div class="print-row">
+        <span class="print-ico">🗂</span>
+        <span class="print-name">Referral Card 5 — Flagship (Crop Marks / Press)</span>
+        <span class="print-tag">★ Approved</span>
+        <a class="print-link" href="/canvas-hub/campaign-reports/" target="_blank">Exports folder ↗</a>
+      </div>
+      <div class="print-row">
+        <span class="print-ico">🗂</span>
+        <span class="print-name">Referral Card 5 — MOO Rack Format</span>
+        <span class="print-tag">Print-ready</span>
+        <a class="print-link" href="/canvas-hub/campaign-reports/" target="_blank">Exports folder ↗</a>
+      </div>
+      <div class="print-row">
+        <span class="print-ico">💼</span>
+        <span class="print-name">Business Card — Aleksandra Dubina</span>
+        <span class="print-tag">Print-ready</span>
+        <a class="print-link" href="/canvas-hub/campaign-reports/" target="_blank">Exports folder ↗</a>
+      </div>
+      <div class="print-row">
+        <span class="print-ico">🎨</span>
+        <span class="print-name">Brand Color Reference — CMYK</span>
+        <span class="print-tag">Reference</span>
+        <a class="print-link" href="/canvas-hub/campaign-reports/" target="_blank">Exports folder ↗</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── NEWSLETTER LAYOUTS ── -->
+  <div>
+    <div class="sec-head">
+      <span class="sec-label">Newsletter Layouts</span>
+      <span class="sec-badge sb-plan">3 Templates</span>
+    </div>
+    <div class="pub-grid">
+      <div class="pub">
+        <div class="pub-head"><span class="pub-ico">📰</span><div><div class="pub-name">Layout 1 — Editorial</div><div class="pub-date">Care &amp; Comfort · Family-facing</div></div></div>
+        <div class="pub-body"><div class="pub-desc">Warm editorial format. Note from team, feature story, comfort tip, sidebar links.</div><a class="pub-link" href="/canvas-hub/emails/layout-1-editorial.html" target="_blank">Preview ↗</a></div>
+      </div>
+      <div class="pub">
+        <div class="pub-head"><span class="pub-ico">📰</span><div><div class="pub-name">Layout 2 — Digest</div><div class="pub-date">Partner Briefing · Professional</div></div></div>
+        <div class="pub-body"><div class="pub-desc">Concise digest for case managers &amp; physicians. Refer button top, compliance note, coverage snapshot.</div><a class="pub-link" href="/canvas-hub/emails/layout-2-digest.html" target="_blank">Preview ↗</a></div>
+      </div>
+      <div class="pub">
+        <div class="pub-head"><span class="pub-ico">📰</span><div><div class="pub-name">Layout 3 — Spotlight</div><div class="pub-date">Trust Issue · Compliance-led</div></div></div>
+        <div class="pub-body"><div class="pub-desc">Steady, authoritative. Fraud-protection framing, verification checklist, compliance pillar.</div><a class="pub-link" href="/canvas-hub/emails/layout-3-spotlight.html" target="_blank">Preview ↗</a></div>
+      </div>
+      <div class="pub">
+        <div class="pub-head"><span class="pub-ico">📋</span><div><div class="pub-name">Newsletter Plan &amp; Ops</div><div class="pub-date">Editorial calendar · Send guide</div></div></div>
+        <div class="pub-body"><div class="pub-desc">Monthly cadence, compliance checklist, fraud/trust angle guidance, platform recommendations.</div><a class="pub-link" href="/canvas-hub/emails/elh-newsletter-plan.html" target="_blank">Preview ↗</a></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>
