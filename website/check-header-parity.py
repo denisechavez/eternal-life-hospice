@@ -41,7 +41,6 @@ INTENTIONAL_EXCEPTIONS = {
     # Homepage — IS the canonical; uses inline JS not header.js file
     "index.html":                  "canonical homepage — inline header JS, not file include",
     # Internal / utility pages not in public nav
-    "sitemap.html":                "utility page",
     "assets/img/amethyst-tmp/gallery.html": "internal asset gallery",
     # Social graphics — not public pages
     "assets/social/index.html":             "social graphic — not a public page",
