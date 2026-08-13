@@ -1,11 +1,12 @@
 /**
- * Tests for chat.js — API-key expiry paths (401 / 403).
+ * Tests for chat.js — API-key expiry paths (401 / 403) and model-discovery
+ * failure paths (Task 394: no silent hang when discovery also fails).
  *
- * Verifies that when Anthropic or OpenAI returns 401/403:
- *   1. The expected operator console.error message is emitted.
- *   2. The error propagates so the handler returns the graceful 502 fallback.
+ * Run with:
+ *   node website/elh-preview/netlify/function-tests/chat.test.js
  *
- * Run with:  node website/elh-preview/netlify/functions/chat.test.js
+ * Uses only Node built-ins — no extra packages needed.
+ * global.fetch is monkey-patched per test; no real network calls are made.
  */
 
 "use strict";
@@ -75,6 +76,27 @@ function fetchStub(firstStatus, subsequentOk) {
   };
 }
 
+/**
+ * Build a fetch stub that replays `responses` in order.
+ * Each entry:
+ *   { throws: "msg" }            — fetch itself throws (network error)
+ *   { ok, status, json?, text? } — returns a Response-like object
+ */
+function makeFetchStub(responses) {
+  const queue = responses.slice();
+  return async function stubFetch(url) {
+    const spec = queue.shift();
+    if (!spec) throw new Error("Unexpected extra fetch call to: " + url);
+    if (spec.throws !== undefined) throw new Error(spec.throws);
+    return {
+      ok: spec.ok,
+      status: spec.status,
+      json: async () => (spec.json !== undefined ? spec.json : {}),
+      text: async () => (spec.text !== undefined ? spec.text : "")
+    };
+  };
+}
+
 /** Isolate env vars for a single test then restore them. */
 function withEnv(vars, fn) {
   const saved = {};
@@ -92,7 +114,6 @@ function withEnv(vars, fn) {
       else process.env[k] = saved[k];
     }
   };
-  // Run — may return a promise
   let result;
   try {
     result = fn();
@@ -105,6 +126,30 @@ function withEnv(vars, fn) {
   }
   restore();
   return result;
+}
+
+/**
+ * Wrap a promise with a hard timeout so a hanging handler fails promptly
+ * rather than waiting for an external CI timeout.
+ */
+function withTimeout(ms, promise) {
+  return Promise.race([
+    promise,
+    new Promise((_, reject) =>
+      setTimeout(() => reject(new Error("Test timed out after " + ms + "ms")), ms)
+    )
+  ]);
+}
+
+/** Load (or reload) the handler from the functions directory. */
+function loadHandler() {
+  delete require.cache[require.resolve("../functions/chat")];
+  return require("../functions/chat");
+}
+
+/** Clear the handler from the require cache after a test. */
+function unloadHandler() {
+  delete require.cache[require.resolve("../functions/chat")];
 }
 
 // ─── Test runner ──────────────────────────────────────────────────────────────
@@ -141,10 +186,7 @@ test("callOpenAI — 401 logs the expected operator message", async () => {
   global.fetch = fetchStub(401);
 
   try {
-    // Re-require so env changes are picked up cleanly
-    delete require.cache[require.resolve("./chat")];
-    const chat = require("./chat");
-
+    const chat = loadHandler();
     await withEnv(
       { ANTHROPIC_API_KEY: undefined, OPENAI_API_KEY: "sk-test-401" },
       () => chat.handler(makeEvent())
@@ -152,7 +194,7 @@ test("callOpenAI — 401 logs the expected operator message", async () => {
   } finally {
     restore();
     global.fetch = originalFetch;
-    delete require.cache[require.resolve("./chat")];
+    unloadHandler();
   }
 
   const matched = captured.some(
@@ -168,9 +210,7 @@ test("callOpenAI — 401 causes handler to return 502 with graceful fallback", a
   let response;
 
   try {
-    delete require.cache[require.resolve("./chat")];
-    const chat = require("./chat");
-
+    const chat = loadHandler();
     response = await withEnv(
       { ANTHROPIC_API_KEY: undefined, OPENAI_API_KEY: "sk-test-401" },
       () => chat.handler(makeEvent())
@@ -178,7 +218,7 @@ test("callOpenAI — 401 causes handler to return 502 with graceful fallback", a
   } finally {
     restore();
     global.fetch = originalFetch;
-    delete require.cache[require.resolve("./chat")];
+    unloadHandler();
   }
 
   assert.strictEqual(response.statusCode, 502, "Expected HTTP 502");
@@ -195,9 +235,7 @@ test("callOpenAI — 403 logs the expected operator message", async () => {
   global.fetch = fetchStub(403);
 
   try {
-    delete require.cache[require.resolve("./chat")];
-    const chat = require("./chat");
-
+    const chat = loadHandler();
     await withEnv(
       { ANTHROPIC_API_KEY: undefined, OPENAI_API_KEY: "sk-test-403" },
       () => chat.handler(makeEvent())
@@ -205,7 +243,7 @@ test("callOpenAI — 403 logs the expected operator message", async () => {
   } finally {
     restore();
     global.fetch = originalFetch;
-    delete require.cache[require.resolve("./chat")];
+    unloadHandler();
   }
 
   const matched = captured.some(
@@ -221,9 +259,7 @@ test("callOpenAI — 403 causes handler to return 502 with graceful fallback", a
   let response;
 
   try {
-    delete require.cache[require.resolve("./chat")];
-    const chat = require("./chat");
-
+    const chat = loadHandler();
     response = await withEnv(
       { ANTHROPIC_API_KEY: undefined, OPENAI_API_KEY: "sk-test-403" },
       () => chat.handler(makeEvent())
@@ -231,7 +267,7 @@ test("callOpenAI — 403 causes handler to return 502 with graceful fallback", a
   } finally {
     restore();
     global.fetch = originalFetch;
-    delete require.cache[require.resolve("./chat")];
+    unloadHandler();
   }
 
   assert.strictEqual(response.statusCode, 502, "Expected HTTP 502");
@@ -249,9 +285,7 @@ test("callClaude — 401 logs the expected operator message", async () => {
   global.fetch = fetchStub(401, "models-empty");
 
   try {
-    delete require.cache[require.resolve("./chat")];
-    const chat = require("./chat");
-
+    const chat = loadHandler();
     await withEnv(
       { ANTHROPIC_API_KEY: "sk-ant-test-401", OPENAI_API_KEY: undefined },
       () => chat.handler(makeEvent())
@@ -259,7 +293,7 @@ test("callClaude — 401 logs the expected operator message", async () => {
   } finally {
     restore();
     global.fetch = originalFetch;
-    delete require.cache[require.resolve("./chat")];
+    unloadHandler();
   }
 
   const matched = captured.some(
@@ -275,9 +309,7 @@ test("callClaude — 401 causes handler to return 502 with graceful fallback", a
   let response;
 
   try {
-    delete require.cache[require.resolve("./chat")];
-    const chat = require("./chat");
-
+    const chat = loadHandler();
     response = await withEnv(
       { ANTHROPIC_API_KEY: "sk-ant-test-401", OPENAI_API_KEY: undefined },
       () => chat.handler(makeEvent())
@@ -285,7 +317,7 @@ test("callClaude — 401 causes handler to return 502 with graceful fallback", a
   } finally {
     restore();
     global.fetch = originalFetch;
-    delete require.cache[require.resolve("./chat")];
+    unloadHandler();
   }
 
   assert.strictEqual(response.statusCode, 502, "Expected HTTP 502");
@@ -302,9 +334,7 @@ test("callClaude — 403 logs the expected operator message", async () => {
   global.fetch = fetchStub(403, "models-empty");
 
   try {
-    delete require.cache[require.resolve("./chat")];
-    const chat = require("./chat");
-
+    const chat = loadHandler();
     await withEnv(
       { ANTHROPIC_API_KEY: "sk-ant-test-403", OPENAI_API_KEY: undefined },
       () => chat.handler(makeEvent())
@@ -312,7 +342,7 @@ test("callClaude — 403 logs the expected operator message", async () => {
   } finally {
     restore();
     global.fetch = originalFetch;
-    delete require.cache[require.resolve("./chat")];
+    unloadHandler();
   }
 
   const matched = captured.some(
@@ -328,9 +358,7 @@ test("callClaude — 403 causes handler to return 502 with graceful fallback", a
   let response;
 
   try {
-    delete require.cache[require.resolve("./chat")];
-    const chat = require("./chat");
-
+    const chat = loadHandler();
     response = await withEnv(
       { ANTHROPIC_API_KEY: "sk-ant-test-403", OPENAI_API_KEY: undefined },
       () => chat.handler(makeEvent())
@@ -338,7 +366,7 @@ test("callClaude — 403 causes handler to return 502 with graceful fallback", a
   } finally {
     restore();
     global.fetch = originalFetch;
-    delete require.cache[require.resolve("./chat")];
+    unloadHandler();
   }
 
   assert.strictEqual(response.statusCode, 502, "Expected HTTP 502");
@@ -347,7 +375,7 @@ test("callClaude — 403 causes handler to return 502 with graceful fallback", a
   assert.strictEqual(body.reply, "", "Expected reply to be empty string");
 });
 
-// ─── Both keys expired simultaneously ─────────────────────────────────────────
+// ─── Tests: Both keys expired simultaneously ──────────────────────────────────
 
 test("both keys 401 — handler returns 502 with graceful fallback (no crash)", async () => {
   const { captured, restore } = captureErrors();
@@ -363,9 +391,7 @@ test("both keys 401 — handler returns 502 with graceful fallback (no crash)", 
 
   let response;
   try {
-    delete require.cache[require.resolve("./chat")];
-    const chat = require("./chat");
-
+    const chat = loadHandler();
     response = await withEnv(
       { ANTHROPIC_API_KEY: "sk-ant-expired", OPENAI_API_KEY: "sk-expired" },
       () => chat.handler(makeEvent())
@@ -373,7 +399,7 @@ test("both keys 401 — handler returns 502 with graceful fallback (no crash)", 
   } finally {
     restore();
     global.fetch = originalFetch;
-    delete require.cache[require.resolve("./chat")];
+    unloadHandler();
   }
 
   assert.strictEqual(response.statusCode, 502, "Expected HTTP 502");
@@ -386,7 +412,167 @@ test("both keys 401 — handler returns 502 with graceful fallback (no crash)", 
   assert.ok(hasOpenAI,    `Missing OpenAI error log. Got: ${JSON.stringify(captured)}`);
 });
 
+// ─── Tests: Model-discovery failure (Task 394 — no silent hang) ───────────────
+//
+// These tests verify that when the primary Claude POST returns 404 and the
+// subsequent model-list GET also fails (network throw or non-ok), the handler
+// completes promptly rather than hanging. Each test is wrapped in withTimeout
+// so a future regression fails fast instead of blocking CI indefinitely.
+
+test("Claude 404 + model-discovery network error → 502 (no OpenAI, no hang)", async () => {
+  const { restore } = captureErrors();
+  const originalFetch = global.fetch;
+  global.fetch = makeFetchStub([
+    { ok: false, status: 404, text: "model_not_found" },   // Claude POST
+    { throws: "fetch failed: network error" }               // model-list GET
+  ]);
+  let response;
+
+  try {
+    const chat = loadHandler();
+    response = await withTimeout(
+      5000,
+      withEnv(
+        { ANTHROPIC_API_KEY: "test-key", OPENAI_API_KEY: undefined },
+        () => chat.handler(makeEvent())
+      )
+    );
+  } finally {
+    restore();
+    global.fetch = originalFetch;
+    unloadHandler();
+  }
+
+  assert.strictEqual(response.statusCode, 502, "should return 502 when both Claude and discovery fail");
+  const body = JSON.parse(response.body);
+  assert.ok(body.fallback && body.fallback.length > 0, "should include a fallback message");
+  assert.strictEqual(body.reply, "");
+});
+
+test("Claude 404 + model-discovery non-ok (503) → 502 (no OpenAI, no hang)", async () => {
+  const { restore } = captureErrors();
+  const originalFetch = global.fetch;
+  global.fetch = makeFetchStub([
+    { ok: false, status: 404, text: "model_not_found" },   // Claude POST
+    { ok: false, status: 503, text: "service unavailable" } // model-list GET
+  ]);
+  let response;
+
+  try {
+    const chat = loadHandler();
+    response = await withTimeout(
+      5000,
+      withEnv(
+        { ANTHROPIC_API_KEY: "test-key", OPENAI_API_KEY: undefined },
+        () => chat.handler(makeEvent())
+      )
+    );
+  } finally {
+    restore();
+    global.fetch = originalFetch;
+    unloadHandler();
+  }
+
+  assert.strictEqual(response.statusCode, 502, "should return 502 when discovery returns non-ok");
+  const body = JSON.parse(response.body);
+  assert.ok(body.fallback && body.fallback.length > 0);
+  assert.strictEqual(body.reply, "");
+});
+
+test("Claude 404 + model-discovery throws → falls through to OpenAI (no hang)", async () => {
+  const { restore } = captureErrors();
+  const originalFetch = global.fetch;
+  global.fetch = makeFetchStub([
+    { ok: false, status: 404, text: "model_not_found" },    // Claude POST
+    { throws: "fetch failed: network error" },               // model-list GET
+    {                                                        // OpenAI POST — succeeds
+      ok: true, status: 200,
+      json: { choices: [{ message: { content: "Hospice care focuses on comfort." } }] }
+    }
+  ]);
+  let response;
+
+  try {
+    const chat = loadHandler();
+    response = await withTimeout(
+      5000,
+      withEnv(
+        { ANTHROPIC_API_KEY: "test-key", OPENAI_API_KEY: "oai-test-key" },
+        () => chat.handler(makeEvent())
+      )
+    );
+  } finally {
+    restore();
+    global.fetch = originalFetch;
+    unloadHandler();
+  }
+
+  assert.strictEqual(response.statusCode, 200, "should return 200 when OpenAI succeeds");
+  const body = JSON.parse(response.body);
+  assert.ok(body.reply && body.reply.length > 0, "should have a non-empty reply from OpenAI");
+  assert.strictEqual(body.configured, true);
+});
+
+test("Claude 404 + discovery throws + OpenAI throws → 502 (no hang)", async () => {
+  const { restore } = captureErrors();
+  const originalFetch = global.fetch;
+  global.fetch = makeFetchStub([
+    { ok: false, status: 404, text: "model_not_found" }, // Claude POST
+    { throws: "network error" },                          // model-list GET
+    { throws: "openai network error" }                    // OpenAI POST
+  ]);
+  let response;
+
+  try {
+    const chat = loadHandler();
+    response = await withTimeout(
+      5000,
+      withEnv(
+        { ANTHROPIC_API_KEY: "test-key", OPENAI_API_KEY: "oai-test-key" },
+        () => chat.handler(makeEvent())
+      )
+    );
+  } finally {
+    restore();
+    global.fetch = originalFetch;
+    unloadHandler();
+  }
+
+  assert.strictEqual(response.statusCode, 502, "should return 502 when all providers fail");
+  const body = JSON.parse(response.body);
+  assert.ok(body.fallback && body.fallback.length > 0);
+});
+
+test("Claude 404 + discovery returns empty model list → 502 (no OpenAI, no hang)", async () => {
+  const { restore } = captureErrors();
+  const originalFetch = global.fetch;
+  global.fetch = makeFetchStub([
+    { ok: false, status: 404, text: "model_not_found" }, // Claude POST
+    { ok: true, status: 200, json: { data: [] } }         // model-list GET — empty
+  ]);
+  let response;
+
+  try {
+    const chat = loadHandler();
+    response = await withTimeout(
+      5000,
+      withEnv(
+        { ANTHROPIC_API_KEY: "test-key", OPENAI_API_KEY: undefined },
+        () => chat.handler(makeEvent())
+      )
+    );
+  } finally {
+    restore();
+    global.fetch = originalFetch;
+    unloadHandler();
+  }
+
+  assert.strictEqual(response.statusCode, 502);
+  const body = JSON.parse(response.body);
+  assert.ok(body.fallback && body.fallback.length > 0);
+});
+
 // ─── Run ──────────────────────────────────────────────────────────────────────
 
-console.log("\nchat.js — API key expiry tests\n");
+console.log("\nchat.js — API key expiry + model-discovery failure tests\n");
 runAll();
