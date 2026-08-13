@@ -71,8 +71,9 @@ REQUIRED = {
 
 results = {"pass": [], "fail": [], "exception": []}
 failures = []
-stale_exceptions = []   # exception keys whose file is missing from disk
+stale_exceptions = []      # exception keys whose file is missing from disk
 redundant_exceptions = []  # exception keys whose file now passes all parity checks
+broken_redirects = []      # redirect stubs that no longer contain a redirect to their documented target
 
 for dirpath, dirs, files in os.walk(ROOT):
     dirs.sort()
@@ -110,6 +111,118 @@ for dirpath, dirs, files in os.walk(ROOT):
             results["pass"].append(rel)
 
 # ── Staleness scan: verify every exception entry is still valid ────────────
+import re as _re
+from html.parser import HTMLParser as _HTMLParser
+
+def _extract_redirect_target(reason: str):
+    """Return the target path from a 'redirect stub → /foo.html' reason, or None."""
+    m = _re.search(r"redirect stub\s*→\s*(\S+)", reason)
+    return m.group(1) if m else None
+
+def _js_string_mask(code: str):
+    """Return a list of bools: True where *code* is inside a JS string literal.
+
+    Handles single-quoted, double-quoted, and template-literal strings with
+    backslash escapes.  The opening/closing quote characters are marked False
+    (they are punctuation, not string content).
+    """
+    mask = [False] * len(code)
+    i = 0
+    while i < len(code):
+        if code[i] in ('"', "'", '`'):
+            quote = code[i]
+            i += 1                    # skip opening quote (stays False)
+            while i < len(code):
+                if code[i] == '\\':
+                    mask[i] = True    # backslash
+                    i += 1
+                    if i < len(code):
+                        mask[i] = True  # escaped char
+                        i += 1
+                    continue
+                if code[i] == quote:
+                    i += 1            # skip closing quote (stays False)
+                    break
+                mask[i] = True        # ordinary string content
+                i += 1
+        else:
+            i += 1
+    return mask
+
+_EXECUTABLE_JS_TYPES = frozenset({
+    '', 'text/javascript', 'application/javascript',
+    'text/ecmascript', 'application/ecmascript', 'module',
+})
+
+def _stub_still_redirects(html: str, target: str) -> bool:
+    """Return True if the HTML contains a valid meta-refresh or JS redirect to exactly *target*.
+
+    Uses html.parser so that:
+    • <meta> tags inside <script> or HTML comments are never seen as real elements.
+    • Only actual <script> element bodies are inspected for JS redirects.
+    JS detection additionally:
+    • Skips inert script types (JSON-LD, text/template, etc.).
+    • Strips JS block and line comments before scanning.
+    • Rejects matches that land inside a JS string literal (via a character mask).
+    The documented target must match exactly — no prefix or substring acceptance.
+    """
+    found = [False]
+
+    class _Parser(_HTMLParser):
+        def __init__(self):
+            super().__init__(convert_charrefs=False)
+            self._in_script = False
+            self._script_type = ''
+            self._buf = []
+
+        def handle_starttag(self, tag, attrs):
+            a = {k.lower(): (v or '') for k, v in attrs}
+            if tag == 'meta':
+                if a.get('http-equiv', '').lower().strip() == 'refresh':
+                    content = a.get('content', '')
+                    m = _re.search(r';\s*url\s*=\s*(\S*)', content, _re.IGNORECASE)
+                    if m and m.group(1).strip() == target:
+                        found[0] = True
+            elif tag == 'script':
+                self._in_script = True
+                self._script_type = a.get('type', '').strip().lower()
+                self._buf = []
+
+        def handle_data(self, data):
+            if self._in_script:
+                self._buf.append(data)
+
+        def handle_endtag(self, tag):
+            if tag == 'script':
+                if self._in_script and self._script_type in _EXECUTABLE_JS_TYPES:
+                    body = ''.join(self._buf)
+                    # Strip JS block comments, then line comments
+                    body = _re.sub(r'/\*.*?\*/', '', body, flags=_re.DOTALL)
+                    body = _re.sub(r'//[^\n]*', '', body)
+                    # Build a string-literal mask and reject matches inside strings
+                    mask = _js_string_mask(body)
+                    pat = _re.compile(
+                        r'window\.location(?:\.href)?\s*=\s*["\']'
+                        + _re.escape(target) + r'["\']',
+                        _re.IGNORECASE,
+                    )
+                    for m in pat.finditer(body):
+                        if not mask[m.start()]:   # match starts in code, not a string
+                            found[0] = True
+                self._in_script = False
+                self._script_type = ''
+                self._buf = []
+
+        # html.parser calls handle_comment for <!-- … --> so those are never
+        # seen as starttags — no extra stripping needed.
+
+    parser = _Parser()
+    try:
+        parser.feed(html)
+    except Exception:
+        pass
+    return found[0]
+
 for exc_rel, exc_reason in INTENTIONAL_EXCEPTIONS.items():
     exc_path = os.path.join(ROOT, exc_rel.replace("/", os.sep))
     if not os.path.exists(exc_path):
@@ -130,6 +243,10 @@ for exc_rel, exc_reason in INTENTIONAL_EXCEPTIONS.items():
             page_fails.append(f"MISSING NAV: {nav_label}")
     if not page_fails:
         redundant_exceptions.append((exc_rel, exc_reason))
+    # For redirect stubs: verify the file still contains a redirect to its target
+    redirect_target = _extract_redirect_target(exc_reason)
+    if redirect_target and not _stub_still_redirects(html, redirect_target):
+        broken_redirects.append((exc_rel, exc_reason, redirect_target))
 
 # ── Report ─────────────────────────────────────────────────────────────────
 total = len(results["pass"]) + len(results["fail"]) + len(results["exception"])
@@ -138,9 +255,11 @@ print(f"  ✅  Pass:       {len(results['pass'])}")
 print(f"  ❌  Fail:       {len(results['fail'])}")
 print(f"  ⚠️   Exceptions: {len(results['exception'])}")
 if stale_exceptions:
-    print(f"  🚨  Stale exceptions (file missing):   {len(stale_exceptions)}")
+    print(f"  🚨  Stale exceptions (file missing):        {len(stale_exceptions)}")
+if broken_redirects:
+    print(f"  🚨  Broken redirect stubs (no redirect):    {len(broken_redirects)}")
 if redundant_exceptions:
-    print(f"  🔔  Redundant exceptions (now passes): {len(redundant_exceptions)}")
+    print(f"  🔔  Redundant exceptions (now passes):      {len(redundant_exceptions)}")
 print()
 
 if failures:
@@ -156,6 +275,15 @@ if stale_exceptions:
     for rel, reason in stale_exceptions:
         print(f"  🚨  {rel}")
         print(f"       was: {reason}")
+    print()
+
+if broken_redirects:
+    print("── BROKEN REDIRECT STUBS (no redirect to documented target) ─────")
+    for rel, reason, target in broken_redirects:
+        print(f"  🚨  {rel}")
+        print(f"       expected redirect to: {target}")
+        print(f"       was: {reason}")
+        print(f"       → add meta-refresh/JS redirect or remove from INTENTIONAL_EXCEPTIONS")
     print()
 
 if redundant_exceptions:
@@ -178,7 +306,10 @@ if failures:
 if stale_exceptions:
     print(f"\n🚨  {len(stale_exceptions)} stale exception(s) — remove or update INTENTIONAL_EXCEPTIONS.\n")
     exit_code = 1
-if not failures and not stale_exceptions:
+if broken_redirects:
+    print(f"\n🚨  {len(broken_redirects)} redirect stub(s) no longer redirect — fix or reclassify.\n")
+    exit_code = 1
+if not failures and not stale_exceptions and not broken_redirects:
     print(f"\n✅  All standard pages pass header parity check.\n")
 if redundant_exceptions:
     print(f"🔔  {len(redundant_exceptions)} exception(s) may be redundant — review INTENTIONAL_EXCEPTIONS.\n")
