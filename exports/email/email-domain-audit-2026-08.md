@@ -34,9 +34,91 @@ Any new staff email added in the future should follow this pattern.
 These cannot be verified or fixed inside the codebase. They require account access.
 
 ### 3a. Shadow domain — `eternalhospice.com` (missing "life")
-- Several third-party directory listings still show `info@eternalhospice.com` or cite `eternalhospice.com` as the website URL.
-- This was documented in `exports/seo/nap-citation-verification-2026-07-14.md` (§7) and `exports/seo/nap-citation-cleanup-2026-07-14.md`.
-- **Action:** Confirm with GoDaddy/Google Workspace whether a catch-all forwarding rule exists on `eternalhospice.com` so any mail sent to that domain reaches the real inbox. If no forwarding exists, set it up. Priority: anyone who emailed `aleksandra@eternalhospice.com` (the variant explicitly flagged in the Sprint 2 audit) should not be silently dropped.
+
+**DNS verified:** August 13, 2026 (Google DoH public resolver + RDAP/Verisign registry lookup)
+
+Several third-party directory listings still show `info@eternalhospice.com` or cite `eternalhospice.com` as the website URL. This was documented in `exports/seo/nap-citation-verification-2026-07-14.md` (§7) and `exports/seo/nap-citation-cleanup-2026-07-14.md`.
+
+#### Live DNS state of `eternalhospice.com`
+
+| Record type | Expected for email forwarding | Found |
+|---|---|---|
+| NS (nameservers) | Any responding server | **Lame delegation — see below** |
+| MX (mail exchange) | Google MX hosts | **None resolvable** |
+| TXT (SPF, etc.) | `v=spf1 …` | **None resolvable** |
+| A (web) | Any IP | **None resolvable** |
+
+**Finding: lame DNS delegation — email is undeliverable.**
+
+The domain is registered and active (registered 2021-11-25, expires 2026-11-25, last modified 2026-07-27 per Verisign RDAP). The `.com` TLD registry delegates the domain to two Cloudflare nameservers:
+
+```
+RUDY.NS.CLOUDFLARE.COM   (108.162.192/193.235, 172.64.32/33.235, 173.245.58/59.235)
+VENUS.NS.CLOUDFLARE.COM
+```
+
+However, those Cloudflare nameservers refuse all queries with `RCODE=REFUSED`. This is a **lame delegation**: the TLD says "ask Cloudflare" but no DNS zone has been set up in the Cloudflare account for this domain, so Cloudflare has nothing to serve. Every query for any record type returns SERVFAIL to resolvers.
+
+As a result, any email addressed to `@eternalhospice.com` — including `aleksandra@eternalhospice.com` and `info@eternalhospice.com` — **cannot be delivered**. The sending MTA cannot look up MX records for the domain; the message bounces or is dropped. Any forwarding rule that may have been configured in Google Workspace is unreachable because DNS itself is broken. The domain cannot be verified by Google Workspace while this lame delegation persists.
+
+For reference, `eternallifehospice.com` (the real domain) correctly uses Google Workspace MX records and SPF:
+```
+MX 1   smtp.google.com
+MX 5   alt2.aspmx.l.google.com
+MX 10  alt3.aspmx.l.google.com
+TXT    v=spf1 include:_spf.google.com include:spf.brevo.com ~all
+```
+
+
+#### Action required — three-step fix
+
+This fix requires access to the Cloudflare account where `eternalhospice.com` is managed and the Google Workspace Admin Console (`admin.google.com`). **The key difference from a standard setup is that DNS records must be added in Cloudflare, not GoDaddy** — the nameservers point there.
+
+**Step 1 — Create the zone in Cloudflare (or switch nameservers back to GoDaddy)**
+
+Choose one path:
+
+*Path A — Fix the Cloudflare zone (preferred if you already have a Cloudflare account):*
+1. Sign in to [dash.cloudflare.com](https://dash.cloudflare.com) and confirm `eternalhospice.com` is listed as a site.
+2. If it is not listed, add it: Add a Site → enter `eternalhospice.com` → free plan is sufficient → Cloudflare will scan for existing records (there are none) and assign a nameserver pair, e.g. `rudy.ns.cloudflare.com` / `venus.ns.cloudflare.com`.
+3. **Check the assigned nameservers.** The `.com` TLD registry currently delegates `eternalhospice.com` to `RUDY.NS.CLOUDFLARE.COM` and `VENUS.NS.CLOUDFLARE.COM`. If the pair Cloudflare assigns to your account **matches** those names, the zone becomes active as soon as Cloudflare marks it as "Active" in the dashboard — no registrar change needed. If the assigned pair **differs** (Cloudflare assigns different nameserver hostnames per account), you must also update the nameservers at the registrar (see Step 2 of Path B below) to match the newly assigned pair, then wait up to 48 h for delegation to propagate before continuing.
+4. Once Cloudflare shows the zone status as **Active** and basic queries resolve, proceed to Step 2.
+
+*Path B — Switch nameservers to GoDaddy (if the Cloudflare account is unknown or inaccessible):*
+1. Sign in to the domain registrar account that holds `eternalhospice.com` (check GoDaddy; the registrar may differ from the DNS host).
+2. Change the nameservers from `rudy.ns.cloudflare.com` / `venus.ns.cloudflare.com` to GoDaddy's default nameservers for the account.
+3. Wait for NS propagation (up to 48 h, usually faster) before proceeding.
+
+**Step 2 — Add Google Workspace MX and SPF records to `eternalhospice.com`**
+
+Once DNS is responding (Path A: in the Cloudflare DNS dashboard; Path B: in GoDaddy DNS), add:
+
+*MX records:*
+
+| Priority | Host / Points-to |
+|---|---|
+| 1 | `smtp.google.com` |
+| 5 | `alt2.aspmx.l.google.com` |
+| 5 | `alt1.aspmx.l.google.com` |
+| 10 | `alt3.aspmx.l.google.com` |
+| 10 | `alt4.aspmx.l.google.com` |
+
+*TXT record (SPF — same policy as the primary domain):*
+```
+v=spf1 include:_spf.google.com ~all
+```
+
+**Step 3 — Add `eternalhospice.com` as a domain alias in Google Workspace and set a catch-all**
+
+1. Sign in to Google Admin (`admin.google.com`) as a super-admin.
+2. Go to **Account → Domains → Manage domains → Add a domain**.
+3. Choose **Domain alias**, enter `eternalhospice.com`, and complete the Google verification step (Google will ask you to add a TXT record or CNAME — add that record in Cloudflare or GoDaddy DNS, then click Verify).
+4. Once Google verifies the domain, any `@eternalhospice.com` address automatically routes to the matching `@eternallifehospice.com` user — e.g., `aleksandra@eternalhospice.com` → `aleksandra@eternallifehospice.com`.
+5. To catch mail to non-existent accounts (e.g. `contact@eternalhospice.com`), configure a catch-all:
+   - Admin Console → Apps → Google Workspace → Gmail → **Default routing**.
+   - Add a routing rule: recipient matches `@eternalhospice.com` and doesn't match a known user → deliver to `info@eternallifehospice.com`.
+
+> **Note:** If no one on the team can access the Cloudflare account and the registrar account is also unclear, contact the domain registrar (check the registrar field in RDAP or run a WHOIS lookup for `eternalhospice.com`) to regain control of the nameserver settings, then follow Path B above.
 
 ### 3b. SPF record — `eternallifehospice.com`
 - **Verified:** August 13, 2026 via DNS-over-HTTPS (dns.google)
@@ -139,3 +221,10 @@ The site codebase is fully consistent — every public email address uses `@eter
 | Brevo DKIM check | ⚠️ MANUAL | Brevo dashboard must be checked manually (API is IP-allowlisted) |
 
 **Before the next campaign goes out:** DKIM must be generated in Google Admin and published to GoDaddy DNS (§3c). Once DKIM is confirmed passing, follow the §3d step-by-step to upgrade DMARC from `p=none` → `p=quarantine` in GoDaddy DNS and run the post-change verification checklist. Everything else is in order.
+
+#### Status
+
+- ❌ **Email is undeliverable** — lame DNS delegation confirmed by live DNS query. RCODE=REFUSED on all six Cloudflare nameserver IPs. No MX records are resolvable.
+- ⚠️ **A catch-all rule may or may not exist in Google Workspace**, but it is currently unreachable due to the broken DNS delegation. This cannot be confirmed from outside account access.
+- ⬜ **Action pending** — team must complete the three steps above using Cloudflare account + Google Workspace Admin access (not accessible from this codebase).
+- After setup, re-test by sending a message to `aleksandra@eternalhospice.com` and confirming it arrives in `aleksandra@eternallifehospice.com` within a few minutes, and a message to `test@eternalhospice.com` arrives at `info@eternallifehospice.com` via the catch-all.
