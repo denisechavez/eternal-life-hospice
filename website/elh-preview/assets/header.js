@@ -128,13 +128,68 @@
     render();
   }
 
-  function render() {
-    var hits = [];
-    for (var i = 0; i < idx.length; i++) {
-      var it = idx[i];
-      var txt = ((it.title || '') + ' ' + (it.desc || '') + ' ' + (it.kw || '')).toLowerCase();
-      if (txt.indexOf(q) > -1) hits.push(it);
+  // Tokenize a string into lowercase alphanumeric words
+  function tokenize(s) {
+    return (s || '').toLowerCase().split(/[^a-z0-9]+/).filter(function (t) { return t.length > 0; });
+  }
+
+  // Levenshtein distance, capped early at 2 for speed
+  function editDist(a, b) {
+    if (a === b) return 0;
+    if (Math.abs(a.length - b.length) > 2) return 99;
+    var m = a.length, n = b.length;
+    var row = [], prev = [];
+    for (var j = 0; j <= n; j++) prev[j] = j;
+    for (var i = 1; i <= m; i++) {
+      row[0] = i;
+      for (var j = 1; j <= n; j++) {
+        row[j] = a[i - 1] === b[j - 1]
+          ? prev[j - 1]
+          : 1 + Math.min(prev[j], row[j - 1], prev[j - 1]);
+      }
+      var tmp = prev; prev = row; row = tmp;
     }
+    return prev[n];
+  }
+
+  // Returns true if a query token matches any token in the document token list.
+  // Rules: exact, prefix (queryTok is prefix of docTok), abbreviation
+  // (queryTok ≥ 3 chars is prefix of docTok), or 1-edit fuzzy for len ≥ 5.
+  function tokenMatches(qt, docToks) {
+    for (var k = 0; k < docToks.length; k++) {
+      var dt = docToks[k];
+      if (dt === qt) return true;                            // exact
+      if (dt.indexOf(qt) === 0 && qt.length >= 3) return true; // prefix
+      if (qt.indexOf(dt) === 0 && dt.length >= 3) return true; // query is longer prefix of doc word (abbreviation)
+      if (qt.length >= 5 && dt.length >= 4 && editDist(qt, dt) <= 1) return true; // fuzzy
+    }
+    return false;
+  }
+
+  // Score: fraction of query tokens that match something in the document.
+  // Exact whole-string match gets a bonus so it still floats to the top.
+  function scoreEntry(entry, queryToks, rawQ) {
+    var txt = ((entry.title || '') + ' ' + (entry.desc || '') + ' ' + (entry.kw || '')).toLowerCase();
+    // Fast path: exact substring match → top score
+    if (txt.indexOf(rawQ) > -1) return 1 + queryToks.length;
+    var docToks = tokenize(txt);
+    if (!queryToks.length) return 0;
+    var matched = 0;
+    for (var i = 0; i < queryToks.length; i++) {
+      if (tokenMatches(queryToks[i], docToks)) matched++;
+    }
+    return matched / queryToks.length; // 0–1
+  }
+
+  function render() {
+    var queryToks = tokenize(q);
+    var scored = [];
+    for (var i = 0; i < idx.length; i++) {
+      var sc = scoreEntry(idx[i], queryToks, q);
+      if (sc > 0) scored.push({ item: idx[i], score: sc });
+    }
+    scored.sort(function (a, b) { return b.score - a.score; });
+    var hits = scored.map(function (s) { return s.item; });
     if (!sr) return;
     sr.innerHTML = '';
     if (!hits.length) { sr.innerHTML = '<div class="search-empty">No results for "' + esc(q) + '"</div>'; return; }
