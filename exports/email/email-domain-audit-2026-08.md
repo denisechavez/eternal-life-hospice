@@ -69,14 +69,46 @@ These cannot be verified or fixed inside the codebase. They require account acce
 - **Risk while missing:** Major providers (Gmail, Outlook, Yahoo) increasingly require DKIM to pass before trusting SPF alone. Brevo's deliverability scoring also factors DKIM in. Without it, campaigns and individual sends are at elevated spam risk.
 
 ### 3d. DMARC — `eternallifehospice.com`
-- **Verified:** August 13, 2026 via DNS-over-HTTPS (dns.google)
-- **Result: ✅ PASS**
-- **Record found at `_dmarc.eternallifehospice.com`:**
+- **Baseline verified:** August 13, 2026 via DNS-over-HTTPS (dns.google)
+- **Baseline record (still live until DKIM is confirmed):**
   ```
   v=DMARC1; p=none; rua=mailto:rua@dmarc.brevo.com
   ```
-- Policy is `p=none` (monitor only — no messages are quarantined or rejected). Aggregate reports are being sent to Brevo's DMARC reporting service, which means data is flowing.
-- **Recommended next step:** Once DKIM is enabled and confirmed passing (§3c), upgrade to `p=quarantine` to actively protect the domain from spoofing. Do **not** move to `p=quarantine` before DKIM is fixed or legitimate sends may be rejected.
+- Policy was `p=none` (monitor only — no messages are quarantined or rejected). Aggregate reports flow to Brevo's DMARC reporting service.
+
+**Target policy — upgrade to `p=quarantine` once DKIM passes (§3c)**
+
+Quarantine mode routes spoofed mail to the recipient's spam folder instead of the inbox. It is the standard second step in the `none → quarantine → reject` graduation path and is safe as long as both SPF and DKIM are passing for every authorised sender (Google Workspace + Brevo).
+
+**Step-by-step: how to make the change in GoDaddy DNS**
+
+> ⚠️ **Prerequisite:** Confirm DKIM is passing before touching DMARC (see §3c). Tightening DMARC while DKIM is broken will cause legitimate mail to land in spam.
+
+1. Log in to [GoDaddy DNS Manager](https://dcc.godaddy.com/manage/dns) for `eternallifehospice.com`.
+2. Find the existing TXT record with **Host** `_dmarc` (value currently starts with `v=DMARC1; p=none`).
+3. Click **Edit** on that record and replace the **Value** with:
+   ```
+   v=DMARC1; p=quarantine; rua=mailto:rua@dmarc.brevo.com
+   ```
+4. Leave **Host** as `_dmarc` and **TTL** at 1 hour (or whatever it is currently). Click **Save**.
+5. Allow up to 1 hour for propagation. Verify the change:
+   ```
+   # From any terminal or browser tool:
+   https://dns.google/resolve?name=_dmarc.eternallifehospice.com&type=TXT
+   # Expect: "v=DMARC1; p=quarantine; rua=mailto:rua@dmarc.brevo.com"
+   ```
+
+**Post-change verification checklist**
+
+- [ ] DNS query above shows `p=quarantine`
+- [ ] Send a test email from `aleksandra@eternallifehospice.com` (Google Workspace) to a Gmail address — check it lands in inbox, not spam
+- [ ] Trigger a small Brevo test campaign (or use Brevo's built-in inbox-preview / spam-score tool) and confirm deliverability score is unchanged
+- [ ] Check Brevo → Senders & IPs → Domains: all indicators for `eternallifehospice.com` are green
+- [ ] Allow 24–48 h then check the Brevo DMARC report for any new failures
+
+**When all boxes are checked**, update the status line in the Summary table below to: `✅ QUARANTINE — p=quarantine enforced, aggregate reports → Brevo`.
+
+> **Next graduation step (future):** After 30+ days at `p=quarantine` with zero legitimate-mail failures in the DMARC reports, upgrade to `p=reject` for full spoofing protection.
 
 ### 3e. Brevo sender authentication
 - The Brevo account sends campaigns from `aleksandra@eternallifehospice.com` and uses `info@eternallifehospice.com` as reply-to.
@@ -102,8 +134,8 @@ The site codebase is fully consistent — every public email address uses `@eter
 |---|---|---|
 | SPF | ✅ PASS | `v=spf1 include:_spf.google.com include:spf.brevo.com ~all` — covers Google Workspace + Brevo |
 | DKIM | ❌ NOT PUBLISHED | No `*._domainkey` TXT record found under any selector — must be enabled in Google Admin and added to GoDaddy DNS (see §3c) |
-| DMARC | ✅ PASS | `v=DMARC1; p=none; rua=mailto:rua@dmarc.brevo.com` — monitor mode, reports flowing to Brevo |
+| DMARC | ⏳ UPGRADE PENDING | Currently `p=none` (monitor); upgrade to `p=quarantine` ready — awaiting DKIM confirmation (§3c). Full steps + checklist in §3d. |
 | Brevo domain claim | ✅ PASS | Verification token confirmed in DNS |
 | Brevo DKIM check | ⚠️ MANUAL | Brevo dashboard must be checked manually (API is IP-allowlisted) |
 
-**Before the next campaign goes out:** DKIM must be generated in Google Admin and published to GoDaddy DNS (§3c). Do not tighten DMARC to `p=quarantine` until DKIM is passing. Everything else is in order.
+**Before the next campaign goes out:** DKIM must be generated in Google Admin and published to GoDaddy DNS (§3c). Once DKIM is confirmed passing, follow the §3d step-by-step to upgrade DMARC from `p=none` → `p=quarantine` in GoDaddy DNS and run the post-change verification checklist. Everything else is in order.
