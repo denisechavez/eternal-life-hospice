@@ -1,5 +1,5 @@
 # Netlify configuration for Eternal Life Hospice.
-# The static site lives in website/elh-preview/. The build command runs three
+# The static site lives in website/elh-preview/. The build command runs four
 # pre-deploy checks and blocks the deploy if any fail:
 #
 #   1. check-cookie-settings.sh        — every page must carry the Cookie Settings link
@@ -12,6 +12,11 @@
 #      and checks: no external scripts without defer/async, no bare CDN src=,
 #      both deferred-loader patterns present, plus three mutation self-tests.
 #      Exits 1 and cancels the deploy if the template is broken.
+#   4. check-header-parity.py          — header parity + _redirects validation.
+#      Verifies every standard page carries the canonical header, that every
+#      redirect stub still contains a valid redirect to its documented target,
+#      and that every local destination in _redirects resolves to a real file.
+#      Exits 1 and cancels the deploy if any check fails.
 #
 # We set `base` to the site folder so Netlify runs entirely inside it. This
 # isolates the deploy from the repo-root package.json (which belongs to the
@@ -21,7 +26,7 @@
 [build]
   base = "website/elh-preview"
   publish = "."
-  command = "git fetch --unshallow 2>/dev/null || true && bash ../check-cookie-settings.sh && node assets/test-chat-teaser.js && python3 ../check-city-scripts.py && node assets/build-search-index.js && node assets/update-sitemap-dates.js"
+  command = "git fetch --unshallow 2>/dev/null || true && bash ../check-cookie-settings.sh && node assets/test-chat-teaser.js && python3 ../check-city-scripts.py && python3 ../check-header-parity.py && node assets/build-search-index.js && node assets/update-sitemap-dates.js"
 
 [functions]
   directory = "netlify/functions"
