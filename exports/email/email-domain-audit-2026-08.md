@@ -49,9 +49,11 @@ These cannot be verified or fixed inside the codebase. They require account acce
 - **Action:** None required. No changes needed in GoDaddy DNS.
 
 ### 3c. DKIM — Google Workspace
-- **Verified:** August 13, 2026 — swept 20+ common selector names (`google`, `default`, `selector1`, `selector2`, `mail`, `k1`, `k2`, `dkim`, `gmail`, `elh`, etc.) via dns.google TXT + CNAME queries.
+- **Initial check:** August 13, 2026 — swept 20+ common selector names (`google`, `default`, `selector1`, `selector2`, `mail`, `k1`, `k2`, `dkim`, `gmail`, `elh`, etc.) via dns.google TXT + CNAME queries.
+- **Re-verified:** August 13, 2026 — queried `google._domainkey.eternallifehospice.com` via DNS-over-HTTPS (dns.google). Response: **NXDOMAIN (Status 3)** — record still not present.
 - **Result: ❌ FAIL — No DKIM TXT record published in DNS**
 - No `*._domainkey.eternallifehospice.com` record was found under any selector.
+- **Status:** Awaiting team action. The steps below must be completed by a Google Admin account holder before this can pass.
 - This means one of two things:
   1. DKIM signing has never been enabled in Google Admin, **or**
   2. The key was generated but never copy-pasted into GoDaddy DNS.
