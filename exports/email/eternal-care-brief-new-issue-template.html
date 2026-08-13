@@ -1,171 +1,373 @@
 <!doctype html>
 <!--
   ETERNAL LIFE HOSPICE — CARE BRIEF "NEW ISSUE" ANNOUNCEMENT TEMPLATE
-  ====================================================================
-  REUSABLE template for announcing each new issue of The Eternal Care Brief
-  (published every other month). Built for MailerLite / Brevo: table layout,
-  all CSS inline, web-safe fonts (Georgia echoes Fraunces, Arial echoes Jost),
-  images by live https URL only.
+  =====================================================================
+  Reusable template for announcing each new issue of The Eternal Care Brief.
+  Built for Brevo (table layout, all CSS inline, web-safe fonts).
+  Images resolve via live https URL — sync to Netlify before sending.
 
-  HOW TO USE (full plain-language steps in the HOW-TO file in this folder):
-  Search this file for "SWAP-ME" — there are 6 fields to update each cycle:
-    SWAP-ME 1: preheader (hidden preview sentence)
-    SWAP-ME 2: issue number + month/year label  (appears twice — kicker + card)
-    SWAP-ME 3: issue link (the URL of the new issue page — appears 3 times:
-               photo link, title link, button link. Use the SAME URL for all.)
-    SWAP-ME 4: hero photo URL + its alt text
-    SWAP-ME 5: issue title (appears twice — headline + photo alt text)
-    SWAP-ME 6: summary paragraph + the small "sections / read time" line
+  HOW TO USE — search for "SWAP-ME" (6 fields to update each cycle):
+    SWAP-ME 1  Preheader (hidden preview sentence)
+    SWAP-ME 2  Issue kicker line: "Issue Three · August 2026"  (2 places)
+    SWAP-ME 3  Issue page URL — used 4 times (hero CTA, card photo, card title, primary button)
+    SWAP-ME 4  Hero image URL + alt text
+    SWAP-ME 5  Issue title (2 places — serif headline + card link)
+    SWAP-ME 6  Body copy: lede paragraph + what's-inside list (5 items) + pull quote
+    SWAP-ME 7  Second care image URL + alt text
 
-  BEFORE SENDING — two checks, every time:
-  1. SYNC FIRST: the new issue page must be live before sending — in Replit
-     click Git -> Sync once, then confirm the issue URL loads in a browser.
-  2. UNSUBSCRIBE: the footer link below is a PLACEHOLDER
-     (href="#UNSUBSCRIBE-PLACEHOLDER"). Replace it with your ESP's real
-     unsubscribe merge tag:
-       MailerLite: {$unsubscribe}     Brevo: {{ unsubscribe }}
+  BEFORE SENDING — two checks every time:
+    1. SYNC first: the issue page must be live before the email goes out.
+       In Replit: Git → Sync. Confirm the issue URL loads in a browser.
+    2. UNSUBSCRIBE: the Brevo tag {{ unsubscribe }} is already in the footer.
+       Do not remove it.
 -->
 <html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<!-- SWAP-ME 5 (part): update the issue title in this browser tab title too -->
+<!-- SWAP-ME 5 (part): update the issue title in the browser tab title -->
 <title>The Eternal Care Brief — New Issue | Eternal Life Hospice</title>
+<style>
+  @media only screen and (max-width:480px){
+    .em-wrap{width:100%!important;max-width:100%!important;}
+    .hero-hl{font-size:28px!important;line-height:1.2!important;}
+    .hero-sub{font-size:15px!important;}
+    .body-pad{padding:28px 22px!important;}
+    .section-pad{padding:28px 22px!important;}
+    .pillar-row td{display:block!important;width:100%!important;padding-bottom:12px!important;}
+    .pillar-spacer{display:none!important;}
+    .btn-block{display:block!important;width:100%!important;box-sizing:border-box!important;}
+    .font-body{font-size:16px!important;line-height:1.7!important;}
+    .checklist-label{font-size:15px!important;}
+    .logo-img{width:130px!important;}
+    .quote-text{font-size:19px!important;line-height:1.35!important;}
+    .sig-photo{width:90px!important;height:90px!important;}
+    .cta-col{display:block!important;width:100%!important;padding:0 0 12px 0!important;}
+  }
+</style>
 </head>
 <body style="margin:0;padding:0;background-color:#EDE6DE;">
 
-<!-- SWAP-ME 1: Preheader (hidden preview text) — one warm sentence about the new issue -->
+<!-- SWAP-ME 1: Preheader — hidden preview sentence, ~90 chars -->
 <div style="display:none;max-height:0;overflow:hidden;mso-hide:all;font-size:1px;line-height:1px;color:#EDE6DE;">
-  SWAP-ME 1: One-sentence preview of this issue &mdash; e.g. &ldquo;Issue Two looks at comfort in the final days, for care teams and families.&rdquo;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;
+  SWAP-ME 1: One warm sentence previewing this issue — e.g. "Issue Three looks at the family caregiver as the second patient in every room."&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;
 </div>
 
 <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="background-color:#EDE6DE;">
-<tr><td align="center" style="padding:24px 12px;">
+<tr><td align="center" style="padding:24px 12px 40px;">
 
-  <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="640" style="width:640px;max-width:100%;background-color:#ffffff;">
+<table role="presentation" cellpadding="0" cellspacing="0" border="0" width="600" class="em-wrap" style="width:600px;max-width:100%;">
 
-    <!-- Masthead (do not change) -->
-    <tr><td style="background-color:#3C1C3B;padding:24px 34px;">
-      <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">
-        <tr>
-          <td style="vertical-align:middle;">
-            <a href="https://eternallifehospice.com" style="text-decoration:none;">
-              <img src="https://eternallifehospice.com/assets/img/elh-logo-cream-g.png" alt="Eternal Life Hospice — Care That Honors Life" width="150" style="display:block;border:0;outline:none;width:150px;height:auto;">
-            </a>
-          </td>
-          <td align="right" style="vertical-align:middle;font-family:Arial,Helvetica,sans-serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#C9B07E;line-height:1.6;">
-            The Eternal<br>Care Brief
-          </td>
-        </tr>
-      </table>
-    </td></tr>
+  <!-- ============================================================
+       1. VIEW IN BROWSER BAR
+  ============================================================ -->
+  <tr><td style="background-color:#EDE6DE;padding:8px 28px;text-align:center;">
+    <span style="font-family:Arial,Helvetica,sans-serif;font-size:11px;color:#7a6a5a;">Having trouble viewing this email? <a href="{{ mirror }}" style="color:#381B37;text-decoration:underline;">View it in your browser</a>.</span>
+  </td></tr>
 
-    <!-- Gold band (do not change) -->
-    <tr><td style="background-color:#C9B07E;font-size:0;line-height:0;height:4px;">&nbsp;</td></tr>
+  <!-- ============================================================
+       2. UTILITY BAR — dark plum
+  ============================================================ -->
+  <tr><td style="background-color:#381B37;padding:11px 28px;text-align:center;">
+    <div style="font-family:Arial,Helvetica,sans-serif;font-size:10px;font-weight:bold;letter-spacing:3px;text-transform:uppercase;color:#C9B07E;">HERE IN MOMENTS THAT MATTER MOST</div>
+  </td></tr>
 
-    <!-- Kicker line -->
-    <tr><td style="padding:38px 40px 8px;">
-      <!-- SWAP-ME 2 (first of two places): issue number + month/year -->
-      <div style="font-family:Arial,Helvetica,sans-serif;font-size:11px;font-weight:bold;letter-spacing:2.5px;text-transform:uppercase;color:#A07C36;padding-bottom:10px;">A New Issue of The Eternal Care Brief &middot; SWAP-ME 2: Issue Number &middot; Month Year</div>
-      <div style="font-family:Arial,Helvetica,sans-serif;font-size:15.5px;line-height:1.65;color:#5A4057;padding-bottom:6px;">
-        The latest issue of our bi-monthly care publication is ready to read &mdash; clinical guidance for professional care teams, and warm, plain-language support for the families they serve.
-      </div>
-    </td></tr>
+  <!-- ============================================================
+       3. LOGO BAND — cream, logo-eternal-trans.png
+  ============================================================ -->
+  <tr><td align="center" style="background-color:#F5F0EB;padding:26px 40px 22px;">
+    <a href="https://eternallifehospice.com" style="text-decoration:none;">
+      <img src="https://eternallifehospice.com/assets/logo-eternal-trans.png"
+           alt="Eternal Life Hospice — Care That Honors Life"
+           width="160" class="logo-img"
+           style="display:block;border:0;outline:none;width:160px;height:auto;margin:0 auto;">
+    </a>
+  </td></tr>
 
-    <!-- New issue feature card -->
-    <tr><td style="padding:20px 40px 0;">
-      <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="background-color:#F5F0EB;border:1px solid #D8CDBF;">
-        <tr><td>
-          <!-- SWAP-ME 3 (link #1 of 3) + SWAP-ME 4: hero photo URL and alt text -->
-          <a href="https://eternallifehospice.com/care-brief/SWAP-ME-3-issue-page-url" style="text-decoration:none;">
-            <img src="https://eternallifehospice.com/assets/img/SWAP-ME-4-hero-photo.jpg" alt="SWAP-ME 5: Issue title" width="558" style="display:block;border:0;outline:none;width:100%;height:auto;">
-          </a>
-        </td></tr>
-        <tr><td style="padding:24px 28px 28px;">
-          <!-- SWAP-ME 2 (second of two places): issue number + month/year -->
-          <div style="font-family:Arial,Helvetica,sans-serif;font-size:11px;font-weight:bold;letter-spacing:2px;text-transform:uppercase;color:#A07C36;padding-bottom:8px;">SWAP-ME 2: Issue Number &middot; Month Year</div>
-          <!-- SWAP-ME 5: issue title, and SWAP-ME 3 (link #2 of 3) -->
-          <div style="font-family:Georgia,'Times New Roman',serif;font-size:24px;line-height:1.2;color:#5B2E59;padding-bottom:12px;">
-            <a href="https://eternallifehospice.com/care-brief/SWAP-ME-3-issue-page-url" style="color:#5B2E59;text-decoration:none;">SWAP-ME 5: Issue Title Goes Here</a>
-          </div>
-          <!-- SWAP-ME 6: one-paragraph summary of this issue -->
-          <div style="font-family:Arial,Helvetica,sans-serif;font-size:14.5px;line-height:1.65;color:#5A4057;padding-bottom:10px;">
-            SWAP-ME 6: A short, warm paragraph (2&ndash;4 sentences) describing what this issue covers &mdash; what care teams will find, and what is written just for families. No medical-efficacy claims, no patient details.
-          </div>
-          <!-- SWAP-ME 6 (part): update the sections / read time line -->
-          <div style="font-family:Arial,Helvetica,sans-serif;font-size:12px;letter-spacing:1px;text-transform:uppercase;color:#8a7a8a;padding-bottom:20px;">SWAP-ME 6: X sections &middot; X min read &middot; prints as a clean handout</div>
-          <!-- Primary button — SWAP-ME 3 (link #3 of 3) -->
-          <table role="presentation" cellpadding="0" cellspacing="0" border="0">
-            <tr><td style="background-color:#C9B07E;border-radius:28px;">
-              <a href="https://eternallifehospice.com/care-brief/SWAP-ME-3-issue-page-url" style="display:inline-block;padding:14px 32px;font-family:Arial,Helvetica,sans-serif;font-size:15px;font-weight:bold;color:#3C1C3B;text-decoration:none;border-radius:28px;">Read the New Issue &rarr;</a>
+  <!-- ============================================================
+       4. HERO — dark plum, kicker + large serif headline + sub-copy + gold CTA
+  ============================================================ -->
+  <tr><td style="background-color:#381B37;padding:48px 44px 44px;" class="body-pad">
+    <!-- SWAP-ME 2 (first of two places): issue kicker line -->
+    <div style="font-family:Arial,Helvetica,sans-serif;font-size:11px;font-weight:bold;letter-spacing:2.5px;text-transform:uppercase;color:#C9B07E;padding-bottom:14px;text-align:center;">The Eternal Care Brief &nbsp;&middot;&nbsp; SWAP-ME 2: Issue Number &nbsp;&middot;&nbsp; Month Year</div>
+    <!-- SWAP-ME 5 (first of two places): issue title as large serif headline -->
+    <div class="hero-hl" style="font-family:Georgia,'Times New Roman',serif;font-size:38px;line-height:1.12;color:#F5F0EB;text-align:center;padding-bottom:18px;">SWAP-ME 5: Issue Title</div>
+    <div class="hero-sub" style="font-family:Arial,Helvetica,sans-serif;font-size:16px;line-height:1.7;color:#D8CDBF;text-align:center;max-width:420px;margin:0 auto;padding-bottom:28px;">A new issue of the Care Brief is ready — clinical guidance for care teams, and plain-language support for the families they serve.</div>
+    <table role="presentation" cellpadding="0" cellspacing="0" border="0" align="center">
+      <tr><td style="background-color:#C9B07E;border-radius:28px;text-align:center;">
+        <!-- SWAP-ME 3 (first of four places): issue page URL -->
+        <a href="https://eternallifehospice.com/care-brief/SWAP-ME-3-issue-page-url"
+           style="display:inline-block;padding:14px 34px;font-family:Arial,Helvetica,sans-serif;font-size:15px;font-weight:bold;color:#3C1C3B;text-decoration:none;border-radius:28px;">Read the New Issue &rarr;</a>
+      </td></tr>
+    </table>
+  </td></tr>
+
+  <!-- ============================================================
+       5. GOLD BAND — 4 px divider
+  ============================================================ -->
+  <tr><td style="background-color:#C9B07E;font-size:0;line-height:0;height:4px;">&nbsp;</td></tr>
+
+  <!-- ============================================================
+       6. HERO IMAGE — inset, rounded corners, cream bg
+  ============================================================ -->
+  <tr><td style="background-color:#F5F0EB;padding:28px 36px 0;" class="body-pad">
+    <!-- SWAP-ME 3 (second of four places): issue page URL -->
+    <!-- SWAP-ME 4: hero image URL + descriptive alt text -->
+    <a href="https://eternallifehospice.com/care-brief/SWAP-ME-3-issue-page-url" style="text-decoration:none;display:block;">
+      <img src="https://eternallifehospice.com/assets/img/SWAP-ME-4-hero-image.jpg"
+           alt="SWAP-ME 4: Descriptive alt text for the hero image"
+           width="528"
+           style="display:block;border:0;outline:none;width:100%;height:auto;border-radius:6px;">
+    </a>
+  </td></tr>
+
+  <!-- ============================================================
+       7. BODY COPY — white bg
+  ============================================================ -->
+  <tr><td style="background-color:#ffffff;padding:40px 48px 32px;" class="body-pad">
+    <!-- SWAP-ME 2 (second of two places): issue number eyebrow -->
+    <div style="font-family:Arial,Helvetica,sans-serif;font-size:13px;font-weight:bold;letter-spacing:2px;text-transform:uppercase;color:#A07C36;padding-bottom:6px;">Care Brief &middot; SWAP-ME 2: Issue Number</div>
+    <!-- SWAP-ME 5 (second of two places): issue title as section heading -->
+    <div style="font-family:Georgia,'Times New Roman',serif;font-size:26px;color:#381B37;padding-bottom:16px;line-height:1.2;">SWAP-ME 5: Issue Title</div>
+    <!-- SWAP-ME 6: lede paragraph — 2–3 sentences describing what this issue covers -->
+    <div class="font-body" style="font-family:Arial,Helvetica,sans-serif;font-size:15px;line-height:1.75;color:#3C2040;padding-bottom:14px;">
+      SWAP-ME 6: Lede paragraph — what this issue is about, who it is written for, and why it matters right now. Two to three sentences. No efficacy claims, no patient details.
+    </div>
+    <div class="font-body" style="font-family:Arial,Helvetica,sans-serif;font-size:15px;line-height:1.75;color:#3C2040;padding-bottom:8px;">
+      Inside this issue:
+    </div>
+  </td></tr>
+
+  <!-- ============================================================
+       8. PULL QUOTE — plum bg
+  ============================================================ -->
+  <tr><td style="background-color:#5B2E59;padding:36px 44px;" class="body-pad">
+    <!-- SWAP-ME 6 (part): pull quote — one strong sentence from the issue -->
+    <div class="quote-text" style="font-family:Georgia,'Times New Roman',serif;font-style:italic;font-size:22px;line-height:1.4;color:#F5F0EB;text-align:center;padding-bottom:16px;">&ldquo;SWAP-ME 6: A single strong sentence from the issue that stands on its own — the line you want the reader to carry.&rdquo;</div>
+    <div style="font-family:Arial,Helvetica,sans-serif;font-size:12px;font-weight:bold;letter-spacing:2px;text-transform:uppercase;color:#C9B07E;text-align:center;">The Eternal Care Brief</div>
+  </td></tr>
+
+  <!-- ============================================================
+       9. WHAT'S INSIDE — 2-col numbered checklist, cream bg
+  ============================================================ -->
+  <tr><td style="background-color:#F5F0EB;padding:36px 40px 32px;" class="section-pad">
+    <div style="font-family:Arial,Helvetica,sans-serif;font-size:12px;font-weight:bold;letter-spacing:2px;text-transform:uppercase;color:#A07C36;padding-bottom:18px;text-align:center;">What&rsquo;s Inside</div>
+    <!-- SWAP-ME 6 (part): 5 checklist items — short section labels for this issue -->
+    <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">
+      <tr>
+        <td width="48%" style="vertical-align:top;padding:0 8px 14px 0;">
+          <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">
+            <tr>
+              <td width="28" style="vertical-align:top;padding-top:2px;">
+                <div style="font-family:Georgia,'Times New Roman',serif;font-size:18px;font-weight:bold;color:#C9B07E;line-height:1;">01</div>
+              </td>
+              <td style="vertical-align:top;">
+                <div class="checklist-label" style="font-family:Arial,Helvetica,sans-serif;font-size:14px;font-weight:bold;color:#381B37;line-height:1.4;padding-bottom:3px;">SWAP-ME 6: Section one label</div>
+                <div style="font-family:Arial,Helvetica,sans-serif;font-size:13px;line-height:1.6;color:#6B4F6A;">Short descriptor, 1 sentence.</div>
+              </td>
+            </tr>
+          </table>
+        </td>
+        <td width="4%">&nbsp;</td>
+        <td width="48%" style="vertical-align:top;padding:0 0 14px 0;">
+          <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">
+            <tr>
+              <td width="28" style="vertical-align:top;padding-top:2px;">
+                <div style="font-family:Georgia,'Times New Roman',serif;font-size:18px;font-weight:bold;color:#C9B07E;line-height:1;">02</div>
+              </td>
+              <td style="vertical-align:top;">
+                <div class="checklist-label" style="font-family:Arial,Helvetica,sans-serif;font-size:14px;font-weight:bold;color:#381B37;line-height:1.4;padding-bottom:3px;">SWAP-ME 6: Section two label</div>
+                <div style="font-family:Arial,Helvetica,sans-serif;font-size:13px;line-height:1.6;color:#6B4F6A;">Short descriptor, 1 sentence.</div>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <tr>
+        <td width="48%" style="vertical-align:top;padding:0 8px 14px 0;">
+          <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">
+            <tr>
+              <td width="28" style="vertical-align:top;padding-top:2px;">
+                <div style="font-family:Georgia,'Times New Roman',serif;font-size:18px;font-weight:bold;color:#C9B07E;line-height:1;">03</div>
+              </td>
+              <td style="vertical-align:top;">
+                <div class="checklist-label" style="font-family:Arial,Helvetica,sans-serif;font-size:14px;font-weight:bold;color:#381B37;line-height:1.4;padding-bottom:3px;">SWAP-ME 6: Section three label</div>
+                <div style="font-family:Arial,Helvetica,sans-serif;font-size:13px;line-height:1.6;color:#6B4F6A;">Short descriptor, 1 sentence.</div>
+              </td>
+            </tr>
+          </table>
+        </td>
+        <td width="4%">&nbsp;</td>
+        <td width="48%" style="vertical-align:top;padding:0 0 14px 0;">
+          <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">
+            <tr>
+              <td width="28" style="vertical-align:top;padding-top:2px;">
+                <div style="font-family:Georgia,'Times New Roman',serif;font-size:18px;font-weight:bold;color:#C9B07E;line-height:1;">04</div>
+              </td>
+              <td style="vertical-align:top;">
+                <div class="checklist-label" style="font-family:Arial,Helvetica,sans-serif;font-size:14px;font-weight:bold;color:#381B37;line-height:1.4;padding-bottom:3px;">SWAP-ME 6: Section four label</div>
+                <div style="font-family:Arial,Helvetica,sans-serif;font-size:13px;line-height:1.6;color:#6B4F6A;">Short descriptor, 1 sentence.</div>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <tr>
+        <td colspan="3" style="vertical-align:top;padding:0 0 8px 0;">
+          <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="48%">
+            <tr>
+              <td width="28" style="vertical-align:top;padding-top:2px;">
+                <div style="font-family:Georgia,'Times New Roman',serif;font-size:18px;font-weight:bold;color:#C9B07E;line-height:1;">05</div>
+              </td>
+              <td style="vertical-align:top;">
+                <div class="checklist-label" style="font-family:Arial,Helvetica,sans-serif;font-size:14px;font-weight:bold;color:#381B37;line-height:1.4;padding-bottom:3px;">SWAP-ME 6: Section five label</div>
+                <div style="font-family:Arial,Helvetica,sans-serif;font-size:13px;line-height:1.6;color:#6B4F6A;">Short descriptor, 1 sentence.</div>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+    <!-- Primary read button -->
+    <table role="presentation" cellpadding="0" cellspacing="0" border="0" align="center" style="margin-top:20px;">
+      <tr><td style="background-color:#381B37;border-radius:28px;text-align:center;">
+        <!-- SWAP-ME 3 (third of four places): issue page URL -->
+        <a href="https://eternallifehospice.com/care-brief/SWAP-ME-3-issue-page-url"
+           style="display:inline-block;padding:14px 34px;font-family:Arial,Helvetica,sans-serif;font-size:15px;font-weight:bold;color:#F5F0EB;text-decoration:none;border-radius:28px;">Read the Issue &rarr;</a>
+      </td></tr>
+    </table>
+  </td></tr>
+
+  <!-- ============================================================
+       10. SECOND CARE IMAGE — cream bg
+  ============================================================ -->
+  <tr><td style="background-color:#F5F0EB;padding:0 36px 28px;" class="body-pad">
+    <!-- SWAP-ME 7: second care image URL + alt text -->
+    <img src="https://eternallifehospice.com/assets/img/SWAP-ME-7-second-image.jpg"
+         alt="SWAP-ME 7: Descriptive alt text for the second care image"
+         width="528"
+         style="display:block;border:0;outline:none;width:100%;height:auto;border-radius:6px;">
+  </td></tr>
+
+  <!-- ============================================================
+       11. THE ETERNAL STANDARD — 4 pillars, white bg (do not change)
+  ============================================================ -->
+  <tr><td style="background-color:#ffffff;padding:40px 40px 36px;" class="section-pad">
+    <div style="font-family:Arial,Helvetica,sans-serif;font-size:12px;font-weight:bold;letter-spacing:2px;text-transform:uppercase;color:#A07C36;padding-bottom:6px;text-align:center;">The Eternal Standard</div>
+    <div style="font-family:Georgia,'Times New Roman',serif;font-size:22px;color:#381B37;text-align:center;padding-bottom:24px;line-height:1.3;">Four commitments in every home we enter</div>
+    <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" class="pillar-row">
+      <tr>
+        <td width="23%" style="vertical-align:top;text-align:center;padding:0 6px;">
+          <div style="font-family:Georgia,'Times New Roman',serif;font-size:15px;font-weight:bold;color:#5B2E59;padding-bottom:6px;">Clinical<br>Excellence</div>
+          <div style="font-family:Arial,Helvetica,sans-serif;font-size:12px;line-height:1.6;color:#6B4F6A;">Board-certified physicians and specialty-trained nurses on every case.</div>
+        </td>
+        <td width="2%" class="pillar-spacer">&nbsp;</td>
+        <td width="23%" style="vertical-align:top;text-align:center;padding:0 6px;">
+          <div style="font-family:Georgia,'Times New Roman',serif;font-size:15px;font-weight:bold;color:#5B2E59;padding-bottom:6px;">Whole-Person<br>Comfort</div>
+          <div style="font-family:Arial,Helvetica,sans-serif;font-size:12px;line-height:1.6;color:#6B4F6A;">Integrative therapies offered at no additional cost to every family.</div>
+        </td>
+        <td width="2%" class="pillar-spacer">&nbsp;</td>
+        <td width="23%" style="vertical-align:top;text-align:center;padding:0 6px;">
+          <div style="font-family:Georgia,'Times New Roman',serif;font-size:15px;font-weight:bold;color:#5B2E59;padding-bottom:6px;">Family<br>Partnership</div>
+          <div style="font-family:Arial,Helvetica,sans-serif;font-size:12px;line-height:1.6;color:#6B4F6A;">Caregivers are seen, supported, and never left to carry it alone.</div>
+        </td>
+        <td width="2%" class="pillar-spacer">&nbsp;</td>
+        <td width="23%" style="vertical-align:top;text-align:center;padding:0 6px;">
+          <div style="font-family:Georgia,'Times New Roman',serif;font-size:15px;font-weight:bold;color:#5B2E59;padding-bottom:6px;">Rapid<br>Response</div>
+          <div style="font-family:Arial,Helvetica,sans-serif;font-size:12px;line-height:1.6;color:#6B4F6A;">Same-day admissions available. A nurse reachable 24/7 at 805.953.7273.</div>
+        </td>
+      </tr>
+    </table>
+  </td></tr>
+
+  <!-- ============================================================
+       12. 3-CTA BLOCK — dark plum bg (do not change)
+  ============================================================ -->
+  <tr><td style="background-color:#381B37;padding:40px 40px 36px;" class="section-pad">
+    <div style="font-family:Georgia,'Times New Roman',serif;font-size:22px;color:#F5F0EB;text-align:center;padding-bottom:28px;line-height:1.3;">How we can help right now</div>
+    <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">
+      <tr>
+        <!-- SWAP-ME 3 (fourth of four places): issue page URL for the Read button -->
+        <td width="30%" class="cta-col" style="vertical-align:top;text-align:center;padding:0 6px;">
+          <div style="font-family:Georgia,'Times New Roman',serif;font-size:15px;font-weight:bold;color:#C9B07E;padding-bottom:8px;">Read the Issue</div>
+          <div style="font-family:Arial,Helvetica,sans-serif;font-size:12.5px;line-height:1.6;color:#D8CDBF;padding-bottom:14px;">The full Care Brief — clinical and family editions in one place.</div>
+          <table role="presentation" cellpadding="0" cellspacing="0" border="0" align="center">
+            <tr><td style="background-color:#C9B07E;border-radius:20px;">
+              <a href="https://eternallifehospice.com/care-brief/SWAP-ME-3-issue-page-url"
+                 style="display:inline-block;padding:10px 22px;font-family:Arial,Helvetica,sans-serif;font-size:13px;font-weight:bold;color:#3C1C3B;text-decoration:none;border-radius:20px;">Read Now &rarr;</a>
             </td></tr>
           </table>
-        </td></tr>
-      </table>
-    </td></tr>
+        </td>
+        <td width="5%" class="pillar-spacer">&nbsp;</td>
+        <td width="30%" class="cta-col" style="vertical-align:top;text-align:center;padding:0 6px;">
+          <div style="font-family:Georgia,'Times New Roman',serif;font-size:15px;font-weight:bold;color:#C9B07E;padding-bottom:8px;">Refer a Patient</div>
+          <div style="font-family:Arial,Helvetica,sans-serif;font-size:12.5px;line-height:1.6;color:#D8CDBF;padding-bottom:14px;">Same-day admissions available. We respond quickly and admit responsibly.</div>
+          <table role="presentation" cellpadding="0" cellspacing="0" border="0" align="center">
+            <tr><td style="border:2px solid #C9B07E;border-radius:20px;">
+              <a href="https://eternallifehospice.com/refer"
+                 style="display:inline-block;padding:10px 22px;font-family:Arial,Helvetica,sans-serif;font-size:13px;font-weight:bold;color:#C9B07E;text-decoration:none;border-radius:20px;">Refer &rarr;</a>
+            </td></tr>
+          </table>
+        </td>
+        <td width="5%" class="pillar-spacer">&nbsp;</td>
+        <td width="30%" class="cta-col" style="vertical-align:top;text-align:center;padding:0 6px;">
+          <div style="font-family:Georgia,'Times New Roman',serif;font-size:15px;font-weight:bold;color:#C9B07E;padding-bottom:8px;">Family Guide</div>
+          <div style="font-family:Arial,Helvetica,sans-serif;font-size:12.5px;line-height:1.6;color:#D8CDBF;padding-bottom:14px;">Plain-language guidance for families walking the hospice road.</div>
+          <table role="presentation" cellpadding="0" cellspacing="0" border="0" align="center">
+            <tr><td style="border:2px solid #C9B07E;border-radius:20px;">
+              <a href="https://eternallifehospice.com/family-guide"
+                 style="display:inline-block;padding:10px 22px;font-family:Arial,Helvetica,sans-serif;font-size:13px;font-weight:bold;color:#C9B07E;text-decoration:none;border-radius:20px;">Open &rarr;</a>
+            </td></tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+  </td></tr>
 
-    <!-- Browse past issues (do not change) -->
-    <tr><td align="center" style="padding:26px 40px 4px;">
-      <div style="font-family:Arial,Helvetica,sans-serif;font-size:14px;line-height:1.6;color:#5A4057;">
-        Missed an issue? <a href="https://eternallifehospice.com/care-brief" style="color:#5B2E59;text-decoration:none;font-weight:bold;border-bottom:2px solid #C9B07E;padding-bottom:2px;">Browse every Care Brief &rarr;</a>
-      </div>
-    </td></tr>
+  <!-- ============================================================
+       13. ALEKSANDRA CLOSING — cream bg, circular photo (do not change)
+  ============================================================ -->
+  <tr><td style="background-color:#F5F0EB;padding:44px 48px;" class="body-pad">
+    <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">
+      <tr>
+        <td width="104" style="vertical-align:top;padding-right:20px;">
+          <img src="https://eternallifehospice.com/assets/img/aleksandra-circle.jpg"
+               alt="Aleksandra Dubina — Founder &amp; CEO, Eternal Life Hospice"
+               width="96" class="sig-photo"
+               style="display:block;border:0;outline:none;width:96px;height:96px;border-radius:50%;object-fit:cover;">
+        </td>
+        <td style="vertical-align:top;">
+          <div style="font-family:Georgia,'Times New Roman',serif;font-style:italic;font-size:16px;line-height:1.6;color:#381B37;padding-bottom:12px;">
+            Thank you for the care you bring to your patients and their families every day. I hope this issue finds something worth carrying into your next visit.
+          </div>
+          <div style="font-family:Arial,Helvetica,sans-serif;font-size:13px;font-weight:bold;color:#5B2E59;">Aleksandra Dubina</div>
+          <div style="font-family:Arial,Helvetica,sans-serif;font-size:12px;color:#7a6a5a;line-height:1.6;">Founder &amp; CEO &nbsp;&middot;&nbsp; Certified Hospice Administrator<br>Eternal Life Hospice</div>
+        </td>
+      </tr>
+    </table>
+  </td></tr>
 
-    <!-- Divider -->
-    <tr><td style="padding:28px 40px 0;"><table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%"><tr><td style="border-top:2px solid #C9B07E;font-size:0;line-height:0;">&nbsp;</td></tr></table></td></tr>
+  <!-- ============================================================
+       14. FOOTER — dark plum (do not change except {{ unsubscribe }})
+  ============================================================ -->
+  <tr><td style="background-color:#381B37;padding:32px 40px;">
+    <div style="font-family:Georgia,'Times New Roman',serif;font-style:italic;font-size:17px;color:#C9B07E;padding-bottom:8px;text-align:center;">Care That Honors Life.</div>
+    <div style="font-family:Arial,Helvetica,sans-serif;font-size:10.5px;font-weight:bold;letter-spacing:1.5px;text-transform:uppercase;color:#C9B07E;padding-bottom:10px;text-align:center;">Medicare-Certified &middot; CDPH-Licensed &middot; ACHC-Accredited</div>
+    <div style="font-family:Arial,Helvetica,sans-serif;font-size:12px;line-height:1.8;color:#D8CDBF;text-align:center;padding-bottom:14px;">
+      Eternal Life Hospice, Inc. &middot; 4165 E Thousand Oaks Blvd, Suite 325B, Westlake Village, CA 91362<br>
+      <a href="tel:18059537273" style="color:#D8CDBF;text-decoration:none;">805.953.7273</a> &nbsp;&middot;&nbsp;
+      <a href="mailto:info@eternallifehospice.com" style="color:#D8CDBF;text-decoration:none;">info@eternallifehospice.com</a> &nbsp;&middot;&nbsp;
+      <a href="https://eternallifehospice.com" style="color:#D8CDBF;text-decoration:none;">eternallifehospice.com</a><br>
+      Serving Ventura &amp; Los Angeles County
+    </div>
+    <div style="font-family:Arial,Helvetica,sans-serif;font-size:11px;line-height:1.7;color:#A892A6;text-align:center;">
+      You are receiving this because you subscribe to The Eternal Care Brief.<br>
+      <a href="{{ unsubscribe }}" style="color:#A892A6;">Unsubscribe</a>
+    </div>
+  </td></tr>
 
-    <!-- Secondary CTAs (do not change) -->
-    <tr><td style="padding:24px 40px 8px;">
-      <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">
-        <tr>
-          <td width="50%" style="padding:0 8px 0 0;vertical-align:top;">
-            <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="background-color:#F5F0EB;border:1px solid #D8CDBF;">
-              <tr><td style="padding:20px 22px;">
-                <div style="font-family:Georgia,'Times New Roman',serif;font-size:18px;color:#5B2E59;padding-bottom:8px;">For professional care&nbsp;teams</div>
-                <div style="font-family:Arial,Helvetica,sans-serif;font-size:13.5px;line-height:1.6;color:#5A4057;padding-bottom:14px;">When a patient may be ready for hospice, our team responds quickly and admits responsibly.</div>
-                <a href="https://eternallifehospice.com/refer" style="font-family:Arial,Helvetica,sans-serif;font-size:14px;font-weight:bold;color:#5B2E59;text-decoration:none;border-bottom:2px solid #C9B07E;padding-bottom:2px;">Refer a Patient &rarr;</a>
-              </td></tr>
-            </table>
-          </td>
-          <td width="50%" style="padding:0 0 0 8px;vertical-align:top;">
-            <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="background-color:#F5F0EB;border:1px solid #D8CDBF;">
-              <tr><td style="padding:20px 22px;">
-                <div style="font-family:Georgia,'Times New Roman',serif;font-size:18px;color:#5B2E59;padding-bottom:8px;">For families</div>
-                <div style="font-family:Arial,Helvetica,sans-serif;font-size:13.5px;line-height:1.6;color:#5A4057;padding-bottom:14px;">The Family Guide walks gently through what hospice is, what to expect, and how to begin.</div>
-                <a href="https://eternallifehospice.com/family-guide" style="font-family:Arial,Helvetica,sans-serif;font-size:14px;font-weight:bold;color:#5B2E59;text-decoration:none;border-bottom:2px solid #C9B07E;padding-bottom:2px;">Open the Family Guide &rarr;</a>
-              </td></tr>
-            </table>
-          </td>
-        </tr>
-      </table>
-    </td></tr>
-
-    <!-- 24/7 line (do not change) -->
-    <tr><td align="center" style="padding:24px 40px 36px;">
-      <div style="font-family:Georgia,'Times New Roman',serif;font-style:italic;font-size:16px;color:#6b5d68;">
-        Questions? A nurse is available 24/7 &middot; <a href="tel:18059537273" style="color:#5B2E59;text-decoration:none;font-weight:bold;">805.953.7273</a>
-      </div>
-    </td></tr>
-
-    <!-- Footer (do not change, except the unsubscribe tag) -->
-    <tr><td style="background-color:#3C1C3B;padding:28px 40px;">
-      <div style="font-family:Georgia,'Times New Roman',serif;font-style:italic;font-size:17px;color:#C9B07E;padding-bottom:8px;">Care That Honors Life.</div>
-      <div style="font-family:Arial,Helvetica,sans-serif;font-size:10.5px;font-weight:bold;letter-spacing:1.5px;text-transform:uppercase;color:#C9B07E;padding-bottom:10px;">Medicare-Certified &middot; CDPH-Licensed &middot; ACHC-Accredited</div>
-      <div style="font-family:Arial,Helvetica,sans-serif;font-size:12px;line-height:1.7;color:#d8ccd8;">
-        Eternal Life Hospice, Inc. &middot; 4165 E Thousand Oaks Blvd, Suite 325B, Westlake Village, CA 91362<br>
-        <a href="tel:18059537273" style="color:#d8ccd8;text-decoration:none;">805.953.7273</a> &middot; <a href="mailto:info@eternallifehospice.com" style="color:#d8ccd8;text-decoration:none;">info@eternallifehospice.com</a> &middot; <a href="https://eternallifehospice.com" style="color:#d8ccd8;text-decoration:none;">eternallifehospice.com</a><br>
-        Serving Ventura &amp; Los Angeles County
-      </div>
-      <div style="font-family:Arial,Helvetica,sans-serif;font-size:11px;line-height:1.7;color:#a892a6;padding-top:14px;">
-        You are receiving this because you asked to hear from Eternal Life Hospice.<br>
-        <!-- PLACEHOLDER: replace href with your ESP's unsubscribe merge tag before sending.
-             MailerLite: {$unsubscribe}   Brevo: {{ unsubscribe }} -->
-        <a href="#UNSUBSCRIBE-PLACEHOLDER" style="color:#a892a6;">Unsubscribe</a>
-      </div>
-    </td></tr>
-
-  </table>
+</table>
 
 </td></tr>
 </table>
