@@ -1,0 +1,620 @@
+You are working directly in the Eternal Life Hospice production repository.
+
+## Sprint 2 Objective
+
+Create one authoritative. indexable founder entity page for **Aleksandra Dubina** while cleaning up duplicate founder routes. unsupported credentials and unnecessary exposure of her personal cell number.
+
+This sprint is focused only on:
+
+* founder entity resolution
+* founder route consolidation
+* founder schema
+* founder internal linking
+* founder contact-card privacy
+* removal of unsupported RN/BSN schema
+
+Do not redesign the site.
+
+Do not change the approved top-level navigation architecture.
+
+Do not begin footer normalization.
+
+Do not alter city-page body content.
+
+Do not begin broader schema cleanup.
+
+Do not change unrelated content.
+
+Do not make speculative SEO changes outside this scope.
+
+---
+
+# Phase 1 — Audit before modifying anything
+
+Search the entire production repository for:
+
+* `Aleksandra Dubina`
+* `aleksandradubina`
+* `card-aleksandra-dubina`
+* `/aleksandra`
+* founder-related links
+* `RN, BSN`
+* `"honorificSuffix"`
+* `8186445357`
+* `818.644.5357`
+* `818-644-5357`
+* `+18186445357`
+* all formatting variations of Aleksandra's 818 personal number
+* `aleksandra@eternalhospice.com`
+* Aleksandra-related `Person` schema
+* downloadable `.vcf` files
+* founder `sameAs` values
+* founder image references
+
+Before making changes report internally:
+
+* every founder route/file
+* current indexability
+* canonical
+* redirects
+* visible content
+* schema present
+* internal links pointing to each route
+* contact information exposed
+* credentials represented
+* whether the personal cell appears in HTML. schema. metadata. vCard or other served assets
+
+Do not modify anything until this route and data map is complete.
+
+---
+
+# Phase 2 — Create the authoritative founder page
+
+Preferred canonical URL:
+
+`/about/aleksandra-dubina`
+
+If it does not exist create it.
+
+The purpose of this page is to give Google. AI systems. referral partners and families one clear authoritative document answering:
+
+**Who is Aleksandra Dubina and what is her relationship to Eternal Life Hospice?**
+
+## Required page state
+
+The page must be:
+
+* HTTP 200
+* `index,follow`
+* self-canonical
+* internally linked
+* mobile responsive
+* visually consistent with the existing Eternal Life Hospice design system
+* clearly about Aleksandra Dubina
+* free of unsupported claims or credentials
+
+## SEO metadata
+
+Use:
+
+**Title tag**
+
+`Aleksandra Dubina | Founder of Eternal Life Hospice`
+
+**H1**
+
+`Aleksandra Dubina`
+
+**Subhead**
+
+`Founder & Chief Executive Officer of Eternal Life Hospice`
+
+Write a unique meta description based only on verified existing founder information.
+
+Do not keyword-stuff it.
+
+---
+
+# Phase 3 — Founder page content
+
+Reuse and consolidate the strongest existing founder content already present on the homepage. card pages or production repository.
+
+Do not invent biography details.
+
+Suggested page structure:
+
+## 1. Leadership at Eternal Life Hospice
+
+Explain Aleksandra's role as Founder and Chief Executive Officer.
+
+## 2. Her connection to hospice
+
+Use only the existing verified story and language already approved on the Eternal website.
+
+## 3. Healthcare and hospice experience
+
+Include only experience that is already explicitly supported in production content.
+
+## 4. The Eternal Standard
+
+Connect her leadership to the established four-pillar framework:
+
+* Clinical Confidence
+* Guided Presence
+* Whole-Person Comfort
+* Compliance-Led Care
+
+## 5. Approach to patients and families
+
+Use existing language around dignity. family guidance. attentive care and whole-person support.
+
+## 6. Credentials
+
+Include only credentials already verified and publicly approved.
+
+### Important
+
+Do **not** identify Aleksandra as:
+
+* RN
+* BSN
+* physician
+* nurse
+* clinician
+
+unless separately verified and expressly approved.
+
+The current human decision is to remove the unsupported **RN, BSN** association.
+
+If `Certified Hospice Administrator` is already supported and approved in existing public materials it may remain.
+
+Do not invent degrees. licenses. certifications. awards. affiliations. years of experience or professional memberships.
+
+If existing sources conflict flag the conflict rather than choosing silently.
+
+---
+
+# Phase 4 — Add Person schema
+
+Add valid JSON-LD `Person` schema to:
+
+`/about/aleksandra-dubina`
+
+Use only verified data.
+
+Where supported include:
+
+* `@type`: `Person`
+* `@id`: stable founder identifier
+* `name`: `Aleksandra Dubina`
+* `url`: `https://eternallifehospice.com/about/aleksandra-dubina`
+* `jobTitle`: `Founder & Chief Executive Officer`
+* `image`
+* `worksFor`
+* confirmed professional `sameAs` profiles
+
+## Entity connection
+
+`worksFor` should reference Eternal Life Hospice consistently through the site's Organization entity if one already exists.
+
+Example relationship:
+
+`Aleksandra Dubina → worksFor → Eternal Life Hospice`
+
+Do not create duplicate conflicting Organization entities in this sprint.
+
+## sameAs rules
+
+Only include confirmed official or professional profiles.
+
+Do not include:
+
+* duplicate internal URLs
+* random directory listings
+* contact-card URLs
+* unverified profiles
+
+If LinkedIn is already confirmed as Aleksandra's professional profile it may be retained.
+
+---
+
+# Phase 5 — Remove unsupported RN, BSN association
+
+The previous audit identified:
+
+`"honorificSuffix": "RN, BSN"`
+
+in Aleksandra's homepage Person schema.
+
+Human decision:
+
+**Remove RN, BSN.**
+
+Search the entire production repository for:
+
+* `RN, BSN`
+* `RN`
+* `BSN`
+* `honorificSuffix`
+
+where associated specifically with Aleksandra Dubina.
+
+Remove the unsupported RN/BSN association from:
+
+* homepage Person schema
+* founder schema
+* metadata
+* public founder content
+* any other production source where it is attached to Aleksandra without verified support
+
+Do not replace it with another clinical credential.
+
+Do not alter unrelated RN/BSN references describing other people or roles.
+
+---
+
+# Phase 6 — Consolidate founder URLs
+
+Audit current founder routes including:
+
+* `/aleksandradubina`
+* `/aleksandra`
+* `/card-aleksandra-dubina`
+
+Then consolidate them deliberately.
+
+## `/aleksandradubina`
+
+If it is currently a sparse. noindex founder card or incomplete founder page:
+
+301 redirect:
+
+`/aleksandradubina`
+
+→
+
+`/about/aleksandra-dubina`
+
+If a physical HTML file prevents Netlify from honoring the redirect remove that file only after confirming the redirect behavior.
+
+## `/aleksandra`
+
+If it currently redirects to the card page:
+
+change it to one-hop redirect:
+
+`/aleksandra`
+
+→
+
+`/about/aleksandra-dubina`
+
+No redirect chains.
+
+## `/card-aleksandra-dubina`
+
+Retain this as a separate operational digital contact card.
+
+Requirements:
+
+* remain publicly fetchable
+* remain `noindex`
+* do not position it as the authoritative biography
+* do not canonicalize the founder biography to the card
+* preserve downloadable contact functionality
+* preserve visual design unless a change is required for privacy cleanup
+
+---
+
+# Phase 7 — Remove Aleksandra's personal cell number
+
+Human decision:
+
+**Remove Aleksandra's personal 818 cell number from all production website assets.**
+
+Search globally for every formatting variation of:
+
+`818.644.5357`
+
+including:
+
+* `8186445357`
+* `818-644-5357`
+* `(818) 644-5357`
+* `+1 818 644 5357`
+* `+18186445357`
+* encoded tel links
+* JSON values
+* vCard values
+
+Remove it from:
+
+* `/card-aleksandra-dubina`
+* downloadable vCard
+* `tel:` links
+* schema
+* metadata
+* JSON
+* HTML
+* hidden attributes
+* any publicly served file in the production site
+
+Do not replace it with another personal number.
+
+---
+
+# Phase 8 — Preserve downloadable contact functionality
+
+The digital contact card and downloadable `.vcf` must remain functional after personal-cell removal.
+
+The downloadable contact should use only approved business contact information already established by Eternal.
+
+Where currently supported preserve:
+
+**Aleksandra Dubina**
+Founder & Chief Executive Officer
+Eternal Life Hospice
+
+Business phone:
+
+`805.953.7273`
+
+Work email:
+
+`aleksandra@eternalhospice.com`
+
+Website:
+
+`https://eternallifehospice.com`
+
+Preserve legitimate business-address fields only if they already exist and match the site's currently approved business address.
+
+Do not make an address decision in this sprint if conflicting addresses exist elsewhere.
+
+Do not add the fax number unless it is already intentionally part of the vCard.
+
+## vCard validation
+
+Confirm the final `.vcf`:
+
+* downloads successfully
+* parses as a valid vCard
+* contains Aleksandra's name
+* contains Eternal Life Hospice
+* contains the business telephone
+* contains the work email
+* contains the website
+* contains zero references to the personal 818 number
+
+---
+
+# Phase 9 — Internal linking
+
+Update relevant internal links throughout production so founder/about references point to:
+
+`/about/aleksandra-dubina`
+
+Examples:
+
+* Aleksandra Dubina
+* Founder
+* Founder & CEO
+* About Aleksandra
+* leadership biography
+
+Do not change links whose explicit purpose is:
+
+* digital contact card
+* download contact
+* save vCard
+
+Those should continue pointing to the operational card or vCard.
+
+## Minimum authoritative internal connections
+
+The founder page should be reachable from:
+
+* homepage founder section
+* About pathway
+* relevant footer/About links if already present
+
+Do not alter top-level navigation labels.
+
+---
+
+# Phase 10 — Homepage Person schema reconciliation
+
+The homepage may already contain Person schema for Aleksandra.
+
+Update it to align with the canonical founder page.
+
+Requirements:
+
+* `url` → canonical founder page
+* `sameAs` → confirmed professional profiles only
+* `worksFor` → Eternal Life Hospice entity
+* remove unsupported RN/BSN honorific
+* do not include personal cell number
+* do not point to the digital contact card as the primary founder URL
+
+Avoid creating two competing founder entities with different `@id` values unless the existing schema architecture requires it.
+
+Prefer one stable Aleksandra entity identifier sitewide.
+
+---
+
+# Phase 11 — Privacy verification
+
+After changes search production again for the personal number.
+
+Required outcome:
+
+**Zero publicly served occurrences of Aleksandra's 818 personal number.**
+
+Check:
+
+* HTML
+* JSON-LD
+* meta tags
+* JS
+* CSS comments only if publicly shipped
+* vCards
+* contact files
+* downloadable assets where text-searchable
+* tel links
+* generated search indexes
+* static-site indexes
+
+If the number remains anywhere report exactly why.
+
+Do not claim privacy cleanup is complete if any publicly served instance remains.
+
+---
+
+# Phase 12 — Validation
+
+Before committing confirm all of the following.
+
+## Canonical founder page
+
+* `/about/aleksandra-dubina` returns 200
+* exactly one H1
+* unique title
+* unique meta description
+* `index,follow`
+* self-referencing canonical
+* visible biography content exists
+* no unsupported credentials
+* no personal cell number
+
+## Schema
+
+* Person schema is structurally valid
+* `name` is correct
+* `url` points to canonical founder page
+* `worksFor` references Eternal Life Hospice
+* stable founder `@id`
+* no RN/BSN
+* no personal cell
+* confirmed `sameAs` only
+
+## Redirects
+
+* `/aleksandradubina` → one-hop 301 to canonical biography
+* `/aleksandra` → one-hop 301 to canonical biography
+* no redirect chains
+* `/card-aleksandra-dubina` remains 200 and `noindex`
+
+## Contact card
+
+* digital contact card still functions
+* personal cell removed
+* business phone remains
+* work email remains
+* downloadable contact remains functional
+* `.vcf` contains no personal cell
+
+## Internal links
+
+* zero standard biography/About links point to obsolete `/aleksandradubina`
+* canonical founder page is internally discoverable
+* contact-card links remain intentional
+
+## Scope
+
+* no city-page body content changed
+* no global footer normalization started
+* no navigation architecture changed
+* no broad schema refactor
+* no unrelated visual redesign
+
+---
+
+# Commit strategy
+
+Keep this sprint tightly scoped.
+
+Commit only files required for:
+
+* authoritative founder page
+* founder redirects
+* founder schema
+* founder internal-link corrections
+* personal-cell removal
+* vCard update
+* RN/BSN cleanup
+
+If a large number of HTML files must change solely because the old founder URL appears in repeated global navigation/footer markup that is acceptable.
+
+Do not use that as an excuse to normalize those templates in this sprint.
+
+---
+
+# Final report
+
+Return a concise Sprint 2 report containing:
+
+## 1. Route map before
+
+Show:
+
+* route
+* file
+* indexability
+* canonical
+* redirect behavior
+* purpose
+
+## 2. Files changed
+
+List every file or file group modified and why.
+
+## 3. Route behavior after
+
+Show:
+
+`old URL → status → final URL`
+
+Confirm redirect hops.
+
+## 4. Founder page
+
+Report:
+
+* title
+* H1
+* canonical
+* indexability
+* sections included
+
+## 5. Schema
+
+Report final Person entity fields and `@id`.
+
+## 6. Credential cleanup
+
+Report every Aleksandra RN/BSN occurrence found and what happened to it.
+
+## 7. Privacy cleanup
+
+Report every location where the 818 personal cell was found and removed.
+
+Explicitly confirm whether repository-wide production search returns zero remaining occurrences.
+
+## 8. Final vCard
+
+Report the final fields included in the downloadable contact.
+
+## 9. Internal links
+
+Report how many old founder links were updated.
+
+## 10. Validation
+
+Provide pass/fail results for all validation requirements.
+
+## 11. Remaining decisions
+
+Flag anything requiring human confirmation rather than guessing.
+
+Do not begin Sprint 3 until this Sprint 2 scope is fully validated.
