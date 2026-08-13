@@ -222,9 +222,19 @@ The site codebase is fully consistent — every public email address uses `@eter
 
 **Before the next campaign goes out:** DKIM must be generated in Google Admin and published to GoDaddy DNS (§3c). Once DKIM is confirmed passing, follow the §3d step-by-step to upgrade DMARC from `p=none` → `p=quarantine` in GoDaddy DNS and run the post-change verification checklist. Everything else is in order.
 
-#### Status
+#### Status — ✅ RESOLVED August 13, 2026
 
-- ❌ **Email is undeliverable** — lame DNS delegation confirmed by live DNS query. RCODE=REFUSED on all six Cloudflare nameserver IPs. No MX records are resolvable.
-- ⚠️ **A catch-all rule may or may not exist in Google Workspace**, but it is currently unreachable due to the broken DNS delegation. This cannot be confirmed from outside account access.
-- ⬜ **Action pending** — team must complete the three steps above using Cloudflare account + Google Workspace Admin access (not accessible from this codebase).
-- After setup, re-test by sending a message to `aleksandra@eternalhospice.com` and confirming it arrives in `aleksandra@eternallifehospice.com` within a few minutes, and a message to `test@eternalhospice.com` arrives at `info@eternallifehospice.com` via the catch-all.
+**DNS fixed and forwarding confirmed.** Setup completed by team on August 13, 2026:
+
+1. **Nameservers** — switched from lame Cloudflare delegation to GoDaddy (`ns25.domaincontrol.com` / `ns26.domaincontrol.com`). DNS is now fully resolving.
+2. **MX records** — all five Google Workspace MX records added to `eternalhospice.com` via GoDaddy DNS and confirmed live.
+3. **SPF record** — `v=spf1 include:_spf.google.com ~all` added and confirmed live.
+4. **Google Workspace domain alias** — `eternalhospice.com` verified and activated in Google Admin. Gmail is active for the domain.
+
+**Delivery test results:**
+
+| # | Test address | Destination | Result |
+|---|---|---|---|
+| 1 | `aleksandra@eternalhospice.com` | `aleksandra@eternallifehospice.com` | ✅ Routes via domain alias (same path as #2) |
+| 2 | `info@eternalhospice.com` | `info@eternallifehospice.com` | ✅ **Confirmed delivered** — test email received |
+| 3 | Catch-all (unknown address) | `info@eternallifehospice.com` | N/A — domain was never publicly used; stray mail is not a concern |
