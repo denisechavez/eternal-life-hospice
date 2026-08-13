@@ -72,6 +72,8 @@ REQUIRED = {
 
 results = {"pass": [], "fail": [], "exception": []}
 failures = []
+stale_exceptions = []   # exception keys whose file is missing from disk
+redundant_exceptions = []  # exception keys whose file now passes all parity checks
 
 for dirpath, dirs, files in os.walk(ROOT):
     dirs.sort()
@@ -108,12 +110,39 @@ for dirpath, dirs, files in os.walk(ROOT):
         else:
             results["pass"].append(rel)
 
+# ── Staleness scan: verify every exception entry is still valid ────────────
+for exc_rel, exc_reason in INTENTIONAL_EXCEPTIONS.items():
+    exc_path = os.path.join(ROOT, exc_rel.replace("/", os.sep))
+    if not os.path.exists(exc_path):
+        stale_exceptions.append((exc_rel, exc_reason))
+        continue
+    # File exists — check whether it now passes all parity checks
+    html = open(exc_path, encoding="utf-8", errors="replace").read()
+    page_fails = []
+    for key, (token, label) in REQUIRED.items():
+        if key == "no_stale_url":
+            if token in html:
+                page_fails.append(f"STALE URL: {token} found")
+        else:
+            if token not in html:
+                page_fails.append(f"MISSING: {label}")
+    for nav_label in NAV_LABELS:
+        if nav_label not in html:
+            page_fails.append(f"MISSING NAV: {nav_label}")
+    if not page_fails:
+        redundant_exceptions.append((exc_rel, exc_reason))
+
 # ── Report ─────────────────────────────────────────────────────────────────
 total = len(results["pass"]) + len(results["fail"]) + len(results["exception"])
 print(f"\nELH Header Parity Audit — {total} pages scanned")
 print(f"  ✅  Pass:       {len(results['pass'])}")
 print(f"  ❌  Fail:       {len(results['fail'])}")
-print(f"  ⚠️   Exceptions: {len(results['exception'])}\n")
+print(f"  ⚠️   Exceptions: {len(results['exception'])}")
+if stale_exceptions:
+    print(f"  🚨  Stale exceptions (file missing):   {len(stale_exceptions)}")
+if redundant_exceptions:
+    print(f"  🔔  Redundant exceptions (now passes): {len(redundant_exceptions)}")
+print()
 
 if failures:
     print("── FAILURES ─────────────────────────────────────────────────────")
@@ -123,14 +152,35 @@ if failures:
             print(f"    • {e}")
     print()
 
+if stale_exceptions:
+    print("── STALE EXCEPTIONS (file no longer exists on disk) ─────────────")
+    for rel, reason in stale_exceptions:
+        print(f"  🚨  {rel}")
+        print(f"       was: {reason}")
+    print()
+
+if redundant_exceptions:
+    print("── REDUNDANT EXCEPTIONS (file now passes all parity checks) ─────")
+    for rel, reason in redundant_exceptions:
+        print(f"  🔔  {rel}")
+        print(f"       was: {reason}")
+        print(f"       → consider removing this entry from INTENTIONAL_EXCEPTIONS")
+    print()
+
 print("── INTENTIONAL EXCEPTIONS ───────────────────────────────────────────")
 for rel, reason in results["exception"]:
     print(f"  ⚠️  {rel}")
     print(f"       {reason}")
 
+exit_code = 0
 if failures:
     print(f"\n❌  {len(failures)} page(s) failed — fix before deploying.\n")
-    sys.exit(1)
-else:
+    exit_code = 1
+if stale_exceptions:
+    print(f"\n🚨  {len(stale_exceptions)} stale exception(s) — remove or update INTENTIONAL_EXCEPTIONS.\n")
+    exit_code = 1
+if not failures and not stale_exceptions:
     print(f"\n✅  All standard pages pass header parity check.\n")
-    sys.exit(0)
+if redundant_exceptions:
+    print(f"🔔  {len(redundant_exceptions)} exception(s) may be redundant — review INTENTIONAL_EXCEPTIONS.\n")
+sys.exit(exit_code)
