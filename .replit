@@ -47,6 +47,10 @@ args = "alias-check"
 task = "workflow.run"
 args = "rebuild-search-index"
 
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "header-parity-check"
+
 [[workflows.workflow]]
 name = "Start application"
 author = "agent"
@@ -136,6 +140,17 @@ args = "node website/elh-preview/assets/build-search-index.js"
 
 [workflows.workflow.metadata]
 outputType = "console"
+
+[[workflows.workflow]]
+name = "header-parity-check"
+author = "agent"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "python3 website/check-header-parity.py"
+
+[workflows.workflow.metadata]
+isValidation = true
 
 [[ports]]
 localPort = 3000
