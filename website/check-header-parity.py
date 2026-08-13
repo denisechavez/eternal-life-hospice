@@ -347,6 +347,8 @@ for rel, reason in results["exception"]:
 REDIRECTS_FILE = os.path.join(ROOT, "_redirects")
 broken_netlify_rules = []  # (line_no, line, dest) tuples
 self_loop_rules = []       # (line_no, line) tuples — source == destination after normalisation
+redirect_cycle_rules = []  # list of (cycle_nodes, cycle_rule_list) — multi-hop cycles (length ≥ 2)
+_plain_redirect_graph = {}  # normalised_src -> [(normalised_dest, lineno, raw_line)]
 
 import re as _re2  # _re already imported above; alias to avoid shadowing
 
@@ -411,6 +413,79 @@ if os.path.isfile(REDIRECTS_FILE):
                 continue
             if not _netlify_dest_exists(_dest):
                 broken_netlify_rules.append((_lineno, _line, _dest))
+            # ── Collect plain (non-splat) rules for multi-hop cycle detection ──
+            # Skip wildcard sources/destinations — they represent pattern rules, not
+            # fixed paths, so they cannot form a deterministic redirect cycle.
+            if "*" not in _src and "*" not in _dest:
+                _n_src = _src.rstrip("/")
+                _n_dest = _dest.rstrip("/")
+                if _n_src not in _plain_redirect_graph:
+                    _plain_redirect_graph[_n_src] = []
+                _plain_redirect_graph[_n_src].append((_n_dest, _lineno, _line))
+
+# ── Multi-hop cycle detection ──────────────────────────────────────────────
+# Walk the graph of plain local redirect rules with DFS; collect any cycle
+# of length ≥ 2 hops (A→B→A counts as 2 hops / 3 nodes in the path list).
+# Self-loops (length 1) are already reported above; they are excluded here
+# (the graph only contains rules whose source != destination after rstrip).
+
+def _find_redirect_cycles(graph):
+    """Return a list of cycles found via DFS.
+
+    Each cycle is represented as a list of path strings:
+      [A, B, A]  for a two-hop loop
+      [A, B, C, A]  for a three-hop loop
+    The first and last element are the same node (the cycle entry point).
+    Only cycles of total length ≥ 3 nodes (≥ 2 hops) are returned.
+    """
+    visited = set()
+    in_stack = {}   # node -> index in current DFS stack
+    stack = []
+    cycles = []
+
+    def _dfs(node):
+        visited.add(node)
+        in_stack[node] = len(stack)
+        stack.append(node)
+        for next_node, _, _ in graph.get(node, []):
+            if next_node not in visited:
+                _dfs(next_node)
+            elif next_node in in_stack:
+                # Back-edge found — extract the cycle from the stack
+                start_idx = in_stack[next_node]
+                cycle_nodes = stack[start_idx:] + [next_node]
+                if len(cycle_nodes) >= 3:   # ≥ 2 hops
+                    cycles.append(list(cycle_nodes))
+        stack.pop()
+        del in_stack[node]
+
+    for _start in list(graph.keys()):
+        if _start not in visited:
+            _dfs(_start)
+    return cycles
+
+_detected_cycles = _find_redirect_cycles(_plain_redirect_graph)
+for _cycle_nodes in _detected_cycles:
+    # Resolve each edge in the cycle back to its (lineno, raw_line) tuple
+    _cycle_rules = []
+    for _ci in range(len(_cycle_nodes) - 1):
+        _cn, _cn_next = _cycle_nodes[_ci], _cycle_nodes[_ci + 1]
+        for _nd, _nl, _nline in _plain_redirect_graph.get(_cn, []):
+            if _nd == _cn_next:
+                _cycle_rules.append((_nl, _nline))
+                break
+    redirect_cycle_rules.append((_cycle_nodes, _cycle_rules))
+
+if redirect_cycle_rules:
+    print("── REDIRECT CYCLE DETECTED (rules loop — browsers will get too-many-redirects) ─")
+    for _cycle_nodes, _cycle_rules in redirect_cycle_rules:
+        _hops = len(_cycle_nodes) - 1
+        _path_str = " → ".join(_cycle_nodes)
+        print(f"  🚨  {_hops}-hop cycle: {_path_str}")
+        for _nl, _nline in _cycle_rules:
+            print(f"       Line {_nl}: {_nline}")
+        print(f"       → remove or reorder these rules to break the loop")
+    print()
 
 if self_loop_rules:
     print("── SELF-LOOP REDIRECT RULES (source == destination) ─────────────")
@@ -444,10 +519,13 @@ if missing_redirect_targets:
 if self_loop_rules:
     print(f"\n🚨  {len(self_loop_rules)} _redirects rule(s) loop back to themselves — fix before deploying.\n")
     exit_code = 1
+if redirect_cycle_rules:
+    print(f"\n🚨  {len(redirect_cycle_rules)} _redirects cycle(s) detected — browsers will hit 'too many redirects' — fix before deploying.\n")
+    exit_code = 1
 if broken_netlify_rules:
     print(f"\n🚨  {len(broken_netlify_rules)} _redirects rule(s) point to a destination that does not exist — fix before deploying.\n")
     exit_code = 1
-if not failures and not stale_exceptions and not broken_redirects and not missing_redirect_targets and not self_loop_rules and not broken_netlify_rules:
+if not failures and not stale_exceptions and not broken_redirects and not missing_redirect_targets and not self_loop_rules and not redirect_cycle_rules and not broken_netlify_rules:
     print(f"\n✅  All standard pages pass header parity check.\n")
 if redundant_exceptions:
     print(f"🔔  {len(redundant_exceptions)} exception(s) may be redundant — review INTENTIONAL_EXCEPTIONS.\n")
