@@ -547,6 +547,10 @@ details.cqn-col:not([open])>summary.cqn-county{margin-bottom:0;padding-bottom:0;
 }
 
 /* ---- Mobile padding — safe gutters on all pages ---- */
+@media(max-width:600px){
+  /* Header icon spacing — tighten gaps so hamburger sits near the right edge */
+  .hdr-in{gap:.6rem}
+}
 @media(max-width:480px){
   /* Header */
   #hdr{padding:0 1.1rem}
