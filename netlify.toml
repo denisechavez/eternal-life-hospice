@@ -18,6 +18,13 @@
 #      and that every local destination in _redirects resolves to a real file.
 #      Exits 1 and cancels the deploy if any check fails.
 #
+# All four checks are wrapped by elh-predeploy.sh, which also captures their
+# combined output and verifies that every script's SENTINEL self-test line was
+# printed.  A script that has been accidentally emptied exits 0 without printing
+# its SENTINEL — the sentinel-grep step catches that and blocks the deploy.
+# This gives Netlify the same hollowed-script protection that the local
+# test-predeploy-chain.sh provides.
+#
 # We set `base` to the site folder so Netlify runs entirely inside it. This
 # isolates the deploy from the repo-root package.json (which belongs to the
 # internal Outreach Tracker, not the website). Without this, Netlify would try
@@ -26,7 +33,7 @@
 [build]
   base = "website/elh-preview"
   publish = "."
-  command = "git fetch --unshallow 2>/dev/null || true && bash ../check-cookie-settings.sh && node assets/test-chat-teaser.js && python3 ../check-city-scripts.py && python3 ../check-header-parity.py && node assets/build-search-index.js && node assets/update-sitemap-dates.js"
+  command = "bash ../elh-predeploy.sh"
 
 [functions]
   directory = "netlify/functions"
