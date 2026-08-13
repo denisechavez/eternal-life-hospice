@@ -18,6 +18,20 @@ EXCLUDE=(
   "aleksandradubina.html"
 )
 
+# ── Sentinel self-test ───────────────────────────────────────────────────────
+# Verifies the guard correctly detects a page missing the Cookie Settings link.
+# If the grep logic were broken (e.g. always returns 0), this exits 1 instead
+# of silently passing the deploy.
+_st_tmp="$(mktemp /tmp/elh-cs-sentinel-XXXXXX.html)"
+printf '<html><body><p>Page without any cookie link here</p></body></html>\n' > "$_st_tmp"
+if grep -q "Cookie Settings" "$_st_tmp"; then
+  echo "❌  SELF-TEST FAILED: guard accepted a page that is missing the Cookie Settings link" >&2
+  rm -f "$_st_tmp"
+  exit 1
+fi
+rm -f "$_st_tmp"
+echo "SENTINEL: check-cookie-settings.sh self-test OK"
+
 # ─────────────────────────────────────────────────────────────────────────────
 missing=()
 

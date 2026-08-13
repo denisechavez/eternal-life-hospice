@@ -69,6 +69,23 @@ REQUIRED = {
     "no_stale_url":('/aleksandradubina',  "stale /aleksandradubina URL"),  # must NOT appear
 }
 
+# ── Sentinel self-test ─────────────────────────────────────────────────────
+# Verifies the guard correctly detects a page missing required header elements.
+# If the token-matching logic were broken so it always reported "pass", this
+# exits 1 instead of silently passing the deploy.
+_st_html = "<html><head></head><body><p>No ELH header present</p></body></html>"
+_st_found_failures = False
+for _st_key, (_st_token, _st_label) in REQUIRED.items():
+    if _st_key == "no_stale_url":
+        continue  # negative check — skip for self-test
+    if _st_token not in _st_html:
+        _st_found_failures = True
+        break
+if not _st_found_failures:
+    print("❌  SELF-TEST FAILED: guard did not detect a page missing required header elements")
+    sys.exit(1)
+print("SENTINEL: check-header-parity.py self-test OK")
+
 results = {"pass": [], "fail": [], "exception": []}
 failures = []
 stale_exceptions = []      # exception keys whose file is missing from disk

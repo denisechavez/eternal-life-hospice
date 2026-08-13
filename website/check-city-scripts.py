@@ -364,6 +364,14 @@ else:
     mutation_errors.append(msg)
 _hero_checks += 1
 
+# ── Sentinel: all mutation self-tests passed ──────────────────────────────────
+# Print only when every mutation above was caught correctly.  If any mutation
+# went undetected, the script will exit 1 via combined_errors below, and this
+# sentinel will NOT appear — test-predeploy-chain.sh treats its absence as a
+# sign the self-test section was skipped or the guard is broken.
+if not mutation_errors:
+    print("\nSENTINEL: check-city-scripts.py self-test OK")
+
 # ── [ 6 ] Stale alias check — aliases whose target city is not published ───────
 
 print("\n[ 6 ] Stale alias check — every alias target must exist in city-data.json …")

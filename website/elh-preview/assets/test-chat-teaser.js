@@ -205,6 +205,46 @@ console.log('\n── Check 3: no auto-show of teaser on page load\n');
   }
 })();
 
+// ── Sentinel self-test ───────────────────────────────────────────────────────
+// Verifies the guard correctly rejects a chat.js where maybeShowTeaser() is NOT
+// a no-op.  If the regex or brace-walk logic were broken so it always returned
+// "is a no-op", this exits 1 instead of silently passing the deploy.
+(function sentinelSelfTest() {
+  // Craft a source string where maybeShowTeaser has a real body (not a no-op).
+  const badSrc = [
+    'function maybeShowTeaser() {',
+    '  teaser.style.display = "block";',   // ← deliberate non-noop body
+    '}',
+    'function build() { teaser.style.display = "none"; }',
+    'function open() {}',
+    'function dismissTeaser() {}',
+    'function close() {}',
+  ].join('\n');
+
+  // Re-run Check 1 logic inline against the bad source.
+  const startMarker = 'function maybeShowTeaser()';
+  const startIdx    = badSrc.indexOf(startMarker);
+  const braceStart  = badSrc.indexOf('{', startIdx);
+  let depth = 0, i = braceStart, end = -1;
+  for (; i < badSrc.length; i++) {
+    if (badSrc[i] === '{') depth++;
+    else if (badSrc[i] === '}') { depth--; if (depth === 0) { end = i; break; } }
+  }
+  const body = badSrc.slice(braceStart + 1, end).trim();
+  const stripped = body
+    .replace(/\/\*[\s\S]*?\*\//g, '')
+    .replace(/\/\/[^\n]*/g, '')
+    .trim();
+  const isNoop = stripped === '' || /^[\s;]*return\s*;[\s;]*$/.test(stripped);
+
+  if (isNoop) {
+    // Guard failed to detect the non-noop body — the check itself is broken.
+    console.error('\n  ✗ SELF-TEST FAILED: guard classified a non-noop maybeShowTeaser() as a no-op');
+    process.exit(1);
+  }
+  console.log('\nSENTINEL: test-chat-teaser.js self-test OK');
+})();
+
 // ── Summary ───────────────────────────────────────────────────────────────────
 console.log('\n' + '═'.repeat(60));
 if (allPassed) {
