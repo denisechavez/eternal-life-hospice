@@ -1,0 +1,306 @@
+You are working directly in the Eternal Life Hospice production repository.
+
+## Objective
+
+Audit and normalize the header behavior across **all public pages** so every page uses the same approved header structure and scroll behavior as the live homepage.
+
+The homepage is the **source of truth**.
+
+This is a sitewide header-consistency sprint.
+
+Do not redesign the header.
+
+Do not change the approved navigation architecture.
+
+Do not rewrite page content.
+
+Do not make unrelated SEO or layout changes.
+
+---
+
+# Canonical header behavior
+
+Use the live homepage implementation as the exact reference for:
+
+* header markup
+* header ID/classes
+* logo treatment
+* desktop navigation
+* mobile hamburger
+* Request Care CTA
+* search control
+* sticky/fixed positioning
+* scroll threshold
+* top-of-page color state
+* scrolled color state
+* background transition
+* nav text transition
+* logo transition if applicable
+* hamburger color transition
+* border/shadow behavior
+* z-index
+* mobile behavior
+* accessibility states
+
+Do not approximate.
+
+Reuse the same implementation wherever possible.
+
+---
+
+# Phase 1 — Inventory every public page
+
+Build a list of every public HTML page in the production site.
+
+Classify each page by header implementation:
+
+A. matches homepage markup + behavior
+B. markup matches but behavior differs
+C. missing full header markup
+D. stale/legacy header variant
+E. special-purpose page where a standard header may intentionally not apply
+
+Examples of possible special-purpose pages:
+
+* digital business card
+* referral confirmation/thank-you pages
+* utility pages
+* intentionally minimal landing pages
+
+Do not assume an exception is intentional. Flag it.
+
+---
+
+# Phase 2 — Compare header markup
+
+For every standard public page compare against the homepage:
+
+* `<header>` ID
+* classes
+* nav structure
+* menu labels
+* destinations
+* logo path
+* CTA
+* search
+* hamburger markup
+* ARIA attributes
+* mobile menu markup
+* data attributes
+* current-page state
+
+Approved top-level navigation must remain:
+
+* Hospice Care
+* Services
+* Resources
+* Locations
+* For Professionals
+* About
+
+Normalize stale or incomplete variants.
+
+---
+
+# Phase 3 — Compare header behavior
+
+For every standard public page verify:
+
+## At top of page
+
+* same background/transparency as homepage
+* same logo treatment
+* same nav colors
+* same CTA styling
+* same hamburger color
+
+## While scrolling
+
+* header remains visible
+* same sticky/fixed behavior
+* same scroll threshold
+* same color transition
+* same logo transition
+* same nav text transition
+* same hamburger transition
+* same border/shadow treatment
+* same z-index
+
+## Returning to top
+
+* original state restores correctly
+
+Do not create page-specific scroll logic unless a page has a documented reason.
+
+Prefer one global behavior path.
+
+---
+
+# Phase 4 — Diagnose implementation differences
+
+For pages that fail parity check investigate:
+
+* missing header markup
+* wrong header ID
+* missing classes
+* missing JS include
+* wrong JS path
+* conflicting page-level CSS
+* duplicate CSS rules
+* duplicate header IDs
+* wrong body class
+* missing initialization
+* `overflow` conflicts
+* `position` conflicts
+* z-index conflicts
+* page-specific selectors overriding global behavior
+
+Report root cause by page/template group before changing.
+
+---
+
+# Phase 5 — Normalize safely
+
+For standard public pages:
+
+* use the canonical homepage header markup
+* preserve page-specific active state where appropriate
+* use root-relative asset paths where possible
+* reuse the global header behavior script
+* remove stale duplicate page-specific header logic if confirmed redundant
+* preserve responsive behavior
+
+Do not refactor the whole site framework unless required.
+
+Prefer the smallest safe mechanical change.
+
+---
+
+# Phase 6 — Mobile hamburger audit
+
+On every standard public page verify:
+
+* hamburger is visible at the expected breakpoint
+* opens the correct mobile menu
+* closes correctly
+* keyboard interaction remains functional
+* menu sits above page content
+* no clipping
+* no horizontal overflow
+* no hero overlap
+* current-page state is preserved where supported
+
+---
+
+# Phase 7 — Special-purpose page exceptions
+
+Identify any page that intentionally should not use the standard header.
+
+For each exception report:
+
+* URL
+* reason
+* current header behavior
+* whether it should remain excluded
+
+Do not silently normalize an intentional card/utility page.
+
+---
+
+# Phase 8 — Automated verification
+
+Where possible create a simple audit script or reusable check that scans all public pages for:
+
+* required header ID
+* required nav labels
+* Request Care CTA
+* search control
+* hamburger markup
+* global header script inclusion
+* duplicate header IDs
+* stale founder URLs
+* broken nav destinations
+
+Do not create a heavy new framework.
+
+A small QA script is acceptable if it can be rerun after future deployments.
+
+---
+
+# Validation
+
+Before committing confirm:
+
+1. Every standard public page uses the approved six-item navigation.
+2. Every standard public page has the full header markup.
+3. Every standard public page includes the same global header behavior logic.
+4. Sticky/fixed behavior matches homepage.
+5. Scroll color transitions match homepage.
+6. Header remains visible during scroll.
+7. Mobile hamburger works everywhere.
+8. Search works everywhere.
+9. Request Care CTA works everywhere.
+10. No broken logo or asset paths.
+11. No duplicate header IDs.
+12. No stale `/aleksandradubina` links.
+13. No page-specific override breaks global behavior.
+14. No unrelated page content changed.
+15. Special-purpose exceptions are documented.
+
+---
+
+# Final report
+
+Return:
+
+## 1. Page inventory
+
+Total public pages audited.
+
+## 2. Header status before
+
+Count pages in:
+
+* A matches
+* B behavior differs
+* C missing markup
+* D legacy variant
+* E intentional exception
+
+## 3. Root causes
+
+Group pages by defect type.
+
+## 4. Files changed
+
+List by template/page group.
+
+## 5. Behavior after
+
+Report:
+
+* desktop parity
+* mobile parity
+* sticky behavior
+* color transition
+* hamburger
+* search
+* CTA
+
+## 6. Exceptions
+
+List any page intentionally not using the standard header.
+
+## 7. Validation
+
+Pass/fail each requirement.
+
+## 8. Reusable QA
+
+If a lightweight audit script was created report:
+
+* file
+* what it checks
+* how to run it
+
+Do not begin any unrelated SEO, schema, footer, city-page or performance work in this sprint.
