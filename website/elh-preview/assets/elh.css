@@ -364,7 +364,7 @@ p,li,blockquote{text-wrap:pretty}
   #site-footer .foot-bottom a:hover{color:var(--gold)}
   #site-footer .foot-bottom>span:first-child{flex:1 1 0;text-align:left}
   #site-footer .foot-bottom>span:last-child{flex:1 1 0;text-align:right}
-  #site-footer .foot-social{max-width:1140px;margin:2.4rem auto 0;display:flex;align-items:flex-end;justify-content:flex-start;gap:1.5rem}
+  #site-footer .foot-social{max-width:1140px;margin:2.4rem auto 0;display:flex;align-items:center;justify-content:flex-start;gap:1.5rem}
   #site-footer .foot-social a{display:inline-flex;color:rgba(245,240,235,.5);padding:2px;transition:color .25s}
   #site-footer .foot-social a:hover{color:var(--gold)}
   #site-footer .foot-social svg{width:17px;height:17px;display:block}
@@ -492,14 +492,13 @@ details.cqn-col:not([open])>summary.cqn-county{margin-bottom:0;padding-bottom:0;
 .blog-featured .rc-meta{margin:0 0 1rem}
 @media(max-width:760px){.blog-featured{grid-template-columns:1fr;margin-top:-2rem}.blog-featured .bf-img{min-height:190px}}
 
-  #site-footer .foot-social{position:relative}
-  #site-footer .foot-social .foot-signup{position:absolute;right:0;top:50%;transform:translateY(-50%);display:inline-block;padding:.6rem 1.35rem;border-radius:999px;background:#CDB47F;color:#2A0F28;font-size:12px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;line-height:1;box-shadow:0 4px 14px rgba(20,8,20,.3);transition:background .25s,transform .25s,box-shadow .25s}
-  #site-footer .foot-social .foot-signup:hover{background:#E0CB97;color:#2A0F28;transform:translateY(calc(-50% - 1px));box-shadow:0 6px 18px rgba(20,8,20,.36)}
-  #site-footer .foot-social .fs-invite{position:absolute;right:205px;top:50%;transform:translateY(-50%);font-style:italic;font-size:13px;letter-spacing:.015em;color:rgba(240,232,224,.82);white-space:nowrap}
+  #site-footer .foot-social .fs-invite{margin-left:auto;font-style:italic;font-size:13px;letter-spacing:.015em;color:rgba(240,232,224,.82);white-space:nowrap;flex-shrink:1;min-width:0}
+  #site-footer .foot-social .foot-signup{flex-shrink:0;display:inline-flex;align-items:center;padding:.6rem 1.35rem;border-radius:999px;background:#CDB47F;color:#2A0F28;font-size:12px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;line-height:1;box-shadow:0 4px 14px rgba(20,8,20,.3);transition:background .25s,transform .25s,box-shadow .25s}
+  #site-footer .foot-social .foot-signup:hover{background:#E0CB97;color:#2A0F28;transform:translateY(-1px);box-shadow:0 6px 18px rgba(20,8,20,.36)}
   @media(max-width:1219px){#site-footer .foot-social .fs-invite{display:none}}
   @media(max-width:860px){
     #site-footer .foot-social{flex-wrap:wrap;gap:1rem;row-gap:.65rem}
-    #site-footer .foot-social .foot-signup{position:static;transform:none;flex-basis:100%;max-width:max-content}
+    #site-footer .foot-social .foot-signup{flex-basis:100%;max-width:max-content;margin-left:0}
   }
 
 /* ---- Share row (Journal posts & Care Brief) ---- */
