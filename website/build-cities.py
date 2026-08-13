@@ -83,16 +83,15 @@ HEAD_SCRIPTS = (
 HEADER = """\
   <header id="hdr"><div class="hdr-in">
     <a class="hdr-logo" href="/"><img class="s sym-cream" src="assets/img/elh-logo-h2-cream.webp" alt="Eternal Life Hospice logo" width="331" height="74"><img class="s sym-plum" src="assets/img/elh-logo-h2-plum.webp" alt="" aria-hidden="true" width="331" height="74"><span class="hdr-wordmark">Eternal<small>Life Hospice</small></span></a>
-    <nav>
-      <div class="nav-group"><a href="/#standard" class="nav-parent">The Eternal Standard</a><div class="nav-sub"><a href="/#standard">Four Pillars : One Standard</a></div></div>
-      <div class="nav-group"><a href="/#first48" class="nav-parent">The First 48 Hours</a><div class="nav-sub"><a href="/#faq">Common Questions Answered</a><a href="family-guide">Family eGuide</a></div></div>
-      <div class="nav-group"><a href="/#modalities" class="nav-parent">Integrative Therapies</a><div class="nav-sub"><a href="/#clinical-mobile">Clinical &amp; Mobile Services</a></div></div>
-      <a href="/#medicare">Insurance &amp; Medicare</a>
-      <div class="nav-group"><a href="/#coverage" class="nav-parent">Coverage Area</a><div class="nav-sub"><a href="/#settings">Care Wherever Home Is</a></div></div>
-      <div class="nav-group"><a href="/#founder" class="nav-parent">About Eternal</a><div class="nav-sub"><a href="/#founder-welcome">A Founder&rsquo;s Welcome</a><a href="/#amethyst">Our Origin</a><a href="resources">Resources</a><a href="volunteer">Volunteer</a></div></div>
-      <div class="nav-group"><a href="/refer" class="nav-parent">For Providers</a><div class="nav-sub"><a href="/refer">Refer With Confidence</a><a href="/?lead=voice#leadcap">Schedule an Educational Session</a></div></div>
+    <nav aria-label="Main navigation">
+      <div class="nav-group"><a href="/hospice-care" class="nav-parent">Hospice Care</a><div class="nav-sub"><a href="/resources/when-is-it-time">When Is It Time?</a><a href="/resources/first-48-hours">The First 48 Hours</a><a href="/resources/medicare-hospice-benefit">What Hospice Covers</a><a href="/resources/how-to-choose-a-hospice">How to Choose a Hospice</a></div></div>
+      <div class="nav-group"><a href="/services" class="nav-parent">Services</a><div class="nav-sub"><a href="/services">All Services</a><a href="/resources/comfort-therapies">Integrative &amp; Whole-Person Care</a><a href="/resources/pain-symptom-management">Pain &amp; Symptom Management</a><a href="/sound-bath">Sound Bath</a></div></div>
+      <div class="nav-group"><a href="/resources" class="nav-parent">Resources</a><div class="nav-sub"><a href="/family-guide">Family Guide</a><a href="/blog">The Eternal Journal</a><a href="/care-brief">Care Brief</a><a href="/volunteer">Volunteer</a></div></div>
+      <div class="nav-group"><a href="/hospice-ventura-and-los-angeles-county-ca" class="nav-parent" aria-current="page">Locations</a><div class="nav-sub"><a href="/hospice-thousand-oaks-ca">Thousand Oaks</a><a href="/hospice-simi-valley-ca">Simi Valley</a><a href="/hospice-calabasas-ca">Calabasas</a><a href="/hospice-ventura-and-los-angeles-county-ca">All Service Areas</a></div></div>
+      <div class="nav-group"><a href="/refer" class="nav-parent">For Professionals</a><div class="nav-sub"><a href="/refer">Refer a Patient</a><a href="/?lead=voice#leadcap">Schedule a Session</a></div></div>
+      <div class="nav-group"><a href="/about/aleksandra-dubina" class="nav-parent">About</a><div class="nav-sub"><a href="/#standard">The Eternal Standard</a><a href="/about/aleksandra-dubina">Aleksandra Dubina</a></div></div>
     </nav>
-    <div class="hdr-cta-wrap"><span class="hdr-cta-note">Here in Moments That Matter Most</span><a href="tel:18059537273" class="hdr-cta">805.953.7273</a></div>
+    <div class="hdr-cta-wrap"><span class="hdr-cta-note">Here in Moments That Matter Most</span><a href="/refer" class="hdr-cta">Request Care</a></div>
     <button class="search-btn" id="searchBtn" aria-label="Search"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="9" cy="9" r="7"/><line x1="15" y1="15" x2="19" y2="19"/></svg></button>
     <button class="menu-btn" aria-label="Menu" aria-expanded="false"><svg width="22" height="16" viewBox="0 0 22 16"><line x1="0" y1="2" x2="22" y2="2" stroke="#F5F0EB" stroke-width="2" stroke-linecap="round"/><line x1="0" y1="8" x2="22" y2="8" stroke="#F5F0EB" stroke-width="2" stroke-linecap="round"/><line x1="0" y1="14" x2="22" y2="14" stroke="#F5F0EB" stroke-width="2" stroke-linecap="round"/></svg></button>
   </div></header>"""
@@ -111,47 +110,132 @@ CRED_STRIP = """\
     <div class="csep"></div>
 </div></div>"""
 
-FOOTER = """\
-<footer id="site-footer">
-  <div class="foot-grid">
-    <div><div class="foot-logo"><a href="/" aria-label="Eternal Life Hospice &mdash; home"><img loading="lazy" decoding="async" src="assets/img/elh-logo-cream-g.webp" alt="Eternal Life Hospice logo"></a></div><p class="foot-tag">Care That Honors Life.</p><p class="foot-legal">Medicare-Certified &middot; CDPH-Licensed &middot; ACHC-Accredited. Serving families across Ventura and Los Angeles Counties.</p><div class="foot-qr"><img src="assets/img/qr-cream.webp" alt="Scan to visit eternallifehospice.com" width="96" height="96" loading="lazy"><span>Scan to visit<br>on your phone</span></div></div>
-    <div class="foot-col"><h4>For Families</h4><a href="family-guide">Family eGuide</a><a href="resources">Resources</a><a href="blog">Journal</a><a href="volunteer">Volunteer</a><a href="careers">Careers</a><a href="/#coverage">Coverage Area</a></div>
-    <div class="foot-col"><h4>For Providers</h4><a href="/refer">Refer With Confidence</a><a href="/referral-card">Referral eCard</a><a href="/?lead=voice#leadcap">Schedule an Educational Session</a></div>
-    <div class="foot-col"><h4>Resources</h4><a href="/media-kit">Media Kit</a><a href="/care-brief/hospice-is-part-of-life-a-continuation-of-care">Care Brief</a><a href="family-guide">Family eGuide</a></div>
-    <div class="foot-col"><h4>Our Care</h4><a href="/#standard">The Eternal Standard</a><a href="/#first48">The First 48 Hours</a><a href="/#modalities">Integrative Therapies</a><a href="/#clinical-mobile">Clinical &amp; Mobile Services</a><a href="/#medicare">Insurance &amp; Medicare</a></div>
-    <div class="foot-col"><h4>Contact</h4>
-      <a class="fc-line" href="tel:18059537273"><svg class="fci" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg><span>805.953.7273</span></a>
-      <span class="fc-line fc-fax"><svg class="fci" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg><span>805.953.8530 fax</span></span>
-      <a class="fc-line" href="mailto:info@eternallifehospice.com"><svg class="fci" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"/><polyline points="22,6 12,13 2,6"/></svg><span>info@eternallifehospice.com</span></a>
-      <a class="fc-line fc-addr" href="https://maps.google.com/?cid=9771388271577679785" target="_blank" rel="noopener"><svg class="fci" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg><span>4165 E Thousand Oaks Blvd, Suite 325B<br>Westlake Village, CA 91362</span></a>
-    </div>
-  </div>
-  <nav class="foot-social" aria-label="Eternal Life Hospice on social media"><span class="fs-label">Stay Connected</span><a href="https://www.linkedin.com/company/eternal-life-hospice/" target="_blank" rel="noopener" aria-label="LinkedIn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4V9h4v1.57A6 6 0 0 1 16 8z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg></a><a href="https://www.facebook.com/eternallifehospiceinc" target="_blank" rel="noopener" aria-label="Facebook"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg></a><a href="https://www.instagram.com/eternallifehospice/" target="_blank" rel="noopener" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg></a><a href="https://www.youtube.com/@EternalLifeHospice" target="_blank" rel="noopener" aria-label="YouTube"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z"/><polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"/></svg></a></nav>
-  <div class="foot-disclaimer"><strong style="color:rgba(245,240,235,.5)">Disclaimer:</strong> Eternal Life Hospice Inc. is a licensed and Medicare-certified hospice care provider. The integrative modalities described are complementary care offered for patient comfort and wellbeing; they are not intended to diagnose, treat, cure or prevent any medical condition. Medicare coverage details are subject to change; confirm current eligibility with your care team or call <a href="tel:18006334227" style="color:inherit;text-decoration:none">1.800.MEDICARE</a>.</div>
-  <div class="foot-bottom"><span>&copy; 2026 Eternal Life Hospice Inc. All rights reserved. &middot; A <a href="https://conduitint.com" target="_blank" rel="noopener" style="color:inherit;text-decoration:none">Conduit International</a> build</span><span class="foot-bottom-links"><a href="/privacy-policy" style="text-decoration:none">Privacy Policy</a> &nbsp;&middot;&nbsp; <a href="/terms" style="text-decoration:none">Terms &amp; Conditions</a> &nbsp;&middot;&nbsp; <a href="#" onclick="window.elhCookieSettings&amp;&amp;window.elhCookieSettings();return false;" style="color:inherit;text-decoration:none">Cookie Settings</a></span></div>
-  <div class="foot-translate">
-    <span class="ft-label">Translate this page</span>
-    <div class="ft-lang-btns">
-      <a class="ft-lang" data-lang="es">\U0001f1f2\U0001f1fd Espa\u00f1ol</a>
-      <a class="ft-lang" data-lang="ru">\U0001f1f7\U0001f1fa \u0420\u0443\u0441\u0441\u043a\u0438\u0439</a>
-      <a class="ft-lang" data-lang="uk">\U0001f1fa\U0001f1e6 \u0423\u043a\u0440\u0430\u0457\u043d\u0441\u044c\u043a\u0430</a>
-      <a class="ft-lang" data-lang="ko">\U0001f1f0\U0001f1f7 \ud55c\uad6d\uc5b4</a>
-      <a class="ft-lang" data-lang="hy">🇦🇲 Հայերեն</a>
-      <a class="ft-lang" data-lang="tl">\U0001f1f5\U0001f1ed Filipino</a>
-      <a class="ft-lang" data-lang="vi">\U0001f1fb\U0001f1f3 Ti\u1ebfng Vi\u1ec7t</a>
-      <a class="ft-lang" data-lang="zh-CN">\U0001f1e8\U0001f1f3 \u4e2d\u6587</a>
-      <a class="ft-lang" data-lang="ar">\U0001f1f8\U0001f1e6 \u0627\u0644\u0639\u0631\u0628\u064a\u0629</a>
-      <a class="ft-lang" data-lang="fa">\U0001f1ee\U0001f1f7 \u0641\u0627\u0631\u0633\u06cc</a>
-    </div>
-  </div>
-</footer>
-<script src="assets/header.js?v=20260805" defer></script><script src="/assets/chat.js?v=20260805" defer></script>
-<div class="search-overlay" id="searchOverlay" role="dialog" aria-modal="true" aria-label="Site search" aria-hidden="true">
-  <div class="search-box"><input type="text" id="searchInput" placeholder="Search pages, cities, resources..." autocomplete="off" aria-label="Search"><button class="search-close" id="searchClose" aria-label="Close search">&times;</button></div>
-  <p class="search-hint">Press Enter to open the first result, or Escape to close</p>
-  <div class="search-results" id="searchResults"></div>
-</div>
-<script defer src="/assets/translate.js?v=20260805"></script>"""
+# ── County-specific footer location shortcuts ──────────────────────────────────
+# Ventura County pages surface West-Valley/Ventura cities; LA County pages
+# surface LA-area cities so the 3 shortcuts are relevant to the visitor.
+
+_FOOT_LOC_VENTURA = (
+    '<a href="/hospice-ventura-and-los-angeles-county-ca">All Service Areas</a>'
+    '<a href="/hospice-thousand-oaks-ca">Thousand Oaks</a>'
+    '<a href="/hospice-simi-valley-ca">Simi Valley</a>'
+    '<a href="/hospice-calabasas-ca">Calabasas</a>'
+)
+
+_FOOT_LOC_LA = (
+    '<a href="/hospice-ventura-and-los-angeles-county-ca">All Service Areas</a>'
+    '<a href="/hospice-calabasas-ca">Calabasas</a>'
+    '<a href="/hospice-woodland-hills-ca">Woodland Hills</a>'
+    '<a href="/hospice-pasadena-ca">Pasadena</a>'
+)
+
+
+def make_footer(county: str) -> str:
+    """Return the full city-page footer with county-appropriate Locations links."""
+    loc_links = _FOOT_LOC_LA if county == "Los Angeles County" else _FOOT_LOC_VENTURA
+    return (
+        '<footer id="site-footer">\n'
+        '  <div class="foot-grid">\n'
+        '    <div><div class="foot-logo"><a href="/" aria-label="Eternal Life Hospice &mdash; home">'
+        '<img loading="lazy" decoding="async" src="assets/img/elh-logo-cream-g.webp" alt="Eternal Life Hospice logo">'
+        '</a></div><p class="foot-tag">Care That Honors Life.</p>'
+        '<p class="foot-legal">Medicare-Certified &middot; CDPH-Licensed &middot; ACHC-Accredited. '
+        'Serving families across Ventura and Los Angeles Counties.</p>'
+        '<div class="foot-qr"><img src="assets/img/qr-cream.webp" alt="Scan to visit eternallifehospice.com" '
+        'width="96" height="96" loading="lazy"><span>Scan to visit<br>on your phone</span></div></div>\n'
+        '    <div class="foot-col"><h4>Hospice Care</h4>'
+        '<a href="/resources/when-is-it-time">When Is It Time?</a>'
+        '<a href="/resources/first-48-hours">The First 48 Hours</a>'
+        '<a href="/resources/medicare-hospice-benefit">What Hospice Covers</a>'
+        '<a href="/resources/how-to-choose-a-hospice">How to Choose a Hospice</a></div>'
+        '<div class="foot-col"><h4>Services</h4>'
+        '<a href="/services">All Services</a>'
+        '<a href="/resources/comfort-therapies">Integrative &amp; Whole-Person Care</a>'
+        '<a href="/sound-bath">Sound Bath</a></div>'
+        '<div class="foot-col"><h4>Resources</h4>'
+        '<a href="/family-guide">Family Guide</a>'
+        '<a href="/blog">The Eternal Journal</a>'
+        '<a href="/care-brief">Care Brief</a>'
+        '<a href="/volunteer">Volunteer</a></div>'
+        f'<div class="foot-col"><h4>Locations</h4>{loc_links}</div>'
+        '<div class="foot-col"><h4>For Professionals</h4>'
+        '<a href="/refer">Refer a Patient</a>'
+        '<a href="/referral-card">Referral eCard</a>'
+        '<a href="/?lead=voice#leadcap">Schedule a Session</a></div>'
+        '<div class="foot-col"><h4>About</h4>'
+        '<a href="/#standard">The Eternal Standard</a>'
+        '<a href="/about/aleksandra-dubina">Aleksandra Dubina</a>'
+        '<a href="/careers">Careers</a>'
+        '<a href="/media-kit">Media Kit</a></div>'
+        '<div class="foot-col"><h4>Contact</h4>\n'
+        '      <a class="fc-line" href="tel:18059537273">'
+        '<svg class="fci" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">'
+        '<path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/>'
+        '</svg><span>805.953.7273</span></a>'
+        '<span class="fc-line fc-direct">'
+        '<svg class="fci" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">'
+        '<path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/>'
+        '</svg><span>805.953.7273 \u00b7 Direct</span></span>\n'
+        '      <span class="fc-line fc-fax">'
+        '<svg class="fci" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">'
+        '<polyline points="6 9 6 2 18 2 18 9"/>'
+        '<path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/>'
+        '<rect x="6" y="14" width="12" height="8"/>'
+        '</svg><span>805.953.8530 fax</span></span>\n'
+        '      <a class="fc-line" href="mailto:info@eternallifehospice.com">'
+        '<svg class="fci" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">'
+        '<path d="M4 4h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"/>'
+        '<polyline points="22,6 12,13 2,6"/>'
+        '</svg><span>info@eternallifehospice.com</span></a>\n'
+        '      <a class="fc-line fc-addr" href="https://maps.google.com/?cid=9771388271577679785" target="_blank" rel="noopener">'
+        '<svg class="fci" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">'
+        '<path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>'
+        '<circle cx="12" cy="10" r="3"/>'
+        '</svg><span>4165 E Thousand Oaks Blvd, Suite 325B<br>Westlake Village, CA 91362</span></a>\n'
+        '    </div>\n'
+        '  </div>\n'
+        '  <nav class="foot-social" aria-label="Eternal Life Hospice on social media">'
+        '<span class="fs-label">Stay Connected</span>'
+        '<a href="https://www.linkedin.com/company/eternal-life-hospice/" target="_blank" rel="noopener" aria-label="LinkedIn">'
+        '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'
+        '<path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4V9h4v1.57A6 6 0 0 1 16 8z"/>'
+        '<rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg></a>'
+        '<a href="https://www.facebook.com/eternallifehospiceinc" target="_blank" rel="noopener" aria-label="Facebook">'
+        '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'
+        '<path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg></a>'
+        '<a href="https://www.instagram.com/eternallifehospice/" target="_blank" rel="noopener" aria-label="Instagram">'
+        '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'
+        '<rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>'
+        '<path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>'
+        '<line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg></a>'
+        '<a href="https://www.youtube.com/@EternalLifeHospice" target="_blank" rel="noopener" aria-label="YouTube">'
+        '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'
+        '<path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z"/>'
+        '<polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"/></svg></a></nav>\n'
+        '  <div class="foot-disclaimer"><strong style="color:rgba(245,240,235,.5)">Disclaimer:</strong> '
+        'Eternal Life Hospice Inc. is a licensed and Medicare-certified hospice care provider. '
+        'The integrative modalities described are complementary care offered for patient comfort and wellbeing; '
+        'they are not intended to diagnose, treat, cure or prevent any medical condition. '
+        'Medicare coverage details are subject to change; confirm current eligibility with your care team or call '
+        '<a href="tel:18006334227" style="color:inherit;text-decoration:none">1.800.MEDICARE</a>.</div>\n'
+        '  <div class="foot-bottom"><span>&copy; 2026 Eternal Life Hospice Inc. All rights reserved.</span>'
+        '<span class="foot-bottom-links">'
+        '<a href="/privacy-policy" style="text-decoration:none">Privacy Policy</a> &nbsp;&middot;&nbsp; '
+        '<a href="/terms" style="text-decoration:none">Terms &amp; Conditions</a> &nbsp;&middot;&nbsp; '
+        '<a href="#" onclick="window.elhCookieSettings&amp;&amp;window.elhCookieSettings();return false;" '
+        'style="color:inherit;text-decoration:none">Cookie Settings</a></span></div>\n'
+        '</footer>\n'
+        '<script src="assets/header.js?v=20260813" defer></script>'
+        '<script src="/assets/chat.js?v=20260805" defer></script>\n'
+        '<div class="search-overlay" id="searchOverlay" role="dialog" aria-modal="true" '
+        'aria-label="Site search" aria-hidden="true">\n'
+        '  <div class="search-box">'
+        '<input type="text" id="searchInput" placeholder="Search pages, cities, resources..." '
+        'autocomplete="off" aria-label="Search">'
+        '<button class="search-close" id="searchClose" aria-label="Close search">&times;</button></div>\n'
+        '  <p class="search-hint">Press Enter to open the first result, or Escape to close</p>\n'
+        '  <div class="search-results" id="searchResults"></div>\n'
+        '</div>'
+    )
 
 # ── Schema builders ────────────────────────────────────────────────────────────
 
@@ -311,24 +395,24 @@ def render_page(c):
   <meta property="og:title" content="{title}">
   <meta property="og:description" content="{meta_desc}">
   <meta property="og:url" content="{canonical}">
-  <meta property="og:image" content="https://eternallifehospice.com/assets/og-image.jpg">
-  <meta property="og:site_name" content="Eternal Life Hospice">
-  <meta name="twitter:card" content="summary_large_image">
+  <meta property="og:image" content="https://eternallifehospice.com/assets/og-image-v2.jpg">
+  <meta property="og:site_name" content="Eternal Life Hospice"><meta property="og:locale" content="en_US"><meta property="og:image:width" content="2400"><meta property="og:image:height" content="1260"><meta property="og:image:alt" content="{title}">
+  <meta name="twitter:card" content="summary_large_image"><meta name="twitter:site" content="@EternalLifeHospice"><meta name="twitter:title" content="{title}"><meta name="twitter:description" content="{meta_desc}"><meta name="twitter:image" content="https://eternallifehospice.com/assets/og-image-v2.jpg">
   <link rel="icon" type="image/png" href="assets/favicon.png">
   {_hero_preload_tag(slug)}
   <link rel="preload" as="font" href="assets/fonts/fraunces-latin.woff2" type="font/woff2" crossorigin fetchpriority="high">
   <link rel="preload" as="font" href="assets/fonts/fraunces-italic-latin.woff2" type="font/woff2" crossorigin fetchpriority="high">
   <link rel="preload" as="font" href="assets/fonts/JostELH-Regular.woff2" type="font/woff2" crossorigin>
   <link rel="preload" as="font" href="assets/fonts/JostELH-SemiBold.woff2" type="font/woff2" crossorigin>
-  <link rel="preload" href="assets/elh.css?v=20260714c" as="style">
-  <link rel="stylesheet" href="assets/elh.css?v=20260714c">
+  <link rel="preload" href="assets/elh.css?v=20260813" as="style">
+  <link rel="stylesheet" href="assets/elh.css?v=20260813">
 {schema_tags}
 {HEAD_SCRIPTS}
 </head><body>
 <a class="skip-link" href="#main-content">Skip to main content</a>
 {HEADER}
 {CRED_STRIP}
-<main id="main-content">
+<main id="main-content" tabindex="-1">
 <section class="hero hero--city hero--tall">{_hero_img_tag(slug, city)}
     <div class="eyebrow">{eyebrow}</div>
     <h1>{h1}</h1>
@@ -415,7 +499,7 @@ def render_page(c):
     <div><span>&#8227;</span><span><a href="family-guide"><b>Family Guide</b></a> &mdash; eligibility, what to expect and questions to ask when choosing a provider</span></div>
     <div><span>&#8227;</span><span><a href="/resources/first-48-hours"><b>The First 48 Hours</b></a> &mdash; what happens when hospice care begins</span></div>
     <div><span>&#8227;</span><span><a href="/resources/medicare-hospice-benefit"><b>Medicare Hospice Benefit</b></a> &mdash; what Medicare covers and how it works</span></div>
-    <div><span>&#8227;</span><span><a href="/resources/what-hospice-covers"><b>What Hospice Covers</b></a> &mdash; services, medications, equipment and support</span></div>
+    <div><span>&#8227;</span><span><a href="/resources/medicare-hospice-benefit"><b>What Hospice Covers</b></a> &mdash; services, medications, equipment and support</span></div>
     <div><span>&#8227;</span><span><a href="/resources/how-to-choose-a-hospice"><b>How to Choose a Hospice</b></a> &mdash; questions to ask before enrolling</span></div>
   </div>
 </section>
@@ -439,7 +523,7 @@ def render_page(c):
   <div class="btns"><a class="btn-gold" href="tel:18059537273">Call Eternal Life Hospice</a><a class="btn-ghost" href="family-guide">Read the Family Guide &#8594;</a><a class="btn-ghost" href="/refer">Refer a Patient &#8594;</a></div>
 </section>
 </main>
-{FOOTER}
+{make_footer(county)}
 </body></html>"""
     return page
 
