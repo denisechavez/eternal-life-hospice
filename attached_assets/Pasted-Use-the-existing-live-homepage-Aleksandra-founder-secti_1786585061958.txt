@@ -1,0 +1,301 @@
+Use the **existing live homepage Aleksandra founder section as the visual source of truth** for:
+
+`/about/aleksandra-dubina`
+
+The current standalone founder page should be brought into the same visual system.
+
+## Objective
+
+Make the founder page feel like an expanded editorial version of the Aleksandra section already used on the Eternal Life Hospice homepage.
+
+Do not create a new design language.
+
+Do not redesign the homepage.
+
+Do not change founder-page SEO, schema, canonical or approved copy except where layout requires repositioning.
+
+---
+
+# Visual reference
+
+The homepage treatment currently uses:
+
+### Left column
+
+* Aleksandra portrait
+* full-height / large editorial image treatment
+* subtle plum gradient at the bottom
+* `Hear her welcome` audio control
+* small founder caption
+
+### Right column
+
+* cream background
+* small uppercase plum eyebrow
+* large Fraunces ELH name
+* Digital Business Card button
+* Jost body copy
+* restrained line lengths
+* founder quote with thin gold rule
+* connection / CTA area beneath
+
+This is the visual direction to follow.
+
+---
+
+# Dedicated founder page hero
+
+Desktop layout:
+
+**LEFT: IMAGE**
+**RIGHT: CONTENT**
+
+Use approximately a 42–45% image / 55–58% content split.
+
+Do not place the image inside a dark plum panel.
+
+The portrait should feel integrated into the page exactly as it does on the homepage.
+
+## Left image area
+
+Use the existing approved Aleksandra portrait.
+
+Preserve:
+
+* image quality
+* natural skin tone
+* existing crop style
+* subtle plum gradient treatment where appropriate
+* audio welcome control if already available
+* small founder caption
+
+Do not distort or aggressively crop the image.
+
+---
+
+# Right content area
+
+Use the Eternal cream background.
+
+Maintain the established hierarchy:
+
+### Eyebrow
+
+`HEART-CENTERED LEADERSHIP`
+
+Small uppercase Jost with appropriate letter spacing.
+
+### H1
+
+`Aleksandra Dubina`
+
+Fraunces ELH.
+
+Large but editorial — not oversized.
+
+### Role
+
+`Founder & Chief Executive Officer`
+`Eternal Life Hospice, Inc.`
+
+Keep this visually secondary to the H1.
+
+### Digital Business Card
+
+Keep the existing Digital Business Card link but style it consistently with the homepage treatment.
+
+### Founder biography
+
+Use the already approved founder copy.
+
+Keep line length controlled for readability.
+
+Do not compress the biography into an overly narrow column.
+
+### Quote
+
+Preserve the founder mission quote.
+
+Use:
+
+* Fraunces ELH
+* italic treatment if currently approved
+* thin Eternal gold rule
+* generous whitespace
+
+Do not introduce Cormorant Garamond or any other non-brand font.
+
+---
+
+# Credential treatment
+
+The standalone page may contain supported credentials including:
+
+* ACHC Certified Consultant
+* Certified Hospice Administrator
+* 20+ years in healthcare
+* 11 years in hospice
+
+Do **not** place them as four heavy pills directly underneath the name as in the earlier version.
+
+That treatment feels more like a résumé dashboard than Eternal's editorial brand.
+
+Instead use one of these existing-brand-compatible approaches:
+
+### Preferred
+
+A restrained credential line or small information row lower in the page.
+
+or
+
+### Secondary
+
+Small outlined chips using the same subtle styling as existing Eternal UI components.
+
+Keep them visually subordinate to the founder story.
+
+Do not add RN or BSN.
+
+---
+
+# Audio
+
+If the founder audio already exists on the homepage:
+
+`assets/audio/aleksandra-welcome.mp3`
+
+reuse the same source rather than duplicating the audio file.
+
+The founder page can use the same:
+
+`Hear her welcome`
+
+control.
+
+Do not autoplay.
+
+Preserve preload behavior consistent with the homepage.
+
+---
+
+# CTA treatment
+
+Do not use an oversized gold telephone button as the visual focal point.
+
+The founder page is primarily an **authority and trust page** rather than a direct-response landing page.
+
+Preferred CTAs:
+
+* Digital Business Card
+* LinkedIn
+* Request Care / Contact Eternal using existing site CTA language where appropriate
+
+The primary business number may appear where useful but it should not dominate the hero.
+
+---
+
+# Background and palette
+
+Use the existing Eternal system:
+
+* warm cream page background
+* Eternal plum typography
+* subtle Eternal gold accents
+* minimal borders
+* no large dark-plum rectangle behind the biography
+* no new gradients beyond treatments already used on the live homepage
+
+The page should feel calm, premium and editorial.
+
+---
+
+# Typography
+
+Use only the established Eternal fonts:
+
+### Display / headings
+
+`Fraunces ELH`
+
+### Body / UI
+
+`Jost ELH`
+
+Do not introduce:
+
+* Cormorant Garamond
+* Georgia
+* browser serif defaults
+* new web fonts
+
+Preserve the existing font preloads already added to this page.
+
+---
+
+# Mobile
+
+On smaller screens stack:
+
+1. Portrait
+2. Audio / founder caption
+3. Eyebrow
+4. Aleksandra Dubina
+5. Role
+6. Biography
+7. Quote
+8. Credentials
+9. CTAs
+
+Preserve breathing room.
+
+Do not force the desktop two-column layout on mobile.
+
+No horizontal overflow.
+
+---
+
+# Important
+
+The live homepage founder section is the **visual benchmark**.
+
+Do not merely reverse the current founder-page columns.
+
+Bring the page into the same design system as the homepage.
+
+The desired result should feel like:
+
+**Homepage Aleksandra section → expanded into a complete founder biography page.**
+
+Not:
+
+**a separate executive-profile microsite.**
+
+---
+
+# Validation
+
+Before committing confirm:
+
+1. Portrait is left and copy is right on desktop.
+2. Cream background and plum typography match homepage.
+3. Fraunces ELH and Jost ELH are the only brand fonts used.
+4. No oversized solid-plum hero panel remains.
+5. Credentials are visually subordinate to the founder story.
+6. Audio styling is consistent with homepage if included.
+7. Quote treatment matches Eternal's editorial language.
+8. Mobile stacking is clean.
+9. Founder page metadata, canonical, schema and indexability remain unchanged.
+10. Digital Business Card destination remains correct.
+11. No RN/BSN content reappears.
+12. No personal 818 number reappears.
+13. No other pages are changed.
+
+Return:
+
+* files changed
+* layout changes
+* typography changes
+* credential-treatment changes
+* audio treatment
+* desktop/mobile validation
+* confirmation that SEO/schema remained untouched
