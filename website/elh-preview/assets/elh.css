@@ -341,7 +341,7 @@ p,li,blockquote{text-wrap:pretty}
 /*ELH-FOOTER*/
   #site-footer{background:var(--deep);color:rgba(245,240,235,.85);padding:3rem 2.5rem 2.4rem;text-align:left}
   #site-footer .foot-grid{max-width:1140px;margin:0 auto;display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr 1fr 1fr 1fr 1.5fr;gap:2rem 1.5rem}
-  #site-footer .foot-logo img{height:52px;opacity:1;margin-bottom:.85rem;display:block}
+  #site-footer .foot-logo img{height:52px;width:auto;opacity:1;margin-bottom:.85rem;display:block}
   #site-footer .foot-logo a{display:inline-block}
   #site-footer .foot-tag{font-family:var(--ff-d);font-style:italic;font-size:18px;color:var(--gold);margin:.2rem 0 .6rem}
   #site-footer .foot-legal{font-size:14px;color:rgba(245,240,235,.6);line-height:1.7;max-width:32ch}
@@ -497,8 +497,8 @@ details.cqn-col:not([open])>summary.cqn-county{margin-bottom:0;padding-bottom:0;
   #site-footer .foot-social .fs-invite{position:absolute;right:205px;top:50%;transform:translateY(-50%);font-style:italic;font-size:13px;letter-spacing:.015em;color:rgba(240,232,224,.82);white-space:nowrap}
   @media(max-width:1219px){#site-footer .foot-social .fs-invite{display:none}}
   @media(max-width:860px){
-    #site-footer .foot-social{flex-wrap:wrap;row-gap:.9rem;gap:1rem;row-gap:.9rem}
-    #site-footer .foot-social .foot-signup{position:static;transform:none;flex-basis:100%;max-width:max-content;margin:0 auto}
+    #site-footer .foot-social{flex-wrap:wrap;gap:1rem;row-gap:.65rem}
+    #site-footer .foot-social .foot-signup{position:static;transform:none;flex-basis:100%;max-width:max-content}
   }
 
 /* ---- Share row (Journal posts & Care Brief) ---- */
