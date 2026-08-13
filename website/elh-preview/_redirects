@@ -39,3 +39,6 @@ http://eternallifehospiceinc.com/*       https://eternallifehospice.com/:splat  
 # Sitemap page
 /sitemap      /sitemap.html             200
 /services     /services.html            200
+
+# What Hospice Covers — legacy path corrected to canonical
+/resources/what-hospice-covers  /resources/medicare-hospice-benefit  301
