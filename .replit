@@ -51,6 +51,10 @@ args = "rebuild-search-index"
 task = "workflow.run"
 args = "header-parity-check"
 
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "pre-deploy-chain-check"
+
 [[workflows.workflow]]
 name = "Start application"
 author = "agent"
@@ -151,6 +155,17 @@ args = "python3 website/check-header-parity.py"
 
 [workflows.workflow.metadata]
 isValidation = true
+
+[[workflows.workflow]]
+name = "pre-deploy-chain-check"
+author = "agent"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "bash website/test-predeploy-chain.sh"
+
+[workflows.workflow.metadata]
+outputType = "console"
 
 [[ports]]
 localPort = 3000
