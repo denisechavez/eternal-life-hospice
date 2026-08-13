@@ -2,8 +2,13 @@
   var hdr = document.getElementById('hdr');
   if (!hdr) return;
 
+  var isHome = (location.pathname === '/' || location.pathname === '/index.html');
   function onScroll() {
-    hdr.classList.toggle('scrolled', window.scrollY > 60);
+    if (isHome) {
+      hdr.classList.toggle('scrolled', window.scrollY > 60);
+    } else {
+      hdr.classList.remove('scrolled');
+    }
   }
   onScroll();
   window.addEventListener('scroll', onScroll, { passive: true });
