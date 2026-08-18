@@ -434,6 +434,8 @@ $("#saveBtn").addEventListener("click", async () => {
 });
 
 
+$("#clearBtn").addEventListener("click", clearForm);
+
 function clearForm() {
   ["#org", "#addr", "#city", "#cname", "#ctitle", "#cemail", "#cphone", "#notes"].forEach((s) => ($(s).value = ""));
   $("#cat").selectedIndex = 0;
@@ -599,8 +601,8 @@ $("#csv").addEventListener("click", () => {
     statusEl.classList.add("hidden");
     statusEl.textContent = "";
     try {
-      await api("/api/backup/run", { method: "POST" });
-      setStatus("Full backup sent.", false);
+      const r = await api("/api/backup/trigger?full=true", { method: "POST" });
+      setStatus(r.note || "Full backup sent.", false);
       toast("Full backup sent.");
       loadBackupStatus();
     } catch (e) {
