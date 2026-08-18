@@ -567,9 +567,15 @@ $("#csv").addEventListener("click", () => {
   const cols = ["visit_date", "company", "category", "address", "city", "county", "contact_name", "contact_title", "contact_email", "contact_phone", "materials", "notes", "owner", "follow_up_method", "follow_up_due", "followup_status"];
   const head = ["Visit date", "Organization", "Category", "Address", "City", "County", "Contact", "Title", "Email", "Phone", "Materials left", "Notes", "Owner", "Follow-up type", "Follow-up due", "Status"];
   const neutralize = (s) => (/^[=+\-@\t\r]/.test(s) ? "'" + s : s);
+  const DATE_COLS = new Set(["visit_date", "follow_up_due"]);
   const rows = visits.map((v) =>
     cols.map((c) => {
-      const val = c === "materials" ? (Array.isArray(v[c]) ? v[c].join("; ") : "") : String(v[c] ?? "");
+      const raw = v[c] ?? "";
+      const val = c === "materials"
+        ? (Array.isArray(raw) ? raw.join("; ") : "")
+        : DATE_COLS.has(c)
+        ? String(raw).slice(0, 10)
+        : String(raw);
       return '"' + neutralize(val).replace(/"/g, '""') + '"';
     }).join(",")
   );
