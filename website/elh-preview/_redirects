@@ -71,6 +71,6 @@ http://eternalhospice.com/*       https://eternallifehospice.com/:splat  301!
 # Forwards /tracker/* and /api/* to the Replit deployment, which runs both
 # the marketing devserver (port 5000) and the tracker Express app (port 3000).
 # The devserver proxies /tracker/* and /api/* internally to port 3000.
-/tracker     /tracker/   301
+/tracker     https://eternal-life-hospice.replit.app/tracker/   200
 /tracker/*   https://eternal-life-hospice.replit.app/tracker/:splat   200
 /api/*       https://eternal-life-hospice.replit.app/api/:splat       200
