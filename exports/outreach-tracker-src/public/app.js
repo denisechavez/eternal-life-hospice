@@ -142,6 +142,14 @@ async function enterApp() {
   updateVoiceSection();
 
   $("#meName").textContent = me ? me.name : "";
+
+  // Site shortcuts (ELH Website, Publications, Events) — Denise Chavez only
+  const _devLinks = $("#devLinks");
+  if (_devLinks) {
+    const _isDenise = me && /denise/i.test(me.name);
+    _devLinks.classList.toggle("hidden", !_isDenise);
+  }
+
   populateOwners();
   $("#date").value = new Date().toISOString().slice(0, 10);
   restoreDraft();
