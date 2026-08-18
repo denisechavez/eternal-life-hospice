@@ -2,14 +2,14 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#3C1C3B">
 <meta name="robots" content="noindex, nofollow">
 <title>Eternal Field Log</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,600&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="/styles.css">
 </head>
 <body>
 
@@ -98,28 +98,13 @@
     <button class="tab" role="tab" aria-selected="false" data-view="export">Export</button>
   </nav>
 
-  <div id="aiModelBanner" class="ai-warn hidden" role="alert">
-    <span id="aiModelBannerMsg">Card scanning is unavailable — the AI model may need updating. Contact your admin.</span>
-    <button type="button" class="ai-warn-dismiss" id="aiModelBannerDismiss" aria-label="Dismiss">×</button>
-  </div>
-
   <!-- ~~~ LOG ~~~ -->
   <section id="view-log">
-    <div class="sec">
-      <h2 class="sech">Start here</h2>
-      <p class="secn">The card carries most of what's below — scan it and skip the typing.</p>
-      <div class="field">
-        <label>Do you have their business card?</label>
-        <div class="seg" id="hasCard" role="group" aria-label="Business card on hand">
-          <button type="button" class="segbtn on" data-val="no">No card — I'll type it</button>
-          <button type="button" class="segbtn" data-val="yes">Yes — scan it</button>
-        </div>
-      </div>
-      <div class="cardscan hidden" id="cardScan">
-        <button type="button" class="btn ghost" id="scanBtn">Scan business card &amp; auto-fill</button>
-        <p class="secn scanhint">Take a clear photo of the card. We'll read the name, title, email, phone, and address, then you check it. The photo is also saved with the visit.</p>
-      </div>
-      <p class="secn manualhint" id="manualHint">No card on hand — enter the street address and the contact details below.</p>
+
+    <div class="sec scan-top">
+      <button type="button" id="scanCardBtn" class="scan-btn scan-btn--full">📷 Scan a business card to auto-fill</button>
+      <span id="scanStatus" class="scan-status"></span>
+      <input type="file" id="cardFileInput" accept="image/*" capture="environment" style="display:none">
     </div>
 
     <div class="sec">
@@ -179,27 +164,8 @@
       <p class="secn">Collateral only. Anything of value beyond printed materials goes through compliance, never through this log.</p>
       <div class="chips" id="mats">
         <label class="chip"><input type="radio" name="mats" value="Marketing Kit"><span>Marketing Kit</span></label>
-        <label class="chip"><input type="radio" name="mats" value="Referral Card"><span>Referral Card</span></label>
-        <label class="chip"><input type="radio" name="mats" value="Both"><span>Both</span></label>
+        <label class="chip"><input type="radio" name="mats" value="Business Card"><span>Business Card</span></label>
       </div>
-    </div>
-
-    <div class="sec">
-      <h2 class="sech">What you captured</h2>
-      <p class="secn">Photograph the business card and the materials in place. Photograph nothing else.</p>
-      <div class="cap">
-        <label class="drop" id="dropCard">
-          <input type="file" accept="image/*" capture="environment" id="fCard">
-          <span class="k">Business card</span>
-          <span class="h">Front of the card. Kept with this visit.</span>
-        </label>
-        <label class="drop" id="dropSite">
-          <input type="file" accept="image/*" capture="environment" id="fSite">
-          <span class="k">Materials in place</span>
-          <span class="h">Rack, front desk, or building exterior.</span>
-        </label>
-      </div>
-      <div class="thumbs" id="thumbs"></div>
     </div>
 
     <div class="sec">
@@ -222,14 +188,26 @@
 
     <div class="sec">
       <h2 class="sech">What happens next</h2>
-      <div class="grid2">
+      <div class="grid3">
         <div class="field">
-          <label for="owner">Follow-up owner</label>
+          <label for="owner">Who visited</label>
           <select id="owner"></select>
         </div>
         <div class="field">
-          <label for="due">Follow-up due</label>
-          <select id="due"><option value="2">In 2 days</option><option value="5" selected>In 5 days</option><option value="10">In 10 days</option><option value="0">Nothing needed</option></select>
+          <label for="fmethod">Follow-up type</label>
+          <select id="fmethod">
+            <option value="Email follow-up">Email follow-up</option>
+            <option value="Phone call">Phone call</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="due">Follow-up timing</label>
+          <select id="due">
+            <option value="0">Same day</option>
+            <option value="2" selected>1–3 days</option>
+            <option value="7">1 week</option>
+            <option value="30">1 month</option>
+          </select>
         </div>
       </div>
     </div>
@@ -276,9 +254,10 @@
   </section>
 </div>
 
-<div class="bar" id="bar">
+<div class="bar hidden" id="bar">
   <div class="barin">
     <button class="btn ghost" id="clearBtn">Clear</button>
+    <span id="draftStatus" class="draft-status" aria-live="polite"></span>
     <button class="btn" id="saveBtn" disabled>Save visit</button>
   </div>
 </div>
@@ -286,6 +265,6 @@
 
 <div class="toast" id="toast"></div>
 
-<script src="app.js"></script>
+<script src="/app.js"></script>
 </body>
 </html>
