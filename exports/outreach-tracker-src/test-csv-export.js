@@ -141,7 +141,35 @@ console.log("=== CSV export regression tests ===\n");
   assert(cells.every((c) => c === '""'), `null/undefined fields export as empty string (all cells: ${cells.slice(0,3).join(" ")})`);
 }
 
-/* 8. Formula injection check is on RAW value, not quoted cell (the key regression) */
+/* 8. Date fields are truncated to YYYY-MM-DD (PostgreSQL returns ISO timestamps) */
+{
+  const DATE_COLS = new Set(["visit_date", "follow_up_due"]);
+  function buildRowWithDates(visit) {
+    return cols.map((c) => {
+      const raw = visit[c] ?? "";
+      const val = c === "materials"
+        ? (Array.isArray(raw) ? raw.join("; ") : "")
+        : DATE_COLS.has(c)
+        ? String(raw).slice(0, 10)
+        : String(raw);
+      return '"' + neutralize(val).replace(/"/g, '""') + '"';
+    }).join(",");
+  }
+
+  const row = buildRowWithDates({
+    visit_date: "2026-01-15T08:30:00.000Z", company: "St. John's",
+    category: "Hospital", address: "", city: "", county: "",
+    contact_name: "", contact_title: "", contact_email: "", contact_phone: "",
+    materials: [], notes: "", owner: "", follow_up_method: "",
+    follow_up_due: "2026-01-22T00:00:00.000Z", followup_status: "Not started",
+  });
+  const cells = row.split(",");
+  assert(cells[0] === '"2026-01-15"', `visit_date ISO timestamp truncated to date: ${cells[0]}`);
+  const fuIdx = cols.indexOf("follow_up_due");
+  assert(cells[fuIdx] === '"2026-01-22"', `follow_up_due ISO timestamp truncated to date: ${cells[fuIdx]}`);
+}
+
+/* 9. Formula injection check is on RAW value, not quoted cell (the key regression) */
 {
   // If neutralize were called on the already-quoted string '"=BAD()"', its
   // first char would be `"` and it would NOT be neutralized.  Confirm the
