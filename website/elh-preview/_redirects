@@ -3,13 +3,31 @@ https://www.eternallifehospice.com/*  https://eternallifehospice.com/:splat  301
 http://www.eternallifehospice.com/*   https://eternallifehospice.com/:splat  301!
 http://eternallifehospice.com/*       https://eternallifehospice.com/:splat  301!
 
-# Legacy domain — eternallifehospiceinc.com → canonical domain (301, one hop)
-# ACTION REQUIRED: eternallifehospiceinc.com must be added to Netlify → Domain Management
-# before these rules fire. Add the domain, point DNS to Netlify, then these rules activate.
+# ── Legacy domain redirects ───────────────────────────────────────────────────
+# Both legacy domains must be activated manually before these rules fire:
+#
+#   Step 1 — Netlify (repeat for EACH domain):
+#     Site → Domain management → Add domain → enter the domain → Verify
+#     Netlify will display the DNS values to point at.
+#
+#   Step 2 — GoDaddy (repeat for EACH domain):
+#     DNS → Add/edit A record → Host: @ → Points to: 75.2.60.5  (Netlify LB)
+#     DNS → Add/edit CNAME   → Host: www → Points to: eternallifehospice.netlify.app
+#
+#   Once DNS propagates (~minutes to 1 hour), Netlify provisions SSL automatically
+#   and these redirect rules begin firing.
+#
+# Legacy domain: eternallifehospiceinc.com
 https://www.eternallifehospiceinc.com/*  https://eternallifehospice.com/:splat  301!
 https://eternallifehospiceinc.com/*      https://eternallifehospice.com/:splat  301!
 http://www.eternallifehospiceinc.com/*   https://eternallifehospice.com/:splat  301!
 http://eternallifehospiceinc.com/*       https://eternallifehospice.com/:splat  301!
+
+# Legacy domain: eternalhospice.com
+https://www.eternalhospice.com/*  https://eternallifehospice.com/:splat  301!
+https://eternalhospice.com/*      https://eternallifehospice.com/:splat  301!
+http://www.eternalhospice.com/*   https://eternallifehospice.com/:splat  301!
+http://eternalhospice.com/*       https://eternallifehospice.com/:splat  301!
 
 /hospice-ventura-county-ca      /hospice-ventura-and-los-angeles-county-ca   301
 /hospice-los-angeles-county-ca  /hospice-ventura-and-los-angeles-county-ca   301
@@ -33,5 +51,26 @@ http://eternallifehospiceinc.com/*       https://eternallifehospice.com/:splat  
 /media       /media-kit   301
 
 # Digital business cards
-/aleksandra   /card-aleksandra-dubina   301
+/aleksandra   /about/aleksandra-dubina   301
 /denise       /card-denise-chavez       301
+
+# Sitemap page
+/sitemap      /sitemap.html             200
+/services     /services.html            200
+
+# What Hospice Covers — legacy path corrected to canonical
+/resources/what-hospice-covers  /resources/medicare-hospice-benefit  301
+
+# Legacy sparse founder card — canonical biography is at /about/aleksandra-dubina
+/aleksandradubina   /about/aleksandra-dubina   301
+
+# OG image v2 compatibility — preserve previously shared/crawled URLs
+/assets/og-image-v2.jpg   /assets/og-image.jpg   301
+
+# ── Outreach Tracker proxy ────────────────────────────────────────────────────
+# Forwards /tracker/* and /api/* to the Replit deployment, which runs both
+# the marketing devserver (port 5000) and the tracker Express app (port 3000).
+# The devserver proxies /tracker/* and /api/* internally to port 3000.
+/tracker     https://eternal-life-hospice.replit.app/tracker/   200
+/tracker/*   https://eternal-life-hospice.replit.app/tracker/:splat   200
+/api/*       https://eternal-life-hospice.replit.app/api/:splat       200
