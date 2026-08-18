@@ -3,17 +3,12 @@ const $$ = (s) => Array.from(document.querySelectorAll(s));
 
 const STATUSES = ["Not started", "Email sent", "Replied", "Meeting booked", "Closed", "No interest"];
 const CLOSED = ["Closed", "No interest"];
-const OWNER_OPTIONS = ["Aleksandra Dubina", "Denise Chavez", "Unassigned"];
+const OWNER_OPTIONS = ["Aleksandra Dubina", "Denise Chavez", "Bianca Kashyap"];
 
+const DRAFT_KEY = "elh_visit_draft";
 let me = null;
 let visits = [];
-let photos = { card: null, site: null };
-let hasCard = "no";
-let scanning = false;
-let pendingCardPhoto = null;
 let aiEnabled = false;
-const SCAN_HINT = "Take a clear photo of the card. We'll read the name, title, email, phone, and address, then you check it. The photo is also saved with the visit.";
-const SCAN_HINT_NO_AI = "Card scanning isn't set up yet — the AI integration hasn't been enabled in this Replit. Enter the details below by hand.";
 
 /* ---------------- api ---------------- */
 async function api(path, opts = {}) {
@@ -97,7 +92,7 @@ $("#loginForm").addEventListener("submit", async (e) => {
   try {
     const r = await api("/api/login", {
       method: "POST",
-      body: JSON.stringify({ phone: $("#li-phone").value, password: $("#li-pass").value }),
+      body: JSON.stringify({ phone: $("#li-phone").value.trim(), password: $("#li-pass").value }),
     });
     me = r.user;
     await enterApp();
@@ -113,10 +108,10 @@ $("#regForm").addEventListener("submit", async (e) => {
     const r = await api("/api/register", {
       method: "POST",
       body: JSON.stringify({
-        name: $("#re-name").value,
-        phone: $("#re-phone").value,
+        name: $("#re-name").value.trim(),
+        phone: $("#re-phone").value.trim(),
         password: $("#re-pass").value,
-        code: $("#re-code").value,
+        code: $("#re-code").value.trim(),
       }),
     });
     me = r.user;
@@ -131,25 +126,6 @@ $("#logoutBtn").addEventListener("click", async () => {
   me = null;
   visits = [];
   location.reload();
-});
-
-/* ================= AI MODEL BANNER ================= */
-const AI_BANNER_DISMISSED_KEY = "aiModelBannerDismissed";
-
-function showAiModelBanner(warning) {
-  if (_ssGet(AI_BANNER_DISMISSED_KEY)) return;
-  const banner = $("#aiModelBanner");
-  const msg = $("#aiModelBannerMsg");
-  if (!banner || !msg) return;
-  msg.textContent = warning ||
-    "Card scanning is unavailable — the AI model may need updating. Contact your admin.";
-  banner.classList.remove("hidden");
-}
-
-$("#aiModelBannerDismiss").addEventListener("click", () => {
-  const banner = $("#aiModelBanner");
-  if (banner) banner.classList.add("hidden");
-  _ssSet(AI_BANNER_DISMISSED_KEY, "1");
 });
 
 /* ================= APP BOOT ================= */
@@ -168,7 +144,15 @@ async function enterApp() {
   $("#meName").textContent = me ? me.name : "";
   populateOwners();
   $("#date").value = new Date().toISOString().slice(0, 10);
+  restoreDraft();
   showView("app");
+  // Show the Save/Clear bar immediately (it starts hidden in HTML but the
+  // log view is always the boot default) and lift it above any injected
+  // dev bar (e.g. the ELH dev switcher in the Replit preview).
+  const _bootBar = $("#bar");
+  _bootBar.classList.remove("hidden");
+  const _devBar = document.getElementById("_elh-dev-bar");
+  if (_devBar) _bootBar.style.bottom = _devBar.offsetHeight + "px";
   await loadVisits();
   riskCheck();
   validate();
@@ -195,10 +179,7 @@ async function enterApp() {
 
 function populateOwners() {
   const sel = $("#owner");
-  const names = [];
-  if (me && me.name) names.push(me.name);
-  for (const o of OWNER_OPTIONS) if (!names.includes(o)) names.push(o);
-  sel.innerHTML = names.map((n) => `<option>${esc(n)}</option>`).join("");
+  sel.innerHTML = OWNER_OPTIONS.map((n) => `<option>${esc(n)}</option>`).join("");
 }
 
 async function loadVisits() {
@@ -228,49 +209,8 @@ function riskCheck() {
   return hit;
 }
 
-/* ================= PHOTO CAPTURE ================= */
-function shrink(file, cb) {
-  const img = new Image();
-  img.onload = () => {
-    const max = 900, s = Math.min(1, max / Math.max(img.width, img.height));
-    const c = document.createElement("canvas");
-    c.width = (img.width * s) | 0;
-    c.height = (img.height * s) | 0;
-    c.getContext("2d").drawImage(img, 0, 0, c.width, c.height);
-    cb(c.toDataURL("image/jpeg", 0.6));
-    URL.revokeObjectURL(img.src);
-  };
-  img.src = URL.createObjectURL(file);
-}
-function bindPhoto(inputSel, slot, dropSel, afterSet) {
-  $(inputSel).addEventListener("change", (e) => {
-    const f = e.target.files[0];
-    if (!f) return;
-    shrink(f, (d) => {
-      photos[slot] = d;
-      $(dropSel).classList.add("set");
-      drawThumbs();
-      if (afterSet) afterSet(d);
-    });
-  });
-}
-function onCardPhotoSet(d) {
-  if (hasCard === "yes") {
-    if (scanning) {
-      // A scan is already in flight — queue this photo so it is not silently dropped.
-      // extractCard's finally block will pick it up once the current scan finishes.
-      pendingCardPhoto = d;
-      return;
-    }
-    const h = $(".scanhint");
-    if (h) { h.textContent = aiEnabled ? SCAN_HINT : SCAN_HINT_NO_AI; h.classList.remove("busy"); }
-    extractCard(d);
-  }
-}
-bindPhoto("#fCard", "card", "#dropCard", onCardPhotoSet);
-bindPhoto("#fSite", "site", "#dropSite");
 
-/* ----- keep voice + scan sections in sync with the current aiEnabled value ----- */
+/* ----- keep voice section in sync with the current aiEnabled value ----- */
 function updateVoiceSection() {
   const voiceSection = $(".voice");
   if (!voiceSection) return;
@@ -292,88 +232,15 @@ function updateVoiceSection() {
   }
 }
 
-function updateScanSection() {
-  if (hasCard !== "yes") return;
-  if (scanning) return;
-  const h = $(".scanhint");
-  const btn = $("#scanBtn");
-  if (aiEnabled) {
-    if (h) { h.textContent = SCAN_HINT; h.classList.remove("busy"); }
-    if (btn) btn.disabled = false;
-  } else {
-    if (h) { h.textContent = SCAN_HINT_NO_AI; h.classList.remove("busy"); }
-    if (btn) btn.disabled = true;
-  }
-}
 
-/* ----- business card toggle + AI auto-fill ----- */
-function setHasCard(val) {
-  hasCard = val;
-  $$("#hasCard .segbtn").forEach((b) => b.classList.toggle("on", b.dataset.val === val));
-  $("#cardScan").classList.toggle("hidden", val !== "yes");
-  $("#manualHint").classList.toggle("hidden", val !== "no");
-  if (val === "yes") {
-    const h = $(".scanhint");
-    const btn = $("#scanBtn");
-    if (aiEnabled) {
-      if (h) { h.textContent = SCAN_HINT; h.classList.remove("busy"); }
-      if (btn) btn.disabled = false;
-    } else {
-      if (h) { h.textContent = SCAN_HINT_NO_AI; h.classList.remove("busy"); }
-      if (btn) btn.disabled = true;
-    }
-  }
-  validate();
-}
-$$("#hasCard .segbtn").forEach((b) => b.addEventListener("click", () => setHasCard(b.dataset.val)));
-$("#scanBtn").addEventListener("click", () => $("#fCard").click());
+/* ----- voice notes: SpeechRecognition (browser-native, no server needed) ----- */
+const SpeechRec = window.SpeechRecognition || window.webkitSpeechRecognition || null;
+let recognition = null;
+let recState = "idle"; // idle | recording
+let recFinalText = "";
 
-async function extractCard(dataUrl) {
-  if (scanning) return;
-  scanning = true;
-  const hint = $(".scanhint");
-  if (hint) { hint.textContent = "Reading the card…"; hint.classList.add("busy"); }
-  try {
-    const r = await api("/api/extract-card", { method: "POST", body: JSON.stringify({ image: dataUrl }) });
-    const c = r.contact || {};
-    const fill = (sel, val) => { if (val && !$(sel).value.trim()) $(sel).value = val; };
-    fill("#org", c.company);
-    fill("#addr", c.address);
-    fill("#city", c.city);
-    fill("#cname", c.contact_name);
-    fill("#ctitle", c.contact_title);
-    fill("#cemail", c.contact_email);
-    fill("#cphone", c.contact_phone);
-    if (hint) { hint.textContent = "Card read — please check every detail is right."; hint.classList.remove("busy"); }
-    toast("Card read. Please check the details.");
-    validate();
-  } catch (err) {
-    if (hint) { hint.textContent = "Couldn't read the card. Please type the details by hand."; hint.classList.remove("busy"); }
-    toast(err.message || "Couldn't read the card.", true);
-  } finally {
-    scanning = false;
-    // If a new photo was queued while this scan was in flight, process it now.
-    if (pendingCardPhoto !== null) {
-      const queued = pendingCardPhoto;
-      pendingCardPhoto = null;
-      extractCard(queued);
-    }
-  }
-}
-
-/* ----- voice notes: record → transcribe → append ----- */
-let mediaRecorder = null;
-let recChunks = [];
-let recStream = null;
-let recState = "idle"; // idle | recording | working
-
-function pickAudioType() {
-  const prefs = ["audio/webm;codecs=opus", "audio/webm", "audio/mp4", "audio/ogg;codecs=opus", "audio/ogg"];
-  if (window.MediaRecorder && MediaRecorder.isTypeSupported) {
-    for (const t of prefs) if (MediaRecorder.isTypeSupported(t)) return t;
-  }
-  return "";
-}
+const REC_HINT_DEFAULT =
+  "Tap Stop when you're done — your words will appear in the notes box. Review before saving.";
 
 function setRecHint(msg, isErr) {
   const h = $("#recHint");
@@ -381,94 +248,15 @@ function setRecHint(msg, isErr) {
   h.textContent = msg;
   h.classList.toggle("err", !!isErr);
 }
-const REC_HINT_DEFAULT =
-  "Talk through the visit and we'll type it up for you. Review it before saving. The recording is deleted the moment it's turned into text — nothing is stored.";
 
 function setRecState(state) {
   recState = state;
   const btn = $("#recBtn");
   const label = btn.querySelector(".reclabel");
   btn.classList.toggle("recording", state === "recording");
-  btn.classList.toggle("working", state === "working");
-  btn.disabled = state === "working";
-  if (state === "recording") label.textContent = "Stop recording";
-  else if (state === "working") label.textContent = "Transcribing…";
-  else label.textContent = "Record instead of typing";
-}
-
-function stopStream() {
-  if (recStream) {
-    recStream.getTracks().forEach((t) => t.stop());
-    recStream = null;
-  }
-}
-
-async function startRecording() {
-  if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia || !window.MediaRecorder) {
-    setRecHint("This browser can't record audio. Please type your notes.", true);
-    return;
-  }
-  try {
-    recStream = await navigator.mediaDevices.getUserMedia({ audio: true });
-  } catch (err) {
-    setRecHint(
-      "Microphone access is blocked. Allow the mic in your browser settings, or type your notes.",
-      true
-    );
-    return;
-  }
-  const mimeType = pickAudioType();
-  try {
-    mediaRecorder = mimeType ? new MediaRecorder(recStream, { mimeType }) : new MediaRecorder(recStream);
-  } catch (_) {
-    mediaRecorder = new MediaRecorder(recStream);
-  }
-  recChunks = [];
-  mediaRecorder.addEventListener("dataavailable", (e) => {
-    if (e.data && e.data.size > 0) recChunks.push(e.data);
-  });
-  mediaRecorder.addEventListener("stop", onRecordingStop);
-  mediaRecorder.start();
-  setRecHint("Recording… tap Stop when you're done.");
-  setRecState("recording");
-}
-
-function stopRecording() {
-  if (mediaRecorder && mediaRecorder.state !== "inactive") {
-    mediaRecorder.stop();
-  }
-}
-
-async function onRecordingStop() {
-  stopStream();
-  const type = (mediaRecorder && mediaRecorder.mimeType) || (recChunks[0] && recChunks[0].type) || "audio/webm";
-  const blob = new Blob(recChunks, { type });
-  recChunks = [];
-  mediaRecorder = null;
-  if (!blob.size) {
-    setRecState("idle");
-    setRecHint("Nothing was recorded. Please try again.", true);
-    return;
-  }
-  setRecState("working");
-  setRecHint("Transcribing your note…");
-  try {
-    const dataUrl = await blobToDataUrl(blob);
-    const r = await api("/api/transcribe", { method: "POST", body: JSON.stringify({ audio: dataUrl }) });
-    const text = (r.text || "").trim();
-    if (!text) {
-      setRecHint("We couldn't make out any words. Try again in a quieter spot, or type your notes.", true);
-    } else {
-      appendNotes(text);
-      setRecHint("Added below — please read it over and edit before saving.");
-      toast("Voice note added. Please review it.");
-    }
-  } catch (err) {
-    setRecHint(err.message || "Couldn't transcribe that. Please try again or type your notes.", true);
-    toast(err.message || "Couldn't transcribe that.", true);
-  } finally {
-    setRecState("idle");
-  }
+  btn.classList.remove("working");
+  btn.disabled = false;
+  label.textContent = state === "recording" ? "Stop recording" : "Record instead of typing";
 }
 
 function appendNotes(text) {
@@ -479,59 +267,121 @@ function appendNotes(text) {
   validate();
 }
 
-function blobToDataUrl(blob) {
-  return new Promise((resolve, reject) => {
-    const fr = new FileReader();
-    fr.onload = () => resolve(fr.result);
-    fr.onerror = () => reject(new Error("Couldn't read the recording."));
-    fr.readAsDataURL(blob);
-  });
+function startRecording() {
+  if (!SpeechRec) {
+    setRecHint("Your browser doesn't support voice recording. Please type your notes.", true);
+    return;
+  }
+  recFinalText = "";
+  recognition = new SpeechRec();
+  recognition.lang = "en-US";
+  recognition.continuous = true;
+  recognition.interimResults = true;
+  recognition.maxAlternatives = 1;
+
+  recognition.onstart = () => {
+    setRecState("recording");
+    setRecHint("Listening… tap Stop when you're done.");
+  };
+
+  recognition.onresult = (e) => {
+    let interim = "";
+    for (let i = e.resultIndex; i < e.results.length; i++) {
+      const t = e.results[i][0].transcript;
+      if (e.results[i].isFinal) recFinalText += t + " ";
+      else interim = t;
+    }
+    setRecHint("Listening… " + (recFinalText + interim).trim());
+  };
+
+  recognition.onerror = (e) => {
+    if (e.error === "not-allowed" || e.error === "service-not-allowed") {
+      setRecHint("Microphone access is blocked. Allow it in your browser settings, or type your notes.", true);
+    } else if (e.error === "no-speech") {
+      setRecHint("No speech detected. Try again or type your notes.", true);
+    } else {
+      setRecHint("Recording error (" + e.error + "). Please type your notes.", true);
+    }
+    setRecState("idle");
+    recognition = null;
+  };
+
+  recognition.onend = () => {
+    const text = recFinalText.trim();
+    setRecState("idle");
+    recognition = null;
+    if (!text) {
+      setRecHint("Nothing was captured. Try again in a quieter spot, or type your notes.", true);
+      return;
+    }
+    appendNotes(text);
+    setRecHint("Added below — read it over and edit before saving.");
+    toast("Voice note added. Please review it.");
+  };
+
+  try {
+    recognition.start();
+  } catch (e) {
+    setRecHint("Couldn't start recording. Please type your notes.", true);
+    recognition = null;
+  }
+}
+
+function stopRecording() {
+  if (recognition) {
+    recognition.stop();
+  }
 }
 
 $("#recBtn").addEventListener("click", () => {
-  if (!aiEnabled) {
-    setRecHint("Voice notes aren't available yet — enable the OpenAI integration in this Replit's Integrations panel.", true);
-    const h = $("#recHint");
-    if (h) h.scrollIntoView({ behavior: "smooth", block: "nearest" });
-    return;
-  }
   if (recState === "recording") stopRecording();
-  else if (recState === "idle") { setRecHint(REC_HINT_DEFAULT); startRecording(); }
+  else { setRecHint(REC_HINT_DEFAULT); startRecording(); }
 });
 
-function drawThumbs() {
-  const labels = { card: "Business card", site: "Materials" };
-  $("#thumbs").innerHTML = Object.entries(photos)
-    .filter(([, d]) => d)
-    .map(
-      ([slot, d]) =>
-        `<figure><button type="button" class="rm" data-slot="${slot}" aria-label="Remove">×</button><img src="${d}" alt=""><figcaption>${labels[slot]}</figcaption></figure>`
-    )
-    .join("");
-  $$("#thumbs .rm").forEach((b) =>
-    b.addEventListener("click", () => {
-      const slot = b.dataset.slot;
-      photos[slot] = null;
-      $(slot === "card" ? "#dropCard" : "#dropSite").classList.remove("set");
-      $(slot === "card" ? "#fCard" : "#fSite").value = "";
-      if (slot === "card" && hasCard === "yes" && !scanning) {
-        const h = $(".scanhint");
-        if (h) { h.textContent = aiEnabled ? SCAN_HINT : SCAN_HINT_NO_AI; h.classList.remove("busy"); }
-      }
-      drawThumbs();
-    })
-  );
-}
+/* ================= CARD SCAN ================= */
+$("#scanCardBtn").addEventListener("click", () => $("#cardFileInput").click());
+$("#cardFileInput").addEventListener("change", async () => {
+  const file = $("#cardFileInput").files[0];
+  if (!file) return;
+  const scanBtn = $("#scanCardBtn");
+  const status = $("#scanStatus");
+  scanBtn.disabled = true;
+  status.textContent = "Reading card…";
+  try {
+    const dataUrl = await new Promise((res, rej) => {
+      const r = new FileReader();
+      r.onload = () => res(r.result);
+      r.onerror = rej;
+      r.readAsDataURL(file);
+    });
+    const data = await api("/api/extract-card", { method: "POST", body: JSON.stringify({ image: dataUrl }) });
+    const c = data.contact || {};
+    if (c.contact_name)  { $("#cname").value  = c.contact_name;  }
+    if (c.contact_title) { $("#ctitle").value = c.contact_title; }
+    if (c.contact_email) { $("#cemail").value = c.contact_email; }
+    if (c.contact_phone) { $("#cphone").value = c.contact_phone; }
+    if (c.company) { $("#org").value  = c.company;  }
+    if (c.address) { $("#addr").value = c.address;  }
+    if (c.city)    { $("#city").value = c.city;     }
+    status.textContent = "Fields filled from card.";
+    validate();
+  } catch (e) {
+    status.textContent = e.message || "Couldn't read the card — fill in manually.";
+  } finally {
+    scanBtn.disabled = false;
+    $("#cardFileInput").value = "";
+  }
+});
 
 /* ================= VALIDATION ================= */
 function validate() {
-  let ok = $("#org").value.trim() && $("#date").value && $("#attest").checked && !riskCheck();
-  if (hasCard === "no") {
-    ok = ok && $("#addr").value.trim() && $("#cname").value.trim();
-  }
+  const ok = $("#org").value.trim() && $("#date").value && $("#attest").checked && !riskCheck()
+    && $("#addr").value.trim() && $("#cname").value.trim();
   $("#saveBtn").disabled = !ok;
 }
-["#org", "#date", "#notes", "#addr", "#cname"].forEach((s) => $(s).addEventListener("input", validate));
+["#org", "#date", "#notes", "#addr", "#cname"].forEach((s) => $(s).addEventListener("input", () => { validate(); saveDraft(); }));
+["#cat", "#city", "#county", "#ctitle", "#cemail", "#cphone", "#owner", "#fmethod", "#due"].forEach((s) => $(s)?.addEventListener("change", saveDraft));
+$$("#mats input").forEach((i) => i.addEventListener("change", saveDraft));
 $("#attest").addEventListener("change", validate);
 
 /* ================= CLOCK ================= */
@@ -565,21 +415,15 @@ $("#saveBtn").addEventListener("click", async () => {
     materials: $$("#mats input:checked").map((i) => i.value),
     notes: $("#notes").value.trim(),
     owner: $("#owner").value,
-    follow_up_due: dueDays === "0" ? null : addDays(visitDate, dueDays),
-    followup_status: dueDays === "0" ? "Closed" : "Not started",
+    follow_up_method: $("#fmethod").value,
+    follow_up_due: addDays(visitDate, dueDays),
+    followup_status: "Not started",
     attested: $("#attest").checked === true,
   };
 
   try {
-    const r = await api("/api/visits", { method: "POST", body: JSON.stringify(payload) });
-    const visit = r.visit;
-    const uploads = [];
-    if (photos.card) uploads.push(uploadPhoto(visit.id, "card", photos.card));
-    if (photos.site) uploads.push(uploadPhoto(visit.id, "site", photos.site));
-    if (uploads.length) {
-      try { await Promise.all(uploads); } catch (_) { toast("Visit saved, but a photo failed to upload.", true); }
-    }
-    clearForm();
+    await api("/api/visits", { method: "POST", body: JSON.stringify(payload) });
+    clearForm();        // also calls clearDraft() internally
     await loadVisits();
     switchTab("queue");
     toast("Visit saved. Follow-up clock started.");
@@ -589,34 +433,44 @@ $("#saveBtn").addEventListener("click", async () => {
   }
 });
 
-async function uploadPhoto(visitId, kind, dataUrl) {
-  return api(`/api/visits/${visitId}/photos`, {
-    method: "POST",
-    body: JSON.stringify({ kind, image: dataUrl }),
-  });
-}
 
 function clearForm() {
   ["#org", "#addr", "#city", "#cname", "#ctitle", "#cemail", "#cphone", "#notes"].forEach((s) => ($(s).value = ""));
   $("#cat").selectedIndex = 0;
   $("#county").selectedIndex = 0;
-  $("#due").value = "5";
+  $("#fmethod").selectedIndex = 0;
+  $("#due").value = "2";
   $$("#mats input").forEach((i) => (i.checked = false));
   $("#attest").checked = false;
-  photos = { card: null, site: null };
-  $("#fCard").value = "";
-  $("#fSite").value = "";
-  $("#dropCard").classList.remove("set");
-  $("#dropSite").classList.remove("set");
   $("#date").value = new Date().toISOString().slice(0, 10);
-  setHasCard("no");
-  drawThumbs();
+  clearDraft();
   riskCheck();
   validate();
 }
-$("#clearBtn").addEventListener("click", clearForm);
 
-/* ================= RENDER QUEUE ================= */
+function saveDraft() {
+  const mat = $("input[name='mats']:checked");
+  const draft = {
+    org: $("#org").value,
+    cat: $("#cat").value,
+    date: $("#date").value,
+    addr: $("#addr").value,
+    city: $("#city").value,
+    county: $("#county").value,
+    cname: $("#cname").value,
+    ctitle: $("#ctitle").value,
+    cemail: $("#cemail").value,
+    cphone: $("#cphone").value,
+    notes: $("#notes").value,
+    owner: $("#owner").value,
+    fmethod: $("#fmethod").value,
+    due: $("#due").value,
+    mat: mat ? mat.value : "",
+  };
+  // attest is intentionally excluded — must be re-confirmed every session
+  try { localStorage.setItem(DRAFT_KEY, JSON.stringify(draft)); } catch (_) {}
+  _flashDraftSaved("Draft saved");
+}
 function render() {
   const open = visits.filter((v) => !CLOSED.includes(v.followup_status));
   $("#qcount").textContent = open.length;
@@ -708,18 +562,14 @@ function render() {
 /* ================= CSV ================= */
 $("#csv").addEventListener("click", () => {
   if (!visits.length) return toast("No visits to export yet.", true);
-  const cols = ["visit_date", "company", "category", "address", "city", "county", "contact_name", "contact_title", "contact_email", "contact_phone", "materials", "notes", "owner", "follow_up_due", "followup_status"];
-  const head = ["Visit date", "Organization", "Category", "Address", "City", "County", "Contact", "Title", "Email", "Phone", "Materials left", "Notes", "Owner", "Follow-up due", "Status"];
+  const cols = ["visit_date", "company", "category", "address", "city", "county", "contact_name", "contact_title", "contact_email", "contact_phone", "materials", "notes", "owner", "follow_up_method", "follow_up_due", "followup_status"];
+  const head = ["Visit date", "Organization", "Category", "Address", "City", "County", "Contact", "Title", "Email", "Phone", "Materials left", "Notes", "Owner", "Follow-up type", "Follow-up due", "Status"];
   const neutralize = (s) => (/^[=+\-@\t\r]/.test(s) ? "'" + s : s);
   const rows = visits.map((v) =>
-    cols
-      .map((c) => {
-        let val = v[c];
-        if (Array.isArray(val)) val = val.join("; ");
-        if ((c === "visit_date" || c === "follow_up_due") && val) val = String(val).slice(0, 10);
-        return `"${neutralize(String(val ?? "")).replace(/"/g, '""')}"`;
-      })
-      .join(",")
+    cols.map((c) => {
+      const val = c === "materials" ? (Array.isArray(v[c]) ? v[c].join("; ") : "") : String(v[c] ?? "");
+      return neutralize('"' + val.replace(/"/g, '""') + '"');
+    }).join(",")
   );
   const blob = new Blob(["\ufeff" + [head.join(","), ...rows].join("\r\n")], { type: "text/csv" });
   const a = document.createElement("a");
@@ -749,8 +599,8 @@ $("#csv").addEventListener("click", () => {
     statusEl.classList.add("hidden");
     statusEl.textContent = "";
     try {
-      const r = await api("/api/backup/trigger?full=true", { method: "POST" });
-      setStatus(r.note || "Full backup sent.", false);
+      await api("/api/backup/run", { method: "POST" });
+      setStatus("Full backup sent.", false);
       toast("Full backup sent.");
       loadBackupStatus();
     } catch (e) {
@@ -1009,7 +859,12 @@ $("#runBackupBtn").addEventListener("click", async () => {
 function switchTab(view) {
   $$(".tab").forEach((x) => x.setAttribute("aria-selected", x.dataset.view === view));
   ["log", "queue", "export"].forEach((v) => $("#view-" + v).classList.toggle("hidden", v !== view));
-  $("#bar").classList.toggle("hidden", view !== "log");
+  const bar = $("#bar");
+  bar.classList.toggle("hidden", view !== "log");
+  if (view === "log") {
+    const devBar = document.getElementById("_elh-dev-bar");
+    bar.style.bottom = devBar ? devBar.offsetHeight + "px" : "";
+  }
   window.scrollTo(0, 0);
   if (_backupCheckedAtTimer) { clearInterval(_backupCheckedAtTimer); _backupCheckedAtTimer = null; }
   if (view === "export") {
@@ -1020,7 +875,7 @@ function switchTab(view) {
     api("/api/config").then((cfg) => {
       aiEnabled = Boolean(cfg.aiEnabled);
       updateVoiceSection();
-      updateScanSection();
+      updateVoiceSection();
     }).catch(() => {});
   }
 }
@@ -1049,3 +904,49 @@ document.addEventListener("visibilitychange", () => {
     await initAuthScreen();
   }
 })();
+
+let _draftTimer;
+
+function restoreDraft() {
+  let draft;
+  try { draft = JSON.parse(localStorage.getItem(DRAFT_KEY) || "null"); } catch (_) {}
+  if (!draft) return;
+  const set = (id, val) => { if (val && $(id)) $(id).value = val; };
+  set("#org", draft.org);
+  set("#cat", draft.cat);
+  set("#date", draft.date);
+  set("#addr", draft.addr);
+  set("#city", draft.city);
+  set("#county", draft.county);
+  set("#cname", draft.cname);
+  set("#ctitle", draft.ctitle);
+  set("#cemail", draft.cemail);
+  set("#cphone", draft.cphone);
+  set("#notes", draft.notes);
+  set("#owner", draft.owner);
+  set("#fmethod", draft.fmethod);
+  set("#due", draft.due);
+  if (draft.mat) {
+    const matInput = $(`input[name='mats'][value='${draft.mat.replace(/'/g, "\\'")}']`);
+    if (matInput) matInput.checked = true;
+  }
+  riskCheck();
+  validate();
+  // Show the restore indicator if there is real content
+  if (draft.org || draft.notes || draft.cname) _flashDraftSaved("Draft restored");
+}
+
+function _flashDraftSaved(msg) {
+  const el = $("#draftStatus");
+  if (!el) return;
+  el.textContent = msg;
+  el.classList.add("on");
+  clearTimeout(_draftTimer);
+  _draftTimer = setTimeout(() => el.classList.remove("on"), 2200);
+}
+
+function clearDraft() {
+  try { localStorage.removeItem(DRAFT_KEY); } catch (_) {}
+  const el = $("#draftStatus");
+  if (el) el.classList.remove("on");
+}
