@@ -570,7 +570,7 @@ $("#csv").addEventListener("click", () => {
   const rows = visits.map((v) =>
     cols.map((c) => {
       const val = c === "materials" ? (Array.isArray(v[c]) ? v[c].join("; ") : "") : String(v[c] ?? "");
-      return neutralize('"' + val.replace(/"/g, '""') + '"');
+      return '"' + neutralize(val).replace(/"/g, '""') + '"';
     }).join(",")
   );
   const blob = new Blob(["\ufeff" + [head.join(","), ...rows].join("\r\n")], { type: "text/csv" });
