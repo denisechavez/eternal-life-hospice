@@ -21,6 +21,23 @@ if (!process.env.SESSION_SECRET) {
 
 app.set("trust proxy", 1);
 app.use(express.json({ limit: "12mb" }));
+
+// ---- live SSE feed ----
+// Lets the office browser see Bianca's saves the moment they happen.
+const _sseClients = new Set();
+function _broadcastVisit(visit, savedById, savedByName) {
+  if (!_sseClients.size) return;
+  const msg = "event: visit_saved\ndata: " +
+    JSON.stringify({
+      id: visit.id,
+      company: visit.company,
+      owner: visit.owner || "Unassigned",
+      saved_by_id: savedById,
+      saved_by_name: savedByName || "Someone",
+    }) +
+    "\n\n";
+  _sseClients.forEach((res) => { try { res.write(msg); } catch (_) {} });
+}
 app.use(express.urlencoded({ extended: true, limit: "12mb" }));
 
 app.use(
@@ -333,6 +350,12 @@ app.post("/api/visits", requireAuth, async (req, res) => {
       ]
     );
     res.json({ visit: { ...rows[0], photos: [] } });
+    // Broadcast to any open SSE connections (non-blocking — fire and forget).
+    try {
+      const userRes = await query("SELECT name FROM users WHERE id = $1", [req.session.userId]);
+      const savedByName = userRes.rows[0] ? userRes.rows[0].name : null;
+      _broadcastVisit(rows[0], req.session.userId, savedByName);
+    } catch (_) {}
   } catch (e) {
     console.error("create visit error", e);
     res.status(500).json({ error: "Server error." });
@@ -668,6 +691,21 @@ async function probeAiModel() {
     // Transient network errors are not surfaced as a banner (don't false-alarm).
   }
 }
+
+// ---- SSE stream (live visit feed) ----
+app.get("/api/stream", requireAuth, (req, res) => {
+  res.setHeader("Content-Type", "text/event-stream");
+  res.setHeader("Cache-Control", "no-cache");
+  res.setHeader("Connection", "keep-alive");
+  res.flushHeaders();
+  _sseClients.add(res);
+  // Keep-alive ping every 25 seconds so intermediaries retain the connection.
+  const ping = setInterval(() => { try { res.write(": ping\n\n"); } catch (_) {} }, 25000);
+  req.on("close", () => {
+    _sseClients.delete(res);
+    clearInterval(ping);
+  });
+});
 
 // ---- static frontend ----
 app.use(express.static(path.join(__dirname, "public")));

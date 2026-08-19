@@ -23,7 +23,8 @@ body{margin:0;background:var(--cream);color:var(--ink);font-family:var(--sans);f
 .brandrow{display:flex;align-items:baseline;justify-content:space-between;gap:14px}
 .brand{font-family:var(--serif);font-size:27px;font-weight:400;letter-spacing:.005em;line-height:1}
 .brand em{font-style:normal;color:var(--gold)}
-.tagpill{font-size:9.5px;letter-spacing:.22em;text-transform:uppercase;color:var(--taupe);border:1px solid rgba(201,176,126,.4);border-radius:999px;padding:5px 10px;white-space:nowrap}
+.tagpill{font-size:9.5px;letter-spacing:.22em;text-transform:uppercase;color:var(--taupe);border:1px solid rgba(201,176,126,.4);border-radius:999px;padding:5px 10px;white-space:nowrap;transition:color .4s,border-color .4s}
+.tagpill--live{color:#7ecb90;border-color:rgba(126,203,144,.55)}
 .subline{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--taupe);margin-top:9px}
 .entity{margin-top:16px;display:flex;align-items:center;gap:9px;font-size:12px;color:var(--cream)}
 .entity .lock{background:var(--plum);border:1px solid rgba(201,176,126,.45);border-radius:4px;padding:5px 11px;font-weight:500;letter-spacing:.08em;font-size:11px;text-transform:uppercase}

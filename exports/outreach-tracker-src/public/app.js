@@ -7,8 +7,10 @@ const OWNER_OPTIONS = ["Aleksandra Dubina", "Denise Chavez", "Bianca Kashyap"];
 
 const DRAFT_KEY = "elh_visit_draft";
 let me = null;
+let myUserId = null;
 let visits = [];
 let aiEnabled = false;
+let _liveStream = null;
 
 /* ---------------- api ---------------- */
 async function api(path, opts = {}) {
@@ -141,6 +143,7 @@ async function enterApp() {
   // Show the voice recorder; grey it out with an explanation when AI is unavailable
   updateVoiceSection();
 
+  myUserId = me ? me.id : null;
   $("#meName").textContent = me ? me.name : "";
 
   // Site shortcuts (ELH Website, Publications, Events) — Denise Chavez only
@@ -182,6 +185,36 @@ async function enterApp() {
   const _bootExportView = $("#view-export");
   if (_bootExportView && !_bootExportView.classList.contains("hidden") && !_backupCheckedAtTimer) {
     _backupCheckedAtTimer = setInterval(renderCheckedAt, 1000);
+  }
+
+  // ---- live visit feed (SSE) ----
+  // Lets the office browser see field saves the moment they happen.
+  if (typeof EventSource !== "undefined") {
+    if (_liveStream) _liveStream.close();
+    _liveStream = new EventSource("/api/stream");
+    const pill = document.querySelector(".tagpill");
+    _liveStream.onopen = () => {
+      if (pill) {
+        pill.textContent = "● Live";
+        pill.classList.add("tagpill--live");
+      }
+    };
+    _liveStream.onerror = () => {
+      if (pill) {
+        pill.textContent = "Live";
+        pill.classList.remove("tagpill--live");
+      }
+    };
+    _liveStream.addEventListener("visit_saved", (event) => {
+      try {
+        const data = JSON.parse(event.data);
+        loadVisits(); // Keep the queue fresh for everyone.
+        // The saver already sees "Visit saved"; only watchers receive this toast.
+        if (data.saved_by_id !== myUserId) {
+          toast(`${data.saved_by_name || "Someone"} just logged a visit at ${data.company}.`);
+        }
+      } catch (_) {}
+    });
   }
 }
 
@@ -347,11 +380,14 @@ $("#recBtn").addEventListener("click", () => {
 });
 
 /* ================= CARD SCAN ================= */
-$("#scanCardBtn").addEventListener("click", () => $("#cardFileInput").click());
-$("#cardFileInput").addEventListener("change", async () => {
-  const file = $("#cardFileInput").files[0];
+const scanCardBtn = $("#scanCardBtn");
+const cardFileInput = $("#cardFileInput");
+if (scanCardBtn && cardFileInput) {
+  scanCardBtn.addEventListener("click", () => cardFileInput.click());
+  cardFileInput.addEventListener("change", async () => {
+  const file = cardFileInput.files[0];
   if (!file) return;
-  const scanBtn = $("#scanCardBtn");
+  const scanBtn = scanCardBtn;
   const status = $("#scanStatus");
   scanBtn.disabled = true;
   status.textContent = "Reading card…";
@@ -377,9 +413,10 @@ $("#cardFileInput").addEventListener("change", async () => {
     status.textContent = e.message || "Couldn't read the card — fill in manually.";
   } finally {
     scanBtn.disabled = false;
-    $("#cardFileInput").value = "";
+    cardFileInput.value = "";
   }
-});
+  });
+}
 
 /* ================= VALIDATION ================= */
 function validate() {
