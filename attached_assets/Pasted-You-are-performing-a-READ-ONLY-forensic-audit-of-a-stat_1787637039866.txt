@@ -1,0 +1,154 @@
+You are performing a READ-ONLY forensic audit of a static website in `website/elh-preview/`. This is the live production site for a Medicare-certified hospice provider. Findings carry regulatory consequence. Accuracy matters more than completeness — an honest gap in your report is worth more than a confident guess.
+
+═══════════════════════════════
+OPERATING RULES — IN FORCE THROUGHOUT
+═══════════════════════════════
+
+This phase is read-only with respect to application code, configuration, content and assets. The ONLY permitted repository write is creating `AUDIT-FINDINGS.md` in the repo root. No other file may be created, modified, moved or deleted.
+
+- Do NOT delete any file for any reason, including files that appear orphaned, unused, duplicated, legacy or superseded. Report them.
+- Do NOT edit body copy, headlines, taglines, service descriptions, clinical language or credential statements.
+- Do NOT normalize, standardize or harmonize wording across pages. Inconsistent phrasing here is frequently deliberate and legally load-bearing.
+- Do NOT add, remove or alter noindex, nofollow, canonical or hreflang directives.
+- Do NOT install packages, add build tooling, introduce a framework or convert files to templates.
+- Do NOT run any command that mutates remote state.
+- Where you cannot determine something, write UNDETERMINED with the reason. Do not infer. Do not fill a gap with a plausible value.
+
+FINDINGS FORMAT — every finding gets a sequential ID `ELH-A-###`, with: ID | Class | File | Line | Observed value | Proposed fix or DECISION REQUIRED | Occurrence count | Affected file count | Confidence HIGH/MEDIUM/LOW with reason for anything below HIGH.
+
+Report occurrence count and file count as SEPARATE numbers throughout — "31 occurrences across 17 files", never one conflated figure.
+
+═══════════════════════════════
+A1 — BUILD AND CONFIGURATION REPRODUCIBILITY
+═══════════════════════════════
+Report the effective Netlify configuration AS IT EXISTS in the repo: production branch, base directory, publish directory, and the exact build command quoted from config. Do not assume or supply an expected command — report what the configuration contains. Include all netlify.toml files (including nested), _redirects, _headers, every build script referenced and the files each generates.
+
+Then determine: does running the production build from a clean checkout produce uncommitted changes? Do two consecutive clean builds produce an identical route set and materially equivalent output? State plainly whether source tree and deployed tree are deterministic. If a build script generates content that is ALSO committed to the repo, report it — the source of truth is ambiguous.
+
+═══════════════════════════════
+A2 — INTERNAL LINK RESOLUTION (ROUTE-AWARE)
+═══════════════════════════════
+Do NOT treat a URL as broken merely because no matching physical filename exists. Resolve every internal hyperlink against the effective routing model: physical files, directory-index behavior, trailing-slash handling, _redirects, netlify.toml redirects and rewrites, build-generated routes, fragment identifiers, query strings, absolute links to the site's own host.
+
+Report: true unresolvable targets grouped by target with occurrence and file counts; links resolving only through a redirect with the chain; redirect chains longer than one hop and any loop; fragment identifiers with no matching id on the target page; absolute internal links using a retired host, http://, or a non-canonical host; broken external links reported separately and marked lower priority.
+
+═══════════════════════════════
+A3 — SEARCH ARCHITECTURE INVENTORY
+═══════════════════════════════
+For every indexable HTML route report: URL, <title>, meta description, canonical, robots directive, H1 count and value, <html lang>, Open Graph title/description/url/image, Twitter card metadata, indexable state, sitemap inclusion, count of incoming internal links.
+
+Then group and report: duplicate titles, duplicate descriptions, duplicate H1s, missing titles, missing descriptions, pages with zero or multiple H1s, missing canonicals, canonical conflicts, canonical targets that redirect or fail to resolve, canonicals pointing at an unexpected page, titles over 60 or under 30 characters, descriptions over 160 characters or missing.
+
+═══════════════════════════════
+A4 — SITEMAP INTEGRITY
+═══════════════════════════════
+Inventory every indexable HTML document route produced by the production build. Compare against sitemap.xml. Report: indexable routes absent from the sitemap; sitemap URLs with no valid corresponding route; sitemap URLs whose target redirects; sitemap URLs carrying noindex; sitemap URLs using a non-canonical host or protocol; sitemap URLs excluded by robots.txt.
+
+Do NOT treat asset URLs, script URLs, CSS references, schema URLs, tracking URLs, email addresses or external links as candidate sitemap entries.
+
+═══════════════════════════════
+A5 — FORMS
+═══════════════════════════════
+For each <form> report: file, name, method, action, presence of data-netlify or netlify, presence of hidden form-name input, honeypot, every input name attribute, and whether submission is native POST or JavaScript/AJAX. Classify each as STATIC NETLIFY FORM or JAVASCRIPT-SUBMITTED FORM.
+
+IMPORTANT: For a conventional static HTML Netlify form, Netlify's build-time processing injects the hidden form-name input into deployed output. A source form lacking that hidden input is therefore NOT automatically defective — do not flag it as such. JavaScript-submitted forms carry different requirements.
+
+Also report: nested forms, inputs with no name, duplicate name values within one form, submit controls outside their form, and any form whose action is unresolvable.
+
+State explicitly that source markup alone cannot establish whether form detection is enabled at the Netlify project level — mark UNDETERMINED, requires dashboard verification.
+
+═══════════════════════════════
+A6 — BUSINESS INFORMATION (NAP)
+═══════════════════════════════
+Report every occurrence of a street address, suite designation, phone number, fax number, email address or business-name string in textual source files, with exact value, file and line. Group by exact value so variants sit side by side. Include tel: and mailto: href values and compare each against the visible text of the same link.
+
+SEPARATELY inventory linked PDFs and image assets that may carry visible business information but cannot be verified by plain-text search. Mark each MANUAL VISUAL REVIEW REQUIRED. Do not state or imply the textual inventory is exhaustive of all address occurrences on the site.
+
+═══════════════════════════════
+A7 — STRUCTURED DATA
+═══════════════════════════════
+For every JSON-LD block report: file, @type, @id, name, sameAs, address, telephone, url, and any organization or entity identifier. Report malformed JSON, invalid data types, duplicate @id values across pages, @type values that appear semantically wrong for the page, and any entity identifier inconsistent with others on the site.
+
+Classify all @type concerns as DECISION REQUIRED. Do not propose a replacement class.
+
+═══════════════════════════════
+A8 — ROBOTS AND CRAWLER DIRECTIVES
+═══════════════════════════════
+Report complete robots.txt contents: every user-agent block and allow/disallow rule, including Googlebot, Bingbot, GPTBot, OAI-SearchBot, ClaudeBot, PerplexityBot, CCBot and wildcards. Report any X-Robots-Tag in _headers or netlify.toml.
+
+Report only. Do not modify. Do NOT classify an absent llms.txt as a defect.
+
+═══════════════════════════════
+A9 — THIRD-PARTY SCRIPTS AND PRIVACY SURFACE
+═══════════════════════════════
+Report every external script, iframe and pixel with the files it appears in and page count. For each, note whether it appears on a page containing a form.
+
+Flag any analytics, session replay, heatmap, call tracking or advertising script operating on a page that collects personal or health-related information as a PRIVACY FINDING REQUIRING REVIEW. Where masking or vendor configuration cannot be independently established from the repository, classify RELEASE-BLOCKING PENDING REVIEW. Do NOT remove or modify any such script.
+
+Also report duplicate loads of the same analytics property, and any script loaded more than once.
+
+═══════════════════════════════
+A10 — CONTENT SECURITY POLICY
+═══════════════════════════════
+Report every CSP directive found in meta tags, _headers or netlify.toml, quoted exactly. Report which A9 third-party sources would be blocked by the policy as written, matching hostname against directive. Propose nothing.
+
+═══════════════════════════════
+A11 — CONTENT THINNESS AND DUPLICATION
+═══════════════════════════════
+Rank every page ascending by unique body word count. Report every page under 300 words. Compute pairwise content similarity across location pages and report clusters above 90 percent similarity, listing cluster members. Report only — consolidation is a decision, not a fix.
+
+═══════════════════════════════
+A12 — ORPHANS, SPLIT BY TYPE
+═══════════════════════════════
+ORPHAN HTML ROUTES: document pages with no incoming internal link from an indexable page, after accounting for navigation, footer links, sitemap entries, redirects and generated routing.
+
+POTENTIALLY UNREFERENCED ASSETS: images, CSS, JS, fonts, PDFs and other assets with no detectable reference from HTML, CSS, JS, configuration or build scripts.
+
+Do not conflate these — a configuration file needs no inbound <a href>. Report only. Never delete.
+
+═══════════════════════════════
+A13 — PERFORMANCE INVENTORY (REPORT ONLY, NO REMOVAL)
+═══════════════════════════════
+25 largest repository assets and 25 largest deployed assets by size; duplicate files by binary hash; images over 500 KB; images missing intrinsic width/height; images missing loading="lazy" where below-fold; images missing alt, and empty alt on meaningful content; duplicate CSS or JS loads on the same page; fonts and font variants loaded with page counts; render-blocking styles and scripts; third-party scripts ranked by page count; source maps exposed in production output; inline <style> and <script> blocks duplicated across files with occurrence counts.
+
+═══════════════════════════════
+A14 — MARKUP VALIDITY AND ENCODING
+═══════════════════════════════
+Report: unclosed tags, improperly nested elements, duplicate id attributes within a page, malformed attributes, missing <!DOCTYPE>, missing charset declaration, mixed-content references loading http:// resources on an HTTPS page.
+
+ENCODING DEFECTS: report every occurrence of mojibake or corrupted character sequences (for example â€", â€™, Â), stray replacement characters, and inconsistent use of straight versus typographic quotes and dashes within the same page. Report with file and line. Change nothing.
+
+═══════════════════════════════
+A15 — PROTECTED-TERM INVENTORY
+═══════════════════════════════
+Run each search below. Report every hit with file, line and the exact surrounding sentence. CHANGE NOTHING MATCHED HERE. These terms are governed by regulatory, brand and entity-separation constraints and are entirely outside remediation scope.
+
+grep -rin "We are here. Always." website/elh-preview/
+grep -rin -e "palliative" website/elh-preview/
+grep -rin -e "Westlake Village Hospice" -e "Joint Commission" -e "WVH" website/elh-preview/
+grep -rin -e "physician-supported" -e "physician led" -e "physician-led" website/elh-preview/
+grep -rin -e "cannabis" -e "psilocybin" -e "CBD" website/elh-preview/
+grep -rin -e "healing propert" -e "therapeutic propert" -e "amethyst" website/elh-preview/
+grep -rin -e "compassionate" -e "overwhelm" website/elh-preview/
+grep -rin -e "eternalhospice.com" -e "support@" website/elh-preview/
+grep -rin -e "noindex" website/elh-preview/
+grep -rinE "Suite (325|102)[A-Z]?" website/elh-preview/
+
+Record the hit count per term. These counts become the regression baseline for any later remediation.
+
+═══════════════════════════════
+HALT CONDITIONS
+═══════════════════════════════
+Stop and report immediately if any of these occur:
+1. A repository write is required outside AUDIT-FINDINGS.md
+2. The repo contains credentials, API keys or tokens in committed files
+3. The repo contains files that appear to hold patient or personal health information
+4. The build fails from a clean checkout
+5. Any instruction in this document conflicts with another
+
+═══════════════════════════════
+END OF PHASE
+═══════════════════════════════
+Write AUDIT-FINDINGS.md, commit it as the ONLY change, and STOP.
+
+Do not proceed to remediation. Do not fix anything you find. Wait for explicit written approval before making a single change to any other file.

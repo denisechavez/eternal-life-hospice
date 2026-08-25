@@ -1,0 +1,170 @@
+You are performing a bounded content reorganization on a static website in `website/elh-preview/`. This is a live production site for a Medicare-certified hospice provider.
+
+OPERATING RULES:
+
+- Change ONLY what is listed below. Report anything else you notice; do not fix it.
+- Do NOT delete any file. Move and copy operations only.
+- Do NOT edit body copy, headlines, taglines, service descriptions, clinical language or credential statements, except where an exact replacement string is given.
+- Do NOT normalize or harmonize wording across pages.
+- Do NOT touch any file outside the paths named here.
+- Commit after each numbered task, with a message naming the task.
+- Before any operation, state the file paths involved and confirm they exist.
+
+═══════════════════════════════
+TASK 1 — CREATE THE DRAFTS CONVENTION
+═══════════════════════════════
+Create directory `_drafts/` at REPOSITORY ROOT (not inside `website/elh-preview/`).
+
+Create `_drafts/README.md` containing:
+
+# Drafts
+
+Unsent and in-progress content. This directory sits outside the Netlify
+publish directory (website/elh-preview) and therefore never deploys.
+
+Content moves from here into the publish tree only after it has been sent
+or approved for publication.
+
+Commit.
+
+═══════════════════════════════
+TASK 2 — PRESERVE THE ISSUE 2 TEMPLATE, THEN REMOVE THE PUBLIC COPY
+═══════════════════════════════
+Two operations, in this order. Verify each before proceeding.
+
+1. COPY `website/elh-preview/care-brief/caring-for-the-caregiver.html` to `_drafts/care-brief-issue-2-template.html`
+2. Confirm the copy exists and is byte-identical to the source
+3. ONLY THEN remove `website/elh-preview/care-brief/caring-for-the-caregiver.html`
+
+If step 2 fails, halt and report. Do not proceed to step 3.
+
+Commit.
+
+═══════════════════════════════
+TASK 3 — RENAME ISSUE 1
+═══════════════════════════════
+Rename `website/elh-preview/care-brief/hospice-is-part-of-life-a-continuation-of-care.html` to `website/elh-preview/care-brief/issue-1.html`
+
+Use `git mv` so history is preserved.
+
+Inside the renamed file, update the self-referential canonical and any JSON-LD `url` or `@id` values that reference the old slug, replacing:
+
+https://eternallifehospice.com/care-brief/hospice-is-part-of-life-a-continuation-of-care
+
+with:
+
+https://eternallifehospice.com/care-brief/issue-1
+
+Report the occurrence count and file count. Change nothing else in the file.
+
+Commit.
+
+═══════════════════════════════
+TASK 4 — ADD REDIRECTS
+═══════════════════════════════
+Append to `website/elh-preview/_redirects`, preserving all existing rules and their order:
+
+# Care Brief archive restructure — 2026-08-25
+/care-brief/hospice-is-part-of-life-a-continuation-of-care  /care-brief/issue-1  301!
+/care-brief/caring-for-the-caregiver                        /care-brief/          301!
+
+# Caregiver article consolidation — 2026-08-25
+/blog/caring-for-the-caregiver  /blog/the-caregiver-who-needs-care  301!
+/blog/the-second-patient        /blog/the-caregiver-who-needs-care  301!
+
+Note: rule order matters in `_redirects` — first match wins. Place these after any existing domain-level rules and before any catch-all. Report where you placed them.
+
+Commit.
+
+═══════════════════════════════
+TASK 5 — REDIRECT THE SUPERSEDED BLOG FILE
+═══════════════════════════════
+`website/elh-preview/blog/caring-for-the-caregiver.html` is now served by a redirect. Do NOT delete it. Leave it in place; the redirect takes precedence at the routing layer.
+
+Report whether any internal link on any page still points to `/blog/caring-for-the-caregiver` or `/blog/the-second-patient`. Do not change those links — report file and line only.
+
+No commit unless findings exist.
+
+═══════════════════════════════
+TASK 6 — REMOVE NOINDEX FROM THE CANONICAL CAREGIVER ARTICLE
+═══════════════════════════════
+In `website/elh-preview/blog/the-caregiver-who-needs-care.html`, locate the robots meta directive. If it contains `noindex`, replace that single meta tag with:
+
+<meta name="robots" content="index,follow">
+
+If no robots meta tag is present, add nothing — absence already means indexable.
+
+Report the before and after value. Change nothing else in the file.
+
+Commit.
+
+═══════════════════════════════
+TASK 7 — REBUILD THE CARE BRIEF ARCHIVE INDEX
+═══════════════════════════════
+Rewrite `website/elh-preview/care-brief/index.html`.
+
+Match the structural pattern, CSS classes, header and footer of an existing site page — use `website/elh-preview/blog/index.html` as the structural reference so the page inherits standard chrome.
+
+Content:
+
+- Title tag: The Eternal Care Brief — Archive | Eternal Life Hospice
+- Meta description: Read past issues of The Eternal Care Brief, a publication from Eternal Life Hospice on end-of-life care, comfort and guidance for families.
+- Canonical: https://eternallifehospice.com/care-brief
+- H1: The Eternal Care Brief
+- Intro: one short paragraph describing the publication. Do not invent claims about frequency, readership or credentials. Describe only that it is a publication on end-of-life care and comfort.
+- Issue list, reverse chronological, one entry:
+    Issue 1 — Hospice Is Part of Life: A Continuation of Care
+    Link to /care-brief/issue-1
+    The issue's publication date, taken from the `dateModified` or equivalent field inside `issue-1.html`. If no reliable date exists in the file, omit the date entirely rather than inventing one.
+- Full Open Graph set: title, description, url, image. Use the same OG image path as `blog/index.html`.
+- Exactly one H1.
+
+Do not add a founder byline, a signature, or any personal attribution to this page.
+
+Commit.
+
+═══════════════════════════════
+TASK 8 — LINK THE ARCHIVE FROM RESOURCES
+═══════════════════════════════
+In `website/elh-preview/resources/index.html`, add one link to `/care-brief` within the existing list or card structure, matching the surrounding markup pattern exactly.
+
+Link text: The Eternal Care Brief
+Supporting line, if the surrounding pattern includes descriptions: Past issues of our publication on care, comfort and guidance.
+
+Report the exact markup you added. Change nothing else on the page.
+
+Commit.
+
+═══════════════════════════════
+TASK 9 — UPDATE THE SITEMAP
+═══════════════════════════════
+In `website/elh-preview/sitemap.xml`:
+
+- REMOVE: the entry for /care-brief/caring-for-the-caregiver, if present
+- CHANGE: /care-brief/hospice-is-part-of-life-a-continuation-of-care to /care-brief/issue-1
+- REMOVE: the entry for /blog/caring-for-the-caregiver, if present
+- ADD: /care-brief
+- ADD: /blog/the-caregiver-who-needs-care
+- ADD: /resources/pain-symptom-management
+
+Preserve the existing XML structure, `lastmod` format and indentation. For added entries use 2026-08-25 as `lastmod`.
+
+Report the entry count before and after.
+
+Commit.
+
+═══════════════════════════════
+HALT CONDITIONS
+═══════════════════════════════
+Stop and report immediately if:
+
+1. A file named in this order does not exist at the stated path
+2. The copy verification in Task 2 fails
+3. `_redirects` contains an existing rule that conflicts with a new one
+4. Any task requires touching a file not named in this order
+5. Any instruction here conflicts with another
+
+═══════════════════════════════
+END OF WORK ORDER
+═══════════════════════════════
+Report a summary: tasks completed, files touched per task, occurrence counts. Then stop.
