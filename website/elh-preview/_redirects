@@ -75,3 +75,11 @@ http://eternalhospice.com/*       https://eternallifehospice.com/:splat  301!
 /tracker     https://eternal-life-hospice.replit.app/tracker/   200
 /tracker/*   https://eternal-life-hospice.replit.app/tracker/:splat   200
 /api/*       https://eternal-life-hospice.replit.app/api/:splat       200
+
+# Care Brief archive restructure — 2026-08-25
+/care-brief/hospice-is-part-of-life-a-continuation-of-care  /care-brief/issue-1  301!
+/care-brief/caring-for-the-caregiver                        /care-brief/          301!
+
+# Caregiver article consolidation — 2026-08-25
+/blog/caring-for-the-caregiver  /blog/the-caregiver-who-needs-care  301!
+/blog/the-second-patient        /blog/the-caregiver-who-needs-care  301!
