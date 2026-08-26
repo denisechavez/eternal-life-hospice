@@ -124,7 +124,7 @@ a.cbl-topic:focus-visible{outline:2px solid #B08D3E;outline-offset:2px}
     <div class="eyebrow" style="color:var(--gold)">The Eternal Care Brief</div>
     <h2>Sign up today</h2>
     <p>An open invitation to learn, to share, and to contribute &mdash; education for care teams, gentle guidance for families, and a welcome place for your voice. Every other month. No noise, and you can unsubscribe at any time.</p>
-    <form name="elh-care-brief-signup" method="POST" data-netlify="true" netlify-honeypot="bot-field" action="/care-brief">
+    <form name="elh-care-brief-signup" method="POST" action="/api/form-submit">
       <input type="hidden" name="form-name" value="elh-care-brief-signup">
       <p class="hp" style="display:none"><label>Leave blank<input name="bot-field"></label></p>
       <div class="cbl-signup-fields">
@@ -135,6 +135,7 @@ a.cbl-topic:focus-visible{outline:2px solid #B08D3E;outline-offset:2px}
       <p class="cbl-signup-note">Educational content only. We never sell or share your information.</p>
     </form>
     <p class="cbl-signup-thanks" hidden>Thank you &mdash; you&rsquo;re on the list. The next issue of The Eternal Care Brief will arrive in your inbox.</p>
+    <p class="cbl-signup-error" hidden style="font-size:14px;line-height:1.65;color:#F5F0EB;max-width:520px;margin:1rem auto 0">We couldn&rsquo;t confirm your signup. Please try again, or call <a href="tel:18059537273" style="color:#C9B07E;font-weight:700">805.953.7273</a> if you need help now.</p>
   </div>
 </section>
 
@@ -181,9 +182,11 @@ a.cbl-topic:focus-visible{outline:2px solid #B08D3E;outline-offset:2px}
   f.addEventListener('submit',function(e){
     e.preventDefault();
     var data=new URLSearchParams(new FormData(f)).toString();
-    fetch('/',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:data})
-      .then(function(r){if(!r.ok)throw new Error('submit failed');f.hidden=true;var t=document.querySelector('.cbl-signup-thanks');if(t)t.hidden=false;})
-      .catch(function(){f.submit();});
+    var er=document.querySelector('.cbl-signup-error');if(er)er.hidden=true;
+    fetch('/api/form-submit',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded','Accept':'application/json'},body:data})
+      .then(function(r){return r.json().catch(function(){return null;}).then(function(body){if(!r.ok||!body||body.ok!==true||body.accepted!==true)throw new Error('submit failed');return body;});})
+      .then(function(){f.hidden=true;var t=document.querySelector('.cbl-signup-thanks');if(t)t.hidden=false;})
+      .catch(function(){if(er)er.hidden=false;});
   });
 })();
 </script>

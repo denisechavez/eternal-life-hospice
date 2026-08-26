@@ -1,12 +1,28 @@
 #!/usr/bin/env python3
-"""Local preview server for the static site.
+"""Static-site server and production form intake endpoint.
 
 Mimics Netlify's "pretty URLs": /care-brief resolves to care-brief.html,
 so internal links behave the same in the Replit preview as on the live site.
-Not published (lives outside elh-preview/).
+The Replit deployment also serves the public domain, so POST /api/form-submit
+is the production form processor. It delivers through Brevo and never stores
+submission data locally.
 """
 import http.server
+import json
 import os
+import sys
+from urllib.parse import urlsplit
+
+from form_intake import (
+    DeliveryError,
+    FORM_CLIENT_RATE_LIMITER,
+    FORM_GLOBAL_RATE_LIMITER,
+    IntakeError,
+    MAX_BODY_BYTES,
+    json_response_payload,
+    parse_form_body,
+    process_submission,
+)
 
 BASE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.join(BASE, "elh-preview")
@@ -55,26 +71,165 @@ class PrettyURLHandler(http.server.SimpleHTTPRequestHandler):
         super().end_headers()
 
     def do_POST(self):
-        # Netlify handles form POSTs on the live site; in this preview we
-        # accept them so the on-page "thank you" flow works (nothing is stored).
-        length = int(self.headers.get("Content-Length") or 0)
-        if length:
-            self.rfile.read(length)
-        body = (
-            "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\">"
-            "<title>Preview only</title></head>"
-            "<body style=\"font-family:Georgia,serif;background:#F5F0EB;color:#3C1C3B;"
-            "display:flex;align-items:center;justify-content:center;min-height:100vh;margin:0\">"
-            "<div style=\"max-width:460px;text-align:center;padding:2rem\">"
-            "<h1 style=\"font-weight:400\">Preview mode</h1>"
-            "<p>This is the workspace preview &mdash; form submissions are only "
-            "recorded on the live site (eternallifehospice.com).</p>"
-            "<p><a href=\"/care-brief#signup\" style=\"color:#5B2E59\">&larr; Back</a></p>"
-            "</div></body></html>"
-        ).encode()
-        self.send_response(200)
-        self.send_header("Content-Type", "text/html; charset=utf-8")
+        if self.path.split("?", 1)[0] != "/api/form-submit":
+            self._send_json(
+                404,
+                json_response_payload(
+                    False,
+                    error="unknown_endpoint",
+                    message="This submission endpoint does not exist.",
+                ),
+            )
+            return
+
+        if not self._is_same_origin():
+            self._send_json(
+                403,
+                json_response_payload(
+                    False,
+                    error="invalid_origin",
+                    message=(
+                        "This form must be submitted from the Eternal Life "
+                        "Hospice website."
+                    ),
+                ),
+            )
+            return
+
+        if not FORM_GLOBAL_RATE_LIMITER.allow(self._peer_key()):
+            self._send_json(
+                429,
+                json_response_payload(
+                    False,
+                    error="rate_limited",
+                    message=(
+                        "The website is receiving too many requests. Please "
+                        "wait and try again, or call 805.953.7273 for immediate help."
+                    ),
+                ),
+            )
+            return
+
+        if not FORM_CLIENT_RATE_LIMITER.allow(self._client_key()):
+            self._send_json(
+                429,
+                json_response_payload(
+                    False,
+                    error="rate_limited",
+                    message=(
+                        "Too many requests were received. Please wait and try "
+                        "again, or call 805.953.7273 for immediate help."
+                    ),
+                ),
+            )
+            return
+
+        try:
+            length = int(self.headers.get("Content-Length") or 0)
+        except ValueError:
+            length = -1
+        if length < 0 or length > MAX_BODY_BYTES:
+            self._send_json(
+                413,
+                json_response_payload(
+                    False,
+                    error="payload_too_large",
+                    message="The submission is too large.",
+                ),
+            )
+            return
+
+        body = self.rfile.read(length)
+        try:
+            fields, files = parse_form_body(
+                self.headers.get("Content-Type", ""), body
+            )
+            result = process_submission(fields, files)
+            form_name = fields.get("form-name", "unknown")
+            receipt = result.get("receipt_id", "honeypot")
+            print(
+                f"FORM_ACCEPTED form={form_name} receipt={receipt} "
+                f"ack={bool(result.get('acknowledgement_sent'))}",
+                file=sys.stderr,
+            )
+            response_data = dict(result)
+            response_data.pop("ok", None)
+            self._send_json(200, json_response_payload(True, **response_data))
+        except IntakeError as exc:
+            self._send_json(
+                exc.status,
+                json_response_payload(
+                    False, error=exc.code, message=exc.message
+                ),
+            )
+        except DeliveryError:
+            print("FORM_DELIVERY_FAILED provider=brevo", file=sys.stderr)
+            self._send_json(
+                502,
+                json_response_payload(
+                    False,
+                    error="delivery_unavailable",
+                    message=(
+                        "We could not confirm delivery. Please try again or call "
+                        "805.953.7273 for immediate help."
+                    ),
+                ),
+            )
+        except Exception as exc:
+            # Never log the request body or submitted fields.
+            print(
+                f"FORM_PROCESSING_FAILED type={type(exc).__name__}",
+                file=sys.stderr,
+            )
+            self._send_json(
+                500,
+                json_response_payload(
+                    False,
+                    error="processing_error",
+                    message=(
+                        "We could not confirm delivery. Please try again or call "
+                        "805.953.7273 for immediate help."
+                    ),
+                ),
+            )
+
+    def _is_same_origin(self):
+        origin = (self.headers.get("Origin") or "").strip()
+        host = (self.headers.get("Host") or "").strip().lower()
+        if not origin or not host:
+            return False
+        try:
+            parsed = urlsplit(origin)
+        except ValueError:
+            return False
+        if parsed.scheme not in ("http", "https"):
+            return False
+        return parsed.netloc.lower() == host
+
+    def _client_key(self):
+        # A compliant reverse proxy appends its observed client address to the
+        # right edge. Never trust a caller-supplied leading XFF value. Because
+        # Replit does not document a sanitized-header contract, the independent
+        # socket-peer circuit breaker above remains authoritative even if every
+        # forwarded value is attacker-controlled.
+        forwarded = [
+            item.strip()
+            for item in (self.headers.get("X-Forwarded-For") or "").split(",")
+            if item.strip()
+        ]
+        candidate = forwarded[-1] if forwarded else self.client_address[0]
+        # Avoid unbounded attacker-controlled keys.
+        return candidate[:64]
+
+    def _peer_key(self):
+        return ("peer:" + self.client_address[0])[:80]
+
+    def _send_json(self, status, body):
+        self.send_response(status)
+        self.send_header("Content-Type", "application/json; charset=utf-8")
         self.send_header("Content-Length", str(len(body)))
+        self.send_header("Cache-Control", "no-store")
+        self.send_header("X-Content-Type-Options", "nosniff")
         self.end_headers()
         self.wfile.write(body)
 

@@ -1,5 +1,10 @@
 # Public Form Submission Routing Verification
 
+> **Historical audit snapshot.** The false-success condition documented below
+> was remediated by the Replit `/api/form-submit` processor. Current routing,
+> failure behavior, and synthetic test instructions are documented in
+> `FORM-INTAKE-OPERATIONS.md`.
+
 **Checked:** 2026-08-26  
 **Scope:** Public Eternal Life Hospice form markup, the reachable Google-hosted production domain, the reachable Netlify hostname, and the repository’s Netlify submission handler.  
 **Safety:** All live POST probes were synthetic routing checks. They contained only a form name and a deliberately populated honeypot field; no name, email address, phone number, clinical detail, patient identifier, file, or other PHI was submitted.

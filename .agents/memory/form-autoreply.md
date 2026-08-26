@@ -1,20 +1,21 @@
 ---
 name: Form auto-reply (Netlify submission-created)
-description: How the client-facing auto-reply email works on the ELH Netlify site, and the constraints that shaped it.
+description: Production acknowledgement rules and the legacy Netlify duplicate.
 ---
 
 # Form auto-reply
 
-`netlify/functions/submission-created.js` sends a warm acknowledgement email to
-people who submit a lead form. Netlify auto-invokes any function literally named
-`submission-created` once per verified form submission — there is no wiring in
-the HTML; the filename IS the trigger.
+The public domain's Replit processor sends internal notifications and
+allowlisted requester acknowledgements through Brevo. The old
+`netlify/functions/submission-created.js` behavior is legacy-only for the
+separate Netlify duplicate and is not a production intake path.
 
-**Rule: never break the submission.** The handler returns `statusCode: 200` on
-every path (missing key, parse error, Resend failure) so a failed auto-reply can
-never mark the form submission or the internal team notification as failed.
-**Why:** internal lead capture is the business-critical path; the auto-reply is a
-courtesy layer on top and must degrade silently.
+**Rule: internal acceptance is authoritative.** Never show success unless Brevo
+accepts the internal notification. If the internal message succeeds but the
+courtesy acknowledgement fails, preserve success to avoid duplicate referrals
+and record the acknowledgement failure separately.
+**Why:** internal lead capture is the business-critical path; retrying an
+already accepted referral creates a different safety risk.
 
 **Rule: gate sends by an explicit form allowlist**, not by "does an `email` field
 exist." **Why:** gating on field presence would reply to any future/crafted form
@@ -48,12 +49,9 @@ referral branch greets by the referrer's first name (a professional, not the
 patient — `referrer_name`/`first_name`/`name`, first token only) and never echoes
 the `situation`/clinical free-text.
 
-**Email provider = Resend.** Key lives in the Netlify dashboard as
-`RESEND_API_KEY` (scope: All / Functions), NOT a Replit integration — Replit
-integration secrets live in the Replit runtime and don't reach the Netlify
-production function (same reason `ANTHROPIC_API_KEY` is set directly in Netlify).
-Sending `from` info@eternallifehospice.com requires verifying the domain in
-Resend (SPF/DKIM DNS records). Without the key set, the function no-ops.
+**Production email provider = Brevo.** Its key lives in the Replit runtime.
+Resend remains relevant only to the legacy Netlify function and must not be
+used as evidence that a public-domain referral was delivered.
 
 **Compliance:** the reply body is static — it never echoes the submitted
 message/details — to avoid accidentally reflecting PHI into outbound email.

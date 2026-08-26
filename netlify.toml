@@ -33,7 +33,10 @@
 [build]
   base = "website/elh-preview"
   publish = "."
-  command = "bash ../elh-predeploy.sh"
+  # The Netlify hostname is a separate duplicate, not the production intake
+  # host. Strip legacy Netlify Forms attributes in the ephemeral build so it
+  # cannot silently become a second referral destination.
+  command = "python3 ../strip-netlify-form-routing.py . && bash ../elh-predeploy.sh"
 
 [functions]
   directory = "netlify/functions"

@@ -4,7 +4,9 @@
   # Two steps run before every deploy:
   #   1. Regenerate city-data.json so /coverage?list=true stays in sync.
   #   2. Regenerate search-index.json so new pages appear in site search.
-  command = "node netlify/scripts/sync-city-data.js && node assets/build-search-index.js"
+  # Keep this duplicate from reactivating Netlify Forms. The public production
+  # processor is POST /api/form-submit on the Replit deployment.
+  command = "python3 ../strip-netlify-form-routing.py . && node netlify/scripts/sync-city-data.js && node assets/build-search-index.js"
   publish = "."
 
 # Pretty URLs (serving /page from page.html) are enabled by default.

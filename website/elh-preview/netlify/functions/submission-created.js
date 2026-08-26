@@ -1,4 +1,11 @@
 /**
+ * LEGACY NETLIFY COPY ONLY.
+ *
+ * The public eternallifehospice.com domain is served by the Replit Python
+ * deployment. Its forms post to /api/form-submit and are processed by
+ * website/form_intake.py through Brevo. This function remains only for the
+ * separate Netlify copy and must not be treated as the production intake path.
+ *
  * Eternal Life Hospice — automatic reply to people who reach out.
  *
  * Netlify calls this function automatically every time a form is submitted

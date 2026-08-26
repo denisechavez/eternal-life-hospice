@@ -311,12 +311,10 @@
     <h2 style="margin:.2rem 0 .6rem">Tell us how to reach you</h2>
     <p class="lede" style="margin-bottom:1.6rem">Share just enough for our intake nurse to call you back and complete the referral securely. <strong>No protected health information is needed here</strong> &mdash; a general description is plenty.</p>
 
-    <!-- INTERNAL NOTE: This referral form reuses the existing "elh-physician" Netlify form so submissions
-         flow into the referral pipeline already configured in the Netlify dashboard (Site -> Forms ->
-         "elh-physician" -> Notifications -> recipient: info@eternallifehospice.com). It is phone-first and is
-         intentionally NOT in the auto-reply allowlist (the intake team calls back). The hidden "source" field
-         marks these as coming from the QR / online referral page so origin is visible in the notification. -->
-    <form id="referForm" class="apply-form" name="elh-physician" tool-name="submit-referral" tool-description="Submit a patient referral to Eternal Life Hospice. For healthcare professionals referring a patient for hospice evaluation." method="POST" data-netlify="true" netlify-honeypot="bot-field" action="/">
+    <!-- Production routing: the Replit deployment validates this request and
+         delivers it to the referral inbox through Brevo. Netlify Forms is not
+         the processor for the public domain. -->
+    <form id="referForm" class="apply-form" name="elh-physician" tool-name="submit-referral" tool-description="Submit a patient referral to Eternal Life Hospice. For healthcare professionals referring a patient for hospice evaluation." method="POST" action="/api/form-submit">
       <input type="hidden" name="form-name" value="elh-physician">
       <input type="hidden" name="audience" value="referral">
       <input type="hidden" name="source" value="Refer a Patient page (QR / online)">
@@ -469,15 +467,21 @@
     
     if(btn){ btn.disabled=true; btn.textContent='Sending\u2026'; }
     var body=new URLSearchParams(); new FormData(f).forEach(function(v,k){ body.append(k,v); });
-    fetch('/',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:body.toString()})
+    var oldError=f.parentNode.querySelector('.apply-error'); if(oldError) oldError.remove();
+    fetch('/api/form-submit',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded','Accept':'application/json'},body:body.toString()})
       .then(function(r){
-        if(!r.ok) throw new Error('submit failed');
-        f.style.display='none';
-        var su=document.createElement('div');
-        su.className='apply-success';
-        su.innerHTML='<div class="as-icon">&#10003;</div><h3>Thank you — your referral is in.</h3><p>Our clinical intake team will call you back shortly to complete it securely. Need us sooner? Call <a href="tel:18059537273">805.953.7273</a> any time —<br>we answer 24/7.</p>';
-        f.parentNode.insertBefore(su,f.nextSibling);
-        su.scrollIntoView({behavior:'smooth',block:'center'});
+        return r.json().catch(function(){return null;}).then(function(data){
+          if(!r.ok||!data||data.ok!==true||data.accepted!==true) throw new Error('submit failed');
+          return data;
+        });
+      })
+      .then(function(data){
+          f.style.display='none';
+          var su=document.createElement('div');
+          su.className='apply-success';
+          su.innerHTML='<div class="as-icon">&#10003;</div><h3>Thank you — your referral is in.</h3><p>Our clinical intake team accepted your request and will call you back shortly to complete it securely. Confirmation: <strong>'+data.receipt_id+'</strong>.<br>Need us sooner? Call <a href="tel:18059537273">805.953.7273</a> any time — we answer 24/7.</p>';
+          f.parentNode.insertBefore(su,f.nextSibling);
+          su.scrollIntoView({behavior:'smooth',block:'center'});
       })
       .catch(function(){
         if(btn){ btn.disabled=false; btn.innerHTML=orig; }

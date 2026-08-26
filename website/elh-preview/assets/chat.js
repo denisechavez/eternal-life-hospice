@@ -569,18 +569,30 @@
       preferred_time: data.preferred_time,
       message: data.message
     });
-    fetch("/", {
+    fetch("/api/form-submit", {
       method: "POST",
-      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+        "Accept": "application/json"
+      },
       body: body
     })
       .then(function (r) {
-        if (!r.ok) throw new Error("bad status");
+        return r.json().catch(function () { return null; }).then(function (data) {
+          if (!r.ok || !data || data.ok !== true || data.accepted !== true) {
+            throw new Error("bad status");
+          }
+          return data;
+        });
+      })
+      .then(function (result) {
         if (form.parentNode) form.parentNode.removeChild(form);
         addMsg(
           "Thank you, " +
             data.name.split(" ")[0] +
-            ". Your message has been sent and a member of our team will call you back within the hour. If anything comes up in the meantime, please feel free to call us anytime at " +
+            ". Your callback request was accepted (confirmation " +
+            result.receipt_id +
+            ") and a member of our team will call you back within the hour. If anything comes up in the meantime, please feel free to call us anytime at " +
             PHONE_DISPLAY +
             ". We're here 24/7.",
           "bot"
