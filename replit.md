@@ -5,10 +5,17 @@ Static marketing website for **Eternal Life Hospice, Inc.** — an independent,
 Medicare-certified hospice serving **Ventura & Los Angeles County, CA**.
 
 - **Live site:** https://eternallifehospice.com
-- **Publishing flow:** edit here → user clicks **Git → Sync** in Replit → Netlify
-  auto-deploys to the live domain.
-- **Website source:** `website/elh-preview/` (this folder, and only this folder,
-  is what publishes to the live site).
+- **Production host:** this Replit project's public Autoscale deployment. Replit
+  operates the underlying private Google Cloud Run service; ELH does not manage
+  a separate Google Cloud project for the site.
+- **Publishing flow:** edit and validate here → user publishes this Replit
+  project. Publishing snapshots the current workspace; a Git push alone does
+  not update production.
+- **Website source:** `website/elh-preview/`, served in production by
+  `python3 website/devserver.py`.
+- **Netlify:** configuration remains in the repository, but Netlify is a
+  parallel/non-authoritative path and does not serve the public domain.
+- **Hosting evidence:** see `PRODUCTION-HOSTING.md`.
 - **Approved coverage:** Ventura + Los Angeles County only.
 - **Brand:** logo = metallic-plum infinity "Eternal / Life Hospice" lockup;
   palette = deep plum, plum, gold, off-white cream; fonts = Fraunces (serif) +
