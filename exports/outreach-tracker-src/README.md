@@ -112,6 +112,18 @@ The app listens on port 5000 and will be served at your Replit dev URL.
 - **Follow-up queue** — filter visits by status (Not started / Email sent / Replied / Meeting booked / Closed / No interest)
 - **Export** — download all visits as a CSV
 
+## Data ownership after the history migration
+
+This standalone tracker is the authoritative owner of all outreach visits,
+visit photos, follow-up state, tracker users, sessions, CSV exports, and
+backups. The main marketing site owns public pages and public referral intake;
+it does not write or display outreach visits.
+
+The old `visits` and `visit_photos` tables in the main site's database were
+verified empty on 2026-08-26 and are retained only as an empty audit source.
+New visit records must be created in this standalone app. Public referral
+submissions are separate from visit-history records.
+
 ## Security notes
 - Max 2 user accounts (enforced at DB level with advisory lock)
 - `REGISTRATION_CODE` required to create accounts

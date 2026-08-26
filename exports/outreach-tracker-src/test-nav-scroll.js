@@ -42,6 +42,15 @@ const PREVIEW_DIR = path.join(REPO_ROOT, "website", "elh-preview");
 
 const MIN_NAV_LINKS = 5; // minimum links to make the scroll cap meaningful
 
+// This guard belongs to the full marketing-site repository. The standalone
+// tracker package intentionally does not include website/elh-preview, so skip
+// cleanly there while preserving the check when those assets are available.
+if (!process.env.ELH_CSS_OVERRIDE &&
+    (!fs.existsSync(ELH_CSS) || !fs.existsSync(PREVIEW_DIR))) {
+  console.log("SKIP: marketing-site nav assets are not included in the standalone tracker package.");
+  process.exit(0);
+}
+
 // ─── helpers ────────────────────────────────────────────────────────────────
 
 /**

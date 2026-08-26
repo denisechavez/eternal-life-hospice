@@ -13,7 +13,7 @@ public marketing site.
 - **Marketing site** = `website/elh-preview/` → publishes to Netlify via Git→Sync (unchanged).
 - **Tracker** = `outreach-tracker/` (Express + Replit Postgres) → deployed via **Replit Deployments**, NOT Netlify. Netlify only ever builds `website/elh-preview`.
 - **Preview setup (July 2026), user-approved:** "Start application" = marketing site on port 5000 webview (front-facing default; `python3 website/devserver.py`); "Outreach Tracker (internal)" = `PORT=3000 npm start`, console — user flips between them with the preview-pane port toggle. Keep the WEBSITE on 5000 so front-facing work always previews by default. Tracker's Replit Deployment (production) runs independently; field staff use the deployed URL.
-- **User wants the tracker moved to its own Replit App** (consistent with the one-App-per-concern convention in replit.md). Blocker to plan for: the tracker's data (visits + BYTEA photos) lives in THIS project's Postgres — a move needs a DB export/import plus re-creating secrets (SESSION_SECRET, REGISTRATION_CODE) and a fresh deployment in the new App.
+- **Ownership after the visit-history migration:** the standalone tracker owns all future visits and photos; the main marketing site owns public pages and referral intake only, and its legacy tracker tables are not authoritative.
 
 ## Auth / security decisions
 - Custom **phone-number + password** auth (bcryptjs, express-session in Postgres via connect-pg-simple). Two users only; each sets their own password on first sign-in.

@@ -34,6 +34,11 @@ const { spawnSync } = require("child_process");
 const REPO_ROOT = path.resolve(__dirname, "..", "..");
 const ELH_CSS   = path.join(REPO_ROOT, "website", "elh-preview", "assets", "elh.css");
 
+if (!fs.existsSync(ELH_CSS)) {
+  console.log("SKIP: marketing-site nav assets are not included in the standalone tracker package.");
+  process.exit(0);
+}
+
 // ── Read the real stylesheet once ────────────────────────────────────────────
 let realCss;
 try {
