@@ -43,6 +43,28 @@ Independent production checks on August 26, 2026 confirmed:
 - None of those responses contains Event JSON-LD or other Event structured-data markers.
 - The current published static source contains no Event JSON-LD and no `/events` route references.
 
+These checks are reproducible with:
+
+```text
+python3 website/check-retired-events.py
+```
+
+The check covers both slash and non-slash forms of the events index and both
+retired detail routes. It requires every response to be HTTP 404 or 410 and
+rejects any response containing an Event JSON-LD item.
+
+Observed output on August 26, 2026:
+
+```text
+PASS /events status=404 event_json_ld=False
+PASS /events/ status=404 event_json_ld=False
+PASS /events/caregiver-support-workshop status=404 event_json_ld=False
+PASS /events/caregiver-support-workshop/ status=404 event_json_ld=False
+PASS /events/community-grief-circle status=404 event_json_ld=False
+PASS /events/community-grief-circle/ status=404 event_json_ld=False
+All retired event routes return 404/410 without Event JSON-LD.
+```
+
 ## Decision
 
 The stale Event markup has been removed from the actual serving source, and the live result is correct. The three valid items shown in Search Console are residual results from Google’s August 25 crawl, not markup currently served by the site.

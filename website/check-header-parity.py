@@ -34,10 +34,8 @@ INTENTIONAL_EXCEPTIONS = {
     # Redirect stubs — noindex, meta-refresh, no UI needed
     "resources/index.html":        "redirect stub → /resources.html",
     "blog/index.html":             "redirect stub → /blog.html",
-    "care-brief/index.html":       "redirect stub → /care-brief.html",
-    # Care brief article — has header HTML but hides it for clean reader mode
-    "care-brief/hospice-is-part-of-life-a-continuation-of-care.html":
-        "reader view — #hdr hidden via CSS intentionally",
+    # Care Brief issue pages — clean reader layouts without standard site chrome
+    "care-brief/issue-1.html":     "reader view — clean issue layout intentionally",
     # Homepage — IS the canonical; uses inline JS not header.js file
     "index.html":                  "canonical homepage — inline header JS, not file include",
     # Internal / utility pages not in public nav
