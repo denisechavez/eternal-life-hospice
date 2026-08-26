@@ -421,6 +421,32 @@ The high-volume physician-supported and suite hits are repeated city-page metada
 
 ---
 
+## A16 — Retired Events follow-up verification
+
+**Checked:** 2026-08-26
+
+The retired Events routes were rechecked against the canonical production host. All
+six slash and non-slash variants return HTTP 404 and contain no `Event` JSON-LD:
+
+| Route family | Variants checked | Result |
+|---|---:|---|
+| `/events` | 2 | 404; no Event JSON-LD |
+| `/events/caregiver-support-workshop` | 2 | 404; no Event JSON-LD |
+| `/events/community-grief-circle` | 2 | 404; no Event JSON-LD |
+
+The reproducible check is `python3 website/check-retired-events.py`. A source scan
+also finds zero `/events` route references or `Event` JSON-LD blocks in the current
+`website/elh-preview/` HTML/XML/redirect source. The sitemap contains no Event URL,
+and `_redirects` contains no Event redirect or replacement route.
+
+The latest supplied Search Console report still lists three valid historical items,
+all last detected on 2026-08-25. The accompanying URL Inspection live test reports
+“URL doesn't have this enhancement.” This is residual Search Console state awaiting
+Google's next recrawl, not current production markup; do not add placeholder Event
+fields, request indexing for the 404 URLs, or create a replacement Events page.
+
+No Netlify duplicate files or routing were changed as part of this verification.
+
 ## End of phase
 
 No remediation was performed. This report is the only intended repository change from the audit phase. Do not alter site files, configuration, content, assets, crawler directives, or protected-term language without explicit written approval.
