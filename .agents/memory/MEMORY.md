@@ -2,7 +2,7 @@
 - [The Five visual brand system](the-five-visual-system.md) — 5 images+labels (The Stone·The Energy·The Word·The Touch·Stillness.); Care Brief mosaic schedule M1–M9; "Stillness" has no "The" — never add it.
 - [Strategic objective: build to SELL](strategic-objective.md) — true north: $11M+ acquisition-ready; immediate mandate = grow census fast; pillars(4)+domain resolved; still open: service-area(Orange?), PR-timing.
 - [Conduit brand architecture](conduit-brand-architecture.md) — canonical = FOUR evolved pillars (six-pillar brief list superseded); domain=eternallifehospice.com; Three Rules; two-track (PR=Track Two, deferred); 45-day Track One.
-- [ELH site architecture](elh-site-architecture.md) — elh-preview static site: index.html & resources.html are inline-CSS-only; shared-header parity; coverage hub = county page (city pages parked/noindex); split font naming.
+- [ELH site architecture](elh-site-architecture.md) — Replit owns the custom domain while a distinct Netlify copy remains public; includes static-site CSS, header, coverage, and font rules.
 - [Sticky vs overflow trap](sticky-overflow-trap.md) — position:sticky breaks when html gets overflow-x:clip while body keeps overflow-x:hidden; use clip on BOTH; check ancestor overflow, not the sticky element.
 - [Family-guide booklet](family-guide.md) — page-turn duration duplicated in CSS+JS; appended overrides re-break reduced-motion; bootveil blocks screenshots (QA via curl); mobile worksheet restack keeps thead pills; fonts externalized.
 - [Email signatures](email-signatures.md) — exports/email/ HTML sigs mirror the card; table+inline+web-safe fonts; logo via live URL only resolves after Git→Sync (trans mark was 404 at build).

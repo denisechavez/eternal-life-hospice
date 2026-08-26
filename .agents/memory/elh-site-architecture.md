@@ -5,6 +5,12 @@ description: Which pages use shared elh.css vs inline-only CSS in the elh-previe
 
 # Eternal Life Hospice static site (website/elh-preview/)
 
+## Production hosting topology — do not infer it from `netlify.toml`
+- `eternallifehospice.com` is the primary URL of this Replit project's public autoscale deployment; `eternal-life-hospice.replit.app` is the same deployment and serves byte-identical responses through Google Frontend.
+- A separate Netlify copy remains publicly reachable at `eternallifehospice.netlify.app`. It is a distinct deployment with some stale/different HTML, even when selected files match the repository.
+- **Why:** Replit deployment metadata identifies the custom domain as this project's primary URL, while live response fingerprints distinguish the Netlify copy. Repository documentation still describes Netlify as production and is not authoritative for current hosting.
+- **How to apply:** identify the hostname before debugging SEO, forms, or deploy drift. Publishing Replit does not prove Netlify updated, and vice versa. Do not change DNS, disable either host, or consolidate them without explicit approval and form-delivery verification.
+
 ## Stylesheet linkage is NOT uniform — check before any global style change
 - Most inner pages (404, careers, volunteer, all `hospice-*.html`, all `resources/*.html`) link `assets/elh.css`.
 - BUT `index.html` (homepage) AND `resources.html` are **inline-CSS only** — they do NOT link elh.css; their styles live in their own `<style>` block with their own `:root`.
