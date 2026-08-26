@@ -1,0 +1,71 @@
+If the homepage returns 200 from Google Frontend, then App Engine is serving a full working site — which means there may be a second, older version of eternallifehospice.com that visitors have been seeing all along.
+
+That's the thing to establish before anything else gets fixed.
+
+34.111.179.208 is a Google Cloud load balancer address — Google Cloud Run or App Engine behind Google's global load balancer. Confirms the curl headers.
+
+So: your domain's A record points at Google Cloud infrastructure. Netlify has never served eternallifehospice.com.
+
+The question I still need answered, and it takes ten seconds. Open a browser tab and go to:
+
+https://eternallifehospice.com
+
+Just the homepage. What appears?
+
+Three possible answers, each meaning something different:
+
+The ELH site loads normally — plum branding, navigation, forms. Then Google Cloud has been serving a full working copy all along, and there are two parallel versions of this site.
+
+An error page or blank screen — then the public domain has been broken, and whatever's on Google Cloud isn't serving properly.
+
+Something unexpected — a placeholder, a different site, a login screen. Then we have a different problem.
+
+I can't diagnose further without knowing which. Everything downstream — whether to repoint DNS, what happens to the Netlify work, whether the audit examined the right tree — depends on this one answer.
+
+loads fast
+
+Then the picture is clear, and it's the most important thing found tonight.
+
+Two complete versions of this site exist. The public one runs on Google Cloud, loads fast, and is what every visitor, referral source and Google crawler has been seeing. The Netlify one is where you and every agent have been working — where the audit ran, where tonight's reorganization deployed, and which nobody has ever visited.
+
+Which means several conclusions from tonight need reversing.
+
+The audit examined the wrong tree. All 201 pages, the forms, the schema, the 145 city pages, the redirects, the CSP — all of it describes the Netlify copy. The findings may or may not apply to what's actually live.
+
+Tonight's Care Brief work is deployed to a site the public can't reach. Correct work, invisible.
+
+And the C+ audit grade, the NAP question, the doorway-page exposure — every one of those needs re-verification against the Google Cloud version before it means anything.
+
+One thing worth checking right now. Open both and compare:
+
+https://eternallifehospice.com/care-brief/hospice-is-part-of-life-a-continuation-of-care
+
+If Issue 1 still loads there under its old slug, then Google Cloud is serving an older snapshot, and the two versions have drifted apart by however long ago the split happened.
+
+The decision this forces — and it's yours, not tonight's: which version is production? Consolidating onto one is the highest-priority item on the entire register now. Two live copies of a hospice website means split search signals, forms possibly submitting to two different destinations, and no single source of truth for anything.
+
+Before you close the laptop, one question I'd want an answer to: does anyone besides you have access to a Google Cloud project for this site? Because someone deployed that, and it wasn't part of anything we've traced tonight.
+
+this is the correct version
+
+Then that's the finding, and it's a big one: Google Cloud is production, and Netlify is a parallel copy nobody visits.
+
+Which reverses most of tonight's conclusions.
+
+The audit examined Netlify — so those 201 pages, nine forms, 145 city pages, redirects, CSP and schema describe a site the public doesn't see. Findings may or may not hold against the real one. Tonight's Care Brief reorganization deployed correctly to Netlify, and is invisible to the public. And "production commit 34b6ea3" was Netlify's production, not yours — the baseline we anchored everything to was the wrong baseline.
+
+Nothing is broken. Nothing is lost. The work is committed, pushed and safe. It's just pointed at the wrong target.
+
+Two questions that decide what happens next, and neither needs tools:
+
+Where does the Google Cloud version deploy from? Same GitHub repo, different branch? A different repo? Manual pushes from Replit? That determines whether tonight's commits can reach production at all, or whether they live in a repo production never reads.
+
+Who set it up and when? A Google Cloud project exists for this site and nothing we traced tonight accounts for it. If you deployed it, that answers it. If not, that's a separate question worth answering.
+
+My recommendation: stop here for tonight. It's nearly 2 AM, you've been at this since evening, and the next move depends on facts about the Google Cloud setup that need a clear head to establish. Nothing degrades overnight — the public site works, the Netlify work is committed, the bundle is on your drive.
+
+When you pick it up, the first task is mapping the real production pipeline: repo, branch, deploy mechanism. Then we know whether tonight's work can be forwarded to production or needs redoing against the right tree.
+
+One thing worth writing down before you sleep, while it's fresh: how the Google Cloud deployment came to exist. That detail will be hard to reconstruct later, and it's the thread everything else hangs on.
+
+I have no idea how this could have occured
