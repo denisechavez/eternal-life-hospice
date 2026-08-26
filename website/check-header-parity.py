@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 ELH Header Parity Audit
-========================
+Header consistency checks for the published site.
 Scans every HTML page in elh-preview and classifies its header against
 the canonical homepage implementation.
 

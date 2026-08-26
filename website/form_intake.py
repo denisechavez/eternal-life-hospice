@@ -13,12 +13,14 @@ import json
 import os
 import re
 import secrets
+import sys
 import threading
 import time
 import urllib.error
 import urllib.request
 from collections import defaultdict, deque
 from dataclasses import dataclass
+from datetime import datetime, timezone
 from email.parser import BytesParser
 from email.policy import default
 from typing import Dict, Iterable, Mapping, Optional, Tuple
@@ -44,6 +46,9 @@ MAX_REFERRAL_NOTE_CHARS = 1200
 RATE_LIMIT_ATTEMPTS = 10
 RATE_LIMIT_WINDOW_SECONDS = 10 * 60
 GLOBAL_RATE_LIMIT_ATTEMPTS = 30
+FORM_ALERT_FAILURE_THRESHOLD = 3
+FORM_ALERT_WINDOW_SECONDS = 5 * 60
+FORM_ALERT_COOLDOWN_SECONDS = 15 * 60
 
 EMAIL_RE = re.compile(r"^[^@\s]+@[^@\s]+\.[^@\s]+$")
 EMBEDDED_EMAIL_RE = re.compile(r"\b[^@\s]+@[^@\s]+\.[^@\s]+\b")
@@ -93,6 +98,104 @@ class DeliveryError(Exception):
     """The transactional email provider did not accept a message."""
 
 
+class DeliveryFailureAlerter:
+    """Rate-limited, privacy-safe notification for internal delivery outages.
+
+    The alert endpoint is intentionally generic so it can be hosted by a
+    provider that is independent of Brevo (for example, an operations
+    webhook relay). No submission data is accepted by this class.
+    """
+
+    def __init__(
+        self,
+        webhook_url: Optional[str] = None,
+        environment: Optional[str] = None,
+        failure_threshold: int = FORM_ALERT_FAILURE_THRESHOLD,
+        window_seconds: int = FORM_ALERT_WINDOW_SECONDS,
+        cooldown_seconds: int = FORM_ALERT_COOLDOWN_SECONDS,
+    ):
+        self.webhook_url = (
+            webhook_url
+            if webhook_url is not None
+            else os.environ.get("FORM_ALERT_WEBHOOK_URL", "")
+        ).strip()
+        self.environment = (
+            environment
+            if environment is not None
+            else os.environ.get("FORM_ALERT_ENVIRONMENT", "production")
+        ).strip() or "production"
+        self.failure_threshold = max(1, int(failure_threshold))
+        self.window_seconds = max(1, int(window_seconds))
+        self.cooldown_seconds = max(1, int(cooldown_seconds))
+        self._failures = deque()
+        self._last_alert_at = None
+        self._lock = threading.Lock()
+
+    def record_failure(self) -> bool:
+        """Record one failed internal delivery and send at most one alert.
+
+        Returns True only when an alert request was attempted. The request is
+        deliberately best-effort: an alert outage must not turn a clear public
+        delivery error into a server traceback or a different user response.
+        """
+        now = time.monotonic()
+        should_alert = False
+        failure_count = 0
+        with self._lock:
+            cutoff = now - self.window_seconds
+            while self._failures and self._failures[0] <= cutoff:
+                self._failures.popleft()
+            self._failures.append(now)
+            failure_count = len(self._failures)
+            if (
+                self.webhook_url
+                and failure_count >= self.failure_threshold
+                and (
+                    self._last_alert_at is None
+                    or now - self._last_alert_at >= self.cooldown_seconds
+                )
+            ):
+                self._last_alert_at = now
+                should_alert = True
+
+        if not should_alert:
+            return False
+
+        payload = {
+            "timestamp": datetime.now(timezone.utc)
+            .isoformat(timespec="seconds")
+            .replace("+00:00", "Z"),
+            "environment": self.environment,
+            "processor_status": "delivery_unavailable",
+            "failure_count": failure_count,
+        }
+        try:
+            self._send(payload)
+        except Exception as exc:
+            # Keep this event safe even if the configured alert service
+            # returns an error. Do not print its URL or response body.
+            print(
+                f"FORM_ALERT_FAILED channel=webhook error={type(exc).__name__}",
+                file=sys.stderr,
+            )
+        return True
+
+    def _send(self, payload: Mapping[str, object]) -> None:
+        request = urllib.request.Request(
+            self.webhook_url,
+            data=json.dumps(payload, separators=(",", ":")).encode("utf-8"),
+            method="POST",
+            headers={
+                "accept": "application/json",
+                "content-type": "application/json",
+                "user-agent": "ELH-Replit-Form-Alert/1.0",
+            },
+        )
+        with urllib.request.urlopen(request, timeout=5) as response:
+            if not 200 <= response.status < 300:
+                raise OSError("alert endpoint rejected the notification")
+
+
 class SlidingWindowRateLimiter:
     """Thread-safe, bounded in-memory limiter for the single-process server."""
 
@@ -134,6 +237,12 @@ FORM_CLIENT_RATE_LIMITER = SlidingWindowRateLimiter(
 FORM_GLOBAL_RATE_LIMITER = SlidingWindowRateLimiter(
     GLOBAL_RATE_LIMIT_ATTEMPTS, RATE_LIMIT_WINDOW_SECONDS
 )
+FORM_DELIVERY_ALERTER = DeliveryFailureAlerter()
+
+
+def notify_delivery_failure() -> bool:
+    """Notify the configured independent alert channel after a Brevo failure."""
+    return FORM_DELIVERY_ALERTER.record_failure()
 
 
 @dataclass(frozen=True)

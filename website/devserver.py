@@ -20,6 +20,7 @@ from form_intake import (
     IntakeError,
     MAX_BODY_BYTES,
     json_response_payload,
+    notify_delivery_failure,
     parse_form_body,
     process_submission,
 )
@@ -164,6 +165,7 @@ class PrettyURLHandler(http.server.SimpleHTTPRequestHandler):
             )
         except DeliveryError:
             print("FORM_DELIVERY_FAILED provider=brevo", file=sys.stderr)
+            notify_delivery_failure()
             self._send_json(
                 502,
                 json_response_payload(

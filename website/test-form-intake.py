@@ -41,6 +41,22 @@ class CaptureHandler(BaseHTTPRequestHandler):
         return
 
 
+class AlertCaptureHandler(BaseHTTPRequestHandler):
+    payloads = []
+
+    def do_POST(self):
+        length = int(self.headers.get("Content-Length") or 0)
+        body = self.rfile.read(length)
+        self.__class__.payloads.append(json.loads(body.decode("utf-8")))
+        response = b'{"accepted":true}'
+        self.send_response(204)
+        self.send_header("Content-Length", str(len(response)))
+        self.end_headers()
+
+    def log_message(self, _format, *_args):
+        return
+
+
 class FakeMailer:
     def __init__(self, fail_at=None):
         self.payloads = []
@@ -307,6 +323,89 @@ class SyntheticEndToEndTest(unittest.TestCase):
         self.assertTrue(limiter.allow("synthetic-client"))
         self.assertTrue(limiter.allow("synthetic-client"))
         self.assertFalse(limiter.allow("synthetic-client"))
+
+    def test_delivery_outage_alerts_and_preserves_phone_fallback(self):
+        """Synthetic provider outage sends only safe alert data and 502 fallback."""
+        AlertCaptureHandler.payloads = []
+        form_intake.FORM_CLIENT_RATE_LIMITER.reset()
+        form_intake.FORM_GLOBAL_RATE_LIMITER.reset()
+        alert_server = ThreadingHTTPServer(("127.0.0.1", 0), AlertCaptureHandler)
+        alert_thread = threading.Thread(
+            target=alert_server.serve_forever, daemon=True
+        )
+        alert_thread.start()
+        app = ThreadingHTTPServer(("127.0.0.1", 0), devserver.PrettyURLHandler)
+        app_thread = threading.Thread(target=app.serve_forever, daemon=True)
+        app_thread.start()
+        original_alerter = form_intake.FORM_DELIVERY_ALERTER
+        form_intake.FORM_DELIVERY_ALERTER = form_intake.DeliveryFailureAlerter(
+            webhook_url=(
+                f"http://127.0.0.1:{alert_server.server_address[1]}/alert"
+            ),
+            environment="synthetic-test",
+            failure_threshold=3,
+            window_seconds=60,
+            cooldown_seconds=60,
+        )
+        body = urllib.parse.urlencode(
+            {
+                "form-name": "elh-family",
+                "first_name": "Synthetic",
+                "last_name": "Outage",
+                "phone": "805.555.0196",
+            }
+        ).encode("utf-8")
+        origin = f"http://127.0.0.1:{app.server_address[1]}"
+        try:
+            with mock.patch.object(
+                devserver,
+                "process_submission",
+                side_effect=form_intake.DeliveryError("synthetic provider outage"),
+            ):
+                statuses = []
+                response_bodies = []
+                for _ in range(4):
+                    request = urllib.request.Request(
+                        origin + "/api/form-submit",
+                        data=body,
+                        method="POST",
+                        headers={
+                            "Content-Type": "application/x-www-form-urlencoded",
+                            "Origin": origin,
+                        },
+                    )
+                    try:
+                        urllib.request.urlopen(request, timeout=5)
+                    except urllib.error.HTTPError as exc:
+                        statuses.append(exc.code)
+                        response_bodies.append(
+                            json.loads(exc.read().decode("utf-8"))
+                        )
+
+            self.assertEqual(statuses, [502, 502, 502, 502])
+            self.assertTrue(
+                all("805.953.7273" in result["message"] for result in response_bodies)
+            )
+            self.assertEqual(len(AlertCaptureHandler.payloads), 1)
+            alert = AlertCaptureHandler.payloads[0]
+            self.assertEqual(
+                set(alert),
+                {"timestamp", "environment", "processor_status", "failure_count"},
+            )
+            self.assertEqual(alert["environment"], "synthetic-test")
+            self.assertEqual(alert["processor_status"], "delivery_unavailable")
+            self.assertEqual(alert["failure_count"], 3)
+            self.assertNotIn("Synthetic", json.dumps(alert))
+            self.assertNotIn("805.555.0196", json.dumps(alert))
+        finally:
+            form_intake.FORM_DELIVERY_ALERTER = original_alerter
+            form_intake.FORM_CLIENT_RATE_LIMITER.reset()
+            form_intake.FORM_GLOBAL_RATE_LIMITER.reset()
+            app.shutdown()
+            app.server_close()
+            alert_server.shutdown()
+            alert_server.server_close()
+            AlertCaptureHandler.payloads.clear()
 
     def test_spoofed_leading_forwarded_ips_cannot_bypass_endpoint_limit(self):
         form_intake.FORM_CLIENT_RATE_LIMITER.reset()

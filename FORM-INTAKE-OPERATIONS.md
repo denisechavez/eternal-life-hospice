@@ -2,6 +2,7 @@
 
 **Processor:** Replit deployment (`website/devserver.py` → `POST /api/form-submit`)  
 **Delivery service:** Brevo transactional email (`BREVO_API`)  
+**Outage alert channel:** Independent HTTPS webhook (`FORM_ALERT_WEBHOOK_URL`)
 **Production domain:** `https://eternallifehospice.com`  
 **No DNS change is part of this implementation.**
 
@@ -33,6 +34,31 @@ The sender is the established Brevo address `no-reply@eternallifehospice.com`. A
 - Cross-origin submissions return `403`; throttled clients return `429`; both responses include the phone fallback.
 - `POST /` now returns 404 JSON instead of a fake preview success.
 
+## Delivery outage alerts
+
+Every failed internal delivery still writes the privacy-safe workflow event
+`FORM_DELIVERY_FAILED provider=brevo`. After three failures within five
+minutes, the processor sends one JSON alert to the independently configured
+`FORM_ALERT_WEBHOOK_URL`. Alerts are suppressed for 15 minutes after an alert,
+so a continuing Brevo outage cannot flood the team. The alert channel is
+best-effort and never changes the public response.
+
+The alert JSON contains exactly these fields:
+
+```json
+{
+  "timestamp": "2026-08-26T12:00:00Z",
+  "environment": "production",
+  "processor_status": "delivery_unavailable",
+  "failure_count": 3
+}
+```
+
+Set `FORM_ALERT_ENVIRONMENT` to the deployment label (for example,
+`production`). Store the webhook URL as a Replit secret or environment value;
+never place it in source control. If no URL is configured, the processor
+continues serving the phone fallback and does not send an external alert.
+
 ## Synthetic end-to-end test
 
 Run:
@@ -59,6 +85,11 @@ The test confirms:
 
 This test creates no Brevo, mailbox, database, or filesystem retention record. For a live post-deploy smoke test, use the same synthetic-only values, confirm the message and acknowledgement in their destination mailboxes, then delete both mailbox messages. Brevo retains only its normal transactional metadata according to the account retention policy; the application itself has no record to remove.
 
+The same test suite includes a synthetic Brevo-outage check. It forces the
+provider to fail, submits four synthetic requests, confirms every response is
+`502` with `805.953.7273`, confirms exactly one alert after the third failure,
+and verifies that the alert contains no submitted values.
+
 ## Netlify duplicate
 
 The separate Netlify copy is not the production processor. Production browser code targets `/api/form-submit`, a route provided by the Replit deployment. The Netlify `submission-created.js` file is explicitly labeled legacy-only. Both Netlify build configurations run `website/strip-netlify-form-routing.py` in their ephemeral build workspace, removing legacy Netlify Forms attributes and changing native form actions to `/api/form-submit`. If someone opens the Netlify hostname, the Replit-only same-origin API is unavailable and the public UI shows the phone fallback instead of a false confirmation.
@@ -68,6 +99,7 @@ Do not repoint DNS or make the Netlify copy authoritative without explicit appro
 ## Operational checks
 
 1. Confirm `BREVO_API` exists in the Replit production environment.
-2. Confirm `referral@eternallifehospice.com` is monitored by the intake team.
-3. Watch workflow logs for `FORM_DELIVERY_FAILED provider=brevo`; submitted fields are never logged.
-4. If Brevo is unavailable, callers should use `805.953.7273`; do not change the endpoint to return success during an outage.
+2. Confirm `FORM_ALERT_WEBHOOK_URL` and `FORM_ALERT_ENVIRONMENT` exist in the Replit production environment and that the webhook is monitored by the intake team.
+3. Confirm `referral@eternallifehospice.com` is monitored by the intake team.
+4. Watch workflow logs for `FORM_DELIVERY_FAILED provider=brevo`; submitted fields are never logged.
+5. If Brevo is unavailable, callers should use `805.953.7273`; do not change the endpoint to return success during an outage.
