@@ -12,7 +12,8 @@ public marketing site.
 ## Two deploy targets now live in ONE repo
 - **Marketing site** = `website/elh-preview/` → publishes to Netlify via Git→Sync (unchanged).
 - **Tracker** = `outreach-tracker/` (Express + Replit Postgres) → deployed via **Replit Deployments**, NOT Netlify. Netlify only ever builds `website/elh-preview`.
-- **Preview setup (July 2026), user-approved:** "Start application" = marketing site on port 5000 webview (front-facing default; `python3 website/devserver.py`); "Outreach Tracker (internal)" = `PORT=3000 npm start`, console — user flips between them with the preview-pane port toggle. Keep the WEBSITE on 5000 so front-facing work always previews by default. Tracker's Replit Deployment (production) runs independently; field staff use the deployed URL.
+- **Preview setup (July 2026), user-approved:** "Start application" = marketing site on port 5000 webview (front-facing default; `python3 website/devserver.py`); "Outreach Tracker (internal)" = `PORT=3000 npm start`, console — user flips between them with the preview-pane port toggle. Keep the WEBSITE on 5000 so front-facing work always previews by default. The tracker is an internal backend app; a public or separate production URL is not required for readiness.
+- **Dependency-install race:** do not run the clean-install test workflow (`npm ci`) at the same time as the tracker workflow because both share the exported app's `node_modules/`; the install can remove a transitive dependency while `server.js` is starting. Run the test first, then start/restart the tracker.
 - **Ownership after the visit-history migration:** the standalone tracker owns all future visits and photos; the main marketing site owns public pages and referral intake only, and its legacy tracker tables are not authoritative.
 
 ## Auth / security decisions
