@@ -50,8 +50,6 @@ CHAT_GLOBAL_RATE_LIMITER = SlidingWindowRateLimiter(120, 10 * 60)
 LEGACY_PAGE_REDIRECTS = {
     "/hospice-ventura-county-ca": "/hospice-ventura-and-los-angeles-county-ca",
     "/hospice-los-angeles-county-ca": "/hospice-ventura-and-los-angeles-county-ca",
-    "/resources": "/resources.html",
-    "/resources/": "/resources.html",
     "/refer-a-patient": "/refer",
     "/referral": "/refer",
     "/refer-patient": "/refer",
@@ -70,8 +68,6 @@ LEGACY_PAGE_REDIRECTS = {
     "/faqs/": "/resources.html",
     "/about-us": "/about/aleksandra-dubina",
     "/about-us/": "/about/aleksandra-dubina",
-    "/hospice-care": "/hospice-care.html",
-    "/hospice-care/": "/hospice-care.html",
     "/contact": "/refer",
     "/contact/": "/refer",
     "/assets/og-image-v2.jpg": "/assets/og-image.jpg",
@@ -108,6 +104,11 @@ class PrettyURLHandler(http.server.SimpleHTTPRequestHandler):
             ):
                 return resolved if os.path.exists(resolved) else resolved + ".html"
             return os.path.join(base, "__not_found__")
+        # These hubs have extensionless canonical URLs. Resolve them before
+        # SimpleHTTPRequestHandler sees the /resources/ directory redirect
+        # stub, so both slash variants serve the final document directly.
+        if clean.rstrip("/") in ("/hospice-care", "/resources"):
+            return os.path.join(ROOT, clean.rstrip("/").lstrip("/") + ".html")
         resolved = super().translate_path(path)
         if not os.path.exists(resolved):
             root, ext = os.path.splitext(resolved)

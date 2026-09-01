@@ -209,7 +209,6 @@ try:
         "/insurance/": "/resources/medicare-hospice-benefit",
         "/faqs/": "/resources.html",
         "/about-us/": "/about/aleksandra-dubina",
-        "/hospice-care/": "/hospice-care.html",
         "/contact/": "/refer",
     }
     for source, expected_location in redirect_cases.items():
@@ -223,6 +222,18 @@ try:
             )
         else:
             raise AssertionError(f"legacy URL did not redirect: {source}")
+
+    for canonical_hub in (
+        "/hospice-care",
+        "/hospice-care/",
+        "/resources",
+        "/resources/",
+    ):
+        response = no_redirect.open(base_url + canonical_hub, timeout=5)
+        check(
+            f"canonical hub serves directly: {canonical_hub}",
+            response.status == 200 and response.geturl() == base_url + canonical_hub,
+        )
 
     for retired in (
         "/events",

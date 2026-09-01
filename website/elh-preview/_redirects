@@ -26,8 +26,6 @@ http://eternallifehospice.com/*       https://eternallifehospice.com/:splat  301
 /faqs/           /resources.html                       301!
 /about-us        /about/aleksandra-dubina              301!
 /about-us/       /about/aleksandra-dubina              301!
-/hospice-care    /hospice-care.html                    301!
-/hospice-care/   /hospice-care.html                    301!
 /contact         /refer                               301!
 /contact/        /refer                               301!
 #
@@ -45,10 +43,6 @@ http://eternalhospice.com/*       https://eternallifehospice.com/:splat  301!
 
 /hospice-ventura-county-ca      /hospice-ventura-and-los-angeles-county-ca   301
 /hospice-los-angeles-county-ca  /hospice-ventura-and-los-angeles-county-ca   301
-
-# Resources directory redirect (server-side 301 preferred over meta-refresh)
-/resources    /resources.html    301
-/resources/   /resources.html    301
 
 # Short URLs for the partner referral page (print/QR can point at any of these)
 /refer-a-patient   /refer   301
