@@ -49,7 +49,7 @@
 #hdr .menu-btn{display:none!important}
 #hdr a:focus-visible,#hdr button:focus-visible{outline:3px solid var(--gold,#C9B07E);outline-offset:3px;border-radius:6px}
 
-@media(max-width:1280px) and (min-width:1180px){
+@media(max-width:1280px) and (min-width:1000px){
   #hdr{padding:0 1rem!important}
   #hdr .hdr-in{gap:1.2rem}
   #hdr .hdr-logo img.s{height:40px}
@@ -57,7 +57,7 @@
   #hdr .nav-toggle{width:20px}
 }
 
-@media(max-width:1179px){
+@media(max-width:999px){
   :root{--elh-header-height:74px}
   #hdr{padding:0 .8rem!important}
   #hdr .hdr-in{height:74px;gap:.35rem}
