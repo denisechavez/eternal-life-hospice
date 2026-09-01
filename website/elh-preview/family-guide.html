@@ -89,7 +89,9 @@ body.booklet .page{position:absolute;top:0;left:0;width:100%;
 body.booklet .page.is-turned{transform:rotateY(-176deg);opacity:0;
   box-shadow:24px 20px 70px rgba(12,5,13,.42)}
 body.booklet .page.is-current{transform:rotateY(0deg);opacity:1}
-body.booklet .page.is-under{transform:rotateY(0deg);opacity:1}
+/* Keep the resting booklet clean: the next leaf is exposed only while turning. */
+body.booklet .page.is-under{transform:rotateY(0deg);opacity:0;pointer-events:none;transition:none}
+body.booklet.is-turning .page.is-under{opacity:1;transition:transform 2.1s cubic-bezier(.3,.4,.2,1),opacity .9s ease 1.05s,box-shadow 2.1s ease}
 /* curl shadow that deepens along the lifting edge */
 body.booklet .page::after{content:"";position:absolute;inset:0;border-radius:14px;pointer-events:none;
   background:linear-gradient(100deg,rgba(20,8,20,0) 50%,rgba(20,8,20,.14) 82%,rgba(20,8,20,.34) 100%);
@@ -797,6 +799,7 @@ body.booklet .page{transition:transform 1.2s cubic-bezier(.3,.4,.2,1),opacity .5
   var prevBtn=document.getElementById('prevBtn'), nextBtn=document.getElementById('nextBtn');
   var pagesEl=document.getElementById('pages');
   var dotsWrap=document.getElementById('dots');
+  var turnTimer=null;
   for(var d=1;d<N;d++){var dt=document.createElement('div');dt.className='dot';dt.setAttribute('data-i',d);dotsWrap.appendChild(dt);}
   var dots=Array.prototype.slice.call(dotsWrap.children);
 
@@ -832,9 +835,13 @@ body.booklet .page{transition:transform 1.2s cubic-bezier(.3,.4,.2,1),opacity .5
     if(target<0)target=0; if(target>N-1)target=N-1;
     if(target===cur)return;
     var moving = (target>cur) ? cur : target;   // the leaf that visibly turns
+    document.body.classList.add('is-turning');
     cur=target; layout(); chrome();
     pages[moving].style.zIndex=300;             // keep the turning leaf on top during flip
-    clearTimeout(animTimer); animTimer=setTimeout(restingZ,1280);
+    clearTimeout(animTimer); clearTimeout(turnTimer);
+    var turnDuration=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches?350:2150;
+    animTimer=setTimeout(restingZ,Math.min(1280,turnDuration));
+    turnTimer=setTimeout(function(){restingZ();document.body.classList.remove('is-turning');},turnDuration);
     if(document.body.classList.contains('booklet')){smoothTo(0,950);}
   }
   function relayout(){ layout(); chrome(); }
