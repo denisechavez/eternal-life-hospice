@@ -45,6 +45,8 @@ CITY_TOKENS = [
     ('<h2>Service Areas</h2>',     "Service Areas column heading"),
     ('<h2>About</h2>',             "About column heading"),
     ('<h2>Contact</h2>',           "Contact column heading"),
+    ('<h2>For Professionals</h2>', "For Professionals subsection heading"),
+    ('Physicians &amp; Referrals',  "For Professionals -- referral link"),
     ('When Is It Time?',           "Hospice Care -- When Is It Time? link"),
     ('County Coverage',            "Service Areas -- County Coverage link"),
     ('fc-direct',                  "Contact -- Direct phone line (fc-direct)"),

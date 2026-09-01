@@ -90,6 +90,22 @@ if _FOOTER_LEGACY_NAV not in FOOTER_HTML:
     raise RuntimeError("Expected legacy footer navigation was not found")
 FOOTER_HTML = FOOTER_HTML.replace(_FOOTER_LEGACY_NAV, _FOOTER_MATCHED_NAV, 1)
 
+# Keep professional actions under Contact rather than creating another column.
+_FOOTER_CONTACT_END = '</a></div>\n  </div>\n  <nav class="foot-social"'
+_FOOTER_PROFESSIONALS = (
+    '<div class="foot-subgroup"><h2>For Professionals</h2>'
+    '<a href="/refer#referral-form">Physicians &amp; Referrals</a>'
+    '<a href="/referral-card">Referral eCard</a>'
+    '<a href="/?lead=voice#leadcap">Schedule a Session</a></div>'
+)
+if _FOOTER_CONTACT_END not in FOOTER_HTML:
+    raise RuntimeError("Expected footer Contact closing was not found")
+FOOTER_HTML = FOOTER_HTML.replace(
+    _FOOTER_CONTACT_END,
+    _FOOTER_PROFESSIONALS + _FOOTER_CONTACT_END,
+    1,
+)
+
 # ── POST-FOOTER BLOCK ─────────────────────────────────────────────────────────
 # Scripts and search overlay that follow </footer> on every standard page.
 # build-cities.py appends this after FOOTER_HTML.  sync-footer.py does NOT
