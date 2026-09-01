@@ -387,7 +387,8 @@ p,li,blockquote{text-wrap:pretty}
   #site-footer .foot-social a:hover{color:var(--gold)}
   #site-footer .foot-social svg{width:17px;height:17px;display:block}
   #site-footer .foot-social .fs-label{font-size:13px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;line-height:1;color:#B7A89D;margin-right:.35rem}
-  @media(max-width:860px){#site-footer .foot-grid{grid-template-columns:1fr 1fr}#site-footer .foot-bottom{flex-direction:column}#site-footer .foot-bottom>span{text-align:center!important}}
+  @media(max-width:1100px) and (min-width:861px){#site-footer .foot-grid{grid-template-columns:1.25fr 1fr 1fr 1.25fr;column-gap:1.5rem;row-gap:2rem}#site-footer .foot-grid>:first-child{grid-row:span 2}#site-footer .foot-col h2{white-space:normal}}
+  @media(max-width:860px){#site-footer .foot-grid{grid-template-columns:1fr 1fr}#site-footer .foot-grid>:first-child{grid-row:auto}#site-footer .foot-bottom{flex-direction:column}#site-footer .foot-bottom>span{text-align:center!important}}
   @media(max-width:560px){#site-footer .foot-grid{grid-template-columns:1fr}}
   
 /* Custom eternal-mark cursor on interactive elements */
