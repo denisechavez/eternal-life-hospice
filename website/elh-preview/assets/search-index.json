@@ -133,13 +133,6 @@
     "kw": "volunteer, companionship, presence, support, community"
   },
   {
-    "url": "/blog/caring-for-the-caregiver",
-    "title": "Caring for the Caregiver: Sustaining Yourself Through Hospice",
-    "desc": "Practical, compassionate ways for family caregivers to sustain themselves during hospice, and how the hospice team can share the load.",
-    "cat": "Journal",
-    "kw": "caregiver, burnout, self-care, respite, support, exhaustion"
-  },
-  {
     "url": "/care-brief",
     "title": "The Eternal Care Brief",
     "desc": "The Eternal Care Brief: a bi-monthly care publication from Eternal Life Hospice for professional care teams and families. Clinical guidance, family support, whole-person comfort, and program integrity.",
@@ -218,8 +211,8 @@
   },
   {
     "url": "/hospice-oxnard-ca",
-    "title": "Hospice Care in Point Mugu, CA",
-    "desc": "Eternal Life Hospice provides Medicare-certified hospice care in Point Mugu, CA — West Ventura County · Pacific Coast, Ventura County. Physician-supported comfort care at home or in a care facility. Call 805.953.7273.",
+    "title": "Hospice Care in Oxnard, CA",
+    "desc": "Eternal Life Hospice provides Medicare-certified hospice care in Oxnard, CA — South Ventura Coast, Ventura County. Physician-supported comfort care at home or in a care facility. Call 805.953.7273.",
     "cat": "City",
     "kw": "oxnard, oxnard plain, harbor, port hueneme, camarillo, ventura"
   },
@@ -1208,13 +1201,13 @@
     "title": "Rest, Renewal and the Work of Caring",
     "desc": "Nurses, social workers, chaplains, family caregivers — everyone at the bedside gives. This is why renewal matters, and what it actually looks like.",
     "cat": "Journal",
-    "kw": ""
+    "kw": "caregiver, burnout, self-care, respite, support, exhaustion"
   },
   {
-    "url": "/care-brief/issue-1",
-    "title": "Hospice Is Part of Life — A Continuation of Care",
-    "desc": "Issue One of The Eternal Care Brief: hospice as a continuation of care, the first 48 hours, sound-based comfort, and compliance-led admissions.",
-    "cat": "Article",
-    "kw": ""
+    "url": "/hospice-point-mugu-ca",
+    "title": "Hospice Care in Point Mugu, CA",
+    "desc": "Eternal Life Hospice provides Medicare-certified hospice care in Point Mugu, CA — West Ventura County · Pacific Coast, Ventura County. Physician-supported comfort care at home or in a care facility. Call 805.953.7273.",
+    "cat": "City",
+    "kw": "point mugu, west ventura county · pacific coast, ventura county"
   }
 ]

@@ -43,6 +43,7 @@ set +o pipefail
   python3 ../check-footer-parity.py
   python3 ../test-google-reviews.py
   python3 ../test-replit-chat-coverage.py
+  node assets/build-search-index.js --check
   node assets/build-search-index.js
   node assets/update-sitemap-dates.js
 ) 2>&1 | tee "$TMPOUT"

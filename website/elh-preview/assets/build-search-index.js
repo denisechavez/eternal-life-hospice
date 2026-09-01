@@ -10,13 +10,17 @@
  *   • Extracts <title>, <meta name="description">, and <link rel="canonical">
  *   • Strips the " | Eternal Life Hospice" site-name suffix from titles
  *   • Skips utility/noindex/internal pages (see SKIP_FILES / noindex check)
- *   • Preserves hand-authored `kw` and `cat` fields for URLs already in index
+ *   • Preserves hand-authored `kw` and `cat` fields separately from generated
+ *     title and description values
  *   • Infers `cat` for brand-new pages from their URL pattern
+ *   • Removes entries whose canonical source is missing, noindex, or excluded
  *   • Keeps existing entry order; appends newly discovered pages at the end
+ *   • Validates every generated title and description against its HTML source
  *   • Idempotent — safe to run on every deploy
  *
  * Usage
  *   node website/elh-preview/assets/build-search-index.js
+ *   node website/elh-preview/assets/build-search-index.js --check
  *
  * It is wired into the Netlify build command in netlify.toml so it runs
  * automatically before every production deploy.
@@ -184,6 +188,36 @@ function findHtmlFiles(dir, results = []) {
   return results;
 }
 
+function validateEntries(entries, discovered) {
+  const seen = new Set();
+
+  for (const entry of entries) {
+    if (seen.has(entry.url)) {
+      throw new Error(`[search-index] Duplicate URL: ${entry.url}`);
+    }
+    seen.add(entry.url);
+
+    const source = discovered.get(entry.url);
+    if (!source) {
+      throw new Error(
+        `[search-index] ${entry.url} has no indexable canonical HTML source.`
+      );
+    }
+    if (entry.title !== source.title || entry.desc !== source.desc) {
+      throw new Error(
+        `[search-index] Metadata mismatch for ${entry.url}. ` +
+        'Title and description must match the canonical HTML source.'
+      );
+    }
+  }
+
+  for (const url of discovered.keys()) {
+    if (!seen.has(url)) {
+      throw new Error(`[search-index] Missing canonical source: ${url}`);
+    }
+  }
+}
+
 // ── Main ──────────────────────────────────────────────────────────────────────
 function main() {
   // 1. Load existing index; build lookup by URL (preserves kw + cat).
@@ -251,18 +285,30 @@ function main() {
     });
   }
 
+  if (process.argv.includes('--check')) {
+    validateEntries(existing, discovered);
+    console.log(
+      `[search-index] Check passed. ${existing.length} entries match their canonical sources.`
+    );
+    return;
+  }
+
   // 3. Rebuild index: existing order first, then new entries appended.
   const output = [];
   const seen   = new Set();
 
-  // Preserve all existing entries (updated with fresh title/desc if found).
+  // Keep only entries backed by an indexable canonical HTML source. This
+  // prevents deleted and noindex legacy documents from surviving discovery.
   for (const entry of existing) {
+    if (seen.has(entry.url)) {
+      console.log(`[search-index] - duplicate entry: ${entry.url}`);
+      continue;
+    }
     const fresh = discovered.get(entry.url);
     if (fresh) {
       output.push(fresh);
     } else {
-      // Keep entries for pages we couldn't scan (e.g. redirects, hand-curated).
-      output.push(entry);
+      console.log(`[search-index] - retired/noindex page: ${entry.url}`);
     }
     seen.add(entry.url);
   }
@@ -278,7 +324,11 @@ function main() {
     }
   }
 
-  // 4. Write output.
+  // 4. Validate generated metadata against each canonical source. `kw` and
+  // `cat` remain hand-authored fields and are intentionally not compared.
+  validateEntries(output, discovered);
+
+  // 5. Write output.
   const json = JSON.stringify(output, null, 2);
   fs.writeFileSync(INDEX_PATH, json, 'utf8');
 

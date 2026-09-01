@@ -72,7 +72,7 @@ LEGACY_PAGE_REDIRECTS = {
     "/contact/": "/refer",
     "/assets/og-image-v2.jpg": "/assets/og-image.jpg",
     "/care-brief/hospice-is-part-of-life-a-continuation-of-care": "/care-brief/issue-1",
-    "/care-brief/caring-for-the-caregiver": "/care-brief/",
+    "/care-brief/caring-for-the-caregiver": "/blog/the-caregiver-who-needs-care",
     "/blog/caring-for-the-caregiver": "/blog/the-caregiver-who-needs-care",
     "/blog/the-second-patient": "/blog/the-caregiver-who-needs-care",
 }
