@@ -157,7 +157,7 @@ is not a substitute for mailbox receipt: the two `PENDING_MANUAL_CONFIRMATION`
 values must be replaced in the dated operations record only after the intake
 team verifies the messages.
 
-### Bounded mailbox verification and cleanup handoff
+### Bounded mailbox verification and cleanup
 
 Use the receipt ID from the command output as the sole correlation value. The
 intake team should search the referral mailbox and the requester mailbox for
@@ -171,9 +171,12 @@ or date range. Depending on forwarding configuration, the bounded set is:
 3. The static `We received your request — Eternal Life Hospice`
    acknowledgement in the requester mailbox.
 
-The connected Gmail access currently cannot perform deletion because it does
-not have `gmail.modify`. Do not claim that this command cleans up mail. Hand
-the following exact, receipt-scoped list to an authorized mailbox user:
+The currently connected Gmail account uses Replit platform credentials and
+does not have `gmail.modify`. That connection remains read-only for cleanup:
+do not pass its ID to cleanup mode and do not claim it can remove mail. Until
+operations explicitly authorizes a custom-OAuth Gmail connection containing
+the exact `https://www.googleapis.com/auth/gmail.modify` scope, hand the
+following receipt-scoped list to an authorized mailbox user:
 
 ```text
 ELH live check receipt: [RECEIPT_ID]
@@ -186,8 +189,54 @@ The authorized user should delete exactly the listed IDs, then verify that no
 non-trash copy remains for the receipt. Record the final result as
 `cleanup: CLOSED` only after that verification. If any expected message is
 missing, leave cleanup open and investigate delivery; do not submit a second
-test to compensate. This is a bounded manual handoff, not an automated Gmail
-cleanup and not a request to broaden mailbox permissions.
+test to compensate.
+
+After operations explicitly authorizes a custom-OAuth Gmail connection with
+`gmail.modify`, add the exact message IDs to the live-check JSON record:
+
+```json
+{
+  "processor": {
+    "receipt_id": "RECEIPT_ID"
+  },
+  "cleanup": {
+    "message_ids": {
+      "internal_referral": "EXACT_GMAIL_ID",
+      "forwarded_referral": "EXACT_GMAIL_ID_OR_NONE",
+      "requester_acknowledgement": "EXACT_GMAIL_ID"
+    }
+  }
+}
+```
+
+Use `null`, an empty string, or `NONE` only when no forwarded copy exists.
+Never add patient information, clinical details, message bodies, OAuth
+credentials, or access tokens to this record. Then run:
+
+```sh
+python3 website/run-live-referral-check.py \
+  --cleanup-record /tmp/elh-live-referral-check-YYYYMMDDTHHMMSSZ.json \
+  --gmail-connection-id conn_google-mail_EXACT_AUTHORIZED_ID \
+  --output /tmp/elh-live-referral-cleanup-YYYYMMDDTHHMMSSZ.json
+```
+
+Cleanup is deliberately separate from submission. Before the first mailbox
+read or write, the command reads the named connection's configured OAuth
+scope metadata and requires the exact modification scope. It also confirms
+that the named connection is the only attached Gmail connection and is
+healthy, and rejects Replit's default platform-credential connection because
+it cannot carry `gmail.modify`. It
+then searches only by the recorded receipt, confirms that every supplied
+message ID belongs to that receipt, and stops without writing if an
+unrecorded non-trash copy is present. It uses Gmail's reversible Trash action,
+never permanent deletion. The result reports each role and message ID as
+`trashed` or `already_in_trash`, repeats the receipt search including Trash,
+and reports `verification.status: CLOSED` only when no non-trash copy remains.
+
+If the scope, connection, receipt, or message-ID checks fail, no Trash request
+is sent. If Gmail fails during a Trash sequence, do not immediately rerun the
+command; inspect the receipt-scoped state first because earlier Trash requests
+may already have succeeded.
 
 This live referral check is an intake-delivery control only. It is separate
 from Netlify availability, retirement, freeze, DNS, and hosting decisions.

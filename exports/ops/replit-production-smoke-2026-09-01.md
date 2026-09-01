@@ -132,10 +132,18 @@ production `/refer` flow and records processor acceptance, receipt ID, Brevo
 provider acceptance ID, expected referral destination, and requester
 acknowledgement status. It sends no PHI and does not write application data.
 
-Mailbox delivery still requires intake-team confirmation. Because the
-connected Gmail grant lacks `gmail.modify`, the command deliberately does not
-delete mail. Use the receipt-scoped message-ID handoff in
-`FORM-INTAKE-OPERATIONS.md` to have an authorized mailbox user delete the
-original, any forwarded copy, and the acknowledgement, then record
-`cleanup: CLOSED`. This procedure is independent of the Netlify decision
-recorded above.
+Mailbox delivery still requires intake-team confirmation. The Gmail
+connection used for this September 1 record has no `gmail.modify` scope, so
+the historical cleanup above was manual and must remain described that way.
+
+For future checks, `website/run-live-referral-check.py --cleanup-record` can
+perform the bounded cleanup only after operations explicitly authorizes a
+healthy custom-OAuth Gmail connection with `gmail.modify`. The cleanup record
+must carry the one processor receipt ID and the exact Gmail IDs for the
+internal referral, optional forwarded copy, and requester acknowledgement.
+The command rejects the current platform-credential connection, refuses
+unrecorded non-trash matches, uses reversible Trash rather than permanent
+deletion, reports each message result, and closes only after a second
+receipt-scoped search finds no non-trash copy. The exact command and no-PHI
+record format are maintained in `FORM-INTAKE-OPERATIONS.md`. This procedure is
+independent of the Netlify decision recorded above.
