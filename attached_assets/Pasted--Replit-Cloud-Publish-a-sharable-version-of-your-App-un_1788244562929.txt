@@ -1,0 +1,326 @@
+
+
+
+
+Replit Cloud
+Publish a sharable version of your App, unaffected by changes made in the project editor
+Manage custom domains for your published project
+View traffic, request metrics, resource usage, and analytics for your deployed App
+Find, fix, and monitor SEO and growth opportunities
+Stores structured data such as user profiles, game scores, and product catalogs.
+Let users log in to your App using a prebuilt login page
+Find, fix, and monitor security vulnerabilities and privacy issues
+Host and save uploads like images, videos, and documents
+Setup
+Connect to Replit-native and external services
+Version control for your App
+Store sensitive information (like API keys) securely in your App
+Manage skills that extend Agent capabilities
+Growth
+
+Review opportunities to grow your app and acquire new users.
+Advanced analytics
+New
+Track custom events and metrics configured by Agent.
+Default analytics
+Get traffic insights based on IP data.
+Visitors
+965
++904 vs previous 7 days (+1482%)
+Visitors over time (hour)
+965 unique IP addresses
+Top Pages
+/
+803
+/wp-content/plugins/hellopress/wp_filemanager.php
+81
+/this_is_a_new_hello_world.php
+77
+/admin.php
+72
+Top Referrers
+.google.com/
+185
+syndicatedsearch.goog/
+64
+ghost-rider/
+19
+fbapp://350685531728/unknown
+16
+Top Countries
+United States
+10428
+Canada
+7614
+Singapore
+1377
+Bulgaria
+817
+Top Browsers
+Top Devices
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+what else do we need to do to establish independence from netlify
+
+7 minutes ago
+Establishing hosting independence
+
+Establishing hosting independence
+I’ll map the remaining Netlify-dependency gates against the project’s current architecture so we can distinguish what is already independent from what still needs proof or cleanup.
+
+
+
+6 actions
+The main remaining risk is not the website itself; it is proving that referrals, legacy links, and day-to-day operations no longer depend on Netlify. I’m checking for any live Netlify references so the checklist is complete.
+
+
+
+7 actions
+You are close. Replit is already operationally independent for hosting:
+
+Canonical site: https://eternallifehospice.com
+Replit deployment: public, autoscale, successful build
+Additional URL: https://eternal-life-hospice.replit.app
+Live chat and coverage use Replit /api/... routes
+Public forms target the Replit form processor
+The Tracker is running separately from the public site
+The remaining work is to prove that nothing important still depends on Netlify.
+
+Remaining independence gates
+1. Prove referral delivery end-to-end
+This is the most important gate.
+
+From the live canonical site:
+
+Submit one clearly labeled, fictional, no-PHI referral.
+Confirm the Replit processor accepts it.
+Confirm the intake team receives it in referral@eternallifehospice.com.
+Delete the test message afterward.
+Repeat the check for the family/contact flow and any other form that must deliver email.
+A green confirmation message in the browser is not enough. The mailbox receipt is the proof.
+
+2. Republish and confirm analytics
+The custom analytics events were implemented, but they only become active after publishing.
+
+After republishing:
+
+Open the live site.
+Trigger a safe event such as opening chat or clicking the map.
+Confirm the event eventually appears in Replit Analytics.
+This is useful operationally, but it is not a blocker for hosting independence.
+
+3. Finish old-domain and redirect checks
+Already completed:
+
+eternalhospice.com now redirects correctly to the canonical domain.
+Still needed:
+
+Correct GoDaddy forwarding for eternallifehospiceinc.com to:
+
+https://eternallifehospice.com/
+
+with Permanent 301 and Forward only.
+
+Recheck both old domains for:
+
+Root URL
+A representative service page
+A resource page
+/refer
+Retired event URLs
+Confirm old paths either redirect correctly or remain intentionally unavailable.
+
+4. Update external profiles and bookmarks
+Confirm that important third-party locations point to the canonical domain rather than Netlify:
+
+Google Business Profile
+Social profiles
+Partner and facility profiles
+Email signatures
+Printed materials and QR codes
+Internal bookmarks and referral instructions
+This is the remaining “people are still being sent to Netlify” risk.
+
+5. Complete the Tracker field-readiness check
+Before relying on it as the authoritative outreach system, verify that representatives can:
+
+Create and edit visits
+Update statuses
+See live office updates
+Export CSV
+Delete records
+Send backup CSVs to the configured recipients
+Use the system without a visible PHI checkbox
+The Tracker does not need a public URL, but the team needs to be comfortable using it.
+
+6. Freeze Netlify, but do not deactivate it yet
+After the referral, domain, profile, and Tracker checks are green:
+
+Stop making content or configuration changes to Netlify.
+Treat the Netlify site as a frozen fallback.
+Keep it online during an observation period.
+Do not change canonical DNS or deactivate it until referral processing has remained reliable.
+The repository still contains legacy Netlify function files and build/test references. The live site is using Replit routes, so those files are not currently proof of runtime dependence. They should be archived or removed only after the freeze and delivery checks are complete.
+
+The actual go/no-go sequence
+Republish Replit.
+Prove a real referral reaches the referral mailbox.
+Fix and test eternallifehospiceinc.com.
+Verify legacy redirects and external profiles.
+Complete Tracker field testing.
+Freeze Netlify.
+Monitor the Replit site and referral flow before considering Netlify retirement.
+The next critical step is the live referral receipt test, not another design change.
+
+
+
+Worked for 41 seconds
+Update external profiles and bookmarks Confirm that important third-party locations point to the canonical domain rather than Netlify:
+Google Business Profile Social profiles Partner and facility profiles Email signatures Printed materials and QR codes Internal bookmarks and referral instructions can you do this ?
+
+4 minutes ago
+Clarifying the audit process
+
+Clarifying the audit process
+I can audit and update the materials we control directly, then identify which third-party profiles still require an account owner to save changes. I’ll first scan the project for Netlify URLs, old domains, QR destinations, signatures, and printed collateral.
+
+
+
+9 actions
+The audit shows the live site is already using the canonical domain and same-origin Replit endpoints. I’m narrowing the remaining work to editable files and publicly visible profile links, while keeping the legacy Netlify copy intact until referral and redirect verification are complete.
+
+
+
+3 actions
+The project-owned signatures, QR destinations, and website links already use eternallifehospice.com. I’m checking the public-facing Google and social listings now; account-level edits still require access to those profile owners.
+
+
+
+Auditing public profile links
+
+Searched the web for "Which public Eternal Life Hospice profiles still link to Netlify or an old domain instead of eternallifehospice.com?"
+The public audit found one important issue: an older LinkedIn identity still appears as “Eternal Life Hospice Inc.” Search results also show stale directory listings with the former address/name. I’m verifying the packaged signatures, PDFs, and QR codes before I give you the exact changes that can be completed here versus changes that need account-owner access.
+
+
+
+10 actions
+Yes—I completed the parts that can be done inside the project and audited the public web presence. Account-owned profile edits still require the owner to sign in; no Google Business Profile, LinkedIn, Facebook, Instagram, or directory-admin connection is available here.
+
+Already verified
+Website links use https://eternallifehospice.com.
+Email signature HTML and the packaged ZIP use the canonical domain.
+QR codes decode correctly:
+General QR → https://eternallifehospice.com
+Referral QR → https://eternallifehospice.com/refer
+Media kit QR → https://eternallifehospice.com/media-kit
+Printed PDF text contains no Netlify or old-domain URLs.
+The live site uses Replit’s same-origin /api/... routes, not Netlify functions.
+The old domains appear only in redirect rules and historical documentation, not active site links.
+Account updates still needed
+Google Business Profile
+On the active listing named Eternal Life Hospice:
+
+Website: https://eternallifehospice.com
+Maps link: https://maps.google.com/?cid=9771388271577679785
+Do not link the older duplicate Eternal Life Hospice, Inc. listing. That duplicate should be reported to Google for removal or merging.
+
+LinkedIn
+Public search still surfaces an older identity titled Eternal Life Hospice Inc.
+
+Update the active profile’s:
+
+Website
+About section
+Contact information
+Any pinned or featured links
+Use:
+
+https://eternallifehospice.com
+
+The site currently links to:
+
+https://www.linkedin.com/company/eternal-life-hospice/
+
+Facebook, Instagram, and YouTube
+Check the profile website field, bio, Link-in-bio page, pinned posts, and profile buttons.
+
+Use:
+
+Website: https://eternallifehospice.com
+Provider referrals: https://eternallifehospice.com/refer
+The current social handles can remain if they are correct; the important change is removing any Netlify or old-domain destination.
+
+Partner and facility directories
+Public search still shows stale third-party records using the former Inc. identity and older addresses. Correct the website wherever the listing is editable:
+
+https://eternallifehospice.com
+
+For directory records, use the current approved business information. Do not alter official state or licensing records unless the legal information itself is wrong; instead, correct the website and contact details in the directory’s owner portal.
+
+Email signatures
+The files are already correct. They still need to be distributed to staff and installed in Gmail/Outlook if anyone has an older signature containing Netlify or an old domain.
+
+Printed materials and QR codes
+The source PDFs and QR masters are already correct. Existing physical pieces cannot be changed; replace only copies that visibly show Netlify or an old URL.
+
+Internal bookmarks and referral instructions
+Replace old bookmarks and written instructions with:
+
+General website: https://eternallifehospice.com
+Provider referral form: https://eternallifehospice.com/refer
+Media kit: https://eternallifehospice.com/media-kit
+Browser bookmarks on staff devices will need to be updated manually.
+
+One additional issue I found
+The live project’s privacy-policy.html still lists Netlify as the hosting and form-processing provider. Since Replit now serves the canonical site and processes its public forms, that legal copy should be reviewed and updated before declaring complete independence. I did not alter it automatically because it is privacy/legal language.
+
+So the remaining work is primarily:
+
+Update the external profile accounts.
