@@ -12,7 +12,7 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 from chat_api import ChatRequestError, process_chat
 from coverage_api import lookup_coverage
-from devserver import PrettyURLHandler, QuietHTTPServer
+from devserver import LEGACY_PAGE_REDIRECTS, PrettyURLHandler, QuietHTTPServer
 
 
 passed = 0
@@ -195,6 +195,41 @@ try:
         check("chat rejects GET with 405", exc.code == 405)
     else:
         raise AssertionError("chat GET was accepted")
+
+    class NoRedirect(urllib.request.HTTPRedirectHandler):
+        def redirect_request(self, req, fp, code, msg, headers, newurl):
+            return None
+
+    no_redirect = urllib.request.build_opener(NoRedirect)
+    redirect_cases = {
+        "/hospice-ventura-county-ca": "/hospice-ventura-and-los-angeles-county-ca",
+        "/refer-a-patient?source=legacy": "/refer?source=legacy",
+        "/resources/what-hospice-covers": "/resources/medicare-hospice-benefit",
+        "/blog/the-second-patient": "/blog/the-caregiver-who-needs-care",
+    }
+    for source, expected_location in redirect_cases.items():
+        try:
+            no_redirect.open(base_url + source, timeout=5)
+        except urllib.error.HTTPError as exc:
+            check(
+                f"legacy URL redirects: {source}",
+                exc.code == 301
+                and exc.headers.get("Location") == expected_location,
+            )
+        else:
+            raise AssertionError(f"legacy URL did not redirect: {source}")
+
+    for retired in (
+        "/events",
+        "/events/caregiver-support-workshop",
+        "/tracker",
+    ):
+        try:
+            urllib.request.urlopen(base_url + retired, timeout=5)
+        except urllib.error.HTTPError as exc:
+            check(f"retired/unowned URL remains unavailable: {retired}", exc.code in (404, 410))
+        else:
+            raise AssertionError(f"retired/unowned URL unexpectedly served: {retired}")
 finally:
     server.shutdown()
     server.server_close()

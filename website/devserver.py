@@ -45,6 +45,32 @@ REPORTS_DIR = os.path.abspath(os.path.join(BASE, "..", "exports", "campaign-repo
 CHAT_CLIENT_RATE_LIMITER = SlidingWindowRateLimiter(20, 10 * 60)
 CHAT_GLOBAL_RATE_LIMITER = SlidingWindowRateLimiter(120, 10 * 60)
 
+# The marketing site owns these historical page aliases. Keep API and tracker
+# forwarding rules out of this table: those services have separate ownership.
+LEGACY_PAGE_REDIRECTS = {
+    "/hospice-ventura-county-ca": "/hospice-ventura-and-los-angeles-county-ca",
+    "/hospice-los-angeles-county-ca": "/hospice-ventura-and-los-angeles-county-ca",
+    "/resources": "/resources.html",
+    "/resources/": "/resources.html",
+    "/refer-a-patient": "/refer",
+    "/referral": "/refer",
+    "/refer-patient": "/refer",
+    "/providers": "/refer",
+    "/kit": "/media-kit",
+    "/presskit": "/media-kit",
+    "/press-kit": "/media-kit",
+    "/media": "/media-kit",
+    "/aleksandra": "/about/aleksandra-dubina",
+    "/denise": "/card-denise-chavez",
+    "/resources/what-hospice-covers": "/resources/medicare-hospice-benefit",
+    "/aleksandradubina": "/about/aleksandra-dubina",
+    "/assets/og-image-v2.jpg": "/assets/og-image.jpg",
+    "/care-brief/hospice-is-part-of-life-a-continuation-of-care": "/care-brief/issue-1",
+    "/care-brief/caring-for-the-caregiver": "/care-brief/",
+    "/blog/caring-for-the-caregiver": "/blog/the-caregiver-who-needs-care",
+    "/blog/the-second-patient": "/blog/the-caregiver-who-needs-care",
+}
+
 
 class PrettyURLHandler(http.server.SimpleHTTPRequestHandler):
     def __init__(self, *args, **kwargs):
@@ -89,6 +115,10 @@ class PrettyURLHandler(http.server.SimpleHTTPRequestHandler):
 
     def do_GET(self):
         parsed = urlsplit(self.path)
+        destination = LEGACY_PAGE_REDIRECTS.get(parsed.path)
+        if destination:
+            self._send_redirect(destination, parsed.query)
+            return
         if parsed.path == "/api/chat":
             self._send_json(
                 405,
@@ -130,6 +160,13 @@ class PrettyURLHandler(http.server.SimpleHTTPRequestHandler):
                 )
             return
         super().do_GET()
+
+    def _send_redirect(self, destination, query=""):
+        location = destination + (f"?{query}" if query else "")
+        self.send_response(301)
+        self.send_header("Location", location)
+        self.send_header("Content-Length", "0")
+        self.end_headers()
 
     def do_POST(self):
         path = self.path.split("?", 1)[0]
