@@ -35,6 +35,19 @@
 
 No patient information, referral data, credentials, or other sensitive content was used in these checks.
 
+
+## Controlled no-PHI referral delivery test
+
+**Submitted:** 2026-09-01 04:13:39 UTC  
+**Completed:** 2026-09-01 04:13:40 UTC  
+**Route:** `https://eternallifehospice.com/refer` → same-origin `POST /api/form-submit`  
+**Test label:** `Task 796 controlled no-PHI delivery test — 2026-09-01`
+
+- **Processor acceptance — PASS:** HTTP 200 returned `accepted: true`, `acknowledgement_sent: true`, and `acknowledgement_error: false`. Receipt: `4F8D77C12AEB`. Brevo returned message ID `<202609010413.40012400777@smtp-relay.mailin.fr>`.
+- **Referral mailbox delivery — PASS:** Gmail received a forwarded copy from `referral@eternallifehospice.com` to `info@eternallifehospice.com` at 04:13:45 UTC, with the forwarded internal referral carrying receipt `4F8D77C12AEB`.
+- **Requester acknowledgement — PASS:** Gmail received `We received your request — Eternal Life Hospice` from `no-reply@eternallifehospice.com` to `info@eternallifehospice.com` at 04:13:40 UTC. The message contained the static acknowledgement and confirmation ID only; it did not contain the synthetic situation note.
+- **Test data:** `ELH TEST — Do Not Call`, reserved fictional phone `805.000.0000`, `Eternal Life Hospice QA`, and the explicitly non-PHI situation `Synthetic non-PHI routing test only. Do not call.` No patient information was submitted.
+
 ## Live independence audit
 
 - The live homepage returned HTTP 200 and loaded `assets/chat.js`.
@@ -47,10 +60,9 @@ No patient information, referral data, credentials, or other sensitive content w
 
 ## Netlify decision
 
-Netlify was not changed, frozen, unpublished, or deleted during this verification. This report supports a future freeze decision, but it does not by itself complete the broader operational checklist. In particular, the readiness workbook still requires the separate no-PHI referral delivery confirmation, standalone tracker field-use confirmation, link audit, and observation period before Netlify retirement.
+Netlify was not changed, frozen, unpublished, or deleted during this verification. This report supports a future freeze decision, but it does not by itself complete the broader operational checklist. In particular, the readiness workbook still requires standalone tracker field-use confirmation, link audit, and observation period before Netlify retirement.
 
 **Current decision:** Keep the Netlify copy available pending the remaining operational sign-offs. The Replit chat/coverage independence gate is **PASS**.
-
 ## Observation record
 
 **Observation window:** 2026-08-27 through 2026-09-01 UTC
@@ -95,3 +107,12 @@ This is a retrospective evidence window covering the available production record
 **NO-GO for freezing, deactivating, or deleting Netlify as of 2026-09-01.**
 
 The Replit deployment and final smoke test are green, and the Netlify rollback reference remains preserved. The decision stays **NO-GO** because the observation record has missing business-day evidence, analytics has no collected telemetry, referral delivery has not been re-proven in this window, and route/link work remains open. Netlify remains available and unchanged while those gates are completed.
+
+### Cleanup status
+
+**Confirmed:** 2026-09-01 04:20:14 UTC. The authorized mailbox user confirmed deletion of the original referral-mailbox message, its forwarded copy, and the requester acknowledgement. A Gmail verification query for receipt `4F8D77C12AEB` found the two visible copies in `TRASH`:
+
+- Forwarded referral copy: `1a05b2c53291f4bc`
+- Requester acknowledgement: `1a05b2c3fab065e6`
+
+No test messages remain in the inboxes. The delivery-test cleanup gate is **CLOSED**.

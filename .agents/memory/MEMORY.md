@@ -39,3 +39,4 @@
 - [Weekly email send rule](weekly-email-send-rule.md) — all weekly campaigns go to aggregate of ALL active Brevo lists; exclude system/test lists 3,6,11,12.
 - [NeverBounce verification rule](neverbounce-rule.md) — ALL emails verified through NeverBounce before adding to Brevo; no exceptions; invalid=remove, catchall/unknown=add with caution.
 - [Public form routing](public-form-routing.md) — prove each publish with one no-PHI referral: provider acceptance, referral-mailbox receipt, then deletion; Netlify is non-authoritative.
+- [Gmail cleanup permissions](gmail-cleanup-permissions.md) — the connected Gmail grant may read/send but lack gmail.modify; mailbox-user cleanup is then required.
