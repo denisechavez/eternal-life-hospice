@@ -921,10 +921,12 @@ p,li,blockquote{text-wrap:pretty}
 .rv-scroll-wrap{flex:1;overflow:hidden;position:relative}
 .rv-scroll-wrap::after{content:'';position:absolute;top:0;right:0;bottom:0;width:60px;background:linear-gradient(to left,var(--cream),transparent);pointer-events:none;z-index:4}
 .rv-reel{display:flex;align-items:center;gap:0;animation:rvscroll 70s linear infinite;width:max-content;padding:.8rem 0;white-space:nowrap}
+.rv-reel.is-static{animation:none;width:100%}
 .rv-reel:hover{animation-play-state:paused}
 .rv-sep{color:var(--gold);font-size:.5rem;flex-shrink:0;padding:0 1rem;opacity:.7}
 .rv-item{font-size:.8rem;color:var(--ink-soft);padding:0 .2rem;white-space:nowrap}
 .rv-item em{font-style:normal;font-weight:600;color:var(--plum);padding-left:.3rem}
+.rv-live-status{color:var(--text-mid);font-style:italic}
 @keyframes rvscroll{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
 @media(max-width:480px){.rv-badge{padding:.65rem .8rem}.rv-reel-label{display:none}}
 </style>
@@ -1247,32 +1249,16 @@ p,li,blockquote{text-wrap:pretty}
   </div>
 </section>
 <!-- GOOGLE REVIEWS TICKER -->
-<div class="rv-strip" id="reviews" aria-label="Google Reviews — 5 stars">
-  <a class="rv-badge" href="https://maps.google.com/?cid=9771388271577679785" target="_blank" rel="noopener" aria-label="5.0 stars — 11 Google reviews"><svg width="22" height="22" viewBox="0 0 48 48" aria-hidden="true"><path fill="#4285F4" d="M45.12 24.5c0-1.56-.14-3.06-.4-4.5H24v8.51h11.84c-.51 2.75-2.06 5.08-4.39 6.64v5.52h7.11c4.16-3.83 6.56-9.47 6.56-16.17z"/><path fill="#34A853" d="M24 46c5.94 0 10.92-1.97 14.56-5.33l-7.11-5.52c-1.97 1.32-4.49 2.1-7.45 2.1-5.73 0-10.58-3.87-12.31-9.07H4.34v5.7C7.96 41.07 15.4 46 24 46z"/><path fill="#FBBC05" d="M11.69 28.18C11.25 26.86 11 25.45 11 24s.25-2.86.69-4.18v-5.7H4.34A21.991 21.991 0 0 0 2 24c0 3.55.85 6.91 2.34 9.88l7.35-5.7z"/><path fill="#EA4335" d="M24 10.75c3.23 0 6.13 1.11 8.41 3.29l6.31-6.31C34.91 4.18 29.93 2 24 2 15.4 2 7.96 6.93 4.34 14.12l7.35 5.7c1.73-5.2 6.58-9.07 12.31-9.07z"/></svg><span class="rv-reel-stars">★★★★★</span><span class="rv-reel-score">5.0</span><span class="rv-reel-label">&nbsp;· 11 reviews</span></a>
+<div class="rv-strip" id="reviews" aria-label="Google Reviews">
+  <a class="rv-badge" id="rvBadge" href="https://maps.google.com/?cid=9771388271577679785" target="_blank" rel="noopener" aria-label="See the latest Google reviews">
+    <svg width="22" height="22" viewBox="0 0 48 48" aria-hidden="true"><path fill="#4285F4" d="M45.12 24.5c0-1.56-.14-3.06-.4-4.5H24v8.51h11.84c-.51 2.75-2.06 5.08-4.39 6.64v5.52h7.11c4.16-3.83 6.56-9.47 6.56-16.17z"/><path fill="#34A853" d="M24 46c5.94 0 10.92-1.97 14.56-5.33l-7.11-5.52c-1.97 1.32-4.49 2.1-7.45 2.1-5.73 0-10.58-3.87-12.31-9.07H4.34v5.7C7.96 41.07 15.4 46 24 46z"/><path fill="#FBBC05" d="M11.69 28.18C11.25 26.86 11 25.45 11 24s.25-2.86.69-4.18v-5.7H4.34A21.991 21.991 0 0 0 2 24c0 3.55.85 6.91 2.34 9.88l7.35-5.7z"/><path fill="#EA4335" d="M24 10.75c3.23 0 6.13 1.11 8.41 3.29l6.31-6.31C34.91 4.18 29.93 2 24 2 15.4 2 7.96 6.93 4.34 14.12l7.35 5.7c1.73-5.2 6.58-9.07 12.31-9.07z"/></svg>
+    <span class="rv-reel-stars" id="rvStars" aria-hidden="true">★★★★★</span>
+    <span class="rv-reel-score" id="rvScore">Loading</span>
+    <span class="rv-reel-label" id="rvLabel">&nbsp;· current Google reviews</span>
+  </a>
   <div class="rv-scroll-wrap">
-    <div class="rv-reel">
-    <span class="rv-sep">◆</span>
-    <span class="rv-item">"Our family is eternally grateful for the compassionate, dignified care they provided."<em>— David H.</em></span>
-    <span class="rv-sep">◆</span>
-    <span class="rv-item">"Exceptional hospice provider — delivers the kind of care anyone would want for a loved one."<em>— Ronny K.</em></span>
-    <span class="rv-sep">◆</span>
-    <span class="rv-item">"Professional, compassionate, and truly dedicated to providing exceptional care to patients and families."<em>— Edmond M.</em></span>
-    <span class="rv-sep">◆</span>
-    <span class="rv-item">"Great services, very caring, and very responsive to patients needs."<em>— Alina M.</em></span>
-    <span class="rv-sep">◆</span>
-    <span class="rv-item">"A hospice that genuinely prioritizes patient comfort, dignity, and quality of care."<em>— DME Partner</em></span>
-    <span class="rv-sep">◆</span>
-    <span class="rv-sep">◆</span>
-    <span class="rv-item">"Our family is eternally grateful for the compassionate, dignified care they provided."<em>— David H.</em></span>
-    <span class="rv-sep">◆</span>
-    <span class="rv-item">"Exceptional hospice provider — delivers the kind of care anyone would want for a loved one."<em>— Ronny K.</em></span>
-    <span class="rv-sep">◆</span>
-    <span class="rv-item">"Professional, compassionate, and truly dedicated to providing exceptional care to patients and families."<em>— Edmond M.</em></span>
-    <span class="rv-sep">◆</span>
-    <span class="rv-item">"Great services, very caring, and very responsive to patients needs."<em>— Alina M.</em></span>
-    <span class="rv-sep">◆</span>
-    <span class="rv-item">"A hospice that genuinely prioritizes patient comfort, dignity, and quality of care."<em>— DME Partner</em></span>
-    <span class="rv-sep">◆</span>
+    <div class="rv-reel is-static" id="rvReel" aria-live="polite">
+      <span class="rv-item rv-live-status" id="rvStatus">Loading current Google reviews…</span>
     </div>
   </div>
 </div>
@@ -2074,6 +2060,81 @@ p,li,blockquote{text-wrap:pretty}
   audio.addEventListener('pause',reset);
   audio.addEventListener('timeupdate',function(){show(idxAt(audio.currentTime));});
   audio.addEventListener('ended',function(){reset();cur=-1;show(0);});
+})();
+</script>
+<script>
+(function(){
+  var badge=document.getElementById('rvBadge');
+  var stars=document.getElementById('rvStars');
+  var score=document.getElementById('rvScore');
+  var label=document.getElementById('rvLabel');
+  var reel=document.getElementById('rvReel');
+  var status=document.getElementById('rvStatus');
+  if(!badge||!stars||!score||!label||!reel||!status)return;
+  var fallbackUrl='https://maps.google.com/?cid=9771388271577679785';
+  function text(value){return value==null?'':String(value);}
+  function addSep(parent){
+    var sep=document.createElement('span');
+    sep.className='rv-sep';
+    sep.textContent='◆';
+    parent.appendChild(sep);
+  }
+  function addReview(parent,review){
+    addSep(parent);
+    var item=document.createElement('span');
+    item.className='rv-item';
+    item.appendChild(document.createTextNode('"'+text(review.text)+'"'));
+    var author=document.createElement('em');
+    author.textContent=' — '+text(review.author||'Google reviewer');
+    item.appendChild(author);
+    parent.appendChild(item);
+  }
+  function render(data){
+    var rating=Number(data.rating);
+    var count=Number(data.reviewCount);
+    var rounded=Number.isFinite(rating)?Math.max(0,Math.min(5,Math.round(rating))):0;
+    stars.textContent=rounded?'★'.repeat(rounded)+'☆'.repeat(5-rounded):'Google';
+    stars.setAttribute('aria-label',Number.isFinite(rating)?rating.toFixed(1)+' out of 5 stars':'Google reviews');
+    score.textContent=Number.isFinite(rating)?rating.toFixed(1):'Google';
+    label.textContent=' · '+(Number.isFinite(count)?count.toLocaleString()+' reviews':'latest reviews')+(data.stale?' · cached':' · live');
+    badge.href=data.googleMapsUrl||fallbackUrl;
+    badge.setAttribute('aria-label',(Number.isFinite(rating)?rating.toFixed(1)+' stars — ':'')+'See the latest Google reviews');
+    reel.textContent='';
+    var reviews=Array.isArray(data.reviews)?data.reviews.filter(function(r){return r&&r.text;}):[];
+    if(!reviews.length){
+      reel.classList.add('is-static');
+      var empty=document.createElement('span');
+      empty.className='rv-item rv-live-status';
+      empty.textContent='See the latest reviews on Google.';
+      reel.appendChild(empty);
+      return;
+    }
+    reviews.forEach(function(review){addReview(reel,review);});
+    reviews.forEach(function(review){addReview(reel,review);});
+    reel.classList.remove('is-static');
+  }
+  function renderFallback(){
+    score.textContent='Google';
+    stars.textContent='★★★★★';
+    stars.setAttribute('aria-label','Google reviews');
+    label.textContent=' · see current reviews on Google';
+    badge.href=fallbackUrl;
+    badge.setAttribute('aria-label','See the latest Google reviews');
+    reel.textContent='';
+    reel.classList.add('is-static');
+    var item=document.createElement('span');
+    item.className='rv-item rv-live-status';
+    item.textContent='Live reviews are temporarily unavailable. See the latest reviews on Google.';
+    reel.appendChild(item);
+  }
+  function load(){
+    fetch('/api/google-reviews',{headers:{'Accept':'application/json'},credentials:'same-origin'})
+      .then(function(response){if(!response.ok)throw new Error('reviews unavailable');return response.json();})
+      .then(render)
+      .catch(renderFallback);
+  }
+  load();
+  window.setInterval(load,3600000);
 })();
 </script>
 <script src="/assets/chat.js?v=20260805" defer></script>

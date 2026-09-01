@@ -24,6 +24,7 @@ from form_intake import (
     parse_form_body,
     process_submission,
 )
+from google_reviews import GoogleReviewsError, get_reviews
 
 BASE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.join(BASE, "elh-preview")
@@ -70,6 +71,29 @@ class PrettyURLHandler(http.server.SimpleHTTPRequestHandler):
     def end_headers(self):
         self.send_header("Cache-Control", "no-store")
         super().end_headers()
+
+    def do_GET(self):
+        if self.path.split("?", 1)[0] == "/api/google-reviews":
+            try:
+                payload = get_reviews()
+                self._send_json(200, payload)
+            except GoogleReviewsError:
+                self._send_json(
+                    503,
+                    {
+                        "ok": False,
+                        "error": "reviews_unavailable",
+                        "message": (
+                            "Live Google reviews are temporarily unavailable. "
+                            "Please use the Google profile link to see the latest reviews."
+                        ),
+                        "googleMapsUrl": (
+                            "https://maps.google.com/?cid=9771388271577679785"
+                        ),
+                    },
+                )
+            return
+        super().do_GET()
 
     def do_POST(self):
         if self.path.split("?", 1)[0] != "/api/form-submit":
@@ -227,6 +251,12 @@ class PrettyURLHandler(http.server.SimpleHTTPRequestHandler):
         return ("peer:" + self.client_address[0])[:80]
 
     def _send_json(self, status, body):
+        if not isinstance(body, (bytes, bytearray)):
+            if not isinstance(body, str):
+                body = json.dumps(
+                    body, ensure_ascii=False, separators=(",", ":")
+                )
+            body = body.encode("utf-8")
         self.send_response(status)
         self.send_header("Content-Type", "application/json; charset=utf-8")
         self.send_header("Content-Length", str(len(body)))

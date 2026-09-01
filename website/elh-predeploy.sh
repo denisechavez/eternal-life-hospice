@@ -40,6 +40,7 @@ set +o pipefail
   python3 ../check-city-scripts.py
   python3 ../check-header-parity.py
   python3 ../check-footer-parity.py
+  python3 ../test-google-reviews.py
   node assets/build-search-index.js
   node assets/update-sitemap-dates.js
 ) 2>&1 | tee "$TMPOUT"
@@ -71,6 +72,7 @@ SENTINELS=(
   "SENTINEL: check-city-scripts.py self-test OK"
   "SENTINEL: check-header-parity.py self-test OK"
   "SENTINEL: check-footer-parity.py self-test OK"
+  "SENTINEL: test-google-reviews.py OK"
 )
 
 SENTINEL_FAIL=0
