@@ -80,7 +80,7 @@ FOOTER_HTML = """<footer id="site-footer">
 </footer>"""
 FOOTER_HTML = FOOTER_HTML.replace(
     "Share the Eternal Care Brief",
-    "Share the Care Brief",
+    "View the Care Brief",
     1,
 )
 

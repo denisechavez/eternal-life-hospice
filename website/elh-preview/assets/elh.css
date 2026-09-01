@@ -352,8 +352,8 @@ p,li,blockquote{text-wrap:pretty}
 .apply-error a{color:#8A2B2B;font-weight:600;text-decoration:underline}
 
 /*ELH-FOOTER*/
-  #site-footer{background:var(--deep);color:rgba(245,240,235,.85);padding:3rem 1.75rem 2.4rem;text-align:left}
-  #site-footer .foot-grid{max-width:1140px;margin:0 auto;display:grid;grid-template-columns:1.55fr 1.05fr .95fr .95fr 1.05fr 1.05fr 1.5fr;gap:2rem 1.25rem}
+  #site-footer{background:var(--deep);color:rgba(245,240,235,.85);padding:3rem 1.5rem 2.4rem;text-align:left}
+  #site-footer .foot-grid{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:1.7fr 1.05fr .95fr .95fr 1.05fr 1.05fr 1.5fr;gap:2rem 1.25rem}
   #site-footer .foot-grid>*{min-width:0}
   #site-footer .foot-logo img{height:52px;width:auto;opacity:1;margin-bottom:.85rem;display:block}
   #site-footer .foot-logo a{display:inline-block}
@@ -376,13 +376,13 @@ p,li,blockquote{text-wrap:pretty}
   #site-footer .fc-addr .fci{margin-top:4px}
   #site-footer .fc-fax,#site-footer .fc-direct{cursor:default}
   #site-footer .fc-direct{color:rgba(245,240,235,.45);font-size:12.5px}
-  #site-footer .foot-disclaimer{max-width:1140px;margin:2rem auto 0;padding-top:1.5rem;border-top:1px solid rgba(255,255,255,.08);font-size:13px;color:rgba(245,240,235,.60);line-height:1.7}
-  #site-footer .foot-bottom{max-width:1140px;margin:1.5rem auto 0;display:flex;justify-content:space-between;flex-wrap:wrap;gap:.5rem;font-size:13px;color:rgba(245,240,235,.60)}
+  #site-footer .foot-disclaimer{max-width:1180px;margin:2rem auto 0;padding-top:1.5rem;border-top:1px solid rgba(255,255,255,.08);font-size:13px;color:rgba(245,240,235,.60);line-height:1.7}
+  #site-footer .foot-bottom{max-width:1180px;margin:1.5rem auto 0;display:flex;justify-content:space-between;flex-wrap:wrap;gap:.5rem;font-size:13px;color:rgba(245,240,235,.60)}
   #site-footer .foot-bottom a{color:rgba(245,240,235,.55);text-decoration:none}
   #site-footer .foot-bottom a:hover{color:var(--gold)}
   #site-footer .foot-bottom>span:first-child{flex:1 1 0;text-align:left}
   #site-footer .foot-bottom>span:last-child{flex:1 1 0;text-align:right}
-  #site-footer .foot-social{max-width:1140px;margin:2.4rem auto 0;display:flex;align-items:center;justify-content:flex-start;gap:1.5rem}
+  #site-footer .foot-social{max-width:1180px;margin:2.4rem auto 0;display:flex;align-items:center;justify-content:flex-start;gap:1.5rem}
   #site-footer .foot-social a{display:inline-flex;color:rgba(245,240,235,.5);padding:2px;transition:color .25s}
   #site-footer .foot-social a:hover{color:var(--gold)}
   #site-footer .foot-social svg{width:17px;height:17px;display:block}
