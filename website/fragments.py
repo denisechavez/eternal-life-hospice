@@ -83,6 +83,11 @@ FOOTER_HTML = FOOTER_HTML.replace(
     "View the Care Brief",
     1,
 )
+FOOTER_HTML = FOOTER_HTML.replace(
+    "Suite 325B",
+    "Ste. 325B",
+    1,
+)
 
 # The footer navigation mirrors the five expandable groups in HEADER_HTML.
 # Contact remains the existing footer contact block below this replacement.

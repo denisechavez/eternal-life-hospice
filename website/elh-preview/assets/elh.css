@@ -355,6 +355,7 @@ p,li,blockquote{text-wrap:pretty}
   #site-footer{background:var(--deep);color:rgba(245,240,235,.85);padding:3rem 1.5rem 2.4rem;text-align:left}
   #site-footer .foot-grid{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:1.7fr 1.05fr .95fr .95fr 1.05fr 1.05fr 1.5fr;gap:2rem 1.25rem}
   #site-footer .foot-grid>*{min-width:0}
+  #site-footer .foot-grid>.foot-col:nth-child(n+2):nth-child(-n+6){transform:translateX(.35rem)}
   #site-footer .foot-logo img{height:52px;width:auto;opacity:1;margin-bottom:.85rem;display:block}
   #site-footer .foot-logo a{display:inline-block}
   #site-footer .foot-tag{font-family:var(--ff-d);font-style:italic;font-size:18px;color:var(--gold);margin:.2rem 0 .6rem}
@@ -388,7 +389,7 @@ p,li,blockquote{text-wrap:pretty}
   #site-footer .foot-social svg{width:17px;height:17px;display:block}
   #site-footer .foot-social .fs-label{font-size:13px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;line-height:1;color:#B7A89D;margin-right:.35rem}
   @media(max-width:1100px) and (min-width:861px){#site-footer .foot-grid{grid-template-columns:1.25fr 1fr 1fr 1.25fr;column-gap:1.5rem;row-gap:2rem}#site-footer .foot-grid>:first-child{grid-row:span 2}#site-footer .foot-col h2{white-space:normal}}
-  @media(max-width:860px){#site-footer .foot-grid{grid-template-columns:1fr 1fr}#site-footer .foot-grid>:first-child{grid-row:auto}#site-footer .foot-bottom{flex-direction:column}#site-footer .foot-bottom>span{text-align:center!important}}
+  @media(max-width:860px){#site-footer .foot-grid{grid-template-columns:1fr 1fr}#site-footer .foot-grid>.foot-col:nth-child(n+2):nth-child(-n+6){transform:none}#site-footer .foot-grid>:first-child{grid-row:auto}#site-footer .foot-bottom{flex-direction:column}#site-footer .foot-bottom>span{text-align:center!important}}
   @media(max-width:560px){#site-footer .foot-grid{grid-template-columns:1fr}}
   
 /* Custom eternal-mark cursor on interactive elements */
