@@ -155,6 +155,22 @@ thread = threading.Thread(target=server.serve_forever, daemon=True)
 thread.start()
 base_url = f"http://127.0.0.1:{server.server_port}"
 try:
+    with urllib.request.urlopen(base_url + "/healthz", timeout=5) as response:
+        check(
+            "HTTP health route returns a lightweight 200",
+            response.status == 200
+            and response.read() == b"ok\n"
+            and response.headers.get("Cache-Control") == "no-store",
+        )
+
+    health_head = urllib.request.Request(base_url + "/healthz", method="HEAD")
+    with urllib.request.urlopen(health_head, timeout=5) as response:
+        check(
+            "HTTP health route supports HEAD",
+            response.status == 200
+            and response.headers.get("Content-Length") == "3",
+        )
+
     with urllib.request.urlopen(base_url + "/api/coverage?city=Pasadena", timeout=5) as response:
         routed_coverage = json.loads(response.read())
         check(

@@ -126,8 +126,29 @@ class PrettyURLHandler(http.server.SimpleHTTPRequestHandler):
             self.send_header("Cache-Control", "no-store")
         super().end_headers()
 
+    def _send_health(self, head_only=False):
+        body = b"ok\n"
+        self.send_response(200)
+        self.send_header("Content-Type", "text/plain; charset=utf-8")
+        self.send_header("Content-Length", str(len(body)))
+        self.send_header("Cache-Control", "no-store")
+        self.send_header("X-Content-Type-Options", "nosniff")
+        self.end_headers()
+        if not head_only:
+            self.wfile.write(body)
+
+    def do_HEAD(self):
+        parsed = urlsplit(self.path)
+        if parsed.path in ("/health", "/healthz"):
+            self._send_health(head_only=True)
+            return
+        super().do_HEAD()
+
     def do_GET(self):
         parsed = urlsplit(self.path)
+        if parsed.path in ("/health", "/healthz"):
+            self._send_health()
+            return
         destination = LEGACY_PAGE_REDIRECTS.get(parsed.path)
         if destination:
             self._send_redirect(destination, parsed.query)
