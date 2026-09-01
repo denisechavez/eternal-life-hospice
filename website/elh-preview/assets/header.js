@@ -79,6 +79,21 @@
   }
   markCurrentSection();
 
+  // Request Care pill — cycle through the three accent colors on each hover pass.
+  var ctaPill = hdr.querySelector('.nav-group--contact > .nav-parent');
+  if (ctaPill) {
+    var ctaHues = ['cta-hue1', 'cta-hue2', 'cta-hue3'];
+    var ctaIdx = 0;
+    ctaPill.addEventListener('mouseenter', function () {
+      ctaPill.classList.remove('cta-hue1', 'cta-hue2', 'cta-hue3');
+      ctaPill.classList.add(ctaHues[ctaIdx % ctaHues.length]);
+      ctaIdx++;
+    });
+    ctaPill.addEventListener('mouseleave', function () {
+      ctaPill.classList.remove('cta-hue1', 'cta-hue2', 'cta-hue3');
+    });
+  }
+
   function closeMenu() {
     hdr.classList.remove('nav-open');
     if (mb) mb.setAttribute('aria-expanded', 'false');
