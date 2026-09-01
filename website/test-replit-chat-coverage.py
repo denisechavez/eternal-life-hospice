@@ -206,6 +206,11 @@ try:
         "/refer-a-patient?source=legacy": "/refer?source=legacy",
         "/resources/what-hospice-covers": "/resources/medicare-hospice-benefit",
         "/blog/the-second-patient": "/blog/the-caregiver-who-needs-care",
+        "/insurance/": "/resources/medicare-hospice-benefit",
+        "/faqs/": "/resources.html",
+        "/about-us/": "/about/aleksandra-dubina",
+        "/hospice-care/": "/hospice-care.html",
+        "/contact/": "/refer",
     }
     for source, expected_location in redirect_cases.items():
         try:

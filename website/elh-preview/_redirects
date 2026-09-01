@@ -17,6 +17,20 @@ http://eternallifehospice.com/*       https://eternallifehospice.com/:splat  301
 #   Once DNS propagates (~minutes to 1 hour), Netlify provisions SSL automatically
 #   and these redirect rules begin firing.
 #
+# Legacy deep paths — map old page bookmarks to current pages before the
+# hostname-preserving rules below. These path rules also work on the canonical
+# host if an old bookmark has already been forwarded there.
+/insurance       /resources/medicare-hospice-benefit  301!
+/insurance/      /resources/medicare-hospice-benefit  301!
+/faqs            /resources.html                       301!
+/faqs/           /resources.html                       301!
+/about-us        /about/aleksandra-dubina              301!
+/about-us/       /about/aleksandra-dubina              301!
+/hospice-care    /hospice-care.html                    301!
+/hospice-care/   /hospice-care.html                    301!
+/contact         /refer                               301!
+/contact/        /refer                               301!
+#
 # Legacy domain: eternallifehospiceinc.com
 https://www.eternallifehospiceinc.com/*  https://eternallifehospice.com/:splat  301!
 https://eternallifehospiceinc.com/*      https://eternallifehospice.com/:splat  301!
