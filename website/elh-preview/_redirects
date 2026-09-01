@@ -64,6 +64,7 @@ http://eternalhospice.com/*       https://eternallifehospice.com/:splat  301!
 
 # Sitemap page
 /sitemap      /sitemap.html             200
+/services/    /services                 301!
 /services     /services.html            200
 
 # Canonical Resources hub — bypass the retired /resources/index.html stub on
@@ -78,6 +79,7 @@ http://eternalhospice.com/*       https://eternallifehospice.com/:splat  301!
 
 # What Hospice Covers — legacy path corrected to canonical
 /resources/what-hospice-covers  /resources/medicare-hospice-benefit  301
+/resources/medical-aid-in-dying-california  /services/medical-aid-in-dying-california  301!
 
 # Legacy sparse founder card — canonical biography is at /about/aleksandra-dubina
 /aleksandradubina   /about/aleksandra-dubina   301

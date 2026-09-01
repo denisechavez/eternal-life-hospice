@@ -61,6 +61,7 @@ LEGACY_PAGE_REDIRECTS = {
     "/aleksandra": "/about/aleksandra-dubina",
     "/denise": "/card-denise-chavez",
     "/resources/what-hospice-covers": "/resources/medicare-hospice-benefit",
+    "/resources/medical-aid-in-dying-california": "/services/medical-aid-in-dying-california",
     "/aleksandradubina": "/about/aleksandra-dubina",
     "/insurance": "/resources/medicare-hospice-benefit",
     "/insurance/": "/resources/medicare-hospice-benefit",
@@ -108,7 +109,7 @@ class PrettyURLHandler(http.server.SimpleHTTPRequestHandler):
         # SimpleHTTPRequestHandler sees the /resources/ or /blog/ directory
         # redirect stub, so the canonical archive URL serves the final
         # document directly.
-        if clean.rstrip("/") in ("/hospice-care", "/resources", "/blog"):
+        if clean.rstrip("/") in ("/hospice-care", "/resources", "/blog", "/services"):
             return os.path.join(ROOT, clean.rstrip("/").lstrip("/") + ".html")
         resolved = super().translate_path(path)
         if not os.path.exists(resolved):
@@ -136,6 +137,9 @@ class PrettyURLHandler(http.server.SimpleHTTPRequestHandler):
         # blog/index.html noindex stub wins for /blog/.
         if parsed.path == "/blog/":
             self._send_redirect("/blog", parsed.query)
+            return
+        if parsed.path == "/services/":
+            self._send_redirect("/services", parsed.query)
             return
         if parsed.path == "/api/chat":
             self._send_json(
