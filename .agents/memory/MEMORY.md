@@ -1,5 +1,6 @@
 - [Project Constitution](project-constitution.md) — referrals+admissions first; conversion beats aesthetics; usability beats complexity; never recommend a feature that doesn't grow census.
 - [Request Care CTA](request-care-cta.md) — Request Care sends families to the landing-page Family · Seeking care form.
+- [Physicians & Referrals CTA](referral-cta.md) — provider links open the Send a referral card, not the top of the referral page.
 - [The Five visual brand system](the-five-visual-system.md) — 5 images+labels (The Stone·The Energy·The Word·The Touch·Stillness.); Care Brief mosaic schedule M1–M9; "Stillness" has no "The" — never add it.
 - [Strategic objective: build to SELL](strategic-objective.md) — true north: $11M+ acquisition-ready; immediate mandate = grow census fast; pillars(4)+domain resolved; still open: service-area(Orange?), PR-timing.
 - [Conduit brand architecture](conduit-brand-architecture.md) — canonical = FOUR evolved pillars (six-pillar brief list superseded); domain=eternallifehospice.com; Three Rules; two-track (PR=Track Two, deferred); 45-day Track One.
