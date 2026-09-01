@@ -2,9 +2,8 @@
    Self-contained: injects its own styles + markup so it works on every page
    (including index.html / resources.html, which do not link elh.css).
    The guided answers and the phone link work with no setup. The free-text
-   "ask anything" box calls a Netlify function (netlify/functions/chat) that
-   adds the AI reply once OPENAI_API_KEY is configured in Netlify; if that is
-   not available, it falls back gracefully to the guided answers + phone. */
+   "ask anything" box calls the Replit-owned same-origin chat API. If that is
+   unavailable, it falls back gracefully to the guided answers + phone. */
 (function () {
   "use strict";
   if (window.__elhChatLoaded) return;
@@ -12,7 +11,7 @@
 
   var PHONE_DISPLAY = "805.953.7273";
   var PHONE_TEL = "18059537273";
-  var ENDPOINT = "/.netlify/functions/chat";
+  var ENDPOINT = "/api/chat";
 
   // Concise, on-brand answers drawn from the site content.
   var GUIDED = [
@@ -51,6 +50,8 @@
   // in their own words in the box below.
   var STARTERS = [GUIDED[0], GUIDED[1], GUIDED[6]];
 
+  var COVERAGE_ENDPOINT = "/api/coverage";
+
   var EMERGENCY = /(emergenc|call 911|\b911\b|can'?t breathe|cannot breathe|chest pain|suicid|kill myself|end my life|overdose|unconscious|not breathing|severe bleeding)/i;
 
   // Clinical / health-detail questions are for a nurse, not the bot. We never
@@ -61,8 +62,138 @@
   // than sending it to the AI.
   var CALLBACK = /(call me|call back|callback|have (someone|somebody) call|someone to call|request a call|can you call|could you call|please call me)/i;
 
+  // Returns a candidate city name when the message looks like a coverage / service-area
+  // question, or null when it clearly is not. The regex is intentionally loose so partial
+  // names like "West" or "Thousand" are passed to the coverage endpoint, which handles
+  // ambiguity more reliably than a frontend heuristic.
+  function extractCityQuery(text) {
+    var COVERAGE_INTENT = /\b(serve|cover|coverage|service.?area|do you (?:have|go|come|serve|cover)|available in|care in|in your area|your area|your service|your coverage)\b/i;
+    if (!COVERAGE_INTENT.test(text)) return null;
+    // Grab a city-like phrase (1–4 words) following a preposition or action word.
+    var m = text.match(
+      /\b(?:in|for|to|near|around|serve(?:d|s)?|cover(?:s|ed)?)\s+([A-Za-z][A-Za-z\s]{1,38}?)(?:[?\.,!]|\s+(?:ca|california)\b|$)/i
+    );
+    if (m) return m[1].replace(/\s+/g, " ").trim();
+    return null;
+  }
+
+  // Show a bot "did you mean?" message with one chip per suggestion.
+  // Clicking a chip sends that full city name back through the coverage check.
+  function showAmbiguousReply(city, suggestions) {
+    var intro = "\u201c" + city + "\u201d matches several cities in our area. Did you mean:";
+    addMsg(intro, "bot");
+    var wrap = el("div", "elhc-chips");
+    suggestions.forEach(function (sug, i) {
+      var c = el("button", "elhc-chip");
+      c.type = "button";
+      c.textContent = sug;
+      c.style.animationDelay = (0.08 * i + 0.1).toFixed(2) + "s";
+      c.addEventListener("click", function () {
+        // Treat it as a fresh user message so the conversation stays coherent.
+        var q = "Do you serve " + sug + "?";
+        addMsg(q, "user");
+        history.push({ role: "user", content: q });
+        if (history.length > 16) history = history.slice(-16);
+        doCoverageCheck(sug, true);
+      });
+      wrap.appendChild(c);
+    });
+    log.appendChild(wrap);
+    scrollDown();
+  }
+
+  // Call the coverage endpoint for `city`.
+  //
+  // fromChip = false (default): called from the initial user message.
+  //   - ambiguous  → show did-you-mean chips (only local action taken).
+  //   - served / not-served → fall through to AI so it gives a rich, on-brand
+  //     answer.  This prevents false positives like "Do you serve Medicare
+  //     patients?" from getting a misleading "no published page" reply.
+  //
+  // fromChip = true: user explicitly clicked a city suggestion.
+  //   - ambiguous  → show refined did-you-mean chips.
+  //   - served / not-served → show a direct local reply (intent is unambiguous).
+  //
+  // On any network error → always fall through to AI.
+  function doCoverageCheck(city, fromChip) {
+    sendBtn.disabled = true;
+    var typing = showTyping();
+
+    fetch(COVERAGE_ENDPOINT + "?city=" + encodeURIComponent(city))
+      .then(function (r) { return r.ok ? r.json() : Promise.reject(new Error("bad status")); })
+      .then(function (data) {
+        if (typing.parentNode) typing.parentNode.removeChild(typing);
+        sendBtn.disabled = false;
+
+        if (data.ambiguous && data.suggestions && data.suggestions.length > 0) {
+          // Ambiguous match — always show did-you-mean chips.
+          showAmbiguousReply(city, data.suggestions);
+
+        } else if (fromChip) {
+          // User chose a specific city from the chip list — reply directly.
+          if (data.served) {
+            var countyNote = data.county ? " in " + data.county : "";
+            var reply =
+              "Yes\u2014we do serve " + data.city + countyNote + "." +
+              " We\u2019d love to talk through how we can support your family." +
+              " Please call us at " + PHONE_DISPLAY + " any time\u2014we\u2019re available 24/7.";
+            addMsg(reply, "bot", true);
+            history.push({ role: "assistant", content: reply });
+          } else {
+            var notServedReply =
+              "We don\u2019t have a published service page for \u201c" + (data.city || city) +
+              "\u201d just yet, but our area across Ventura and Los Angeles counties may extend further than our page list." +
+              " Please call " + PHONE_DISPLAY + " to confirm\u2014our team will be glad to help.";
+            addMsg(notServedReply, "bot", true);
+            history.push({ role: "assistant", content: notServedReply });
+          }
+
+        } else {
+          // Non-ambiguous result from the initial user message (served or not):
+          // let the AI answer so it can give a warm, contextual reply instead of
+          // a blunt coverage-lookup string.  This also handles false positives
+          // like "Do you serve Medicare patients?" correctly.
+          sendToAI();
+        }
+      })
+      .catch(function () {
+        // Coverage endpoint unreachable — fall through to AI.
+        if (typing.parentNode) typing.parentNode.removeChild(typing);
+        sendBtn.disabled = false;
+        sendToAI();
+      });
+  }
+
+  // Send the current history to the AI chat endpoint and render the reply.
+  // Extracted so both the normal path and the coverage-error fallback can call it.
+  function sendToAI() {
+    sendBtn.disabled = true;
+    var typing = showTyping();
+    fetch(ENDPOINT, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ messages: history })
+    })
+      .then(function (r) {
+        return r.ok ? r.json() : Promise.reject(new Error("bad status"));
+      })
+      .then(function (data) {
+        if (typing.parentNode) typing.parentNode.removeChild(typing);
+        sendBtn.disabled = false;
+        var reply = data && data.reply ? String(data.reply).trim() : "";
+        if (!reply) { localFallback(); return; }
+        addMsg(reply, "bot", true);
+        history.push({ role: "assistant", content: reply });
+      })
+      .catch(function () {
+        if (typing.parentNode) typing.parentNode.removeChild(typing);
+        sendBtn.disabled = false;
+        localFallback();
+      });
+  }
+
   var history = []; // {role, content} pairs for the AI
-  var panel, log, openBtn, dock, inputEl, sendBtn, teaser, backdrop, opened = false, aiAvailable = true;
+  var panel, log, replyStatus, callbackStatus, openBtn, dock, inputEl, sendBtn, teaser, backdrop, opened = false, aiAvailable = true;
   var greeted = false, greetTimer = null, closeTimer = null, focusTimer = null;
 
   /* ---------- styles ---------- */
@@ -90,6 +221,7 @@
       ".elhc-cb textarea{resize:none;min-height:46px;line-height:1.4}",
       ".elhc-cb input:focus,.elhc-cb textarea:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 3px rgba(79,115,150,.22)}",
       ".elhc-cb-err{color:#9a2b2b;font-size:11.5px}",
+      ".elhc-sr{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important}",
       ".elhc-cb-actions{display:flex;gap:.5rem;align-items:center}",
       ".elhc-cb-submit{flex:1;border:none;cursor:pointer;background:var(--p);color:var(--cream);font-family:inherit;font-weight:700;font-size:13.5px;padding:.58rem;border-radius:10px;transition:background .15s}",
       ".elhc-cb-submit:hover{background:var(--deep)}.elhc-cb-submit:disabled{opacity:.6;cursor:default}",
@@ -159,6 +291,11 @@
       .map(function (k) { return encodeURIComponent(k) + "=" + encodeURIComponent(obj[k]); })
       .join("&");
   }
+  function track(name, data) {
+    if (typeof window.elhTrackEvent === "function") {
+      window.elhTrackEvent(name, data);
+    }
+  }
   function reduced() {
     try { return !!(window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches); }
     catch (e) { return false; }
@@ -166,6 +303,16 @@
   function scrollDown() {
     try { log.scrollTo({ top: log.scrollHeight, behavior: reduced() ? "auto" : "smooth" }); }
     catch (e) { log.scrollTop = log.scrollHeight; }
+  }
+  function announceReply(text) {
+    if (!replyStatus) return;
+    replyStatus.textContent = text;
+  }
+  function announceCallback(text, urgent) {
+    if (!callbackStatus) return;
+    callbackStatus.setAttribute("role", urgent ? "alert" : "status");
+    callbackStatus.setAttribute("aria-live", urgent ? "assertive" : "polite");
+    callbackStatus.textContent = text;
   }
 
   // Reveal speed: aim for a natural, human cadence regardless of length, but
@@ -186,11 +333,20 @@
     step();
   }
 
-  function addMsg(text, who, stream, done) {
+  function addMsg(text, who, stream, done, hideFromLog) {
     var m = el("div", "elhc-msg " + (who === "user" ? "elhc-user" : "elhc-bot"));
+    if (hideFromLog || (who === "bot" && stream)) m.setAttribute("aria-hidden", "true");
     log.appendChild(m);
-    if (who === "bot" && stream && !reduced()) {
-      typeInto(m, text, done);
+    if (who === "bot" && stream) {
+      var finish = function () {
+        announceReply(text);
+        if (done) done();
+      };
+      if (!reduced()) typeInto(m, text, finish);
+      else {
+        m.textContent = text;
+        finish();
+      }
     } else {
       m.textContent = text;
       if (done) done();
@@ -310,6 +466,7 @@
 
   /* ---------- callback request ---------- */
   function showCallbackForm() {
+    track("chat_callback_start", { page: window.location.pathname || "/" });
     addMsg(
       "Of course \u2014 I'd be glad to arrange that. Leave your name and number below and a member of our team will call you. If it's urgent, calling " +
         PHONE_DISPLAY +
@@ -376,6 +533,7 @@
     form.appendChild(err);
     form.appendChild(actions);
     log.appendChild(form);
+    if (callbackStatus) callbackStatus.textContent = "";
     scrollDown();
     try { nameIn.focus(); } catch (e) {}
 
@@ -393,24 +551,31 @@
       var name = (nameIn.value || "").trim();
       var phone = (phoneIn.value || "").trim();
       if (!name) {
-        err.textContent = "Please add your name so we know who we're calling.";
+        var nameError = "Please add your name so we know who we're calling.";
+        err.textContent = nameError;
+        announceCallback(nameError, true);
         nameIn.focus();
         return;
       }
       if (phone.replace(/[^0-9]/g, "").length < 10) {
-        err.textContent = "Please add a phone number we can reach you at.";
+        var phoneError = "Please add a phone number we can reach you at.";
+        err.textContent = phoneError;
+        announceCallback(phoneError, true);
         phoneIn.focus();
         return;
       }
       var email = (emailIn.value || "").trim();
       if (email && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) {
-        err.textContent = "That email doesn\u2019t look quite right \u2014 please check it, or leave it blank.";
+        var emailError = "That email doesn\u2019t look quite right \u2014 please check it, or leave it blank.";
+        err.textContent = emailError;
+        announceCallback(emailError, true);
         emailIn.focus();
         return;
       }
       err.textContent = "";
       submitBtn.disabled = true;
       submitBtn.textContent = "Sending\u2026";
+      track("chat_callback_submit", { page: window.location.pathname || "/" });
       submitCallback(
         {
           name: name,
@@ -437,36 +602,52 @@
       preferred_time: data.preferred_time,
       message: data.message
     });
-    fetch("/", {
+    fetch("/api/form-submit", {
       method: "POST",
-      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+        "Accept": "application/json"
+      },
       body: body
     })
       .then(function (r) {
-        if (!r.ok) throw new Error("bad status");
+        return r.json().catch(function () { return null; }).then(function (data) {
+          if (!r.ok || !data || data.ok !== true || data.accepted !== true) {
+            throw new Error("bad status");
+          }
+          return data;
+        });
+      })
+      .then(function (result) {
+        track("chat_callback_success", { page: window.location.pathname || "/" });
         if (form.parentNode) form.parentNode.removeChild(form);
-        addMsg(
-          "Thank you, " +
+        var confirmation = "Thank you, " +
             data.name.split(" ")[0] +
-            ". Your message has been sent and a member of our team will call you back within the hour. If anything comes up in the meantime, please feel free to call us anytime at " +
+            ". Your callback request was accepted (confirmation " +
+            result.receipt_id +
+            ") and a member of our team will call you back within the hour. If anything comes up in the meantime, please feel free to call us anytime at " +
             PHONE_DISPLAY +
-            ". We're here 24/7.",
-          "bot"
-        );
+            ". We're here 24/7.";
+        addMsg(confirmation, "bot", false, null, true);
+        announceCallback(confirmation, false);
       })
       .catch(function () {
+        track("chat_callback_error", { page: window.location.pathname || "/" });
         submitBtn.disabled = false;
         submitBtn.textContent = "Send request";
-        err.textContent =
+        var failure =
           "I couldn't send that just now \u2014 please call us at " +
           PHONE_DISPLAY +
           " and we'll help right away.";
+        err.textContent = failure;
+        announceCallback(failure, true);
       });
   }
 
   function send(text) {
     text = (text || "").trim();
     if (!text) return;
+    track("chat_message_sent", { page: window.location.pathname || "/" });
     addMsg(text, "user");
     history.push({ role: "user", content: text });
     if (history.length > 16) history = history.slice(-16);
@@ -488,30 +669,16 @@
       return;
     }
 
-    var typing = showTyping();
-    sendBtn.disabled = true;
+    // Coverage interception: if this looks like a service-area question with a
+    // city name, call the coverage endpoint first. When the result is ambiguous
+    // the widget shows a "did you mean?" prompt instead of a generic AI reply.
+    var cityQuery = extractCityQuery(text);
+    if (cityQuery) {
+      window.setTimeout(function () { doCoverageCheck(cityQuery); }, 200);
+      return;
+    }
 
-    fetch(ENDPOINT, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ messages: history })
-    })
-      .then(function (r) {
-        return r.ok ? r.json() : Promise.reject(new Error("bad status"));
-      })
-      .then(function (data) {
-        if (typing.parentNode) typing.parentNode.removeChild(typing);
-        sendBtn.disabled = false;
-        var reply = data && data.reply ? String(data.reply).trim() : "";
-        if (!reply) { localFallback(); return; }
-        addMsg(reply, "bot", true);
-        history.push({ role: "assistant", content: reply });
-      })
-      .catch(function () {
-        if (typing.parentNode) typing.parentNode.removeChild(typing);
-        sendBtn.disabled = false;
-        localFallback();
-      });
+    window.setTimeout(sendToAI, 200);
   }
 
   /* ---------- build UI ---------- */
@@ -580,7 +747,20 @@
     panel.appendChild(head);
 
     log = el("div", "elhc-log");
+    log.setAttribute("role", "log");
+    log.setAttribute("aria-live", "polite");
+    log.setAttribute("aria-relevant", "additions");
     panel.appendChild(log);
+    replyStatus = el("div", "elhc-sr");
+    replyStatus.setAttribute("role", "status");
+    replyStatus.setAttribute("aria-live", "polite");
+    replyStatus.setAttribute("aria-atomic", "true");
+    panel.appendChild(replyStatus);
+    callbackStatus = el("div", "elhc-sr");
+    callbackStatus.setAttribute("role", "status");
+    callbackStatus.setAttribute("aria-live", "polite");
+    callbackStatus.setAttribute("aria-atomic", "true");
+    panel.appendChild(callbackStatus);
 
     var foot = el("div", "elhc-foot");
     var row = el("div", "elhc-inrow");
@@ -647,11 +827,15 @@
   }
 
   function open() {
+    var wasOpen = panel.classList.contains("open");
     dismissTeaser(true);
     window.clearTimeout(closeTimer);
     panel.classList.remove("closing");
     panel.classList.add("open");
     dock.classList.add("hide");
+    if (!wasOpen) {
+      track("chat_open", { page: window.location.pathname || "/" });
+    }
     if (!opened) {
       opened = true;
       if (reduced()) greet();

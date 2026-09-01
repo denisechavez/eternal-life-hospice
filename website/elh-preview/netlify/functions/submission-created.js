@@ -1,4 +1,11 @@
 /**
+ * LEGACY NETLIFY COPY ONLY.
+ *
+ * The public eternallifehospice.com domain is served by the Replit Python
+ * deployment. Its forms post to /api/form-submit and are processed by
+ * website/form_intake.py through Brevo. This function remains only for the
+ * separate Netlify copy and must not be treated as the production intake path.
+ *
  * Eternal Life Hospice — automatic reply to people who reach out.
  *
  * Netlify calls this function automatically every time a form is submitted
@@ -135,7 +142,7 @@ exports.handler = async function (event) {
           "",
           lead,
           "",
-          "Read the latest issue: " + SITE + "/care-brief/hospice-is-part-of-life-a-continuation-of-care",
+          "Read the latest issue: " + SITE + "/care-brief/issue-1",
           "Explore the Care Brief library: " + SITE + "/care-brief",
           "",
           "Download the Family Guide (free PDF): " + SITE + "/ELH_Family_Guide.pdf",
@@ -317,7 +324,7 @@ function renderSignupHtml(greeting, lead) {
     '<p style="margin:0 0 14px;">' + greeting + "</p>",
     '<p style="margin:0 0 22px;">' + lead + "</p>",
     '<table role="presentation" align="center" cellpadding="0" cellspacing="0" style="margin:0 auto 10px;"><tr>',
-    '<td style="padding:0 6px 12px;">' + btn(SITE + "/care-brief/hospice-is-part-of-life-a-continuation-of-care", "Read the Latest Issue &#8594;", true) + "</td>",
+    '<td style="padding:0 6px 12px;">' + btn(SITE + "/care-brief/issue-1", "Read the Latest Issue &#8594;", true) + "</td>",
     '<td style="padding:0 6px 12px;">' + btn(SITE + "/care-brief", "Explore the Library", false) + "</td>",
     "</tr></table>",
     "</td></tr>",

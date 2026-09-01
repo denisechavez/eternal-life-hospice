@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
+<meta charset="UTF-8"><!-- build:2026-08-10 -->
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Hospice Care Ventura &amp; Los Angeles County | Eternal Life Hospice</title>
 <meta name="description" content="Physician-supported hospice care at home across Ventura and Los Angeles County. Same-day admissions, 24/7 nursing, Medicare-certified. Call 805.953.7273.">
@@ -9,8 +9,8 @@
 <meta property="og:title" content="Hospice Care in Ventura &amp; Los Angeles County | Eternal Life Hospice">
 <meta property="og:description" content="Physician-supported hospice care at home across Ventura and Los Angeles County. Same-day admissions, 24/7 nursing, Medicare-certified. Call 805.953.7273.">
 <meta property="og:image" content="https://eternallifehospice.com/assets/og-image-v2.jpg">
-<meta property="og:image:width" content="1200">
-<meta property="og:image:height" content="630">
+<meta property="og:image:width" content="2400">
+<meta property="og:image:height" content="1260">
 <meta property="og:image:alt" content="Eternal Life Hospice — Care That Honors Life">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://eternallifehospice.com/">
@@ -27,6 +27,8 @@
 <link rel="preload" as="font" href="assets/fonts/inline-3c986c6628.woff2" type="font/woff2" crossorigin>
 <link rel="preload" as="font" href="assets/fonts/fraunces-latin.woff2" type="font/woff2" crossorigin fetchpriority="high">
 <link rel="preload" as="font" href="assets/fonts/fraunces-italic-latin.woff2" type="font/woff2" crossorigin fetchpriority="high">
+<link rel="preload" as="font" href="assets/fonts/inline-a3c2438bfe.woff2" type="font/woff2" crossorigin>
+<link rel="preload" as="font" href="assets/fonts/inline-b6346d671c.woff2" type="font/woff2" crossorigin>
 <!-- Google Search Console verification (URL-prefix property for https://eternallifehospice.com/) -->
 <meta name="google-site-verification" content="HcHJe-U9QF8swQzKciQQs2GwuI8gdtrjLHYSo8VdBzE">
 <script defer src="/assets/analytics.js?v=20260727h"></script>
@@ -139,22 +141,42 @@ nav a:hover{color:var(--gold)}
 #hdr.nav-open nav a:hover{color:var(--gold)}
 #hdr.nav-open nav a.nav-call{color:var(--gold);font-weight:600;font-size:16px;border-bottom:1px solid rgba(201,176,126,.3);padding-bottom:.8rem;margin-bottom:.3rem}
 #hdr.nav-open .menu-btn{position:relative;z-index:1001}
-#hdr.nav-open .nav-group{display:flex;flex-direction:column;gap:1rem}
-#hdr.nav-open .nav-parent::after{content:" \25BE";font-size:12px;opacity:.55}
-#hdr.nav-open .nav-sub{display:flex;flex-direction:column;gap:.7rem;padding-left:1.1rem}
+#hdr.nav-open .nav-group{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:0}
+#hdr.nav-open .nav-parent{grid-column:1;min-width:0}
+#hdr.nav-open .nav-toggle{grid-column:2;display:flex;align-items:center;justify-content:center;width:44px;min-height:44px;background:none;border:0;padding:0;appearance:none;cursor:pointer;color:rgba(245,240,235,.82);border-bottom:1px solid rgba(245,240,235,.08);font-size:14px;line-height:1}
+#hdr.nav-open .nav-toggle>span[aria-hidden="true"]{display:block;transition:transform .2s}
+#hdr.nav-open .nav-sub{display:none}
+#hdr.nav-open .nav-group.expanded .nav-sub{display:flex;grid-column:1/-1;flex-direction:column;gap:.7rem;padding-left:1.1rem}
+#hdr.nav-open .nav-group.expanded .nav-toggle>span[aria-hidden="true"]{transform:rotate(-180deg)}
 #hdr.nav-open .nav-sub a{font-size:13.5px;color:rgba(245,240,235,.6);border-bottom-color:rgba(245,240,235,.05)}
 #hdr.nav-open .nav-sub a:hover{color:var(--gold)}
-@media(hover:hover){#hdr.nav-open .nav-sub{display:none}#hdr.nav-open .nav-group:hover .nav-sub,#hdr.nav-open .nav-group:focus-within .nav-sub{display:flex}}
 .hdr-cta{background:var(--plum);color:var(--cream);padding:.5rem 1.4rem;border-radius:24px;font-size:13px;font-weight:600;white-space:nowrap;transition:background .25s ease,color .25s ease}.hdr-cta.cta-hue1{background:#C9B07E;color:#3C1C3B}.hdr-cta.cta-hue2{background:#6793AC;color:#F5F0EB}.hdr-cta.cta-hue3{background:#3C1C3B;color:#F5F0EB}.hdr-cta-wrap{display:flex;align-items:center;gap:.65rem}.hdr-cta-note{font-family:var(--ff-d);font-style:italic;font-size:18px;font-weight:400;letter-spacing:.005em;color:rgba(245,240,235,.92);white-space:nowrap}#hdr.scrolled .hdr-cta-note{color:var(--text-mid)}
 .menu-btn{display:block}
+#hdr a:focus-visible,#hdr button:focus-visible{outline:3px solid var(--gold);outline-offset:3px;border-radius:4px}
+.sr-only{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important}
+.skip-link{position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden}
+.skip-link:focus{position:fixed;top:0;left:0;width:auto;height:auto;padding:.5rem 1.25rem;background:var(--plum);color:var(--cream);font-size:1rem;z-index:10000;border-radius:0 0 6px 0;outline:3px solid var(--gold);text-decoration:none}
+.mob-call-bar{display:none;position:fixed;bottom:0;left:0;right:0;z-index:998;background:var(--plum);color:var(--cream);text-align:center;padding:.85rem 1rem;font-family:var(--ff-b);font-size:15px;font-weight:700;text-decoration:none;letter-spacing:.02em;border-top:2px solid rgba(201,176,126,.35);transition:background .2s ease}
+.mob-call-bar:hover,.mob-call-bar:focus{background:var(--deep)}
 @media(max-width:980px){
   .hdr-cta,.hdr-cta-note{display:none}
+  .mob-call-bar{display:block}
+}
+@media(max-width:600px){
+  #hdr{padding:0 .625rem}
+  .hdr-in{gap:.15rem}
+  .hdr-logo img.s{height:32px}
+  .hdr-cta-wrap{gap:0;flex:0 0 auto}
+  #elh-ada-trigger{width:36px;height:44px;padding:0!important;justify-content:center}
+  .search-btn{width:40px;height:44px;padding:0}
+  .menu-btn{width:42px;height:44px;padding:0;display:flex;align-items:center;justify-content:center}
+  #hdr.nav-open nav{padding:1rem .9rem 1.5rem}
 }
 @keyframes navdrop{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:translateY(0)}}
 
 /* ===== SEARCH ===== */
 .search-btn{background:none;border:none;color:var(--cream);cursor:pointer;padding:.4rem;display:flex;align-items:center;justify-content:center;transition:color .25s}
-.search-btn:hover{color:var(--gold)}#hdr.scrolled .search-btn{color:var(--deep)}.search-btn svg{width:20px;height:20px}
+.search-btn:hover{color:var(--gold)}#hdr.scrolled .search-btn{color:var(--deep)}#elh-ada-trigger{color:rgba(245,240,235,.75);transition:color .25s ease}#hdr.scrolled #elh-ada-trigger{color:var(--text-mid)}.search-btn svg{width:20px;height:20px}
 .search-overlay{position:fixed;inset:0;z-index:2000;background:rgba(42,15,40,.92);backdrop-filter:blur(8px);display:none;flex-direction:column;align-items:center;padding:8vh 1.5rem 2rem;opacity:0;transition:opacity .3s ease}.search-overlay.open{display:flex;opacity:1}
 .search-box{width:100%;max-width:680px;position:relative}.search-box input{width:100%;background:rgba(245,240,235,.08);border:1px solid rgba(245,240,235,.15);border-radius:14px;padding:1rem 3rem 1rem 1.2rem;color:var(--cream);font-family:var(--ff-b);font-size:18px;outline:none;transition:border-color .25s,background .25s}.search-box input::placeholder{color:rgba(245,240,235,.4)}.search-box input:focus{border-color:var(--gold);background:rgba(245,240,235,.12)}
 .search-close{position:absolute;right:1rem;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--cream);cursor:pointer;font-size:24px;line-height:1;padding:.2rem;opacity:.6;transition:opacity .2s}.search-close:hover{opacity:1}
@@ -355,7 +377,7 @@ nav a:hover{color:var(--gold)}
 .mod-card[data-mod="soundbath"] .mod-img::before,.mod-card[data-mod="soundbath"] .mod-img::after{content:'';position:absolute;z-index:1;top:34%;left:21%;width:18px;height:18px;border-radius:50%;border:1.5px solid rgba(255,255,255,.6);opacity:0;pointer-events:none;transform:translate(-50%,-50%)}
 .mod-card[data-mod="soundbath"]:hover .mod-img::before{animation:rippleOut 2.6s ease-out infinite}
 .mod-card[data-mod="soundbath"]:hover .mod-img::after{animation:rippleOut 2.6s ease-out 1.3s infinite}
-@keyframes rippleOut{0%{opacity:.6;width:18px;height:18px}100%{opacity:0;width:140px;height:140px}}
+@keyframes rippleOut{0%{opacity:.6;transform:translate(-50%,-50%) scale(1)}100%{opacity:0;transform:translate(-50%,-50%) scale(7.78)}}
 .mod-card[data-mod="music"] .mod-img::before,.mod-card[data-mod="music"] .mod-img::after{content:'\266A';position:absolute;z-index:1;bottom:8px;left:40%;color:rgba(255,255,255,.72);font-size:20px;opacity:0;pointer-events:none}
 .mod-card[data-mod="music"] .mod-img::after{content:'\266B';left:56%;font-size:16px}
 .mod-card[data-mod="music"]:hover .mod-img::before{animation:noteRise 3s ease-out infinite}
@@ -375,7 +397,7 @@ nav a:hover{color:var(--gold)}
 .mod-card[data-mod="audiology"] .mod-img::before,.mod-card[data-mod="audiology"] .mod-img::after{content:'';position:absolute;z-index:1;top:55%;left:58%;width:14px;height:14px;border-radius:50%;border:1.5px solid rgba(255,255,255,.62);opacity:0;pointer-events:none;transform:translate(-50%,-50%)}
 .mod-card[data-mod="audiology"]:hover .mod-img::before{animation:soundPing 2.4s ease-out infinite}
 .mod-card[data-mod="audiology"]:hover .mod-img::after{animation:soundPing 2.4s ease-out 1.2s infinite}
-@keyframes soundPing{0%{opacity:.7;width:14px;height:14px}100%{opacity:0;width:92px;height:92px}}
+@keyframes soundPing{0%{opacity:.7;transform:translate(-50%,-50%) scale(1)}100%{opacity:0;transform:translate(-50%,-50%) scale(6.57)}}
 .mod-card[data-mod="holistic"] .mod-img::before,.mod-card[data-mod="holistic"] .mod-img::after{content:'';position:absolute;z-index:1;bottom:10px;left:46%;width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.72);box-shadow:0 0 6px rgba(255,255,255,.5);opacity:0;pointer-events:none}
 .mod-card[data-mod="holistic"] .mod-img::after{left:58%;width:4px;height:4px}
 .mod-card[data-mod="holistic"]:hover .mod-img::before{animation:moteDrift 4.6s ease-in-out infinite}
@@ -581,7 +603,7 @@ nav a:hover{color:var(--gold)}
 .founder-photo.has-portrait{position:relative;min-height:480px;overflow:hidden;margin:0}
 .founder-photo.has-portrait::after{content:"";position:absolute;left:0;right:0;bottom:0;height:66%;background:linear-gradient(transparent,rgba(36,16,40,.14) 18%,rgba(36,16,40,.74) 66%,rgba(36,16,40,.92));z-index:1;pointer-events:none}
 .founder-overlay{position:absolute;z-index:2;left:0;right:0;bottom:0;display:flex;flex-direction:column;align-items:flex-start;gap:1rem;padding:2.4rem 2.4rem 1.6rem}
-.founder-words{margin:0 0 0 5rem;color:rgba(245,240,235,.97);font-family:'Cormorant Garamond',var(--ff-d);font-style:italic;font-weight:500;font-size:25px;line-height:1.42;text-shadow:0 2px 16px rgba(0,0,0,.6);transition:opacity .2s ease;transform:translateY(.6rem)}
+.founder-words{margin:0 0 0 5rem;color:rgba(245,240,235,.97);font-family:var(--ff-d);font-style:italic;font-weight:500;font-size:25px;line-height:1.42;text-shadow:0 2px 16px rgba(0,0,0,.6);transition:opacity .2s ease;transform:translateY(.6rem)}
 .founder-words.is-fading{opacity:0}
 .founder-play{display:inline-flex;align-items:center;gap:.55rem;background:rgba(201,176,126,.96);color:var(--deep);border:0;border-radius:999px;padding:.52rem 1.1rem;font-family:var(--ff-b);font-size:13px;font-weight:600;letter-spacing:.02em;cursor:pointer;box-shadow:0 8px 22px rgba(0,0,0,.3);transition:transform .18s,background .18s}
 .founder-play:hover{transform:translateY(-1px);background:var(--gold)}
@@ -658,7 +680,7 @@ nav a:hover{color:var(--gold)}
 
 /* ===== FOOTER ===== */
 footer{background:var(--deep);padding:3.5rem 2.5rem 2.5rem}
-.foot-grid{max-width:1140px;margin:0 auto;display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr 1fr 1.5fr;gap:2rem}
+.foot-grid{max-width:1140px;margin:0 auto;display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr 1fr 1fr 1fr 1.5fr;gap:2rem 1.5rem}
 @media(max-width:760px){.foot-grid{grid-template-columns:1fr 1fr}}
 .foot-qr{display:flex;align-items:center;gap:.7rem;margin-top:1.15rem}
 .foot-qr img{width:96px;height:96px;border-radius:12px;display:block;background:var(--cream)}
@@ -666,11 +688,11 @@ footer{background:var(--deep);padding:3.5rem 2.5rem 2.5rem}
 .foot-logo img{height:52px;opacity:1;margin-bottom:.85rem;display:block}.foot-logo a{display:inline-block}
 .foot-tag{font-family:var(--ff-d);font-style:italic;font-size:18px;color:var(--gold);margin:.2rem 0 .85rem}
 .foot-legal{font-size:14px;color:rgba(245,240,235,.6);line-height:1.7;max-width:340px}
-.foot-col h4{font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--taupe);margin-bottom:.85rem}
+.foot-col h2{font-family:var(--ff-b);font-size:12px;font-weight:700;line-height:normal;letter-spacing:.12em;text-transform:uppercase;color:var(--taupe);margin-bottom:.85rem}
 .foot-col a,.foot-col p{display:block;font-size:14px;color:rgba(245,240,235,.6);line-height:2.1}
 .foot-col a:hover{color:var(--cream)}.foot-col .fc-line{display:flex;align-items:center;gap:.72rem;font-size:14px;color:rgba(245,240,235,.6);line-height:2.5;text-decoration:none}.fc-line .fci{width:15px;height:15px;flex-shrink:0;opacity:.85}.fc-line.fc-addr{align-items:flex-start;font-size:12px;line-height:1.55}.fc-addr span{white-space:nowrap}.fc-addr .fci{margin-top:4px}.fc-fax{cursor:default}
 section[id]{scroll-margin-top:84px}#clinical-mobile{scroll-margin-top:84px}#wsDetail{scroll-margin-top:96px}.foot-disclaimer{max-width:1140px;margin:2rem auto 0;padding-top:1.5rem;border-top:1px solid rgba(255,255,255,.08);font-size:13px;color:rgba(245,240,235,.70);line-height:1.7}
-.foot-translate{max-width:1140px;margin:1.5rem auto 0;padding-top:1.25rem;border-top:1px solid rgba(255,255,255,.08)}.ft-label{display:block;font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:rgba(245,240,235,.60);margin-bottom:.65rem}.ft-lang-btns{display:flex;flex-wrap:wrap;gap:.45rem}.ft-lang{display:inline-flex;align-items:center;gap:.35rem;padding:.3rem .75rem;border:1px solid rgba(245,240,235,.14);border-radius:20px;font-size:12.5px;color:rgba(245,240,235,.65);text-decoration:none;transition:border-color .2s,color .2s,background .2s;white-space:nowrap}.ft-lang:hover{border-color:rgba(201,176,126,.5);color:var(--cream);background:rgba(201,176,126,.08)}
+
 .foot-bottom{max-width:1140px;margin:1.5rem auto 0;display:flex;justify-content:space-between;flex-wrap:wrap;gap:.5rem;font-size:13px;color:rgba(245,240,235,.70)}
 .foot-bottom>span:first-child{flex:1 1 0;text-align:left}
 .foot-bottom>span:last-child{flex:1 1 0;text-align:right}
@@ -679,7 +701,7 @@ section[id]{scroll-margin-top:84px}#clinical-mobile{scroll-margin-top:84px}#wsDe
 .foot-social a:hover{color:var(--gold)}
 .foot-social svg{width:17px;height:17px;display:block}
 .foot-social .fs-label{font-size:13px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;line-height:1;color:var(--taupe);margin-right:.35rem}
-.foot-social{position:relative}.foot-social .foot-signup{position:absolute;right:0;top:50%;transform:translateY(-50%);display:inline-block;padding:.6rem 1.35rem;border-radius:999px;background:#CDB47F;color:#2A0F28;font-size:12px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;line-height:1;box-shadow:0 4px 14px rgba(20,8,20,.3);transition:background .25s,transform .25s,box-shadow .25s}.foot-social .foot-signup:hover{background:#E0CB97;color:#2A0F28;transform:translateY(calc(-50% - 1px));box-shadow:0 6px 18px rgba(20,8,20,.36)}.foot-social .fs-invite{position:absolute;right:205px;top:50%;transform:translateY(-50%);font-style:italic;font-size:13px;letter-spacing:.015em;color:rgba(240,232,224,.82);white-space:nowrap}@media(max-width:1219px){.foot-social .fs-invite{display:none}}@media(max-width:860px){.foot-social{flex-wrap:wrap;gap:1rem;row-gap:.9rem}.foot-social .foot-signup{position:static;transform:none;flex-basis:100%;max-width:max-content;margin:0 auto}}
+.foot-social{position:relative}.foot-social .foot-signup{position:absolute;right:0;top:50%;transform:translateY(-50%);display:inline-block;padding:.6rem 1.35rem;border-radius:999px;background:#CDB47F;color:#2A0F28;font-size:12px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;line-height:1;box-shadow:0 4px 14px rgba(20,8,20,.3);transition:background .25s,transform .25s,box-shadow .25s}.foot-social .foot-signup:hover{background:#E0CB97;color:#2A0F28;transform:translateY(calc(-50% - 1px));box-shadow:0 6px 18px rgba(20,8,20,.36)}.foot-social .fs-invite{position:absolute;right:205px;top:50%;transform:translateY(-50%);font-style:italic;font-size:13px;letter-spacing:.015em;color:rgba(240,232,224,.82);white-space:nowrap}@media(max-width:1219px){.foot-social .fs-invite{display:none}}@media(max-width:860px){.foot-social{flex-wrap:wrap;gap:1rem;row-gap:.65rem}.foot-social .foot-signup{position:static;transform:none;flex-basis:100%;max-width:max-content}}
 
 .foot-bottom-links{flex:0 0 auto;text-align:right}
 .wf-badge{position:fixed;bottom:1.25rem;right:1.25rem;z-index:1400;background:var(--deep);color:var(--gold);font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:.5rem 1rem;border-radius:20px;box-shadow:0 4px 16px rgba(0,0,0,.25);opacity:.85}
@@ -916,10 +938,12 @@ p,li,blockquote{text-wrap:pretty}
 .rv-scroll-wrap{flex:1;overflow:hidden;position:relative}
 .rv-scroll-wrap::after{content:'';position:absolute;top:0;right:0;bottom:0;width:60px;background:linear-gradient(to left,var(--cream),transparent);pointer-events:none;z-index:4}
 .rv-reel{display:flex;align-items:center;gap:0;animation:rvscroll 70s linear infinite;width:max-content;padding:.8rem 0;white-space:nowrap}
+.rv-reel.is-static{animation:none;width:100%}
 .rv-reel:hover{animation-play-state:paused}
 .rv-sep{color:var(--gold);font-size:.5rem;flex-shrink:0;padding:0 1rem;opacity:.7}
 .rv-item{font-size:.8rem;color:var(--ink-soft);padding:0 .2rem;white-space:nowrap}
 .rv-item em{font-style:normal;font-weight:600;color:var(--plum);padding-left:.3rem}
+.rv-live-status{color:var(--text-mid);font-style:italic}
 @keyframes rvscroll{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
 @media(max-width:480px){.rv-badge{padding:.65rem .8rem}.rv-reel-label{display:none}}
 </style>
@@ -934,137 +958,136 @@ p,li,blockquote{text-wrap:pretty}
 
 <script type="application/ld+json">{
   "@context": "https://schema.org",
-  "@type": [
-    "MedicalOrganization",
-    "LocalBusiness"
-  ],
-  "name": "Eternal Life Hospice, Inc.",
-  "alternateName": "Eternal Life Hospice",
-  "url": "https://eternallifehospice.com",
-  "logo": "https://eternallifehospice.com/assets/logo-cream.png",
-  "image": "https://eternallifehospice.com/assets/og-image-v2.jpg",
-  "telephone": "+18059537273",
-  "email": "info@eternallifehospice.com",
-  "hasMap": "https://maps.google.com/?cid=9771388271577679785",
-  "sameAs": [
-    "https://www.facebook.com/eternallifehospiceinc",
-    "https://www.instagram.com/eternallifehospice/",
-    "https://www.linkedin.com/company/eternal-life-hospice/",
-    "https://www.youtube.com/@EternalLifeHospice", "https://yelp.to/uEz7kTDDl6",
-    "https://www.pinterest.com/eternallifehospice/",
-    "https://x.com/eternallifehosp",
-    "https://maps.google.com/?cid=9771388271577679785"
-  ],
-  "medicalSpecialty": "https://schema.org/Hospice",
-  "isAccreditedBy": [
+  "@graph": [
     {
-      "@type": "Organization",
-      "name": "Centers for Medicare & Medicaid Services"
+      "@type": ["MedicalOrganization", "LocalBusiness"],
+      "@id": "https://eternallifehospice.com/#organization",
+      "name": "Eternal Life Hospice, Inc.",
+      "alternateName": "Eternal Life Hospice",
+      "url": "https://eternallifehospice.com",
+      "logo": "https://eternallifehospice.com/assets/logo-cream.png",
+      "image": "https://eternallifehospice.com/assets/og-image-v2.jpg",
+      "telephone": "+18059537273",
+      "email": "info@eternallifehospice.com",
+      "hasMap": "https://maps.google.com/?cid=9771388271577679785",
+      "priceRange": "$",
+      "foundingDate": "2022",
+      "sameAs": [
+        "https://www.facebook.com/eternallifehospiceinc",
+        "https://www.instagram.com/eternallifehospice/",
+        "https://www.linkedin.com/company/eternal-life-hospice/",
+        "https://www.youtube.com/@EternalLifeHospice",
+        "https://yelp.to/uEz7kTDDl6",
+        "https://www.pinterest.com/eternallifehospice/",
+        "https://x.com/eternallifehosp",
+        "https://maps.google.com/?cid=9771388271577679785"
+      ],
+      "medicalSpecialty": "https://schema.org/Hospice",
+      "isAccreditedBy": [
+        { "@type": "Organization", "name": "Centers for Medicare & Medicaid Services" },
+        { "@type": "Organization", "name": "California Department of Public Health" },
+        { "@type": "Organization", "name": "Accreditation Commission for Health Care (ACHC)" }
+      ],
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "4165 E Thousand Oaks Blvd, Suite 325B",
+        "addressLocality": "Westlake Village",
+        "addressRegion": "CA",
+        "postalCode": "91362",
+        "addressCountry": "US"
+      },
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": 34.1386,
+        "longitude": -118.8198
+      },
+      "areaServed": [
+        { "@type": "AdministrativeArea", "name": "Ventura County, California" },
+        { "@type": "AdministrativeArea", "name": "Los Angeles County, California" },
+        { "@type": "City", "name": "Thousand Oaks, California" },
+        { "@type": "City", "name": "Westlake Village, California" },
+        { "@type": "City", "name": "Camarillo, California" },
+        { "@type": "City", "name": "Oxnard, California" },
+        { "@type": "City", "name": "Ventura, California" },
+        { "@type": "City", "name": "Simi Valley, California" },
+        { "@type": "City", "name": "Moorpark, California" },
+        { "@type": "City", "name": "Newbury Park, California" },
+        { "@type": "City", "name": "Ojai, California" },
+        { "@type": "City", "name": "Santa Paula, California" },
+        { "@type": "City", "name": "Port Hueneme, California" },
+        { "@type": "City", "name": "Oak Park, California" },
+        { "@type": "City", "name": "Woodland Hills, California" },
+        { "@type": "City", "name": "Calabasas, California" },
+        { "@type": "City", "name": "Agoura Hills, California" },
+        { "@type": "City", "name": "Encino, California" },
+        { "@type": "City", "name": "Tarzana, California" },
+        { "@type": "City", "name": "Sherman Oaks, California" },
+        { "@type": "City", "name": "Malibu, California" },
+        { "@type": "City", "name": "Santa Monica, California" },
+        { "@type": "City", "name": "Beverly Hills, California" },
+        { "@type": "City", "name": "Burbank, California" },
+        { "@type": "City", "name": "Glendale, California" },
+        { "@type": "City", "name": "Pasadena, California" },
+        { "@type": "City", "name": "Long Beach, California" },
+        { "@type": "City", "name": "Northridge, California" },
+        { "@type": "City", "name": "Chatsworth, California" },
+        { "@type": "City", "name": "Canoga Park, California" }
+      ],
+      "availableService": [
+        {
+          "@type": "MedicalTherapy",
+          "name": "Hospice Care",
+          "description": "Physician-directed, nurse-coordinated end-of-life comfort care delivered wherever the patient calls home."
+        },
+        {
+          "@type": "MedicalTherapy",
+          "name": "Pain and Symptom Management",
+          "description": "Expert management of pain and distressing symptoms to keep patients comfortable and present."
+        },
+        {
+          "@type": "MedicalTherapy",
+          "name": "Integrative and Comfort Therapies",
+          "description": "Complementary comfort offerings including music therapy, aromatherapy, massage, reiki, sound bath and pet therapy."
+        },
+        {
+          "@type": "MedicalTherapy",
+          "name": "Spiritual and Emotional Support",
+          "description": "Chaplain, social work and counseling support for the patient and the whole family."
+        },
+        {
+          "@type": "MedicalTherapy",
+          "name": "Bereavement and Grief Support",
+          "description": "Ongoing grief and bereavement support for families following the death of a loved one."
+        }
+      ],
+      "openingHoursSpecification": {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"],
+        "opens": "00:00",
+        "closes": "23:59"
+      }
     },
     {
-      "@type": "Organization",
-      "name": "California Department of Public Health"
+      "@type": "WebSite",
+      "@id": "https://eternallifehospice.com/#website",
+      "name": "Eternal Life Hospice",
+      "url": "https://eternallifehospice.com",
+      "publisher": { "@id": "https://eternallifehospice.com/#organization" },
+      "dateModified": "2026-08-06"
     },
     {
-      "@type": "Organization",
-      "name": "Accreditation Commission for Health Care (ACHC)"
-    }
-  ],
-  "address": {
-    "@type": "PostalAddress",
-    "streetAddress": "4165 E Thousand Oaks Blvd, Suite 325B",
-    "addressLocality": "Westlake Village",
-    "addressRegion": "CA",
-    "postalCode": "91362",
-    "addressCountry": "US"
-  },
-  "geo": {
-    "@type": "GeoCoordinates",
-    "latitude": 34.1386,
-    "longitude": -118.8198
-  },
-  "areaServed": [
-    {
-      "@type": "AdministrativeArea",
-      "name": "Ventura County, California"
+      "@type": "Person",
+      "@id": "https://eternallifehospice.com/#founder",
+      "name": "Aleksandra Dubina",
+      "jobTitle": "Founder & CEO",
+      "description": "Aleksandra Dubina is the Founder and CEO of Eternal Life Hospice, Inc. With more than two decades in healthcare — eleven years in hospice — she is an ACHC Certified Consultant and Certified Hospice Administrator who knows every patient by name.",
+      "worksFor": { "@id": "https://eternallifehospice.com/#organization" },
+      "url": "https://eternallifehospice.com/about/aleksandra-dubina",
+      "sameAs": ["https://www.linkedin.com/in/aleksandra-dubina-a78b1a117/"]
     },
     {
-      "@type": "AdministrativeArea",
-      "name": "Los Angeles County, California"
-    }
-  ],
-  "availableService": [
-    {
-      "@type": "MedicalTherapy",
-      "name": "Hospice Care",
-      "description": "Physician-directed, nurse-coordinated end-of-life comfort care delivered wherever the patient calls home."
-    },
-    {
-      "@type": "MedicalTherapy",
-      "name": "Pain and Symptom Management",
-      "description": "Expert management of pain and distressing symptoms to keep patients comfortable and present."
-    },
-    {
-      "@type": "MedicalTherapy",
-      "name": "Integrative and Comfort Therapies",
-      "description": "Complementary comfort offerings including music therapy, aromatherapy, massage, reiki, sound bath and pet therapy."
-    },
-    {
-      "@type": "MedicalTherapy",
-      "name": "Spiritual and Emotional Support",
-      "description": "Chaplain, social work and counseling support for the patient and the whole family."
-    },
-    {
-      "@type": "MedicalTherapy",
-      "name": "Bereavement and Grief Support",
-      "description": "Ongoing grief and bereavement support for families following the death of a loved one."
-    }
-  ],
-  "openingHoursSpecification": {
-    "@type": "OpeningHoursSpecification",
-    "dayOfWeek": [
-      "Monday",
-      "Tuesday",
-      "Wednesday",
-      "Thursday",
-      "Friday",
-      "Saturday",
-      "Sunday"
-    ],
-    "opens": "00:00",
-    "closes": "23:59"
-  }
-}</script>
-<script type="application/ld+json">{
-  "@context": "https://schema.org",
-  "@type": "WebSite",
-  "name": "Eternal Life Hospice",
-  "url": "https://eternallifehospice.com",
-  "potentialAction": {
-    "@type": "SearchAction",
-    "target": "https://eternallifehospice.com/?s={search_term_string}",
-    "query-input": "required name=search_term_string"
-  }
-}</script>
-<script type="application/ld+json">{
-  "@context": "https://schema.org",
-  "@type": "Person",
-  "name": "Aleksandra Dubina",
-  "jobTitle": "Founder & CEO",
-  "honorificSuffix": "RN, BSN",
-  "description": "Aleksandra Dubina, RN, BSN, is the Founder and CEO of Eternal Life Hospice, Inc. With more than two decades in healthcare — eleven years in hospice — she is an ACHC Certified Consultant and Certified Hospice Administrator who knows every patient by name.",
-  "worksFor": {
-    "@type": "Organization",
-    "name": "Eternal Life Hospice, Inc.",
-    "url": "https://eternallifehospice.com"
-  },
-  "url": "https://eternallifehospice.com/aleksandra",
-  "sameAs": "https://eternallifehospice.com/aleksandra"
-}</script>
-<script type="application/ld+json">{
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  "mainEntity": [
+      "@type": "FAQPage",
+      "mainEntity": [
     {
       "@type": "Question",
       "name": "What is hospice care?",
@@ -1120,6 +1143,40 @@ p,li,blockquote{text-wrap:pretty}
         "@type": "Answer",
         "text": "Eternal Life Hospice may incorporate integrative comfort therapies — including music therapy, massage, reiki, aromatherapy and more — into the plan of care when requested and appropriate, at no additional expense to families."
       }
+    },
+    {
+      "@type": "Question",
+      "name": "How do I refer a patient to Eternal Life Hospice?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Referring providers can call 805.953.7273 at any time — our clinical intake team is reachable 24/7 for new referrals. You may also submit a referral online at eternallifehospice.com/refer. Only general information is needed to start; no protected health information is required on the initial form. Our intake coordinator will contact you promptly to collect physician orders and complete the admission securely."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What clinical criteria qualify a patient for hospice?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Hospice eligibility requires a physician's certification that the patient has a prognosis of six months or less if the illness follows its expected course, and that the patient — or their healthcare surrogate — elects comfort-focused care in place of curative treatment. Qualifying diagnoses include advanced cancer, heart failure, COPD, dementia, end-stage renal disease, and other serious illnesses with documented functional or nutritional decline. Our medical director is available to discuss specific cases."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How quickly will Eternal Life Hospice respond to a referral?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Our intake team responds to referrals within two hours during business hours and is on call around the clock for urgent admissions. Same-day admission is available when a physician order is in place and the clinical situation warrants it. For time-sensitive referrals, call 805.953.7273 directly."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What information does a referring provider need to submit a referral?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "To begin, we need the patient's name, primary diagnosis, your direct contact information, and a brief description of the clinical situation. Our intake coordinator will follow up to obtain physician orders, face-to-face documentation where required, and insurance information. Most referrals can move to admission rapidly once a signed order is received."
+      }
+    }
+      ]
     }
   ]
 }</script>
@@ -1137,84 +1194,49 @@ p,li,blockquote{text-wrap:pretty}
   p,li,blockquote{orphans:3;widows:3}
 }
 </style>
-  <script>(function(d){var load=function(){var s=d.createElement('script');s.setAttribute('data-color','#6793AC');s.setAttribute('data-trigger','elh-ada-trigger');s.setAttribute('data-account','puHleOAe1C');s.src='https://cdn.userway.org/widget.js';d.body.appendChild(s)};'requestIdleCallback'in window?window.requestIdleCallback(load):window.addEventListener('load',load)})(document)</script>
-  <noscript>Please ensure Javascript is enabled for purposes of <a href="https://userway.org">website accessibility</a></noscript>
-
-
-<script>window.addEventListener('load',function(){var f=function(a){return JSON.parse(JSON.stringify(a))};window.$wc_leads=window.$wc_leads||{doc:{url:f(document.URL),ref:f(document.referrer),search:f(location.search),hash:f(location.hash)}};var s=document.createElement('script');s.src='//s.ksrndkehqnwntyxlhgto.com/172406.js';document.body.appendChild(s)});</script>
+  <!-- UserWay (accessibility, essential) and WhatConverts (call-tracking, marketing)
+       are both bootstrapped by analytics.js to respect the cookie consent gate. -->
 </head>
 <body>
 <a class="skip-link" href="#main-content">Skip to main content</a>
 <!-- ANNOTATION TOGGLE -->
 
-
 <!-- HEADER -->
 <header id="hdr">
   <div class="hdr-in">
     <a class="hdr-logo" href="/"><img class="s sym-cream" src="assets/img/elh-logo-h2-cream.webp" alt="Eternal Life Hospice logo" width="331" height="74"><img class="s sym-plum" src="assets/img/elh-logo-h2-plum.webp" alt="" aria-hidden="true"></a>
-    <nav>
-      <div class="nav-group">
-        <a href="#standard" class="nav-parent">The Eternal Standard</a>
-        <div class="nav-sub">
-          <a href="#standard">Four Pillars : One Standard</a>
-        </div>
-      </div>
-      <div class="nav-group">
-        <a href="#first48" class="nav-parent">The First 48 Hours</a>
-        <div class="nav-sub">
-          <a href="#faq">Common Questions Answered</a>
-          <a href="family-guide">Family eGuide</a>
-        </div>
-      </div>
-      <div class="nav-group">
-        <a href="#modalities" class="nav-parent">Integrative Therapies</a>
-        <div class="nav-sub">
-          <a href="sound-bath">The Sound Bath</a>
-          <a href="#clinical-mobile">Clinical &amp; Mobile Services</a>
-        </div>
-      </div>
-      <a href="#medicare">Insurance &amp; Medicare</a>
-      <div class="nav-group">
-        <a href="#coverage" class="nav-parent">Coverage Area</a>
-        <div class="nav-sub">
-          <a href="#settings">Care Wherever Home Is</a>
-        </div>
-      </div>
-      <div class="nav-group">
-        <a href="#founder" class="nav-parent">About Eternal</a>
-        <div class="nav-sub">
-          <a href="#founder-welcome">A Founder&rsquo;s Welcome</a>
-          <a href="#amethyst">Our Origin</a>
-          <a href="resources">Resources</a>
-          <a href="volunteer">Volunteer</a>
-        </div>
-      </div>
-      <div class="nav-group"><a href="/refer" class="nav-parent">For Providers</a><div class="nav-sub"><a href="/refer">Refer With Confidence</a><a href="/?lead=voice#leadcap">Schedule an Educational Session</a></div></div>
+    <nav id="site-nav" aria-label="Main navigation">
+      <div class="nav-group"><a href="/hospice-care" class="nav-parent">Hospice Care</a><div class="nav-sub"><a href="/resources/when-is-it-time">When Is It Time?</a><a href="/resources/first-48-hours">The First 48 Hours</a><a href="/resources/medicare-hospice-benefit">What Hospice Covers</a><a href="/resources/how-to-choose-a-hospice">How to Choose a Hospice</a></div></div>
+      <div class="nav-group"><a href="/services" class="nav-parent">Services</a><div class="nav-sub"><a href="/services">All Services</a><a href="/resources/comfort-therapies">Integrative &amp; Whole-Person Care</a><a href="/resources/pain-symptom-management">Pain &amp; Symptom Management</a><a href="/sound-bath">Sound Bath</a></div></div>
+      <div class="nav-group"><a href="/resources" class="nav-parent">Resources</a><div class="nav-sub"><a href="/family-guide">Family Guide</a><a href="/blog">The Eternal Journal</a><a href="/care-brief">Care Brief</a><a href="/volunteer">Volunteer</a></div></div>
+      <div class="nav-group"><a href="/hospice-ventura-and-los-angeles-county-ca" class="nav-parent">Locations</a><div class="nav-sub"><a href="/hospice-thousand-oaks-ca">Thousand Oaks</a><a href="/hospice-simi-valley-ca">Simi Valley</a><a href="/hospice-calabasas-ca">Calabasas</a><a href="/hospice-ventura-and-los-angeles-county-ca">All Service Areas</a></div></div>
+      <div class="nav-group"><a href="/refer" class="nav-parent">For Professionals</a><div class="nav-sub"><a href="/refer">Refer a Patient</a><a href="/?lead=voice#leadcap">Schedule a Session</a></div></div>
+      <div class="nav-group"><a href="/about/aleksandra-dubina" class="nav-parent">About</a><div class="nav-sub"><a href="/#standard">The Eternal Standard</a><a href="/about/aleksandra-dubina">Aleksandra Dubina</a></div></div>
     </nav>
-    <div class="hdr-cta-wrap"><button id="elh-ada-trigger" aria-label="Accessibility options" style="background:none;border:none;cursor:pointer;padding:0 .5rem 0 0;color:rgba(245,240,235,.75);display:flex;align-items:center;flex-shrink:0"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="12" cy="4.5" r="2"/><path d="M17 8h-4.15l-.85-2H7v2h3.15l.85 2H8c-1.1 0-2 .9-2 2v5h2v-4.5h1.35L11 16h2l-1.5-3.5V12h4l1 4h2l-1.25-5H17z"/></svg></button><span class="hdr-cta-note">Here in Moments That Matter Most</span><a href="tel:18059537273" class="hdr-cta">805.953.7273</a></div>
+    <div class="hdr-cta-wrap"><button id="elh-ada-trigger" aria-label="Accessibility options" style="background:none;border:none;cursor:pointer;padding:0 .5rem 0 0;color:rgba(245,240,235,.75);display:flex;align-items:center;flex-shrink:0"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="12" cy="4.5" r="2"/><path d="M17 8h-4.15l-.85-2H7v2h3.15l.85 2H8c-1.1 0-2 .9-2 2v5h2v-4.5h1.35L11 16h2l-1.5-3.5V12h4l1 4h2l-1.25-5H17z"/></svg></button><span class="hdr-cta-note">Here in Moments That Matter Most</span><a href="/refer" class="hdr-cta">Request Care</a></div>
     <button class="search-btn" id="searchBtn" aria-label="Search"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="9" cy="9" r="7"/><line x1="15" y1="15" x2="19" y2="19"/></svg></button>
-    <button class="menu-btn" aria-label="Menu" aria-expanded="false"><svg width="22" height="16" viewBox="0 0 22 16"><line x1="0" y1="2" x2="22" y2="2" stroke="#F5F0EB" stroke-width="2" stroke-linecap="round"/><line x1="0" y1="8" x2="22" y2="8" stroke="#F5F0EB" stroke-width="2" stroke-linecap="round"/><line x1="0" y1="14" x2="22" y2="14" stroke="#F5F0EB" stroke-width="2" stroke-linecap="round"/></svg></button>
+    <button class="menu-btn" aria-label="Menu" aria-controls="site-nav" aria-expanded="false"><svg width="22" height="16" viewBox="0 0 22 16"><line x1="0" y1="2" x2="22" y2="2" stroke="#F5F0EB" stroke-width="2" stroke-linecap="round"/><line x1="0" y1="8" x2="22" y2="8" stroke="#F5F0EB" stroke-width="2" stroke-linecap="round"/><line x1="0" y1="14" x2="22" y2="14" stroke="#F5F0EB" stroke-width="2" stroke-linecap="round"/></svg></button>
   </div>
 </header>
 
 <!-- CREDENTIAL STRIP -->
 <div class="cred-strip">
   <div class="cred-track">
-    <a class="lc cms" href="https://www.medicare.gov/care-compare/?providerType=Hospice" target="_blank" rel="noopener"><img loading="lazy" decoding="async" src="assets/img/cred-cms.webp" alt="CMS Medicare Certified" width="691" height="239"><div class="ct"><span class="cl">Medicare Certified</span><span class="csub">Centers for Medicare &amp; Medicaid Services</span><span class="ext">medicare.gov ↗</span></div></a>
+    <a class="lc cms" href="https://www.medicare.gov/care-compare/?providerType=Hospice" target="_blank" rel="noopener"><img loading="lazy" decoding="async" src="assets/img/cred-cms.webp" srcset="assets/img/cred-cms-1x.webp 1x, assets/img/cred-cms.webp 2x" alt="CMS Medicare Certified" width="691" height="239"><div class="ct"><span class="cl">Medicare Certified</span><span class="csub">Centers for Medicare &amp; Medicaid Services</span><span class="ext">medicare.gov ↗</span></div></a>
     <div class="csep"></div>
-    <a class="lc cdph" href="https://www.cdph.ca.gov/Programs/CHCQ/LCP/CalHealthFind/pages/home.aspx" target="_blank" rel="noopener"><img loading="lazy" decoding="async" src="assets/img/cred-cdph.webp" alt="CDPH Licensed" width="607" height="269"><div class="ct"><span class="cl">CDPH Licensed</span><span class="csub">California Dept. of Public Health</span><span class="ext">cdph.ca.gov ↗</span></div></a>
+    <a class="lc cdph" href="https://www.cdph.ca.gov/Programs/CHCQ/LCP/CalHealthFind/pages/home.aspx" target="_blank" rel="noopener"><img loading="lazy" decoding="async" src="assets/img/cred-cdph.webp" srcset="assets/img/cred-cdph-1x.webp 1x, assets/img/cred-cdph.webp 2x" alt="CDPH Licensed" width="607" height="269"><div class="ct"><span class="cl">CDPH Licensed</span><span class="csub">California Dept. of Public Health</span><span class="ext">cdph.ca.gov ↗</span></div></a>
     <div class="csep"></div>
-    <a class="lc achc" href="https://achc.org/search-facilities/" target="_blank" rel="noopener"><img loading="lazy" decoding="async" src="assets/img/cred-achc.webp" width="40" height="40" alt="ACHC Accredited"><div class="ct"><span class="cl">ACHC Accredited</span><span class="csub">Accreditation Commission for Health Care</span><span class="ext">achc.org ↗</span></div></a>
+    <a class="lc achc" href="https://achc.org/search-facilities/" target="_blank" rel="noopener"><img loading="lazy" decoding="async" src="assets/img/cred-achc.webp" srcset="assets/img/cred-achc-1x.webp 1x, assets/img/cred-achc.webp 2x" width="40" height="40" alt="ACHC Accredited"><div class="ct"><span class="cl">ACHC Accredited</span><span class="csub">Accreditation Commission for Health Care</span><span class="ext">achc.org ↗</span></div></a>
     <div class="csep"></div>
     <a class="ic" href="#first48"><svg viewBox="0 0 48 48" width="44" height="44" fill="none"><circle cx="24" cy="24" r="15" stroke="#D8CDBF" stroke-width="1.5"/><line x1="24" y1="12" x2="24" y2="24" stroke="#5B2E59" stroke-width="2.5" stroke-linecap="round"/><line x1="24" y1="24" x2="33" y2="24" stroke="#C9B07E" stroke-width="2.5" stroke-linecap="round"/><circle cx="24" cy="24" r="2.5" fill="#5B2E59"/></svg><div class="ct"><span class="cl">Same-Day Admissions</span><span class="csub">24/7 On-Call Nursing</span></div></a>
     <div class="csep"></div>
     <a class="ic" href="#medicare"><svg viewBox="0 0 48 48" width="44" height="44" fill="none"><path d="M24 9l13 4.5v9.8c0 7.5-5.5 13-13 16-7.5-3-13-8.5-13-16v-9.8L24 9z" stroke="#5B2E59" stroke-width="1.4" fill="none"/><polyline points="18,24 22,28 30,20" stroke="#C9B07E" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg><div class="ct"><span class="cl">Little to no out-of-pocket cost</span><span class="csub">For most covered hospice services</span></div></a>
     <div class="csep"></div>
-    <a class="lc cms" href="https://www.medicare.gov/care-compare/?providerType=Hospice" target="_blank" rel="noopener"><img loading="lazy" decoding="async" src="assets/img/cred-cms.webp" alt="CMS" width="691" height="239"><div class="ct"><span class="cl">Medicare Certified</span><span class="csub">Centers for Medicare &amp; Medicaid Services</span><span class="ext">medicare.gov ↗</span></div></a>
+    <a class="lc cms" href="https://www.medicare.gov/care-compare/?providerType=Hospice" target="_blank" rel="noopener"><img loading="lazy" decoding="async" src="assets/img/cred-cms.webp" srcset="assets/img/cred-cms-1x.webp 1x, assets/img/cred-cms.webp 2x" alt="CMS" width="691" height="239"><div class="ct"><span class="cl">Medicare Certified</span><span class="csub">Centers for Medicare &amp; Medicaid Services</span><span class="ext">medicare.gov ↗</span></div></a>
     <div class="csep"></div>
-    <a class="lc cdph" href="https://www.cdph.ca.gov/Programs/CHCQ/LCP/CalHealthFind/pages/home.aspx" target="_blank" rel="noopener"><img loading="lazy" decoding="async" src="assets/img/cred-cdph.webp" alt="CDPH" width="607" height="269"><div class="ct"><span class="cl">CDPH Licensed</span><span class="csub">California Dept. of Public Health</span><span class="ext">cdph.ca.gov ↗</span></div></a>
+    <a class="lc cdph" href="https://www.cdph.ca.gov/Programs/CHCQ/LCP/CalHealthFind/pages/home.aspx" target="_blank" rel="noopener"><img loading="lazy" decoding="async" src="assets/img/cred-cdph.webp" srcset="assets/img/cred-cdph-1x.webp 1x, assets/img/cred-cdph.webp 2x" alt="CDPH" width="607" height="269"><div class="ct"><span class="cl">CDPH Licensed</span><span class="csub">California Dept. of Public Health</span><span class="ext">cdph.ca.gov ↗</span></div></a>
     <div class="csep"></div>
-    <a class="lc achc" href="https://achc.org/search-facilities/" target="_blank" rel="noopener"><img loading="lazy" decoding="async" src="assets/img/cred-achc.webp" width="40" height="40" alt="ACHC"><div class="ct"><span class="cl">ACHC Accredited</span><span class="csub">Accreditation Commission for Health Care</span><span class="ext">achc.org ↗</span></div></a>
+    <a class="lc achc" href="https://achc.org/search-facilities/" target="_blank" rel="noopener"><img loading="lazy" decoding="async" src="assets/img/cred-achc.webp" srcset="assets/img/cred-achc-1x.webp 1x, assets/img/cred-achc.webp 2x" width="40" height="40" alt="ACHC"><div class="ct"><span class="cl">ACHC Accredited</span><span class="csub">Accreditation Commission for Health Care</span><span class="ext">achc.org ↗</span></div></a>
     <div class="csep"></div>
     <a class="ic" href="#first48"><svg viewBox="0 0 48 48" width="44" height="44" fill="none"><circle cx="24" cy="24" r="15" stroke="#D8CDBF" stroke-width="1.5"/><line x1="24" y1="12" x2="24" y2="24" stroke="#5B2E59" stroke-width="2.5" stroke-linecap="round"/><line x1="24" y1="24" x2="33" y2="24" stroke="#C9B07E" stroke-width="2.5" stroke-linecap="round"/><circle cx="24" cy="24" r="2.5" fill="#5B2E59"/></svg><div class="ct"><span class="cl">Same-Day Admissions</span><span class="csub">24/7 On-Call Nursing</span></div></a>
     <div class="csep"></div>
@@ -1222,19 +1244,19 @@ p,li,blockquote{text-wrap:pretty}
   </div>
 </div>
 <!-- HERO -->
-<main id="main-content">
+<main id="main-content" tabindex="-1">
 <section class="hero" id="top">
   <picture class="hero-bg-pic" style="position:absolute;inset:0;z-index:0">
     <source media="(max-width:768px)" srcset="assets/img/hero-mobile-640.webp" type="image/webp">
     <source srcset="assets/img/inline-cdca7d25f7.webp" type="image/webp">
-    <img src="assets/img/inline-cdca7d25f7.jpg" alt="Clasped hands in caring gesture" style="width:100%;height:100%;object-fit:cover;object-position:65% center">
+    <img src="assets/img/inline-cdca7d25f7.jpg" alt="Clasped hands in caring gesture" fetchpriority="high" width="1100" height="563" style="width:100%;height:100%;object-fit:cover;object-position:65% center">
   </picture>
   <div class="hero-overlay"></div>
     <div class="hero-content">
     <div class="hero-inner">
-      <span class="eyebrow gold-c">Eternal Life Hospice · Ventura &amp; Los Angeles County, CA</span>
+      <span class="eyebrow gold-c" style="letter-spacing:.07em;white-space:nowrap">Serving Thousand Oaks throughout Ventura County &amp; Los Angeles County</span>
       <h1 class="hero-tagline">Hospice Care That<br><em>Honors Life</em></h1>
-      <p class="hero-lead">Eternal Life Hospice provides physician-supported hospice care at home throughout Ventura County and Los Angeles County — including Thousand Oaks, Westlake Village, Camarillo, Oxnard, Ventura and Simi Valley. Our interdisciplinary team supports patients in private homes, assisted living communities, residential care settings and skilled nursing facilities.</p>
+      <p class="hero-lead">Eternal Life Hospice provides physician-supported hospice care at home in Thousand Oaks, Westlake, Camarillo, Oxnard, Ventura, Simi Valley and throughout Ventura County and Los Angeles County. Our interdisciplinary team supports patients in private homes, assisted living communities, residential care settings and skilled nursing facilities.</p>
 
       <div class="hero-btns">
         <a href="tel:18059537273" class="btn btn-gold">Request Care — 805.953.7273</a>
@@ -1244,37 +1266,21 @@ p,li,blockquote{text-wrap:pretty}
   </div>
 </section>
 <!-- GOOGLE REVIEWS TICKER -->
-<div class="rv-strip" id="reviews" aria-label="Google Reviews — 5 stars">
-  <a class="rv-badge" href="https://maps.google.com/?cid=9771388271577679785" target="_blank" rel="noopener" aria-label="5.0 stars — 11 Google reviews"><svg width="22" height="22" viewBox="0 0 48 48" aria-hidden="true"><path fill="#4285F4" d="M45.12 24.5c0-1.56-.14-3.06-.4-4.5H24v8.51h11.84c-.51 2.75-2.06 5.08-4.39 6.64v5.52h7.11c4.16-3.83 6.56-9.47 6.56-16.17z"/><path fill="#34A853" d="M24 46c5.94 0 10.92-1.97 14.56-5.33l-7.11-5.52c-1.97 1.32-4.49 2.1-7.45 2.1-5.73 0-10.58-3.87-12.31-9.07H4.34v5.7C7.96 41.07 15.4 46 24 46z"/><path fill="#FBBC05" d="M11.69 28.18C11.25 26.86 11 25.45 11 24s.25-2.86.69-4.18v-5.7H4.34A21.991 21.991 0 0 0 2 24c0 3.55.85 6.91 2.34 9.88l7.35-5.7z"/><path fill="#EA4335" d="M24 10.75c3.23 0 6.13 1.11 8.41 3.29l6.31-6.31C34.91 4.18 29.93 2 24 2 15.4 2 7.96 6.93 4.34 14.12l7.35 5.7c1.73-5.2 6.58-9.07 12.31-9.07z"/></svg><span class="rv-reel-stars">★★★★★</span><span class="rv-reel-score">5.0</span><span class="rv-reel-label">&nbsp;· 11 reviews</span></a>
+<div class="rv-strip" id="reviews" aria-label="Google Reviews">
+  <a class="rv-badge" id="rvBadge" href="https://maps.google.com/?cid=9771388271577679785" target="_blank" rel="noopener" aria-label="See the latest Google reviews">
+    <svg width="22" height="22" viewBox="0 0 48 48" aria-hidden="true"><path fill="#4285F4" d="M45.12 24.5c0-1.56-.14-3.06-.4-4.5H24v8.51h11.84c-.51 2.75-2.06 5.08-4.39 6.64v5.52h7.11c4.16-3.83 6.56-9.47 6.56-16.17z"/><path fill="#34A853" d="M24 46c5.94 0 10.92-1.97 14.56-5.33l-7.11-5.52c-1.97 1.32-4.49 2.1-7.45 2.1-5.73 0-10.58-3.87-12.31-9.07H4.34v5.7C7.96 41.07 15.4 46 24 46z"/><path fill="#FBBC05" d="M11.69 28.18C11.25 26.86 11 25.45 11 24s.25-2.86.69-4.18v-5.7H4.34A21.991 21.991 0 0 0 2 24c0 3.55.85 6.91 2.34 9.88l7.35-5.7z"/><path fill="#EA4335" d="M24 10.75c3.23 0 6.13 1.11 8.41 3.29l6.31-6.31C34.91 4.18 29.93 2 24 2 15.4 2 7.96 6.93 4.34 14.12l7.35 5.7c1.73-5.2 6.58-9.07 12.31-9.07z"/></svg>
+    <span class="rv-reel-stars" id="rvStars" aria-hidden="true">★★★★★</span>
+    <span class="rv-reel-score" id="rvScore">Loading</span>
+    <span class="rv-reel-label" id="rvLabel">&nbsp;· current Google reviews</span>
+  </a>
   <div class="rv-scroll-wrap">
-    <div class="rv-reel">
-    <span class="rv-sep">◆</span>
-    <span class="rv-item">"Our family is eternally grateful for the compassionate, dignified care they provided."<em>— David H.</em></span>
-    <span class="rv-sep">◆</span>
-    <span class="rv-item">"Exceptional hospice provider — delivers the kind of care anyone would want for a loved one."<em>— Ronny K.</em></span>
-    <span class="rv-sep">◆</span>
-    <span class="rv-item">"Professional, compassionate, and truly dedicated to providing exceptional care to patients and families."<em>— Edmond M.</em></span>
-    <span class="rv-sep">◆</span>
-    <span class="rv-item">"Great services, very caring, and very responsive to patients needs."<em>— Alina M.</em></span>
-    <span class="rv-sep">◆</span>
-    <span class="rv-item">"A hospice that genuinely prioritizes patient comfort, dignity, and quality of care."<em>— DME Partner</em></span>
-    <span class="rv-sep">◆</span>
-    <span class="rv-sep">◆</span>
-    <span class="rv-item">"Our family is eternally grateful for the compassionate, dignified care they provided."<em>— David H.</em></span>
-    <span class="rv-sep">◆</span>
-    <span class="rv-item">"Exceptional hospice provider — delivers the kind of care anyone would want for a loved one."<em>— Ronny K.</em></span>
-    <span class="rv-sep">◆</span>
-    <span class="rv-item">"Professional, compassionate, and truly dedicated to providing exceptional care to patients and families."<em>— Edmond M.</em></span>
-    <span class="rv-sep">◆</span>
-    <span class="rv-item">"Great services, very caring, and very responsive to patients needs."<em>— Alina M.</em></span>
-    <span class="rv-sep">◆</span>
-    <span class="rv-item">"A hospice that genuinely prioritizes patient comfort, dignity, and quality of care."<em>— DME Partner</em></span>
-    <span class="rv-sep">◆</span>
+    <div class="rv-reel is-static" id="rvReel" aria-live="polite">
+      <span class="rv-item rv-live-status" id="rvStatus">Loading current Google reviews…</span>
     </div>
   </div>
 </div>
 <!-- GUIDED WALKTHROUGH -->
-<section class="guide-band" id="guide">
+<section class="guide-band" id="guide" tool-name="care-guide" tool-description="Interactive decision guide helping families, patients, or providers identify their next step with hospice care.">
   <div class="guide-card">
     <div class="guide-launch" id="guideLaunch">
       <div class="guide-eyebrow">Start where you are</div>
@@ -1330,10 +1336,10 @@ p,li,blockquote{text-wrap:pretty}
     <h2>Four Pillars<br><em>One Standard of Care</em></h2>
     <p>Patients and families deserve dignity, clarity, comfort and protection during one of life's most vulnerable moments. Every service we provide, every caregiver we send, every decision we make ladders back to this — four pillars that define how we care.</p>
     <div class="pillar-tiles">
-      <button type="button" class="ptile" data-pillar="1"><span class="pt-num">01</span><span class="pt-name">Clinical Confidence</span></button>
-      <button type="button" class="ptile" data-pillar="2"><span class="pt-num">02</span><span class="pt-name">Guided Presence</span></button>
-      <button type="button" class="ptile" data-pillar="3"><span class="pt-num">03</span><span class="pt-name">Whole-Person Comfort</span></button>
-      <button type="button" class="ptile" data-pillar="4"><span class="pt-num">04</span><span class="pt-name">Compliance-Led Care</span></button>
+      <button type="button" class="ptile" data-pillar="1" aria-label="Clinical Confidence — pillar 1"><span class="pt-num">01</span><span class="pt-name">Clinical Confidence</span></button>
+      <button type="button" class="ptile" data-pillar="2" aria-label="Guided Presence — pillar 2"><span class="pt-num">02</span><span class="pt-name">Guided Presence</span></button>
+      <button type="button" class="ptile" data-pillar="3" aria-label="Whole-Person Comfort — pillar 3"><span class="pt-num">03</span><span class="pt-name">Whole-Person Comfort</span></button>
+      <button type="button" class="ptile" data-pillar="4" aria-label="Compliance-Led Care — pillar 4"><span class="pt-num">04</span><span class="pt-name">Compliance-Led Care</span></button>
     </div>
   </div>
 
@@ -1371,7 +1377,7 @@ p,li,blockquote{text-wrap:pretty}
 
     <div class="pcard pc3" data-i="3" id="stack-3">
       <div class="pcard-photo">
-        <img loading="lazy" decoding="async" src="assets/img/inline-33ce6328f1.jpg" alt="Open hands holding an amethyst geode during a quiet moment of rest">
+        <picture><source srcset="assets/img/inline-33ce6328f1.webp" type="image/webp"><img loading="lazy" decoding="async" src="assets/img/inline-33ce6328f1.jpg" alt="Open hands holding an amethyst geode during a quiet moment of rest" width="1080" height="1350"></picture>
       </div>
       <div class="pcard-copy">
         <div class="pcard-num">03</div>
@@ -1386,7 +1392,7 @@ p,li,blockquote{text-wrap:pretty}
 
     <div class="pcard pc4 flip" data-i="4" id="stack-4">
       <div class="pcard-photo">
-        <img loading="lazy" decoding="async" src="assets/img/inline-c8b0a690da.jpg" alt="A clinician signing a plan-of-care document at a desk">
+        <picture><source srcset="assets/img/inline-c8b0a690da.webp" type="image/webp"><img loading="lazy" decoding="async" src="assets/img/inline-c8b0a690da.jpg" alt="A clinician signing a plan-of-care document at a desk" width="1080" height="1350"></picture>
       </div>
       <div class="pcard-copy">
         <div class="pcard-num">04</div>
@@ -1510,15 +1516,15 @@ p,li,blockquote{text-wrap:pretty}
     <p>Physical, occupational and speech therapy along with every integrative therapy below, are provided at <strong>no additional expense to your family.</strong> It is part of our ongoing commitment to caring for the whole person,<br>mind, body and spirit.<br>Explore Sound as Comfort Below</p>
   </div>
   <div class="mod-grid">
-    <div class="mod-card" data-mod="music" role="button" tabindex="0"><div class="mod-img"><img loading="lazy" decoding="async" class="mod-photo" src="/assets/img/music-therapy.jpg" alt="Music therapist playing live at a patient bedside"><span class="mod-veil"></span></div><div class="mod-body"><div class="mod-head"><div class="mod-name">Music Therapy</div><div class="mod-toggle"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 2v10M2 7h10" stroke-linecap="round"/></svg></div></div><div class="mod-tease">Live music tailored to the patient's history</div><div class="mod-detail"><div class="mod-detail-inner"><p>A board-certified music therapist brings live music chosen for the patient's own history and preferences. Many families report softer moments, reduced distress and, at times, recognition even in advanced cognitive decline.</p><p>Many families describe the music therapy visit as the moment they saw their loved one return to themselves, however briefly.</p></div></div></div></div>
-    <div class="mod-card" data-mod="massage" role="button" tabindex="0"><div class="mod-img"><img loading="lazy" decoding="async" class="mod-photo" src="/assets/img/massage.jpg" alt="A massage therapist easing tension for an older adult during a calm session"><span class="mod-veil"></span></div><div class="mod-body"><div class="mod-head"><div class="mod-name">Therapeutic Massage</div><div class="mod-toggle"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 2v10M2 7h10" stroke-linecap="round"/></svg></div></div><div class="mod-tease">Gentle, adaptive touch for comfort</div><div class="mod-detail"><div class="mod-detail-inner"><p>Gentle, adaptive massage supports comfort and circulation, carefully modified for each patient's physical condition and comfort level. A quiet, restorative experience many describe as the most soothing part of their week.</p></div></div></div></div>
-    <div class="mod-card" data-mod="reiki" role="button" tabindex="0"><div class="mod-img"><img loading="lazy" decoding="async" class="mod-photo" src="/assets/img/reiki.jpg" alt="Reiki practitioner with hands above a resting patient"><span class="mod-veil"></span></div><div class="mod-body"><div class="mod-head"><div class="mod-name">Reiki</div><div class="mod-toggle"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 2v10M2 7h10" stroke-linecap="round"/></svg></div></div><div class="mod-tease">A gentle practice for calm and rest</div><div class="mod-detail"><div class="mod-detail-inner"><p>A gentle, non-invasive practice offered for relaxation and comfort. Reiki sessions are quiet and unhurried — an opportunity for the patient to rest and receive care without any demand.</p></div></div></div></div>
-    <div class="mod-card" data-mod="aroma" role="button" tabindex="0"><div class="mod-img"><img loading="lazy" decoding="async" class="mod-photo" src="/assets/img/aromatherapy.jpg" alt="Aromatherapy diffuser beside a resting patient at home"><span class="mod-veil"></span></div><div class="mod-body"><div class="mod-head"><div class="mod-name">Aromatherapy</div><div class="mod-toggle"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 2v10M2 7h10" stroke-linecap="round"/></svg></div></div><div class="mod-tease">Calming natural scents for comfort</div><div class="mod-detail"><div class="mod-detail-inner"><p>Carefully selected botanical essences support comfort and ease distress, integrated into the care environment with the patient's own preferences and sensitivities as the guide.</p></div></div></div></div>
-    <div class="mod-card" data-mod="pet" role="button" tabindex="0"><div class="mod-img"><img loading="lazy" decoding="async" class="mod-photo" src="/assets/img/pet-therapy.jpg" alt="Certified therapy dog with a patient"><span class="mod-veil"></span></div><div class="mod-body"><div class="mod-head"><div class="mod-name">Pet Therapy</div><div class="mod-toggle"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 2v10M2 7h10" stroke-linecap="round"/></svg></div></div><div class="mod-tease">Certified therapy animals visit at home</div><div class="mod-detail"><div class="mod-detail-inner"><p>Certified therapy animals visit patients at home. Few things reliably reach through advanced illness the way an animal does. These visits are among the most requested experiences our families ask us to continue.</p></div></div></div></div>
-    <div class="mod-card" data-mod="audiology" role="button" tabindex="0"><div class="mod-img"><img loading="lazy" decoding="async" class="mod-photo" src="/assets/img/audiology-support.jpg" alt="Audiology support, fitting a hearing device"><span class="mod-veil"></span></div><div class="mod-body"><div class="mod-head"><div class="mod-name">Audiology Support</div><div class="mod-toggle"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 2v10M2 7h10" stroke-linecap="round"/></svg></div></div><div class="mod-tease">So patients stay connected to loved ones</div><div class="mod-detail"><div class="mod-detail-inner"><p>Hearing assessment and support ensure patients can engage with their environment and their loved ones. Communication is care — and we protect it to the end.</p></div></div></div></div>
-    <div class="mod-card" data-mod="holistic" role="button" tabindex="0"><div class="mod-img"><img loading="lazy" decoding="async" class="mod-photo" src="/assets/img/holistic-medicine.jpg" alt="Botanical remedies, dried herbs and a balance scale in an apothecary setting"><span class="mod-veil"></span></div><div class="mod-body"><div class="mod-head"><div class="mod-name">Holistic Medicine</div><div class="mod-toggle"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 2v10M2 7h10" stroke-linecap="round"/></svg></div></div><div class="mod-tease">Coordinated with the clinical team</div><div class="mod-detail"><div class="mod-detail-inner"><p>Integrative approaches coordinated with the patient's clinical care team, addressing the whole person and not just the diagnosis. Our holistic practitioners work alongside the hospice clinical team to support comfort at every level.</p></div></div></div></div>
-    <div class="mod-card" data-mod="doula" role="button" tabindex="0"><div class="mod-img"><img loading="lazy" decoding="async" class="mod-photo" src="/assets/img/end-of-life-doula.jpg" alt="End-of-life doula presence"><span class="mod-veil"></span></div><div class="mod-body"><div class="mod-head"><div class="mod-name">End-of-Life Doula</div><div class="mod-toggle"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 2v10M2 7h10" stroke-linecap="round"/></svg></div></div><div class="mod-tease">A trained companion for the final passage</div><div class="mod-detail"><div class="mod-detail-inner"><p>A trained companion for the final passage — for both patient and family. Our doulas offer non-medical support: presence, guidance, legacy conversations and the steady holding of a process that medicine alone cannot fully accompany.</p></div></div></div></div>
-    <div class="mod-card feat" data-mod="soundbath" role="button" tabindex="0"><div class="mod-img"><img loading="lazy" decoding="async" class="mod-photo" src="/assets/img/sound-bath.jpg" alt="Tibetan and crystal singing bowls sound bath"><span class="mod-veil"></span><span class="mod-tag">&#9656; Listen</span></div><div class="mod-body"><div class="mod-head"><div class="mod-name">Sound Bath</div><div class="mod-toggle"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 2v10M2 7h10" stroke-linecap="round"/></svg></div></div><div class="mod-tease">Tibetan and crystal singing bowls — tap to learn more</div><div class="mod-detail"><div class="mod-detail-inner"><span class="mod-badge">Featured · Interactive</span><p>Tibetan and crystal singing bowls produce sustained, resonant tones that fill the room and the body in equal measure. Patients often describe the experience as the deepest rest they have found.</p><p>Sessions are offered purely for relaxation and comfort, at the patient's pace.</p><div class="players"><div class="player" id="playerEl-0"><button class="play-btn" id="btn-0" onclick="event.stopPropagation();toggleSound(0)" aria-pressed="false" aria-label="Play Release and Ground sound journey"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></button><div class="player-info"><div class="player-name">Release &amp; Ground</div><div class="player-desc">A gentle journey for moments of grief or emotional weight</div><div class="freq-pills"><span class="fpill earth">174 Hz</span><span class="fpill earth">396 Hz</span><span class="fpill binaural">theta 6 Hz binaural</span></div></div><div class="player-right"><div class="progress-track"><div class="progress-fill" id="prog-0"></div></div><div class="timer" id="timer-0">0:00</div></div></div><div class="player" id="playerEl-1"><button class="play-btn" id="btn-1" onclick="event.stopPropagation();toggleSound(1)" aria-pressed="false" aria-label="Play Love and Transformation sound journey"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></button><div class="player-info"><div class="player-name">Love &amp; Transformation</div><div class="player-desc">A spacious journey for peace and quiet presence</div><div class="freq-pills"><span class="fpill rose">528 Hz</span><span class="fpill amber">432 Hz</span><span class="fpill sage">639 Hz</span><span class="fpill binaural">alpha 10 Hz binaural</span></div></div><div class="player-right"><div class="progress-track"><div class="progress-fill" id="prog-1"></div></div><div class="timer" id="timer-1">0:00</div></div></div><div class="player" id="playerEl-2"><button class="play-btn" id="btn-2" onclick="event.stopPropagation();toggleSound(2)" aria-pressed="false" aria-label="Play Sacred Passage sound journey"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></button><div class="player-info"><div class="player-name">Sacred Passage</div><div class="player-desc">A still journey for reflection and the threshold of transition</div><div class="freq-pills"><span class="fpill violet">111 Hz</span><span class="fpill indigo">852 Hz</span><span class="fpill violet">963 Hz</span><span class="fpill binaural">delta 2 Hz binaural</span></div></div><div class="player-right"><div class="progress-track"><div class="progress-fill" id="prog-2"></div></div><div class="timer" id="timer-2">0:00</div></div></div></div><p class="freq-disclaimer">Each journey is a layered soundscape — synthesized for preview and best experienced with headphones. Offered for relaxation and comfort, not as medical treatment. <a href="sound-bath" style="color:var(--plum);font-weight:600;font-style:normal;text-decoration:none;white-space:nowrap">Visit the Sound Bath page &#8594;</a></p>
+    <div class="mod-card" data-mod="music" role="button" tabindex="0" aria-expanded="false"><div class="mod-img"><img loading="lazy" decoding="async" class="mod-photo" src="/assets/img/music-therapy.jpg" alt="Music therapist playing live at a patient bedside"><span class="mod-veil"></span></div><div class="mod-body"><div class="mod-head"><div class="mod-name">Music Therapy</div><div class="mod-toggle"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 2v10M2 7h10" stroke-linecap="round"/></svg></div></div><div class="mod-tease">Live music tailored to the patient's history</div><div class="mod-detail"><div class="mod-detail-inner"><p>A board-certified music therapist brings live music chosen for the patient's own history and preferences. Many families report softer moments, reduced distress and, at times, recognition even in advanced cognitive decline.</p><p>Many families describe the music therapy visit as the moment they saw their loved one return to themselves, however briefly.</p></div></div></div></div>
+    <div class="mod-card" data-mod="massage" role="button" tabindex="0" aria-expanded="false"><div class="mod-img"><img loading="lazy" decoding="async" class="mod-photo" src="/assets/img/massage.jpg" alt="A massage therapist easing tension for an older adult during a calm session"><span class="mod-veil"></span></div><div class="mod-body"><div class="mod-head"><div class="mod-name">Therapeutic Massage</div><div class="mod-toggle"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 2v10M2 7h10" stroke-linecap="round"/></svg></div></div><div class="mod-tease">Gentle, adaptive touch for comfort</div><div class="mod-detail"><div class="mod-detail-inner"><p>Gentle, adaptive massage supports comfort and circulation, carefully modified for each patient's physical condition and comfort level. A quiet, restorative experience many describe as the most soothing part of their week.</p></div></div></div></div>
+    <div class="mod-card" data-mod="reiki" role="button" tabindex="0" aria-expanded="false"><div class="mod-img"><img loading="lazy" decoding="async" class="mod-photo" src="/assets/img/reiki.jpg" alt="Reiki practitioner with hands above a resting patient"><span class="mod-veil"></span></div><div class="mod-body"><div class="mod-head"><div class="mod-name">Reiki</div><div class="mod-toggle"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 2v10M2 7h10" stroke-linecap="round"/></svg></div></div><div class="mod-tease">A gentle practice for calm and rest</div><div class="mod-detail"><div class="mod-detail-inner"><p>A gentle, non-invasive practice offered for relaxation and comfort. Reiki sessions are quiet and unhurried — an opportunity for the patient to rest and receive care without any demand.</p></div></div></div></div>
+    <div class="mod-card" data-mod="aroma" role="button" tabindex="0" aria-expanded="false"><div class="mod-img"><img loading="lazy" decoding="async" class="mod-photo" src="/assets/img/aromatherapy.jpg" alt="Aromatherapy diffuser beside a resting patient at home"><span class="mod-veil"></span></div><div class="mod-body"><div class="mod-head"><div class="mod-name">Aromatherapy</div><div class="mod-toggle"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 2v10M2 7h10" stroke-linecap="round"/></svg></div></div><div class="mod-tease">Calming natural scents for comfort</div><div class="mod-detail"><div class="mod-detail-inner"><p>Carefully selected botanical essences support comfort and ease distress, integrated into the care environment with the patient's own preferences and sensitivities as the guide.</p></div></div></div></div>
+    <div class="mod-card" data-mod="pet" role="button" tabindex="0" aria-expanded="false"><div class="mod-img"><img loading="lazy" decoding="async" class="mod-photo" src="/assets/img/pet-therapy.jpg" alt="Certified therapy dog with a patient"><span class="mod-veil"></span></div><div class="mod-body"><div class="mod-head"><div class="mod-name">Pet Therapy</div><div class="mod-toggle"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 2v10M2 7h10" stroke-linecap="round"/></svg></div></div><div class="mod-tease">Certified therapy animals visit at home</div><div class="mod-detail"><div class="mod-detail-inner"><p>Certified therapy animals visit patients at home. Few things reliably reach through advanced illness the way an animal does. These visits are among the most requested experiences our families ask us to continue.</p></div></div></div></div>
+    <div class="mod-card" data-mod="audiology" role="button" tabindex="0" aria-expanded="false"><div class="mod-img"><img loading="lazy" decoding="async" class="mod-photo" src="/assets/img/audiology-support.jpg" alt="Audiology support, fitting a hearing device"><span class="mod-veil"></span></div><div class="mod-body"><div class="mod-head"><div class="mod-name">Audiology Support</div><div class="mod-toggle"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 2v10M2 7h10" stroke-linecap="round"/></svg></div></div><div class="mod-tease">So patients stay connected to loved ones</div><div class="mod-detail"><div class="mod-detail-inner"><p>Hearing assessment and support ensure patients can engage with their environment and their loved ones. Communication is care — and we protect it to the end.</p></div></div></div></div>
+    <div class="mod-card" data-mod="holistic" role="button" tabindex="0" aria-expanded="false"><div class="mod-img"><img loading="lazy" decoding="async" class="mod-photo" src="/assets/img/holistic-medicine.jpg" alt="Botanical remedies, dried herbs and a balance scale in an apothecary setting"><span class="mod-veil"></span></div><div class="mod-body"><div class="mod-head"><div class="mod-name">Holistic Medicine</div><div class="mod-toggle"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 2v10M2 7h10" stroke-linecap="round"/></svg></div></div><div class="mod-tease">Coordinated with the clinical team</div><div class="mod-detail"><div class="mod-detail-inner"><p>Integrative approaches coordinated with the patient's clinical care team, addressing the whole person and not just the diagnosis. Our holistic practitioners work alongside the hospice clinical team to support comfort at every level.</p></div></div></div></div>
+    <div class="mod-card" data-mod="doula" role="button" tabindex="0" aria-expanded="false"><div class="mod-img"><img loading="lazy" decoding="async" class="mod-photo" src="/assets/img/end-of-life-doula.jpg" alt="End-of-life doula presence"><span class="mod-veil"></span></div><div class="mod-body"><div class="mod-head"><div class="mod-name">End-of-Life Doula</div><div class="mod-toggle"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 2v10M2 7h10" stroke-linecap="round"/></svg></div></div><div class="mod-tease">A trained companion for the final passage</div><div class="mod-detail"><div class="mod-detail-inner"><p>A trained companion for the final passage — for both patient and family. Our doulas offer non-medical support: presence, guidance, legacy conversations and the steady holding of a process that medicine alone cannot fully accompany.</p></div></div></div></div>
+    <div class="mod-card feat" data-mod="soundbath" role="button" tabindex="0" aria-expanded="false"><div class="mod-img"><img loading="lazy" decoding="async" class="mod-photo" src="/assets/img/sound-bath.jpg" alt="Tibetan and crystal singing bowls sound bath"><span class="mod-veil"></span><span class="mod-tag">&#9656; Listen</span></div><div class="mod-body"><div class="mod-head"><div class="mod-name">Sound Bath</div><div class="mod-toggle"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 2v10M2 7h10" stroke-linecap="round"/></svg></div></div><div class="mod-tease">Tibetan and crystal singing bowls — tap to learn more</div><div class="mod-detail"><div class="mod-detail-inner"><span class="mod-badge">Featured · Interactive</span><p>Tibetan and crystal singing bowls produce sustained, resonant tones that fill the room and the body in equal measure. Patients often describe the experience as the deepest rest they have found.</p><p>Sessions are offered purely for relaxation and comfort, at the patient's pace.</p><div class="players"><div class="player" id="playerEl-0"><button class="play-btn" id="btn-0" onclick="event.stopPropagation();toggleSound(0)" aria-pressed="false" aria-label="Play Release and Ground sound journey"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></button><div class="player-info"><div class="player-name">Release &amp; Ground</div><div class="player-desc">A gentle journey for moments of grief or emotional weight</div><div class="freq-pills"><span class="fpill earth">174 Hz</span><span class="fpill earth">396 Hz</span><span class="fpill binaural">theta 6 Hz binaural</span></div></div><div class="player-right"><div class="progress-track"><div class="progress-fill" id="prog-0"></div></div><div class="timer" id="timer-0">0:00</div></div></div><div class="player" id="playerEl-1"><button class="play-btn" id="btn-1" onclick="event.stopPropagation();toggleSound(1)" aria-pressed="false" aria-label="Play Love and Transformation sound journey"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></button><div class="player-info"><div class="player-name">Love &amp; Transformation</div><div class="player-desc">A spacious journey for peace and quiet presence</div><div class="freq-pills"><span class="fpill rose">528 Hz</span><span class="fpill amber">432 Hz</span><span class="fpill sage">639 Hz</span><span class="fpill binaural">alpha 10 Hz binaural</span></div></div><div class="player-right"><div class="progress-track"><div class="progress-fill" id="prog-1"></div></div><div class="timer" id="timer-1">0:00</div></div></div><div class="player" id="playerEl-2"><button class="play-btn" id="btn-2" onclick="event.stopPropagation();toggleSound(2)" aria-pressed="false" aria-label="Play Sacred Passage sound journey"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></button><div class="player-info"><div class="player-name">Sacred Passage</div><div class="player-desc">A still journey for reflection and the threshold of transition</div><div class="freq-pills"><span class="fpill violet">111 Hz</span><span class="fpill indigo">852 Hz</span><span class="fpill violet">963 Hz</span><span class="fpill binaural">delta 2 Hz binaural</span></div></div><div class="player-right"><div class="progress-track"><div class="progress-fill" id="prog-2"></div></div><div class="timer" id="timer-2">0:00</div></div></div></div><p class="freq-disclaimer">Each journey is a layered soundscape — synthesized for preview and best experienced with headphones. Offered for relaxation and comfort, not as medical treatment. <a href="sound-bath" style="color:var(--plum);font-weight:600;font-style:normal;text-decoration:none;white-space:nowrap">Visit the Sound Bath page &#8594;</a></p>
       </div></div></div></div>
   </div>
   <div style="max-width:1100px;margin:1.8rem auto 0;padding:0 2rem;text-align:right"><a class="coverage-cta" href="resources">Explore our family resources <span class="cta-arrow">&#8594;</span></a></div>
@@ -1556,7 +1562,7 @@ p,li,blockquote{text-wrap:pretty}
     <div class="cs-item"><div class="cs-num" style="font-size:1.4rem;line-height:1.15">Low<br>cost</div><div class="cs-lbl">For most covered hospice services</div></div>
   </div>
   <div class="coverage-map reveal">
-    <a href="hospice-ventura-and-los-angeles-county-ca" class="coverage-map-img" aria-label="View our full coverage area across Ventura and Los Angeles County"><img loading="lazy" decoding="async" src="assets/img/service-hero-map.webp" alt="Map of Ventura County and Los Angeles County showing the communities Eternal Life Hospice serves"></a>
+    <a href="hospice-ventura-and-los-angeles-county-ca" class="coverage-map-img" aria-label="View our full coverage area across Ventura and Los Angeles County"><img loading="lazy" decoding="async" src="assets/img/service-hero-map.webp" alt="Map of Ventura County and Los Angeles County showing the communities Eternal Life Hospice serves" width="1095" height="773"></a>
     <div style="text-align:center"><a href="hospice-ventura-and-los-angeles-county-ca" class="coverage-cta">View our full coverage area <span class="cta-arrow">&#8594;</span></a></div>
   </div>
 </section>
@@ -1626,7 +1632,7 @@ p,li,blockquote{text-wrap:pretty}
 </section>
 <!-- AMETHYST ORIGIN -->
 <section class="amethyst" id="amethyst">
-  <div class="amethyst-bg"><img loading="lazy" decoding="async" class="amethyst-photo-real" src="assets/img/inline-3559a51165.jpg" alt="Macro of an amethyst geode, the stone Eternal Life is named for"></div>
+  <div class="amethyst-bg"><picture><source srcset="assets/img/inline-3559a51165.webp" type="image/webp"><img loading="lazy" decoding="async" class="amethyst-photo-real" src="assets/img/inline-3559a51165.jpg" alt="Macro of an amethyst geode, the stone Eternal Life is named for" width="1408" height="768"></picture></div>
   <div class="amethyst-scrim"></div>
   <div class="amethyst-overlay">
     <div class="eyebrow gold-c" style="text-align:center">Our Origin</div>
@@ -1647,7 +1653,7 @@ p,li,blockquote{text-wrap:pretty}
 </section>
 <section class="founder" id="founder-welcome">
   <figure class="founder-photo has-portrait">
-    <img loading="lazy" decoding="async" class="founder-portrait" src="assets/img/inline-e143eb7e1b.jpg" alt="Aleksandra Dubina, founder of Eternal Life Hospice">
+    <picture><source srcset="assets/img/inline-e143eb7e1b.webp" type="image/webp"><img loading="lazy" decoding="async" class="founder-portrait" src="assets/img/inline-e143eb7e1b.jpg" alt="Aleksandra Dubina, founder of Eternal Life Hospice" width="860" height="1043"></picture>
     <div class="founder-overlay">
       <blockquote class="founder-words"></blockquote>
       <button type="button" class="founder-play" aria-pressed="false"><span class="ico" aria-hidden="true"></span><span class="lbl">Hear her welcome</span></button>
@@ -1658,7 +1664,7 @@ p,li,blockquote{text-wrap:pretty}
   <div class="founder-copy reveal">
     <div class="eyebrow">Heart-Centered Leadership</div>
     <h2>Aleksandra Dubina</h2>
-    <a href="/aleksandra" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:7px;margin:0 0 1.1rem;padding:6px 14px 6px 10px;background:#F5F0EB;border:1px solid rgba(160,124,54,.35);border-radius:999px;font-size:12.5px;font-family:Jost,Arial,sans-serif;letter-spacing:.4px;color:#7A5C1E;text-decoration:none;font-weight:500;transition:background .2s;width:fit-content;align-self:flex-start;" onmouseover="this.style.background='#EDE8DF'" onmouseout="this.style.background='#F5F0EB'"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M16 5v14M8 5v14M2 12h20"/></svg>Digital Business Card</a>
+    <a href="/card-aleksandra-dubina" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:7px;margin:0 0 1.1rem;padding:6px 14px 6px 10px;background:#F5F0EB;border:1px solid rgba(160,124,54,.35);border-radius:999px;font-size:12.5px;font-family:Jost,Arial,sans-serif;letter-spacing:.4px;color:#7A5C1E;text-decoration:none;font-weight:500;transition:background .2s;width:fit-content;align-self:flex-start;" onmouseover="this.style.background='#EDE8DF'" onmouseout="this.style.background='#F5F0EB'"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M16 5v14M8 5v14M2 12h20"/></svg>Digital Business Card</a>
     <p class="pl-body">Aleksandra Dubina founded Eternal Life Hospice from a place most administrators never reach: personal knowledge of what it means to sit at a loved one's side during the final chapter of their life.</p>
     <p class="pl-body">Her grandmother passed on hospice. That experience — the profound relief of attentive, dignified end-of-life care — became the reason she entered this field, and the standard she sets for every member of her team.</p>
     <p class="pl-body">As a young child, Aleksandra underwent open-heart surgery, brought to the United States for advanced care. Having once been the patient — wholly dependent on the skill and compassion of others — she leads with a rare understanding of what it means to be on the receiving end of care.</p>
@@ -1667,7 +1673,7 @@ p,li,blockquote{text-wrap:pretty}
     <div class="founder-connect">
       <label class="fc-label" for="founderConnect">Schedule a Time to Connect</label>
       <div class="fc-row">
-        <select id="founderConnect" class="fc-select" aria-label="Schedule a time to connect — choose a reason">
+        <select id="founderConnect" class="fc-select" aria-label="Schedule a time to connect — choose a reason" tool-name="schedule-connect" tool-description="Schedule a time to speak with Aleksandra Dubina, Founder and CEO of Eternal Life Hospice.">
           <option value="">Select…</option>
           <option>Share my voice in The Eternal Care Brief</option>
           <option>Be featured in a future issue</option>
@@ -1708,21 +1714,21 @@ p,li,blockquote{text-wrap:pretty}
     </div>
     <div class="accred-grid reveal">
       <div class="accred-card">
-        <div class="ac-badge"><img loading="lazy" decoding="async" src="assets/img/cred-cms.webp" alt="Medicare-certified by the Centers for Medicare &amp; Medicaid Services" width="691" height="239"></div>
+        <div class="ac-badge"><img loading="lazy" decoding="async" src="assets/img/cred-cms.webp" srcset="assets/img/cred-cms-1x.webp 1x, assets/img/cred-cms.webp 2x" alt="Medicare-certified by the Centers for Medicare &amp; Medicaid Services" width="691" height="239"></div>
         <h3>Medicare-Certified</h3>
         <p class="ac-body">Centers for Medicare &amp; Medicaid Services</p>
         <p class="ac-status">Certified provider · CCN B31709</p>
         <a class="ac-verify" href="https://www.medicare.gov/care-compare/?providerType=Hospice" target="_blank" rel="noopener">Verify on Medicare Care Compare &#8599;</a>
       </div>
       <div class="accred-card">
-        <div class="ac-badge"><img loading="lazy" decoding="async" src="assets/img/cred-cdph.webp" alt="Licensed by the California Department of Public Health" width="607" height="269"></div>
+        <div class="ac-badge"><img loading="lazy" decoding="async" src="assets/img/cred-cdph.webp" srcset="assets/img/cred-cdph-1x.webp 1x, assets/img/cred-cdph.webp 2x" alt="Licensed by the California Department of Public Health" width="607" height="269"></div>
         <h3>CDPH-Licensed</h3>
         <p class="ac-body">California Department of Public Health</p>
         <p class="ac-status">Licensed California hospice</p>
         <a class="ac-verify" href="https://www.cdph.ca.gov/Programs/CHCQ/LCP/CalHealthFind/pages/home.aspx" target="_blank" rel="noopener">Verify on Cal Health Find &#8599;</a>
       </div>
       <div class="accred-card">
-        <div class="ac-badge"><img loading="lazy" decoding="async" src="assets/img/cred-achc.webp" width="40" height="40" alt="Accredited by the Accreditation Commission for Health Care"></div>
+        <div class="ac-badge"><img loading="lazy" decoding="async" src="assets/img/cred-achc.webp" srcset="assets/img/cred-achc-1x.webp 1x, assets/img/cred-achc.webp 2x" width="40" height="40" alt="Accredited by the Accreditation Commission for Health Care"></div>
         <h3>ACHC-Accredited</h3>
         <p class="ac-body">Accreditation Commission for Health Care</p>
         <p class="ac-status">Nationally accredited agency</p>
@@ -1760,18 +1766,18 @@ p,li,blockquote{text-wrap:pretty}
   </div>
   <div class="lead-card">
     <div class="lead-cats" id="leadCats">
-      <button class="lead-cat active" data-cat="family"><div class="lc-icon"><svg width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="7" r="3.5"/><path d="M4 19c0-3.9 3.1-7 7-7s7 3.1 7 7"/></svg></div><div class="lead-cat-label">Family</div><div class="lead-cat-sub">Seeking care</div></button>
-      <button class="lead-cat" data-cat="physician"><div class="lc-icon"><svg width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="5" y="4" width="12" height="14" rx="2"/><path d="M11 8v5M8.5 10.5h5" stroke-linecap="round"/></svg></div><div class="lead-cat-label">Physician</div><div class="lead-cat-sub">Referring</div></button>
-      <button class="lead-cat" data-cat="casemanager"><div class="lc-icon"><svg width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="4" y="6" width="14" height="11" rx="2"/><path d="M8 6V4h6v2"/></svg></div><div class="lead-cat-label">Case Manager</div><div class="lead-cat-sub">Discharge planning</div></button>
-      <button class="lead-cat" data-cat="coordinator"><div class="lc-icon"><svg width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="7"/><path d="M11 7v4l3 2" stroke-linecap="round"/></svg></div><div class="lead-cat-label">Care Ally</div><div class="lead-cat-sub">Coordinator / advocate</div></button>
-      <button class="lead-cat" data-cat="voice"><div class="lc-icon"><svg width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="8.25" y="3" width="5.5" height="9.5" rx="2.75"/><path d="M5.5 10.5a5.5 5.5 0 0011 0M11 16.5v2.5" stroke-linecap="round"/></svg></div><div class="lead-cat-label">Share Your Voice</div><div class="lead-cat-sub">Care Brief · education</div></button>
+      <button class="lead-cat active" data-cat="family" aria-label="Family member seeking care"><div class="lc-icon"><svg width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="7" r="3.5"/><path d="M4 19c0-3.9 3.1-7 7-7s7 3.1 7 7"/></svg></div><div class="lead-cat-label">Family</div><div class="lead-cat-sub">Seeking care</div></button>
+      <button class="lead-cat" data-cat="physician" aria-label="Physician making a referral"><div class="lc-icon"><svg width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="5" y="4" width="12" height="14" rx="2"/><path d="M11 8v5M8.5 10.5h5" stroke-linecap="round"/></svg></div><div class="lead-cat-label">Physician</div><div class="lead-cat-sub">Referring</div></button>
+      <button class="lead-cat" data-cat="casemanager" aria-label="Case manager or discharge planner"><div class="lc-icon"><svg width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="4" y="6" width="14" height="11" rx="2"/><path d="M8 6V4h6v2"/></svg></div><div class="lead-cat-label">Case Manager</div><div class="lead-cat-sub">Discharge planning</div></button>
+      <button class="lead-cat" data-cat="coordinator" aria-label="Care coordinator or patient advocate"><div class="lc-icon"><svg width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="7"/><path d="M11 7v4l3 2" stroke-linecap="round"/></svg></div><div class="lead-cat-label">Care Ally</div><div class="lead-cat-sub">Coordinator / advocate</div></button>
+      <button class="lead-cat" data-cat="voice" aria-label="Share my voice in the Care Brief"><div class="lc-icon"><svg width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="8.25" y="3" width="5.5" height="9.5" rx="2.75"/><path d="M5.5 10.5a5.5 5.5 0 0011 0M11 16.5v2.5" stroke-linecap="round"/></svg></div><div class="lead-cat-label">Share Your Voice</div><div class="lead-cat-sub">Care Brief · education</div></button>
     </div>
-    <form class="lead-form show" data-form="family" name="elh-family" method="POST" data-netlify="true" netlify-honeypot="bot-field" action="/"><input type="hidden" name="form-name" value="elh-family"><input type="hidden" name="audience" value="family"><p class="hp" style="display:none"><label>Leave blank<input name="bot-field"></label></p><div class="lf-grid"><div class="lf-field"><label>First Name<input name="first_name" required type="text" placeholder="First name" data-clarity-mask="True"></label></div><div class="lf-field"><label>Last Name<input name="last_name" required type="text" placeholder="Last name" data-clarity-mask="True"></label></div><div class="lf-field"><label>Phone<input name="phone" required type="tel" placeholder="805.000.0000" data-clarity-mask="True"></label></div><div class="lf-field"><label>Email<input name="email" type="email" placeholder="you@email.com" data-clarity-mask="True"></label></div><div class="lf-field"><label>Relationship to Patient<select name="relationship"><option>Select…</option><option>Son / Daughter</option><option>Spouse / Loved one</option><option>Other family member</option><option>Self</option><option>Friend / Caregiver</option></select></label></div><div class="lf-field full"><label>How can we help?<textarea name="message" placeholder="Tell us a little about your situation." data-clarity-mask="True" No medical details needed right now."></textarea></label></div></div><p class="lf-note">A member of our admissions team will reach out within hours. There is no cost or obligation to talk.</p><button class="btn btn-plum" data-submit="family">Request a Call →</button></form>
-    <form class="lead-form" data-form="physician" name="elh-physician" method="POST" data-netlify="true" netlify-honeypot="bot-field" action="/"><input type="hidden" name="form-name" value="elh-physician"><input type="hidden" name="audience" value="referral"><p class="hp" style="display:none"><label>Leave blank<input name="bot-field"></label></p><div class="lf-grid"><div class="lf-field"><label>Provider First Name<input name="provider_first_name" required type="text" placeholder="First name"></label></div><div class="lf-field"><label>Provider Last Name<input name="provider_last_name" required type="text" placeholder="Last name"></label></div><div class="lf-field"><label>Practice / Facility<input name="practice" type="text" placeholder="Practice name"></label></div><div class="lf-field"><label>Direct Phone<input name="phone" required type="tel" placeholder="805.000.0000"></label></div><div class="lf-field"><label>NPI Number (optional)<input name="npi" type="text" placeholder="10-digit NPI"></label></div><div class="lf-field full"><label>Patient Situation — general, no PHI required<textarea name="situation" placeholder="General description. Our intake team follows up to complete the referral securely."></textarea></label></div><div class="lf-field"><label>Coverage County<select name="county"><option>Select…</option><option>Ventura</option><option>Los Angeles</option></select></label></div><div class="lf-field"><label>Preferred Contact Time<input name="preferred_time" type="text" placeholder="e.g. mornings"></label></div></div><p class="lf-note">This form collects no protected health information. Clinical intake responds within 2 hours. Urgent admissions: <strong style="color:var(--plum)">805.953.7273</strong>.</p><button class="btn btn-plum" data-submit="physician">Submit Referral →</button></form>
-    <form class="lead-form" data-form="casemanager" name="elh-casemanager" method="POST" data-netlify="true" netlify-honeypot="bot-field" action="/"><input type="hidden" name="form-name" value="elh-casemanager"><input type="hidden" name="audience" value="referral"><p class="hp" style="display:none"><label>Leave blank<input name="bot-field"></label></p><div class="lf-grid"><div class="lf-field"><label>First Name<input name="first_name" required type="text" placeholder="First name"></label></div><div class="lf-field"><label>Last Name<input name="last_name" required type="text" placeholder="Last name"></label></div><div class="lf-field"><label>Hospital / Facility<input name="facility" type="text" placeholder="Facility name"></label></div><div class="lf-field"><label>Direct Phone<input name="phone" required type="tel" placeholder="805.000.0000"></label></div><div class="lf-field"><label>Email<input name="email" type="email" placeholder="you@facility.org"></label></div><div class="lf-field full"><label>Discharge Timeline &amp; Needs — general, no PHI<textarea name="needs" placeholder="When does the patient need placement? Any special needs we should prepare for?"></textarea></label></div><div class="lf-field"><label>Coverage County<select name="county"><option>Select…</option><option>Ventura</option><option>Los Angeles</option></select></label></div><div class="lf-field"><label>Urgency<select name="urgency"><option>Select…</option><option>Same-day</option><option>Within 48 hours</option><option>This week</option><option>Planning ahead</option></select></label></div></div><p class="lf-note">Same-day admissions available. No PHI collected here — we coordinate securely by phone. Urgent: <strong style="color:var(--plum)">805.953.7273</strong>.</p><button class="btn btn-plum" data-submit="casemanager">Submit Discharge Referral →</button></form>
-    <form class="lead-form" data-form="coordinator" name="elh-coordinator" method="POST" data-netlify="true" netlify-honeypot="bot-field" action="/"><input type="hidden" name="form-name" value="elh-coordinator"><input type="hidden" name="audience" value="referral"><p class="hp" style="display:none"><label>Leave blank<input name="bot-field"></label></p><div class="lf-grid"><div class="lf-field"><label>First Name<input name="first_name" required type="text" placeholder="First name"></label></div><div class="lf-field"><label>Last Name<input name="last_name" required type="text" placeholder="Last name"></label></div><div class="lf-field"><label>Organization<input name="organization" type="text" placeholder="Agency or practice"></label></div><div class="lf-field"><label>Role<select name="role"><option>Select…</option><option>Geriatric Care Manager</option><option>Placement Specialist</option><option>Social Worker</option><option>Patient Advocate</option><option>Other</option></select></label></div><div class="lf-field"><label>Phone<input name="phone" required type="tel" placeholder="805.000.0000"></label></div><div class="lf-field full"><label>How would you like to connect?<textarea name="message" placeholder="Tell us about your work and how we might support the families you serve."></textarea></label></div></div><p class="lf-note">We welcome relationships with care coordinators and advocates across the region. We'll reach out to introduce ourselves personally.</p><button class="btn btn-plum" data-submit="coordinator">Start the Conversation →</button></form>
-    <form class="lead-form" data-form="voice" name="elh-voice" method="POST" data-netlify="true" netlify-honeypot="bot-field" action="/"><input type="hidden" name="form-name" value="elh-voice"><input type="hidden" name="audience" value="professional"><p class="hp" style="display:none"><label>Leave blank<input name="bot-field"></label></p><div class="lf-grid"><div class="lf-field"><label>First Name<input name="first_name" required type="text" placeholder="First name"></label></div><div class="lf-field"><label>Last Name<input name="last_name" required type="text" placeholder="Last name"></label></div><div class="lf-field"><label>Organization / Practice<input name="organization" type="text" placeholder="Where you serve"></label></div><div class="lf-field"><label>Role / Credential<input name="role" type="text" placeholder="e.g. RN, MSW, MD, Chaplain"></label></div><div class="lf-field"><label>Email<input name="email" required type="email" placeholder="you@organization.org" data-clarity-mask="True"></label></div><div class="lf-field"><label>Phone (optional)<input name="phone" type="tel" placeholder="805.000.0000" data-clarity-mask="True"></label></div><div class="lf-field full"><label>I'd like to…<select name="interest"><option>Select…</option><option>Share my voice in The Eternal Care Brief</option><option>Be featured in a future issue</option><option>Schedule an education session with The Eternal Team</option><option>Schedule a speaking engagement with Aleksandra</option><option>Set up a time to connect</option><option>All of the above</option></select></label></div><div class="lf-field full"><label>What would you like to share?<textarea name="message" placeholder="Tell us about your experience" data-clarity-mask="True", your perspective, or a topic you believe clinicians and families need to hear."></textarea></label></div></div><p class="lf-note">The Eternal Care Brief is built on real voices from the field. If your experience could help the clinicians and families who read it, we'd be honored to feature it — and to find the way to connect that serves you best.</p><button class="btn btn-plum" data-submit="voice">Share My Voice →</button></form>
-    <div class="lead-success" id="leadSuccess"><div class="ls-icon"><svg width="30" height="30" viewBox="0 0 30 30" fill="none" stroke="#43697F" stroke-width="2"><path d="M8 15l5 5 9-11" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="ls-title">Thank you. We've received your message.</div><div class="ls-body">A member of our team will reach out shortly. To speak with someone right away, call us anytime at <a href="tel:18059537273" style="color:var(--plum);font-weight:700;text-decoration:none">805.953.7273</a>.</div></div>
+    <form class="lead-form show" data-form="family" name="elh-family" tool-name="contact-elh" tool-description="Contact Eternal Life Hospice: general inquiries, hospice questions, or request a callback from a family or patient." method="POST" action="/api/form-submit"><input type="hidden" name="form-name" value="elh-family"><input type="hidden" name="audience" value="family"><p class="hp" style="display:none"><label>Leave blank<input name="bot-field"></label></p><div class="lf-grid"><div class="lf-field"><label>First Name<input name="first_name" required type="text" autocomplete="given-name" placeholder="First name" data-clarity-mask="True"></label></div><div class="lf-field"><label>Last Name<input name="last_name" required type="text" autocomplete="family-name" placeholder="Last name" data-clarity-mask="True"></label></div><div class="lf-field"><label>Phone<input name="phone" required type="tel" autocomplete="tel" placeholder="805.000.0000" data-clarity-mask="True"></label></div><div class="lf-field"><label>Email<input name="email" type="email" autocomplete="email" placeholder="you@email.com" data-clarity-mask="True"></label></div><div class="lf-field"><label>Relationship to Patient<select name="relationship" autocomplete="off"><option>Select…</option><option>Son / Daughter</option><option>Spouse / Loved one</option><option>Other family member</option><option>Self</option><option>Friend / Caregiver</option></select></label></div><div class="lf-field full"><label>How can we help?<textarea name="message" autocomplete="off" placeholder="Tell us a little about your situation. No medical details needed right now." data-clarity-mask="True"></textarea></label></div></div><p class="lf-note">A member of our admissions team will reach out within hours. There is no cost or obligation to talk.</p><button class="btn btn-plum" data-submit="family">Request a Free Evaluation →</button></form>
+    <form class="lead-form" data-form="physician" name="elh-physician" tool-name="submit-physician-referral" tool-description="Submit a patient referral to Eternal Life Hospice. For referring physicians and providers." method="POST" action="/api/form-submit"><input type="hidden" name="form-name" value="elh-physician"><input type="hidden" name="audience" value="referral"><p class="hp" style="display:none"><label>Leave blank<input name="bot-field"></label></p><div class="lf-grid"><div class="lf-field"><label>Provider First Name<input name="provider_first_name" required type="text" autocomplete="given-name" placeholder="First name"></label></div><div class="lf-field"><label>Provider Last Name<input name="provider_last_name" required type="text" autocomplete="family-name" placeholder="Last name"></label></div><div class="lf-field"><label>Practice / Facility<input name="practice" type="text" autocomplete="organization" placeholder="Practice name"></label></div><div class="lf-field"><label>Direct Phone<input name="phone" required type="tel" autocomplete="tel" placeholder="805.000.0000"></label></div><div class="lf-field"><label>NPI Number (optional)<input name="npi" type="text" autocomplete="off" placeholder="10-digit NPI"></label></div><div class="lf-field full"><label>Patient Situation — general, no PHI required<textarea name="situation" autocomplete="off" placeholder="General description. Our intake team follows up to complete the referral securely."></textarea></label></div><div class="lf-field"><label>Coverage County<select name="county" autocomplete="off"><option>Select…</option><option>Ventura</option><option>Los Angeles</option></select></label></div><div class="lf-field"><label>Preferred Contact Time<input name="preferred_time" type="text" autocomplete="off" placeholder="e.g. mornings"></label></div></div><p class="lf-note">This form collects no protected health information. Clinical intake responds within 2 hours. Urgent admissions: <strong style="color:var(--plum)">805.953.7273</strong>.</p><button class="btn btn-plum" data-submit="physician">Submit Referral →</button></form>
+    <form class="lead-form" data-form="casemanager" name="elh-casemanager" tool-name="submit-discharge-referral" tool-description="Submit a discharge referral to Eternal Life Hospice. For hospital case managers and discharge planners." method="POST" action="/api/form-submit"><input type="hidden" name="form-name" value="elh-casemanager"><input type="hidden" name="audience" value="referral"><p class="hp" style="display:none"><label>Leave blank<input name="bot-field"></label></p><div class="lf-grid"><div class="lf-field"><label>First Name<input name="first_name" required type="text" autocomplete="given-name" placeholder="First name"></label></div><div class="lf-field"><label>Last Name<input name="last_name" required type="text" autocomplete="family-name" placeholder="Last name"></label></div><div class="lf-field"><label>Hospital / Facility<input name="facility" type="text" autocomplete="organization" placeholder="Facility name"></label></div><div class="lf-field"><label>Direct Phone<input name="phone" required type="tel" autocomplete="tel" placeholder="805.000.0000"></label></div><div class="lf-field"><label>Email<input name="email" type="email" autocomplete="email" placeholder="you@facility.org"></label></div><div class="lf-field full"><label>Discharge Timeline &amp; Needs — general, no PHI<textarea name="needs" autocomplete="off" placeholder="When does the patient need placement? Any special needs we should prepare for?"></textarea></label></div><div class="lf-field"><label>Coverage County<select name="county" autocomplete="off"><option>Select…</option><option>Ventura</option><option>Los Angeles</option></select></label></div><div class="lf-field"><label>Urgency<select name="urgency" autocomplete="off"><option>Select…</option><option>Same-day</option><option>Within 48 hours</option><option>This week</option><option>Planning ahead</option></select></label></div></div><p class="lf-note">Same-day admissions available. No PHI collected here — we coordinate securely by phone. Urgent: <strong style="color:var(--plum)">805.953.7273</strong>.</p><button class="btn btn-plum" data-submit="casemanager">Submit Discharge Referral →</button></form>
+    <form class="lead-form" data-form="coordinator" name="elh-coordinator" tool-name="connect-as-coordinator" tool-description="Connect with Eternal Life Hospice as a care coordinator or patient advocate." method="POST" action="/api/form-submit"><input type="hidden" name="form-name" value="elh-coordinator"><input type="hidden" name="audience" value="referral"><p class="hp" style="display:none"><label>Leave blank<input name="bot-field"></label></p><div class="lf-grid"><div class="lf-field"><label>First Name<input name="first_name" required type="text" autocomplete="given-name" placeholder="First name"></label></div><div class="lf-field"><label>Last Name<input name="last_name" required type="text" autocomplete="family-name" placeholder="Last name"></label></div><div class="lf-field"><label>Organization<input name="organization" type="text" autocomplete="organization" placeholder="Agency or practice"></label></div><div class="lf-field"><label>Role<select name="role" autocomplete="off"><option>Select…</option><option>Geriatric Care Manager</option><option>Placement Specialist</option><option>Social Worker</option><option>Patient Advocate</option><option>Other</option></select></label></div><div class="lf-field"><label>Phone<input name="phone" required type="tel" autocomplete="tel" placeholder="805.000.0000"></label></div><div class="lf-field full"><label>How would you like to connect?<textarea name="message" autocomplete="off" placeholder="Tell us about your work and how we might support the families you serve."></textarea></label></div></div><p class="lf-note">We welcome relationships with care coordinators and advocates across the region. We'll reach out to introduce ourselves personally.</p><button class="btn btn-plum" data-submit="coordinator">Start the Conversation →</button></form>
+    <form class="lead-form" data-form="voice" name="elh-voice" tool-name="share-voice-brief" tool-description="Submit interest in contributing to the Eternal Care Brief or scheduling an educational session." method="POST" action="/api/form-submit"><input type="hidden" name="form-name" value="elh-voice"><input type="hidden" name="audience" value="professional"><p class="hp" style="display:none"><label>Leave blank<input name="bot-field"></label></p><div class="lf-grid"><div class="lf-field"><label>First Name<input name="first_name" required type="text" autocomplete="given-name" placeholder="First name"></label></div><div class="lf-field"><label>Last Name<input name="last_name" required type="text" autocomplete="family-name" placeholder="Last name"></label></div><div class="lf-field"><label>Organization / Practice<input name="organization" type="text" autocomplete="organization" placeholder="Where you serve"></label></div><div class="lf-field"><label>Role / Credential<input name="role" type="text" autocomplete="off" placeholder="e.g. RN, MSW, MD, Chaplain"></label></div><div class="lf-field"><label>Email<input name="email" required type="email" autocomplete="email" placeholder="you@organization.org" data-clarity-mask="True"></label></div><div class="lf-field"><label>Phone (optional)<input name="phone" type="tel" autocomplete="tel" placeholder="805.000.0000" data-clarity-mask="True"></label></div><div class="lf-field full"><label>I'd like to…<select name="interest" autocomplete="off"><option>Select…</option><option>Share my voice in The Eternal Care Brief</option><option>Be featured in a future issue</option><option>Schedule an education session with The Eternal Team</option><option>Schedule a speaking engagement with Aleksandra</option><option>Set up a time to connect</option><option>All of the above</option></select></label></div><div class="lf-field full"><label>What would you like to share?<textarea name="message" autocomplete="off" placeholder="Tell us about your experience, your perspective, or a topic you believe clinicians and families need to hear." data-clarity-mask="True"></textarea></label></div></div><p class="lf-note">The Eternal Care Brief is built on real voices from the field. If your experience could help the clinicians and families who read it, we'd be honored to feature it — and to find the way to connect that serves you best.</p><button class="btn btn-plum" data-submit="voice">Share My Voice →</button></form>
+    <div class="lead-success" id="leadSuccess" role="status" aria-live="polite" aria-atomic="true"><div class="ls-icon"><svg width="30" height="30" viewBox="0 0 30 30" fill="none" stroke="#43697F" stroke-width="2"><path d="M8 15l5 5 9-11" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="ls-title">Thank you. We've received your message.</div><div class="ls-body">A member of our team will reach out shortly. To speak with someone right away, call us anytime at <a href="tel:18059537273" style="color:var(--plum);font-weight:700;text-decoration:none">805.953.7273</a>.</div></div>
   </div>
 <p class="lead-alt reveal">Here to join our team or volunteer? <a href="#join">See the ways to get involved →</a></p></section>
 <!-- FAQ -->
@@ -1785,6 +1791,9 @@ p,li,blockquote{text-wrap:pretty}
     <div class="collapse-card"><button class="collapse-trigger" aria-expanded="false"><div class="ct-left"><div class="ct-title">Who comes to the home?</div></div><span class="ct-chev"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="5,7 9,11 13,7"/></svg></span></button><div class="collapse-body"><div class="cb-inner"><p>Your care comes from an interdisciplinary team and most of it happens where the patient is. A registered nurse case manager leads day-to-day care, supported by a hospice physician, certified aides for personal care, a social worker, a chaplain or spiritual-care provider when wanted and trained volunteers. They visit on a schedule built around the patient. A nurse is reachable any hour of the day or night.</p></div></div></div>
     <div class="collapse-card"><button class="collapse-trigger" aria-expanded="false"><div class="ct-left"><div class="ct-title">What support is there at night or on weekends?</div></div><span class="ct-chev"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="5,7 9,11 13,7"/></svg></span></button><div class="collapse-body"><div class="cb-inner"><p>Support continues around the clock. A nurse is on call 24 hours a day, every day of the year. When you call, a real person answers and a clinician helps you through whatever is happening — including a visit to the home when one is needed.</p></div></div></div>
     <div class="collapse-card"><button class="collapse-trigger" aria-expanded="false"><div class="ct-left"><div class="ct-title">What makes Eternal Life Hospice different?</div></div><span class="ct-chev"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="5,7 9,11 13,7"/></svg></span></button><div class="collapse-body"><div class="cb-inner"><p>Three things: we are independent and integrative. We may incorporate whole-person therapies into the care plan when requested and appropriate, at no additional expense to families. And we combine the clinical depth of a nationally accredited agency with a personal, human presence that larger institutional systems find difficult to offer.</p></div></div></div>
+    <div class="collapse-card"><button class="collapse-trigger" aria-expanded="false"><div class="ct-left"><div class="ct-title">How do I refer a patient? <span style="font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--plum);margin-left:.6rem;vertical-align:middle">For Providers</span></div></div><span class="ct-chev"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="5,7 9,11 13,7"/></svg></span></button><div class="collapse-body"><div class="cb-inner"><p>Call <strong>805.953.7273</strong> anytime — our clinical intake team is available 24/7 for new referrals. You can also submit a referral form at <a href="/refer" style="color:var(--plum);font-weight:600">eternallifehospice.com/refer</a>. No protected health information is required on the initial form; our intake coordinator will follow up to collect physician orders and complete the admission securely. For urgent same-day admissions, calling directly is fastest.</p></div></div></div>
+    <div class="collapse-card"><button class="collapse-trigger" aria-expanded="false"><div class="ct-left"><div class="ct-title">What clinical criteria qualify a patient? <span style="font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--plum);margin-left:.6rem;vertical-align:middle">For Providers</span></div></div><span class="ct-chev"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="5,7 9,11 13,7"/></svg></span></button><div class="collapse-body"><div class="cb-inner"><p>Hospice eligibility requires a physician's certification that the patient has a prognosis of six months or less if the illness follows its expected course, and that the patient — or their healthcare surrogate — elects comfort-focused care rather than curative treatment. Qualifying diagnoses include advanced cancer, heart failure, COPD, dementia, end-stage renal disease, and other serious conditions with documented functional or nutritional decline. Our medical director is available to consult on specific cases.</p></div></div></div>
+    <div class="collapse-card"><button class="collapse-trigger" aria-expanded="false"><div class="ct-left"><div class="ct-title">How quickly will intake respond to a referral? <span style="font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--plum);margin-left:.6rem;vertical-align:middle">For Providers</span></div></div><span class="ct-chev"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="5,7 9,11 13,7"/></svg></span></button><div class="collapse-body"><div class="cb-inner"><p>Our intake team responds to referrals within two hours during business hours and is on call around the clock for urgent cases. Same-day admission is available when a physician order is in place and the situation warrants it. For time-sensitive discharges or crisis admissions, call <strong>805.953.7273</strong> directly — we begin coordinating immediately.</p></div></div></div>
   </div>
 </section>
 <!-- JOIN / CAREERS + VOLUNTEERS -->
@@ -1809,31 +1818,13 @@ p,li,blockquote{text-wrap:pretty}
 </main>
 <footer id="site-footer">
   <div class="foot-grid">
-    <div><div class="foot-logo"><a href="#top" aria-label="Eternal Life Hospice — home"><img loading="lazy" decoding="async" src="assets/img/elh-logo-cream-g.webp" alt="Eternal Life Hospice logo" width="331" height="74"></a></div><p class="foot-tag">Care That Honors Life.</p><p class="foot-legal">Medicare-Certified · CDPH-Licensed · ACHC-Accredited. Serving families across Ventura and Los Angeles Counties.</p><div class="foot-qr"><img src="assets/img/qr-cream.webp" alt="Scan to visit eternallifehospice.com" width="96" height="96" loading="lazy"><span>Scan to visit<br>on your phone</span></div></div>
-    <div class="foot-col"><h4>For Families</h4><a href="family-guide">Family eGuide</a><a href="resources">Resources</a><a href="blog">Journal</a><a href="volunteer">Volunteer</a><a href="careers">Careers</a><a href="#coverage">Coverage Area</a></div><div class="foot-col"><h4>For Providers</h4><a href="/refer">Refer With Confidence</a><a href="/referral-card">Referral eCard</a><a href="/?lead=voice#leadcap">Schedule an Educational Session</a></div><div class="foot-col"><h4>Resources</h4><a href="/media-kit">Media Kit</a><a href="/care-brief/hospice-is-part-of-life-a-continuation-of-care">Care Brief</a><a href="family-guide">Family eGuide</a></div>
-    <div class="foot-col"><h4>Our Care</h4><a href="#standard">The Eternal Standard</a><a href="#first48">The First 48 Hours</a><a href="#modalities">Integrative Therapies</a><a href="#clinical-mobile">Clinical &amp; Mobile Services</a><a href="#medicare">Insurance &amp; Medicare</a></div>
-    <div class="foot-col"><h4>Contact</h4><a class="fc-line" href="tel:18059537273"><svg class="fci" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg><span>805.953.7273</span></a><span class="fc-line fc-fax"><svg class="fci" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg><span>805.953.8530 fax</span></span><a class="fc-line" href="mailto:info@eternallifehospice.com"><svg class="fci" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"/><polyline points="22,6 12,13 2,6"/></svg><span>info@eternallifehospice.com</span></a><a class="fc-line fc-addr" href="https://maps.google.com/?cid=9771388271577679785" target="_blank" rel="noopener"><svg class="fci" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg><span>4165 E Thousand Oaks Blvd, Suite 325B<br>Westlake Village, CA 91362</span></a></div>
+    <div><div class="foot-logo"><a href="/" aria-label="Eternal Life Hospice — home"><img loading="lazy" decoding="async" src="/assets/img/elh-logo-cream-g.webp" alt="Eternal Life Hospice logo" width="331" height="74"></a></div><p class="foot-tag">Care That Honors Life.</p><p class="foot-legal">Medicare-Certified · CDPH-Licensed · ACHC-Accredited. Serving families across Ventura and Los Angeles Counties.</p><div class="foot-qr"><img src="/assets/img/qr-cream.webp" alt="Scan to visit eternallifehospice.com" width="96" height="96" loading="lazy"><span>Scan to visit<br>on your phone</span></div></div>
+    <div class="foot-col"><h2>Hospice Care</h2><a href="/resources/when-is-it-time">When Is It Time?</a><a href="/resources/first-48-hours">The First 48 Hours</a><a href="/resources/medicare-hospice-benefit">What Hospice Covers</a><a href="/resources/how-to-choose-a-hospice">How to Choose</a></div><div class="foot-col"><h2>Services</h2><a href="/services">All Services</a><a href="/resources/comfort-therapies">Integrative Care</a><a href="/sound-bath">Sound Bath</a></div><div class="foot-col"><h2>Resources</h2><a href="/family-guide">Family Guide</a><a href="/blog">Eternal Journal</a><a href="/care-brief">Care Brief</a><a href="/volunteer">Volunteer</a></div><div class="foot-col"><h2>Locations</h2><a href="/hospice-ventura-and-los-angeles-county-ca">All Service Areas</a><a href="/hospice-thousand-oaks-ca">Thousand Oaks</a><a href="/hospice-simi-valley-ca">Simi Valley</a><a href="/hospice-calabasas-ca">Calabasas</a></div><div class="foot-col"><h2>For Professionals</h2><a href="/refer">Refer a Patient</a><a href="/referral-card">Referral eCard</a><a href="/?lead=voice#leadcap">Schedule a Session</a></div><div class="foot-col"><h2>About</h2><a href="/#standard">Eternal Standard</a><a href="/about/aleksandra-dubina">Aleksandra Dubina</a><a href="/careers">Careers</a><a href="/media-kit">Media Kit</a></div><div class="foot-col"><h2>Contact</h2><a class="fc-line" href="tel:18059537273"><svg class="fci" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 1 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg><span>805.953.7273</span></a><span class="fc-line fc-direct"><svg class="fci" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 1 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg><span>805.953.7273 · Direct</span></span><span class="fc-line fc-fax"><svg class="fci" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg><span>805.953.8530 fax</span></span><a class="fc-line" href="mailto:info@eternallifehospice.com"><svg class="fci" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"/><polyline points="22,6 12,13 2,6"/></svg><span>info@eternallifehospice.com</span></a><a class="fc-line fc-addr" href="https://maps.google.com/?cid=9771388271577679785" target="_blank" rel="noopener"><svg class="fci" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg><span>4165 E Thousand Oaks Blvd, Suite 325B<br>Westlake Village, CA 91362</span></a></div>
   </div>
-  <nav class="foot-social" aria-label="Eternal Life Hospice on social media"><span class="fs-label">Stay Connected</span><a href="https://www.linkedin.com/company/eternal-life-hospice/" target="_blank" rel="noopener" aria-label="Visit Eternal Life Hospice on LinkedIn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4V9h4v1.57A6 6 0 0 1 16 8z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg></a><a href="https://www.facebook.com/eternallifehospiceinc" target="_blank" rel="noopener" aria-label="Visit Eternal Life Hospice on Facebook"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg></a><a href="https://www.instagram.com/eternallifehospice/" target="_blank" rel="noopener" aria-label="Visit Eternal Life Hospice on Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg></a><a href="https://www.youtube.com/@EternalLifeHospice" target="_blank" rel="noopener" aria-label="Watch Eternal Life Hospice on YouTube"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z"/><polygon points="9.75 15.02 15.5 11.75 9.75 8.48"/></svg></a><a href="https://yelp.to/uEz7kTDDl6" target="_blank" rel="noopener" aria-label="Eternal Life Hospice on Yelp"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false"><path d="m7.6885 15.1415-3.6715.8483c-.3769.0871-.755.183-1.1452.155-.2611-.0188-.5122-.0414-.7606-.213a1.179 1.179 0 0 1-.331-.3594c-.3486-.5519-.3656-1.3661-.3697-2.0004a6.2874 6.2874 0 0 1 .3314-2.0642 1.857 1.857 0 0 1 .1073-.2474 2.3426 2.3426 0 0 1 .1255-.2165 2.4572 2.4572 0 0 1 .1563-.1975 1.1736 1.1736 0 0 1 .399-.2831 1.082 1.082 0 0 1 .4592-.0837c.2355.0016.5139.052.91.1734.0555.0191.1237.0382.1856.0572.3277.1013.7048.2404 1.1499.3987.6863.2404 1.3663.487 2.0463.7397l1.2117.4423c.2217.0807.4363.18.6412.297.174.0984.3273.2298.4512.387a1.217 1.217 0 0 1 .192.4309 1.2205 1.2205 0 0 1-.872 1.4522c-.0468.0151-.0852.0239-.1085.0293l-1.105.2553-.0031-.001zM18.8208 7.565a1.8506 1.8506 0 0 0-.2042-.1754 2.4082 2.4082 0 0 0-.2077-.1394 2.3607 2.3607 0 0 0-.2269-.109 1.1705 1.1705 0 0 0-.482-.0796 1.0862 1.0862 0 0 0-.4498.1263c-.2107.1048-.4388.2732-.742.5551-.042.0417-.0947.0886-.142.133-.2502.2351-.5286.5252-.8599.863a114.6363 114.6363 0 0 0-1.5166 1.5629l-.8962.9293a4.1897 4.1897 0 0 0-.4466.5483 1.541 1.541 0 0 0-.2364.5459 1.2199 1.2199 0 0 0 .0107.4518l.0046.02a1.218 1.218 0 0 0 1.4184.923 1.162 1.162 0 0 0 .1105-.0213l4.7781-1.104c.3766-.087.7587-.1667 1.097-.3631.2269-.1316.4428-.262.5909-.5252a1.1793 1.1793 0 0 0 .1405-.4683c.0733-.6512-.2668-1.3908-.5403-1.963a6.2792 6.2792 0 0 0-1.2001-1.7103zM8.9703.0754a8.6724 8.6724 0 0 0-.83.1564c-.2754.066-.548.1383-.8146.2236-.868.2844-2.0884.8063-2.295 1.8065-.1165.5655.1595 1.1439.3737 1.66.2595.6254.614 1.1889.9373 1.7777.8543 1.5545 1.7245 3.0993 2.5922 4.6457.259.4617.5416 1.0464 1.043 1.2856a1.058 1.058 0 0 0 .1013.0383c.2248.0851.4699.1016.7041.0471a4.3015 4.3015 0 0 0 .0418-.0097 1.2136 1.2136 0 0 0 .5658-.3397 1.1033 1.1033 0 0 0 .079-.0822c.3463-.435.3454-1.0833.3764-1.6134.1042-1.771.2139-3.5423.3009-5.3142.0332-.6712.1055-1.3333.0655-2.0096-.0328-.5579-.0368-1.1984-.3891-1.6563-.6218-.8073-1.9476-.741-2.8523-.6158zm2.084 15.9505a1.1053 1.1053 0 0 0-1.2306-.4145 1.1398 1.1398 0 0 0-.1526.0633 1.4806 1.4806 0 0 0-.2171.1354c-.1992.1475-.3668.3392-.5196.5315-.0386.049-.074.1143-.12.1562l-.7686 1.0573a113.9168 113.9168 0 0 0-1.2913 1.789c-.278.3895-.5184.7184-.7083 1.0094-.036.0547-.0734.116-.1075.1647-.2277.3522-.3566.6092-.4228.8381a1.0945 1.0945 0 0 0-.046.4721c.0211.1655.0768.3246.1635.467.046.0715.0957.1406.1487.207a2.334 2.334 0 0 0 .1754.1825 1.843 1.843 0 0 0 .2108.1732c.5304.369 1.1112.6342 1.722.8391a6.0958 6.0958 0 0 0 1.5716.3004c.091.0046.1821.0025.2728-.006a2.3878 2.3878 0 0 0 .2506-.0351 2.3862 2.3862 0 0 0 .2447-.071 1.1927 1.1927 0 0 0 .4175-.2658c.1127-.113.1994-.249.2541-.3989.0889-.2214.1473-.5026.1857-.92.0034-.0593.0118-.1305.0177-.1958.0304-.3463.0443-.7531.0666-1.2315.0375-.7357.067-1.4681.0903-2.2026 0 0 .0495-1.3053.0494-1.306.0113-.3008.002-.6342-.0814-.9336a1.396 1.396 0 0 0-.1756-.4054zm8.6754 2.0439c-.1605-.176-.3878-.3514-.7462-.5682-.0518-.0288-.1124-.0674-.1684-.1009-.2985-.1795-.658-.3684-1.078-.5965a120.7615 120.7615 0 0 0-1.9427-1.042l-1.1515-.6107c-.0597-.0175-.1203-.0607-.1766-.0878-.2212-.1058-.4558-.2045-.6992-.2498a1.4915 1.4915 0 0 0-.2545-.0265 1.1527 1.1527 0 0 0-.1648.01 1.1077 1.1077 0 0 0-.9227.9133 1.4186 1.4186 0 0 0 .0159.439c.0563.3065.1932.6096.3346.875l.615 1.1526c.3422.65.6884 1.2963 1.0435 1.9406.229.4202.4196.7799.5982 1.078.0338.056.0721.1163.1011.1682.2173.3584.392.584.569.7458.1146.1107.252.195.4026.247.1583.0525.326.071.4919.0546a2.368 2.368 0 0 0 .251-.0435c.0817-.022.1622-.048.241-.0784a1.863 1.863 0 0 0 .2475-.1143 6.1018 6.1018 0 0 0 1.2818-.9597c.4596-.4522.8659-.9454 1.182-1.51.044-.08.0819-.163.1138-.2483a2.49 2.49 0 0 0 .0773-.2411c.0186-.083.033-.1669.0429-.2513a1.188 1.188 0 0 0-.0565-.491 1.0933 1.0933 0 0 0-.248-.4041z"/></svg></a><span class="fs-invite">An invitation to learn, share &amp; contribute in The Eternal Care Brief</span><a class="foot-signup" href="/care-brief#signup">Sign up today &#8594;</a></nav>
-  <div class="foot-disclaimer"><strong>Disclaimer:</strong> Eternal Life Hospice Inc. is a licensed and Medicare-certified hospice care provider. We do not sell, prescribe, dispense or ship prescription medications, and we do not operate an online pharmacy or telemedicine prescribing service. All hospice services are provided in person by licensed healthcare professionals. Any references to Medicare coverage, medication support or medical coordination relate solely to patient care delivered under physician direction and do not constitute prescription drug sales or online medical services. The integrative modalities described are complementary care offered for patient comfort and wellbeing; they are not intended to diagnose, treat, cure or prevent any medical condition. Medicare coverage details are subject to change; confirm current eligibility with your care team or call <a href="tel:18006334227" style="color:inherit;text-decoration:none">1.800.MEDICARE</a>.</div>
-  <div class="foot-translate">
-    <span class="ft-label">Translate this page</span>
-    <div class="ft-lang-btns">
-      <a class="ft-lang" data-lang="es">🇲🇽 Español</a>
-      <a class="ft-lang" data-lang="ru">🇷🇺 Русский</a>
-      <a class="ft-lang" data-lang="uk">🇺🇦 Українська</a>
-      <a class="ft-lang" data-lang="ko">🇰🇷 한국어</a>
-      <a class="ft-lang" data-lang="hy">🇦🇲 Հայերեն</a>
-      <a class="ft-lang" data-lang="tl">🇵🇭 Filipino</a>
-      <a class="ft-lang" data-lang="vi">🇻🇳 Tiếng Việt</a>
-      <a class="ft-lang" data-lang="zh-CN">🇨🇳 中文</a>
-      <a class="ft-lang" data-lang="ar">🇸🇦 العربية</a>
-      <a class="ft-lang" data-lang="fa">🇮🇷 فارسی</a>
-    </div>
-  </div>
-  <div class="foot-bottom"><span>© 2026 Eternal Life Hospice Inc. All rights reserved. · A <a href="https://conduitint.com" target="_blank" rel="noopener" style="color:inherit;text-decoration:none">Conduit International</a> build</span><span class="foot-bottom-links"><a href="/privacy-policy" style="text-decoration:none">Privacy Policy</a> &nbsp;·&nbsp; <a href="/terms" style="text-decoration:none">Terms &amp; Conditions</a> &nbsp;&middot;&nbsp; <a href="#" onclick="window.elhCookieSettings&amp;&amp;window.elhCookieSettings();return false;" style="color:inherit;text-decoration:none">Cookie Settings</a></span></div>
+  <nav class="foot-social" aria-label="Eternal Life Hospice on social media"><span class="fs-label">Stay Connected</span><a href="https://www.linkedin.com/company/eternal-life-hospice/" target="_blank" rel="noopener" aria-label="Visit Eternal Life Hospice on LinkedIn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4V9h4v1.57A6 6 0 0 1 16 8z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg></a><a href="https://www.facebook.com/eternallifehospiceinc" target="_blank" rel="noopener" aria-label="Visit Eternal Life Hospice on Facebook"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg></a><a href="https://www.instagram.com/eternallifehospice/" target="_blank" rel="noopener" aria-label="Visit Eternal Life Hospice on Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg></a><a href="https://www.youtube.com/@EternalLifeHospice" target="_blank" rel="noopener" aria-label="Watch Eternal Life Hospice on YouTube"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z"/><polygon points="9.75 15.02 15.5 11.75 9.75 8.48"/></svg></a><a href="https://yelp.to/uEz7kTDDl6" target="_blank" rel="noopener" aria-label="Eternal Life Hospice on Yelp"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false"><path d="m7.6885 15.1415-3.6715.8483c-.3769.0871-.755.183-1.1452.155-.2611-.0188-.5122-.0414-.7606-.213a1.179 1.179 0 0 1-.331-.3594c-.3486-.5519-.3656-1.3661-.3697-2.0004a6.2874 6.2874 0 0 1 .3314-2.0642 1.857 1.857 0 0 1 .1073-.2474 2.3426 2.3426 0 0 1 .1255-.2165 2.4572 2.4572 0 0 1 .1563-.1975 1.1736 1.1736 0 0 1 .399-.2831 1.082 1.082 0 0 1 .4592-.0837c.2355.0016.5139.052.91.1734.0555.0191.1237.0382.1856.0572.3277.1013.7048.2404 1.1499.3987.6863.2404 1.3663.487 2.0463.7397l1.2117.4423c.2217.0807.4363.18.6412.297.174.0984.3273.2298.4512.387a1.217 1.217 0 0 1 .192.4309 1.2205 1.2205 0 0 1-.872 1.4522c-.0468.0151-.0852.0239-.1085.0293l-1.105.2553-.0031-.001zM18.8208 7.565a1.8506 1.8506 0 0 0-.2042-.1754 2.4082 2.4082 0 0 0-.2077-.1394 2.3607 2.3607 0 0 0-.2269-.109 1.1705 1.1705 0 0 0-.482-.0796 1.0862 1.0862 0 0 0-.4498.1263c-.2107.1048-.4388.2732-.742.5551-.042.0417-.0947.0886-.142.133-.2502.2351-.5286.5252-.8599.863a114.6363 114.6363 0 0 0-1.5166 1.5629l-.8962.9293a4.1897 4.1897 0 0 0-.4466.5483 1.541 1.541 0 0 0-.2364.5459 1.2199 1.2199 0 0 0 .0107.4518l.0046.02a1.218 1.218 0 0 0 1.4184.923 1.162 1.162 0 0 0 .1105-.0213l4.7781-1.104c.3766-.087.7587-.1667 1.097-.3631.2269-.1316.4428-.262.5909-.5252a1.1793 1.1793 0 0 0 .1405-.4683c.0733-.6512-.2668-1.3908-.5403-1.963a6.2792 6.2792 0 0 0-1.2001-1.7103zM8.9703.0754a8.6724 8.6724 0 0 0-.83.1564c-.2754.066-.548.1383-.8146.2236-.868.2844-2.0884.8063-2.295 1.8065-.1165.5655.1595 1.1439.3737 1.66.2595.6254.614 1.1889.9373 1.7777.8543 1.5545 1.7245 3.0993 2.5922 4.6457.259.4617.5416 1.0464 1.043 1.2856a1.058 1.058 0 0 0 .1013.0383c.2248.0851.4699.1016.7041.0471a4.3015 4.3015 0 0 0 .0418-.0097 1.2136 1.2136 0 0 0 .5658-.3397 1.1033 1.1033 0 0 0 .079-.0822c.3463-.435.3454-1.0833.3764-1.6134.1042-1.771.2139-3.5423.3009-5.3142.0332-.6712.1055-1.3333.0655-2.0096-.0328-.5579-.0368-1.1984-.3891-1.6563-.6218-.8073-1.9476-.741-2.8523-.6158zm2.084 15.9505a1.1053 1.1053 0 0 0-1.2306-.4145 1.1398 1.1398 0 0 0-.1526.0633 1.4806 1.4806 0 0 0-.2171.1354c-.1992.1475-.3668.3392-.5196.5315-.0386.049-.074.1143-.12.1562l-.7686 1.0573a113.9168 113.9168 0 0 0-1.2913 1.789c-.278.3895-.5184.7184-.7083 1.0094-.036.0547-.0734.116-.1075.1647-.2277.3522-.3566.6092-.4228.8381a1.0945 1.0945 0 0 0-.046.4721c.0211.1655.0768.3246.1635.467.046.0715.0957.1406.1487.207a2.334 2.334 0 0 0 .1754.1825 1.843 1.843 0 0 0 .2108.1732c.5304.369 1.1112.6342 1.722.8391a6.0958 6.0958 0 0 0 1.5716.3004c.091.0046.1821.0025.2728-.006a2.3878 2.3878 0 0 0 .2506-.0351 2.3862 2.3862 0 0 0 .2447-.071 1.1927 1.1927 0 0 0 .4175-.2658c.1127-.113.1994-.249.2541-.3989.0889-.2214.1473-.5026.1857-.92.0034-.0593.0118-.1305.0177-.1958.0304-.3463.0443-.7531.0666-1.2315.0375-.7357.067-1.4681.0903-2.2026 0 0 .0495-1.3053.0494-1.306.0113-.3008.002-.6342-.0814-.9336a1.396 1.396 0 0 0-.1756-.4054zm8.6754 2.0439c-.1605-.176-.3878-.3514-.7462-.5682-.0518-.0288-.1124-.0674-.1684-.1009-.2985-.1795-.658-.3684-1.078-.5965a120.7615 120.7615 0 0 0-1.9427-1.042l-1.1515-.6107c-.0597-.0175-.1203-.0607-.1766-.0878-.2212-.1058-.4558-.2045-.6992-.2498a1.4915 1.4915 0 0 0-.2545-.0265 1.1527 1.1527 0 0 0-.1648.01 1.1077 1.1077 0 0 0-.9227.9133 1.4186 1.4186 0 0 0 .0159.439c.0563.3065.1932.6096.3346.875l.615 1.1526c.3422.65.6884 1.2963 1.0435 1.9406.229.4202.4196.7799.5982 1.078.0338.056.0721.1163.1011.1682.2173.3584.392.584.569.7458.1146.1107.252.195.4026.247.1583.0525.326.071.4919.0546a2.368 2.368 0 0 0 .251-.0435c.0817-.022.1622-.048.241-.0784a1.863 1.863 0 0 0 .2475-.1143 6.1018 6.1018 0 0 0 1.2818-.9597c.4596-.4522.8659-.9454 1.182-1.51.044-.08.0819-.163.1138-.2483a2.49 2.49 0 0 0 .0773-.2411c.0186-.083.033-.1669.0429-.2513a1.188 1.188 0 0 0-.0565-.491 1.0933 1.0933 0 0 0-.248-.4041z"/></svg></a><span class="fs-invite">An invitation to learn, share &amp; contribute in The Eternal Care Brief</span><a class="foot-signup" href="/care-brief#signup">Share the Eternal Care Brief &#8594;</a></nav>
+  <div class="foot-disclaimer"><strong style="color:rgba(245,240,235,.5)">Disclaimer:</strong> Eternal Life Hospice Inc. is a licensed and Medicare-certified hospice care provider. We do not sell, prescribe, dispense or ship prescription medications, and we do not operate an online pharmacy or telemedicine prescribing service. All hospice services are provided in person by licensed healthcare professionals. Any references to Medicare coverage, medication support or medical coordination relate solely to patient care delivered under physician direction and do not constitute prescription drug sales or online medical services. The integrative modalities described are complementary care offered for patient comfort and wellbeing; they are not intended to diagnose, treat, cure or prevent any medical condition. Medicare coverage details are subject to change; confirm current eligibility with your care team or call <a href="tel:18006334227" style="color:inherit;text-decoration:none">1.800.MEDICARE</a>.</div>
+  <div class="foot-bottom"><span>© 2026 Eternal Life Hospice Inc. All rights reserved.</span><span class="foot-bottom-links"><a href="/privacy-policy" style="text-decoration:none">Privacy Policy</a> &nbsp;·&nbsp; <a href="/terms" style="text-decoration:none">Terms &amp; Conditions</a> &nbsp;&middot;&nbsp; <a href="#" onclick="window.elhCookieSettings&amp;&amp;window.elhCookieSettings();return false;" style="color:inherit;text-decoration:none">Cookie Settings</a></span></div>
 </footer>
-
 
 <script>
 (function(){
@@ -1965,15 +1956,8 @@ p,li,blockquote{text-wrap:pretty}
   var forms=document.querySelectorAll('.lead-form'), success=document.getElementById('leadSuccess');
   document.querySelectorAll('.lead-cat').forEach(function(cat){ cat.addEventListener('click', function(){ document.querySelectorAll('.lead-cat').forEach(function(c){ c.classList.remove('active'); }); cat.classList.add('active'); success.classList.remove('show'); var t=cat.dataset.cat; forms.forEach(function(f){ f.classList.toggle('show', f.dataset.form===t); }); }); });
   function leadShow(){ forms.forEach(function(f){ f.classList.remove('show'); }); success.classList.add('show'); success.scrollIntoView({behavior:'smooth',block:'center'}); }
-  document.querySelectorAll('form.lead-form').forEach(function(f){ f.addEventListener('submit', function(e){ e.preventDefault(); var body=new URLSearchParams(); new FormData(f).forEach(function(v,k){ body.append(k,v); }); fetch('/',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:body.toString()}).then(leadShow).catch(leadShow); }); });
-
-  // mobile menu — toggle open/close, close on link tap
-  var mb=document.querySelector('.menu-btn'), navEl=document.querySelector('#hdr nav');
-  function closeMenu(){ document.getElementById('hdr').classList.remove('nav-open'); if(mb) mb.setAttribute('aria-expanded','false'); }
-  function toggleMenu(){ var open=document.getElementById('hdr').classList.toggle('nav-open'); if(mb) mb.setAttribute('aria-expanded', open?'true':'false'); }
-  if(mb){ mb.addEventListener('click', toggleMenu); }
-  document.addEventListener('click', function(e){ if(document.getElementById('hdr').classList.contains('nav-open') && mb && !mb.contains(e.target)){ closeMenu(); } });
-  if(navEl){ navEl.querySelectorAll('a').forEach(function(a){ a.addEventListener('click', closeMenu); }); }
+  function leadFail(f,btn,label){if(btn){btn.disabled=false;btn.textContent=label;}var old=f.querySelector('.lead-submit-error');if(old)old.remove();var er=document.createElement('div');er.className='lead-submit-error';er.setAttribute('role','alert');er.setAttribute('aria-live','assertive');er.setAttribute('aria-atomic','true');er.style.cssText='margin-top:1rem;padding:.85rem 1rem;border:1px solid #9a2b2b;border-radius:10px;color:#7a2020;background:#fff7f5;font-size:14px;line-height:1.6';er.innerHTML="We couldn't confirm delivery. Please try again, or call us now at <a href=\"tel:18059537273\" style=\"color:var(--plum);font-weight:700\">805.953.7273</a> — we answer 24/7.";f.appendChild(er);er.scrollIntoView({behavior:'smooth',block:'center'});}
+  document.querySelectorAll('form.lead-form').forEach(function(f){ f.setAttribute('action','/api/form-submit');f.removeAttribute('data-netlify');f.removeAttribute('netlify-honeypot');f.addEventListener('submit', function(e){ e.preventDefault();var old=f.querySelector('.lead-submit-error');if(old)old.remove();var btn=f.querySelector('button[type="submit"],button:not([type])'),label=btn?btn.textContent:'';if(btn){btn.disabled=true;btn.textContent='Sending\u2026';}var body=new URLSearchParams();new FormData(f).forEach(function(v,k){body.append(k,v);});fetch('/api/form-submit',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded','Accept':'application/json'},body:body.toString()}).then(function(r){return r.json().catch(function(){return null;}).then(function(data){if(!r.ok||!data||data.ok!==true||data.accepted!==true)throw new Error('submit failed');return data;});}).then(function(data){if(window.elhTrackEvent){window.elhTrackEvent('form_success',{page:location.pathname||'/',form:f.getAttribute('name')||'unknown'});}leadShow(data);}).catch(function(){leadFail(f,btn,label);});});});
 
   // header phone pill — cycle 3 accent colors, one per hover pass
   var ctaPill=document.querySelector('#hdr .hdr-cta');
@@ -1985,11 +1969,13 @@ p,li,blockquote{text-wrap:pretty}
   (function(){
     var so=document.getElementById('searchOverlay'), si=document.getElementById('searchInput'), sr=document.getElementById('searchResults'), sb=document.getElementById('searchBtn'), sc=document.getElementById('searchClose'), idx=null, q='', fetching=false, lastFocus=null;
     function esc(s){ var d=document.createElement('div'); d.textContent=s; return d.innerHTML; }
-    function openSearch(){ if(!so) return; lastFocus=document.activeElement; so.classList.add('open'); so.setAttribute('aria-hidden','false'); so.setAttribute('aria-modal','true'); if(si){ si.focus(); si.value=''; } if(sr) sr.innerHTML=''; }
+     function searchFocusables(){ if(!so) return []; var nodes=so.querySelectorAll('a[href],button:not([disabled]),input:not([disabled]),textarea:not([disabled]),select:not([disabled]),[tabindex]:not([tabindex="-1"])'); return Array.prototype.filter.call(nodes,function(el){ return el.getAttribute('aria-hidden')!=='true' && (el.offsetWidth||el.offsetHeight||el.getClientRects().length); }); }
+     function openSearch(){ if(!so || so.classList.contains('open')) return; lastFocus=document.activeElement; so.classList.add('open'); so.setAttribute('aria-hidden','false'); so.setAttribute('aria-modal','true'); if(si){ si.focus(); si.value=''; } if(sr) sr.innerHTML=''; }
     function closeSearch(){ if(!so) return; so.classList.remove('open'); so.setAttribute('aria-hidden','true'); so.removeAttribute('aria-modal'); if(si) si.blur(); if(lastFocus&&lastFocus.focus) lastFocus.focus(); }
     if(sb) sb.addEventListener('click', openSearch);
     if(sc) sc.addEventListener('click', closeSearch);
-    document.addEventListener('keydown', function(e){ if(e.key==='Escape' && so && so.classList.contains('open')){ e.preventDefault(); closeSearch(); } if((e.metaKey||e.ctrlKey) && e.key==='k'){ e.preventDefault(); openSearch(); } });
+     document.addEventListener('keydown', function(e){ if(!so||!so.classList.contains('open')) return; if(e.key==='Escape'){ e.preventDefault(); closeSearch(); return; } if(e.key==='Tab'){ var focusables=searchFocusables(); if(!focusables.length){ e.preventDefault(); return; } var first=focusables[0], last=focusables[focusables.length-1], active=document.activeElement; if(!so.contains(active)){ e.preventDefault(); (e.shiftKey?last:first).focus(); } else if(e.shiftKey&&active===first){ e.preventDefault(); last.focus(); } else if(!e.shiftKey&&active===last){ e.preventDefault(); first.focus(); } } });
+     document.addEventListener('keydown', function(e){ if((e.metaKey||e.ctrlKey) && e.key==='k'){ e.preventDefault(); openSearch(); } });
     function doSearch(val){ q=val.toLowerCase().trim(); if(!q){ if(sr) sr.innerHTML=''; return; } if(!idx){ if(fetching) return; if(sr) sr.innerHTML='<div class="search-empty">Loading search index...</div>'; fetching=true; fetch('/assets/search-index.json').then(function(r){ return r.json(); }).then(function(data){ idx=data; fetching=false; render(); }).catch(function(){ fetching=false; if(sr) sr.innerHTML='<div class="search-empty">Unable to load search. Try again.</div>'; }); return; } render(); }
     function render(){ var hits=[]; for(var i=0;i<idx.length;i++){ var it=idx[i]; var txt=((it.title||'')+' '+(it.desc||'')+' '+(it.kw||'')).toLowerCase(); if(txt.indexOf(q)>-1){ hits.push(it); } } if(!sr) return; sr.innerHTML=''; if(!hits.length){ sr.innerHTML='<div class="search-empty">No results for "'+esc(q)+'"</div>'; return; } var c=document.createElement('div'); c.style.cssText='color:rgba(245,240,235,.4);font-size:13px;margin-bottom:.6rem;'; c.textContent=hits.length+' result'+(hits.length>1?'s':''); sr.appendChild(c); for(var j=0;j<hits.length;j++){ var r=hits[j]; var a=document.createElement('a'); a.className='search-result'; a.href=r.url||'#'; if(r.cat){ var cat=document.createElement('div'); cat.className='search-result-cat'; cat.textContent=r.cat; a.appendChild(cat); } var t=document.createElement('div'); t.className='search-result-title'; t.textContent=r.title||''; a.appendChild(t); var d=document.createElement('div'); d.className='search-result-desc'; d.textContent=r.desc||''; a.appendChild(d); sr.appendChild(a); } }
     if(si){ si.addEventListener('input', function(){ doSearch(si.value); }); si.addEventListener('keydown', function(e){ if(e.key==='Enter'){ var first=sr?sr.querySelector('.search-result'):null; if(first){ e.preventDefault(); window.location.href=first.getAttribute('href'); } } }); }
@@ -2087,19 +2073,96 @@ p,li,blockquote{text-wrap:pretty}
   audio.addEventListener('ended',function(){reset();cur=-1;show(0);});
 })();
 </script>
-<form name="elh-chat-callback" method="POST" data-netlify="true" netlify-honeypot="bot-field" action="/" hidden><input type="hidden" name="form-name" value="elh-chat-callback"><input type="hidden" name="source" value="chat"><p class="hp" style="display:none"><label>Leave blank<input name="bot-field"></label></p><input type="text" name="name"><input type="tel" name="phone"><input type="email" name="email"><input type="text" name="preferred_time"><textarea name="message"></textarea></form>
+<script>
+(function(){
+  var badge=document.getElementById('rvBadge');
+  var stars=document.getElementById('rvStars');
+  var score=document.getElementById('rvScore');
+  var label=document.getElementById('rvLabel');
+  var reel=document.getElementById('rvReel');
+  var status=document.getElementById('rvStatus');
+  if(!badge||!stars||!score||!label||!reel||!status)return;
+  var fallbackUrl='https://maps.google.com/?cid=9771388271577679785';
+  function text(value){return value==null?'':String(value);}
+  function addSep(parent){
+    var sep=document.createElement('span');
+    sep.className='rv-sep';
+    sep.textContent='◆';
+    parent.appendChild(sep);
+  }
+  function addReview(parent,review){
+    addSep(parent);
+    var item=document.createElement('span');
+    item.className='rv-item';
+    item.appendChild(document.createTextNode('"'+text(review.text)+'"'));
+    var author=document.createElement('em');
+    author.textContent=' — '+text(review.author||'Google reviewer');
+    item.appendChild(author);
+    parent.appendChild(item);
+  }
+  function render(data){
+    var rating=Number(data.rating);
+    var count=Number(data.reviewCount);
+    var rounded=Number.isFinite(rating)?Math.max(0,Math.min(5,Math.round(rating))):0;
+    stars.textContent=rounded?'★'.repeat(rounded)+'☆'.repeat(5-rounded):'Google';
+    stars.setAttribute('aria-label',Number.isFinite(rating)?rating.toFixed(1)+' out of 5 stars':'Google reviews');
+    score.textContent=Number.isFinite(rating)?rating.toFixed(1):'Google';
+    label.textContent=' · '+(Number.isFinite(count)?count.toLocaleString()+' reviews':'latest reviews')+(data.stale?' · cached':' · live');
+    badge.href=data.googleMapsUrl||fallbackUrl;
+    badge.setAttribute('aria-label',(Number.isFinite(rating)?rating.toFixed(1)+' stars — ':'')+'See the latest Google reviews');
+    reel.textContent='';
+    var reviews=Array.isArray(data.reviews)?data.reviews.filter(function(r){return r&&r.text;}):[];
+    if(!reviews.length){
+      reel.classList.add('is-static');
+      var empty=document.createElement('span');
+      empty.className='rv-item rv-live-status';
+      empty.textContent='See the latest reviews on Google.';
+      reel.appendChild(empty);
+      return;
+    }
+    reviews.forEach(function(review){addReview(reel,review);});
+    reviews.forEach(function(review){addReview(reel,review);});
+    reel.classList.remove('is-static');
+  }
+  function renderFallback(){
+    score.textContent='Google';
+    stars.textContent='★★★★★';
+    stars.setAttribute('aria-label','Google reviews');
+    label.textContent=' · see current reviews on Google';
+    badge.href=fallbackUrl;
+    badge.setAttribute('aria-label','See the latest Google reviews');
+    reel.textContent='';
+    reel.classList.add('is-static');
+    var item=document.createElement('span');
+    item.className='rv-item rv-live-status';
+    item.textContent='Live reviews are temporarily unavailable. See the latest reviews on Google.';
+    reel.appendChild(item);
+  }
+  function load(){
+    fetch('/api/google-reviews',{headers:{'Accept':'application/json'},credentials:'same-origin'})
+      .then(function(response){if(!response.ok)throw new Error('reviews unavailable');return response.json();})
+      .then(render)
+      .catch(renderFallback);
+  }
+  load();
+  window.setInterval(load,3600000);
+})();
+</script>
+<script src="/assets/header.js?v=20260901" defer></script>
 <script src="/assets/chat.js?v=20260805" defer></script>
 <!-- SEARCH OVERLAY -->
 <div class="search-overlay" id="searchOverlay" role="dialog" aria-modal="true" aria-label="Site search" aria-hidden="true">
   <div class="search-box">
-    <input type="text" id="searchInput" placeholder="Search pages, cities, resources..." autocomplete="off" aria-label="Search">
-    <button class="search-close" id="searchClose" aria-label="Close search">&times;</button>
+    <input type="text" id="searchInput" placeholder="Search pages, cities, resources..." autocomplete="off" aria-label="Search" tabindex="-1">
+    <button class="search-close" id="searchClose" aria-label="Close search" tabindex="-1">&times;</button>
   </div>
   <p class="search-hint">Press Enter to open the first result, or Escape to close</p>
   <div class="search-results" id="searchResults"></div>
 </div>
 
-
-<script defer src="/assets/translate.js?v=20260805"></script>
+<script>
+(function(){var o=document.getElementById('searchOverlay');if(!o)return;var els=o.querySelectorAll('input,button');new MutationObserver(function(ms){ms.forEach(function(m){if(m.attributeName==='aria-hidden'){var h=o.getAttribute('aria-hidden')==='true';els.forEach(function(el){el.tabIndex=h?-1:0;});}});}).observe(o,{attributes:true});})();
+</script>
+<a class="mob-call-bar" href="tel:18059537273" aria-label="Call Eternal Life Hospice — available 24/7">Call 805.953.7273 — Here 24/7</a>
 </body>
 </html>

@@ -1,4 +1,46 @@
 User-agent: *
 Allow: /
 Disallow: /assets/search-index.json
+
+# AI search and answer assistants — allowed to crawl and surface content
+User-agent: anthropic-ai
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Meta-ExternalAgent
+Allow: /
+
+User-agent: YouBot
+Allow: /
+
+# AI training crawlers — disallowed (Content-Signal: training=no)
+User-agent: GPTBot
+Disallow: /
+
+User-agent: ClaudeBot
+Disallow: /
+
+User-agent: CCBot
+Disallow: /
+
+User-agent: Bytespider
+Disallow: /
+
+User-agent: cohere-ai
+Disallow: /
+
+User-agent: Diffbot
+Disallow: /
+
+User-agent: omgili
+Disallow: /
+
+# Content policy signal for AI systems that read robots.txt metadata
+Content-Signal: training=no; search=yes; ai-input=yes
+
 Sitemap: https://eternallifehospice.com/sitemap.xml

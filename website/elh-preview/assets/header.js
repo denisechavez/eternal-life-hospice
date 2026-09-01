@@ -2,22 +2,60 @@
   var hdr = document.getElementById('hdr');
   if (!hdr) return;
 
+  var isHome = (location.pathname === '/' || location.pathname === '/index.html');
   function onScroll() {
-    hdr.classList.toggle('scrolled', window.scrollY > 60);
+    if (isHome) {
+      hdr.classList.toggle('scrolled', window.scrollY > 60);
+    } else {
+      hdr.classList.remove('scrolled');
+    }
   }
   onScroll();
   window.addEventListener('scroll', onScroll, { passive: true });
 
   var mb = hdr.querySelector('.menu-btn');
   var nav = hdr.querySelector('nav');
+  var groups = nav ? nav.querySelectorAll('.nav-group') : [];
+
+  if (nav && !nav.id) nav.id = 'site-nav';
+  if (mb && nav) mb.setAttribute('aria-controls', nav.id);
+
+  Array.prototype.forEach.call(groups, function (group, index) {
+    var parent = group.querySelector('.nav-parent');
+    var submenu = group.querySelector('.nav-sub');
+    if (!parent || !submenu) return;
+
+    var submenuId = submenu.id || 'site-nav-submenu-' + (index + 1);
+    submenu.id = submenuId;
+
+    var toggle = group.querySelector('.nav-toggle');
+    if (!toggle) {
+      toggle = document.createElement('button');
+      toggle.type = 'button';
+      toggle.className = 'nav-toggle';
+      toggle.innerHTML = '<span class="sr-only">Show submenu for ' + parent.textContent.trim() + '</span><span aria-hidden="true">&#9662;</span>';
+      parent.insertAdjacentElement('afterend', toggle);
+    }
+    toggle.setAttribute('aria-controls', submenuId);
+    toggle.setAttribute('aria-expanded', 'false');
+  });
 
   function closeMenu() {
     hdr.classList.remove('nav-open');
     if (mb) mb.setAttribute('aria-expanded', 'false');
+    collapseAllGroups();
+  }
+  function collapseAllGroups() {
+    Array.prototype.forEach.call(groups, function (group) {
+      group.classList.remove('expanded');
+      var toggle = group.querySelector('.nav-toggle');
+      if (toggle) toggle.setAttribute('aria-expanded', 'false');
+    });
   }
   function toggleMenu() {
     var open = hdr.classList.toggle('nav-open');
     if (mb) mb.setAttribute('aria-expanded', open ? 'true' : 'false');
+    if (open) collapseAllGroups(); // always open with sections collapsed
   }
 
   if (mb) {
@@ -38,10 +76,30 @@
   });
 
   if (nav) {
+    // Every link remains navigable, including top-level landing pages.
     nav.querySelectorAll('a').forEach(function (a) {
       a.addEventListener('click', closeMenu);
     });
+
+    nav.querySelectorAll('.nav-toggle').forEach(function (toggle) {
+      toggle.addEventListener('click', function () {
+        var group = toggle.parentElement;
+        var wasExpanded = group.classList.contains('expanded');
+        collapseAllGroups();
+        if (!wasExpanded) {
+          group.classList.add('expanded');
+          toggle.setAttribute('aria-expanded', 'true');
+        }
+      });
+    });
   }
+
+  document.addEventListener('keydown', function (e) {
+    if (e.key !== 'Escape' || !hdr.classList.contains('nav-open')) return;
+    e.preventDefault();
+    closeMenu();
+    if (mb) mb.focus();
+  });
 
   var ctaPill = hdr.querySelector('.hdr-cta');
   if (ctaPill) {
@@ -70,8 +128,20 @@
     return d.innerHTML;
   }
 
+  function searchFocusables() {
+    if (!so) return [];
+    var nodes = so.querySelectorAll('a[href],button:not([disabled]),input:not([disabled]),textarea:not([disabled]),select:not([disabled]),[tabindex]:not([tabindex="-1"])');
+    return Array.prototype.filter.call(nodes, function (el) {
+      return el.getAttribute('aria-hidden') !== 'true' &&
+        (el.offsetWidth || el.offsetHeight || el.getClientRects().length);
+    });
+  }
+
   function openSearch() {
-    if (!so) return;
+    if (!so || so.classList.contains('open')) return;
+    if (typeof window.elhTrackEvent === 'function') {
+      window.elhTrackEvent('site_search_open', { page: location.pathname || '/' });
+    }
     lastFocus = document.activeElement;
     so.classList.add('open');
     so.setAttribute('aria-hidden', 'false');
@@ -90,7 +160,26 @@
   if (sb) sb.addEventListener('click', openSearch);
   if (sc) sc.addEventListener('click', closeSearch);
   document.addEventListener('keydown', function (e) {
-    if (e.key === 'Escape' && so && so.classList.contains('open')) { e.preventDefault(); closeSearch(); }
+    if (!so || !so.classList.contains('open')) return;
+    if (e.key === 'Escape') { e.preventDefault(); closeSearch(); return; }
+    if (e.key === 'Tab') {
+      var focusables = searchFocusables();
+      if (!focusables.length) { e.preventDefault(); return; }
+      var first = focusables[0], last = focusables[focusables.length - 1];
+      var active = document.activeElement;
+      if (!so.contains(active)) {
+        e.preventDefault();
+        (e.shiftKey ? last : first).focus();
+      } else if (e.shiftKey && active === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && active === last) {
+        e.preventDefault();
+        first.focus();
+      }
+    }
+  });
+  document.addEventListener('keydown', function (e) {
     if ((e.metaKey || e.ctrlKey) && e.key === 'k') { e.preventDefault(); openSearch(); }
   });
 
@@ -107,13 +196,68 @@
     render();
   }
 
-  function render() {
-    var hits = [];
-    for (var i = 0; i < idx.length; i++) {
-      var it = idx[i];
-      var txt = ((it.title || '') + ' ' + (it.desc || '') + ' ' + (it.kw || '')).toLowerCase();
-      if (txt.indexOf(q) > -1) hits.push(it);
+  // Tokenize a string into lowercase alphanumeric words
+  function tokenize(s) {
+    return (s || '').toLowerCase().split(/[^a-z0-9]+/).filter(function (t) { return t.length > 0; });
+  }
+
+  // Levenshtein distance, capped early at 2 for speed
+  function editDist(a, b) {
+    if (a === b) return 0;
+    if (Math.abs(a.length - b.length) > 2) return 99;
+    var m = a.length, n = b.length;
+    var row = [], prev = [];
+    for (var j = 0; j <= n; j++) prev[j] = j;
+    for (var i = 1; i <= m; i++) {
+      row[0] = i;
+      for (var j = 1; j <= n; j++) {
+        row[j] = a[i - 1] === b[j - 1]
+          ? prev[j - 1]
+          : 1 + Math.min(prev[j], row[j - 1], prev[j - 1]);
+      }
+      var tmp = prev; prev = row; row = tmp;
     }
+    return prev[n];
+  }
+
+  // Returns true if a query token matches any token in the document token list.
+  // Rules: exact, prefix (queryTok is prefix of docTok), abbreviation
+  // (queryTok ≥ 3 chars is prefix of docTok), or 1-edit fuzzy for len ≥ 5.
+  function tokenMatches(qt, docToks) {
+    for (var k = 0; k < docToks.length; k++) {
+      var dt = docToks[k];
+      if (dt === qt) return true;                            // exact
+      if (dt.indexOf(qt) === 0 && qt.length >= 3) return true; // prefix
+      if (qt.indexOf(dt) === 0 && dt.length >= 3) return true; // query is longer prefix of doc word (abbreviation)
+      if (qt.length >= 5 && dt.length >= 4 && editDist(qt, dt) <= 1) return true; // fuzzy
+    }
+    return false;
+  }
+
+  // Score: fraction of query tokens that match something in the document.
+  // Exact whole-string match gets a bonus so it still floats to the top.
+  function scoreEntry(entry, queryToks, rawQ) {
+    var txt = ((entry.title || '') + ' ' + (entry.desc || '') + ' ' + (entry.kw || '')).toLowerCase();
+    // Fast path: exact substring match → top score
+    if (txt.indexOf(rawQ) > -1) return 1 + queryToks.length;
+    var docToks = tokenize(txt);
+    if (!queryToks.length) return 0;
+    var matched = 0;
+    for (var i = 0; i < queryToks.length; i++) {
+      if (tokenMatches(queryToks[i], docToks)) matched++;
+    }
+    return matched / queryToks.length; // 0–1
+  }
+
+  function render() {
+    var queryToks = tokenize(q);
+    var scored = [];
+    for (var i = 0; i < idx.length; i++) {
+      var sc = scoreEntry(idx[i], queryToks, q);
+      if (sc > 0) scored.push({ item: idx[i], score: sc });
+    }
+    scored.sort(function (a, b) { return b.score - a.score; });
+    var hits = scored.map(function (s) { return s.item; });
     if (!sr) return;
     sr.innerHTML = '';
     if (!hits.length) { sr.innerHTML = '<div class="search-empty">No results for "' + esc(q) + '"</div>'; return; }

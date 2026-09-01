@@ -1,25 +1,34 @@
 # Netlify configuration for Eternal Life Hospice.
-# The static site lives in website/elh-preview/. The build command runs five
+# The static site lives in website/elh-preview/. The build command runs four
 # pre-deploy checks and blocks the deploy if any fail:
 #
 #   1. check-cookie-settings.sh        — every page must carry the Cookie Settings link
-#   2. translate-smoke-test.js         — every representative page must have the
-#      translate bar wired correctly (ft-lang pills + translate.js + valid
-#      canonical URL).  Catches bulk-edit regressions before they go live.
-#   3. translate-visibility-check.js   — no inline CSS rule on any site page
-#      hides the translate bar via display:none, visibility:hidden, opacity:0,
-#      height:0, or max-height:0, and no bar element carries the HTML hidden
-#      attribute.  Catches CSS regressions that leave the markup in place but
-#      make the bar invisible to real visitors.
-#   4. test-chat-teaser.js             — the chat widget teaser auto-popup must
+#   2. test-chat-teaser.js             — the chat widget teaser auto-popup must
 #      remain a no-op (maybeShowTeaser immediately returns).  Blocks a deploy
 #      if a future edit accidentally re-enables the greeting bubble that would
 #      appear on every first visit to a hospice page.
-#   5. check-city-scripts.py           — city-page generator must not emit
+#   3. check-city-scripts.py           — city-page generator must not emit
 #      render-blocking <script> tags in <head>.  Renders a city page in-memory
 #      and checks: no external scripts without defer/async, no bare CDN src=,
 #      both deferred-loader patterns present, plus three mutation self-tests.
 #      Exits 1 and cancels the deploy if the template is broken.
+#   4. check-blog-schema.py            — Journal BlogPosting URLs must be unique.
+#      Exits 1 and cancels the deploy if the archive emits duplicate article
+#      URLs in its JSON-LD.
+#   5. check-header-parity.py          — structural header parity + _redirects validation.
+#      Verifies every standard page carries the canonical header, that every
+#      redirect stub still contains a valid redirect to its documented target,
+#      and that every local destination in _redirects resolves to a real file.
+#      Exits 1 and cancels the deploy if any check fails.
+#   6. test-header-mobile.py           — real Chromium checks at 320px and 390px.
+#      Verifies the header is not clipped and its menu/submenus remain operable.
+#
+# All four checks are wrapped by elh-predeploy.sh, which also captures their
+# combined output and verifies that every script's SENTINEL self-test line was
+# printed.  A script that has been accidentally emptied exits 0 without printing
+# its SENTINEL — the sentinel-grep step catches that and blocks the deploy.
+# This gives Netlify the same hollowed-script protection that the local
+# test-predeploy-chain.sh provides.
 #
 # We set `base` to the site folder so Netlify runs entirely inside it. This
 # isolates the deploy from the repo-root package.json (which belongs to the
@@ -29,7 +38,10 @@
 [build]
   base = "website/elh-preview"
   publish = "."
-  command = "bash ../check-cookie-settings.sh && node assets/translate-smoke-test.js && node assets/translate-visibility-check.js && node assets/test-chat-teaser.js && python3 ../check-city-scripts.py"
+  # The Netlify hostname is a separate duplicate, not the production intake
+  # host. Strip legacy Netlify Forms attributes in the ephemeral build so it
+  # cannot silently become a second referral destination.
+  command = "python3 ../strip-netlify-form-routing.py . && bash ../elh-predeploy.sh"
 
 [functions]
   directory = "netlify/functions"

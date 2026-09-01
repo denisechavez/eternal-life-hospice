@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 Regression guard: city-page generator must not emit render-blocking scripts
-===========================================================================
+---------------------------------------------------------------------------
 Renders ALL published city pages in-memory and runs four groups of checks:
 
   [1] No external <script src=…> in <head> without defer or async
@@ -66,17 +66,22 @@ def src_value(attrs):
 
 
 def find_city_hero_preload(head_html, slug):
-    """Return the first <link> tag that is rel=preload as=image for *slug*'s city hero.
+    """Return the desktop <link rel=preload as=image> for slug's full-size city hero WebP.
 
     Searches each <link> tag as a unit so all required attributes must appear
     on the same element — a decoy WebP link elsewhere in <head> cannot satisfy
     the assertions that use this helper.
+
+    Two preload tags are now emitted per city page (mobile + desktop).  This
+    function returns the DESKTOP tag whose href is exactly
+    ``assets/img/city/{slug}.webp`` — not the ``-mobile`` variant — so that
+    the href and type attribute checks below operate on a predictable tag.
     """
     for tag in re.findall(r'<link\b[^>]*>', head_html, re.IGNORECASE):
         if (re.search(r'\brel\s*=\s*["\']preload["\']', tag, re.IGNORECASE) and
                 re.search(r'\bas\s*=\s*["\']image["\']', tag, re.IGNORECASE) and
                 re.search(
-                    r'href\s*=\s*["\']assets/img/city/' + re.escape(slug),
+                    r'href\s*=\s*["\']assets/img/city/' + re.escape(slug) + r'\.webp["\']',
                     tag, re.IGNORECASE)):
             return tag
     return None
@@ -89,15 +94,16 @@ FORBIDDEN_BARE_SRC_SUBSTRINGS = [
     'ksrndkehqnwntyxlhgto.com',   # WhatConverts CDN domain
 ]
 
-# Patterns that MUST appear somewhere in the full rendered HTML
-# (belt-and-suspenders: ensures the deferred loaders are actually present).
+# Patterns that MUST appear somewhere in the full rendered HTML.
+# UserWay and WhatConverts are now bootstrapped exclusively by analytics.js,
+# so the check verifies that the analytics.js deferred script is present
+# (ensuring the consent-aware loaders will execute) rather than looking for
+# the old inline loader snippets that were removed from city page templates.
 REQUIRED_PATTERNS = [
-    ("requestIdleCallback",
-     "UserWay widget deferred via requestIdleCallback — must never revert to "
-     "inline/DOMContentLoaded"),
-    ("window.addEventListener('load'",
-     "WhatConverts tracker deferred via window load event — must never revert "
-     "to inline async"),
+    ('/assets/analytics.js',
+     "analytics.js deferred script must be present — it bootstraps UserWay "
+     "(accessibility widget, always-on) and WhatConverts (call-tracking, "
+     "consent-gated) centrally. Never inline these loaders on individual pages."),
 ]
 
 
@@ -140,6 +146,23 @@ def collect_errors(html):
     for pattern, label in REQUIRED_PATTERNS:
         if pattern not in html:
             errs.append(f"missing-deferred-pattern: {pattern!r} — {label}")
+
+    # [4] Hero image — every page must contain <img class="hero-bg">
+    if not re.search(r'<img\b[^>]*\bclass=["\'][^"\']*hero-bg', html, re.IGNORECASE):
+        errs.append(
+            'missing-hero-img: no <img class="hero-bg"> found — '
+            'hero section will render as a plain dark background'
+        )
+
+    # [5] WebP preload — <link rel="preload" as="image" …webp> must be in <head>
+    if not re.search(
+        r'<link\b[^>]*\brel\s*=\s*["\']preload["\'][^>]*\.webp',
+        head, re.IGNORECASE,
+    ):
+        errs.append(
+            'missing-webp-preload: no <link rel="preload" as="image" …webp> '
+            'in <head> — hero image will not be eagerly preloaded'
+        )
 
     return errs
 
@@ -215,116 +238,425 @@ else:
     print(f"  ✗  {msg}")
     mutation_errors.append(msg)
 
-# Mutation C — deferred-loader pattern stripped from HEAD_SCRIPTS
-_mutant_c = _base_html.replace("requestIdleCallback", "REMOVED_PATTERN")
+# Mutation C — analytics.js deferred script removed (simulates accidental deletion)
+_mutant_c = _base_html.replace("/assets/analytics.js", "/assets/REMOVED_analytics.js")
 _errs_c = collect_errors(_mutant_c)
 if any('missing-deferred-pattern' in e for e in _errs_c):
-    print("  ✓  Mutation C: removed requestIdleCallback is caught")
+    print("  ✓  Mutation C: removed analytics.js script is caught")
 else:
-    msg = "Mutation C FAILED: guard did not catch removal of requestIdleCallback"
+    msg = "Mutation C FAILED: guard did not catch removal of analytics.js deferred script"
     print(f"  ✗  {msg}")
     mutation_errors.append(msg)
 
-# ── [ 5 ] WebP hero-preload sentinel test ────────────────────────────────────
-print("\n[ 5 ] WebP hero preload — sentinel .webp triggers correct <link> tag …")
+# ── [ 5 ] Hero image + WebP preload — attribute checks and mutation tests ──────
+print("\n[ 5 ] Hero image and WebP preload — attribute checks and mutations …")
 
-_img_dir       = os.path.join(_mod.OUT_DIR, "assets", "img", "city")
-_sentinel_path = os.path.join(_img_dir, f"{_base_slug}.webp")
-_sentinel_created = False
-_webp_checks = 0
+# collect_errors already checks every published city (groups [4] and [5] inside
+# collect_errors).  This section verifies the exact tag attributes on a single
+# rendered page and runs two extra mutation tests.
+
+_base_head = extract_head(_base_html)
+
+# 5a — all three required attributes on the SAME <link> tag --------------------
+_preload_tag = find_city_hero_preload(_base_head, _base_slug)
+
+if _preload_tag is not None:
+    print(f"  ✓  <link rel=preload as=image> found for {_base_slug}")
+else:
+    msg = (f'webp-preload: no <link rel="preload" as="image"> found '
+           f'for slug {_base_slug!r}')
+    print(f"  ✗  {msg}")
+    mutation_errors.append(msg)
+
+_hero_checks = 1
+
+if _preload_tag is not None:
+    _has_webp_href = bool(re.search(
+        r'href\s*=\s*["\']assets/img/city/' + re.escape(_base_slug) + r'\.webp["\']',
+        _preload_tag, re.IGNORECASE))
+    _has_webp_type = bool(re.search(
+        r'type\s*=\s*["\']image/webp["\']', _preload_tag, re.IGNORECASE))
+
+    if _has_webp_href:
+        print(f"  ✓  preload href is assets/img/city/{_base_slug}.webp (same tag)")
+    else:
+        msg = f'webp-preload: href does not end in .webp for slug {_base_slug!r}'
+        print(f"  ✗  {msg}")
+        mutation_errors.append(msg)
+    _hero_checks += 1
+
+    if _has_webp_type:
+        print(f'  ✓  type="image/webp" present on the preload tag')
+    else:
+        msg = (f'webp-preload: type="image/webp" missing from '
+               f'<link rel=preload as=image> for {_base_slug!r}')
+        print(f"  ✗  {msg}")
+        mutation_errors.append(msg)
+    _hero_checks += 1
+else:
+    _hero_checks += 2  # count sub-checks as run (already failed above)
+
+# 5b — img.hero-bg present in the rendered hero section -----------------------
+if re.search(r'<img\b[^>]*\bclass=["\'][^"\']*hero-bg', _base_html, re.IGNORECASE):
+    print(f"  ✓  <img class=\"hero-bg\"> found in rendered page for {_base_slug}")
+else:
+    msg = f'missing-hero-img: no <img class="hero-bg"> in rendered page for {_base_slug!r}'
+    print(f"  ✗  {msg}")
+    mutation_errors.append(msg)
+_hero_checks += 1
+
+# Mutation D — strip the hero img; guard must catch it -------------------------
+_mutant_d = re.sub(
+    r'<img\b[^>]*\bclass=["\'][^"\']*hero-bg[^>]*>',
+    '', _base_html, count=1, flags=re.IGNORECASE,
+)
+_errs_d = collect_errors(_mutant_d)
+if any('missing-hero-img' in e for e in _errs_d):
+    print("  ✓  Mutation D: missing img.hero-bg is caught")
+else:
+    msg = "Mutation D FAILED: guard did not catch a page with no <img class=\"hero-bg\">"
+    print(f"  ✗  {msg}")
+    mutation_errors.append(msg)
+_hero_checks += 1
+
+# Mutation E — replace ALL city-hero WebP preloads with a JPEG preload; guard must catch it.
+# Two preload tags are now emitted (mobile + desktop), so count=1 would leave the
+# second WebP preload intact and incorrectly satisfy check [5].  Replace every
+# preload whose href contains the slug's city image path.
+_mutant_e = re.sub(
+    r'<link\b[^>]*\brel\s*=\s*["\']preload["\'][^>]*assets/img/city/'
+    + re.escape(_base_slug) + r'[^>]*\.webp[^>]*>',
+    f'<link rel="preload" as="image" href="assets/img/city/{_base_slug}.jpg" fetchpriority="high">',
+    _base_html, flags=re.IGNORECASE,
+)
+_errs_e = collect_errors(_mutant_e)
+if any('missing-webp-preload' in e for e in _errs_e):
+    print("  ✓  Mutation E: WebP preload replaced with JPEG preload is caught")
+else:
+    msg = "Mutation E FAILED: guard did not catch a page with a JPEG-only preload"
+    print(f"  ✗  {msg}")
+    mutation_errors.append(msg)
+_hero_checks += 1
+
+# Mutation F — decoy WebP prefetch must not fool the preload guard -------------
+_decoy = (f'<link rel="prefetch" as="image" '
+          f'href="assets/img/city/{_base_slug}.webp" type="image/webp">')
+_mutant_f = re.sub(
+    r'(<link\b[^>]*\brel\s*=\s*["\']preload["\'][^>]*)'
+    + re.escape(_base_slug) + r'\.webp',
+    r'\g<1>' + _base_slug + '.jpg',
+    _base_html, count=1, flags=re.IGNORECASE,
+)
+_mutant_f = _mutant_f.replace('<link rel="stylesheet"',
+                              _decoy + '\n  <link rel="stylesheet"', 1)
+_mutant_f_head = extract_head(_mutant_f)
+_mutant_preload = find_city_hero_preload(_mutant_f_head, _base_slug)
+_mutant_webp = (_mutant_preload is not None and
+                bool(re.search(r'\.webp["\']', _mutant_preload, re.IGNORECASE)) and
+                bool(re.search(r'type\s*=\s*["\']image/webp["\']',
+                               _mutant_preload, re.IGNORECASE)))
+if not _mutant_webp:
+    print("  ✓  Mutation F: decoy WebP prefetch does not satisfy preload guard")
+else:
+    msg = ("Mutation F FAILED: guard passed despite preload pointing to "
+           ".jpg while a decoy WebP prefetch was present — assertions too loose")
+    print(f"  ✗  {msg}")
+    mutation_errors.append(msg)
+_hero_checks += 1
+
+# ── Sentinel: all mutation self-tests passed ──────────────────────────────────
+# Print only when every mutation above was caught correctly.  If any mutation
+# went undetected, the script will exit 1 via combined_errors below, and this
+# sentinel will NOT appear — test-predeploy-chain.sh treats its absence as a
+# sign the self-test section was skipped or the guard is broken.
+if not mutation_errors:
+    print("\nSENTINEL: check-city-scripts.py self-test OK")
+
+# ── [ 6 ] Stale alias check — aliases whose target city is not published ───────
+
+print("\n[ 6 ] Stale alias check — every alias target must exist in city-data.json …")
+
+_alias_file = os.path.join(os.path.dirname(__file__), "city-aliases.json")
+_stale_alias_errors = []
+_redundant_alias_warnings = []   # warnings only — do not block CI
+
+
+def _normalise(s):
+    """Mirror of coverage.js normalise(): strip diacritics, lowercase, remove punctuation."""
+    import unicodedata as _ud
+    nfd = _ud.normalize("NFD", str(s or ""))
+    stripped = "".join(c for c in nfd if _ud.category(c) != "Mn")
+    return re.sub(r"\s+", " ", re.sub(r"[^a-z0-9\s]", "", stripped.lower())).strip()
+
 
 try:
-    if not os.path.isfile(_sentinel_path):
-        # Create a zero-byte sentinel so _hero_preload_tag detects a WebP file.
-        os.makedirs(_img_dir, exist_ok=True)
-        open(_sentinel_path, 'wb').close()
-        _sentinel_created = True
+    with open(_alias_file, encoding="utf-8") as _af:
+        _alias_data = json.load(_af)
 
-    # --- 5a: all three required attributes on the SAME <link> tag ---------------
-    # find_city_hero_preload returns only a tag with rel=preload + as=image +
-    # the slug's href, so a decoy WebP link elsewhere in <head> cannot pass.
-    _webp_html = _mod.render_page(_published[0])
-    _webp_head = extract_head(_webp_html)
+    _published_city_names = {c["city"] for c in _published}
+    _aliases = _alias_data.get("aliases", {})
 
-    _preload_tag = find_city_hero_preload(_webp_head, _base_slug)
+    _stale = [
+        (alias_key, target)
+        for alias_key, target in _aliases.items()
+        if target not in _published_city_names
+    ]
 
-    if _preload_tag is not None:
-        print(f"  ✓  <link rel=preload as=image> found for {_base_slug}")
-    else:
-        msg = (f'webp-preload: no <link rel="preload" as="image"> found '
-               f'for slug {_base_slug!r} when .webp file is present')
-        print(f"  ✗  {msg}")
-        mutation_errors.append(msg)
-    _webp_checks += 1
-
-    if _preload_tag is not None:
-        _has_webp_href = bool(re.search(
-            r'href\s*=\s*["\']assets/img/city/' + re.escape(_base_slug) + r'\.webp["\']',
-            _preload_tag, re.IGNORECASE))
-        _has_webp_type = bool(re.search(
-            r'type\s*=\s*["\']image/webp["\']', _preload_tag, re.IGNORECASE))
-
-        if _has_webp_href:
-            print(f"  ✓  preload href is assets/img/city/{_base_slug}.webp (same tag)")
-        else:
-            msg = (f'webp-preload: preload href does not end in .webp '
-                   f'for slug {_base_slug!r}')
+    if _stale:
+        for alias_key, target in _stale:
+            msg = (
+                f'stale-alias: "{alias_key}" → "{target}" — '
+                f'target city is absent from the published index; '
+                f'remove or update this alias in website/city-aliases.json '
+                f'(run python3 website/clean-stale-aliases.py to auto-remove)'
+            )
             print(f"  ✗  {msg}")
-            mutation_errors.append(msg)
-        _webp_checks += 1
-
-        if _has_webp_type:
-            print(f'  ✓  type="image/webp" present on the same preload tag')
-        else:
-            msg = (f'webp-preload: type="image/webp" missing from the '
-                   f'<link rel=preload as=image> tag for {_base_slug!r}')
-            print(f"  ✗  {msg}")
-            mutation_errors.append(msg)
-        _webp_checks += 1
+            _stale_alias_errors.append(("city-aliases.json", msg))
     else:
-        _webp_checks += 2  # count sub-checks as run (already failed above)
+        print(f"  ✓  all {len(_aliases)} alias(es) point to published cities")
 
-    # --- 5b: mutation — decoy WebP link must not fool the guard -----------------
-    # Replace the real preload's .webp href with .jpg (simulating a forgotten
-    # update), then inject a decoy <link> that carries type="image/webp" and a
-    # .webp href but is NOT a preload.  The guard must still reject this page.
-    _decoy = (f'<link rel="prefetch" as="image" '
-              f'href="assets/img/city/{_base_slug}.webp" type="image/webp">')
-    _mutant_d = re.sub(
-        r'(<link\b[^>]*\brel\s*=\s*["\']preload["\'][^>]*)'
-        + re.escape(_base_slug) + r'\.webp',
-        r'\g<1>' + _base_slug + '.jpg',
-        _webp_html, count=1, flags=re.IGNORECASE,
+    # Redundant alias check (warning only — does not fail CI)
+    # An alias is redundant when its key already resolves to the correct city
+    # via coverage.js step-1 exact-match logic (city name OR slug-derived name)
+    # without needing the alias entry.
+    for alias_key, target in _aliases.items():
+        if target not in _published_city_names:
+            continue  # already flagged as stale; skip
+        norm_key = _normalise(alias_key)
+        by_name = any(_normalise(c["city"]) == norm_key and c["city"] == target
+                      for c in _published)
+        by_slug = any(c.get("slug", "").replace("-", " ") == norm_key and c["city"] == target
+                      for c in _published)
+        if by_name or by_slug:
+            via = "city name" if by_name else "slug"
+            warn = (
+                f'redundant-alias: "{alias_key}" → "{target}" already resolves '
+                f'via exact match ({via}) without this alias entry — '
+                f'consider removing it from website/city-aliases.json'
+            )
+            print(f"  ⚠  {warn}")
+            _redundant_alias_warnings.append(warn)
+
+    if _redundant_alias_warnings:
+        print(f"\n  ({len(_redundant_alias_warnings)} redundant alias warning(s) above — "
+              f"these are informational and do not fail this check)")
+
+except FileNotFoundError:
+    print("  ⚠  city-aliases.json not found — skipping stale-alias check")
+except (KeyError, ValueError) as _exc:
+    print(f"  ⚠  could not parse city-aliases.json: {_exc} — skipping stale-alias check")
+
+# ── [ 7 ] services.html hero ↔ card-grid sync ─────────────────────────────────
+#
+# The hero <p> on services.html names each service by prose. A machine-readable
+# comment <!-- SERVICES-HERO-SYNC count="N" tc-count="M" --> sits just above
+# that paragraph; count must equal the number of <a class="rc"> service cards
+# and tc-count must equal the number of <a class="tc"> themed cards in the page.
+# When a card is added or removed either count will fall out of sync, which fails
+# this check — that's the signal to also update the hero copy.
+
+print("\n[ 7 ] services.html — hero ↔ card-grid sync check …")
+
+_services_path = os.path.join(os.path.dirname(__file__), "elh-preview", "services.html")
+_services_sync_errors = []
+
+try:
+    with open(_services_path, encoding="utf-8") as _sf:
+        _shtml = _sf.read()
+
+    # Strip HTML comments before counting so mentions inside comments don't
+    # pollute the card counts (e.g. the SERVICES-HERO-SYNC comment itself uses
+    # the literal text <a class="rc"> and <a class="tc"> as examples).
+    _shtml_no_comments = re.sub(r'<!--.*?-->', '', _shtml, flags=re.DOTALL)
+
+    # Count actual service (rc) cards and themed (tc) cards
+    _card_count = len(re.findall(
+        r'<a\b[^>]*\bclass=["\'][^"\']*\brc\b', _shtml_no_comments, re.IGNORECASE))
+    _tc_card_count = len(re.findall(
+        r'<a\b[^>]*\bclass=["\'][^"\']*\btc\b', _shtml_no_comments, re.IGNORECASE))
+
+    # Read the declared counts from the SERVICES-HERO-SYNC comment
+    _sync_m = re.search(
+        r'<!--\s*SERVICES-HERO-SYNC\b([^-]|-(?!->))*-->',
+        _shtml, re.IGNORECASE | re.DOTALL)
+
+    if _sync_m is None:
+        _services_sync_errors.append(
+            "services-hero-sync-marker-missing: the "
+            "<!-- SERVICES-HERO-SYNC count=\"N\" tc-count=\"M\" --> comment is "
+            "absent from services.html — add it above the hero <p> and set N to "
+            "the number of <a class=\"rc\"> cards and M to the number of "
+            "<a class=\"tc\"> themed cards in the page"
+        )
+    else:
+        _sync_text = _sync_m.group(0)
+
+        # rc-card count (count="N")
+        _rc_declared_m = re.search(
+            r'\bcount=["\'](\d+)["\']', _sync_text, re.IGNORECASE)
+        if _rc_declared_m is None:
+            _services_sync_errors.append(
+                "services-hero-sync-rc-missing: the SERVICES-HERO-SYNC comment "
+                "is present but has no count=\"N\" attribute — add count=\"N\" "
+                "where N is the number of <a class=\"rc\"> cards in the page"
+            )
+        else:
+            _declared = int(_rc_declared_m.group(1))
+            if _declared != _card_count:
+                _services_sync_errors.append(
+                    f"services-hero-out-of-sync: SERVICES-HERO-SYNC declares "
+                    f"{_declared} card(s) but {_card_count} <a class=\"rc\"> "
+                    f"card(s) are present in the grid — "
+                    f"update the hero <p> to name the new/removed service, then "
+                    f"set count=\"{_card_count}\" in the SERVICES-HERO-SYNC comment"
+                )
+            else:
+                print(f"  ✓  hero paragraph declares {_declared} service rc card(s) "
+                      f"— matches the {_card_count} rc card(s) in the grid")
+
+        # tc-card count (tc-count="M")
+        _tc_declared_m = re.search(
+            r'\btc-count=["\'](\d+)["\']', _sync_text, re.IGNORECASE)
+        if _tc_declared_m is None:
+            _services_sync_errors.append(
+                "services-hero-sync-tc-missing: the SERVICES-HERO-SYNC comment "
+                "is present but has no tc-count=\"M\" attribute — add tc-count=\"M\" "
+                "where M is the number of <a class=\"tc\"> themed cards in the page"
+            )
+        else:
+            _tc_declared = int(_tc_declared_m.group(1))
+            if _tc_declared != _tc_card_count:
+                _services_sync_errors.append(
+                    f"services-hero-tc-out-of-sync: SERVICES-HERO-SYNC tc-count declares "
+                    f"{_tc_declared} tc card(s) but {_tc_card_count} <a class=\"tc\"> "
+                    f"themed card(s) are present in the page — "
+                    f"update the hero <p> to reflect the new/removed themed card, then "
+                    f"set tc-count=\"{_tc_card_count}\" in the SERVICES-HERO-SYNC comment"
+                )
+            else:
+                print(f"  ✓  hero paragraph declares {_tc_declared} service tc card(s) "
+                      f"— matches the {_tc_card_count} tc card(s) in the page")
+
+except FileNotFoundError:
+    _services_sync_errors.append(
+        f"services-file-missing: {_services_path} not found — "
+        "cannot run hero sync check"
     )
-    # Inject decoy just before the stylesheet so it lands in <head>
-    _mutant_d = _mutant_d.replace('<link rel="stylesheet"',
-                                  _decoy + '\n  <link rel="stylesheet"', 1)
-    _mutant_d_head = extract_head(_mutant_d)
-    _mutant_preload = find_city_hero_preload(_mutant_d_head, _base_slug)
-    _mutant_webp = (_mutant_preload is not None and
-                    bool(re.search(r'\.webp["\']', _mutant_preload, re.IGNORECASE)) and
-                    bool(re.search(r'type\s*=\s*["\']image/webp["\']',
-                                   _mutant_preload, re.IGNORECASE)))
-    if not _mutant_webp:
-        print("  ✓  Mutation 5b: decoy WebP link does not satisfy preload guard "
-              "(wrong preload is caught)")
-    else:
-        msg = ("webp-preload-mutation: guard passed despite preload pointing to "
-               ".jpg while a decoy WebP link was present — assertions are too loose")
-        print(f"  ✗  {msg}")
-        mutation_errors.append(msg)
-    _webp_checks += 1
 
-finally:
-    # Always clean up the sentinel if we created it.
-    if _sentinel_created and os.path.isfile(_sentinel_path):
-        os.remove(_sentinel_path)
+if _services_sync_errors:
+    for _e in _services_sync_errors:
+        print(f"  ✗  {_e}")
+
+# ── [ 8 ] resources.html hero ↔ card-grid sync ────────────────────────────────
+#
+# The hero <p> on resources.html describes the resource hub. A machine-readable
+# comment <!-- RESOURCES-HERO-SYNC count="N" tc-count="M" --> sits just above
+# that paragraph; count must equal the number of <a class="rc"> resource cards
+# and tc-count must equal the number of <a class="tc"> themed cards in the page.
+# When a card is added or removed either count will fall out of sync, which fails
+# this check — that's the signal to also update the hero copy.
+
+print("\n[ 8 ] resources.html — hero ↔ card-grid sync check …")
+
+_resources_path = os.path.join(os.path.dirname(__file__), "elh-preview", "resources.html")
+_resources_sync_errors = []
+
+try:
+    with open(_resources_path, encoding='utf-8') as _rf:
+        _rhtml = _rf.read()
+
+    # Strip HTML comments before counting so the RESOURCES-HERO-SYNC comment
+    # itself (which may contain the literal text <a class="rc"> or <a class="tc">)
+    # doesn't pollute the card counts.
+    _rhtml_no_comments = re.sub(r'<!--.*?-->', '', _rhtml, flags=re.DOTALL)
+
+    # Count actual resource (rc) cards and themed (tc) cards
+    _res_card_count = len(re.findall(
+        r'<a\b[^>]*\bclass=["\'][^"\']*\brc\b', _rhtml_no_comments, re.IGNORECASE))
+    _res_tc_count = len(re.findall(
+        r'<a\b[^>]*\bclass=["\'][^"\']*\btc\b', _rhtml_no_comments, re.IGNORECASE))
+
+    # Read the declared counts from the RESOURCES-HERO-SYNC comment
+    _res_sync_m = re.search(
+        r'<!--\s*RESOURCES-HERO-SYNC\b([^-]|-(?!->))*-->',
+        _rhtml, re.IGNORECASE | re.DOTALL)
+
+    if _res_sync_m is None:
+        _resources_sync_errors.append(
+            "resources-hero-sync-marker-missing: the "
+            "<!-- RESOURCES-HERO-SYNC count=\"N\" tc-count=\"M\" --> comment is "
+            "absent from resources.html — add it above the hero <p> and set N to "
+            "the number of <a class=\"rc\"> cards and M to the number of "
+            "<a class=\"tc\"> cards in the page"
+        )
+    else:
+        _res_sync_text = _res_sync_m.group(0)
+
+        # rc-card count (count="N")
+        _rc_declared_m = re.search(
+            r'\bcount=["\'](\d+)["\']', _res_sync_text, re.IGNORECASE)
+        if _rc_declared_m is None:
+            _resources_sync_errors.append(
+                "resources-hero-sync-rc-missing: the RESOURCES-HERO-SYNC comment "
+                "is present but has no count=\"N\" attribute — add count=\"N\" "
+                "where N is the number of <a class=\"rc\"> cards in the page"
+            )
+        else:
+            _res_declared = int(_rc_declared_m.group(1))
+            if _res_declared != _res_card_count:
+                _resources_sync_errors.append(
+                    f"resources-hero-out-of-sync: RESOURCES-HERO-SYNC count declares "
+                    f"{_res_declared} rc card(s) but {_res_card_count} <a class=\"rc\"> "
+                    f"card(s) are present in the page — "
+                    f"update the hero <p> to reflect the new/removed resource, then "
+                    f"set count=\"{_res_card_count}\" in the RESOURCES-HERO-SYNC comment"
+                )
+            else:
+                print(f"  ✓  hero paragraph declares {_res_declared} rc card(s) "
+                      f"— matches the {_res_card_count} rc card(s) in the page")
+
+        # tc-card count (tc-count="M")
+        _tc_declared_m = re.search(
+            r'\btc-count=["\'](\d+)["\']', _res_sync_text, re.IGNORECASE)
+        if _tc_declared_m is None:
+            _resources_sync_errors.append(
+                "resources-hero-sync-tc-missing: the RESOURCES-HERO-SYNC comment "
+                "is present but has no tc-count=\"M\" attribute — add tc-count=\"M\" "
+                "where M is the number of <a class=\"tc\"> themed cards in the page"
+            )
+        else:
+            _res_tc_declared = int(_tc_declared_m.group(1))
+            if _res_tc_declared != _res_tc_count:
+                _resources_sync_errors.append(
+                    f"resources-hero-tc-out-of-sync: RESOURCES-HERO-SYNC tc-count declares "
+                    f"{_res_tc_declared} tc card(s) but {_res_tc_count} <a class=\"tc\"> "
+                    f"themed card(s) are present in the page — "
+                    f"update the hero <p> to reflect the new/removed themed card, then "
+                    f"set tc-count=\"{_res_tc_count}\" in the RESOURCES-HERO-SYNC comment"
+                )
+            else:
+                print(f"  ✓  hero paragraph declares {_res_tc_declared} tc card(s) "
+                      f"— matches the {_res_tc_count} tc card(s) in the page")
+
+except FileNotFoundError:
+    _resources_sync_errors.append(
+        f"resources-file-missing: {_resources_path} not found — "
+        "cannot run hero sync check"
+    )
+
+if _resources_sync_errors:
+    for _e in _resources_sync_errors:
+        print(f"  ✗  {_e}")
 
 # ── Summary ───────────────────────────────────────────────────────────────────
 
 print()
 
-combined_errors = all_errors + [(f"mutation/{_base_slug}", e) for e in mutation_errors]
+combined_errors = (all_errors
+                   + [(f"mutation/{_base_slug}", e) for e in mutation_errors]
+                   + _stale_alias_errors
+                   + [("services.html", e) for e in _services_sync_errors]
+                   + [("resources.html", e) for e in _resources_sync_errors])
 
 if combined_errors:
     print("❌  FAIL — city-script regression check found issues:")
@@ -336,9 +668,11 @@ if combined_errors:
         print("    Fix HEAD_SCRIPTS in website/build-cities.py before deploying.")
     sys.exit(1)
 
-checks_per_city = len(REQUIRED_PATTERNS) + len(FORBIDDEN_BARE_SRC_SUBSTRINGS) + 1  # +1 for blocking-script scan
+# checks per city: blocking-script scan(1) + bare-CDN(2) + deferred-patterns(2)
+#                  + hero-img(1) + webp-preload(1) = 7
+checks_per_city = 1 + len(FORBIDDEN_BARE_SRC_SUBSTRINGS) + len(REQUIRED_PATTERNS) + 2
 total_city_checks = checks_per_city * len(_published)
 print(f"✅  OK — all checks pass across {len(_published)} published cities "
-      f"({total_city_checks} total city checks · 3 mutations caught · "
-      f"{_webp_checks} WebP preload checks).")
+      f"({total_city_checks} total city checks · 6 mutations caught · "
+      f"{_hero_checks} hero/preload attribute checks).")
 sys.exit(0)

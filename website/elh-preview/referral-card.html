@@ -10,7 +10,7 @@
 <meta property="og:title" content="Eternal Life Hospice — Digital Referral Card">
 <meta property="og:description" content="Physician-led hospice care across Ventura &amp; Los Angeles County. Same-day admissions. 24/7 nurse access. Flip, download, or share.">
 <meta property="og:url" content="https://eternallifehospice.com/referral-card">
-<meta property="og:image" content="https://eternallifehospice.com/assets/og-image-v2.jpg"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:image:alt" content="Eternal Life Hospice — Digital Referral Card">
+<meta property="og:image" content="https://eternallifehospice.com/assets/og-image-v2.jpg"><meta property="og:image:width" content="2400"><meta property="og:image:height" content="1260"><meta property="og:image:alt" content="Eternal Life Hospice — Digital Referral Card">
 <meta property="og:site_name" content="Eternal Life Hospice">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" type="image/png" href="assets/favicon.png">
@@ -91,11 +91,11 @@ a{color:inherit}
 #site-footer{background:linear-gradient(180deg,#33172f 0%,#2a1226 100%);color:#E3D6D9;padding:52px 22px 26px;margin-top:30px;font-family:var(--ff-b)}
 #site-footer a{color:#E3D6D9;text-decoration:none}
 #site-footer a:hover{color:var(--gold)}
-.foot-grid{max-width:1120px;margin:0 auto;display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr 1fr 1.5fr;gap:34px}
+.foot-grid{max-width:1120px;margin:0 auto;display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr 1fr 1fr 1fr 1.5fr;gap:2rem 1.25rem}
 .foot-logo img{height:44px}
 .foot-tag{font-family:var(--ff-d);font-size:18px;color:var(--cream);margin:14px 0 8px}
 .foot-legal{font-size:12.5px;line-height:1.6;color:#B79FB4;max-width:280px}
-.foot-col h4{font-size:11.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);margin:0 0 10px;font-weight:600}
+.foot-col h2{font-family:var(--ff-b);font-size:11.5px;line-height:normal;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);margin:0 0 10px;font-weight:600}
 .foot-col a{display:block;font-size:13.5px;color:#C9B6C6;margin-bottom:6px;transition:color .2s}
 .foot-col a:hover{color:var(--cream)}
 .foot-addr{font-size:13px;line-height:1.6;color:#B79FB4}
@@ -114,13 +114,11 @@ a{color:inherit}
 }
 </style>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://www.eternallifehospice.com/"},{"@type":"ListItem","position":2,"name":"Providers","item":"https://www.eternallifehospice.com/refer"},{"@type":"ListItem","position":3,"name":"Referral eCard","item":"https://www.eternallifehospice.com/referral-card"}]}</script>
-<script>(function(d){var load=function(){var s=d.createElement('script');s.setAttribute('data-color','#6793AC');s.setAttribute('data-trigger','elh-ada-trigger');s.setAttribute('data-account','puHleOAe1C');s.src='https://cdn.userway.org/widget.js';d.body.appendChild(s)};'requestIdleCallback'in window?window.requestIdleCallback(load):window.addEventListener('load',load)})(document)</script>
-  <noscript>Please ensure Javascript is enabled for purposes of <a href="https://userway.org">website accessibility</a></noscript>
 
-
-<script>window.addEventListener('load',function(){var f=function(a){return JSON.parse(JSON.stringify(a))};window.$wc_leads=window.$wc_leads||{doc:{url:f(document.URL),ref:f(document.referrer),search:f(location.search),hash:f(location.hash)}};var s=document.createElement('script');s.src='//s.ksrndkehqnwntyxlhgto.com/172406.js';document.body.appendChild(s)});</script>
+  <!-- UserWay (accessibility) and WhatConverts (call-tracking) loaded by analytics.js -->
 </head>
 <body>
+<a class="skip-link" href="#main-content">Skip to main content</a>
 
 <header id="hdr">
   <div class="hdr-in">
@@ -131,11 +129,12 @@ a{color:inherit}
     </div>
   </div>
 </header>
+<main id="main-content" tabindex="-1">
 
 <div class="hero">
   <div class="eyebrow">For Referring Providers &amp; Care Teams</div>
   <h1>Digital Referral Card</h1>
-  <p>Tap the card to flip. Download the print-ready PDF, or share instantly with a colleague.</p>
+  <p>Tap the card to flip. Use the QR code or refer online, download the print-ready PDF, or share this resource with a colleague.</p>
 </div>
 
 <div class="card-wrap">
@@ -153,6 +152,10 @@ a{color:inherit}
   </div>
 
   <div class="actions">
+    <a class="btn primary" href="/refer">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 2 11 13"/><path d="m22 2-7 20-4-9-9-4Z"/></svg>
+      Refer a Patient Online
+    </a>
     <button class="btn primary" id="flipBtn" onclick="toggleFlip()">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg>
       Flip Card
@@ -167,11 +170,11 @@ a{color:inherit}
 <div class="share-wrap">
   <div class="share-label">Share This Card</div>
   <nav class="share-nav" aria-label="Share referral card">
-    <a href="mailto:?subject=Eternal%20Life%20Hospice%20%E2%80%94%20Digital%20Referral%20Card&body=I%20thought%20you%20might%20find%20this%20helpful%3A%0A%0AEternal%20Life%20Hospice%20%E2%80%94%20Independent%2C%20physician-supported%20hospice%20care%20across%20Ventura%20%26%20Los%20Angeles%20County.%0A%0ASame-day%20admissions%20%7C%2024%2F7%20nurse%20access%20%7C%20805.953.7273%0A%0AView%20the%20digital%20card%3A%20https%3A%2F%2Feternallifehospice.com%2Freferral-card%0A%0ADownload%20print-ready%20PDF%3A%20https%3A%2F%2Feternallifehospice.com%2Fassets%2Fdownloads%2Feternal-life-referral-card-digital.pdf" aria-label="Share by email">
+    <a href="mailto:?subject=Eternal%20Life%20Hospice%20%E2%80%94%20Refer%20a%20Patient&body=I%20thought%20you%20might%20find%20this%20helpful%3A%0A%0AEternal%20Life%20Hospice%20%E2%80%94%20independent%2C%20physician-supported%20hospice%20care%20across%20Ventura%20%26%20Los%20Angeles%20County.%0A%0ARefer%20online%20%28no%20patient%20details%20in%20the%20web%20form%29%3A%20https%3A%2F%2Feternallifehospice.com%2Frefer%0A%0ASame-day%20admissions%20when%20clinically%20appropriate%20%7C%2024%2F7%20nurse%20access%20%7C%20805.953.7273%0A%0AView%20the%20digital%20card%3A%20https%3A%2F%2Feternallifehospice.com%2Freferral-card%0A%0ADownload%20print-ready%20PDF%3A%20https%3A%2F%2Feternallifehospice.com%2Fassets%2Fdownloads%2Feternal-life-referral-card-digital.pdf" aria-label="Share referral link by email">
       <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
       Email
     </a>
-    <a href="sms:?body=Eternal%20Life%20Hospice%20%E2%80%94%20Referral%20Card%3A%20https%3A%2F%2Feternallifehospice.com%2Freferral-card" aria-label="Share by text message">
+    <a href="sms:?body=Eternal%20Life%20Hospice%20%E2%80%94%20Refer%20a%20patient%20online%3A%20https%3A%2F%2Feternallifehospice.com%2Frefer%20%7C%2024%2F7%20line%3A%20805.953.7273" aria-label="Share referral link by text message">
       <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
       Text
     </a>
@@ -187,13 +190,14 @@ a{color:inherit}
       <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
       Instagram
     </a>
-    <a href="#" onclick="copyLink();return false" aria-label="Copy link to clipboard">
+    <a href="#" onclick="copyLink();return false" aria-label="Copy referral link to clipboard">
       <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
-      Copy Link
+       Copy Referral Link
     </a>
   </nav>
 </div>
 
+</main>
 <footer id="site-footer">
   <div class="foot-grid">
     <div>
@@ -202,59 +206,59 @@ a{color:inherit}
       <div class="foot-legal">Eternal Life Hospice, Inc. is an independent, Medicare-certified hospice serving Ventura and Los Angeles counties.</div>
     </div>
     <div class="foot-col">
-      <h4>Care</h4>
-      <a href="/">The Eternal Standard</a>
-      <a href="/">The First 48 Hours</a>
-      <a href="/">Integrative Therapies</a>
+      <h2>Hospice Care</h2>
+      <a href="/resources/when-is-it-time">When Is It Time?</a>
+      <a href="/resources/first-48-hours">The First 48 Hours</a>
+      <a href="/resources/medicare-hospice-benefit">What Hospice Covers</a>
+      <a href="/resources/how-to-choose-a-hospice">How to Choose</a>
     </div>
     <div class="foot-col">
-      <h4>For Providers</h4>
-      <a href="/refer">Refer With Confidence</a>
-      <a href="/referral-card">Referral Card</a>
-      <a href="/media-kit">Media Kit</a>
+      <h2>Services</h2>
+      <a href="/services">All Services</a>
+      <a href="/resources/comfort-therapies">Integrative Care</a>
+      <a href="/sound-bath">Sound Bath</a>
     </div>
     <div class="foot-col">
-      <h4>Resources</h4>
+      <h2>For Professionals</h2>
+      <a href="/refer">Refer a Patient</a>
+      <a href="/referral-card">Referral eCard</a>
+      <a href="/?lead=voice#leadcap">Schedule a Session</a>
+    </div>
+    <div class="foot-col">
+      <h2>Resources</h2>
       <a href="/family-guide">Family Guide</a>
-      <a href="/care-brief">The Eternal Care Brief</a>
-      <a href="/blog">The Eternal Journal</a>
+      <a href="/blog">Eternal Journal</a>
+      <a href="/care-brief">Care Brief</a>
+      <a href="/volunteer">Volunteer</a>
     </div>
     <div class="foot-col">
-      <h4>About</h4>
+      <h2>Locations</h2>
+      <a href="/hospice-ventura-and-los-angeles-county-ca">All Service Areas</a>
+      <a href="/hospice-thousand-oaks-ca">Thousand Oaks</a>
+      <a href="/hospice-simi-valley-ca">Simi Valley</a>
+      <a href="/hospice-calabasas-ca">Calabasas</a>
+    </div>
+    <div class="foot-col">
+      <h2>About</h2>
       <a href="/">Our Story</a>
       <a href="/careers">Careers</a>
       <a href="/volunteer">Volunteer</a>
     </div>
     <div>
-      <h4>Contact</h4>
+      <h2>Contact</h2>
       <div class="foot-addr">
         4165 E Thousand Oaks Blvd<br>Suite 325B, Westlake Village, CA 91362<br>
         <a href="tel:18059537273">805.953.7273</a><br>
+        <span style="font-size:.9em;opacity:.6">805.953.7273 · Direct</span><br>
         <a href="mailto:info@eternallifehospice.com">info@eternallifehospice.com</a><br>
         <a href="https://maps.google.com/?cid=9771388271577679785" target="_blank" rel="noopener">Google Maps</a>
       </div>
     </div>
   </div>
   <div class="foot-copy">Eternal Life Hospice, Inc. &middot; Medicare-Certified &middot; CDPH-Licensed &middot; ACHC-Accredited &nbsp;&middot;&nbsp; <a href="/privacy-policy" style="color:inherit;text-decoration:none">Privacy Policy</a> &nbsp;&middot;&nbsp; <a href="#" onclick="window.elhCookieSettings&amp;&amp;window.elhCookieSettings();return false;" style="color:inherit;text-decoration:none">Cookie Settings</a></div>
-
-  <div class="foot-translate">
-    <span class="ft-label">Translate this page</span>
-    <div class="ft-lang-btns">
-      <a class="ft-lang" data-lang="es">🇲🇽 Español</a>
-      <a class="ft-lang" data-lang="ru">🇷🇺 Русский</a>
-      <a class="ft-lang" data-lang="uk">🇺🇦 Українська</a>
-      <a class="ft-lang" data-lang="ko">🇰🇷 한국어</a>
-      <a class="ft-lang" data-lang="hy">🇦🇲 Հայերեն</a>
-      <a class="ft-lang" data-lang="tl">🇵🇭 Filipino</a>
-      <a class="ft-lang" data-lang="vi">🇻🇳 Tiếng Việt</a>
-      <a class="ft-lang" data-lang="zh-CN">🇨🇳 中文</a>
-      <a class="ft-lang" data-lang="ar">🇸🇦 العربية</a>
-      <a class="ft-lang" data-lang="fa">🇮🇷 فارسی</a>
-    </div>
-  </div>
 </footer>
 
-<div class="toast" id="toast" role="status" aria-live="polite">Link copied &mdash; ready to paste anywhere</div>
+<div class="toast" id="toast" role="status" aria-live="polite">Referral link copied &mdash; ready to share</div>
 
 <script>
 /* header scroll */
@@ -268,7 +272,7 @@ card.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.p
 
 /* copy link */
 function copyLink(){
-  var url='https://eternallifehospice.com/referral-card';
+  var url='https://eternallifehospice.com/refer';
   if(navigator.clipboard&&navigator.clipboard.writeText){
     navigator.clipboard.writeText(url).then(showToast).catch(function(){fallbackCopy(url)});
   }else{fallbackCopy(url)}
@@ -308,7 +312,5 @@ function showToast(){
   }
 }</script>
 
-
-<script defer src="/assets/translate.js?v=20260805"></script>
 </body>
 </html>
