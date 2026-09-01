@@ -146,11 +146,14 @@ function showAiModelBanner(warning) {
   banner.classList.remove("hidden");
 }
 
-$("#aiModelBannerDismiss").addEventListener("click", () => {
-  const banner = $("#aiModelBanner");
-  if (banner) banner.classList.add("hidden");
-  _ssSet(AI_BANNER_DISMISSED_KEY, "1");
-});
+const aiModelBannerDismiss = $("#aiModelBannerDismiss");
+if (aiModelBannerDismiss) {
+  aiModelBannerDismiss.addEventListener("click", () => {
+    const banner = $("#aiModelBanner");
+    if (banner) banner.classList.add("hidden");
+    _ssSet(AI_BANNER_DISMISSED_KEY, "1");
+  });
+}
 
 /* ================= APP BOOT ================= */
 async function enterApp() {
@@ -243,7 +246,9 @@ function shrink(file, cb) {
   img.src = URL.createObjectURL(file);
 }
 function bindPhoto(inputSel, slot, dropSel, afterSet) {
-  $(inputSel).addEventListener("change", (e) => {
+  const input = $(inputSel);
+  if (!input) return;
+  input.addEventListener("change", (e) => {
     const f = e.target.files[0];
     if (!f) return;
     shrink(f, (d) => {
@@ -326,7 +331,11 @@ function setHasCard(val) {
   validate();
 }
 $$("#hasCard .segbtn").forEach((b) => b.addEventListener("click", () => setHasCard(b.dataset.val)));
-$("#scanBtn").addEventListener("click", () => $("#fCard").click());
+const scanBtn = $("#scanBtn");
+const legacyCardInput = $("#fCard");
+if (scanBtn && legacyCardInput) {
+  scanBtn.addEventListener("click", () => legacyCardInput.click());
+}
 
 async function extractCard(dataUrl) {
   if (scanning) return;

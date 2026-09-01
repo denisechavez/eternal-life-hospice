@@ -36,7 +36,7 @@
 
     <!-- ============ MAGAZINE COVER ============ -->
     <tr><td align="center" style="background-color:#3C1C3B;padding:44px 34px 0;">
-      <a href="https://eternallifehospice.com/care-brief/hospice-is-part-of-life-a-continuation-of-care" style="text-decoration:none;">
+      <a href="https://eternallifehospice.com/care-brief/issue-1" style="text-decoration:none;">
         <img src="https://eternallifehospice.com/assets/img/elh-logo-cream-g.png" alt="Eternal Life Hospice — Care That Honors Life" width="132" style="display:block;border:0;outline:none;width:132px;height:auto;">
       </a>
       <div style="font-family:Arial,Helvetica,sans-serif;font-size:10.5px;font-weight:bold;letter-spacing:3px;text-transform:uppercase;color:#C9B07E;padding:26px 0 0;">A&nbsp;New&nbsp;Publication From Eternal&nbsp;Life&nbsp;Hospice</div>
@@ -54,7 +54,7 @@
 
     <!-- Cover image, full bleed under the plum cover -->
     <tr><td style="background-color:#3C1C3B;">
-      <a href="https://eternallifehospice.com/care-brief/hospice-is-part-of-life-a-continuation-of-care" style="text-decoration:none;">
+      <a href="https://eternallifehospice.com/care-brief/issue-1" style="text-decoration:none;">
         <img src="https://eternallifehospice.com/assets/img/care-brief-sound.gif" alt="Whole-Person Comfort — a singing bowl, orchid and candlelight, part of the comfort-focused care explored in Issue One" width="640" style="display:block;border:0;outline:none;width:100%;height:auto;">
       </a>
     </td></tr>
@@ -65,7 +65,7 @@
     <tr><td align="center" style="padding:36px 40px 8px;">
       <div style="font-family:Arial,Helvetica,sans-serif;font-size:11px;font-weight:bold;letter-spacing:2.5px;text-transform:uppercase;color:#A07C36;padding-bottom:12px;">Inside Issue One</div>
       <div style="font-family:Georgia,'Times New Roman',serif;font-size:30px;line-height:1.2;color:#3C1C3B;padding-bottom:14px;">
-        <a href="https://eternallifehospice.com/care-brief/hospice-is-part-of-life-a-continuation-of-care" style="color:#3C1C3B;text-decoration:none;">Hospice Is Part of Life &mdash;<br>A Continuation of Care</a>
+        <a href="https://eternallifehospice.com/care-brief/issue-1" style="color:#3C1C3B;text-decoration:none;">Hospice Is Part of Life &mdash;<br>A Continuation of Care</a>
       </div>
       <div style="font-family:Arial,Helvetica,sans-serif;font-size:16.5px;line-height:1.65;color:#472B44;padding-bottom:8px;max-width:470px;">
         Introduced by <b style="color:#3C1C3B;">Aleksandra Dubina</b>, Founder &amp; CEO and Certified Hospice Administrator &mdash; Issue One reframes hospice as a continuation of care, not its end.
@@ -74,7 +74,7 @@
       <!-- Primary button -->
       <table role="presentation" cellpadding="0" cellspacing="0" border="0" align="center">
         <tr><td style="background-color:#C9B07E;border-radius:28px;">
-          <a href="https://eternallifehospice.com/care-brief/hospice-is-part-of-life-a-continuation-of-care" style="display:inline-block;padding:15px 40px;font-family:Arial,Helvetica,sans-serif;font-size:16px;font-weight:bold;color:#3C1C3B;text-decoration:none;border-radius:28px;">Read Issue One &rarr;</a>
+          <a href="https://eternallifehospice.com/care-brief/issue-1" style="display:inline-block;padding:15px 40px;font-family:Arial,Helvetica,sans-serif;font-size:16px;font-weight:bold;color:#3C1C3B;text-decoration:none;border-radius:28px;">Read Issue One &rarr;</a>
         </td></tr>
       </table>
     </td></tr>
@@ -87,11 +87,11 @@
         </td></tr>
         <tr><td style="padding:0 28px 6px;">
           <div style="font-family:Arial,Helvetica,sans-serif;font-size:15.5px;line-height:2.05;color:#472B44;">
-            <a href="https://eternallifehospice.com/care-brief/hospice-is-part-of-life-a-continuation-of-care#founder-note" style="color:#472B44;text-decoration:none;"><span style="font-family:Georgia,'Times New Roman',serif;color:#A07C36;">01&nbsp;&nbsp;</span><b style="color:#3C1C3B;">A Note From Our Founder</b> &mdash; why this publication exists</a><br>
-            <a href="https://eternallifehospice.com/care-brief/hospice-is-part-of-life-a-continuation-of-care#lead-article" style="color:#472B44;text-decoration:none;"><span style="font-family:Georgia,'Times New Roman',serif;color:#A07C36;">02&nbsp;&nbsp;</span><b style="color:#3C1C3B;">The Case for Timely Referral</b> &mdash; and the first 48 hours of care</a><br>
-            <a href="https://eternallifehospice.com/care-brief/hospice-is-part-of-life-a-continuation-of-care#whole-person-comfort" style="color:#472B44;text-decoration:none;"><span style="font-family:Georgia,'Times New Roman',serif;color:#A07C36;">03&nbsp;&nbsp;</span><b style="color:#3C1C3B;">Whole-Person Comfort</b> &mdash; sound, stillness, and presence</a><br>
-            <a href="https://eternallifehospice.com/care-brief/hospice-is-part-of-life-a-continuation-of-care#eternal-standard" style="color:#472B44;text-decoration:none;"><span style="font-family:Georgia,'Times New Roman',serif;color:#A07C36;">04&nbsp;&nbsp;</span><b style="color:#3C1C3B;">Compliance-Led Care</b> &mdash; responsible, well-documented admissions</a><br>
-            <a href="https://eternallifehospice.com/care-brief/hospice-is-part-of-life-a-continuation-of-care#family-section" style="color:#472B44;text-decoration:none;"><span style="font-family:Georgia,'Times New Roman',serif;color:#A07C36;">05&nbsp;&nbsp;</span><b style="color:#3C1C3B;">For Families</b> &mdash; a gentle place to begin</a>
+            <a href="https://eternallifehospice.com/care-brief/issue-1#founder-note" style="color:#472B44;text-decoration:none;"><span style="font-family:Georgia,'Times New Roman',serif;color:#A07C36;">01&nbsp;&nbsp;</span><b style="color:#3C1C3B;">A Note From Our Founder</b> &mdash; why this publication exists</a><br>
+            <a href="https://eternallifehospice.com/care-brief/issue-1#lead-article" style="color:#472B44;text-decoration:none;"><span style="font-family:Georgia,'Times New Roman',serif;color:#A07C36;">02&nbsp;&nbsp;</span><b style="color:#3C1C3B;">The Case for Timely Referral</b> &mdash; and the first 48 hours of care</a><br>
+            <a href="https://eternallifehospice.com/care-brief/issue-1#whole-person-comfort" style="color:#472B44;text-decoration:none;"><span style="font-family:Georgia,'Times New Roman',serif;color:#A07C36;">03&nbsp;&nbsp;</span><b style="color:#3C1C3B;">Whole-Person Comfort</b> &mdash; sound, stillness, and presence</a><br>
+            <a href="https://eternallifehospice.com/care-brief/issue-1#eternal-standard" style="color:#472B44;text-decoration:none;"><span style="font-family:Georgia,'Times New Roman',serif;color:#A07C36;">04&nbsp;&nbsp;</span><b style="color:#3C1C3B;">Compliance-Led Care</b> &mdash; responsible, well-documented admissions</a><br>
+            <a href="https://eternallifehospice.com/care-brief/issue-1#family-section" style="color:#472B44;text-decoration:none;"><span style="font-family:Georgia,'Times New Roman',serif;color:#A07C36;">05&nbsp;&nbsp;</span><b style="color:#3C1C3B;">For Families</b> &mdash; a gentle place to begin</a>
           </div>
         </td></tr>
         <tr><td style="padding:8px 28px 22px;">

@@ -41,5 +41,12 @@ public marketing site.
 - **Vision extraction uses the Replit OpenAI AI integration (gateway), not a personal key** — client built from `AI_INTEGRATIONS_OPENAI_*` env vars; model is a gpt-5.x vision model via chat-completions with `response_format: json_object`. **Why:** avoids user API-key friction; usage bills Replit credits. gpt-5 models forbid `temperature` and `max_tokens` (use `max_completion_tokens`).
 - Extract endpoint is auth-gated + rate-limited, validates the data URL and caps decoded size, and **lazy-requires the AI module returning 503 if absent** so the app still boots without AI. Enforcement of the No-card required fields is client-side only (acceptable: 2 trusted users; server can't see the toggle).
 
+## Logged-out runtime QA
+- Always browser-render the logged-out Tracker after frontend changes; syntax and backend tests alone are insufficient.
+
+**Why:** Removed optional controls once left stale direct event bindings that threw before authentication initialized, leaving only the loading veil while every server route and test still passed.
+
+**How to apply:** Guard bindings for optional elements and require a no-console-error logged-out browser render before calling the Tracker healthy.
+
 ## Deferred
 - **Automated follow-up email sending is intentionally NOT built** — user was still choosing an email platform/CRM. Wiring real sending (e.g. Resend, already used by the site) is the natural next step.

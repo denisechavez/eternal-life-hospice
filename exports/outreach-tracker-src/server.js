@@ -647,11 +647,11 @@ async function probeAiModel() {
       baseURL: process.env.AI_INTEGRATIONS_OPENAI_BASE_URL,
     });
     // Use the same model as extractCardContact; a minimal text-only call is
-    // enough to confirm the model is live without spending tokens.
+    // enough to confirm the model is live with a small output allowance.
     await client.chat.completions.create({
       model: "gpt-5.4-mini",
       messages: [{ role: "user", content: "ping" }],
-      max_tokens: 1,
+      max_completion_tokens: 128,
     });
     aiModelWarning = null;
     console.log("AI model probe: card-scanning model is reachable.");

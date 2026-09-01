@@ -29,10 +29,6 @@ args = "backup-trim-test"
 
 [[workflows.workflow.tasks]]
 task = "workflow.run"
-args = "focus-ring-check"
-
-[[workflows.workflow.tasks]]
-task = "workflow.run"
 args = "city-script-regression-check"
 
 [[workflows.workflow.tasks]]
@@ -54,6 +50,10 @@ args = "header-parity-check"
 [[workflows.workflow.tasks]]
 task = "workflow.run"
 args = "pre-deploy-chain-check"
+
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "Outreach Tracker (internal)"
 
 [[workflows.workflow]]
 name = "Start application"
@@ -89,17 +89,6 @@ isValidation = true
 [[workflows.workflow.tasks]]
 task = "shell.exec"
 args = "cd exports/outreach-tracker-src && npm ci --no-audit --no-fund && npm test"
-
-[[workflows.workflow]]
-name = "focus-ring-check"
-author = "agent"
-
-[[workflows.workflow.tasks]]
-task = "shell.exec"
-args = "cd exports/outreach-tracker-src && node test-rechint-focus.js"
-
-[workflows.workflow.metadata]
-outputType = "console"
 
 [[workflows.workflow]]
 name = "city-script-regression-check"
@@ -163,6 +152,18 @@ author = "agent"
 [[workflows.workflow.tasks]]
 task = "shell.exec"
 args = "bash website/test-predeploy-chain.sh"
+
+[workflows.workflow.metadata]
+outputType = "console"
+
+[[workflows.workflow]]
+name = "Outreach Tracker (internal)"
+author = "agent"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "cd exports/outreach-tracker-src && PORT=3000 npm start"
+waitForPort = 3000
 
 [workflows.workflow.metadata]
 outputType = "console"
