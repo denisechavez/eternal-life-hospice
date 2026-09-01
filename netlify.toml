@@ -15,11 +15,13 @@
 #   4. check-blog-schema.py            — Journal BlogPosting URLs must be unique.
 #      Exits 1 and cancels the deploy if the archive emits duplicate article
 #      URLs in its JSON-LD.
-#   5. check-header-parity.py          — header parity + _redirects validation.
+#   5. check-header-parity.py          — structural header parity + _redirects validation.
 #      Verifies every standard page carries the canonical header, that every
 #      redirect stub still contains a valid redirect to its documented target,
 #      and that every local destination in _redirects resolves to a real file.
 #      Exits 1 and cancels the deploy if any check fails.
+#   6. test-header-mobile.py           — real Chromium checks at 320px and 390px.
+#      Verifies the header is not clipped and its menu/submenus remain operable.
 #
 # All four checks are wrapped by elh-predeploy.sh, which also captures their
 # combined output and verifies that every script's SENTINEL self-test line was

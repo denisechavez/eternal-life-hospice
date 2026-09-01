@@ -40,6 +40,7 @@ set +o pipefail
   python3 ../check-city-scripts.py
   python3 ../check-blog-schema.py
   python3 ../check-header-parity.py
+  python3 ../test-header-mobile.py
   python3 ../check-footer-parity.py
   python3 ../test-google-reviews.py
   python3 ../test-replit-chat-coverage.py
@@ -75,6 +76,7 @@ SENTINELS=(
   "SENTINEL: check-city-scripts.py self-test OK"
   "SENTINEL: check-blog-schema.py self-test OK"
   "SENTINEL: check-header-parity.py self-test OK"
+  "SENTINEL: test-header-mobile.py browser checks OK"
   "SENTINEL: check-footer-parity.py self-test OK"
   "SENTINEL: test-google-reviews.py OK"
   "SENTINEL: test-replit-chat-coverage.py OK"

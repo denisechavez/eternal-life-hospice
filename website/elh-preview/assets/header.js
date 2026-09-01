@@ -16,12 +16,37 @@
   var mb = hdr.querySelector('.menu-btn');
   var nav = hdr.querySelector('nav');
 
+  // Establish explicit accessible relationships without requiring hundreds of
+  // static pages to duplicate IDs. The parity and browser checks guard these.
+  if (nav) {
+    if (!nav.id) nav.id = 'site-nav';
+    if (mb) mb.setAttribute('aria-controls', nav.id);
+    nav.querySelectorAll('.nav-group').forEach(function (group, index) {
+      var parent = group.querySelector('.nav-parent');
+      var sub = group.querySelector('.nav-sub');
+      if (!parent || !sub) return;
+      if (!parent.id) parent.id = 'nav-parent-' + (index + 1);
+      if (!sub.id) sub.id = 'nav-sub-' + (index + 1);
+      parent.setAttribute('aria-controls', sub.id);
+      parent.setAttribute('aria-expanded', 'false');
+      sub.setAttribute('aria-labelledby', parent.id);
+    });
+  }
+
+  function setGroupExpanded(group, expanded) {
+    group.classList.toggle('expanded', expanded);
+    var parent = group.querySelector('.nav-parent');
+    if (parent) parent.setAttribute('aria-expanded', expanded ? 'true' : 'false');
+  }
   function closeMenu() {
     hdr.classList.remove('nav-open');
     if (mb) mb.setAttribute('aria-expanded', 'false');
+    collapseAllGroups();
   }
   function collapseAllGroups() {
-    if (nav) nav.querySelectorAll('.nav-group').forEach(function (g) { g.classList.remove('expanded'); });
+    if (nav) nav.querySelectorAll('.nav-group').forEach(function (g) {
+      setGroupExpanded(g, false);
+    });
   }
   function toggleMenu() {
     var open = hdr.classList.toggle('nav-open');
@@ -59,7 +84,7 @@
         var group = parent.parentElement;
         var wasExpanded = group.classList.contains('expanded');
         collapseAllGroups();
-        if (!wasExpanded) group.classList.add('expanded');
+        if (!wasExpanded) setGroupExpanded(group, true);
       });
     });
   }

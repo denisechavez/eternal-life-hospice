@@ -142,18 +142,26 @@ nav a:hover{color:var(--gold)}
 #hdr.nav-open nav a.nav-call{color:var(--gold);font-weight:600;font-size:16px;border-bottom:1px solid rgba(201,176,126,.3);padding-bottom:.8rem;margin-bottom:.3rem}
 #hdr.nav-open .menu-btn{position:relative;z-index:1001}
 #hdr.nav-open .nav-group{display:flex;flex-direction:column;gap:1rem}
-#hdr.nav-open .nav-parent::after{content:" \25BE";font-size:12px;opacity:.55}
-#hdr.nav-open .nav-sub{display:flex;flex-direction:column;gap:.7rem;padding-left:1.1rem}
+#hdr.nav-open .nav-parent::after{content:" \25BE";font-size:12px;opacity:.55;display:inline-block;transition:transform .2s}
+#hdr.nav-open .nav-sub{display:none}
+#hdr.nav-open .nav-group.expanded .nav-sub{display:flex;flex-direction:column;gap:.7rem;padding-left:1.1rem}
+#hdr.nav-open .nav-group.expanded .nav-parent::after{transform:rotate(-180deg)}
 #hdr.nav-open .nav-sub a{font-size:13.5px;color:rgba(245,240,235,.6);border-bottom-color:rgba(245,240,235,.05)}
 #hdr.nav-open .nav-sub a:hover{color:var(--gold)}
-@media(hover:hover){#hdr.nav-open .nav-sub{display:none}#hdr.nav-open .nav-group:hover .nav-sub,#hdr.nav-open .nav-group:focus-within .nav-sub{display:flex}}
+@media(hover:hover){#hdr.nav-open .nav-sub{display:none}#hdr.nav-open .nav-group:hover .nav-sub,#hdr.nav-open .nav-group:focus-within .nav-sub{display:flex;flex-direction:column;gap:.7rem;padding-left:1.1rem}}
 .hdr-cta{background:var(--plum);color:var(--cream);padding:.5rem 1.4rem;border-radius:24px;font-size:13px;font-weight:600;white-space:nowrap;transition:background .25s ease,color .25s ease}.hdr-cta.cta-hue1{background:#C9B07E;color:#3C1C3B}.hdr-cta.cta-hue2{background:#6793AC;color:#F5F0EB}.hdr-cta.cta-hue3{background:#3C1C3B;color:#F5F0EB}.hdr-cta-wrap{display:flex;align-items:center;gap:.65rem}.hdr-cta-note{font-family:var(--ff-d);font-style:italic;font-size:18px;font-weight:400;letter-spacing:.005em;color:rgba(245,240,235,.92);white-space:nowrap}#hdr.scrolled .hdr-cta-note{color:var(--text-mid)}
-.menu-btn{display:block}
+.menu-btn{display:block;background:none;border:none;cursor:pointer;padding:14px 10px;line-height:0}
 .mob-call-bar{display:none;position:fixed;bottom:0;left:0;right:0;z-index:998;background:var(--plum);color:var(--cream);text-align:center;padding:.85rem 1rem;font-family:var(--ff-b);font-size:15px;font-weight:700;text-decoration:none;letter-spacing:.02em;border-top:2px solid rgba(201,176,126,.35);transition:background .2s ease}
 .mob-call-bar:hover,.mob-call-bar:focus{background:var(--deep)}
 @media(max-width:980px){
   .hdr-cta,.hdr-cta-note{display:none}
+  #elh-ada-trigger{display:none!important}
   .mob-call-bar{display:block}
+}
+@media(max-width:600px){.hdr-in{gap:.6rem}}
+@media(max-width:480px){
+  #hdr{padding:0 .85rem}
+  #hdr.nav-open nav{padding:1.2rem .85rem 1.8rem}
 }
 @keyframes navdrop{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:translateY(0)}}
 
@@ -1942,13 +1950,31 @@ p,li,blockquote{text-wrap:pretty}
   function leadFail(f,btn,label){if(btn){btn.disabled=false;btn.textContent=label;}var old=f.querySelector('.lead-submit-error');if(old)old.remove();var er=document.createElement('div');er.className='lead-submit-error';er.setAttribute('role','alert');er.setAttribute('aria-live','assertive');er.setAttribute('aria-atomic','true');er.style.cssText='margin-top:1rem;padding:.85rem 1rem;border:1px solid #9a2b2b;border-radius:10px;color:#7a2020;background:#fff7f5;font-size:14px;line-height:1.6';er.innerHTML="We couldn't confirm delivery. Please try again, or call us now at <a href=\"tel:18059537273\" style=\"color:var(--plum);font-weight:700\">805.953.7273</a> — we answer 24/7.";f.appendChild(er);er.scrollIntoView({behavior:'smooth',block:'center'});}
   document.querySelectorAll('form.lead-form').forEach(function(f){ f.setAttribute('action','/api/form-submit');f.removeAttribute('data-netlify');f.removeAttribute('netlify-honeypot');f.addEventListener('submit', function(e){ e.preventDefault();var old=f.querySelector('.lead-submit-error');if(old)old.remove();var btn=f.querySelector('button[type="submit"],button:not([type])'),label=btn?btn.textContent:'';if(btn){btn.disabled=true;btn.textContent='Sending\u2026';}var body=new URLSearchParams();new FormData(f).forEach(function(v,k){body.append(k,v);});fetch('/api/form-submit',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded','Accept':'application/json'},body:body.toString()}).then(function(r){return r.json().catch(function(){return null;}).then(function(data){if(!r.ok||!data||data.ok!==true||data.accepted!==true)throw new Error('submit failed');return data;});}).then(function(data){if(window.elhTrackEvent){window.elhTrackEvent('form_success',{page:location.pathname||'/',form:f.getAttribute('name')||'unknown'});}leadShow(data);}).catch(function(){leadFail(f,btn,label);});});});
 
-  // mobile menu — toggle open/close, close on link tap
+  // mobile menu — accessible accordion, close on destination link tap
   var mb=document.querySelector('.menu-btn'), navEl=document.querySelector('#hdr nav');
-  function closeMenu(){ document.getElementById('hdr').classList.remove('nav-open'); if(mb) mb.setAttribute('aria-expanded','false'); }
-  function toggleMenu(){ var open=document.getElementById('hdr').classList.toggle('nav-open'); if(mb) mb.setAttribute('aria-expanded', open?'true':'false'); }
+  if(navEl){
+    if(!navEl.id) navEl.id='site-nav';
+    if(mb) mb.setAttribute('aria-controls',navEl.id);
+    navEl.querySelectorAll('.nav-group').forEach(function(group,index){
+      var parent=group.querySelector('.nav-parent'),sub=group.querySelector('.nav-sub');
+      if(!parent||!sub)return;
+      if(!parent.id)parent.id='nav-parent-'+(index+1);
+      if(!sub.id)sub.id='nav-sub-'+(index+1);
+      parent.setAttribute('aria-controls',sub.id);
+      parent.setAttribute('aria-expanded','false');
+      sub.setAttribute('aria-labelledby',parent.id);
+    });
+  }
+  function setGroupExpanded(group,expanded){group.classList.toggle('expanded',expanded);var parent=group.querySelector('.nav-parent');if(parent)parent.setAttribute('aria-expanded',expanded?'true':'false');}
+  function collapseAllGroups(){if(navEl)navEl.querySelectorAll('.nav-group').forEach(function(group){setGroupExpanded(group,false);});}
+  function closeMenu(){ document.getElementById('hdr').classList.remove('nav-open'); if(mb) mb.setAttribute('aria-expanded','false'); collapseAllGroups(); }
+  function toggleMenu(){ var open=document.getElementById('hdr').classList.toggle('nav-open'); if(mb) mb.setAttribute('aria-expanded', open?'true':'false'); if(open)collapseAllGroups(); }
   if(mb){ mb.addEventListener('click', toggleMenu); }
-  document.addEventListener('click', function(e){ if(document.getElementById('hdr').classList.contains('nav-open') && mb && !mb.contains(e.target)){ closeMenu(); } });
-  if(navEl){ navEl.querySelectorAll('a').forEach(function(a){ a.addEventListener('click', closeMenu); }); }
+  document.addEventListener('click', function(e){ if(document.getElementById('hdr').classList.contains('nav-open') && mb && !mb.contains(e.target) && navEl && !navEl.contains(e.target)){ closeMenu(); } });
+  if(navEl){
+    navEl.querySelectorAll('a:not(.nav-parent)').forEach(function(a){a.addEventListener('click',closeMenu);});
+    navEl.querySelectorAll('.nav-parent').forEach(function(parent){parent.addEventListener('click',function(e){if(!document.getElementById('hdr').classList.contains('nav-open'))return;e.preventDefault();var group=parent.parentElement,wasExpanded=group.classList.contains('expanded');collapseAllGroups();if(!wasExpanded)setGroupExpanded(group,true);});});
+  }
 
   // header phone pill — cycle 3 accent colors, one per hover pass
   var ctaPill=document.querySelector('#hdr .hdr-cta');

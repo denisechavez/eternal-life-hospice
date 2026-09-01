@@ -11,7 +11,8 @@ Usage:
 Exit code 0 = all standard pages pass.  Non-zero = failures found.
 """
 
-import os, sys
+import os, re, sys
+from html.parser import HTMLParser
 
 ROOT = os.path.join(os.path.dirname(__file__), "elh-preview")
 
@@ -20,6 +21,7 @@ NAV_LABELS = [
     "Hospice Care", "Services", "Resources",
     "Locations", "For Professionals", "About",
 ]
+NAV_FINGERPRINT = tuple(NAV_LABELS)
 
 # ── Pages that intentionally omit the standard header ─────────────────────
 INTENTIONAL_EXCEPTIONS = {
@@ -66,6 +68,143 @@ REQUIRED = {
     "no_stale_url":('/aleksandradubina',  "stale /aleksandradubina URL"),  # must NOT appear
 }
 
+class HeaderStructureParser(HTMLParser):
+    """Extract the canonical header structure from actual HTML elements."""
+
+    VOID_TAGS = frozenset({
+        "area", "base", "br", "col", "embed", "hr", "img", "input",
+        "link", "meta", "param", "source", "track", "wbr",
+    })
+
+    def __init__(self):
+        super().__init__(convert_charrefs=True)
+        self.stack = []
+        self.header_count = 0
+        self.in_header = False
+        self.header_depth = None
+        self.nav_attrs = []
+        self.menu_attrs = []
+        self.full_logo_count = 0
+        self.wordmark_count = 0
+        self.nav_parent_labels = []
+        self.nav_parent_attrs = []
+        self.nav_sub_count = 0
+        self.nav_group_count = 0
+        self._parent_text = None
+
+    @staticmethod
+    def _attrs(attrs):
+        return {str(k).lower(): (v or "") for k, v in attrs}
+
+    @staticmethod
+    def _classes(attrs):
+        return set(attrs.get("class", "").split())
+
+    def handle_starttag(self, tag, attrs):
+        attr = self._attrs(attrs)
+        classes = self._classes(attr)
+        if tag not in self.VOID_TAGS:
+            self.stack.append((tag, classes))
+
+        if tag == "header" and attr.get("id") == "hdr":
+            self.header_count += 1
+            self.in_header = True
+            self.header_depth = len(self.stack)
+            return
+        if not self.in_header:
+            return
+
+        if tag == "nav":
+            self.nav_attrs.append(attr)
+        if tag == "button" and "menu-btn" in classes:
+            self.menu_attrs.append(attr)
+        if "hdr-wordmark" in classes:
+            self.wordmark_count += 1
+        if tag == "img" and any("hdr-logo" in ancestor for _, ancestor in self.stack):
+            if "elh-logo-h2-" in attr.get("src", ""):
+                self.full_logo_count += 1
+        if "nav-group" in classes:
+            self.nav_group_count += 1
+        if "nav-sub" in classes:
+            self.nav_sub_count += 1
+        if tag == "a" and "nav-parent" in classes:
+            self.nav_parent_attrs.append(attr)
+            self._parent_text = []
+
+    def handle_data(self, data):
+        if self._parent_text is not None:
+            self._parent_text.append(data)
+
+    def handle_endtag(self, tag):
+        if self.in_header and tag == "a" and self._parent_text is not None:
+            label = " ".join("".join(self._parent_text).split())
+            self.nav_parent_labels.append(label)
+            self._parent_text = None
+
+        if self.in_header and tag == "header" and self.header_depth == len(self.stack):
+            self.in_header = False
+            self.header_depth = None
+        if self.stack:
+            self.stack.pop()
+
+
+def structural_header_failures(html):
+    """Return canonical header structure/accessibility failures for one page."""
+    parser = HeaderStructureParser()
+    try:
+        parser.feed(html)
+    except Exception as exc:
+        return [f"INVALID HEADER MARKUP: parser error: {exc}"]
+
+    errors = []
+    if parser.header_count != 1:
+        errors.append(f"STRUCTURE: expected 1 #hdr header, found {parser.header_count}")
+    if len(parser.nav_attrs) != 1:
+        errors.append(f"STRUCTURE: expected 1 header nav, found {len(parser.nav_attrs)}")
+    elif parser.nav_attrs[0].get("aria-label", "").strip().lower() != "main navigation":
+        errors.append('ACCESSIBILITY: header nav must have aria-label="Main navigation"')
+
+    if len(parser.menu_attrs) != 1:
+        errors.append(f"STRUCTURE: expected 1 .menu-btn button, found {len(parser.menu_attrs)}")
+    else:
+        menu = parser.menu_attrs[0]
+        if menu.get("aria-label", "").strip().lower() != "menu":
+            errors.append('ACCESSIBILITY: .menu-btn must have aria-label="Menu"')
+        if menu.get("aria-expanded") != "false":
+            errors.append('ACCESSIBILITY: .menu-btn must start with aria-expanded="false"')
+
+    if parser.full_logo_count and parser.wordmark_count:
+        errors.append(
+            "DUPLICATE WORDMARK: full horizontal elh-logo-h2 image is paired "
+            "with .hdr-wordmark markup"
+        )
+
+    if tuple(parser.nav_parent_labels) != NAV_FINGERPRINT:
+        actual = " > ".join(parser.nav_parent_labels) or "(none)"
+        expected = " > ".join(NAV_FINGERPRINT)
+        errors.append(f"NAV ORDER: expected [{expected}], found [{actual}]")
+
+    expected_groups = len(NAV_FINGERPRINT)
+    if parser.nav_group_count != expected_groups or parser.nav_sub_count != expected_groups:
+        errors.append(
+            "SUBMENU STRUCTURE: expected "
+            f"{expected_groups} nav groups and submenus, found "
+            f"{parser.nav_group_count} groups and {parser.nav_sub_count} submenus"
+        )
+    if len(parser.nav_parent_attrs) == expected_groups:
+        missing_hrefs = [
+            parser.nav_parent_labels[index]
+            for index, attrs in enumerate(parser.nav_parent_attrs)
+            if not attrs.get("href")
+        ]
+        if missing_hrefs:
+            errors.append(
+                "ACCESSIBILITY: submenu controls must remain keyboard-reachable "
+                f"links; missing href: {', '.join(missing_hrefs)}"
+            )
+    return errors
+
+
 # ── Sentinel self-test ─────────────────────────────────────────────────────
 # Verifies the guard correctly detects a page missing required header elements.
 # If the token-matching logic were broken so it always reported "pass", this
@@ -80,6 +219,21 @@ for _st_key, (_st_token, _st_label) in REQUIRED.items():
         break
 if not _st_found_failures:
     print("❌  SELF-TEST FAILED: guard did not detect a page missing required header elements")
+    sys.exit(1)
+
+_st_duplicate = """<header id="hdr"><a class="hdr-logo">
+<img src="assets/img/elh-logo-h2-cream.webp"><span class="hdr-wordmark">Eternal</span>
+</a><nav aria-label="Main navigation"></nav>
+<button class="menu-btn" aria-label="Menu" aria-expanded="false"></button></header>"""
+if not any("DUPLICATE WORDMARK" in failure for failure in structural_header_failures(_st_duplicate)):
+    print("❌  SELF-TEST FAILED: guard did not detect a duplicate full-logo wordmark")
+    sys.exit(1)
+
+_st_bad_order = """<header id="hdr"><nav aria-label="Main navigation">
+<div class="nav-group"><a class="nav-parent" href="/">Services</a><div class="nav-sub"></div></div>
+</nav><button class="menu-btn" aria-label="Menu" aria-expanded="false"></button></header>"""
+if not any("NAV ORDER" in failure for failure in structural_header_failures(_st_bad_order)):
+    print("❌  SELF-TEST FAILED: guard did not detect a changed nav label/order fingerprint")
     sys.exit(1)
 print("SENTINEL: check-header-parity.py self-test OK")
 
@@ -118,6 +272,7 @@ for dirpath, dirs, files in os.walk(ROOT):
         for label in NAV_LABELS:
             if label not in html:
                 page_fails.append(f"MISSING NAV: {label}")
+        page_fails.extend(structural_header_failures(html))
 
         if page_fails:
             results["fail"].append(rel)

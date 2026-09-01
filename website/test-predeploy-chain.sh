@@ -135,6 +135,7 @@ SENTINELS=(
   "SENTINEL: check-city-scripts.py self-test OK"
   "SENTINEL: check-blog-schema.py self-test OK"
   "SENTINEL: check-header-parity.py self-test OK"
+  "SENTINEL: test-header-mobile.py browser checks OK"
   "SENTINEL: check-footer-parity.py self-test OK"
 )
 

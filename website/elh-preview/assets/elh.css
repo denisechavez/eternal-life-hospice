@@ -553,7 +553,7 @@ details.cqn-col:not([open])>summary.cqn-county{margin-bottom:0;padding-bottom:0;
 }
 @media(max-width:480px){
   /* Header */
-  #hdr{padding:0 1.1rem}
+  #hdr{padding:0 .85rem}
   #hdr.nav-open nav{padding:1.2rem 1.1rem 1.8rem}
   /* Main content wrapper */
   .wrap{padding-left:1.1rem;padding-right:1.1rem}
