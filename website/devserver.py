@@ -105,9 +105,10 @@ class PrettyURLHandler(http.server.SimpleHTTPRequestHandler):
                 return resolved if os.path.exists(resolved) else resolved + ".html"
             return os.path.join(base, "__not_found__")
         # These hubs have extensionless canonical URLs. Resolve them before
-        # SimpleHTTPRequestHandler sees the /resources/ directory redirect
-        # stub, so both slash variants serve the final document directly.
-        if clean.rstrip("/") in ("/hospice-care", "/resources"):
+        # SimpleHTTPRequestHandler sees the /resources/ or /blog/ directory
+        # redirect stub, so the canonical archive URL serves the final
+        # document directly.
+        if clean.rstrip("/") in ("/hospice-care", "/resources", "/blog"):
             return os.path.join(ROOT, clean.rstrip("/").lstrip("/") + ".html")
         resolved = super().translate_path(path)
         if not os.path.exists(resolved):
@@ -129,6 +130,12 @@ class PrettyURLHandler(http.server.SimpleHTTPRequestHandler):
         destination = LEGACY_PAGE_REDIRECTS.get(parsed.path)
         if destination:
             self._send_redirect(destination, parsed.query)
+            return
+        # Keep the extensionless, non-trailing-slash URL as the single
+        # canonical Journal archive URL. Without this, the on-disk
+        # blog/index.html noindex stub wins for /blog/.
+        if parsed.path == "/blog/":
+            self._send_redirect("/blog", parsed.query)
             return
         if parsed.path == "/api/chat":
             self._send_json(

@@ -71,6 +71,11 @@ http://eternalhospice.com/*       https://eternallifehospice.com/:splat  301!
 /resources    /resources.html            200!
 /resources/   /resources.html            200!
 
+# Canonical Journal archive — bypass the retired /blog/index.html stub while
+# keeping /blog as the sitemap and canonical URL.
+/blog/        /blog                     301!
+/blog         /blog.html                200!
+
 # What Hospice Covers — legacy path corrected to canonical
 /resources/what-hospice-covers  /resources/medicare-hospice-benefit  301
 

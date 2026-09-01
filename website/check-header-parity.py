@@ -562,7 +562,21 @@ if os.path.isfile(REDIRECTS_FILE):
             if _src.startswith(("http://", "https://")) or _dest.startswith(("http://", "https://")):
                 continue
             # ── Self-loop check (runs for ALL local rules, including placeholders) ──
-            if _loop_normalize(_src) == _loop_normalize(_dest):
+            # A plain 3xx rule that differs only by one trailing slash is
+            # canonicalization, not a loop (for example /blog/ → /blog).
+            _trailing_slash_redirect = (
+                "*" not in _src
+                and ":" not in _src
+                and "*" not in _dest
+                and ":" not in _dest
+                and _src != _dest
+                and _src.rstrip("/") == _dest.rstrip("/")
+                and _status.startswith("3")
+            )
+            if (
+                _loop_normalize(_src) == _loop_normalize(_dest)
+                and not _trailing_slash_redirect
+            ):
                 self_loop_rules.append((_lineno, _line))
             # ── Existence check (plain destinations only — skip placeholders) ──
             # Placeholder destinations contain a colon (e.g. /:splat, /:id).
@@ -583,6 +597,8 @@ if os.path.isfile(REDIRECTS_FILE):
 required_canonical_hub_rules = {
     ("/resources", "/resources.html", "200!"),
     ("/resources/", "/resources.html", "200!"),
+    ("/blog", "/blog.html", "200!"),
+    ("/blog/", "/blog", "301!"),
 }
 missing_canonical_hub_rules = sorted(
     required_canonical_hub_rules - _parsed_netlify_rules

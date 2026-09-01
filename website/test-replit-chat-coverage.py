@@ -235,6 +235,27 @@ try:
             response.status == 200 and response.geturl() == base_url + canonical_hub,
         )
 
+    with no_redirect.open(base_url + "/blog", timeout=5) as response:
+        blog_archive = response.read().decode("utf-8", errors="replace")
+        check(
+            "canonical blog archive serves directly",
+            response.status == 200
+            and response.geturl() == base_url + "/blog"
+            and "The Eternal Journal" in blog_archive
+            and "noindex" not in blog_archive.lower(),
+        )
+
+    try:
+        no_redirect.open(base_url + "/blog/?source=journal", timeout=5)
+    except urllib.error.HTTPError as exc:
+        check(
+            "trailing-slash blog archive redirects to canonical URL",
+            exc.code == 301
+            and exc.headers.get("Location") == "/blog?source=journal",
+        )
+    else:
+        raise AssertionError("trailing-slash blog archive did not redirect")
+
     for retired in (
         "/events",
         "/events/caregiver-support-workshop",
