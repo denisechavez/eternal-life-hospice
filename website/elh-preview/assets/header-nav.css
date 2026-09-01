@@ -20,8 +20,8 @@
 #hdr.scrolled .hdr-phone{border-right-color:rgba(91,46,89,.2)}
 #hdr .hdr-referral{color:var(--gold,#C9B07E)!important}
 #hdr .hdr-referral:hover,#hdr .hdr-referral:focus,#hdr .hdr-referral:active{color:var(--cream-dark,#D8CDBF)!important}
-#hdr.scrolled .hdr-referral{color:var(--gold,#C9B07E)!important}
-#hdr.scrolled .hdr-referral:hover,#hdr.scrolled .hdr-referral:focus,#hdr.scrolled .hdr-referral:active{color:var(--cream-dark,#D8CDBF)!important}
+#hdr.scrolled .hdr-referral{color:var(--plum,#5B2E59)!important}
+#hdr.scrolled .hdr-referral:hover,#hdr.scrolled .hdr-referral:focus,#hdr.scrolled .hdr-referral:active{color:var(--deep,#3C1C3B)!important}
 #hdr .hdr-access{min-height:32px;display:inline-flex;align-items:center;justify-content:center;gap:.42rem;padding:.3rem .7rem;border:1px solid var(--gold,#C9B07E);border-radius:999px;background:var(--cream,#F5F0EB);color:var(--deep,#3C1C3B);font:600 12px/1 var(--ff-b,'Jost ELH',system-ui,sans-serif);cursor:pointer;white-space:nowrap}
 #hdr .hdr-access:hover{background:#fff}
 #hdr .hdr-main-row{height:74px;display:flex;align-items:center;justify-content:flex-end;gap:.7rem;min-width:0}
