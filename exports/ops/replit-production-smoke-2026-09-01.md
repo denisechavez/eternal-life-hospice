@@ -50,3 +50,48 @@ No patient information, referral data, credentials, or other sensitive content w
 Netlify was not changed, frozen, unpublished, or deleted during this verification. This report supports a future freeze decision, but it does not by itself complete the broader operational checklist. In particular, the readiness workbook still requires the separate no-PHI referral delivery confirmation, standalone tracker field-use confirmation, link audit, and observation period before Netlify retirement.
 
 **Current decision:** Keep the Netlify copy available pending the remaining operational sign-offs. The Replit chat/coverage independence gate is **PASS**.
+
+## Observation record
+
+**Observation window:** 2026-08-27 through 2026-09-01 UTC
+**Observation end:** 2026-09-01 at 04:14 UTC
+**Decision owner:** Eternal Life Hospice operations
+**Rollback reference preserved:** Netlify production deploy `6a8d5522ffa55f00083c01fc` / Git commit `0c6ca3f39d878e59976e0d03dacec6e550e36e99` (published 2026-08-25). No Netlify setting, content, or deployment was changed.
+
+This is a retrospective evidence window covering the available production records from Thursday, August 27 through Tuesday, September 1. The September 1 sweep is the only day with a complete retained check across all three operational signals; the missing daily records are treated as a readiness gap, not as a pass.
+
+### Business-day checks
+
+| UTC date | Production errors | Referral delivery | Analytics | Result |
+| --- | --- | --- | --- | --- |
+| 2026-08-27 | The read-only host investigation found the custom domain serving from the healthy Replit deployment; no application error was recorded in that evidence. | No form was submitted during the read-only investigation. | No analytics query was recorded. | Evidence gap; no retirement decision |
+| 2026-08-28 | No retained deployment-log record is available for this date. | No retained delivery check is available for this date. | No retained analytics check is available for this date. | Evidence gap; no retirement decision |
+| 2026-08-31 | No retained deployment-log record is available for this date. | No retained delivery check is available for this date. | No retained analytics check is available for this date. | Evidence gap; no retirement decision |
+| 2026-09-01 | Deployment is public, Autoscale, and on a successful build. A restart produced transient health-check failures at 03:48:34 UTC; `/` returned 200 at 03:48:35 UTC and subsequent checks were healthy. | No referral submission was made in this smoke pass. The required no-PHI mailbox test remains a separate open gate. | Analytics access is authorized, but the query from 2026-08-27 00:00 UTC returned zero pageview rows; this is recorded as no collected telemetry, not zero traffic. | Current-day check recorded; no-go |
+
+### September 1 final smoke and live checks
+
+- `python3 website/test-replit-chat-coverage.py` — **PASS**, 27 checks.
+- `python3 website/check-city-scripts.py` — **PASS**, 145 published city pages.
+- `python3 website/clean-stale-aliases.py --check --remove-redundant` — **PASS**, 24 aliases clean.
+- `python3 website/check-header-parity.py` — **PASS**, 177 standard pages and 23 intentional exceptions.
+- `bash website/test-predeploy-chain.sh` — **PASS**, all pre-deploy checks and sentinel self-tests.
+- `GET /`, `/refer`, `/robots.txt`, `/sitemap.xml`, the county page, and the Pasadena city page — **HTTP 200**.
+- `GET /events` and `/providers` — **HTTP 404**, as required for retired/unavailable routes.
+- Live homepage and `assets/chat.js` — **zero** `/.netlify/functions/` references.
+- Live-referenced logo, font, and homepage asset checks — **HTTP 200**.
+- A production screenshot of `https://eternallifehospice.com/` showed the homepage, credentials strip, hero, primary actions, cookie controls, and chat control rendering.
+
+### Issues and disposition
+
+1. **Transient startup health-check failures (resolved):** the deployment health probe raced the application during a restart at 03:48:34 UTC. The application returned 200 one second later, the deployment remained healthy, and no persistent application failure was found.
+2. **Missing daily evidence for August 28 and August 31 (not resolved by inference):** those checks are not backfilled. This remains a process/readiness gap and is a reason to keep the old copy available.
+3. **Analytics has no collected rows in the queried window (not an application error):** the analytics service is authorized, but no pageview telemetry was returned. This limits the stability conclusion and must not be represented as proof of normal traffic.
+4. **Referral delivery proof is still open:** no referral was submitted in this observation pass. Keep the no-PHI delivery test and mailbox confirmation as a separate required gate before any Netlify freeze.
+5. **Known Replit route-parity gaps remain:** the hosting investigation documents legacy aliases that still return 404 on Replit even though the Netlify copy redirects them. Do not retire the old copy until the approved route/link work is complete.
+
+## Observation decision
+
+**NO-GO for freezing, deactivating, or deleting Netlify as of 2026-09-01.**
+
+The Replit deployment and final smoke test are green, and the Netlify rollback reference remains preserved. The decision stays **NO-GO** because the observation record has missing business-day evidence, analytics has no collected telemetry, referral delivery has not been re-proven in this window, and route/link work remains open. Netlify remains available and unchanged while those gates are completed.
