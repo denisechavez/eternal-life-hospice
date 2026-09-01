@@ -8,40 +8,7 @@ expertMode = true
 integrations = ["javascript_openai_ai_integrations:2.0.0", "google-drive:1.0.0"]
 
 [workflows]
-runButton = "Project"
-
-[[workflows.workflow]]
-name = "Project"
-mode = "parallel"
-author = "agent"
-
-[[workflows.workflow.tasks]]
-task = "workflow.run"
-args = "Start application"
-
-[[workflows.workflow.tasks]]
-task = "workflow.run"
-args = "Reel Preview"
-
-[[workflows.workflow.tasks]]
-task = "workflow.run"
-args = "backup-trim-test"
-
-[[workflows.workflow.tasks]]
-task = "workflow.run"
-args = "focus-ring-check"
-
-[[workflows.workflow.tasks]]
-task = "workflow.run"
-args = "translate-smoke-test"
-
-[[workflows.workflow.tasks]]
-task = "workflow.run"
-args = "translate-bar-city-pages"
-
-[[workflows.workflow.tasks]]
-task = "workflow.run"
-args = "city-script-regression-check"
+runButton = "Start application"
 
 [[workflows.workflow]]
 name = "Start application"
@@ -56,62 +23,6 @@ args = "python3 website/devserver.py"
 waitForPort = 5000
 
 [[workflows.workflow]]
-name = "Reel Preview"
-author = "agent"
-
-[[workflows.workflow.tasks]]
-task = "shell.exec"
-args = "cd artifacts/mockup-sandbox && npm run dev"
-waitForPort = 5173
-
-[workflows.workflow.metadata]
-outputType = "console"
-
-[[workflows.workflow]]
-name = "backup-trim-test"
-author = "agent"
-
-[workflows.workflow.metadata]
-isValidation = true
-
-[[workflows.workflow.tasks]]
-task = "shell.exec"
-args = "cd exports/outreach-tracker-src && npm ci --no-audit --no-fund && npm test"
-
-[[workflows.workflow]]
-name = "focus-ring-check"
-author = "agent"
-
-[[workflows.workflow.tasks]]
-task = "shell.exec"
-args = "cd exports/outreach-tracker-src && node test-rechint-focus.js"
-
-[workflows.workflow.metadata]
-outputType = "console"
-
-[[workflows.workflow]]
-name = "translate-smoke-test"
-author = "agent"
-
-[[workflows.workflow.tasks]]
-task = "shell.exec"
-args = "cd website/elh-preview && node assets/translate-smoke-test.js"
-
-[workflows.workflow.metadata]
-isValidation = true
-
-[[workflows.workflow]]
-name = "translate-bar-city-pages"
-author = "agent"
-
-[[workflows.workflow.tasks]]
-task = "shell.exec"
-args = "node website/elh-preview/assets/test-city-pages-batch.js"
-
-[workflows.workflow.metadata]
-isValidation = true
-
-[[workflows.workflow]]
 name = "city-script-regression-check"
 author = "agent"
 
@@ -122,25 +33,64 @@ args = "python3 website/check-city-scripts.py"
 [workflows.workflow.metadata]
 outputType = "console"
 
-[[ports]]
-localPort = 3000
-externalPort = 3000
+[[workflows.workflow]]
+name = "coverage-lookup-test"
+author = "agent"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "node website/elh-preview/assets/test-coverage-lookup.js"
+
+[workflows.workflow.metadata]
+outputType = "console"
+
+[[workflows.workflow]]
+name = "alias-check"
+author = "agent"
+
+[workflows.workflow.metadata]
+isValidation = true
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "python3 website/clean-stale-aliases.py --check --remove-redundant"
+
+[[workflows.workflow]]
+name = "rebuild-search-index"
+author = "agent"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "node website/elh-preview/assets/build-search-index.js"
+
+[workflows.workflow.metadata]
+outputType = "console"
+
+[[workflows.workflow]]
+name = "header-parity-check"
+author = "agent"
+
+[workflows.workflow.metadata]
+isValidation = true
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "python3 website/check-header-parity.py"
+
+[[workflows.workflow]]
+name = "pre-deploy-chain-check"
+author = "agent"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "bash website/test-predeploy-chain.sh"
+
+[workflows.workflow.metadata]
+outputType = "console"
 
 [[ports]]
 localPort = 5000
 externalPort = 80
-
-[[ports]]
-localPort = 5173
-externalPort = 5173
-
-[[ports]]
-localPort = 5174
-externalPort = 3001
-
-[[ports]]
-localPort = 8099
-externalPort = 8099
 
 [postMerge]
 path = "scripts/post-merge.sh"
@@ -149,8 +99,3 @@ timeoutMs = 30000
 [deployment]
 deploymentTarget = "autoscale"
 run = ["bash", "-c", "python3 website/devserver.py"]
-
-[userenv]
-
-[userenv.shared]
-BACKUP_EMAIL = "backup@eternallifehospice.com"

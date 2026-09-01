@@ -1,348 +1,86 @@
 #!/usr/bin/env python3
-"""Local preview server for the static site.
+"""Static-site server and production API endpoints.
 
 Mimics Netlify's "pretty URLs": /care-brief resolves to care-brief.html,
 so internal links behave the same in the Replit preview as on the live site.
-Not published (lives outside elh-preview/).
+The Replit deployment serves the public domain and owns form intake, reviews,
+chat, and coverage lookup without requiring Netlify functions.
 """
 import http.server
+import json
 import os
+import socket
+import sys
+from urllib.parse import parse_qs, urlsplit
+
+from chat_api import (
+    ChatProviderError,
+    ChatRequestError,
+    MAX_CHAT_BODY_BYTES,
+    process_chat,
+)
+from coverage_api import lookup_coverage
+
+from form_intake import (
+    DeliveryError,
+    FORM_CLIENT_RATE_LIMITER,
+    FORM_GLOBAL_RATE_LIMITER,
+    IntakeError,
+    MAX_BODY_BYTES,
+    SlidingWindowRateLimiter,
+    json_response_payload,
+    notify_delivery_failure,
+    parse_form_body,
+    process_submission,
+)
+from google_reviews import GoogleReviewsError, get_reviews
 
 BASE = os.path.dirname(os.path.abspath(__file__))
-
-# ── Dev switcher bar ──────────────────────────────────────────────────────────
-# Injected before </body> on every HTML page served locally.
-# Never touches the published files — it lives only in the dev server response.
-_DEV_BAR = """
-<style id="_elh-dev-bar-css">
-#_elh-dev-bar{
-  position:fixed;bottom:0;left:0;right:0;z-index:2147483647;
-  background:#3E1F3E;display:flex;align-items:center;gap:6px;flex-wrap:nowrap;
-  padding:0 14px;height:42px;
-  font:500 12px/1 'Segoe UI',Arial,sans-serif;
-  box-shadow:0 -2px 10px rgba(0,0,0,.35);
-  white-space:nowrap;overflow-x:auto;
-}
-#_elh-dev-bar ._dbb{color:#C9B07E;font-weight:700;letter-spacing:.05em;margin-right:6px;flex-shrink:0}
-#_elh-dev-bar a,#_elh-dev-bar button{
-  color:rgba(245,240,235,.82);background:transparent;
-  border:1px solid rgba(245,240,235,.22);border-radius:20px;
-  padding:5px 13px;font:inherit;text-decoration:none;cursor:pointer;
-  flex-shrink:0;transition:border-color .15s,color .15s,background .15s;
-}
-#_elh-dev-bar a:hover,#_elh-dev-bar button:hover{color:#fff;border-color:#C9B07E}
-#_elh-dev-bar a._on,#_elh-dev-bar button._on{background:#C9B07E;border-color:#C9B07E;color:#2A0F28;font-weight:700}
-#_elh-dev-bar select{
-  color:rgba(245,240,235,.82);background:#4A2A4A;
-  border:1px solid rgba(245,240,235,.22);border-radius:20px;
-  padding:5px 10px;font:inherit;cursor:pointer;outline:none;flex-shrink:0;
-}
-#_elh-dev-bar select:hover{border-color:#C9B07E}
-body{padding-bottom:42px!important}
-</style>
-<div id="_elh-dev-bar">
-  <span class="_dbb">ELH ▸</span>
-  <a href="/" id="_dba-site">Website</a>
-  <a href="/tracker/" id="_dba-tracker">Marketing Outreach</a>
-  <select aria-label="Publications" onchange="if(this.value){location=this.value;this.selectedIndex=0}">
-    <option value="">Publications ▾</option>
-    <optgroup label="Care Brief">
-      <option value="/care-brief/hospice-is-part-of-life-a-continuation-of-care">Care Brief — Issue One</option>
-      <option value="/care-brief">Care Brief Library</option>
-    </optgroup>
-    <optgroup label="Guides &amp; Kit">
-      <option value="/family-guide">Family Guide</option>
-      <option value="/media-kit">Media Kit</option>
-    </optgroup>
-    <optgroup label="Blog — Eternal Journal">
-      <option value="/blog">Journal Index</option>
-      <option value="/blog/caring-for-the-caregiver">Caring for the Caregiver</option>
-      <option value="/blog/the-caregiver-who-needs-care">Rest, Renewal and the Work of Caring</option>
-      <option value="/blog/five-hospice-myths-that-cause-families-to-wait">Five Hospice Myths That Delay Care</option>
-      <option value="/blog/talking-with-children-when-a-loved-one-is-seriously-ill">Talking with Children About Illness</option>
-      <option value="/blog/music-at-the-bedside">Music at the Bedside</option>
-      <option value="/blog/sound-baths-ancient-comfort-for-body-and-spirit">Sound Baths: Ancient Comfort</option>
-      <option value="/blog/the-quiet-work-of-hospice-volunteers">The Quiet Work of Hospice Volunteers</option>
-    </optgroup>
-  </select>
-  <select aria-label="Events" onchange="if(this.value){location=this.value;this.selectedIndex=0}">
-    <option value="">Events ▾</option>
-    <option value="/events">Events Index</option>
-    <optgroup label="Upcoming">
-      <option value="/events/caregiver-support-workshop">Caregiver Support Workshop — Sep 18</option>
-      <option value="/events/community-grief-circle">Community Grief Circle — Oct 8</option>
-    </optgroup>
-  </select>
-  <select aria-label="Emails" onchange="if(this.value){location=this.value;this.selectedIndex=0}">
-    <option value="">Emails ▾</option>
-    <option value="/canvas-hub/emails/eternal-care-brief-introduction-email.html">Intro Email (Campaign 1)</option>
-    <option value="/canvas-hub/emails/eternal-care-brief-new-issue-template.html">New-Issue Template</option>
-    <option value="/canvas-hub/emails/eternal-life-email-signature-aleksandra-dubina.html">Sig — Aleksandra</option>
-    <option value="/canvas-hub/emails/eternal-life-email-signature-TEMPLATE.html">Sig — Template</option>
-  </select>
-  <script>
-  (function(){
-    var p=location.pathname;
-    var onTracker=p==='/tracker'||p.startsWith('/tracker/');
-    if(onTracker)
-      document.getElementById('_dba-tracker').className='_on';
-    else
-      document.getElementById('_dba-site').className='_on';
-    // Lift any existing fixed bottom bar (e.g. tracker Save/Clear bar) so it
-    // sits above the dev switcher and isn't hidden behind it.
-    function liftFixedBars(){
-      var barH=document.getElementById('_elh-dev-bar');
-      if(!barH)return;
-      var h=barH.offsetHeight||42;
-      // Explicitly lift the tracker Save/Clear bar by ID — display:none at load
-      // time means getComputedStyle returns 'auto' for bottom on some browsers,
-      // so the generic loop below misses it. Set it unconditionally here.
-      var trackerBar=document.getElementById('bar');
-      if(trackerBar){trackerBar.style.bottom=h+'px';}
-      // Generic lift for any other fixed-bottom element on this page
-      document.querySelectorAll('*').forEach(function(el){
-        if(el.id==='_elh-dev-bar'||el.id==='bar')return;
-        var s=getComputedStyle(el);
-        if(s.position==='fixed'&&(s.bottom==='0px'||s.bottom==='0')){
-          el.style.bottom=h+'px';
-        }
-      });
-      // Also nudge any toast that references bottom:96px
-      var toast=document.getElementById('toast');
-      if(toast){toast.style.bottom=(96+h)+'px';}
-    }
-    if(document.readyState==='loading'){
-      document.addEventListener('DOMContentLoaded',liftFixedBars);
-    } else {
-      liftFixedBars();
-    }
-    // Re-run whenever a hidden class is removed (e.g. tracker Save bar appearing)
-    var _mo=new MutationObserver(function(muts){
-      var needsLift=muts.some(function(m){
-        return m.type==='attributes'&&m.attributeName==='class';
-      });
-      if(needsLift)liftFixedBars();
-    });
-    _mo.observe(document.body,{subtree:true,attributes:true,attributeFilter:['class']});
-  })();
-  </script>
-</div>
-"""
-
-def _inject_dev_bar(html: bytes) -> bytes:
-    """Insert the dev switcher bar before </body>. Falls back to appending."""
-    tag = b"</body>"
-    bar = _DEV_BAR.encode()
-    idx = html.lower().rfind(tag)
-    if idx != -1:
-        return html[:idx] + bar + html[idx:]
-    return html + bar
 ROOT = os.path.join(BASE, "elh-preview")
 # Internal-only routes for the workspace canvas hub (never published to the site):
 CANVAS_HUB = os.path.join(BASE, "canvas-hub")
 EMAILS_DIR = os.path.abspath(os.path.join(BASE, "..", "exports", "email"))
 NEWSLETTER_DIR = os.path.abspath(os.path.join(BASE, "..", "exports", "newsletter"))
 REPORTS_DIR = os.path.abspath(os.path.join(BASE, "..", "exports", "campaign-reports"))
+CHAT_CLIENT_RATE_LIMITER = SlidingWindowRateLimiter(20, 10 * 60)
+CHAT_GLOBAL_RATE_LIMITER = SlidingWindowRateLimiter(120, 10 * 60)
+
+# The marketing site owns these historical page aliases. Keep API and tracker
+# forwarding rules out of this table: those services have separate ownership.
+LEGACY_PAGE_REDIRECTS = {
+    "/hospice-ventura-county-ca": "/hospice-ventura-and-los-angeles-county-ca",
+    "/hospice-los-angeles-county-ca": "/hospice-ventura-and-los-angeles-county-ca",
+    "/refer-a-patient": "/refer",
+    "/referral": "/refer",
+    "/refer-patient": "/refer",
+    "/providers": "/refer",
+    "/kit": "/media-kit",
+    "/presskit": "/media-kit",
+    "/press-kit": "/media-kit",
+    "/media": "/media-kit",
+    "/aleksandra": "/about/aleksandra-dubina",
+    "/denise": "/card-denise-chavez",
+    "/resources/what-hospice-covers": "/resources/medicare-hospice-benefit",
+    "/aleksandradubina": "/about/aleksandra-dubina",
+    "/insurance": "/resources/medicare-hospice-benefit",
+    "/insurance/": "/resources/medicare-hospice-benefit",
+    "/faqs": "/resources.html",
+    "/faqs/": "/resources.html",
+    "/about-us": "/about/aleksandra-dubina",
+    "/about-us/": "/about/aleksandra-dubina",
+    "/contact": "/refer",
+    "/contact/": "/refer",
+    "/assets/og-image-v2.jpg": "/assets/og-image.jpg",
+    "/care-brief/hospice-is-part-of-life-a-continuation-of-care": "/care-brief/issue-1",
+    "/care-brief/caring-for-the-caregiver": "/blog/the-caregiver-who-needs-care",
+    "/blog/caring-for-the-caregiver": "/blog/the-caregiver-who-needs-care",
+    "/blog/the-second-patient": "/blog/the-caregiver-who-needs-care",
+}
 
 
 class PrettyURLHandler(http.server.SimpleHTTPRequestHandler):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, directory=ROOT, **kwargs)
-
-    # ------------------------------------------------------------------
-    # Tracker proxy — forwards /tracker and /tracker/* to the Outreach
-    # Tracker app running on port 3000 so the preview pane can reach it
-    # without switching ports.
-    # ------------------------------------------------------------------
-    def _proxy_tracker(self):
-        import urllib.request, urllib.error, re
-        raw = self.path  # e.g. /tracker/  /tracker/contacts  /api/auth/check
-        # /tracker/* → strip the /tracker prefix; /api/* → forward as-is
-        if raw.startswith("/tracker"):
-            sub = raw[len("/tracker"):]
-            if not sub or sub[0] not in ("/", "?", "#"):
-                sub = "/" + sub
-            if not sub:
-                sub = "/"
-        else:
-            sub = raw  # already a root-relative path like /api/auth/check
-        target = "http://127.0.0.1:3000" + sub
-        try:
-            # Read request body for POST/PUT/PATCH
-            body_data = None
-            if self.command in ("POST", "PUT", "PATCH"):
-                length = int(self.headers.get("Content-Length") or 0)
-                body_data = self.rfile.read(length) if length else b""
-            req = urllib.request.Request(target, data=body_data,
-                                         method=self.command)
-            for h in ("Accept", "Accept-Encoding", "Accept-Language",
-                      "Cookie", "Content-Type", "X-Requested-With",
-                      "X-Forwarded-Proto"):
-                if self.headers.get(h):
-                    req.add_header(h, self.headers[h])
-            # HTTPError is a subclass of URLError but carries a valid HTTP
-            # response (4xx / 5xx from Express).  Catch it first so login
-            # failures, rate-limit 429s, and validation 400s reach the client
-            # intact; reserve the URLError handler for genuine connection faults.
-            try:
-                resp_obj = urllib.request.urlopen(req, timeout=5)
-                status = resp_obj.status
-                resp_headers = resp_obj.headers
-                body = resp_obj.read()
-                resp_obj.close()
-            except urllib.error.HTTPError as http_err:
-                status = http_err.code
-                resp_headers = http_err.headers
-                body = http_err.read()
-                http_err.close()
-            ct = resp_headers.get("Content-Type", "")
-            # Rewrite root-relative asset paths in HTML so the browser
-            # fetches them under /tracker/* (which this proxy handles)
-            if "text/html" in ct:
-                text = body.decode("utf-8", errors="replace")
-                # href="/  src="/  action="/  → prefixed with /tracker
-                def _rewrite(m):
-                    attr, path = m.group(1), m.group(2)
-                    # leave absolute URLs and anchors unchanged
-                    if path.startswith(("http", "//", "#", "mailto")):
-                        return m.group(0)
-                    return f'{attr}="/tracker{path}"'
-                text = re.sub(
-                    r'(href|src|action)="(/[^"]*)"', _rewrite, text
-                )
-                body = _inject_dev_bar(text.encode("utf-8"))
-                ct = "text/html; charset=utf-8"
-            self.send_response(status)
-            self.send_header("Content-Type", ct)
-            for key, val in resp_headers.items():
-                if key.lower() in ("set-cookie", "cache-control"):
-                    self.send_header(key, val)
-                elif key.lower() == "location":
-                    # rewrite redirect targets too
-                    loc = val
-                    if loc.startswith("/") and not loc.startswith("/tracker"):
-                        loc = "/tracker" + loc
-                    self.send_header("Location", loc)
-            self.send_header("Content-Length", str(len(body)))
-            self.end_headers()
-            self.wfile.write(body)
-        except urllib.error.URLError:
-            # Only fires for genuine connection failures (refused, timeout) —
-            # HTTPError is caught above and forwarded normally.
-            body = (
-                b"<html><body style='font-family:sans-serif;padding:2rem'>"
-                b"<h2>Outreach Tracker not running</h2>"
-                b"<p>Start the <b>Outreach Tracker</b> workflow, then reload.</p>"
-                b"</body></html>"
-            )
-            self.send_response(503)
-            self.send_header("Content-Type", "text/html; charset=utf-8")
-            self.send_header("Content-Length", str(len(body)))
-            self.end_headers()
-            self.wfile.write(body)
-
-    def _is_tracker_path(self):
-        """True if this request should be forwarded to the tracker on port 3000."""
-        p = self.path
-        # /tracker/  and  /tracker?  (bare /tracker redirects first)
-        if p.startswith("/tracker/") or p.startswith("/tracker?"):
-            return True
-        # /api/* — tracker JS calls these with a root-relative path; the static
-        # dev server has no API routes so forwarding is always correct here.
-        if p.startswith("/api/"):
-            return True
-        return False
-
-    def _serve_site_html(self, fspath):
-        """Read a local HTML file, inject the dev bar, and send the response."""
-        try:
-            with open(fspath, "rb") as f:
-                raw = f.read()
-        except OSError:
-            self.send_error(404, "File not found")
-            return
-        body = _inject_dev_bar(raw)
-        self.send_response(200)
-        self.send_header("Content-Type", "text/html; charset=utf-8")
-        self.send_header("Content-Length", str(len(body)))
-        self.end_headers()
-        self.wfile.write(body)
-
-    def do_GET(self):
-        if self.path == "/tracker":
-            # Redirect bare /tracker → /tracker/ so relative asset paths
-            # (styles.css, app.js) resolve as /tracker/styles.css etc.
-            self.send_response(301)
-            self.send_header("Location", "/tracker/")
-            self.send_header("Content-Length", "0")
-            self.end_headers()
-            return
-        if self._is_tracker_path():
-            self._proxy_tracker()
-            return
-        # For HTML files served from the static site, inject the dev bar.
-        # translate_path returns a directory for paths like / — resolve index.
-        fspath = self.translate_path(self.path)
-        if os.path.isdir(fspath):
-            for idx in ("index.html", "index.htm"):
-                candidate = os.path.join(fspath, idx)
-                if os.path.isfile(candidate):
-                    fspath = candidate
-                    break
-        if os.path.isfile(fspath) and fspath.endswith(".html"):
-            self._serve_site_html(fspath)
-            return
-        super().do_GET()
-
-    def do_HEAD(self):
-        # HEAD must not write a response body; proxy only the redirect,
-        # then fall through to the base class for all other paths.
-        if self.path == "/tracker":
-            self.send_response(301)
-            self.send_header("Location", "/tracker/")
-            self.send_header("Content-Length", "0")
-            self.end_headers()
-            return
-        super().do_HEAD()
-
-    def do_POST(self):
-        if self._is_tracker_path():
-            self._proxy_tracker()
-            return
-        # Netlify handles form POSTs on the live site; in this preview we
-        # accept them so the on-page "thank you" flow works (nothing is stored).
-        length = int(self.headers.get("Content-Length") or 0)
-        if length:
-            self.rfile.read(length)
-        body = (
-            "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\">"
-            "<title>Preview only</title></head>"
-            "<body style=\"font-family:Georgia,serif;background:#F5F0EB;color:#3C1C3B;"
-            "display:flex;align-items:center;justify-content:center;min-height:100vh;margin:0\">"
-            "<div style=\"max-width:460px;text-align:center;padding:2rem\">"
-            "<h1 style=\"font-weight:400\">Preview mode</h1>"
-            "<p>This is the workspace preview &mdash; form submissions are only "
-            "recorded on the live site (eternallifehospice.com).</p>"
-            "<p><a href=\"/care-brief#signup\" style=\"color:#5B2E59\">&larr; Back</a></p>"
-            "</div></body></html>"
-        ).encode()
-        self.send_response(200)
-        self.send_header("Content-Type", "text/html; charset=utf-8")
-        self.send_header("Content-Length", str(len(body)))
-        self.end_headers()
-        self.wfile.write(body)
-
-    def do_PUT(self):
-        if self._is_tracker_path():
-            self._proxy_tracker()
-
-    def do_PATCH(self):
-        if self._is_tracker_path():
-            self._proxy_tracker()
-
-    def do_DELETE(self):
-        if self._is_tracker_path():
-            self._proxy_tracker()
 
     def translate_path(self, path):
         clean = path.split("?", 1)[0].split("#", 1)[0]
@@ -366,6 +104,11 @@ class PrettyURLHandler(http.server.SimpleHTTPRequestHandler):
             ):
                 return resolved if os.path.exists(resolved) else resolved + ".html"
             return os.path.join(base, "__not_found__")
+        # These hubs have extensionless canonical URLs. Resolve them before
+        # SimpleHTTPRequestHandler sees the /resources/ directory redirect
+        # stub, so both slash variants serve the final document directly.
+        if clean.rstrip("/") in ("/hospice-care", "/resources"):
+            return os.path.join(ROOT, clean.rstrip("/").lstrip("/") + ".html")
         resolved = super().translate_path(path)
         if not os.path.exists(resolved):
             root, ext = os.path.splitext(resolved)
@@ -374,8 +117,339 @@ class PrettyURLHandler(http.server.SimpleHTTPRequestHandler):
         return resolved
 
     def end_headers(self):
-        self.send_header("Cache-Control", "no-store")
+        if not any(
+            header.lower().startswith(b"cache-control:")
+            for header in getattr(self, "_headers_buffer", [])
+        ):
+            self.send_header("Cache-Control", "no-store")
         super().end_headers()
+
+    def do_GET(self):
+        parsed = urlsplit(self.path)
+        destination = LEGACY_PAGE_REDIRECTS.get(parsed.path)
+        if destination:
+            self._send_redirect(destination, parsed.query)
+            return
+        if parsed.path == "/api/chat":
+            self._send_json(
+                405,
+                {"error": "method_not_allowed", "message": "Use POST /api/chat."},
+            )
+            return
+        if parsed.path == "/api/coverage":
+            status, payload, cache_seconds = lookup_coverage(
+                parse_qs(parsed.query, keep_blank_values=True)
+            )
+            self._send_json(
+                status,
+                payload,
+                cache_control=f"public, max-age={cache_seconds}",
+                extra_headers={
+                    "Access-Control-Allow-Origin": "*",
+                    "Access-Control-Allow-Methods": "GET, OPTIONS",
+                },
+            )
+            return
+        if parsed.path == "/api/google-reviews":
+            try:
+                payload = get_reviews()
+                self._send_json(200, payload)
+            except GoogleReviewsError:
+                self._send_json(
+                    503,
+                    {
+                        "ok": False,
+                        "error": "reviews_unavailable",
+                        "message": (
+                            "Live Google reviews are temporarily unavailable. "
+                            "Please use the Google profile link to see the latest reviews."
+                        ),
+                        "googleMapsUrl": (
+                            "https://maps.google.com/?cid=9771388271577679785"
+                        ),
+                    },
+                )
+            return
+        super().do_GET()
+
+    def _send_redirect(self, destination, query=""):
+        location = destination + (f"?{query}" if query else "")
+        self.send_response(301)
+        self.send_header("Location", location)
+        self.send_header("Content-Length", "0")
+        self.end_headers()
+
+    def do_POST(self):
+        path = self.path.split("?", 1)[0]
+        if path == "/api/coverage":
+            self._send_json(
+                405,
+                {
+                    "error": "method_not_allowed",
+                    "message": "Use GET /api/coverage?city=CityName.",
+                },
+            )
+            return
+        if path == "/api/chat":
+            self._handle_chat()
+            return
+        if path != "/api/form-submit":
+            self._send_json(
+                404,
+                json_response_payload(
+                    False,
+                    error="unknown_endpoint",
+                    message="This submission endpoint does not exist.",
+                ),
+            )
+            return
+
+        if not self._is_same_origin():
+            self._send_json(
+                403,
+                json_response_payload(
+                    False,
+                    error="invalid_origin",
+                    message=(
+                        "This form must be submitted from the Eternal Life "
+                        "Hospice website."
+                    ),
+                ),
+            )
+            return
+
+        if not FORM_GLOBAL_RATE_LIMITER.allow(self._peer_key()):
+            self._send_json(
+                429,
+                json_response_payload(
+                    False,
+                    error="rate_limited",
+                    message=(
+                        "The website is receiving too many requests. Please "
+                        "wait and try again, or call 805.953.7273 for immediate help."
+                    ),
+                ),
+            )
+            return
+
+        if not FORM_CLIENT_RATE_LIMITER.allow(self._client_key()):
+            self._send_json(
+                429,
+                json_response_payload(
+                    False,
+                    error="rate_limited",
+                    message=(
+                        "Too many requests were received. Please wait and try "
+                        "again, or call 805.953.7273 for immediate help."
+                    ),
+                ),
+            )
+            return
+
+        try:
+            length = int(self.headers.get("Content-Length") or 0)
+        except ValueError:
+            length = -1
+        if length < 0 or length > MAX_BODY_BYTES:
+            self._send_json(
+                413,
+                json_response_payload(
+                    False,
+                    error="payload_too_large",
+                    message="The submission is too large.",
+                ),
+            )
+            return
+
+        body = self.rfile.read(length)
+        try:
+            fields, files = parse_form_body(
+                self.headers.get("Content-Type", ""), body
+            )
+            result = process_submission(fields, files)
+            form_name = fields.get("form-name", "unknown")
+            receipt = result.get("receipt_id", "honeypot")
+            print(
+                f"FORM_ACCEPTED form={form_name} receipt={receipt} "
+                f"ack={bool(result.get('acknowledgement_sent'))}",
+                file=sys.stderr,
+            )
+            response_data = dict(result)
+            response_data.pop("ok", None)
+            self._send_json(200, json_response_payload(True, **response_data))
+        except IntakeError as exc:
+            self._send_json(
+                exc.status,
+                json_response_payload(
+                    False, error=exc.code, message=exc.message
+                ),
+            )
+        except DeliveryError:
+            print("FORM_DELIVERY_FAILED provider=brevo", file=sys.stderr)
+            notify_delivery_failure()
+            self._send_json(
+                502,
+                json_response_payload(
+                    False,
+                    error="delivery_unavailable",
+                    message=(
+                        "We could not confirm delivery. Please try again or call "
+                        "805.953.7273 for immediate help."
+                    ),
+                ),
+            )
+        except Exception as exc:
+            # Never log the request body or submitted fields.
+            print(
+                f"FORM_PROCESSING_FAILED type={type(exc).__name__}",
+                file=sys.stderr,
+            )
+            self._send_json(
+                500,
+                json_response_payload(
+                    False,
+                    error="processing_error",
+                    message=(
+                        "We could not confirm delivery. Please try again or call "
+                        "805.953.7273 for immediate help."
+                    ),
+                ),
+            )
+
+    def do_OPTIONS(self):
+        if self.path.split("?", 1)[0] == "/api/coverage":
+            self.send_response(204)
+            self.send_header("Access-Control-Allow-Origin", "*")
+            self.send_header("Access-Control-Allow-Methods", "GET, OPTIONS")
+            self.send_header("Content-Length", "0")
+            self.end_headers()
+            return
+        self.send_response(404)
+        self.send_header("Content-Length", "0")
+        self.end_headers()
+
+    def _handle_chat(self):
+        if not self._is_same_origin():
+            self._send_json(
+                403,
+                {
+                    "error": "invalid_origin",
+                    "message": "This chat must be used from the Eternal Life Hospice website.",
+                },
+            )
+            return
+        if not CHAT_GLOBAL_RATE_LIMITER.allow("global"):
+            self._send_json(
+                429,
+                {"error": "rate_limited", "message": "Please wait and try again."},
+            )
+            return
+        if not CHAT_CLIENT_RATE_LIMITER.allow(self._client_key()):
+            self._send_json(
+                429,
+                {"error": "rate_limited", "message": "Please wait and try again."},
+            )
+            return
+        try:
+            length = int(self.headers.get("Content-Length") or 0)
+        except ValueError:
+            length = -1
+        if length < 0 or length > MAX_CHAT_BODY_BYTES:
+            self._send_json(
+                413,
+                {"error": "payload_too_large", "message": "The chat request is too large."},
+            )
+            return
+        try:
+            previous_timeout = self.connection.gettimeout()
+            self.connection.settimeout(10)
+            try:
+                body = self.rfile.read(length)
+            finally:
+                self.connection.settimeout(previous_timeout)
+            status, payload = process_chat(body)
+            self._send_json(status, payload)
+        except (socket.timeout, TimeoutError):
+            self._send_json(
+                408,
+                {"error": "request_timeout", "message": "The chat request timed out."},
+            )
+        except ChatRequestError as exc:
+            self._send_json(
+                exc.status, {"error": exc.code, "message": exc.message}
+            )
+        except ChatProviderError:
+            # Never log message bodies or provider response bodies.
+            print("CHAT_PROVIDER_FAILED", file=sys.stderr)
+            self._send_json(
+                502,
+                {
+                    "reply": "",
+                    "error": "chat_unavailable",
+                    "message": "Chat is temporarily unavailable.",
+                },
+            )
+        except Exception as exc:
+            # Never log message bodies or submitted fields.
+            print(f"CHAT_FAILED type={type(exc).__name__}", file=sys.stderr)
+            self._send_json(
+                500,
+                {
+                    "reply": "",
+                    "error": "chat_unavailable",
+                    "message": "Chat is temporarily unavailable.",
+                },
+            )
+
+    def _is_same_origin(self):
+        origin = (self.headers.get("Origin") or "").strip()
+        host = (self.headers.get("Host") or "").strip().lower()
+        if not origin or not host:
+            return False
+        try:
+            parsed = urlsplit(origin)
+        except ValueError:
+            return False
+        if parsed.scheme not in ("http", "https"):
+            return False
+        return parsed.netloc.lower() == host
+
+    def _client_key(self):
+        # A compliant reverse proxy appends its observed client address to the
+        # right edge. Never trust a caller-supplied leading XFF value. Because
+        # Replit does not document a sanitized-header contract, the independent
+        # socket-peer circuit breaker above remains authoritative even if every
+        # forwarded value is attacker-controlled.
+        forwarded = [
+            item.strip()
+            for item in (self.headers.get("X-Forwarded-For") or "").split(",")
+            if item.strip()
+        ]
+        candidate = forwarded[-1] if forwarded else self.client_address[0]
+        # Avoid unbounded attacker-controlled keys.
+        return candidate[:64]
+
+    def _peer_key(self):
+        return ("peer:" + self.client_address[0])[:80]
+
+    def _send_json(
+        self, status, body, cache_control="no-store", extra_headers=None
+    ):
+        if not isinstance(body, (bytes, bytearray)):
+            if not isinstance(body, str):
+                body = json.dumps(
+                    body, ensure_ascii=False, separators=(",", ":")
+                )
+            body = body.encode("utf-8")
+        self.send_response(status)
+        self.send_header("Content-Type", "application/json; charset=utf-8")
+        self.send_header("Content-Length", str(len(body)))
+        self.send_header("Cache-Control", cache_control)
+        self.send_header("X-Content-Type-Options", "nosniff")
+        for name, value in (extra_headers or {}).items():
+            self.send_header(name, value)
+        self.end_headers()
+        self.wfile.write(body)
 
 
 class QuietHTTPServer(http.server.ThreadingHTTPServer):

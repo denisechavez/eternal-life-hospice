@@ -1,0 +1,73 @@
+{
+  "version": "1.0",
+  "site": "https://eternallifehospice.com",
+  "name": "Eternal Life Hospice",
+  "description": "Medicare-certified, ACHC-accredited hospice care serving Ventura and Los Angeles counties. Same-day admissions, 24/7 nursing, whole-person comfort care.",
+  "tools": [
+    {
+      "name": "coverage-lookup",
+      "description": "Check whether Eternal Life Hospice serves a given city in Ventura or Los Angeles County. Returns a structured yes/no answer with county, subregion, and a link to the city-specific hospice care page.",
+      "endpoint": "https://eternallifehospice.com/api/coverage",
+      "method": "GET",
+      "parameters": {
+        "city": {
+          "type": "string",
+          "required": true,
+          "description": "City name to check (case-insensitive; diacritics optional).",
+          "example": "Pasadena"
+        }
+      },
+      "openapi": "https://eternallifehospice.com/.well-known/openapi.json"
+    }
+  ],
+  "surfaces": [
+    {
+      "name": "care-guide",
+      "description": "Interactive decision guide helping families, patients, or providers identify their next step with hospice care.",
+      "url": "https://eternallifehospice.com/#guide",
+      "type": "interactive-guide"
+    },
+    {
+      "name": "schedule-connect",
+      "description": "Schedule a time to speak with Aleksandra Dubina, Founder and CEO of Eternal Life Hospice.",
+      "url": "https://eternallifehospice.com/#founder",
+      "type": "scheduler"
+    },
+    {
+      "name": "contact-elh",
+      "description": "Contact Eternal Life Hospice: general inquiries, hospice questions, or request a callback from a family or patient.",
+      "url": "https://eternallifehospice.com/#leadcap",
+      "type": "contact-form"
+    },
+    {
+      "name": "submit-physician-referral",
+      "description": "Submit a patient referral to Eternal Life Hospice. For referring physicians documenting a terminal prognosis and initiating the hospice election process.",
+      "url": "https://eternallifehospice.com/refer#referral-form",
+      "type": "referral-form"
+    },
+    {
+      "name": "submit-discharge-referral",
+      "description": "Submit a patient referral to Eternal Life Hospice. For hospital discharge planners coordinating a safe, same-day or next-day transition to hospice.",
+      "url": "https://eternallifehospice.com/refer#referral-form",
+      "type": "referral-form"
+    },
+    {
+      "name": "connect-as-coordinator",
+      "description": "Connect with Eternal Life Hospice as a case manager, skilled nursing facility, or assisted living coordinator to initiate or discuss a patient referral.",
+      "url": "https://eternallifehospice.com/refer#referral-form",
+      "type": "referral-form"
+    },
+    {
+      "name": "share-voice-brief",
+      "description": "Submit interest in contributing to the Eternal Care Brief or scheduling an educational session.",
+      "url": "https://eternallifehospice.com/#leadcap",
+      "type": "interest-form"
+    },
+    {
+      "name": "submit-referral",
+      "description": "Submit a patient referral to Eternal Life Hospice. For healthcare professionals referring a patient for hospice evaluation.",
+      "url": "https://eternallifehospice.com/refer#referral-form",
+      "type": "referral-form"
+    }
+  ]
+}

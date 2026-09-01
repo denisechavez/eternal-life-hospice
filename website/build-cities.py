@@ -1,57 +1,109 @@
 #!/usr/bin/env python3
 """
 Eternal Life Hospice — City Page Generator
-==========================================
+------------------------------------------
 Reads city-data.json, writes one HTML file per published city
 into website/elh-preview/.
 
-Run from repo root:
-    python3 website/build-cities.py
+CANONICAL SOURCE RULE
+---------------------
+city-data.json is the single source of truth for all city page content.
+The generated HTML files in elh-preview/ are build artifacts — do not
+hand-edit them.  Any prose changes (summaries, intro paragraphs, nearby
+city text, FAQ answers) must be made in city-data.json first, then the
+HTML regenerated.
 
-Or for a single city:
+OVERWRITE PROTECTION
+--------------------
+By default, this script will NOT overwrite an HTML file that already
+exists on disk.  This prevents accidentally clobbering hand-crafted
+edits that have not yet been merged back into city-data.json.
+
+To overwrite existing files, pass --force explicitly:
+
+    python3 website/build-cities.py --force
+    python3 website/build-cities.py --slug thousand-oaks --force
+
+Run from repo root:
+    python3 website/build-cities.py            # skips cities that already have HTML
+    python3 website/build-cities.py --force    # overwrites all published cities
     python3 website/build-cities.py --slug thousand-oaks
+    python3 website/build-cities.py --dry-run  # show what would be written without writing
 """
 
 import json, os, re, sys, textwrap, argparse
 
-def _hero_img_tag(slug: str, city: str) -> str:
-    """Return the <img class="hero-bg"> tag for the city hero section.
 
-    Mirrors _hero_preload_tag: prefers WebP when the file exists, falls back
-    to JPEG. Uses eager loading + async decoding so the browser fetches it at
-    highest priority alongside the preload hint.
-    """
-    img_dir = os.path.join(OUT_DIR, "assets", "img", "city")
-    webp_path = os.path.join(img_dir, f"{slug}.webp")
-    if os.path.isfile(webp_path):
-        src = f"assets/img/city/{slug}.webp"
+def meta_description(c: dict) -> str:
+    """Build a locally specific search snippet near the 150–160 character target."""
+    city = c["city"]
+    subregion = c["subregion"]
+    county = c["county"]
+
+    if city == "Conejo Valley":
+        territory = "Thousand Oaks and Westlake Village"
+    elif city in {"Thousand Oaks", "Westlake Village"}:
+        territory = "the Conejo Valley and Ventura County"
     else:
-        src = f"assets/img/city/{slug}.jpg"
+        territory = subregion.split(" · ", 1)[0]
+        if county.lower() not in territory.lower():
+            territory = f"{territory}, {county}"
+
+    prefixes = (
+        "Medicare-certified hospice care in",
+        "Eternal Life Hospice offers Medicare-certified hospice care in",
+        "Eternal Life Hospice provides Medicare-certified hospice care in",
+    )
+    connectors = ("— serving", "—")
+    differentiators = (
+        "Physician-supported care at home.",
+        "Physician-supported comfort care at home.",
+        "Compassionate, physician-supported care at home.",
+        "Care at home, supported by our hospice physician.",
+    )
+    calls_to_action = ("Call 805.953.7273.", "Call for guidance: 805.953.7273.")
+
+    candidates = [
+        f"{prefix} {city}, CA {connector} {territory}. {differentiator} {cta}"
+        for prefix in prefixes
+        for connector in connectors
+        for differentiator in differentiators
+        for cta in calls_to_action
+    ]
+    in_range = [text for text in candidates if 150 <= len(text) <= 160]
+    return min(in_range or candidates, key=lambda text: abs(len(text) - 155))
+
+def _hero_img_tag(slug: str, city: str) -> str:
+    """Return a responsive <picture> element for the city hero image.
+
+    Emits a mobile 640px variant (<= 768 px) and the full-size WebP for
+    wider screens, with a JPEG fallback.  Hero images are deployed
+    separately; their on-disk presence is NOT checked here.
+    """
     return (
-        f'<img class="hero-bg" src="{src}" alt="{city}, California" '
-        f'width="1536" height="1024" loading="eager" decoding="async">'
+        f'<picture class="hero-bg">'
+        f'<source srcset="assets/img/city/{slug}-mobile.webp" media="(max-width:768px)" type="image/webp">'
+        f'<source srcset="assets/img/city/{slug}.webp" type="image/webp">'
+        f'<img class="hero-bg" src="assets/img/city/{slug}.jpg"'
+        f' alt="{city}, California" width="1536" height="1024"'
+        f' loading="eager" decoding="async">'
+        f'</picture>'
     )
 
-
 def _hero_preload_tag(slug: str) -> str:
-    """Return the correct <link rel="preload"> tag for the city hero image.
+    """Return responsive <link rel="preload"> tags for the city hero image.
 
-    Prefers a WebP variant (assets/img/city/{slug}.webp) when one exists in
-    the output directory, emitting type="image/webp" to match the homepage
-    pattern.  Falls back to the JPEG without a type attribute when only the
-    .jpg is present.
+    Emits two preload hints: a mobile 640px WebP for narrow screens and the
+    full-size WebP for wider screens, mirroring the homepage hero pattern.
+    Hero images are deployed separately; on-disk presence is NOT checked here.
     """
-    img_dir = os.path.join(OUT_DIR, "assets", "img", "city")
-    webp_path = os.path.join(img_dir, f"{slug}.webp")
-    if os.path.isfile(webp_path):
-        return (
-            f'<link rel="preload" as="image" '
-            f'href="assets/img/city/{slug}.webp" '
-            f'type="image/webp" fetchpriority="high">'
-        )
     return (
         f'<link rel="preload" as="image" '
-        f'href="assets/img/city/{slug}.jpg" fetchpriority="high">'
+        f'href="assets/img/city/{slug}-mobile.webp" '
+        f'media="(max-width:768px)" type="image/webp" fetchpriority="high">\n  '
+        f'<link rel="preload" as="image" '
+        f'href="assets/img/city/{slug}.webp" '
+        f'media="(min-width:769px)" type="image/webp" fetchpriority="high">'
     )
 
 BASE = os.path.dirname(__file__)
@@ -61,50 +113,34 @@ OUT_DIR   = os.path.join(BASE, "elh-preview")
 # ── Deferred script snippets (must NOT be inside an f-string — JS braces clash) ─
 
 HEAD_SCRIPTS = (
-    '<script defer src="/assets/analytics.js?v=20260727h"></script>\n'
-    # UserWay accessibility widget — requestIdleCallback deferred (never DOMContentLoaded)
-    '<script>(function(d){var load=function(){var s=d.createElement(\'script\');'
-    's.setAttribute(\'data-color\',\'#6793AC\');'
-    's.setAttribute(\'data-trigger\',\'elh-ada-trigger\');'
-    's.setAttribute(\'data-account\',\'puHleOAe1C\');'
-    's.src=\'https://cdn.userway.org/widget.js\';d.body.appendChild(s)};'
-    '\'requestIdleCallback\'in window?window.requestIdleCallback(load):window.addEventListener(\'load\',load)})(document)'
-    '</script>\n'
-    '<noscript>Please ensure Javascript is enabled for purposes of '
-    '<a href="https://userway.org">website accessibility</a></noscript>\n'
-    # WhatConverts lead tracking — window load deferred (never inline async)
-    '<script>window.addEventListener(\'load\',function(){'
-    'var f=function(a){return JSON.parse(JSON.stringify(a))};'
-    'window.$wc_leads=window.$wc_leads||{doc:{url:f(document.URL),ref:f(document.referrer),'
-    'search:f(location.search),hash:f(location.hash)}};'
-    'var s=document.createElement(\'script\');'
-    's.src=\'//s.ksrndkehqnwntyxlhgto.com/172406.js\';document.body.appendChild(s)});</script>'
+    '<script defer src="/assets/analytics.js?v=20260727h"></script>'
+    # UserWay (accessibility, essential) and WhatConverts (call-tracking, marketing)
+    # are both bootstrapped by analytics.js to respect the cookie consent gate.
 )
 
 # ── Shared HTML fragments ──────────────────────────────────────────────────────
 
 HEADER = """\
   <header id="hdr"><div class="hdr-in">
-    <a class="hdr-logo" href="/"><img class="s sym-cream" src="assets/img/elh-logo-h2-cream.webp" alt="Eternal Life Hospice logo"><img class="s sym-plum" src="assets/img/elh-logo-h2-plum.webp" alt="" aria-hidden="true"><span class="hdr-wordmark">Eternal<small>Life Hospice</small></span></a>
-    <nav>
-      <div class="nav-group"><a href="/#standard" class="nav-parent">The Eternal Standard</a><div class="nav-sub"><a href="/#standard">Four Pillars : One Standard</a></div></div>
-      <div class="nav-group"><a href="/#first48" class="nav-parent">The First 48 Hours</a><div class="nav-sub"><a href="/#faq">Common Questions Answered</a><a href="family-guide">Family eGuide</a></div></div>
-      <div class="nav-group"><a href="/#modalities" class="nav-parent">Integrative Therapies</a><div class="nav-sub"><a href="/#clinical-mobile">Clinical &amp; Mobile Services</a></div></div>
-      <a href="/#medicare">Insurance &amp; Medicare</a>
-      <div class="nav-group"><a href="/#coverage" class="nav-parent">Coverage Area</a><div class="nav-sub"><a href="/#settings">Care Wherever Home Is</a></div></div>
-      <div class="nav-group"><a href="/#founder" class="nav-parent">About Eternal</a><div class="nav-sub"><a href="/#founder-welcome">A Founder&rsquo;s Welcome</a><a href="/#amethyst">Our Origin</a><a href="resources">Resources</a><a href="volunteer">Volunteer</a></div></div>
-      <div class="nav-group"><a href="/refer" class="nav-parent">For Providers</a><div class="nav-sub"><a href="/refer">Refer With Confidence</a><a href="/?lead=voice#leadcap">Schedule an Educational Session</a></div></div>
+    <a class="hdr-logo" href="/"><img class="s sym-cream" src="assets/img/elh-logo-h2-cream.webp" alt="Eternal Life Hospice logo" width="331" height="74"><img class="s sym-plum" src="assets/img/elh-logo-h2-plum.webp" alt="" aria-hidden="true" width="331" height="74"></a>
+    <nav id="site-nav" aria-label="Main navigation">
+      <div class="nav-group"><a href="/hospice-care" class="nav-parent">Hospice Care</a><div class="nav-sub"><a href="/resources/when-is-it-time">When Is It Time?</a><a href="/resources/first-48-hours">The First 48 Hours</a><a href="/resources/medicare-hospice-benefit">What Hospice Covers</a><a href="/resources/how-to-choose-a-hospice">How to Choose a Hospice</a></div></div>
+      <div class="nav-group"><a href="/services" class="nav-parent">Services</a><div class="nav-sub"><a href="/services">All Services</a><a href="/resources/comfort-therapies">Integrative &amp; Whole-Person Care</a><a href="/resources/pain-symptom-management">Pain &amp; Symptom Management</a><a href="/sound-bath">Sound Bath</a></div></div>
+      <div class="nav-group"><a href="/resources" class="nav-parent">Resources</a><div class="nav-sub"><a href="/family-guide">Family Guide</a><a href="/blog">The Eternal Journal</a><a href="/care-brief">Care Brief</a><a href="/volunteer">Volunteer</a></div></div>
+      <div class="nav-group"><a href="/hospice-ventura-and-los-angeles-county-ca" class="nav-parent" aria-current="page">Locations</a><div class="nav-sub"><a href="/hospice-thousand-oaks-ca">Thousand Oaks</a><a href="/hospice-simi-valley-ca">Simi Valley</a><a href="/hospice-calabasas-ca">Calabasas</a><a href="/hospice-ventura-and-los-angeles-county-ca">All Service Areas</a></div></div>
+      <div class="nav-group"><a href="/refer" class="nav-parent">For Professionals</a><div class="nav-sub"><a href="/refer">Refer a Patient</a><a href="/?lead=voice#leadcap">Schedule a Session</a></div></div>
+      <div class="nav-group"><a href="/about/aleksandra-dubina" class="nav-parent">About</a><div class="nav-sub"><a href="/#standard">The Eternal Standard</a><a href="/about/aleksandra-dubina">Aleksandra Dubina</a></div></div>
     </nav>
-    <div class="hdr-cta-wrap"><span class="hdr-cta-note">Here in Moments That Matter Most</span><a href="tel:18059537273" class="hdr-cta">805.953.7273</a></div>
+    <div class="hdr-cta-wrap"><button id="elh-ada-trigger" aria-label="Accessibility options" style="background:none;border:none;cursor:pointer;padding:0 .5rem 0 0;color:rgba(245,240,235,.75);display:flex;align-items:center;flex-shrink:0"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="12" cy="4.5" r="2"/><path d="M17 8h-4.15l-.85-2H7v2h3.15l.85 2H8c-1.1 0-2 .9-2 2v5h2v-4.5h1.35L11 16h2l-1.5-3.5V12h4l1 4h2l-1.25-5H17z"/></svg></button><span class="hdr-cta-note">Here in Moments That Matter Most</span><a href="/refer" class="hdr-cta">Request Care</a></div>
     <button class="search-btn" id="searchBtn" aria-label="Search"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="9" cy="9" r="7"/><line x1="15" y1="15" x2="19" y2="19"/></svg></button>
-    <button class="menu-btn" aria-label="Menu" aria-expanded="false"><svg width="22" height="16" viewBox="0 0 22 16"><line x1="0" y1="2" x2="22" y2="2" stroke="#F5F0EB" stroke-width="2" stroke-linecap="round"/><line x1="0" y1="8" x2="22" y2="8" stroke="#F5F0EB" stroke-width="2" stroke-linecap="round"/><line x1="0" y1="14" x2="22" y2="14" stroke="#F5F0EB" stroke-width="2" stroke-linecap="round"/></svg></button>
+    <button class="menu-btn" aria-label="Menu" aria-controls="site-nav" aria-expanded="false"><svg width="22" height="16" viewBox="0 0 22 16"><line x1="0" y1="2" x2="22" y2="2" stroke="#F5F0EB" stroke-width="2" stroke-linecap="round"/><line x1="0" y1="8" x2="22" y2="8" stroke="#F5F0EB" stroke-width="2" stroke-linecap="round"/><line x1="0" y1="14" x2="22" y2="14" stroke="#F5F0EB" stroke-width="2" stroke-linecap="round"/></svg></button>
   </div></header>"""
 
 CRED_STRIP = """\
 <div class="cred-strip"><div class="cred-track">
-    <a class="lc cms" href="https://www.medicare.gov/care-compare/?providerType=Hospice" target="_blank" rel="noopener"><img loading="lazy" decoding="async" src="assets/img/cred-cms.webp" alt="CMS Medicare Certified"><div class="ct"><span class="cl">Medicare Certified</span><span class="csub">Centers for Medicare &amp; Medicaid Services</span><span class="ext">medicare.gov &#8599;</span></div></a>
+    <a class="lc cms" href="https://www.medicare.gov/care-compare/?providerType=Hospice" target="_blank" rel="noopener"><img loading="lazy" decoding="async" src="assets/img/cred-cms.webp" srcset="assets/img/cred-cms-1x.webp 1x, assets/img/cred-cms.webp 2x" alt="CMS Medicare Certified"><div class="ct"><span class="cl">Medicare Certified</span><span class="csub">Centers for Medicare &amp; Medicaid Services</span><span class="ext">medicare.gov &#8599;</span></div></a>
     <div class="csep"></div>
-    <a class="lc cdph" href="https://www.cdph.ca.gov/Programs/CHCQ/LCP/CalHealthFind/pages/home.aspx" target="_blank" rel="noopener"><img loading="lazy" decoding="async" src="assets/img/cred-cdph.webp" alt="CDPH Licensed"><div class="ct"><span class="cl">CDPH Licensed</span><span class="csub">California Dept. of Public Health</span><span class="ext">cdph.ca.gov &#8599;</span></div></a>
+    <a class="lc cdph" href="https://www.cdph.ca.gov/Programs/CHCQ/LCP/CalHealthFind/pages/home.aspx" target="_blank" rel="noopener"><img loading="lazy" decoding="async" src="assets/img/cred-cdph.webp" srcset="assets/img/cred-cdph-1x.webp 1x, assets/img/cred-cdph.webp 2x" alt="CDPH Licensed"><div class="ct"><span class="cl">CDPH Licensed</span><span class="csub">California Dept. of Public Health</span><span class="ext">cdph.ca.gov &#8599;</span></div></a>
     <div class="csep"></div>
     <a class="lc achc" href="https://achc.org/search-facilities/" target="_blank" rel="noopener"><img loading="lazy" decoding="async" src="assets/img/cred-achc.webp" alt="ACHC Accredited"><div class="ct"><span class="cl">ACHC Accredited</span><span class="csub">Accreditation Commission for Health Care</span><span class="ext">achc.org &#8599;</span></div></a>
     <div class="csep"></div>
@@ -114,46 +150,132 @@ CRED_STRIP = """\
     <div class="csep"></div>
 </div></div>"""
 
-FOOTER = """\
-<footer id="site-footer">
-  <div class="foot-grid">
-    <div><div class="foot-logo"><a href="/" aria-label="Eternal Life Hospice &mdash; home"><img loading="lazy" decoding="async" src="assets/img/elh-logo-cream-g.webp" alt="Eternal Life Hospice logo"></a></div><p class="foot-tag">Care That Honors Life.</p><p class="foot-legal">Medicare-Certified &middot; CDPH-Licensed &middot; ACHC-Accredited. Serving families across Ventura and Los Angeles Counties.</p><div class="foot-qr"><img src="assets/img/qr-cream.webp" alt="Scan to visit eternallifehospice.com" width="96" height="96" loading="lazy"><span>Scan to visit<br>on your phone</span></div></div>
-    <div class="foot-col"><h4>For Families</h4><a href="family-guide">Family eGuide</a><a href="resources">Resources</a><a href="blog">Journal</a><a href="volunteer">Volunteer</a><a href="careers">Careers</a><a href="/#coverage">Coverage Area</a></div>
-    <div class="foot-col"><h4>For Providers</h4><a href="/refer">Refer With Confidence</a><a href="/referral-card">Referral eCard</a><a href="/?lead=voice#leadcap">Schedule an Educational Session</a></div>
-    <div class="foot-col"><h4>Resources</h4><a href="/media-kit">Media Kit</a><a href="/care-brief/hospice-is-part-of-life-a-continuation-of-care">Care Brief</a><a href="family-guide">Family eGuide</a></div>
-    <div class="foot-col"><h4>Our Care</h4><a href="/#standard">The Eternal Standard</a><a href="/#first48">The First 48 Hours</a><a href="/#modalities">Integrative Therapies</a><a href="/#clinical-mobile">Clinical &amp; Mobile Services</a><a href="/#medicare">Insurance &amp; Medicare</a></div>
-    <div class="foot-col"><h4>Contact</h4>
-      <a class="fc-line" href="tel:18059537273"><svg class="fci" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg><span>805.953.7273</span></a>
-      <span class="fc-line fc-fax"><svg class="fci" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg><span>805.953.8530 fax</span></span>
-      <a class="fc-line" href="mailto:info@eternallifehospice.com"><svg class="fci" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"/><polyline points="22,6 12,13 2,6"/></svg><span>info@eternallifehospice.com</span></a>
-      <a class="fc-line fc-addr" href="https://maps.google.com/?cid=9771388271577679785" target="_blank" rel="noopener"><svg class="fci" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg><span>4165 E Thousand Oaks Blvd, Suite 325B<br>Westlake Village, CA 91362</span></a>
-    </div>
-  </div>
-  <nav class="foot-social" aria-label="Eternal Life Hospice on social media"><span class="fs-label">Stay Connected</span><a href="https://www.linkedin.com/company/eternal-life-hospice/" target="_blank" rel="noopener" aria-label="LinkedIn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4V9h4v1.57A6 6 0 0 1 16 8z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg></a><a href="https://www.facebook.com/eternallifehospiceinc" target="_blank" rel="noopener" aria-label="Facebook"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg></a><a href="https://www.instagram.com/eternallifehospice/" target="_blank" rel="noopener" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg></a><a href="https://www.youtube.com/@EternalLifeHospice" target="_blank" rel="noopener" aria-label="YouTube"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z"/><polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"/></svg></a></nav>
-  <div class="foot-disclaimer"><strong style="color:rgba(245,240,235,.5)">Disclaimer:</strong> Eternal Life Hospice Inc. is a licensed and Medicare-certified hospice care provider. The integrative modalities described are complementary care offered for patient comfort and wellbeing; they are not intended to diagnose, treat, cure or prevent any medical condition. Medicare coverage details are subject to change; confirm current eligibility with your care team or call <a href="tel:18006334227" style="color:inherit;text-decoration:none">1.800.MEDICARE</a>.</div>
-  <div class="foot-bottom"><span>&copy; 2026 Eternal Life Hospice Inc. All rights reserved. &middot; A <a href="https://conduitint.com" target="_blank" rel="noopener" style="color:inherit;text-decoration:none">Conduit International</a> build</span><span><a href="/" style="color:inherit">eternallifehospice.com</a></span></div>
-</footer>
-<script src="assets/header.js?v=20260805" defer></script><script src="/assets/chat.js?v=20260805" defer></script>
-<div class="search-overlay" id="searchOverlay" role="dialog" aria-modal="true" aria-label="Site search" aria-hidden="true">
-  <div class="search-box"><input type="text" id="searchInput" placeholder="Search pages, cities, resources..." autocomplete="off" aria-label="Search"><button class="search-close" id="searchClose" aria-label="Close search">&times;</button></div>
-  <p class="search-hint">Press Enter to open the first result, or Escape to close</p>
-  <div class="search-results" id="searchResults"></div>
-</div>
-<div class="foot-translate">
-    <span class="ft-label">Translate this page</span>
-    <div class="ft-lang-btns">
-      <a class="ft-lang" data-lang="es">🇲🇽 Español</a>
-      <a class="ft-lang" data-lang="ru">🇷🇺 Русский</a>
-      <a class="ft-lang" data-lang="uk">🇺🇦 Українська</a>
-      <a class="ft-lang" data-lang="ko">🇰🇷 한국어</a>
-      <a class="ft-lang" data-lang="hy">🇦🇲 Հայերեն</a>
-      <a class="ft-lang" data-lang="tl">🇵🇭 Filipino</a>
-      <a class="ft-lang" data-lang="vi">🇻🇳 Tiếng Việt</a>
-      <a class="ft-lang" data-lang="zh-CN">🇨🇳 中文</a>
-      <a class="ft-lang" data-lang="ar">🇸🇦 العربية</a>
-      <a class="ft-lang" data-lang="fa">🇮🇷 فارسی</a>
-    </div>
-<script defer src="/assets/translate.js?v=20260805"></script>"""
+# ── County-specific footer location shortcuts ──────────────────────────────────
+# Ventura County pages surface West-Valley/Ventura cities; LA County pages
+# surface LA-area cities so the 3 shortcuts are relevant to the visitor.
+
+_FOOT_LOC_VENTURA = (
+    '<a href="/hospice-ventura-and-los-angeles-county-ca">All Service Areas</a>'
+    '<a href="/hospice-thousand-oaks-ca">Thousand Oaks</a>'
+    '<a href="/hospice-simi-valley-ca">Simi Valley</a>'
+    '<a href="/hospice-calabasas-ca">Calabasas</a>'
+)
+
+_FOOT_LOC_LA = (
+    '<a href="/hospice-ventura-and-los-angeles-county-ca">All Service Areas</a>'
+    '<a href="/hospice-calabasas-ca">Calabasas</a>'
+    '<a href="/hospice-woodland-hills-ca">Woodland Hills</a>'
+    '<a href="/hospice-pasadena-ca">Pasadena</a>'
+)
+
+
+def make_footer(county: str) -> str:
+    """Return the full city-page footer with county-appropriate Locations links."""
+    loc_links = _FOOT_LOC_LA if county == "Los Angeles County" else _FOOT_LOC_VENTURA
+    return (
+        '<footer id="site-footer">\n'
+        '  <div class="foot-grid">\n'
+        '    <div><div class="foot-logo"><a href="/" aria-label="Eternal Life Hospice &mdash; home">'
+        '<img loading="lazy" decoding="async" src="assets/img/elh-logo-cream-g.webp" alt="Eternal Life Hospice logo">'
+        '</a></div><p class="foot-tag">Care That Honors Life.</p>'
+        '<p class="foot-legal">Medicare-Certified &middot; CDPH-Licensed &middot; ACHC-Accredited. '
+        'Serving families across Ventura and Los Angeles Counties.</p>'
+        '<div class="foot-qr"><img src="assets/img/qr-cream.webp" alt="Scan to visit eternallifehospice.com" '
+        'width="96" height="96" loading="lazy"><span>Scan to visit<br>on your phone</span></div></div>\n'
+        '    <div class="foot-col"><h2>Hospice Care</h2>'
+        '<a href="/resources/when-is-it-time">When Is It Time?</a>'
+        '<a href="/resources/first-48-hours">The First 48 Hours</a>'
+        '<a href="/resources/medicare-hospice-benefit">What Hospice Covers</a>'
+        '<a href="/resources/how-to-choose-a-hospice">How to Choose</a></div>'
+        '<div class="foot-col"><h2>Services</h2>'
+        '<a href="/services">All Services</a>'
+        '<a href="/resources/comfort-therapies">Integrative Care</a>'
+        '<a href="/sound-bath">Sound Bath</a></div>'
+        '<div class="foot-col"><h2>Resources</h2>'
+        '<a href="/family-guide">Family Guide</a>'
+        '<a href="/blog">Eternal Journal</a>'
+        '<a href="/care-brief">Care Brief</a>'
+        '<a href="/volunteer">Volunteer</a></div>'
+        f'<div class="foot-col"><h2>Locations</h2>{loc_links}</div>'
+        '<div class="foot-col"><h2>For Professionals</h2>'
+        '<a href="/refer">Refer a Patient</a>'
+        '<a href="/referral-card">Referral eCard</a>'
+        '<a href="/?lead=voice#leadcap">Schedule a Session</a></div>'
+        '<div class="foot-col"><h2>About</h2>'
+        '<a href="/#standard">Eternal Standard</a>'
+        '<a href="/about/aleksandra-dubina">Aleksandra Dubina</a>'
+        '<a href="/careers">Careers</a>'
+        '<a href="/media-kit">Media Kit</a></div>'
+        '<div class="foot-col"><h2>Contact</h2>\n'
+        '      <a class="fc-line" href="tel:18059537273">'
+        '<svg class="fci" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">'
+        '<path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/>'
+        '</svg><span>805.953.7273</span></a>'
+        '<span class="fc-line fc-direct">'
+        '<svg class="fci" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">'
+        '<path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/>'
+        '</svg><span>805.953.7273 \u00b7 Direct</span></span>\n'
+        '      <span class="fc-line fc-fax">'
+        '<svg class="fci" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">'
+        '<polyline points="6 9 6 2 18 2 18 9"/>'
+        '<path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/>'
+        '<rect x="6" y="14" width="12" height="8"/>'
+        '</svg><span>805.953.8530 fax</span></span>\n'
+        '      <a class="fc-line" href="mailto:info@eternallifehospice.com">'
+        '<svg class="fci" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">'
+        '<path d="M4 4h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"/>'
+        '<polyline points="22,6 12,13 2,6"/>'
+        '</svg><span>info@eternallifehospice.com</span></a>\n'
+        '      <a class="fc-line fc-addr" href="https://maps.google.com/?cid=9771388271577679785" target="_blank" rel="noopener">'
+        '<svg class="fci" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">'
+        '<path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>'
+        '<circle cx="12" cy="10" r="3"/>'
+        '</svg><span>4165 E Thousand Oaks Blvd, Suite 325B<br>Westlake Village, CA 91362</span></a>\n'
+        '    </div>\n'
+        '  </div>\n'
+        '  <nav class="foot-social" aria-label="Eternal Life Hospice on social media">'
+        '<span class="fs-label">Stay Connected</span>'
+        '<a href="https://www.linkedin.com/company/eternal-life-hospice/" target="_blank" rel="noopener" aria-label="LinkedIn">'
+        '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'
+        '<path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4V9h4v1.57A6 6 0 0 1 16 8z"/>'
+        '<rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg></a>'
+        '<a href="https://www.facebook.com/eternallifehospiceinc" target="_blank" rel="noopener" aria-label="Facebook">'
+        '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'
+        '<path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg></a>'
+        '<a href="https://www.instagram.com/eternallifehospice/" target="_blank" rel="noopener" aria-label="Instagram">'
+        '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'
+        '<rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>'
+        '<path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>'
+        '<line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg></a>'
+        '<a href="https://www.youtube.com/@EternalLifeHospice" target="_blank" rel="noopener" aria-label="YouTube">'
+        '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'
+        '<path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z"/>'
+        '<polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"/></svg></a></nav>\n'
+        '  <div class="foot-disclaimer"><strong style="color:rgba(245,240,235,.5)">Disclaimer:</strong> '
+        'Eternal Life Hospice Inc. is a licensed and Medicare-certified hospice care provider. '
+        'The integrative modalities described are complementary care offered for patient comfort and wellbeing; '
+        'they are not intended to diagnose, treat, cure or prevent any medical condition. '
+        'Medicare coverage details are subject to change; confirm current eligibility with your care team or call '
+        '<a href="tel:18006334227" style="color:inherit;text-decoration:none">1.800.MEDICARE</a>.</div>\n'
+        '  <div class="foot-bottom"><span>&copy; 2026 Eternal Life Hospice Inc. All rights reserved.</span>'
+        '<span class="foot-bottom-links">'
+        '<a href="/privacy-policy" style="text-decoration:none">Privacy Policy</a> &nbsp;&middot;&nbsp; '
+        '<a href="/terms" style="text-decoration:none">Terms &amp; Conditions</a> &nbsp;&middot;&nbsp; '
+        '<a href="#" onclick="window.elhCookieSettings&amp;&amp;window.elhCookieSettings();return false;" '
+        'style="color:inherit;text-decoration:none">Cookie Settings</a></span></div>\n'
+        '</footer>\n'
+        '<script src="assets/header.js?v=20260901" defer></script>'
+        '<script src="/assets/chat.js?v=20260805" defer></script>\n'
+        '<div class="search-overlay" id="searchOverlay" role="dialog" aria-modal="true" '
+        'aria-label="Site search" aria-hidden="true">\n'
+        '  <div class="search-box">'
+        '<input type="text" id="searchInput" placeholder="Search pages, cities, resources..." '
+        'autocomplete="off" aria-label="Search">'
+        '<button class="search-close" id="searchClose" aria-label="Close search">&times;</button></div>\n'
+        '  <p class="search-hint">Press Enter to open the first result, or Escape to close</p>\n'
+        '  <div class="search-results" id="searchResults"></div>\n'
+        '</div>'
+    )
 
 # ── Schema builders ────────────────────────────────────────────────────────────
 
@@ -164,7 +286,7 @@ def webpage_schema(c):
         "@id": c["canonicalUrl"] + "#webpage",
         "url": c["canonicalUrl"],
         "name": c["title"],
-        "description": c["metaDescription"],
+        "description": meta_description(c),
         "isPartOf": {"@id": "https://eternallifehospice.com/#website"},
         "about": {"@id": "https://eternallifehospice.com/#organization"},
         "breadcrumb": {"@id": c["canonicalUrl"] + "#breadcrumb"},
@@ -225,6 +347,7 @@ def faq_schema(faqs):
     return {
         "@context": "https://schema.org",
         "@type": "FAQPage",
+        "provider": {"@id": "https://eternallifehospice.com/#organization"},
         "mainEntity": [
             {"@type": "Question", "name": f["q"], "acceptedAnswer": {"@type": "Answer", "text": f["a"]}}
             for f in faqs
@@ -255,6 +378,17 @@ def care_settings_html(settings):
 
 # ── Full page renderer ─────────────────────────────────────────────────────────
 
+def intro_html(intro: str) -> str:
+    """Render localIntroduction as one or more <p> tags.
+
+    city-data.json stores multi-paragraph intros joined with double-newline.
+    Each segment becomes its own <p> so the HTML output matches hand-authored
+    pages that had multiple paragraphs in the intro section.
+    """
+    segments = [s.strip() for s in intro.split("\n\n") if s.strip()]
+    return "\n".join(f"  <p>{s}</p>" for s in segments)
+
+
 def render_page(c):
     slug        = c["slug"]
     city        = c["city"]
@@ -262,7 +396,7 @@ def render_page(c):
     subregion   = c["subregion"]
     canonical   = c["canonicalUrl"]
     title       = c["title"]
-    meta_desc   = c["metaDescription"]
+    meta_desc   = meta_description(c)
     h1          = c["h1"]
     eyebrow     = c["heroEyebrow"]
     at_a_glance = c["atAGlanceSummary"]
@@ -301,20 +435,26 @@ def render_page(c):
   <meta property="og:title" content="{title}">
   <meta property="og:description" content="{meta_desc}">
   <meta property="og:url" content="{canonical}">
-  <meta property="og:image" content="https://eternallifehospice.com/assets/og-image.jpg">
-  <meta property="og:site_name" content="Eternal Life Hospice">
-  <meta name="twitter:card" content="summary_large_image">
+  <meta property="og:image" content="https://eternallifehospice.com/assets/og-image-v2.jpg">
+  <meta property="og:site_name" content="Eternal Life Hospice"><meta property="og:locale" content="en_US"><meta property="og:image:width" content="2400"><meta property="og:image:height" content="1260"><meta property="og:image:alt" content="{title}">
+  <meta name="twitter:card" content="summary_large_image"><meta name="twitter:site" content="@EternalLifeHospice"><meta name="twitter:title" content="{title}"><meta name="twitter:description" content="{meta_desc}"><meta name="twitter:image" content="https://eternallifehospice.com/assets/og-image-v2.jpg">
   <link rel="icon" type="image/png" href="assets/favicon.png">
   {_hero_preload_tag(slug)}
-  <link rel="stylesheet" href="assets/elh.css?v=20260714c">
+  <link rel="preload" as="font" href="assets/fonts/fraunces-latin.woff2" type="font/woff2" crossorigin fetchpriority="high">
+  <link rel="preload" as="font" href="assets/fonts/fraunces-italic-latin.woff2" type="font/woff2" crossorigin fetchpriority="high">
+  <link rel="preload" as="font" href="assets/fonts/JostELH-Regular.woff2" type="font/woff2" crossorigin>
+  <link rel="preload" as="font" href="assets/fonts/JostELH-SemiBold.woff2" type="font/woff2" crossorigin>
+  <link rel="preload" href="assets/elh.css?v=20260901" as="style">
+  <link rel="stylesheet" href="assets/elh.css?v=20260901">
 {schema_tags}
 {HEAD_SCRIPTS}
 </head><body>
 <a class="skip-link" href="#main-content">Skip to main content</a>
 {HEADER}
 {CRED_STRIP}
-<main id="main-content">
-<section class="hero hero--city hero--tall">{_hero_img_tag(slug, city)}<div class="eyebrow">{eyebrow}</div>
+<main id="main-content" tabindex="-1">
+<section class="hero hero--city hero--tall">{_hero_img_tag(slug, city)}
+    <div class="eyebrow">{eyebrow}</div>
     <h1>{h1}</h1>
     <p>Eternal Life Hospice provides physician-supported hospice care for eligible patients and families in {city} and surrounding communities. Care may be provided in private homes, assisted-living communities, residential-care settings and skilled-nursing facilities throughout {county}.</p>
     <div class="hero-btns"><a class="btn-gold" href="tel:18059537273">Call for Hospice Guidance</a><a class="btn-ghost" href="family-guide">Read the Family Guide &#8594;</a><a class="btn-ghost" href="/refer">Refer a Patient &#8594;</a></div>
@@ -328,7 +468,7 @@ def render_page(c):
 
 <section class="sec wrap">
   <h2>Hospice care at home in {city}, California</h2>
-  <p>{intro}</p>
+{intro_html(intro)}
   {"<p>" + nearby_para + "</p>" if nearby_para else ""}
   {"<p>" + nearby_html + "</p>" if nearby_html else ""}
 </section>
@@ -374,7 +514,7 @@ def render_page(c):
 </section>
 
 <section class="sec wrap">
-  <h2>The Eternal Standard</h2>
+  <h2>Eternal Standard</h2>
   <div class="prov">
     <div><span>&#8227;</span><span><b>Clinical Confidence</b> &mdash; Physician support, skilled nursing, symptom management and coordinated care.</span></div>
     <div><span>&#8227;</span><span><b>Guided Presence</b> &mdash; Families understand what is happening, what comes next and who to reach.</span></div>
@@ -399,8 +539,8 @@ def render_page(c):
     <div><span>&#8227;</span><span><a href="family-guide"><b>Family Guide</b></a> &mdash; eligibility, what to expect and questions to ask when choosing a provider</span></div>
     <div><span>&#8227;</span><span><a href="/resources/first-48-hours"><b>The First 48 Hours</b></a> &mdash; what happens when hospice care begins</span></div>
     <div><span>&#8227;</span><span><a href="/resources/medicare-hospice-benefit"><b>Medicare Hospice Benefit</b></a> &mdash; what Medicare covers and how it works</span></div>
-    <div><span>&#8227;</span><span><a href="/resources/what-hospice-covers"><b>What Hospice Covers</b></a> &mdash; services, medications, equipment and support</span></div>
-    <div><span>&#8227;</span><span><a href="/resources/how-to-choose-a-hospice"><b>How to Choose a Hospice</b></a> &mdash; questions to ask before enrolling</span></div>
+    <div><span>&#8227;</span><span><a href="/resources/medicare-hospice-benefit"><b>What Hospice Covers</b></a> &mdash; services, medications, equipment and support</span></div>
+    <div><span>&#8227;</span><span><a href="/resources/how-to-choose-a-hospice"><b>How to Choose</b></a> &mdash; questions to ask before enrolling</span></div>
   </div>
 </section>
 
@@ -423,27 +563,81 @@ def render_page(c):
   <div class="btns"><a class="btn-gold" href="tel:18059537273">Call Eternal Life Hospice</a><a class="btn-ghost" href="family-guide">Read the Family Guide &#8594;</a><a class="btn-ghost" href="/refer">Refer a Patient &#8594;</a></div>
 </section>
 </main>
-{FOOTER}
+{make_footer(county)}
 </body></html>"""
     return page
 
 # ── Main ───────────────────────────────────────────────────────────────────────
 
+def _normalise(html: str) -> str:
+    """Collapse whitespace for drift comparison (ignores indent/newline noise)."""
+    return re.sub(r"\s+", " ", html).strip()
+
+
 def main():
-    parser = argparse.ArgumentParser()
+    parser = argparse.ArgumentParser(
+        description="Generate city HTML pages from city-data.json."
+    )
     parser.add_argument("--slug", help="Build only this city slug")
-    parser.add_argument("--dry-run", action="store_true", help="Print filenames only, do not write")
+    parser.add_argument("--dry-run", action="store_true",
+                        help="Print filenames only, do not write")
+    parser.add_argument("--check", action="store_true",
+                        help="Drift-detection mode: generate HTML in memory and "
+                             "compare with on-disk files. Exit non-zero if any "
+                             "city page is out of sync with city-data.json. "
+                             "Does not write any files.")
+    parser.add_argument("--force", action="store_true",
+                        help="(Deprecated — no longer needed. Kept for backward "
+                             "compatibility. Builds always write output now that "
+                             "city-data.json is the canonical source.)")
     args = parser.parse_args()
 
     with open(DATA_FILE, encoding="utf-8") as f:
         cities = json.load(f)
 
-    built = []
-    skipped = []
+    if args.check:
+        # ── Drift-check mode ──────────────────────────────────────────────────
+        # Generate HTML from JSON in memory and compare with on-disk pages.
+        # Reports any city where the two diverge; exits 1 if drift is found.
+        drifted = []
+        missing = []
+        for c in cities:
+            if c.get("publishStatus") != "published":
+                continue
+            if args.slug and c["slug"] != args.slug:
+                continue
+            out = os.path.join(OUT_DIR, f"hospice-{c['slug']}-ca.html")
+            if not os.path.exists(out):
+                missing.append(c["slug"])
+                continue
+            generated = _normalise(render_page(c))
+            on_disk   = _normalise(open(out, encoding="utf-8").read())
+            if generated != on_disk:
+                drifted.append(c["slug"])
+                print(f"  DRIFT: {c['slug']}")
+        if missing:
+            print(f"\nMissing HTML (not yet built): {', '.join(missing)}")
+        if drifted:
+            print(f"\nDrift detected in {len(drifted)} city page(s).")
+            print("Run  python3 website/build-cities.py  to regenerate.")
+            sys.exit(1)
+        else:
+            checked = len([c for c in cities
+                           if c.get("publishStatus") == "published"
+                           and (not args.slug or c["slug"] == args.slug)
+                           and os.path.exists(
+                               os.path.join(OUT_DIR, f"hospice-{c['slug']}-ca.html")
+                           )])
+            print(f"OK — {checked} city page(s) match city-data.json.")
+        return
+
+    # ── Normal build mode ─────────────────────────────────────────────────────
+    built         = []
+    skipped_draft = []
 
     for c in cities:
         if c.get("publishStatus") != "published":
-            skipped.append(c["slug"])
+            skipped_draft.append(c["slug"])
             continue
         if args.slug and c["slug"] != args.slug:
             continue
@@ -452,7 +646,8 @@ def main():
         out  = os.path.join(OUT_DIR, f"hospice-{c['slug']}-ca.html")
 
         if args.dry_run:
-            print(f"  [DRY] would write {out}")
+            action = "overwrite" if os.path.exists(out) else "write"
+            print(f"  [DRY] would {action} {out}")
         else:
             with open(out, "w", encoding="utf-8") as f:
                 f.write(html)
@@ -460,9 +655,9 @@ def main():
             print(f"  ✓ hospice-{c['slug']}-ca.html")
 
     print(f"\nBuilt: {len(built)} pages")
-    print(f"Skipped (draft/future): {len(skipped)} cities")
-    if skipped:
-        print("  Drafts:", ", ".join(skipped[:20]))
+    print(f"Skipped (draft/future): {len(skipped_draft)} cities")
+    if skipped_draft:
+        print("  Drafts:", ", ".join(skipped_draft[:20]))
 
 if __name__ == "__main__":
     main()

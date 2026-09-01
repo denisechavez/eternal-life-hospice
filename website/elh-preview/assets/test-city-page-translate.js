@@ -35,8 +35,8 @@ function check(condition, message) {
 }
 
 function extractLangs(html) {
-  const re  = /<a[^>]+class=["'][^"']*ft-lang[^"']*["'][^>]+data-lang=["']([^"']+)["'][^>]*>/gi;
-  const re2 = /<a[^>]+data-lang=["']([^"']+)["'][^>]+class=["'][^"']*ft-lang[^"']*["'][^>]*>/gi;
+  const re  = /<(?:a|button)[^>]+class=["'][^"']*ft-lang[^"']*["'][^>]+data-lang=["']([^"']+)["'][^>]*>/gi;
+  const re2 = /<(?:a|button)[^>]+data-lang=["']([^"']+)["'][^>]+class=["'][^"']*ft-lang[^"']*["'][^>]*>/gi;
   const langs = [];
   let m;
   while ((m = re.exec(html))  !== null) langs.push(m[1]);
