@@ -63,7 +63,7 @@ REQUIRED = {
     "search_btn":  ('class="search-btn"', "search button present"),
     "request_care":('Contact / Request Care', "Contact / Request Care navigation present"),
     "referral_link":('Physicians &amp; Referrals', "Physicians & Referrals utility link present"),
-    "accessibility":('class="hdr-access"', "stable accessibility control present"),
+    "accessibility":('class="foot-access"', "footer accessibility control present"),
     "logo_cream":  ('elh-logo-h2-cream',  "cream logo present"),
     "header_css":  ('header-nav.css?v=20260901c', "current header navigation stylesheet included"),
     "header_js":   ('header.js?v=20260901b', "current header.js included"),

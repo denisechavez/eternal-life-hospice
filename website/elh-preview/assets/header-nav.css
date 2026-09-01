@@ -44,6 +44,10 @@
 #hdr .nav-group--contact>.nav-parent:hover{background:#dfc999;color:var(--deep,#3C1C3B)!important}
 #hdr .nav-group--contact>.nav-sub{left:auto;right:0}
 #hdr .nav-mobile-links{display:none}
+#site-footer .foot-bottom-links{display:inline-flex;align-items:center;justify-content:flex-end;gap:.65rem;flex-wrap:wrap}
+#site-footer .foot-access{order:-1;display:inline-flex;align-items:center;justify-content:center;flex:0 0 44px;width:44px;height:44px;margin-right:.25rem;padding:0;border:1px solid var(--gold,#C9B07E);border-radius:50%;background:var(--cream,#F5F0EB);color:var(--deep,#3C1C3B);cursor:pointer}
+#site-footer .foot-access:hover{background:#fff}
+#site-footer .foot-access:focus-visible{outline:3px solid var(--gold,#C9B07E);outline-offset:3px}
 #hdr .search-btn{display:flex;align-items:center;justify-content:center;flex:0 0 44px;width:44px;height:44px;padding:0;color:var(--cream,#F5F0EB);border-radius:50%}
 #hdr.scrolled .search-btn{color:var(--deep,#3C1C3B)}
 #hdr .menu-btn{display:none!important}
