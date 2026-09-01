@@ -1418,3 +1418,10 @@ uri = "file://exports/ELH-SEO-AI-Meta-Report-Aug13-2026.pdf"
 type = "pdf"
 title = "ELH — SEO, AI & Design System Report · August 13, 2026"
 description = "12-page branded report: SEO & site changes + full Design System (color palette, typography, logo rules, The Five, brand voice, social formats)."
+
+[[outputs]]
+id = "kr-idrbOWeZgv0QMibppl"
+uri = "file://exports/print/elh-replit-netlify-cutover-checklist.pdf"
+type = "pdf"
+title = "ELH Main Site Readiness Checklist"
+description = "Eight-page printable workbook for testing the Replit main site, referral delivery, Outreach Tracker, links, observation period, and final Netlify retirement sign-off."
