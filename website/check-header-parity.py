@@ -19,7 +19,7 @@ ROOT = os.path.join(os.path.dirname(__file__), "elh-preview")
 # ── Approved six-item navigation labels ────────────────────────────────────
 NAV_LABELS = [
     "Hospice Care", "Services", "Resources",
-    "Service Areas", "About", "Contact / Request Care",
+    "Service Areas", "About", "Request Care",
 ]
 NAV_FINGERPRINT = tuple(NAV_LABELS)
 
@@ -61,11 +61,11 @@ REQUIRED = {
     "header_id":   ('id="hdr"',          "header element uses id=hdr"),
     "menu_btn":    ('class="menu-btn"',   "hamburger button present"),
     "search_btn":  ('class="search-btn"', "search button present"),
-    "request_care":('Contact / Request Care', "Contact / Request Care navigation present"),
+    "request_care":('Request Care', "Request Care navigation present"),
     "referral_link":('Physicians &amp; Referrals', "Physicians & Referrals utility link present"),
     "accessibility":('class="foot-access"', "footer accessibility control present"),
     "logo_cream":  ('elh-logo-h2-cream',  "cream logo present"),
-    "header_css":  ('header-nav.css?v=20260901o', "current header navigation stylesheet included"),
+    "header_css":  ('header-nav.css?v=20260901p', "current header navigation stylesheet included"),
     "header_js":   ('header.js?v=20260901c', "current header.js included"),
     "no_stale_url":('/aleksandradubina',  "stale /aleksandradubina URL"),  # must NOT appear
 }

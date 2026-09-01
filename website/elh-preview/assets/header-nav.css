@@ -10,9 +10,9 @@
 #hdr.scrolled .hdr-logo img.sym-cream{display:none}
 #hdr.scrolled .hdr-logo img.sym-plum{display:block}
 #hdr .hdr-stack{display:flex;flex:1 1 auto;min-width:0;height:100%;flex-direction:column}
-#hdr .hdr-utility-row{height:38px;display:flex;align-items:center;justify-content:flex-end;gap:1rem;border-bottom:1px solid rgba(245,240,235,.13)}
+#hdr .hdr-utility-row{position:relative;height:38px;display:flex;align-items:center;justify-content:flex-end;gap:1rem;border-bottom:1px solid rgba(245,240,235,.13)}
 #hdr.scrolled .hdr-utility-row{border-bottom-color:rgba(91,46,89,.13)}
-#hdr .hdr-tagline{margin-right:auto;font-family:var(--ff-d,Georgia,serif);font-size:22px;font-style:italic;font-weight:500;letter-spacing:.005em;line-height:1.1;color:rgba(245,240,235,.94);white-space:nowrap}
+#hdr .hdr-tagline{position:absolute;left:50%;margin:0;transform:translateX(-50%);font-family:var(--ff-d,Georgia,serif);font-size:22px;font-style:italic;font-weight:500;letter-spacing:.005em;line-height:1.1;text-align:center;color:rgba(245,240,235,.94);white-space:nowrap}
 #hdr.scrolled .hdr-tagline{color:var(--text-mid,#5A4057)}
 #hdr .hdr-utility-row a{font-size:12px;font-weight:600;letter-spacing:.04em;color:rgba(245,240,235,.9);text-transform:none;white-space:nowrap}
 #hdr .hdr-utility-row a:hover{color:var(--gold,#C9B07E)}
