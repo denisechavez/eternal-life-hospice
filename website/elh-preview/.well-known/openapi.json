@@ -16,7 +16,7 @@
   },
   "servers": [
     {
-      "url": "https://eternallifehospice.com/.netlify/functions",
+      "url": "https://eternallifehospice.com/api",
       "description": "Production"
     }
   ],

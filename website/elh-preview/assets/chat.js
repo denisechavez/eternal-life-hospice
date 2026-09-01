@@ -2,9 +2,8 @@
    Self-contained: injects its own styles + markup so it works on every page
    (including index.html / resources.html, which do not link elh.css).
    The guided answers and the phone link work with no setup. The free-text
-   "ask anything" box calls a Netlify function (netlify/functions/chat) that
-   adds the AI reply once OPENAI_API_KEY is configured in Netlify; if that is
-   not available, it falls back gracefully to the guided answers + phone. */
+   "ask anything" box calls the Replit-owned same-origin chat API. If that is
+   unavailable, it falls back gracefully to the guided answers + phone. */
 (function () {
   "use strict";
   if (window.__elhChatLoaded) return;
@@ -12,7 +11,7 @@
 
   var PHONE_DISPLAY = "805.953.7273";
   var PHONE_TEL = "18059537273";
-  var ENDPOINT = "/.netlify/functions/chat";
+  var ENDPOINT = "/api/chat";
 
   // Concise, on-brand answers drawn from the site content.
   var GUIDED = [
@@ -51,7 +50,7 @@
   // in their own words in the box below.
   var STARTERS = [GUIDED[0], GUIDED[1], GUIDED[6]];
 
-  var COVERAGE_ENDPOINT = "/.netlify/functions/coverage";
+  var COVERAGE_ENDPOINT = "/api/coverage";
 
   var EMERGENCY = /(emergenc|call 911|\b911\b|can'?t breathe|cannot breathe|chest pain|suicid|kill myself|end my life|overdose|unconscious|not breathing|severe bleeding)/i;
 

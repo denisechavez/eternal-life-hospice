@@ -41,6 +41,7 @@ set +o pipefail
   python3 ../check-header-parity.py
   python3 ../check-footer-parity.py
   python3 ../test-google-reviews.py
+  python3 ../test-replit-chat-coverage.py
   node assets/build-search-index.js
   node assets/update-sitemap-dates.js
 ) 2>&1 | tee "$TMPOUT"
@@ -73,6 +74,7 @@ SENTINELS=(
   "SENTINEL: check-header-parity.py self-test OK"
   "SENTINEL: check-footer-parity.py self-test OK"
   "SENTINEL: test-google-reviews.py OK"
+  "SENTINEL: test-replit-chat-coverage.py OK"
 )
 
 SENTINEL_FAIL=0

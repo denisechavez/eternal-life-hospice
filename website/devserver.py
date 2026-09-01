@@ -1,17 +1,25 @@
 #!/usr/bin/env python3
-"""Static-site server and production form intake endpoint.
+"""Static-site server and production API endpoints.
 
 Mimics Netlify's "pretty URLs": /care-brief resolves to care-brief.html,
 so internal links behave the same in the Replit preview as on the live site.
-The Replit deployment also serves the public domain, so POST /api/form-submit
-is the production form processor. It delivers through Brevo and never stores
-submission data locally.
+The Replit deployment serves the public domain and owns form intake, reviews,
+chat, and coverage lookup without requiring Netlify functions.
 """
 import http.server
 import json
 import os
+import socket
 import sys
-from urllib.parse import urlsplit
+from urllib.parse import parse_qs, urlsplit
+
+from chat_api import (
+    ChatProviderError,
+    ChatRequestError,
+    MAX_CHAT_BODY_BYTES,
+    process_chat,
+)
+from coverage_api import lookup_coverage
 
 from form_intake import (
     DeliveryError,
@@ -19,6 +27,7 @@ from form_intake import (
     FORM_GLOBAL_RATE_LIMITER,
     IntakeError,
     MAX_BODY_BYTES,
+    SlidingWindowRateLimiter,
     json_response_payload,
     notify_delivery_failure,
     parse_form_body,
@@ -33,6 +42,8 @@ CANVAS_HUB = os.path.join(BASE, "canvas-hub")
 EMAILS_DIR = os.path.abspath(os.path.join(BASE, "..", "exports", "email"))
 NEWSLETTER_DIR = os.path.abspath(os.path.join(BASE, "..", "exports", "newsletter"))
 REPORTS_DIR = os.path.abspath(os.path.join(BASE, "..", "exports", "campaign-reports"))
+CHAT_CLIENT_RATE_LIMITER = SlidingWindowRateLimiter(20, 10 * 60)
+CHAT_GLOBAL_RATE_LIMITER = SlidingWindowRateLimiter(120, 10 * 60)
 
 
 class PrettyURLHandler(http.server.SimpleHTTPRequestHandler):
@@ -69,11 +80,36 @@ class PrettyURLHandler(http.server.SimpleHTTPRequestHandler):
         return resolved
 
     def end_headers(self):
-        self.send_header("Cache-Control", "no-store")
+        if not any(
+            header.lower().startswith(b"cache-control:")
+            for header in getattr(self, "_headers_buffer", [])
+        ):
+            self.send_header("Cache-Control", "no-store")
         super().end_headers()
 
     def do_GET(self):
-        if self.path.split("?", 1)[0] == "/api/google-reviews":
+        parsed = urlsplit(self.path)
+        if parsed.path == "/api/chat":
+            self._send_json(
+                405,
+                {"error": "method_not_allowed", "message": "Use POST /api/chat."},
+            )
+            return
+        if parsed.path == "/api/coverage":
+            status, payload, cache_seconds = lookup_coverage(
+                parse_qs(parsed.query, keep_blank_values=True)
+            )
+            self._send_json(
+                status,
+                payload,
+                cache_control=f"public, max-age={cache_seconds}",
+                extra_headers={
+                    "Access-Control-Allow-Origin": "*",
+                    "Access-Control-Allow-Methods": "GET, OPTIONS",
+                },
+            )
+            return
+        if parsed.path == "/api/google-reviews":
             try:
                 payload = get_reviews()
                 self._send_json(200, payload)
@@ -96,7 +132,20 @@ class PrettyURLHandler(http.server.SimpleHTTPRequestHandler):
         super().do_GET()
 
     def do_POST(self):
-        if self.path.split("?", 1)[0] != "/api/form-submit":
+        path = self.path.split("?", 1)[0]
+        if path == "/api/coverage":
+            self._send_json(
+                405,
+                {
+                    "error": "method_not_allowed",
+                    "message": "Use GET /api/coverage?city=CityName.",
+                },
+            )
+            return
+        if path == "/api/chat":
+            self._handle_chat()
+            return
+        if path != "/api/form-submit":
             self._send_json(
                 404,
                 json_response_payload(
@@ -219,6 +268,91 @@ class PrettyURLHandler(http.server.SimpleHTTPRequestHandler):
                 ),
             )
 
+    def do_OPTIONS(self):
+        if self.path.split("?", 1)[0] == "/api/coverage":
+            self.send_response(204)
+            self.send_header("Access-Control-Allow-Origin", "*")
+            self.send_header("Access-Control-Allow-Methods", "GET, OPTIONS")
+            self.send_header("Content-Length", "0")
+            self.end_headers()
+            return
+        self.send_response(404)
+        self.send_header("Content-Length", "0")
+        self.end_headers()
+
+    def _handle_chat(self):
+        if not self._is_same_origin():
+            self._send_json(
+                403,
+                {
+                    "error": "invalid_origin",
+                    "message": "This chat must be used from the Eternal Life Hospice website.",
+                },
+            )
+            return
+        if not CHAT_GLOBAL_RATE_LIMITER.allow("global"):
+            self._send_json(
+                429,
+                {"error": "rate_limited", "message": "Please wait and try again."},
+            )
+            return
+        if not CHAT_CLIENT_RATE_LIMITER.allow(self._client_key()):
+            self._send_json(
+                429,
+                {"error": "rate_limited", "message": "Please wait and try again."},
+            )
+            return
+        try:
+            length = int(self.headers.get("Content-Length") or 0)
+        except ValueError:
+            length = -1
+        if length < 0 or length > MAX_CHAT_BODY_BYTES:
+            self._send_json(
+                413,
+                {"error": "payload_too_large", "message": "The chat request is too large."},
+            )
+            return
+        try:
+            previous_timeout = self.connection.gettimeout()
+            self.connection.settimeout(10)
+            try:
+                body = self.rfile.read(length)
+            finally:
+                self.connection.settimeout(previous_timeout)
+            status, payload = process_chat(body)
+            self._send_json(status, payload)
+        except (socket.timeout, TimeoutError):
+            self._send_json(
+                408,
+                {"error": "request_timeout", "message": "The chat request timed out."},
+            )
+        except ChatRequestError as exc:
+            self._send_json(
+                exc.status, {"error": exc.code, "message": exc.message}
+            )
+        except ChatProviderError:
+            # Never log message bodies or provider response bodies.
+            print("CHAT_PROVIDER_FAILED", file=sys.stderr)
+            self._send_json(
+                502,
+                {
+                    "reply": "",
+                    "error": "chat_unavailable",
+                    "message": "Chat is temporarily unavailable.",
+                },
+            )
+        except Exception as exc:
+            # Never log message bodies or submitted fields.
+            print(f"CHAT_FAILED type={type(exc).__name__}", file=sys.stderr)
+            self._send_json(
+                500,
+                {
+                    "reply": "",
+                    "error": "chat_unavailable",
+                    "message": "Chat is temporarily unavailable.",
+                },
+            )
+
     def _is_same_origin(self):
         origin = (self.headers.get("Origin") or "").strip()
         host = (self.headers.get("Host") or "").strip().lower()
@@ -250,7 +384,9 @@ class PrettyURLHandler(http.server.SimpleHTTPRequestHandler):
     def _peer_key(self):
         return ("peer:" + self.client_address[0])[:80]
 
-    def _send_json(self, status, body):
+    def _send_json(
+        self, status, body, cache_control="no-store", extra_headers=None
+    ):
         if not isinstance(body, (bytes, bytearray)):
             if not isinstance(body, str):
                 body = json.dumps(
@@ -260,8 +396,10 @@ class PrettyURLHandler(http.server.SimpleHTTPRequestHandler):
         self.send_response(status)
         self.send_header("Content-Type", "application/json; charset=utf-8")
         self.send_header("Content-Length", str(len(body)))
-        self.send_header("Cache-Control", "no-store")
+        self.send_header("Cache-Control", cache_control)
         self.send_header("X-Content-Type-Options", "nosniff")
+        for name, value in (extra_headers or {}).items():
+            self.send_header(name, value)
         self.end_headers()
         self.wfile.write(body)
 

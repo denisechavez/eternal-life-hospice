@@ -3,7 +3,7 @@
 ## What this site is
 Eternal Life Hospice (eternallifehospice.com) is a **static informational website** for a Medicare-certified, CDPH-licensed, ACHC-accredited hospice provider serving Ventura and Los Angeles Counties in California.
 
-The site is pre-rendered HTML with no REST or GraphQL interface. Contact and referral forms submit to Netlify Forms. One live programmatic endpoint is available for agent use — see **Live endpoints** below.
+The site is pre-rendered HTML with Replit-owned API routes for public forms, live reviews, chat, and coverage lookup. One public read-only endpoint is available for agent use — see **Live endpoints** below.
 
 ## Who it serves
 - Families and patients considering or beginning hospice care
@@ -16,7 +16,7 @@ The site is pre-rendered HTML with no REST or GraphQL interface. Contact and ref
 Check whether ELH serves a specific city — returns structured JSON, no auth required.
 
 ```
-GET https://eternallifehospice.com/.netlify/functions/coverage?city=Pasadena
+GET https://eternallifehospice.com/api/coverage?city=Pasadena
 ```
 
 **Served city response:**
@@ -47,7 +47,7 @@ GET https://eternallifehospice.com/.netlify/functions/coverage?city=Pasadena
 Fetch all published cities in a single call. Use this to pre-load ELH's complete service area into a system prompt, knowledge base, or geographic filter — instead of making 58 individual city lookups.
 
 ```
-GET https://eternallifehospice.com/.netlify/functions/coverage?list=true
+GET https://eternallifehospice.com/api/coverage?list=true
 ```
 
 **Response:**

@@ -7,7 +7,7 @@
     {
       "name": "coverage-lookup",
       "description": "Check whether Eternal Life Hospice serves a given city in Ventura or Los Angeles County. Returns a structured yes/no answer with county, subregion, and a link to the city-specific hospice care page.",
-      "endpoint": "https://eternallifehospice.com/.netlify/functions/coverage",
+      "endpoint": "https://eternallifehospice.com/api/coverage",
       "method": "GET",
       "parameters": {
         "city": {
