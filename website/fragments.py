@@ -78,6 +78,11 @@ FOOTER_HTML = """<footer id="site-footer">
   <div class="foot-disclaimer"><strong style="color:rgba(245,240,235,.5)">Disclaimer:</strong> Eternal Life Hospice Inc. is a licensed and Medicare-certified hospice care provider. We do not sell, prescribe, dispense or ship prescription medications, and we do not operate an online pharmacy or telemedicine prescribing service. All hospice services are provided in person by licensed healthcare professionals. Any references to Medicare coverage, medication support or medical coordination relate solely to patient care delivered under physician direction and do not constitute prescription drug sales or online medical services. The integrative modalities described are complementary care offered for patient comfort and wellbeing; they are not intended to diagnose, treat, cure or prevent any medical condition. Medicare coverage details are subject to change; confirm current eligibility with your care team or call <a href="tel:18006334227" style="color:inherit;text-decoration:none">1.800.MEDICARE</a>.</div>
   <div class="foot-bottom"><span>© 2026 Eternal Life Hospice Inc. All rights reserved.</span><span class="foot-bottom-links"><a href="/privacy-policy" style="text-decoration:none">Privacy Policy</a> &nbsp;·&nbsp; <a href="/terms" style="text-decoration:none">Terms &amp; Conditions</a> &nbsp;&middot;&nbsp; <a href="#" onclick="window.elhCookieSettings&amp;&amp;window.elhCookieSettings();return false;" style="color:inherit;text-decoration:none">Cookie Settings</a><button id="elh-ada-trigger" class="foot-access" type="button" aria-label="Accessibility options"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false"><circle cx="12" cy="4.5" r="2"/><path d="M17 8h-4.15l-.85-2H7v2h3.15l.85 2H8c-1.1 0-2 .9-2 2v5h2v-4.5h1.35L11 16h2l-1.5-3.5V12h4l1 4h2l-1.25-5H17z"/></svg><span class="sr-only">Accessibility</span></button></span></div>
 </footer>"""
+FOOTER_HTML = FOOTER_HTML.replace(
+    "Share the Eternal Care Brief",
+    "Share the Care Brief",
+    1,
+)
 
 # The footer navigation mirrors the five expandable groups in HEADER_HTML.
 # Contact remains the existing footer contact block below this replacement.
