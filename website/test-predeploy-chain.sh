@@ -133,6 +133,7 @@ SENTINELS=(
   "SENTINEL: check-cookie-settings.sh self-test OK"
   "SENTINEL: test-chat-teaser.js self-test OK"
   "SENTINEL: check-city-scripts.py self-test OK"
+  "SENTINEL: check-blog-schema.py self-test OK"
   "SENTINEL: check-header-parity.py self-test OK"
   "SENTINEL: check-footer-parity.py self-test OK"
 )

@@ -12,7 +12,10 @@
 #      and checks: no external scripts without defer/async, no bare CDN src=,
 #      both deferred-loader patterns present, plus three mutation self-tests.
 #      Exits 1 and cancels the deploy if the template is broken.
-#   4. check-header-parity.py          — header parity + _redirects validation.
+#   4. check-blog-schema.py            — Journal BlogPosting URLs must be unique.
+#      Exits 1 and cancels the deploy if the archive emits duplicate article
+#      URLs in its JSON-LD.
+#   5. check-header-parity.py          — header parity + _redirects validation.
 #      Verifies every standard page carries the canonical header, that every
 #      redirect stub still contains a valid redirect to its documented target,
 #      and that every local destination in _redirects resolves to a real file.

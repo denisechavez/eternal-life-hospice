@@ -38,6 +38,7 @@ set +o pipefail
   bash ../check-cookie-settings.sh
   node assets/test-chat-teaser.js
   python3 ../check-city-scripts.py
+  python3 ../check-blog-schema.py
   python3 ../check-header-parity.py
   python3 ../check-footer-parity.py
   python3 ../test-google-reviews.py
@@ -71,6 +72,7 @@ SENTINELS=(
   "SENTINEL: check-cookie-settings.sh self-test OK"
   "SENTINEL: test-chat-teaser.js self-test OK"
   "SENTINEL: check-city-scripts.py self-test OK"
+  "SENTINEL: check-blog-schema.py self-test OK"
   "SENTINEL: check-header-parity.py self-test OK"
   "SENTINEL: check-footer-parity.py self-test OK"
   "SENTINEL: test-google-reviews.py OK"
