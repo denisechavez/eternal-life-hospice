@@ -3,8 +3,8 @@
 """
 website/fragments.py  —  ELH shared HTML fragments
 ===================================================
-Single source of truth for the footer (and post-footer scripts) used by
-every page on the site.
+Single source of truth for the standard header, footer and post-footer
+scripts used across the site.
 
 HOW TO UPDATE THE FOOTER SITEWIDE
 ----------------------------------
@@ -16,8 +16,35 @@ HOW TO UPDATE THE FOOTER SITEWIDE
        python3 website/check-footer-parity.py
 
 The sync + rebuild step takes care of all 170+ HTML files automatically.
-Never hand-edit footer HTML in individual page files.
+Never hand-edit shared header or footer HTML in individual page files.
 """
+
+# ── CANONICAL HEADER ──────────────────────────────────────────────────────────
+HEADER_HTML = """<header id="hdr">
+  <div class="hdr-in">
+    <a class="hdr-logo" href="/" aria-label="Eternal Life Hospice — home"><img class="s sym-cream" src="/assets/img/elh-logo-h2-cream.webp" alt="Eternal Life Hospice logo" width="331" height="74"><img class="s sym-plum" src="/assets/img/elh-logo-h2-plum.webp" alt="" aria-hidden="true" width="331" height="74"></a>
+    <div class="hdr-stack">
+      <div class="hdr-utility-row" aria-label="Quick links">
+        <a class="hdr-phone" href="tel:18059537273">Call 805.953.7273</a>
+        <a class="hdr-referral" href="/refer">Physicians &amp; Referrals</a>
+        <button id="elh-ada-trigger" class="hdr-access" type="button" aria-label="Accessibility options"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false"><circle cx="12" cy="4.5" r="2"/><path d="M17 8h-4.15l-.85-2H7v2h3.15l.85 2H8c-1.1 0-2 .9-2 2v5h2v-4.5h1.35L11 16h2l-1.5-3.5V12h4l1 4h2l-1.25-5H17z"/></svg><span class="hdr-access-label">Accessibility</span></button>
+      </div>
+      <div class="hdr-main-row">
+        <nav id="site-nav" aria-label="Main navigation">
+          <div class="nav-group" data-section="hospice-care"><a href="/hospice-care" class="nav-parent">Hospice Care</a><div class="nav-sub"><a href="/hospice-care">What Is Hospice Care?</a><a href="/resources/when-is-it-time">When Is It Time?</a><a href="/resources/first-48-hours">The First 48 Hours</a><a href="/resources/medicare-hospice-benefit">What Hospice Covers</a><a href="/resources/how-to-choose-a-hospice">How to Choose a Hospice</a></div></div>
+          <div class="nav-group" data-section="services"><a href="/services" class="nav-parent">Services</a><div class="nav-sub"><a href="/services">All Services</a><a href="/resources/comfort-therapies">Integrative &amp; Whole-Person Care</a><a href="/resources/pain-symptom-management">Pain &amp; Symptom Management</a><a href="/sound-bath">Sound Bath</a></div></div>
+          <div class="nav-group" data-section="resources"><a href="/resources" class="nav-parent">Resources</a><div class="nav-sub"><a href="/family-guide">Family Guide</a><a href="/blog">The Eternal Journal</a><a href="/care-brief">Care Brief</a><a href="/volunteer">Volunteer</a><a href="/media-kit">Media Kit</a><a href="/careers">Careers</a></div></div>
+          <div class="nav-group" data-section="service-areas"><a href="/hospice-ventura-and-los-angeles-county-ca" class="nav-parent">Service Areas</a><div class="nav-sub"><a href="/hospice-thousand-oaks-ca">Thousand Oaks</a><a href="/hospice-simi-valley-ca">Simi Valley</a><a href="/hospice-calabasas-ca">Calabasas</a><a href="/hospice-ventura-and-los-angeles-county-ca">Ventura &amp; Los Angeles County Overview</a></div></div>
+          <div class="nav-group" data-section="about"><a href="/about/aleksandra-dubina" class="nav-parent">About</a><div class="nav-sub"><a href="/about/aleksandra-dubina">Our Founder</a><a href="/#care-team">Our Team</a><a href="/#accreditations">Accreditations</a><a href="/#standard">Eternal Standard</a></div></div>
+          <div class="nav-group nav-group--contact" data-section="contact"><a href="/?lead=voice#leadcap" class="nav-parent">Contact / Request Care</a><div class="nav-sub"><a href="/refer">Request Care</a><a href="tel:18059537273">Call 805.953.7273 — Available 24/7</a><a href="/?lead=voice#leadcap">Contact Our Team</a></div></div>
+          <div class="nav-mobile-links" aria-label="Professional and phone links"><a href="/refer">Physicians &amp; Referrals</a><a href="tel:18059537273">Call 805.953.7273</a></div>
+        </nav>
+        <button class="search-btn" id="searchBtn" type="button" aria-label="Search"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true" focusable="false"><circle cx="9" cy="9" r="7"/><line x1="15" y1="15" x2="19" y2="19"/></svg></button>
+        <button class="menu-btn" type="button" aria-label="Menu" aria-controls="site-nav" aria-expanded="false"><svg width="22" height="16" viewBox="0 0 22 16" aria-hidden="true" focusable="false"><line x1="0" y1="2" x2="22" y2="2" stroke="#F5F0EB" stroke-width="2" stroke-linecap="round"/><line x1="0" y1="8" x2="22" y2="8" stroke="#F5F0EB" stroke-width="2" stroke-linecap="round"/><line x1="0" y1="14" x2="22" y2="14" stroke="#F5F0EB" stroke-width="2" stroke-linecap="round"/></svg></button>
+      </div>
+    </div>
+  </div>
+</header>"""
 
 # ── CANONICAL FOOTER ──────────────────────────────────────────────────────────
 # Edit this string to change the footer on every page.
@@ -36,7 +63,7 @@ FOOTER_HTML = """<footer id="site-footer">
 # Scripts and search overlay that follow </footer> on every standard page.
 # build-cities.py appends this after FOOTER_HTML.  sync-footer.py does NOT
 # patch this block — it is already consistent across all pages.
-POST_FOOTER_HTML = """<script src="assets/header.js?v=20260805" defer></script><script src="/assets/chat.js?v=20260805" defer></script>
+POST_FOOTER_HTML = """<script src="/assets/header.js?v=20260901b" defer></script><script src="/assets/chat.js?v=20260805" defer></script>
 <div class="search-overlay" id="searchOverlay" role="dialog" aria-modal="true" aria-label="Site search" aria-hidden="true">
   <div class="search-box"><input type="text" id="searchInput" placeholder="Search pages, cities, resources..." autocomplete="off" aria-label="Search"><button class="search-close" id="searchClose" aria-label="Close search">&times;</button></div>
   <p class="search-hint">Press Enter to open the first result, or Escape to close</p>

@@ -32,6 +32,7 @@ Run from repo root:
 """
 
 import json, os, re, sys, textwrap, argparse
+from fragments import HEADER_HTML
 
 
 def meta_description(c: dict) -> str:
@@ -120,21 +121,7 @@ HEAD_SCRIPTS = (
 
 # ── Shared HTML fragments ──────────────────────────────────────────────────────
 
-HEADER = """\
-  <header id="hdr"><div class="hdr-in">
-    <a class="hdr-logo" href="/"><img class="s sym-cream" src="assets/img/elh-logo-h2-cream.webp" alt="Eternal Life Hospice logo" width="331" height="74"><img class="s sym-plum" src="assets/img/elh-logo-h2-plum.webp" alt="" aria-hidden="true" width="331" height="74"></a>
-    <nav id="site-nav" aria-label="Main navigation">
-      <div class="nav-group"><a href="/hospice-care" class="nav-parent">Hospice Care</a><div class="nav-sub"><a href="/resources/when-is-it-time">When Is It Time?</a><a href="/resources/first-48-hours">The First 48 Hours</a><a href="/resources/medicare-hospice-benefit">What Hospice Covers</a><a href="/resources/how-to-choose-a-hospice">How to Choose a Hospice</a></div></div>
-      <div class="nav-group"><a href="/services" class="nav-parent">Services</a><div class="nav-sub"><a href="/services">All Services</a><a href="/resources/comfort-therapies">Integrative &amp; Whole-Person Care</a><a href="/resources/pain-symptom-management">Pain &amp; Symptom Management</a><a href="/sound-bath">Sound Bath</a></div></div>
-      <div class="nav-group"><a href="/resources" class="nav-parent">Resources</a><div class="nav-sub"><a href="/family-guide">Family Guide</a><a href="/blog">The Eternal Journal</a><a href="/care-brief">Care Brief</a><a href="/volunteer">Volunteer</a></div></div>
-      <div class="nav-group"><a href="/hospice-ventura-and-los-angeles-county-ca" class="nav-parent" aria-current="page">Locations</a><div class="nav-sub"><a href="/hospice-thousand-oaks-ca">Thousand Oaks</a><a href="/hospice-simi-valley-ca">Simi Valley</a><a href="/hospice-calabasas-ca">Calabasas</a><a href="/hospice-ventura-and-los-angeles-county-ca">All Service Areas</a></div></div>
-      <div class="nav-group"><a href="/refer" class="nav-parent">For Professionals</a><div class="nav-sub"><a href="/refer">Refer a Patient</a><a href="/?lead=voice#leadcap">Schedule a Session</a></div></div>
-      <div class="nav-group"><a href="/about/aleksandra-dubina" class="nav-parent">About</a><div class="nav-sub"><a href="/#standard">The Eternal Standard</a><a href="/about/aleksandra-dubina">Aleksandra Dubina</a></div></div>
-    </nav>
-    <div class="hdr-cta-wrap"><button id="elh-ada-trigger" aria-label="Accessibility options" style="background:none;border:none;cursor:pointer;padding:0 .5rem 0 0;color:rgba(245,240,235,.75);display:flex;align-items:center;flex-shrink:0"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="12" cy="4.5" r="2"/><path d="M17 8h-4.15l-.85-2H7v2h3.15l.85 2H8c-1.1 0-2 .9-2 2v5h2v-4.5h1.35L11 16h2l-1.5-3.5V12h4l1 4h2l-1.25-5H17z"/></svg></button><span class="hdr-cta-note">Here in Moments That Matter Most</span><a href="/refer" class="hdr-cta">Request Care</a></div>
-    <button class="search-btn" id="searchBtn" aria-label="Search"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="9" cy="9" r="7"/><line x1="15" y1="15" x2="19" y2="19"/></svg></button>
-    <button class="menu-btn" aria-label="Menu" aria-controls="site-nav" aria-expanded="false"><svg width="22" height="16" viewBox="0 0 22 16"><line x1="0" y1="2" x2="22" y2="2" stroke="#F5F0EB" stroke-width="2" stroke-linecap="round"/><line x1="0" y1="8" x2="22" y2="8" stroke="#F5F0EB" stroke-width="2" stroke-linecap="round"/><line x1="0" y1="14" x2="22" y2="14" stroke="#F5F0EB" stroke-width="2" stroke-linecap="round"/></svg></button>
-  </div></header>"""
+HEADER = HEADER_HTML
 
 CRED_STRIP = """\
 <div class="cred-strip"><div class="cred-track">

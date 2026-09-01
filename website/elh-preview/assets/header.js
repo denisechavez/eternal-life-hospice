@@ -3,15 +3,22 @@
   if (!hdr) return;
 
   var isHome = (location.pathname === '/' || location.pathname === '/index.html');
-  function onScroll() {
-    if (isHome) {
-      hdr.classList.toggle('scrolled', window.scrollY > 60);
-    } else {
-      hdr.classList.remove('scrolled');
-    }
+  var scrollScheduled = false;
+  var lastScrolled = null;
+  function updateHeaderState() {
+    scrollScheduled = false;
+    var nextScrolled = isHome && window.scrollY > 60;
+    if (nextScrolled === lastScrolled) return;
+    hdr.classList.toggle('scrolled', nextScrolled);
+    lastScrolled = nextScrolled;
   }
-  onScroll();
-  window.addEventListener('scroll', onScroll, { passive: true });
+  function onScroll() {
+    if (scrollScheduled) return;
+    scrollScheduled = true;
+    window.requestAnimationFrame(updateHeaderState);
+  }
+  updateHeaderState();
+  if (isHome) window.addEventListener('scroll', onScroll, { passive: true });
 
   var mb = hdr.querySelector('.menu-btn');
   var nav = hdr.querySelector('nav');
@@ -39,6 +46,38 @@
     toggle.setAttribute('aria-controls', submenuId);
     toggle.setAttribute('aria-expanded', 'false');
   });
+
+  function normalizePath(value) {
+    var path = (value || '/').split('?')[0].split('#')[0];
+    if (path.length > 1) path = path.replace(/\/+$/, '');
+    return path || '/';
+  }
+
+  function markCurrentSection() {
+    if (!nav) return;
+    var path = normalizePath(location.pathname);
+    var section = '';
+    if (path === '/hospice-care') section = 'hospice-care';
+    else if (
+      path === '/services' || path === '/sound-bath' ||
+      path === '/resources/comfort-therapies' ||
+      path === '/resources/pain-symptom-management'
+    ) section = 'services';
+    else if (
+      path === '/resources' || path === '/family-guide' ||
+      path === '/blog' || path.indexOf('/blog/') === 0 ||
+      path === '/care-brief' || path.indexOf('/care-brief/') === 0 ||
+      path === '/volunteer' || path === '/media-kit' || path === '/careers'
+    ) section = 'resources';
+    else if (path.indexOf('/hospice-') === 0) section = 'service-areas';
+    else if (path.indexOf('/about/') === 0) section = 'about';
+    else if (path === '/refer') section = 'contact';
+
+    if (!section) return;
+    var current = nav.querySelector('[data-section="' + section + '"] > .nav-parent');
+    if (current) current.setAttribute('aria-current', 'page');
+  }
+  markCurrentSection();
 
   function closeMenu() {
     hdr.classList.remove('nav-open');
@@ -72,7 +111,9 @@
       nav && !nav.contains(e.target)
     ) {
       closeMenu();
+      return;
     }
+    if (nav && !nav.contains(e.target)) collapseAllGroups();
   });
 
   if (nav) {
@@ -95,24 +136,14 @@
   }
 
   document.addEventListener('keydown', function (e) {
-    if (e.key !== 'Escape' || !hdr.classList.contains('nav-open')) return;
+    if (e.key !== 'Escape') return;
+    var mobileOpen = hdr.classList.contains('nav-open');
+    var expanded = nav && nav.querySelector('.nav-group.expanded');
+    if (!mobileOpen && !expanded) return;
     e.preventDefault();
     closeMenu();
-    if (mb) mb.focus();
+    if (mobileOpen && mb) mb.focus();
   });
-
-  var ctaPill = hdr.querySelector('.hdr-cta');
-  if (ctaPill) {
-    var ctaHues = ['cta-hue1', 'cta-hue2', 'cta-hue3'], ctaIdx = 0;
-    ctaPill.addEventListener('mouseenter', function () {
-      ctaPill.classList.remove('cta-hue1', 'cta-hue2', 'cta-hue3');
-      ctaPill.classList.add(ctaHues[ctaIdx % 3]);
-      ctaIdx++;
-    });
-    ctaPill.addEventListener('mouseleave', function () {
-      ctaPill.classList.remove('cta-hue1', 'cta-hue2', 'cta-hue3');
-    });
-  }
 
   // SEARCH
   var so = document.getElementById('searchOverlay');
