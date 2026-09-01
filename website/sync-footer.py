@@ -34,21 +34,17 @@ COUNTY_HUB = "hospice-ventura-and-los-angeles-county-ca.html"
 
 # Pages whose footer intentionally differs from the canonical — do not patch.
 EXCEPTIONS = {
-    # Custom multi-column layout, not a standard foot-col footer
-    "sitemap.html",
     # Digital contact / vCard — minimal pages, no standard footer
     "card-aleksandra-dubina.html",
     "card-denise-chavez.html",
-    # Flipbook UI — own chrome, no standard footer
-    "family-guide.html",
-    "media-kit.html",
-    # Referral tool — stripped UI, no standard footer
-    "referral-card.html",
     # Redirect stubs — noindex, meta-refresh only, no UI
     "resources/index.html",
     "blog/index.html",
-    "care-brief/index.html",
 }
+
+# Public custom-layout pages that should receive the canonical footer even when
+# they did not previously contain a footer element.
+INSERT_IF_MISSING = {"family-guide.html"}
 
 # Sub-directories whose files are never standard pages
 SKIP_DIRS = {"assets"}
@@ -93,10 +89,13 @@ def main():
                 continue
 
             if not FOOTER_RE.search(html):
-                no_footer.append(rel)
-                continue
-
-            new_html = FOOTER_RE.sub(FOOTER_HTML, html, count=1)
+                if rel in INSERT_IF_MISSING and "</body>" in html:
+                    new_html = html.replace("</body>", FOOTER_HTML + "\n</body>", 1)
+                else:
+                    no_footer.append(rel)
+                    continue
+            else:
+                new_html = FOOTER_RE.sub(FOOTER_HTML, html, count=1)
 
             if new_html == html:
                 already_ok.append(rel)

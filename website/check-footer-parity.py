@@ -55,14 +55,9 @@ CITY_TOKENS = [
 
 # -- Pages whose footer intentionally deviates from canonical -----------------
 INTENTIONAL_EXCEPTIONS = {
-    "sitemap.html":                              "custom layout -- not a standard foot-col footer",
     "card-aleksandra-dubina.html":               "digital contact card -- no standard footer",
     "card-denise-chavez.html":                   "digital contact card -- no standard footer",
-    "family-guide.html":                         "flipbook UI -- own chrome, no standard footer",
-    "media-kit.html":                            "flipbook UI -- own chrome, no standard footer",
-    "referral-card.html":                        "referral tool -- stripped UI, no standard footer",
     "blog/index.html":                           "redirect stub -- no UI needed",
-    "care-brief/index.html":                     "redirect stub -- no UI needed",
     # Social graphics and internal asset pages (not public pages)
     "assets/img/amethyst-tmp/gallery.html":      "internal asset gallery",
     "assets/social/index.html":                  "social graphic -- not a public page",
