@@ -61,7 +61,7 @@ FOOTER_HTML = """<footer id="site-footer">
 # Scripts and search overlay that follow </footer> on every standard page.
 # build-cities.py appends this after FOOTER_HTML.  sync-footer.py does NOT
 # patch this block — it is already consistent across all pages.
-POST_FOOTER_HTML = """<script src="/assets/header.js?v=20260901b" defer></script><script src="/assets/chat.js?v=20260805" defer></script>
+POST_FOOTER_HTML = """<script src="/assets/header.js?v=20260901c" defer></script><script src="/assets/chat.js?v=20260805" defer></script>
 <div class="search-overlay" id="searchOverlay" role="dialog" aria-modal="true" aria-label="Site search" aria-hidden="true">
   <div class="search-box"><input type="text" id="searchInput" placeholder="Search pages, cities, resources..." autocomplete="off" aria-label="Search"><button class="search-close" id="searchClose" aria-label="Close search">&times;</button></div>
   <p class="search-hint">Press Enter to open the first result, or Escape to close</p>

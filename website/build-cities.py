@@ -255,7 +255,7 @@ def make_footer(county: str) -> str:
         '<circle cx="12" cy="4.5" r="2"/><path d="M17 8h-4.15l-.85-2H7v2h3.15l.85 2H8c-1.1 0-2 .9-2 2v5h2v-4.5h1.35L11 16h2l-1.5-3.5V12h4l1 4h2l-1.25-5H17z"/></svg>'
         '<span class="sr-only">Accessibility</span></button></span></div>\n'
         '</footer>\n'
-        '<script src="assets/header.js?v=20260901" defer></script>'
+        '<script src="assets/header.js?v=20260901c" defer></script>'
         '<script src="/assets/chat.js?v=20260805" defer></script>\n'
         '<div class="search-overlay" id="searchOverlay" role="dialog" aria-modal="true" '
         'aria-label="Site search" aria-hidden="true">\n'

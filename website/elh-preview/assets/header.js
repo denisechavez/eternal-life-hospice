@@ -40,7 +40,7 @@
       toggle = document.createElement('button');
       toggle.type = 'button';
       toggle.className = 'nav-toggle';
-      toggle.innerHTML = '<span class="sr-only">Show submenu for ' + parent.textContent.trim() + '</span><span aria-hidden="true">&#9662;</span>';
+      toggle.innerHTML = '<span class="sr-only">Show submenu for ' + parent.textContent.trim() + '</span><span class="nav-chevron" aria-hidden="true"></span>';
       parent.insertAdjacentElement('afterend', toggle);
     }
     toggle.setAttribute('aria-controls', submenuId);

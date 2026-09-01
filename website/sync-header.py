@@ -16,8 +16,8 @@ HEADER_CSS_RE = re.compile(
     re.IGNORECASE,
 )
 HEADER_JS_RE = re.compile(r'(?P<prefix>(?:/|assets/)?assets/header\.js\?v=)[A-Za-z0-9._-]+')
-CSS_LINK = '<link rel="stylesheet" href="/assets/header-nav.css?v=20260901d">'
-JS_VERSION = "20260901b"
+CSS_LINK = '<link rel="stylesheet" href="/assets/header-nav.css?v=20260901g">'
+JS_VERSION = "20260901c"
 
 
 def main():
