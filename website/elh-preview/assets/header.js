@@ -102,6 +102,9 @@
 
   function openSearch() {
     if (!so || so.classList.contains('open')) return;
+    if (typeof window.elhTrackEvent === 'function') {
+      window.elhTrackEvent('site_search_open', { page: location.pathname || '/' });
+    }
     lastFocus = document.activeElement;
     so.classList.add('open');
     so.setAttribute('aria-hidden', 'false');

@@ -291,6 +291,11 @@
       .map(function (k) { return encodeURIComponent(k) + "=" + encodeURIComponent(obj[k]); })
       .join("&");
   }
+  function track(name, data) {
+    if (typeof window.elhTrackEvent === "function") {
+      window.elhTrackEvent(name, data);
+    }
+  }
   function reduced() {
     try { return !!(window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches); }
     catch (e) { return false; }
@@ -461,6 +466,7 @@
 
   /* ---------- callback request ---------- */
   function showCallbackForm() {
+    track("chat_callback_start", { page: window.location.pathname || "/" });
     addMsg(
       "Of course \u2014 I'd be glad to arrange that. Leave your name and number below and a member of our team will call you. If it's urgent, calling " +
         PHONE_DISPLAY +
@@ -569,6 +575,7 @@
       err.textContent = "";
       submitBtn.disabled = true;
       submitBtn.textContent = "Sending\u2026";
+      track("chat_callback_submit", { page: window.location.pathname || "/" });
       submitCallback(
         {
           name: name,
@@ -612,6 +619,7 @@
         });
       })
       .then(function (result) {
+        track("chat_callback_success", { page: window.location.pathname || "/" });
         if (form.parentNode) form.parentNode.removeChild(form);
         var confirmation = "Thank you, " +
             data.name.split(" ")[0] +
@@ -624,6 +632,7 @@
         announceCallback(confirmation, false);
       })
       .catch(function () {
+        track("chat_callback_error", { page: window.location.pathname || "/" });
         submitBtn.disabled = false;
         submitBtn.textContent = "Send request";
         var failure =
@@ -638,6 +647,7 @@
   function send(text) {
     text = (text || "").trim();
     if (!text) return;
+    track("chat_message_sent", { page: window.location.pathname || "/" });
     addMsg(text, "user");
     history.push({ role: "user", content: text });
     if (history.length > 16) history = history.slice(-16);
@@ -817,11 +827,15 @@
   }
 
   function open() {
+    var wasOpen = panel.classList.contains("open");
     dismissTeaser(true);
     window.clearTimeout(closeTimer);
     panel.classList.remove("closing");
     panel.classList.add("open");
     dock.classList.add("hide");
+    if (!wasOpen) {
+      track("chat_open", { page: window.location.pathname || "/" });
+    }
     if (!opened) {
       opened = true;
       if (reduced()) greet();

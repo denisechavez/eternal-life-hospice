@@ -12,6 +12,156 @@
   var consent = null;
   try { consent = localStorage.getItem(KEY); } catch (e) {}
 
+  /* ── Replit custom events (privacy-safe and consent-aware) ───────────── */
+  function analyticsConsentGranted() {
+    try { return localStorage.getItem(KEY) === 'all'; }
+    catch (e) { return false; }
+  }
+
+  function trackEvent(name, data) {
+    if (!analyticsConsentGranted()) { return; }
+    try {
+      if (window.umami && typeof window.umami.track === 'function') {
+        window.umami.track(name, data);
+      }
+    } catch (e) {
+      // Analytics must never interrupt care-seeking or site navigation.
+    }
+  }
+
+  // Shared, safe hook for form and chat code. Never pass visitor-entered text.
+  window.elhTrackEvent = trackEvent;
+
+  function pagePath() {
+    return window.location.pathname || '/';
+  }
+
+  function placementFor(el) {
+    if (el.closest('.elhc')) { return 'chat'; }
+    if (el.closest('header')) { return 'header'; }
+    if (el.closest('footer')) { return 'footer'; }
+    if (el.closest('.hero')) { return 'hero'; }
+    if (el.closest('form')) { return 'form'; }
+    return 'content';
+  }
+
+  function safeFormName(form) {
+    var field = form.querySelector('input[name="form-name"]');
+    var value = form.getAttribute('name') || (field && field.value) || 'unknown';
+    return /^[a-z0-9_-]{1,50}$/i.test(value) ? value : 'unknown';
+  }
+
+  function resourceName(url) {
+    var parts = url.pathname.split('/');
+    var name = parts[parts.length - 1] || 'download';
+    return name.toLowerCase().replace(/[^a-z0-9._-]/g, '').slice(0, 80) || 'download';
+  }
+
+  function socialNetwork(url) {
+    var host = url.hostname.toLowerCase();
+    if (host.indexOf('linkedin.com') > -1) { return 'linkedin'; }
+    if (host.indexOf('facebook.com') > -1) { return 'facebook'; }
+    if (host.indexOf('instagram.com') > -1) { return 'instagram'; }
+    if (host.indexOf('twitter.com') > -1 || host === 'x.com') { return 'x'; }
+    if (host.indexOf('pinterest.com') > -1) { return 'pinterest'; }
+    return '';
+  }
+
+  function bindCustomEvents() {
+    if (window.__elhCustomEventsBound) { return; }
+    window.__elhCustomEventsBound = true;
+
+    document.addEventListener('click', function (event) {
+      var target = event.target;
+      var link = target && target.closest ? target.closest('a[href]') : null;
+      if (!link) { return; }
+
+      var rawHref = link.getAttribute('href') || '';
+      var data = { page: pagePath(), placement: placementFor(link) };
+
+      if (rawHref.indexOf('tel:') === 0) {
+        trackEvent('phone_click', data);
+        return;
+      }
+      if (rawHref.indexOf('mailto:?') === 0) {
+        trackEvent('email_share_click', data);
+        return;
+      }
+      if (rawHref.indexOf('mailto:') === 0) {
+        trackEvent('email_click', data);
+        return;
+      }
+
+      var url;
+      try { url = new URL(rawHref, window.location.href); }
+      catch (e) { return; }
+
+      if (link.classList.contains('search-result')) {
+        trackEvent('site_search_result_click', {
+          page: pagePath(),
+          destination: url.pathname.slice(0, 100)
+        });
+        return;
+      }
+
+      if (url.hostname === 'maps.google.com' || url.hostname === 'www.google.com' && url.pathname.indexOf('/maps') === 0) {
+        trackEvent('map_click', data);
+        return;
+      }
+
+      if (link.hasAttribute('download') || /\.(pdf|vcf)$/i.test(url.pathname)) {
+        trackEvent('resource_download', {
+          page: pagePath(),
+          placement: data.placement,
+          resource: resourceName(url)
+        });
+        return;
+      }
+
+      var network = socialNetwork(url);
+      if (network) {
+        trackEvent('social_link_click', {
+          page: pagePath(),
+          placement: data.placement,
+          network: network
+        });
+        return;
+      }
+
+      if (url.origin === window.location.origin && (url.pathname === '/refer' || url.pathname === '/refer/')) {
+        trackEvent('referral_cta_click', data);
+        return;
+      }
+
+      if (
+        url.origin === window.location.origin &&
+        (url.searchParams.get('lead') === 'voice' || url.hash === '#leadcap')
+      ) {
+        trackEvent('schedule_session_click', data);
+      }
+    });
+
+    document.addEventListener('focusin', function (event) {
+      var target = event.target;
+      var form = target && target.closest ? target.closest('form') : null;
+      if (!form || form.getAttribute('data-analytics-started') === 'true') { return; }
+      form.setAttribute('data-analytics-started', 'true');
+      trackEvent('form_start', {
+        page: pagePath(),
+        form: safeFormName(form)
+      });
+    });
+
+    document.addEventListener('submit', function (event) {
+      var form = event.target;
+      if (!form || form.tagName !== 'FORM') { return; }
+      trackEvent('form_submit', {
+        page: pagePath(),
+        form: safeFormName(form)
+      });
+    });
+  }
+
   /* ── Analytics init (runs after window load to protect LCP) ─────────── */
   function loadAnalytics() {
     if (document.readyState === 'complete') { bootAnalytics(); }
@@ -272,6 +422,8 @@
     }
   }
   // consent === 'essential' → analytics suppressed, no banner
+
+  bindCustomEvents();
 
   // UserWay is an accessibility tool — load it unconditionally on every page
   loadUserWay();

@@ -21,3 +21,14 @@ had zero measurement. A shared file = one place to update, no per-page drift.
   `care-brief/index.html`) intentionally have NO analytics.
 - Root-relative `/assets/analytics.js` is required so pages in subfolders
   (`blog/`, `resources/`, `care-brief/`) resolve it correctly.
+
+Replit custom events must stay behind the site's explicit analytics-consent
+choice and may report only fixed event categories and route/placement metadata.
+Never send form values, search text, chat text, names, contact details,
+confirmation numbers, or other free-form content.
+
+**Why:** Hospice interactions can contain health details or other sensitive
+information even when a field is not intended for PHI.
+
+**How to apply:** Add new events through the shared safe wrapper and use
+allowlisted, non-user-entered dimensions only.

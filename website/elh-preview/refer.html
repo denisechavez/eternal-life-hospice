@@ -476,6 +476,7 @@
         });
       })
       .then(function(data){
+        if(window.elhTrackEvent){window.elhTrackEvent('form_success',{page:location.pathname||'/',form:'elh-physician'});}
           f.style.display='none';
           var su=document.createElement('div');
           su.className='apply-success';

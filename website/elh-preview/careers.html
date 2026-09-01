@@ -254,6 +254,7 @@
         });
       })
       .then(function(){
+        if(window.elhTrackEvent){window.elhTrackEvent('form_success',{page:location.pathname||'/',form:'elh-careers'});}
         f.style.display='none';
         var s=document.getElementById('applySuccess');
         if(s){ s.hidden=false; s.scrollIntoView({behavior:'smooth',block:'center'}); }
