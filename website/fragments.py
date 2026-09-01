@@ -44,6 +44,28 @@ HEADER_HTML = """<header id="hdr">
   </div>
 </header>"""
 
+# Keep the Services submenu order aligned with the footer: overview first,
+# then pain management, followed by integrative care.
+_HEADER_SERVICES_LEGACY = (
+    '<div class="nav-group" data-section="services"><a href="/services" class="nav-parent">Services</a>'
+    '<div class="nav-sub"><a href="/services">All Services</a>'
+    '<a href="/resources/comfort-therapies">Integrative &amp; Whole-Person Care</a>'
+    '<a href="/resources/pain-symptom-management">Pain &amp; Symptom Management</a>'
+    '<a href="/sound-bath">Sound Bath</a>'
+    '<a href="/services/medical-aid-in-dying-california">End-of-Life Care &amp; Choices</a></div></div>'
+)
+_HEADER_SERVICES_ORDERED = (
+    '<div class="nav-group" data-section="services"><a href="/services" class="nav-parent">Services</a>'
+    '<div class="nav-sub"><a href="/services">All Services</a>'
+    '<a href="/resources/pain-symptom-management">Pain &amp; Symptom Management</a>'
+    '<a href="/resources/comfort-therapies">Integrative &amp; Whole-Person Care</a>'
+    '<a href="/sound-bath">Sound Bath</a>'
+    '<a href="/services/medical-aid-in-dying-california">End-of-Life Care &amp; Choices</a></div></div>'
+)
+if _HEADER_SERVICES_LEGACY not in HEADER_HTML:
+    raise RuntimeError("Expected legacy Services navigation was not found")
+HEADER_HTML = HEADER_HTML.replace(_HEADER_SERVICES_LEGACY, _HEADER_SERVICES_ORDERED, 1)
+
 # ── CANONICAL FOOTER ──────────────────────────────────────────────────────────
 # Edit this string to change the footer on every page.
 # After editing, follow the "HOW TO UPDATE" steps above.
@@ -76,8 +98,8 @@ _FOOTER_MATCHED_NAV = (
     '<div class="foot-col"><h2>Hospice Care</h2><a href="/hospice-care">What Is Hospice Care?</a><a href="/resources/when-is-it-time">When Is It Time?</a>'
     '<a href="/resources/first-48-hours">The First 48 Hours</a><a href="/resources/medicare-hospice-benefit">What Hospice Covers</a>'
     '<a href="/resources/how-to-choose-a-hospice">How to Choose a Hospice</a></div><div class="foot-col"><h2>Services</h2>'
-    '<a href="/services">All Services</a><a href="/resources/comfort-therapies">Integrative &amp; Whole-Person Care</a>'
-    '<a href="/resources/pain-symptom-management">Pain &amp; Symptom Management</a><a href="/sound-bath">Sound Bath</a>'
+    '<a href="/services">All Services</a><a href="/resources/pain-symptom-management">Pain &amp; Symptom Management</a>'
+    '<a href="/resources/comfort-therapies">Integrative &amp; Whole-Person Care</a><a href="/sound-bath">Sound Bath</a>'
     '<a href="/services/medical-aid-in-dying-california">End-of-Life Care &amp; Choices</a></div><div class="foot-col"><h2>Resources</h2>'
     '<a href="/family-guide">Family Guide</a><a href="/blog">The Eternal Journal</a><a href="/care-brief">Care Brief</a>'
     '<a href="/volunteer">Volunteer</a><a href="/media-kit">Media Kit</a><a href="/careers">Careers</a></div>'
