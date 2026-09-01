@@ -65,7 +65,7 @@ REQUIRED = {
     "referral_link":('Physicians &amp; Referrals', "Physicians & Referrals utility link present"),
     "accessibility":('class="foot-access"', "footer accessibility control present"),
     "logo_cream":  ('elh-logo-h2-cream',  "cream logo present"),
-    "header_css":  ('header-nav.css?v=20260901p', "current header navigation stylesheet included"),
+    "header_css":  ('header-nav.css?v=20260901q', "current header navigation stylesheet included"),
     "header_js":   ('header.js?v=20260901c', "current header.js included"),
     "no_stale_url":('/aleksandradubina',  "stale /aleksandradubina URL"),  # must NOT appear
 }
