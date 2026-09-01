@@ -25,7 +25,6 @@ HEADER_HTML = """<header id="hdr">
     <a class="hdr-logo" href="/" aria-label="Eternal Life Hospice — home"><img class="s sym-cream" src="/assets/img/elh-logo-h2-cream.webp" alt="Eternal Life Hospice logo" width="331" height="74"><img class="s sym-plum" src="/assets/img/elh-logo-h2-plum.webp" alt="" aria-hidden="true" width="331" height="74"></a>
     <div class="hdr-stack">
       <div class="hdr-utility-row" aria-label="Quick links">
-        <span class="hdr-tagline">Here in Moments That Matter Most</span>
         <a class="hdr-referral" href="/refer">Physicians &amp; Referrals</a>
       </div>
       <div class="hdr-main-row">

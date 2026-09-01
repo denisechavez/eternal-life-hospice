@@ -12,8 +12,6 @@
 #hdr .hdr-stack{display:flex;flex:1 1 auto;min-width:0;height:100%;flex-direction:column}
 #hdr .hdr-utility-row{position:relative;height:38px;display:flex;align-items:center;justify-content:flex-end;gap:1rem;border-bottom:1px solid rgba(245,240,235,.13)}
 #hdr.scrolled .hdr-utility-row{border-bottom-color:rgba(91,46,89,.13)}
-#hdr .hdr-tagline{position:static;margin-right:auto;transform:none;font-family:var(--ff-d,Georgia,serif);font-size:22px;font-style:italic;font-weight:400;letter-spacing:.01em;line-height:1.1;text-align:left;color:#DCC9B0;white-space:nowrap}
-#hdr.scrolled .hdr-tagline{color:var(--text-mid,#5A4057)}
 #hdr .hdr-utility-row a{font-size:12px;font-weight:600;letter-spacing:.04em;color:rgba(245,240,235,.9);text-transform:none;white-space:nowrap}
 #hdr .hdr-utility-row a:hover{color:var(--gold,#C9B07E)}
 #hdr.scrolled .hdr-utility-row a{color:var(--deep,#3C1C3B)}
@@ -46,7 +44,7 @@
 #hdr .nav-sub a::after{content:"→";flex:0 0 auto;color:var(--gold,#C9B07E);font-size:16px;opacity:0;transform:translateX(-4px);transition:opacity .18s ease,transform .18s ease}
 #hdr .nav-sub a:hover,#hdr .nav-sub a:focus-visible{background:rgba(201,176,126,.12);border-color:rgba(201,176,126,.38);color:#fff!important;transform:translateX(2px)}
 #hdr .nav-sub a:hover::after,#hdr .nav-sub a:focus-visible::after{opacity:1;transform:none}
-#hdr .nav-group--contact>.nav-parent{min-height:40px;margin-left:.3rem;padding:.55rem .9rem;border-radius:999px;background:#6F3A6D;color:var(--cream,#F5F0EB)!important;font-weight:600}
+#hdr .nav-group--contact>.nav-parent{width:165px;height:51px;box-sizing:border-box;display:inline-flex;align-items:center;justify-content:center;margin-left:.3rem;padding:0 1.4rem;border-radius:999px;background:#6F3A6D;color:var(--cream,#F5F0EB)!important;font-size:13px;line-height:1.15;font-weight:600}
 #hdr .nav-group--contact>.nav-parent:hover{background:#814D7F;color:#fff!important}
 #hdr .nav-group--contact>.nav-parent.cta-hue1{background:#C9B07E;color:#3C1C3B!important}
 #hdr .nav-group--contact>.nav-parent.cta-hue2{background:#6793AC;color:#F5F0EB!important}
@@ -66,7 +64,6 @@
   #hdr{padding:0 1rem!important}
   #hdr .hdr-in{gap:1.2rem}
   #hdr .hdr-logo img.s{height:40px}
-  #hdr .hdr-tagline{font-size:19px}
   #hdr .nav-parent{font-size:14px;padding-left:.3rem;padding-right:.3rem}
   #hdr .nav-toggle{width:20px}
 }
@@ -78,7 +75,6 @@
   #hdr .hdr-logo{margin-right:auto!important}
   #hdr .hdr-logo img.s{height:36px}
   #hdr .hdr-stack,#hdr .hdr-utility-row,#hdr .hdr-main-row{display:contents}
-  #hdr .hdr-tagline{display:none}
   #hdr .hdr-phone,#hdr .hdr-referral{display:none}
   #hdr .hdr-access{order:2;flex:0 0 44px;width:44px;height:44px;min-height:44px;padding:0;border-radius:50%}
   #hdr .hdr-access-label{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important}
