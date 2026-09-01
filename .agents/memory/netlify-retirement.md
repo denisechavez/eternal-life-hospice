@@ -3,8 +3,8 @@ name: Netlify retirement
 description: Freeze the legacy Netlify site before changing DNS or completing the Replit cutover.
 ---
 
-Stop Netlify builds while the Replit cutover and DNS redirects are being verified; the current Netlify deployment remains available as a fallback.
+The retirement target is to disable the Netlify project, not delete it, after the Replit cutover and DNS redirects are verified.
 
-**Why:** A stopped-build site preserves the known-good fallback without allowing new Git pushes or build hooks to change it during DNS propagation.
+**Why:** Disabling takes the Netlify site offline so public traffic uses Replit, while preserving the project configuration and allowing the site to be re-enabled if needed. Stopped builds alone leave the old site publicly reachable.
 
-**How to apply:** Use Netlify's Build status → Stopped builds first. Do not delete the site or remove its deployed services until the canonical Replit site and every required domain redirect have been verified.
+**How to apply:** Use Build status → Stopped builds during the transition, then Project configuration → General → Danger zone → Disable project. Keep the project; do not choose Delete. Verify the canonical domain after disabling. Google may retain historical Netlify URLs temporarily, but canonical DNS, canonical tags, and the canonical sitemap direct indexing to Replit.
