@@ -193,7 +193,7 @@
   }
 
   var history = []; // {role, content} pairs for the AI
-  var panel, log, openBtn, dock, inputEl, sendBtn, teaser, backdrop, opened = false, aiAvailable = true;
+  var panel, log, replyStatus, callbackStatus, openBtn, dock, inputEl, sendBtn, teaser, backdrop, opened = false, aiAvailable = true;
   var greeted = false, greetTimer = null, closeTimer = null, focusTimer = null;
 
   /* ---------- styles ---------- */
@@ -221,6 +221,7 @@
       ".elhc-cb textarea{resize:none;min-height:46px;line-height:1.4}",
       ".elhc-cb input:focus,.elhc-cb textarea:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 3px rgba(79,115,150,.22)}",
       ".elhc-cb-err{color:#9a2b2b;font-size:11.5px}",
+      ".elhc-sr{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important}",
       ".elhc-cb-actions{display:flex;gap:.5rem;align-items:center}",
       ".elhc-cb-submit{flex:1;border:none;cursor:pointer;background:var(--p);color:var(--cream);font-family:inherit;font-weight:700;font-size:13.5px;padding:.58rem;border-radius:10px;transition:background .15s}",
       ".elhc-cb-submit:hover{background:var(--deep)}.elhc-cb-submit:disabled{opacity:.6;cursor:default}",
@@ -298,6 +299,16 @@
     try { log.scrollTo({ top: log.scrollHeight, behavior: reduced() ? "auto" : "smooth" }); }
     catch (e) { log.scrollTop = log.scrollHeight; }
   }
+  function announceReply(text) {
+    if (!replyStatus) return;
+    replyStatus.textContent = text;
+  }
+  function announceCallback(text, urgent) {
+    if (!callbackStatus) return;
+    callbackStatus.setAttribute("role", urgent ? "alert" : "status");
+    callbackStatus.setAttribute("aria-live", urgent ? "assertive" : "polite");
+    callbackStatus.textContent = text;
+  }
 
   // Reveal speed: aim for a natural, human cadence regardless of length, but
   // never so slow it feels broken or so fast it's instant.
@@ -317,11 +328,20 @@
     step();
   }
 
-  function addMsg(text, who, stream, done) {
+  function addMsg(text, who, stream, done, hideFromLog) {
     var m = el("div", "elhc-msg " + (who === "user" ? "elhc-user" : "elhc-bot"));
+    if (hideFromLog || (who === "bot" && stream)) m.setAttribute("aria-hidden", "true");
     log.appendChild(m);
-    if (who === "bot" && stream && !reduced()) {
-      typeInto(m, text, done);
+    if (who === "bot" && stream) {
+      var finish = function () {
+        announceReply(text);
+        if (done) done();
+      };
+      if (!reduced()) typeInto(m, text, finish);
+      else {
+        m.textContent = text;
+        finish();
+      }
     } else {
       m.textContent = text;
       if (done) done();
@@ -507,6 +527,7 @@
     form.appendChild(err);
     form.appendChild(actions);
     log.appendChild(form);
+    if (callbackStatus) callbackStatus.textContent = "";
     scrollDown();
     try { nameIn.focus(); } catch (e) {}
 
@@ -524,18 +545,24 @@
       var name = (nameIn.value || "").trim();
       var phone = (phoneIn.value || "").trim();
       if (!name) {
-        err.textContent = "Please add your name so we know who we're calling.";
+        var nameError = "Please add your name so we know who we're calling.";
+        err.textContent = nameError;
+        announceCallback(nameError, true);
         nameIn.focus();
         return;
       }
       if (phone.replace(/[^0-9]/g, "").length < 10) {
-        err.textContent = "Please add a phone number we can reach you at.";
+        var phoneError = "Please add a phone number we can reach you at.";
+        err.textContent = phoneError;
+        announceCallback(phoneError, true);
         phoneIn.focus();
         return;
       }
       var email = (emailIn.value || "").trim();
       if (email && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) {
-        err.textContent = "That email doesn\u2019t look quite right \u2014 please check it, or leave it blank.";
+        var emailError = "That email doesn\u2019t look quite right \u2014 please check it, or leave it blank.";
+        err.textContent = emailError;
+        announceCallback(emailError, true);
         emailIn.focus();
         return;
       }
@@ -586,24 +613,25 @@
       })
       .then(function (result) {
         if (form.parentNode) form.parentNode.removeChild(form);
-        addMsg(
-          "Thank you, " +
+        var confirmation = "Thank you, " +
             data.name.split(" ")[0] +
             ". Your callback request was accepted (confirmation " +
             result.receipt_id +
             ") and a member of our team will call you back within the hour. If anything comes up in the meantime, please feel free to call us anytime at " +
             PHONE_DISPLAY +
-            ". We're here 24/7.",
-          "bot"
-        );
+            ". We're here 24/7.";
+        addMsg(confirmation, "bot", false, null, true);
+        announceCallback(confirmation, false);
       })
       .catch(function () {
         submitBtn.disabled = false;
         submitBtn.textContent = "Send request";
-        err.textContent =
+        var failure =
           "I couldn't send that just now \u2014 please call us at " +
           PHONE_DISPLAY +
           " and we'll help right away.";
+        err.textContent = failure;
+        announceCallback(failure, true);
       });
   }
 
@@ -709,7 +737,20 @@
     panel.appendChild(head);
 
     log = el("div", "elhc-log");
+    log.setAttribute("role", "log");
+    log.setAttribute("aria-live", "polite");
+    log.setAttribute("aria-relevant", "additions");
     panel.appendChild(log);
+    replyStatus = el("div", "elhc-sr");
+    replyStatus.setAttribute("role", "status");
+    replyStatus.setAttribute("aria-live", "polite");
+    replyStatus.setAttribute("aria-atomic", "true");
+    panel.appendChild(replyStatus);
+    callbackStatus = el("div", "elhc-sr");
+    callbackStatus.setAttribute("role", "status");
+    callbackStatus.setAttribute("aria-live", "polite");
+    callbackStatus.setAttribute("aria-atomic", "true");
+    panel.appendChild(callbackStatus);
 
     var foot = el("div", "elhc-foot");
     var row = el("div", "elhc-inrow");

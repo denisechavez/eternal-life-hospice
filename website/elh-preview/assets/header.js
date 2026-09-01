@@ -91,8 +91,17 @@
     return d.innerHTML;
   }
 
+  function searchFocusables() {
+    if (!so) return [];
+    var nodes = so.querySelectorAll('a[href],button:not([disabled]),input:not([disabled]),textarea:not([disabled]),select:not([disabled]),[tabindex]:not([tabindex="-1"])');
+    return Array.prototype.filter.call(nodes, function (el) {
+      return el.getAttribute('aria-hidden') !== 'true' &&
+        (el.offsetWidth || el.offsetHeight || el.getClientRects().length);
+    });
+  }
+
   function openSearch() {
-    if (!so) return;
+    if (!so || so.classList.contains('open')) return;
     lastFocus = document.activeElement;
     so.classList.add('open');
     so.setAttribute('aria-hidden', 'false');
@@ -111,7 +120,26 @@
   if (sb) sb.addEventListener('click', openSearch);
   if (sc) sc.addEventListener('click', closeSearch);
   document.addEventListener('keydown', function (e) {
-    if (e.key === 'Escape' && so && so.classList.contains('open')) { e.preventDefault(); closeSearch(); }
+    if (!so || !so.classList.contains('open')) return;
+    if (e.key === 'Escape') { e.preventDefault(); closeSearch(); return; }
+    if (e.key === 'Tab') {
+      var focusables = searchFocusables();
+      if (!focusables.length) { e.preventDefault(); return; }
+      var first = focusables[0], last = focusables[focusables.length - 1];
+      var active = document.activeElement;
+      if (!so.contains(active)) {
+        e.preventDefault();
+        (e.shiftKey ? last : first).focus();
+      } else if (e.shiftKey && active === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && active === last) {
+        e.preventDefault();
+        first.focus();
+      }
+    }
+  });
+  document.addEventListener('keydown', function (e) {
     if ((e.metaKey || e.ctrlKey) && e.key === 'k') { e.preventDefault(); openSearch(); }
   });
 

@@ -479,6 +479,9 @@
           f.style.display='none';
           var su=document.createElement('div');
           su.className='apply-success';
+           su.setAttribute('role','status');
+           su.setAttribute('aria-live','polite');
+           su.setAttribute('aria-atomic','true');
           su.innerHTML='<div class="as-icon">&#10003;</div><h3>Thank you — your referral is in.</h3><p>Our clinical intake team accepted your request and will call you back shortly to complete it securely. Confirmation: <strong>'+data.receipt_id+'</strong>.<br>Need us sooner? Call <a href="tel:18059537273">805.953.7273</a> any time — we answer 24/7.</p>';
           f.parentNode.insertBefore(su,f.nextSibling);
           su.scrollIntoView({behavior:'smooth',block:'center'});
@@ -487,6 +490,9 @@
         if(btn){ btn.disabled=false; btn.innerHTML=orig; }
         var er=document.createElement('div');
         er.className='apply-error';
+         er.setAttribute('role','alert');
+         er.setAttribute('aria-live','assertive');
+         er.setAttribute('aria-atomic','true');
         er.innerHTML='Sorry — something went wrong sending your referral. Please try again, or call us at <a href="tel:18059537273">805.953.7273</a>.';
         f.parentNode.insertBefore(er,f.nextSibling);
         er.scrollIntoView({behavior:'smooth',block:'center'});
