@@ -211,8 +211,8 @@
   },
   {
     "url": "/hospice-oxnard-ca",
-    "title": "Hospice Care in Point Mugu, CA",
-    "desc": "Medicare-certified hospice care in Point Mugu, CA — serving West Ventura County. Physician-supported comfort care at home. Call for guidance: 805.953.7273.",
+    "title": "Hospice Care in Oxnard, CA",
+    "desc": "Medicare-certified hospice care in Oxnard, CA — serving South Ventura Coast, Ventura County. Physician-supported comfort care at home. Call 805.953.7273.",
     "cat": "City",
     "kw": "oxnard, oxnard plain, harbor, port hueneme, camarillo, ventura"
   },
@@ -1202,5 +1202,26 @@
     "desc": "Nurses, social workers, chaplains, family caregivers — everyone at the bedside gives. This is why renewal matters, and what it actually looks like.",
     "cat": "Journal",
     "kw": "caregiver, burnout, self-care, respite, support, exhaustion"
+  },
+  {
+    "url": "/hospice-lake-hughes-ca",
+    "title": "Hospice Care in Lake Hughes, CA",
+    "desc": "Medicare-certified hospice care in Lake Hughes, CA — Antelope Valley, Los Angeles County. Physician-supported care at home. Call for guidance: 805.953.7273.",
+    "cat": "City",
+    "kw": "lake hughes, antelope valley, los angeles county"
+  },
+  {
+    "url": "/hospice-llano-ca",
+    "title": "Hospice Care in Llano, CA",
+    "desc": "Medicare-certified hospice care in Llano, CA — serving Antelope Valley, Los Angeles County. Physician-supported care at home. Call for guidance: 805.953.7273.",
+    "cat": "City",
+    "kw": "llano, serving antelope valley, los angeles county"
+  },
+  {
+    "url": "/hospice-point-mugu-ca",
+    "title": "Hospice Care in Point Mugu, CA",
+    "desc": "Medicare-certified hospice care in Point Mugu, CA — serving West Ventura County. Physician-supported comfort care at home. Call for guidance: 805.953.7273.",
+    "cat": "City",
+    "kw": "point mugu"
   }
 ]

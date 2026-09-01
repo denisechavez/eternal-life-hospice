@@ -101,6 +101,8 @@ function assert(label, condition, detail) {
 
   for (const entry of published) {
     const { status, body } = await query(entry.city);
+    const expectedPageUrl =
+      `https://eternallifehospice.com/hospice-${entry.slug}-ca`;
     assert(
       `${entry.city} → served`,
       status === 200 && body.served === true,
@@ -110,6 +112,11 @@ function assert(label, condition, detail) {
       `${entry.city} → correct city name`,
       body.city === entry.city,
       `got "${body.city}"`
+    );
+    assert(
+      `${entry.city} → own city page URL`,
+      body.pageUrl === expectedPageUrl,
+      `got "${body.pageUrl}", expected "${expectedPageUrl}"`
     );
   }
 
