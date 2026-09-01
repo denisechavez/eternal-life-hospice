@@ -353,7 +353,7 @@ p,li,blockquote{text-wrap:pretty}
 
 /*ELH-FOOTER*/
   #site-footer{background:var(--deep);color:rgba(245,240,235,.85);padding:3rem 2.5rem 2.4rem;text-align:left}
-  #site-footer .foot-grid{max-width:1140px;margin:0 auto;display:grid;grid-template-columns:1.4fr 1fr 0.9fr 0.9fr 1fr 1.1fr 0.9fr 1.5fr;gap:2rem 1rem}
+  #site-footer .foot-grid{max-width:1140px;margin:0 auto;display:grid;grid-template-columns:1.4fr 1fr 0.9fr 0.9fr 1fr 1.1fr 1.5fr;gap:2rem 1rem}
   #site-footer .foot-logo img{height:52px;width:auto;opacity:1;margin-bottom:.85rem;display:block}
   #site-footer .foot-logo a{display:inline-block}
   #site-footer .foot-tag{font-family:var(--ff-d);font-style:italic;font-size:18px;color:var(--gold);margin:.2rem 0 .6rem}

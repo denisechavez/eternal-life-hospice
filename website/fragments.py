@@ -57,11 +57,44 @@ FOOTER_HTML = """<footer id="site-footer">
   <div class="foot-bottom"><span>© 2026 Eternal Life Hospice Inc. All rights reserved.</span><span class="foot-bottom-links"><a href="/privacy-policy" style="text-decoration:none">Privacy Policy</a> &nbsp;·&nbsp; <a href="/terms" style="text-decoration:none">Terms &amp; Conditions</a> &nbsp;&middot;&nbsp; <a href="#" onclick="window.elhCookieSettings&amp;&amp;window.elhCookieSettings();return false;" style="color:inherit;text-decoration:none">Cookie Settings</a><button id="elh-ada-trigger" class="foot-access" type="button" aria-label="Accessibility options"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false"><circle cx="12" cy="4.5" r="2"/><path d="M17 8h-4.15l-.85-2H7v2h3.15l.85 2H8c-1.1 0-2 .9-2 2v5h2v-4.5h1.35L11 16h2l-1.5-3.5V12h4l1 4h2l-1.25-5H17z"/></svg><span class="sr-only">Accessibility</span></button></span></div>
 </footer>"""
 
+# The footer navigation mirrors the five expandable groups in HEADER_HTML.
+# Contact remains the existing footer contact block below this replacement.
+_FOOTER_LEGACY_NAV = (
+    '<div class="foot-col"><h2>Hospice Care</h2><a href="/resources/when-is-it-time">When Is It Time?</a>'
+    '<a href="/resources/first-48-hours">The First 48 Hours</a><a href="/resources/medicare-hospice-benefit">What Hospice Covers</a>'
+    '<a href="/resources/how-to-choose-a-hospice">How to Choose</a></div><div class="foot-col"><h2>Services</h2>'
+    '<a href="/services">All Services</a><a href="/resources/comfort-therapies">Integrative Care</a><a href="/sound-bath">Sound Bath</a></div>'
+    '<div class="foot-col"><h2>Resources</h2><a href="/family-guide">Family Guide</a><a href="/blog">Eternal Journal</a>'
+    '<a href="/care-brief">Care Brief</a><a href="/volunteer">Volunteer</a></div><div class="foot-col"><h2>Locations</h2>'
+    '<a href="/hospice-ventura-and-los-angeles-county-ca">All Service Areas</a><a href="/hospice-thousand-oaks-ca">Thousand Oaks</a>'
+    '<a href="/hospice-simi-valley-ca">Simi Valley</a><a href="/hospice-calabasas-ca">Calabasas</a></div>'
+    '<div class="foot-col"><h2>For Professionals</h2><a href="/refer">Refer a Patient</a><a href="/referral-card">Referral eCard</a>'
+    '<a href="/?lead=voice#leadcap">Schedule a Session</a></div><div class="foot-col"><h2>About</h2><a href="/#standard">Eternal Standard</a>'
+    '<a href="/about/aleksandra-dubina">Aleksandra Dubina</a><a href="/careers">Careers</a><a href="/media-kit">Media Kit</a></div>'
+)
+_FOOTER_MATCHED_NAV = (
+    '<div class="foot-col"><h2>Hospice Care</h2><a href="/hospice-care">What Is Hospice Care?</a><a href="/resources/when-is-it-time">When Is It Time?</a>'
+    '<a href="/resources/first-48-hours">The First 48 Hours</a><a href="/resources/medicare-hospice-benefit">What Hospice Covers</a>'
+    '<a href="/resources/how-to-choose-a-hospice">How to Choose a Hospice</a></div><div class="foot-col"><h2>Services</h2>'
+    '<a href="/services">All Services</a><a href="/resources/comfort-therapies">Integrative &amp; Whole-Person Care</a>'
+    '<a href="/resources/pain-symptom-management">Pain &amp; Symptom Management</a><a href="/sound-bath">Sound Bath</a>'
+    '<a href="/services/medical-aid-in-dying-california">End-of-Life Care &amp; Choices</a></div><div class="foot-col"><h2>Resources</h2>'
+    '<a href="/family-guide">Family Guide</a><a href="/blog">The Eternal Journal</a><a href="/care-brief">Care Brief</a>'
+    '<a href="/volunteer">Volunteer</a><a href="/media-kit">Media Kit</a><a href="/careers">Careers</a></div>'
+    '<div class="foot-col"><h2>Service Areas</h2><a href="/hospice-thousand-oaks-ca">Thousand Oaks</a><a href="/hospice-simi-valley-ca">Simi Valley</a>'
+    '<a href="/hospice-calabasas-ca">Calabasas</a><a href="/hospice-ventura-and-los-angeles-county-ca">County Coverage</a></div>'
+    '<div class="foot-col"><h2>About</h2><a href="/about/aleksandra-dubina">Our Founder</a><a href="/#care-team">Our Team</a>'
+    '<a href="/#accreditations">Accreditations</a><a href="/#standard">Eternal Standard</a></div>'
+)
+if _FOOTER_LEGACY_NAV not in FOOTER_HTML:
+    raise RuntimeError("Expected legacy footer navigation was not found")
+FOOTER_HTML = FOOTER_HTML.replace(_FOOTER_LEGACY_NAV, _FOOTER_MATCHED_NAV, 1)
+
 # ── POST-FOOTER BLOCK ─────────────────────────────────────────────────────────
 # Scripts and search overlay that follow </footer> on every standard page.
 # build-cities.py appends this after FOOTER_HTML.  sync-footer.py does NOT
 # patch this block — it is already consistent across all pages.
-POST_FOOTER_HTML = """<script src="/assets/header.js?v=20260901c" defer></script><script src="/assets/chat.js?v=20260805" defer></script>
+POST_FOOTER_HTML = """<script src="/assets/header.js?v=20260901d" defer></script><script src="/assets/chat.js?v=20260805" defer></script>
 <div class="search-overlay" id="searchOverlay" role="dialog" aria-modal="true" aria-label="Site search" aria-hidden="true">
   <div class="search-box"><input type="text" id="searchInput" placeholder="Search pages, cities, resources..." autocomplete="off" aria-label="Search"><button class="search-close" id="searchClose" aria-label="Close search">&times;</button></div>
   <p class="search-hint">Press Enter to open the first result, or Escape to close</p>

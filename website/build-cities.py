@@ -142,22 +142,22 @@ CRED_STRIP = """\
 # surface LA-area cities so the 3 shortcuts are relevant to the visitor.
 
 _FOOT_LOC_VENTURA = (
-    '<a href="/hospice-ventura-and-los-angeles-county-ca">All Service Areas</a>'
     '<a href="/hospice-thousand-oaks-ca">Thousand Oaks</a>'
     '<a href="/hospice-simi-valley-ca">Simi Valley</a>'
     '<a href="/hospice-calabasas-ca">Calabasas</a>'
+    '<a href="/hospice-ventura-and-los-angeles-county-ca">County Coverage</a>'
 )
 
 _FOOT_LOC_LA = (
-    '<a href="/hospice-ventura-and-los-angeles-county-ca">All Service Areas</a>'
+    '<a href="/hospice-thousand-oaks-ca">Thousand Oaks</a>'
+    '<a href="/hospice-simi-valley-ca">Simi Valley</a>'
     '<a href="/hospice-calabasas-ca">Calabasas</a>'
-    '<a href="/hospice-woodland-hills-ca">Woodland Hills</a>'
-    '<a href="/hospice-pasadena-ca">Pasadena</a>'
+    '<a href="/hospice-ventura-and-los-angeles-county-ca">County Coverage</a>'
 )
 
 
 def make_footer(county: str) -> str:
-    """Return the full city-page footer with county-appropriate Locations links."""
+    """Return the full city-page footer with the shared Service Areas links."""
     loc_links = _FOOT_LOC_LA if county == "Los Angeles County" else _FOOT_LOC_VENTURA
     return (
         '<footer id="site-footer">\n'
@@ -170,29 +170,31 @@ def make_footer(county: str) -> str:
         '<div class="foot-qr"><img src="assets/img/qr-cream.webp" alt="Scan to visit eternallifehospice.com" '
         'width="96" height="96" loading="lazy"><span>Scan to visit<br>on your phone</span></div></div>\n'
         '    <div class="foot-col"><h2>Hospice Care</h2>'
+        '<a href="/hospice-care">What Is Hospice Care?</a>'
         '<a href="/resources/when-is-it-time">When Is It Time?</a>'
         '<a href="/resources/first-48-hours">The First 48 Hours</a>'
         '<a href="/resources/medicare-hospice-benefit">What Hospice Covers</a>'
-        '<a href="/resources/how-to-choose-a-hospice">How to Choose</a></div>'
+        '<a href="/resources/how-to-choose-a-hospice">How to Choose a Hospice</a></div>'
         '<div class="foot-col"><h2>Services</h2>'
         '<a href="/services">All Services</a>'
-        '<a href="/resources/comfort-therapies">Integrative Care</a>'
-        '<a href="/sound-bath">Sound Bath</a></div>'
+        '<a href="/resources/comfort-therapies">Integrative &amp; Whole-Person Care</a>'
+        '<a href="/resources/pain-symptom-management">Pain &amp; Symptom Management</a>'
+        '<a href="/sound-bath">Sound Bath</a>'
+        '<a href="/services/medical-aid-in-dying-california">End-of-Life Care &amp; Choices</a></div>'
         '<div class="foot-col"><h2>Resources</h2>'
         '<a href="/family-guide">Family Guide</a>'
-        '<a href="/blog">Eternal Journal</a>'
+        '<a href="/blog">The Eternal Journal</a>'
         '<a href="/care-brief">Care Brief</a>'
-        '<a href="/volunteer">Volunteer</a></div>'
-        f'<div class="foot-col"><h2>Locations</h2>{loc_links}</div>'
-        '<div class="foot-col"><h2>For Professionals</h2>'
-        '<a href="/refer">Refer a Patient</a>'
-        '<a href="/referral-card">Referral eCard</a>'
-        '<a href="/?lead=voice#leadcap">Schedule a Session</a></div>'
+        '<a href="/volunteer">Volunteer</a>'
+        '<a href="/media-kit">Media Kit</a>'
+        '<a href="/careers">Careers</a></div>'
+        f'<div class="foot-col"><h2>Service Areas</h2>{loc_links}</div>'
         '<div class="foot-col"><h2>About</h2>'
+        '<a href="/about/aleksandra-dubina">Our Founder</a>'
+        '<a href="/#care-team">Our Team</a>'
+        '<a href="/#accreditations">Accreditations</a>'
         '<a href="/#standard">Eternal Standard</a>'
-        '<a href="/about/aleksandra-dubina">Aleksandra Dubina</a>'
-        '<a href="/careers">Careers</a>'
-        '<a href="/media-kit">Media Kit</a></div>'
+        '</div>'
         '<div class="foot-col"><h2>Contact</h2>\n'
         '      <a class="fc-line" href="tel:18059537273">'
         '<svg class="fci" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">'
@@ -255,7 +257,7 @@ def make_footer(county: str) -> str:
         '<circle cx="12" cy="4.5" r="2"/><path d="M17 8h-4.15l-.85-2H7v2h3.15l.85 2H8c-1.1 0-2 .9-2 2v5h2v-4.5h1.35L11 16h2l-1.5-3.5V12h4l1 4h2l-1.25-5H17z"/></svg>'
         '<span class="sr-only">Accessibility</span></button></span></div>\n'
         '</footer>\n'
-        '<script src="assets/header.js?v=20260901c" defer></script>'
+        '<script src="assets/header.js?v=20260901d" defer></script>'
         '<script src="/assets/chat.js?v=20260805" defer></script>\n'
         '<div class="search-overlay" id="searchOverlay" role="dialog" aria-modal="true" '
         'aria-label="Site search" aria-hidden="true">\n'
@@ -437,6 +439,7 @@ def render_page(c):
   <link rel="preload" as="font" href="assets/fonts/JostELH-SemiBold.woff2" type="font/woff2" crossorigin>
   <link rel="preload" href="assets/elh.css?v=20260901" as="style">
   <link rel="stylesheet" href="assets/elh.css?v=20260901">
+  <link rel="stylesheet" href="/assets/header-nav.css?v=20260901ab">
 {schema_tags}
 {HEAD_SCRIPTS}
 </head><body>

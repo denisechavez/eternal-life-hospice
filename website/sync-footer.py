@@ -30,6 +30,7 @@ OUT_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "elh-preview"
 
 # City pages are managed by build-cities.py → make_footer(); never patch here.
 CITY_PAGE_RE = re.compile(r'^hospice-.+-ca\.html$')
+COUNTY_HUB = "hospice-ventura-and-los-angeles-county-ca.html"
 
 # Pages whose footer intentionally differs from the canonical — do not patch.
 EXCEPTIONS = {
@@ -77,7 +78,7 @@ def main():
             rel = os.path.relpath(abs_path, OUT_DIR).replace("\\", "/")
 
             # Skip city pages — managed by build-cities.py → make_footer()
-            if CITY_PAGE_RE.match(fn):
+            if CITY_PAGE_RE.match(fn) and fn != COUNTY_HUB:
                 skipped.append(rel)
                 continue
 

@@ -33,22 +33,22 @@ ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), "elh-preview")
 
 FOOTER_RE    = re.compile(r'<footer id="site-footer">.*?</footer>', re.DOTALL)
 CITY_PAGE_RE = re.compile(r'^hospice-.+-ca\.html$')
+COUNTY_HUB = "hospice-ventura-and-los-angeles-county-ca.html"
 STALE_HEADING_SELECTOR_RE = re.compile(r'(?:#site-footer\s+)?\.foot-col\s+h4\b')
 
 # -- Required tokens present in EVERY footer (static and city) ----------------
 # These headings and links are invariant across all page types.
 CITY_TOKENS = [
-    ('<h2>Hospice Care</h2>',       "Hospice Care column heading"),
-    ('<h2>Services</h2>',           "Services column heading"),
-    ('<h2>Resources</h2>',          "Resources column heading"),
-    ('<h2>Locations</h2>',          "Locations column heading"),
-    ('<h2>For Professionals</h2>',  "For Professionals column heading"),
-    ('<h2>About</h2>',              "About column heading"),
-    ('<h2>Contact</h2>',            "Contact column heading"),
-    ('When Is It Time?',            "Hospice Care -- When Is It Time? link"),
-    ('All Service Areas',           "Locations -- All Service Areas link"),
-    ('fc-direct',                   "Contact -- Direct phone line (fc-direct)"),
-    ('foot-disclaimer',             "foot-disclaimer block present"),
+    ('<h2>Hospice Care</h2>',      "Hospice Care column heading"),
+    ('<h2>Services</h2>',          "Services column heading"),
+    ('<h2>Resources</h2>',         "Resources column heading"),
+    ('<h2>Service Areas</h2>',     "Service Areas column heading"),
+    ('<h2>About</h2>',             "About column heading"),
+    ('<h2>Contact</h2>',           "Contact column heading"),
+    ('When Is It Time?',           "Hospice Care -- When Is It Time? link"),
+    ('County Coverage',            "Service Areas -- County Coverage link"),
+    ('fc-direct',                  "Contact -- Direct phone line (fc-direct)"),
+    ('foot-disclaimer',            "foot-disclaimer block present"),
 ]
 
 # -- Pages whose footer intentionally deviates from canonical -----------------
@@ -130,7 +130,7 @@ for dirpath, dirs, files in os.walk(ROOT):
 
         m = FOOTER_RE.search(html)
 
-        is_city = bool(CITY_PAGE_RE.match(fn))
+        is_city = bool(CITY_PAGE_RE.match(fn) and fn != COUNTY_HUB)
 
         if is_city:
             # City pages: token check only (Locations column varies by county)
