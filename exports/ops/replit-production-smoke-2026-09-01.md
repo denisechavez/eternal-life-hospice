@@ -116,3 +116,26 @@ The Replit deployment and final smoke test are green, and the Netlify rollback r
 - Requester acknowledgement: `1a05b2c3fab065e6`
 
 No test messages remain in the inboxes. The delivery-test cleanup gate is **CLOSED**.
+
+## Repeatable future referral check
+
+The next live no-PHI referral check can be run without hand-building a request:
+
+```sh
+python3 website/run-live-referral-check.py \
+  --requester-email info@eternallifehospice.com \
+  --output /tmp/elh-live-referral-check-$(date -u +%Y%m%dT%H%M%SZ).json
+```
+
+The command submits one clearly labeled synthetic referral through the
+production `/refer` flow and records processor acceptance, receipt ID, Brevo
+provider acceptance ID, expected referral destination, and requester
+acknowledgement status. It sends no PHI and does not write application data.
+
+Mailbox delivery still requires intake-team confirmation. Because the
+connected Gmail grant lacks `gmail.modify`, the command deliberately does not
+delete mail. Use the receipt-scoped message-ID handoff in
+`FORM-INTAKE-OPERATIONS.md` to have an authorized mailbox user delete the
+original, any forwarded copy, and the acknowledgement, then record
+`cleanup: CLOSED`. This procedure is independent of the Netlify decision
+recorded above.

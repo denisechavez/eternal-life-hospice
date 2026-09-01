@@ -130,6 +130,68 @@ provider to fail, submits four synthetic requests, confirms every response is
 `502` with `805.953.7273`, confirms exactly one alert after the third failure,
 and verifies that the alert contains no submitted values.
 
+### Repeatable post-deploy live check
+
+Run this only after a production publish when a live delivery check is required:
+
+```sh
+python3 website/run-live-referral-check.py \
+  --requester-email info@eternallifehospice.com \
+  --output /tmp/elh-live-referral-check-$(date -u +%Y%m%dT%H%M%SZ).json
+```
+
+The command posts the same fields that `/refer` submits to the same-origin
+`/api/form-submit` processor. It uses only these fixed synthetic values:
+
+- Referrer: `ELH LIVE CHECK — DO NOT CALL` plus the UTC check timestamp
+- Callback phone: reserved fictional `805.555.0199`
+- Facility: `Eternal Life Hospice QA`
+- Situation: `Synthetic non-PHI routing test only. Do not call.`
+- Requester mailbox: `info@eternallifehospice.com` (or another monitored,
+  explicitly approved test mailbox supplied with `--requester-email`)
+
+The JSON record contains no patient information. It records the processor HTTP
+status, acceptance, receipt ID, Brevo provider message ID, expected internal
+destination, and requester acknowledgement status. `provider_accepted: true`
+is not a substitute for mailbox receipt: the two `PENDING_MANUAL_CONFIRMATION`
+values must be replaced in the dated operations record only after the intake
+team verifies the messages.
+
+### Bounded mailbox verification and cleanup handoff
+
+Use the receipt ID from the command output as the sole correlation value. The
+intake team should search the referral mailbox and the requester mailbox for
+that receipt and record the exact Gmail message IDs, timestamps, and mailbox
+location in the operations record. Search by the receipt, not by a broad sender
+or date range. Depending on forwarding configuration, the bounded set is:
+
+1. The original internal referral in `referral@eternallifehospice.com`.
+2. Its forwarded copy in the monitored requester mailbox, if forwarding is
+   enabled.
+3. The static `We received your request — Eternal Life Hospice`
+   acknowledgement in the requester mailbox.
+
+The connected Gmail access currently cannot perform deletion because it does
+not have `gmail.modify`. Do not claim that this command cleans up mail. Hand
+the following exact, receipt-scoped list to an authorized mailbox user:
+
+```text
+ELH live check receipt: [RECEIPT_ID]
+Internal referral Gmail message ID: [EXACT_ID]
+Forwarded referral Gmail message ID (if present): [EXACT_ID or NONE]
+Requester acknowledgement Gmail message ID: [EXACT_ID]
+```
+
+The authorized user should delete exactly the listed IDs, then verify that no
+non-trash copy remains for the receipt. Record the final result as
+`cleanup: CLOSED` only after that verification. If any expected message is
+missing, leave cleanup open and investigate delivery; do not submit a second
+test to compensate. This is a bounded manual handoff, not an automated Gmail
+cleanup and not a request to broaden mailbox permissions.
+
+This live referral check is an intake-delivery control only. It is separate
+from Netlify availability, retirement, freeze, DNS, and hosting decisions.
+
 ## Netlify duplicate
 
 The separate Netlify copy is not the production processor. Production browser code targets `/api/form-submit`, a route provided by the Replit deployment. The Netlify `submission-created.js` file is explicitly labeled legacy-only. Both Netlify build configurations run `website/strip-netlify-form-routing.py` in their ephemeral build workspace, removing legacy Netlify Forms attributes and changing native form actions to `/api/form-submit`. If someone opens the Netlify hostname, the Replit-only same-origin API is unavailable and the public UI shows the phone fallback instead of a false confirmation.
