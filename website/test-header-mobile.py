@@ -155,6 +155,12 @@ CHECK_EXPRESSION = r"""
   const toggle = nav.querySelector('.nav-toggle');
   const subId = toggle && toggle.getAttribute('aria-controls');
   const sub = subId && document.getElementById(subId);
+  const toggleStyle = toggle && getComputedStyle(toggle);
+  const submenuToggleStyled = !!(toggleStyle &&
+    toggleStyle.backgroundColor === 'rgba(0, 0, 0, 0)' &&
+    toggleStyle.borderTopWidth === '0px' &&
+    toggleStyle.borderRightWidth === '0px' &&
+    toggleStyle.borderLeftWidth === '0px');
   if (toggle) toggle.click();
   const submenuOpened = !!(parent && toggle && sub &&
     toggle.getAttribute('aria-expanded') === 'true' &&
@@ -182,6 +188,7 @@ CHECK_EXPRESSION = r"""
     initialCollapsed: before === 'false',
     controlledNav,
     opened,
+    submenuToggleStyled,
     submenuOpened,
     parentNavigable,
     closed
@@ -292,6 +299,9 @@ def main():
                         "menu starts collapsed": result.get("initialCollapsed"),
                         "menu controls nav": result.get("controlledNav"),
                         "menu opens": result.get("opened"),
+                        "submenu toggle has no native button box": result.get(
+                            "submenuToggleStyled"
+                        ),
                         "submenu opens accessibly": result.get("submenuOpened"),
                         "Hospice Care landing page remains linked": result.get("parentNavigable"),
                         "menu closes": result.get("closed"),
