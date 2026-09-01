@@ -141,27 +141,34 @@ nav a:hover{color:var(--gold)}
 #hdr.nav-open nav a:hover{color:var(--gold)}
 #hdr.nav-open nav a.nav-call{color:var(--gold);font-weight:600;font-size:16px;border-bottom:1px solid rgba(201,176,126,.3);padding-bottom:.8rem;margin-bottom:.3rem}
 #hdr.nav-open .menu-btn{position:relative;z-index:1001}
-#hdr.nav-open .nav-group{display:flex;flex-direction:column;gap:1rem}
-#hdr.nav-open .nav-parent::after{content:" \25BE";font-size:12px;opacity:.55;display:inline-block;transition:transform .2s}
+#hdr.nav-open .nav-group{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:0}
+#hdr.nav-open .nav-parent{grid-column:1;min-width:0}
+#hdr.nav-open .nav-toggle{grid-column:2;display:flex;align-items:center;justify-content:center;width:44px;color:rgba(245,240,235,.82);border-bottom:1px solid rgba(245,240,235,.08);font-size:14px}
+#hdr.nav-open .nav-toggle>span[aria-hidden="true"]{display:block;transition:transform .2s}
 #hdr.nav-open .nav-sub{display:none}
-#hdr.nav-open .nav-group.expanded .nav-sub{display:flex;flex-direction:column;gap:.7rem;padding-left:1.1rem}
-#hdr.nav-open .nav-group.expanded .nav-parent::after{transform:rotate(-180deg)}
+#hdr.nav-open .nav-group.expanded .nav-sub{display:flex;grid-column:1/-1;flex-direction:column;gap:.7rem;padding-left:1.1rem}
+#hdr.nav-open .nav-group.expanded .nav-toggle>span[aria-hidden="true"]{transform:rotate(-180deg)}
 #hdr.nav-open .nav-sub a{font-size:13.5px;color:rgba(245,240,235,.6);border-bottom-color:rgba(245,240,235,.05)}
 #hdr.nav-open .nav-sub a:hover{color:var(--gold)}
-@media(hover:hover){#hdr.nav-open .nav-sub{display:none}#hdr.nav-open .nav-group:hover .nav-sub,#hdr.nav-open .nav-group:focus-within .nav-sub{display:flex;flex-direction:column;gap:.7rem;padding-left:1.1rem}}
 .hdr-cta{background:var(--plum);color:var(--cream);padding:.5rem 1.4rem;border-radius:24px;font-size:13px;font-weight:600;white-space:nowrap;transition:background .25s ease,color .25s ease}.hdr-cta.cta-hue1{background:#C9B07E;color:#3C1C3B}.hdr-cta.cta-hue2{background:#6793AC;color:#F5F0EB}.hdr-cta.cta-hue3{background:#3C1C3B;color:#F5F0EB}.hdr-cta-wrap{display:flex;align-items:center;gap:.65rem}.hdr-cta-note{font-family:var(--ff-d);font-style:italic;font-size:18px;font-weight:400;letter-spacing:.005em;color:rgba(245,240,235,.92);white-space:nowrap}#hdr.scrolled .hdr-cta-note{color:var(--text-mid)}
-.menu-btn{display:block;background:none;border:none;cursor:pointer;padding:14px 10px;line-height:0}
+.menu-btn{display:block}
+#hdr a:focus-visible,#hdr button:focus-visible{outline:3px solid var(--gold);outline-offset:3px;border-radius:4px}
+.sr-only{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important}
 .mob-call-bar{display:none;position:fixed;bottom:0;left:0;right:0;z-index:998;background:var(--plum);color:var(--cream);text-align:center;padding:.85rem 1rem;font-family:var(--ff-b);font-size:15px;font-weight:700;text-decoration:none;letter-spacing:.02em;border-top:2px solid rgba(201,176,126,.35);transition:background .2s ease}
 .mob-call-bar:hover,.mob-call-bar:focus{background:var(--deep)}
 @media(max-width:980px){
   .hdr-cta,.hdr-cta-note{display:none}
-  #elh-ada-trigger{display:none!important}
   .mob-call-bar{display:block}
 }
-@media(max-width:600px){.hdr-in{gap:.6rem}}
-@media(max-width:480px){
-  #hdr{padding:0 .85rem}
-  #hdr.nav-open nav{padding:1.2rem .85rem 1.8rem}
+@media(max-width:600px){
+  #hdr{padding:0 .625rem}
+  .hdr-in{gap:.15rem}
+  .hdr-logo img.s{height:32px}
+  .hdr-cta-wrap{gap:0;flex:0 0 auto}
+  #elh-ada-trigger{width:36px;height:44px;padding:0!important;justify-content:center}
+  .search-btn{width:40px;height:44px;padding:0}
+  .menu-btn{width:42px;height:44px;padding:0;display:flex;align-items:center;justify-content:center}
+  #hdr.nav-open nav{padding:1rem .9rem 1.5rem}
 }
 @keyframes navdrop{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:translateY(0)}}
 
@@ -1196,7 +1203,7 @@ p,li,blockquote{text-wrap:pretty}
 <header id="hdr">
   <div class="hdr-in">
     <a class="hdr-logo" href="/"><img class="s sym-cream" src="assets/img/elh-logo-h2-cream.webp" alt="Eternal Life Hospice logo" width="331" height="74"><img class="s sym-plum" src="assets/img/elh-logo-h2-plum.webp" alt="" aria-hidden="true"></a>
-    <nav aria-label="Main navigation">
+    <nav id="site-nav" aria-label="Main navigation">
       <div class="nav-group"><a href="/hospice-care" class="nav-parent">Hospice Care</a><div class="nav-sub"><a href="/resources/when-is-it-time">When Is It Time?</a><a href="/resources/first-48-hours">The First 48 Hours</a><a href="/resources/medicare-hospice-benefit">What Hospice Covers</a><a href="/resources/how-to-choose-a-hospice">How to Choose a Hospice</a></div></div>
       <div class="nav-group"><a href="/services" class="nav-parent">Services</a><div class="nav-sub"><a href="/services">All Services</a><a href="/resources/comfort-therapies">Integrative &amp; Whole-Person Care</a><a href="/resources/pain-symptom-management">Pain &amp; Symptom Management</a><a href="/sound-bath">Sound Bath</a></div></div>
       <div class="nav-group"><a href="/resources" class="nav-parent">Resources</a><div class="nav-sub"><a href="/family-guide">Family Guide</a><a href="/blog">The Eternal Journal</a><a href="/care-brief">Care Brief</a><a href="/volunteer">Volunteer</a></div></div>
@@ -1206,7 +1213,7 @@ p,li,blockquote{text-wrap:pretty}
     </nav>
     <div class="hdr-cta-wrap"><button id="elh-ada-trigger" aria-label="Accessibility options" style="background:none;border:none;cursor:pointer;padding:0 .5rem 0 0;color:rgba(245,240,235,.75);display:flex;align-items:center;flex-shrink:0"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="12" cy="4.5" r="2"/><path d="M17 8h-4.15l-.85-2H7v2h3.15l.85 2H8c-1.1 0-2 .9-2 2v5h2v-4.5h1.35L11 16h2l-1.5-3.5V12h4l1 4h2l-1.25-5H17z"/></svg></button><span class="hdr-cta-note">Here in Moments That Matter Most</span><a href="/refer" class="hdr-cta">Request Care</a></div>
     <button class="search-btn" id="searchBtn" aria-label="Search"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="9" cy="9" r="7"/><line x1="15" y1="15" x2="19" y2="19"/></svg></button>
-    <button class="menu-btn" aria-label="Menu" aria-expanded="false"><svg width="22" height="16" viewBox="0 0 22 16"><line x1="0" y1="2" x2="22" y2="2" stroke="#F5F0EB" stroke-width="2" stroke-linecap="round"/><line x1="0" y1="8" x2="22" y2="8" stroke="#F5F0EB" stroke-width="2" stroke-linecap="round"/><line x1="0" y1="14" x2="22" y2="14" stroke="#F5F0EB" stroke-width="2" stroke-linecap="round"/></svg></button>
+    <button class="menu-btn" aria-label="Menu" aria-controls="site-nav" aria-expanded="false"><svg width="22" height="16" viewBox="0 0 22 16"><line x1="0" y1="2" x2="22" y2="2" stroke="#F5F0EB" stroke-width="2" stroke-linecap="round"/><line x1="0" y1="8" x2="22" y2="8" stroke="#F5F0EB" stroke-width="2" stroke-linecap="round"/><line x1="0" y1="14" x2="22" y2="14" stroke="#F5F0EB" stroke-width="2" stroke-linecap="round"/></svg></button>
   </div>
 </header>
 
@@ -1950,32 +1957,6 @@ p,li,blockquote{text-wrap:pretty}
   function leadFail(f,btn,label){if(btn){btn.disabled=false;btn.textContent=label;}var old=f.querySelector('.lead-submit-error');if(old)old.remove();var er=document.createElement('div');er.className='lead-submit-error';er.setAttribute('role','alert');er.setAttribute('aria-live','assertive');er.setAttribute('aria-atomic','true');er.style.cssText='margin-top:1rem;padding:.85rem 1rem;border:1px solid #9a2b2b;border-radius:10px;color:#7a2020;background:#fff7f5;font-size:14px;line-height:1.6';er.innerHTML="We couldn't confirm delivery. Please try again, or call us now at <a href=\"tel:18059537273\" style=\"color:var(--plum);font-weight:700\">805.953.7273</a> — we answer 24/7.";f.appendChild(er);er.scrollIntoView({behavior:'smooth',block:'center'});}
   document.querySelectorAll('form.lead-form').forEach(function(f){ f.setAttribute('action','/api/form-submit');f.removeAttribute('data-netlify');f.removeAttribute('netlify-honeypot');f.addEventListener('submit', function(e){ e.preventDefault();var old=f.querySelector('.lead-submit-error');if(old)old.remove();var btn=f.querySelector('button[type="submit"],button:not([type])'),label=btn?btn.textContent:'';if(btn){btn.disabled=true;btn.textContent='Sending\u2026';}var body=new URLSearchParams();new FormData(f).forEach(function(v,k){body.append(k,v);});fetch('/api/form-submit',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded','Accept':'application/json'},body:body.toString()}).then(function(r){return r.json().catch(function(){return null;}).then(function(data){if(!r.ok||!data||data.ok!==true||data.accepted!==true)throw new Error('submit failed');return data;});}).then(function(data){if(window.elhTrackEvent){window.elhTrackEvent('form_success',{page:location.pathname||'/',form:f.getAttribute('name')||'unknown'});}leadShow(data);}).catch(function(){leadFail(f,btn,label);});});});
 
-  // mobile menu — accessible accordion, close on destination link tap
-  var mb=document.querySelector('.menu-btn'), navEl=document.querySelector('#hdr nav');
-  if(navEl){
-    if(!navEl.id) navEl.id='site-nav';
-    if(mb) mb.setAttribute('aria-controls',navEl.id);
-    navEl.querySelectorAll('.nav-group').forEach(function(group,index){
-      var parent=group.querySelector('.nav-parent'),sub=group.querySelector('.nav-sub');
-      if(!parent||!sub)return;
-      if(!parent.id)parent.id='nav-parent-'+(index+1);
-      if(!sub.id)sub.id='nav-sub-'+(index+1);
-      parent.setAttribute('aria-controls',sub.id);
-      parent.setAttribute('aria-expanded','false');
-      sub.setAttribute('aria-labelledby',parent.id);
-    });
-  }
-  function setGroupExpanded(group,expanded){group.classList.toggle('expanded',expanded);var parent=group.querySelector('.nav-parent');if(parent)parent.setAttribute('aria-expanded',expanded?'true':'false');}
-  function collapseAllGroups(){if(navEl)navEl.querySelectorAll('.nav-group').forEach(function(group){setGroupExpanded(group,false);});}
-  function closeMenu(){ document.getElementById('hdr').classList.remove('nav-open'); if(mb) mb.setAttribute('aria-expanded','false'); collapseAllGroups(); }
-  function toggleMenu(){ var open=document.getElementById('hdr').classList.toggle('nav-open'); if(mb) mb.setAttribute('aria-expanded', open?'true':'false'); if(open)collapseAllGroups(); }
-  if(mb){ mb.addEventListener('click', toggleMenu); }
-  document.addEventListener('click', function(e){ if(document.getElementById('hdr').classList.contains('nav-open') && mb && !mb.contains(e.target) && navEl && !navEl.contains(e.target)){ closeMenu(); } });
-  if(navEl){
-    navEl.querySelectorAll('a:not(.nav-parent)').forEach(function(a){a.addEventListener('click',closeMenu);});
-    navEl.querySelectorAll('.nav-parent').forEach(function(parent){parent.addEventListener('click',function(e){if(!document.getElementById('hdr').classList.contains('nav-open'))return;e.preventDefault();var group=parent.parentElement,wasExpanded=group.classList.contains('expanded');collapseAllGroups();if(!wasExpanded)setGroupExpanded(group,true);});});
-  }
-
   // header phone pill — cycle 3 accent colors, one per hover pass
   var ctaPill=document.querySelector('#hdr .hdr-cta');
   if(ctaPill){ var ctaHues=['cta-hue1','cta-hue2','cta-hue3'], ctaIdx=0;
@@ -2165,6 +2146,7 @@ p,li,blockquote{text-wrap:pretty}
   window.setInterval(load,3600000);
 })();
 </script>
+<script src="/assets/header.js?v=20260901" defer></script>
 <script src="/assets/chat.js?v=20260805" defer></script>
 <!-- SEARCH OVERLAY -->
 <div class="search-overlay" id="searchOverlay" role="dialog" aria-modal="true" aria-label="Site search" aria-hidden="true">

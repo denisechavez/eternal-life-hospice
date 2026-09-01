@@ -152,13 +152,16 @@ CHECK_EXPRESSION = r"""
     button.getAttribute('aria-expanded') === 'true' &&
     getComputedStyle(nav).display !== 'none';
   const parent = nav.querySelector('.nav-parent');
-  const subId = parent && parent.getAttribute('aria-controls');
+  const toggle = nav.querySelector('.nav-toggle');
+  const subId = toggle && toggle.getAttribute('aria-controls');
   const sub = subId && document.getElementById(subId);
-  if (parent) parent.click();
-  const submenuOpened = !!(parent && sub &&
-    parent.getAttribute('aria-expanded') === 'true' &&
-    parent.parentElement.classList.contains('expanded') &&
+  if (toggle) toggle.click();
+  const submenuOpened = !!(parent && toggle && sub &&
+    toggle.getAttribute('aria-expanded') === 'true' &&
+    toggle.parentElement.classList.contains('expanded') &&
     getComputedStyle(sub).display !== 'none');
+  const parentNavigable = parent && parent.tagName === 'A' &&
+    parent.getAttribute('href') === '/hospice-care';
   button.click();
   const closed = !hdr.classList.contains('nav-open') &&
     button.getAttribute('aria-expanded') === 'false';
@@ -180,6 +183,7 @@ CHECK_EXPRESSION = r"""
     controlledNav,
     opened,
     submenuOpened,
+    parentNavigable,
     closed
   };
 })()
@@ -256,7 +260,23 @@ def main():
                         "Page.navigate",
                         {"url": f"http://127.0.0.1:{site_port}{page}"},
                     )
-                    time.sleep(0.35)
+                    # The homepage has substantial deferred content; wait for the
+                    # shared header enhancer to create disclosure controls before
+                    # exercising them.
+                    for _ in range(20):
+                        ready = client.call(
+                            "Runtime.evaluate",
+                            {
+                                "expression": (
+                                    "document.readyState !== 'loading' && "
+                                    "!!document.querySelector('#hdr .nav-toggle')"
+                                ),
+                                "returnByValue": True,
+                            },
+                        )["result"].get("value")
+                        if ready:
+                            break
+                        time.sleep(0.05)
                     result = client.call(
                         "Runtime.evaluate",
                         {"expression": CHECK_EXPRESSION, "returnByValue": True},
@@ -273,6 +293,7 @@ def main():
                         "menu controls nav": result.get("controlledNav"),
                         "menu opens": result.get("opened"),
                         "submenu opens accessibly": result.get("submenuOpened"),
+                        "Hospice Care landing page remains linked": result.get("parentNavigable"),
                         "menu closes": result.get("closed"),
                     }
                     broken = [label for label, passed in checks.items() if not passed]

@@ -15,37 +15,41 @@
 
   var mb = hdr.querySelector('.menu-btn');
   var nav = hdr.querySelector('nav');
+  var groups = nav ? nav.querySelectorAll('.nav-group') : [];
 
-  // Establish explicit accessible relationships without requiring hundreds of
-  // static pages to duplicate IDs. The parity and browser checks guard these.
-  if (nav) {
-    if (!nav.id) nav.id = 'site-nav';
-    if (mb) mb.setAttribute('aria-controls', nav.id);
-    nav.querySelectorAll('.nav-group').forEach(function (group, index) {
-      var parent = group.querySelector('.nav-parent');
-      var sub = group.querySelector('.nav-sub');
-      if (!parent || !sub) return;
-      if (!parent.id) parent.id = 'nav-parent-' + (index + 1);
-      if (!sub.id) sub.id = 'nav-sub-' + (index + 1);
-      parent.setAttribute('aria-controls', sub.id);
-      parent.setAttribute('aria-expanded', 'false');
-      sub.setAttribute('aria-labelledby', parent.id);
-    });
-  }
+  if (nav && !nav.id) nav.id = 'site-nav';
+  if (mb && nav) mb.setAttribute('aria-controls', nav.id);
 
-  function setGroupExpanded(group, expanded) {
-    group.classList.toggle('expanded', expanded);
+  Array.prototype.forEach.call(groups, function (group, index) {
     var parent = group.querySelector('.nav-parent');
-    if (parent) parent.setAttribute('aria-expanded', expanded ? 'true' : 'false');
-  }
+    var submenu = group.querySelector('.nav-sub');
+    if (!parent || !submenu) return;
+
+    var submenuId = submenu.id || 'site-nav-submenu-' + (index + 1);
+    submenu.id = submenuId;
+
+    var toggle = group.querySelector('.nav-toggle');
+    if (!toggle) {
+      toggle = document.createElement('button');
+      toggle.type = 'button';
+      toggle.className = 'nav-toggle';
+      toggle.innerHTML = '<span class="sr-only">Show submenu for ' + parent.textContent.trim() + '</span><span aria-hidden="true">&#9662;</span>';
+      parent.insertAdjacentElement('afterend', toggle);
+    }
+    toggle.setAttribute('aria-controls', submenuId);
+    toggle.setAttribute('aria-expanded', 'false');
+  });
+
   function closeMenu() {
     hdr.classList.remove('nav-open');
     if (mb) mb.setAttribute('aria-expanded', 'false');
     collapseAllGroups();
   }
   function collapseAllGroups() {
-    if (nav) nav.querySelectorAll('.nav-group').forEach(function (g) {
-      setGroupExpanded(g, false);
+    Array.prototype.forEach.call(groups, function (group) {
+      group.classList.remove('expanded');
+      var toggle = group.querySelector('.nav-toggle');
+      if (toggle) toggle.setAttribute('aria-expanded', 'false');
     });
   }
   function toggleMenu() {
@@ -72,22 +76,30 @@
   });
 
   if (nav) {
-    // Sub-menu links close the menu on click (they navigate away)
-    nav.querySelectorAll('a:not(.nav-parent)').forEach(function (a) {
+    // Every link remains navigable, including top-level landing pages.
+    nav.querySelectorAll('a').forEach(function (a) {
       a.addEventListener('click', closeMenu);
     });
-    // Nav-parent links: accordion toggle on mobile, normal link on desktop
-    nav.querySelectorAll('.nav-parent').forEach(function (parent) {
-      parent.addEventListener('click', function (e) {
-        if (!hdr.classList.contains('nav-open')) return; // desktop: navigate normally
-        e.preventDefault(); // mobile: block navigation, toggle sub-menu instead
-        var group = parent.parentElement;
+
+    nav.querySelectorAll('.nav-toggle').forEach(function (toggle) {
+      toggle.addEventListener('click', function () {
+        var group = toggle.parentElement;
         var wasExpanded = group.classList.contains('expanded');
         collapseAllGroups();
-        if (!wasExpanded) setGroupExpanded(group, true);
+        if (!wasExpanded) {
+          group.classList.add('expanded');
+          toggle.setAttribute('aria-expanded', 'true');
+        }
       });
     });
   }
+
+  document.addEventListener('keydown', function (e) {
+    if (e.key !== 'Escape' || !hdr.classList.contains('nav-open')) return;
+    e.preventDefault();
+    closeMenu();
+    if (mb) mb.focus();
+  });
 
   var ctaPill = hdr.querySelector('.hdr-cta');
   if (ctaPill) {

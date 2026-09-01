@@ -38,7 +38,6 @@ INTENTIONAL_EXCEPTIONS = {
     # Care Brief issue pages — clean reader layouts without standard site chrome
     "care-brief/issue-1.html":     "reader view — clean issue layout intentionally",
     # Homepage — IS the canonical; uses inline JS not header.js file
-    "index.html":                  "canonical homepage — inline header JS, not file include",
     # Internal / utility pages not in public nav
     "assets/img/amethyst-tmp/gallery.html": "internal asset gallery",
     # Social graphics — not public pages
@@ -64,7 +63,7 @@ REQUIRED = {
     "search_btn":  ('class="search-btn"', "search button present"),
     "request_care":('Request Care',       "Request Care CTA present"),
     "logo_cream":  ('elh-logo-h2-cream',  "cream logo present"),
-    "header_js":   ('header.js',          "header.js included"),
+    "header_js":   ('header.js?v=20260901', "current header.js included"),
     "no_stale_url":('/aleksandradubina',  "stale /aleksandradubina URL"),  # must NOT appear
 }
 
@@ -273,6 +272,9 @@ for dirpath, dirs, files in os.walk(ROOT):
             if label not in html:
                 page_fails.append(f"MISSING NAV: {label}")
         page_fails.extend(structural_header_failures(html))
+
+        if "elh.css?v=20260813" in html or "header.js?v=20260813" in html:
+            page_fails.append("STALE HEADER ASSET: pre-phone-fix cache version found")
 
         if page_fails:
             results["fail"].append(rel)
