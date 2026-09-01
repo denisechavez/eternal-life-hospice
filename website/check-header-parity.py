@@ -32,7 +32,6 @@ INTENTIONAL_EXCEPTIONS = {
     "family-guide.html":           "flipbook UI — own toolbar, no standard nav",
     "media-kit.html":              "flipbook UI — own toolbar, no standard nav",
     # Redirect stubs — noindex, meta-refresh, no UI needed
-    "resources/index.html":        "redirect stub → /resources.html",
     "blog/index.html":             "redirect stub → /blog.html",
     # Care Brief issue pages — clean reader layouts without standard site chrome
     "care-brief/issue-1.html":     "reader view — clean issue layout intentionally",
@@ -347,6 +346,7 @@ broken_netlify_rules = []  # (line_no, line, dest) tuples
 self_loop_rules = []       # (line_no, line) tuples — source == destination after normalisation
 redirect_cycle_rules = []  # list of (cycle_nodes, cycle_rule_list) — multi-hop cycles (length ≥ 2)
 _plain_redirect_graph = {}  # normalised_src -> [(normalised_dest, lineno, raw_line)]
+_parsed_netlify_rules = set()
 
 import re as _re2  # _re already imported above; alias to avoid shadowing
 
@@ -399,6 +399,8 @@ if os.path.isfile(REDIRECTS_FILE):
             if len(_parts) < 2:
                 continue
             _src, _dest = _parts[0], _parts[1]
+            _status = _parts[2] if len(_parts) > 2 else ""
+            _parsed_netlify_rules.add((_src, _dest, _status))
             # Skip rules whose source or destination is an external URL
             if _src.startswith(("http://", "https://")) or _dest.startswith(("http://", "https://")):
                 continue
@@ -420,6 +422,14 @@ if os.path.isfile(REDIRECTS_FILE):
                 if _n_src not in _plain_redirect_graph:
                     _plain_redirect_graph[_n_src] = []
                 _plain_redirect_graph[_n_src].append((_n_dest, _lineno, _line))
+
+required_canonical_hub_rules = {
+    ("/resources", "/resources.html", "200!"),
+    ("/resources/", "/resources.html", "200!"),
+}
+missing_canonical_hub_rules = sorted(
+    required_canonical_hub_rules - _parsed_netlify_rules
+)
 
 # ── Multi-hop cycle detection ──────────────────────────────────────────────
 # Walk the graph of plain local redirect rules with DFS; collect any cycle
@@ -501,6 +511,12 @@ if broken_netlify_rules:
         print(f"       → fix the destination path or create the missing page")
     print()
 
+if missing_canonical_hub_rules:
+    print("── MISSING CANONICAL HUB REWRITE RULES ─────────────────────────")
+    for source, destination, status in missing_canonical_hub_rules:
+        print(f"  🚨  Missing: {source}  {destination}  {status}")
+    print()
+
 exit_code = 0
 if failures:
     print(f"\n❌  {len(failures)} page(s) failed — fix before deploying.\n")
@@ -523,7 +539,10 @@ if redirect_cycle_rules:
 if broken_netlify_rules:
     print(f"\n🚨  {len(broken_netlify_rules)} _redirects rule(s) point to a destination that does not exist — fix before deploying.\n")
     exit_code = 1
-if not failures and not stale_exceptions and not broken_redirects and not missing_redirect_targets and not self_loop_rules and not redirect_cycle_rules and not broken_netlify_rules:
+if missing_canonical_hub_rules:
+    print(f"\n🚨  {len(missing_canonical_hub_rules)} canonical hub rewrite rule(s) missing — fix before deploying.\n")
+    exit_code = 1
+if not failures and not stale_exceptions and not broken_redirects and not missing_redirect_targets and not self_loop_rules and not redirect_cycle_rules and not broken_netlify_rules and not missing_canonical_hub_rules:
     print(f"\n✅  All standard pages pass header parity check.\n")
 if redundant_exceptions:
     print(f"🔔  {len(redundant_exceptions)} exception(s) may be redundant — review INTENTIONAL_EXCEPTIONS.\n")

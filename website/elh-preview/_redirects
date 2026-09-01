@@ -66,6 +66,11 @@ http://eternalhospice.com/*       https://eternallifehospice.com/:splat  301!
 /sitemap      /sitemap.html             200
 /services     /services.html            200
 
+# Canonical Resources hub — bypass the retired /resources/index.html stub on
+# static hosts while preserving the extensionless URL in the browser.
+/resources    /resources.html            200!
+/resources/   /resources.html            200!
+
 # What Hospice Covers — legacy path corrected to canonical
 /resources/what-hospice-covers  /resources/medicare-hospice-benefit  301
 

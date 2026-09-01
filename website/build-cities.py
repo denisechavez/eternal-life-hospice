@@ -33,6 +33,46 @@ Run from repo root:
 
 import json, os, re, sys, textwrap, argparse
 
+
+def meta_description(c: dict) -> str:
+    """Build a locally specific search snippet near the 150–160 character target."""
+    city = c["city"]
+    subregion = c["subregion"]
+    county = c["county"]
+
+    if city == "Conejo Valley":
+        territory = "Thousand Oaks and Westlake Village"
+    elif city in {"Thousand Oaks", "Westlake Village"}:
+        territory = "the Conejo Valley and Ventura County"
+    else:
+        territory = subregion.split(" · ", 1)[0]
+        if county.lower() not in territory.lower():
+            territory = f"{territory}, {county}"
+
+    prefixes = (
+        "Medicare-certified hospice care in",
+        "Eternal Life Hospice offers Medicare-certified hospice care in",
+        "Eternal Life Hospice provides Medicare-certified hospice care in",
+    )
+    connectors = ("— serving", "—")
+    differentiators = (
+        "Physician-supported care at home.",
+        "Physician-supported comfort care at home.",
+        "Compassionate, physician-supported care at home.",
+        "Care at home, supported by our hospice physician.",
+    )
+    calls_to_action = ("Call 805.953.7273.", "Call for guidance: 805.953.7273.")
+
+    candidates = [
+        f"{prefix} {city}, CA {connector} {territory}. {differentiator} {cta}"
+        for prefix in prefixes
+        for connector in connectors
+        for differentiator in differentiators
+        for cta in calls_to_action
+    ]
+    in_range = [text for text in candidates if 150 <= len(text) <= 160]
+    return min(in_range or candidates, key=lambda text: abs(len(text) - 155))
+
 def _hero_img_tag(slug: str, city: str) -> str:
     """Return a responsive <picture> element for the city hero image.
 
@@ -84,12 +124,12 @@ HEADER = """\
   <header id="hdr"><div class="hdr-in">
     <a class="hdr-logo" href="/"><img class="s sym-cream" src="assets/img/elh-logo-h2-cream.webp" alt="Eternal Life Hospice logo" width="331" height="74"><img class="s sym-plum" src="assets/img/elh-logo-h2-plum.webp" alt="" aria-hidden="true" width="331" height="74"><span class="hdr-wordmark">Eternal<small>Life Hospice</small></span></a>
     <nav aria-label="Main navigation">
-      <div class="nav-group"><a href="/hospice-care" class="nav-parent">Hospice Care</a><div class="nav-sub"><a href="/resources/when-is-it-time">When Is It Time?</a><a href="/resources/first-48-hours">The First 48 Hours</a><a href="/resources/medicare-hospice-benefit">What Hospice Covers</a><a href="/resources/how-to-choose-a-hospice">How to Choose a Hospice</a></div></div>
-      <div class="nav-group"><a href="/services" class="nav-parent">Services</a><div class="nav-sub"><a href="/services">All Services</a><a href="/resources/comfort-therapies">Integrative &amp; Whole-Person Care</a><a href="/resources/pain-symptom-management">Pain &amp; Symptom Management</a><a href="/sound-bath">Sound Bath</a></div></div>
-      <div class="nav-group"><a href="/resources" class="nav-parent">Resources</a><div class="nav-sub"><a href="/family-guide">Family Guide</a><a href="/blog">The Eternal Journal</a><a href="/care-brief">Care Brief</a><a href="/volunteer">Volunteer</a></div></div>
+      <div class="nav-group"><a href="/hospice-care" class="nav-parent">Hospice Care</a><div class="nav-sub"><a href="/resources/when-is-it-time">When Is It Time?</a><a href="/resources/first-48-hours">The First 48 Hours</a><a href="/resources/medicare-hospice-benefit">What Hospice Covers</a><a href="/resources/how-to-choose-a-hospice">How to Choose</a></div></div>
+      <div class="nav-group"><a href="/services" class="nav-parent">Services</a><div class="nav-sub"><a href="/services">All Services</a><a href="/resources/comfort-therapies">Integrative Care</a><a href="/resources/pain-symptom-management">Pain &amp; Symptom Management</a><a href="/sound-bath">Sound Bath</a></div></div>
+      <div class="nav-group"><a href="/resources" class="nav-parent">Resources</a><div class="nav-sub"><a href="/family-guide">Family Guide</a><a href="/blog">Eternal Journal</a><a href="/care-brief">Care Brief</a><a href="/volunteer">Volunteer</a></div></div>
       <div class="nav-group"><a href="/hospice-ventura-and-los-angeles-county-ca" class="nav-parent" aria-current="page">Locations</a><div class="nav-sub"><a href="/hospice-thousand-oaks-ca">Thousand Oaks</a><a href="/hospice-simi-valley-ca">Simi Valley</a><a href="/hospice-calabasas-ca">Calabasas</a><a href="/hospice-ventura-and-los-angeles-county-ca">All Service Areas</a></div></div>
       <div class="nav-group"><a href="/refer" class="nav-parent">For Professionals</a><div class="nav-sub"><a href="/refer">Refer a Patient</a><a href="/?lead=voice#leadcap">Schedule a Session</a></div></div>
-      <div class="nav-group"><a href="/about/aleksandra-dubina" class="nav-parent">About</a><div class="nav-sub"><a href="/#standard">The Eternal Standard</a><a href="/about/aleksandra-dubina">Aleksandra Dubina</a></div></div>
+      <div class="nav-group"><a href="/about/aleksandra-dubina" class="nav-parent">About</a><div class="nav-sub"><a href="/#standard">Eternal Standard</a><a href="/about/aleksandra-dubina">Aleksandra Dubina</a></div></div>
     </nav>
     <div class="hdr-cta-wrap"><span class="hdr-cta-note">Here in Moments That Matter Most</span><a href="/refer" class="hdr-cta">Request Care</a></div>
     <button class="search-btn" id="searchBtn" aria-label="Search"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="9" cy="9" r="7"/><line x1="15" y1="15" x2="19" y2="19"/></svg></button>
@@ -142,31 +182,31 @@ def make_footer(county: str) -> str:
         'Serving families across Ventura and Los Angeles Counties.</p>'
         '<div class="foot-qr"><img src="assets/img/qr-cream.webp" alt="Scan to visit eternallifehospice.com" '
         'width="96" height="96" loading="lazy"><span>Scan to visit<br>on your phone</span></div></div>\n'
-        '    <div class="foot-col"><h4>Hospice Care</h4>'
+        '    <div class="foot-col"><h2>Hospice Care</h2>'
         '<a href="/resources/when-is-it-time">When Is It Time?</a>'
         '<a href="/resources/first-48-hours">The First 48 Hours</a>'
         '<a href="/resources/medicare-hospice-benefit">What Hospice Covers</a>'
-        '<a href="/resources/how-to-choose-a-hospice">How to Choose a Hospice</a></div>'
-        '<div class="foot-col"><h4>Services</h4>'
+        '<a href="/resources/how-to-choose-a-hospice">How to Choose</a></div>'
+        '<div class="foot-col"><h2>Services</h2>'
         '<a href="/services">All Services</a>'
-        '<a href="/resources/comfort-therapies">Integrative &amp; Whole-Person Care</a>'
+        '<a href="/resources/comfort-therapies">Integrative Care</a>'
         '<a href="/sound-bath">Sound Bath</a></div>'
-        '<div class="foot-col"><h4>Resources</h4>'
+        '<div class="foot-col"><h2>Resources</h2>'
         '<a href="/family-guide">Family Guide</a>'
-        '<a href="/blog">The Eternal Journal</a>'
+        '<a href="/blog">Eternal Journal</a>'
         '<a href="/care-brief">Care Brief</a>'
         '<a href="/volunteer">Volunteer</a></div>'
-        f'<div class="foot-col"><h4>Locations</h4>{loc_links}</div>'
-        '<div class="foot-col"><h4>For Professionals</h4>'
+        f'<div class="foot-col"><h2>Locations</h2>{loc_links}</div>'
+        '<div class="foot-col"><h2>For Professionals</h2>'
         '<a href="/refer">Refer a Patient</a>'
         '<a href="/referral-card">Referral eCard</a>'
         '<a href="/?lead=voice#leadcap">Schedule a Session</a></div>'
-        '<div class="foot-col"><h4>About</h4>'
-        '<a href="/#standard">The Eternal Standard</a>'
+        '<div class="foot-col"><h2>About</h2>'
+        '<a href="/#standard">Eternal Standard</a>'
         '<a href="/about/aleksandra-dubina">Aleksandra Dubina</a>'
         '<a href="/careers">Careers</a>'
         '<a href="/media-kit">Media Kit</a></div>'
-        '<div class="foot-col"><h4>Contact</h4>\n'
+        '<div class="foot-col"><h2>Contact</h2>\n'
         '      <a class="fc-line" href="tel:18059537273">'
         '<svg class="fci" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">'
         '<path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/>'
@@ -246,7 +286,7 @@ def webpage_schema(c):
         "@id": c["canonicalUrl"] + "#webpage",
         "url": c["canonicalUrl"],
         "name": c["title"],
-        "description": c["metaDescription"],
+        "description": meta_description(c),
         "isPartOf": {"@id": "https://eternallifehospice.com/#website"},
         "about": {"@id": "https://eternallifehospice.com/#organization"},
         "breadcrumb": {"@id": c["canonicalUrl"] + "#breadcrumb"},
@@ -356,7 +396,7 @@ def render_page(c):
     subregion   = c["subregion"]
     canonical   = c["canonicalUrl"]
     title       = c["title"]
-    meta_desc   = c["metaDescription"]
+    meta_desc   = meta_description(c)
     h1          = c["h1"]
     eyebrow     = c["heroEyebrow"]
     at_a_glance = c["atAGlanceSummary"]
@@ -474,7 +514,7 @@ def render_page(c):
 </section>
 
 <section class="sec wrap">
-  <h2>The Eternal Standard</h2>
+  <h2>Eternal Standard</h2>
   <div class="prov">
     <div><span>&#8227;</span><span><b>Clinical Confidence</b> &mdash; Physician support, skilled nursing, symptom management and coordinated care.</span></div>
     <div><span>&#8227;</span><span><b>Guided Presence</b> &mdash; Families understand what is happening, what comes next and who to reach.</span></div>
@@ -500,7 +540,7 @@ def render_page(c):
     <div><span>&#8227;</span><span><a href="/resources/first-48-hours"><b>The First 48 Hours</b></a> &mdash; what happens when hospice care begins</span></div>
     <div><span>&#8227;</span><span><a href="/resources/medicare-hospice-benefit"><b>Medicare Hospice Benefit</b></a> &mdash; what Medicare covers and how it works</span></div>
     <div><span>&#8227;</span><span><a href="/resources/medicare-hospice-benefit"><b>What Hospice Covers</b></a> &mdash; services, medications, equipment and support</span></div>
-    <div><span>&#8227;</span><span><a href="/resources/how-to-choose-a-hospice"><b>How to Choose a Hospice</b></a> &mdash; questions to ask before enrolling</span></div>
+    <div><span>&#8227;</span><span><a href="/resources/how-to-choose-a-hospice"><b>How to Choose</b></a> &mdash; questions to ask before enrolling</span></div>
   </div>
 </section>
 

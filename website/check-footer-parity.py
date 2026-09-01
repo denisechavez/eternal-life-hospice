@@ -33,17 +33,18 @@ ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), "elh-preview")
 
 FOOTER_RE    = re.compile(r'<footer id="site-footer">.*?</footer>', re.DOTALL)
 CITY_PAGE_RE = re.compile(r'^hospice-.+-ca\.html$')
+STALE_HEADING_SELECTOR_RE = re.compile(r'(?:#site-footer\s+)?\.foot-col\s+h4\b')
 
 # -- Required tokens present in EVERY footer (static and city) ----------------
 # These headings and links are invariant across all page types.
 CITY_TOKENS = [
-    ('<h4>Hospice Care</h4>',       "Hospice Care column heading"),
-    ('<h4>Services</h4>',           "Services column heading"),
-    ('<h4>Resources</h4>',          "Resources column heading"),
-    ('<h4>Locations</h4>',          "Locations column heading"),
-    ('<h4>For Professionals</h4>',  "For Professionals column heading"),
-    ('<h4>About</h4>',              "About column heading"),
-    ('<h4>Contact</h4>',            "Contact column heading"),
+    ('<h2>Hospice Care</h2>',       "Hospice Care column heading"),
+    ('<h2>Services</h2>',           "Services column heading"),
+    ('<h2>Resources</h2>',          "Resources column heading"),
+    ('<h2>Locations</h2>',          "Locations column heading"),
+    ('<h2>For Professionals</h2>',  "For Professionals column heading"),
+    ('<h2>About</h2>',              "About column heading"),
+    ('<h2>Contact</h2>',            "Contact column heading"),
     ('When Is It Time?',            "Hospice Care -- When Is It Time? link"),
     ('All Service Areas',           "Locations -- All Service Areas link"),
     ('fc-direct',                   "Contact -- Direct phone line (fc-direct)"),
@@ -58,7 +59,6 @@ INTENTIONAL_EXCEPTIONS = {
     "family-guide.html":                         "flipbook UI -- own chrome, no standard footer",
     "media-kit.html":                            "flipbook UI -- own chrome, no standard footer",
     "referral-card.html":                        "referral tool -- stripped UI, no standard footer",
-    "resources/index.html":                      "redirect stub -- no UI needed",
     "blog/index.html":                           "redirect stub -- no UI needed",
     "care-brief/index.html":                     "redirect stub -- no UI needed",
     # Social graphics and internal asset pages (not public pages)
@@ -85,6 +85,9 @@ INTENTIONAL_EXCEPTIONS = {
 assert 'When Is It Time?' in CANONICAL, "Sentinel anchor text missing from CANONICAL"
 _bad = CANONICAL.replace('When Is It Time?', 'When Is It Time -- stale', 1)
 assert _bad != CANONICAL, "Sentinel mutation had no effect"
+assert STALE_HEADING_SELECTOR_RE.search(
+    "<style>#site-footer .foot-col h4{font-size:12px}</style>"
+), "Sentinel stale-heading selector was not detected"
 _html = f'<html><body>{_bad}</body></html>'
 _m = FOOTER_RE.search(_html)
 if _m and _m.group(0).strip() == CANONICAL:
@@ -101,6 +104,7 @@ exceptions  = []
 stale_exceptions  = []
 static_failures   = []   # (rel, [diff lines])
 city_failures     = []   # (rel, [missing tokens])
+semantic_failures = []   # public/custom footers that still use h4 headings
 
 for dirpath, dirs, files in os.walk(ROOT):
     dirs.sort()
@@ -108,13 +112,22 @@ for dirpath, dirs, files in os.walk(ROOT):
         if not fn.endswith(".html"):
             continue
         rel = os.path.relpath(os.path.join(dirpath, fn), ROOT).replace("\\", "/")
+        html = open(os.path.join(dirpath, fn), encoding="utf-8",
+                    errors="replace").read()
+        footer_match = FOOTER_RE.search(html)
+        if footer_match and "<h4" in footer_match.group(0).lower():
+            semantic_failures.append(
+                (rel, "Footer category headings must use h2, not h4")
+            )
+        if STALE_HEADING_SELECTOR_RE.search(html):
+            semantic_failures.append(
+                (rel, "Stale .foot-col h4 CSS selector; footer headings are h2")
+            )
 
         if rel in INTENTIONAL_EXCEPTIONS:
             exceptions.append((rel, INTENTIONAL_EXCEPTIONS[rel]))
             continue
 
-        html = open(os.path.join(dirpath, fn), encoding="utf-8",
-                    errors="replace").read()
         m = FOOTER_RE.search(html)
 
         is_city = bool(CITY_PAGE_RE.match(fn))
@@ -194,6 +207,11 @@ if city_failures:
         for f in page_fails:
             print(f"       {f}")
 
+if semantic_failures:
+    print("\nFOOTER SEMANTIC FAILURES:")
+    for rel, failure in semantic_failures:
+        print(f"  x  {rel}: {failure}")
+
 if stale_exceptions:
     print("\nSTALE EXCEPTIONS (file deleted but still listed):")
     for rel in stale_exceptions:
@@ -201,7 +219,7 @@ if stale_exceptions:
 
 print()
 
-if total_fail:
+if total_fail or semantic_failures:
     print("=" * 64)
     print("FAILED -- footer parity check did not pass.")
     if static_fail:
@@ -210,6 +228,8 @@ if total_fail:
     if city_fail:
         print("  City pages are missing required footer tokens.")
         print("  Fix:  python3 website/build-cities.py --force")
+    if semantic_failures:
+        print("  Footer category markup/styles still reference h4.")
     print("=" * 64)
     sys.exit(1)
 

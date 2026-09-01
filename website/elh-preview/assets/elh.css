@@ -345,7 +345,7 @@ p,li,blockquote{text-wrap:pretty}
   #site-footer .foot-logo a{display:inline-block}
   #site-footer .foot-tag{font-family:var(--ff-d);font-style:italic;font-size:18px;color:var(--gold);margin:.2rem 0 .6rem}
   #site-footer .foot-legal{font-size:14px;color:rgba(245,240,235,.6);line-height:1.7;max-width:32ch}
-  #site-footer .foot-col h4{font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#B7A89D;margin-bottom:.85rem;white-space:nowrap}
+  #site-footer .foot-col h2{font-family:var(--ff-b);font-size:12px;font-weight:700;line-height:normal;letter-spacing:.12em;text-transform:uppercase;color:#B7A89D;margin-bottom:.85rem;white-space:nowrap}
   #site-footer .foot-col a,#site-footer .foot-col p{display:block;font-size:14px;color:rgba(245,240,235,.6);line-height:2.1;text-decoration:none}
   #site-footer .foot-col a:hover{color:var(--cream)}
   #site-footer .foot-qr{display:flex;align-items:center;gap:.7rem;margin-top:1.15rem}
