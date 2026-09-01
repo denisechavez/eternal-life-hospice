@@ -32,7 +32,7 @@ body{font-family:var(--ff-b);color:var(--ink);background:#3a1c39;
   background:radial-gradient(120% 120% at 50% -10%,#6b3a69 0%,#4a2548 45%,#33172f 100%);
   min-height:100vh;min-height:100svh;-webkit-font-smoothing:antialiased;font-optical-sizing:auto;text-rendering:optimizeLegibility}
 .skip-link{position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden}
-.skip-link:focus{position:fixed;top:0;left:0;width:auto;height:auto;padding:.5rem 1.25rem;background:#5B2E59;color:#F5F0EB;font-size:1rem;z-index:100000;border-radius:0 0 6px 0;outline:3px solid #C9B07E;text-decoration:none}
+.skip-link:focus{position:fixed!important;top:0!important;left:0!important;width:auto!important;height:auto!important;padding:.5rem 1.25rem;background:#5B2E59;color:#F5F0EB;font-size:1rem;z-index:100000;border-radius:0 0 6px 0;outline:3px solid #C9B07E;text-decoration:none}
 
 /* ---------- TOOLBAR ---------- */
 .toolbar{position:sticky;top:0;z-index:50;display:flex;align-items:center;column-gap:22px;row-gap:14px;
@@ -469,7 +469,7 @@ body.booklet .page{transition:transform 1.2s cubic-bezier(.3,.4,.2,1),opacity .5
   <!-- UserWay (accessibility) and WhatConverts (call-tracking) loaded by analytics.js -->
 </head>
 <body class="booklet">
-<a class="skip-link" href="#main-content">Skip to main content</a>
+<a class="skip-link" href="#main-content" style="position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden">Skip to main content</a>
 
 <div id="bootveil"><div class="bv-logo" role="img" aria-label="Eternal Life Hospice"></div></div>
 
