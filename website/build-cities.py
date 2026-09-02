@@ -291,41 +291,26 @@ def webpage_schema(c):
         "dateModified": c["lastMaterialUpdate"]
     }
 
-def org_schema(c):
+def service_schema(c):
+    """Describe service coverage without redefining the canonical organization.
+
+    The organization's physical address and GeoCoordinates live in the
+    homepage entity. City pages reference that entity and describe their
+    verified coverage as a Service, so a service-area centroid cannot be
+    mistaken for the hospice's office location.
+    """
     schema = {
         "@context": "https://schema.org",
-        "@type": ["MedicalOrganization", "LocalBusiness"],
-        "@id": "https://eternallifehospice.com/#organization",
-        "name": "Eternal Life Hospice, Inc.",
-        "url": "https://eternallifehospice.com",
-        "description": f"Medicare-certified hospice care in {c['city']}, {c['county']} — serving {c['subregion']} and surrounding communities.",
-        "telephone": "+18059537273",
-        "email": "info@eternallifehospice.com",
-        "hasMap": "https://maps.google.com/?cid=9771388271577679785",
-        "sameAs": [
-            "https://www.facebook.com/eternallifehospiceinc",
-            "https://www.instagram.com/eternallifehospice/",
-            "https://www.linkedin.com/company/eternal-life-hospice/",
-            "https://www.youtube.com/@EternalLifeHospice",
-            "https://maps.google.com/?cid=9771388271577679785"
-        ],
-        "address": {
-            "@type": "PostalAddress",
-            "streetAddress": "4165 E Thousand Oaks Blvd, Suite 325B",
-            "addressLocality": "Westlake Village",
-            "addressRegion": "CA",
-            "postalCode": "91362",
-            "addressCountry": "US"
-        },
+        "@type": "Service",
+        "@id": c["canonicalUrl"] + "#service",
+        "name": f"Hospice care in {c['city']}, California",
+        "description": f"Medicare-certified hospice care serving {c['city']}, {c['county']} and surrounding communities.",
+        "provider": {"@id": "https://eternallifehospice.com/#organization"},
         "areaServed": [
             {"@type": "City", "name": f"{c['city']}, California"},
             {"@type": "AdministrativeArea", "name": f"{c['county']}, California"}
-        ],
-        "medicalSpecialty": "https://schema.org/Hospice",
-        "image": "https://eternallifehospice.com/assets/og-image.jpg"
+        ]
     }
-    if c.get("latitude") and c.get("longitude"):
-        schema["geo"] = {"@type": "GeoCoordinates", "latitude": c["latitude"], "longitude": c["longitude"]}
     return schema
 
 def breadcrumb_schema(c):
@@ -413,7 +398,7 @@ def render_page(c):
 
     schemas = [
         json.dumps(webpage_schema(c), ensure_ascii=False),
-        json.dumps(org_schema(c), ensure_ascii=False),
+        json.dumps(service_schema(c), ensure_ascii=False),
         json.dumps(breadcrumb_schema(c), ensure_ascii=False),
         json.dumps(faq_schema(faqs), ensure_ascii=False)
     ]

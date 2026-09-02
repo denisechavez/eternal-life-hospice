@@ -121,33 +121,30 @@ ADDRESS = {
     "addressCountry": "US",
 }
 
-def build_block(city_name: str, county: str, lat: float, lng: float) -> dict:
+def build_block(
+    slug: str, city_name: str, county: str, lat: float, lng: float
+) -> dict:
+    """Build a service-area node, not a second organization entity.
+
+    Keep the physical office address and coordinates on the canonical
+    organization node on the homepage. The latitude/longitude arguments are
+    retained for callers that still pass city data, but are intentionally not
+    emitted as organization geo coordinates.
+    """
     return {
         "@context": "https://schema.org",
-        "@type": ["MedicalOrganization", "LocalBusiness"],
-        "@id": "https://eternallifehospice.com/#organization",
-        "name": "Eternal Life Hospice, Inc.",
-        "url": "https://eternallifehospice.com",
+        "@type": "Service",
+        "@id": f"https://eternallifehospice.com/hospice-{slug}-ca#service",
+        "name": f"Hospice care in {city_name}, California",
         "description": (
-            f"Medicare-certified hospice care in {city_name}, {county} County "
-            f"\u2014 serving {city_name} and surrounding communities."
+            f"Medicare-certified hospice care serving {city_name}, {county} County "
+            f"and surrounding communities."
         ),
-        "telephone": "+18059537273",
-        "email": "info@eternallifehospice.com",
-        "hasMap": "https://maps.google.com/?cid=9771388271577679785",
-        "sameAs": SAMEASES,
-        "address": ADDRESS,
+        "provider": {"@id": "https://eternallifehospice.com/#organization"},
         "areaServed": [
             {"@type": "City", "name": f"{city_name}, California"},
             {"@type": "AdministrativeArea", "name": f"{county} County, California"},
         ],
-        "medicalSpecialty": "https://schema.org/Hospice",
-        "image": "https://eternallifehospice.com/assets/og-image.jpg",
-        "geo": {
-            "@type": "GeoCoordinates",
-            "latitude": lat,
-            "longitude": lng,
-        },
     }
 
 
@@ -192,7 +189,7 @@ def process_files(dry_run: bool = False):
             continue
 
         city_name, county, lat, lng = CITY_DATA[slug]
-        block = build_block(city_name, county, lat, lng)
+        block = build_block(slug, city_name, county, lat, lng)
 
         # Validate the block serializes cleanly
         try:

@@ -123,30 +123,18 @@ def build_lb_script(slug):
     city_name, county, lat, lng = CITY_DATA[slug]
     block = {
         "@context": "https://schema.org",
-        "@type": ["MedicalOrganization", "LocalBusiness"],
-        "@id": "https://eternallifehospice.com/#organization",
-        "name": "Eternal Life Hospice, Inc.",
-        "url": "https://eternallifehospice.com",
+        "@type": "Service",
+        "@id": f"https://eternallifehospice.com/hospice-{slug}-ca#service",
+        "name": f"Hospice care in {city_name}, California",
         "description": (
-            f"Medicare-certified hospice care in {city_name}, {county} County "
-            f"\u2014 serving {city_name} and surrounding communities."
+            f"Medicare-certified hospice care serving {city_name}, {county} County "
+            f"and surrounding communities."
         ),
-        "telephone": "+18059537273",
-        "email": "info@eternallifehospice.com",
-        "hasMap": "https://maps.google.com/?cid=9771388271577679785",
-        "sameAs": SAMEASES,
-        "address": ADDRESS,
+        "provider": {"@id": "https://eternallifehospice.com/#organization"},
         "areaServed": [
             {"@type": "City", "name": f"{city_name}, California"},
             {"@type": "AdministrativeArea", "name": f"{county} County, California"},
         ],
-        "medicalSpecialty": "https://schema.org/Hospice",
-        "image": "https://eternallifehospice.com/assets/og-image.jpg",
-        "geo": {
-            "@type": "GeoCoordinates",
-            "latitude": lat,
-            "longitude": lng,
-        },
     }
     return (
         '<script type="application/ld+json">\n'

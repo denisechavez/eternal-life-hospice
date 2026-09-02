@@ -11,6 +11,11 @@ description: Decisions made implementing the 36-point technical SEO brief (July 
 - **Valid FAQPage schema locations:** `index.html` (homepage FAQ accordion is visible) and `refer.html` (Provider FAQ section is visible).
 - **Why:** Google's guidelines deindex or ignore schema that doesn't match page content; can also trigger manual actions.
 
+## City-page entity rule
+- **Rule:** The homepage owns the complete `#organization` node, including the verified office address and coordinates. City and county coverage pages use provider-linked `Service` nodes with `areaServed`; they must not redefine the organization or attach service-area centroids as its `geo`.
+- **Why:** Reusing one organization ID with different coordinates creates a contradictory local entity graph and can weaken trust in the hospice's NAP/location signals.
+- **How to apply:** Preserve city latitude/longitude as content data if needed, but never emit it as the canonical organization's location. Run the structured-data pre-deploy check after schema changes.
+
 ## OG image completeness standard
 - Every published page needs `og:image`, `og:image:width` (1200), `og:image:height` (630), AND `og:image:alt`.
 - City pages use their own local hero photo for `og:image` (e.g. `thousand-oaks.jpg`), not the shared `og-image-v2.jpg`.
