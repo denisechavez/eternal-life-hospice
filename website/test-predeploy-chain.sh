@@ -132,6 +132,7 @@ echo ""
 SENTINELS=(
   "SENTINEL: check-cookie-settings.sh self-test OK"
   "SENTINEL: test-chat-teaser.js self-test OK"
+  "SENTINEL: test-a11y-forms.js self-test OK"
   "SENTINEL: check-city-scripts.py self-test OK"
   "SENTINEL: check-structured-data.py self-test OK"
   "SENTINEL: check-blog-schema.py self-test OK"

@@ -195,6 +195,7 @@
   var history = []; // {role, content} pairs for the AI
   var panel, log, replyStatus, callbackStatus, openBtn, dock, inputEl, sendBtn, teaser, backdrop, opened = false, aiAvailable = true;
   var greeted = false, greetTimer = null, closeTimer = null, focusTimer = null;
+  var callbackInstance = 0;
 
   /* ---------- styles ---------- */
   function injectStyles() {
@@ -475,41 +476,57 @@
     );
 
     var form = el("div", "elhc-cb");
+    var callbackPrefix = "elhc-callback-" + (++callbackInstance) + "-";
 
     var nameWrap = el("div");
-    nameWrap.appendChild(el("label", null, "Your name"));
+    var nameLabel = el("label", null, "Your name");
+    nameLabel.setAttribute("for", callbackPrefix + "name");
+    nameWrap.appendChild(nameLabel);
     var nameIn = el("input");
+    nameIn.id = callbackPrefix + "name";
     nameIn.type = "text";
     nameIn.setAttribute("autocomplete", "name");
     nameIn.placeholder = "First and last name";
     nameWrap.appendChild(nameIn);
 
     var phoneWrap = el("div");
-    phoneWrap.appendChild(el("label", null, "Phone number"));
+    var phoneLabel = el("label", null, "Phone number");
+    phoneLabel.setAttribute("for", callbackPrefix + "phone");
+    phoneWrap.appendChild(phoneLabel);
     var phoneIn = el("input");
+    phoneIn.id = callbackPrefix + "phone";
     phoneIn.type = "tel";
     phoneIn.setAttribute("autocomplete", "tel");
     phoneIn.placeholder = "805.000.0000";
     phoneWrap.appendChild(phoneIn);
 
     var emailWrap = el("div");
-    emailWrap.appendChild(el("label", null, "Email (optional)"));
+    var emailLabel = el("label", null, "Email (optional)");
+    emailLabel.setAttribute("for", callbackPrefix + "email");
+    emailWrap.appendChild(emailLabel);
     var emailIn = el("input");
+    emailIn.id = callbackPrefix + "email";
     emailIn.type = "email";
     emailIn.setAttribute("autocomplete", "email");
     emailIn.placeholder = "you@example.com";
     emailWrap.appendChild(emailIn);
 
     var timeWrap = el("div");
-    timeWrap.appendChild(el("label", null, "Best time to reach you (optional)"));
+    var timeLabel = el("label", null, "Best time to reach you (optional)");
+    timeLabel.setAttribute("for", callbackPrefix + "time");
+    timeWrap.appendChild(timeLabel);
     var timeIn = el("input");
+    timeIn.id = callbackPrefix + "time";
     timeIn.type = "text";
     timeIn.placeholder = "e.g. mornings, after 5pm";
     timeWrap.appendChild(timeIn);
 
     var noteWrap = el("div");
-    noteWrap.appendChild(el("label", null, "Anything we should know? (optional)"));
+    var noteLabel = el("label", null, "Anything we should know? (optional)");
+    noteLabel.setAttribute("for", callbackPrefix + "notes");
+    noteWrap.appendChild(noteLabel);
     var noteIn = el("textarea");
+    noteIn.id = callbackPrefix + "notes";
     noteIn.placeholder = "No medical details needed.";
     noteWrap.appendChild(noteIn);
 

@@ -37,6 +37,7 @@ set +o pipefail
   git fetch --unshallow 2>/dev/null || true
   bash ../check-cookie-settings.sh
   node assets/test-chat-teaser.js
+  node assets/test-a11y-forms.js
   python3 ../check-city-scripts.py
   python3 ../check-structured-data.py
   python3 ../check-blog-schema.py
@@ -74,6 +75,7 @@ echo ""
 SENTINELS=(
   "SENTINEL: check-cookie-settings.sh self-test OK"
   "SENTINEL: test-chat-teaser.js self-test OK"
+  "SENTINEL: test-a11y-forms.js self-test OK"
   "SENTINEL: check-city-scripts.py self-test OK"
   "SENTINEL: check-structured-data.py self-test OK"
   "SENTINEL: check-blog-schema.py self-test OK"

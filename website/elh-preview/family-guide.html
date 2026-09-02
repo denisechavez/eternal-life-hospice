@@ -166,8 +166,8 @@ table.ws{width:100%;border-collapse:collapse;min-width:560px;font-size:15px;marg
 table.ws th,table.ws td{border:1px solid var(--cream-dark);padding:9px 11px;vertical-align:middle}
 table.ws thead th{background:var(--deep);color:var(--cream);font-weight:500;font-size:14px}
 table.ws thead th.q{text-align:left;width:40%}
-table.ws td.q{background:var(--cream);color:var(--ink);font-weight:500;width:40%}
-table.ws tbody tr:nth-child(even) td.q{background:var(--cream-mid)}
+table.ws tbody th.q{background:var(--cream);color:var(--ink);font-weight:500;width:40%}
+table.ws tbody tr:nth-child(even) th.q{background:var(--cream-mid)}
 table.ws td.cell{padding:0}
 .cellbox{width:100%;border:0;background:transparent;font-family:var(--ff-b);font-size:14.5px;color:var(--plum);
   padding:11px;height:100%}
@@ -286,7 +286,7 @@ body.lowink .num{background:transparent;border:2px solid var(--gold-deep);color:
 body.lowink .callout{background:#faf7f3}
 body.lowink .sig.good,body.lowink .sig.watch{background:#fff}
 body.lowink table.ws thead th{background:#fff;color:var(--deep);border-bottom:2px solid var(--plum)}
-body.lowink table.ws td.q,body.lowink table.ws tbody tr:nth-child(even) td.q{background:#fff}
+body.lowink table.ws tbody th.q,body.lowink table.ws tbody tr:nth-child(even) th.q{background:#fff}
 body.lowink .agencyname{color:var(--deep);border-bottom-color:var(--taupe)}
 body.lowink .agencyname::placeholder{color:var(--ink-light)}
 body.lowink .checklist{background:#fff}
@@ -361,7 +361,7 @@ body.lowink .cover-foot{border-top-color:var(--cream-dark)}
   .tb-cap{color:var(--gold-deep)!important}
   .contact .info,.contact .info .ph,.contact .tag{color:#222!important}
   table.ws thead th{background:#fff!important;color:var(--deep)!important;border-bottom:2px solid var(--plum)}
-  table.ws td.q{background:#fff!important}
+  table.ws tbody th.q{background:#fff!important}
   .callout,.sig.good,.sig.watch,.checklist,.howto{background:#fff!important;border:1px solid #ccc}
   .cellbox,.fill,.agencyname{color:#000!important}
   .agencyname{border-bottom:1px solid #999}
@@ -399,9 +399,9 @@ body.booklet .page{transition:transform 1.2s cubic-bezier(.3,.4,.2,1),opacity .5
  table.ws thead tr{display:flex;gap:8px}
  table.ws thead th.q{display:none}
  table.ws thead th{flex:1;background:var(--deep);border:0;border-radius:8px;padding:8px 6px}
- table.ws tbody,table.ws tbody tr,table.ws tbody td{display:block;width:100%}
+ table.ws tbody,table.ws tbody tr,table.ws tbody th,table.ws tbody td{display:block;width:100%}
  table.ws tbody tr{border:1px solid var(--cream-dark);border-radius:10px;margin-bottom:14px;overflow:hidden}
- table.ws tbody td.q{width:auto!important;background:var(--cream);font-weight:600;border:0;border-bottom:1px solid var(--cream-dark);padding:10px 12px}
+ table.ws tbody th.q{width:auto!important;background:var(--cream);font-weight:600;border:0;border-bottom:1px solid var(--cream-dark);padding:10px 12px}
  table.ws tbody td.cell{border:0;border-bottom:1px solid var(--cream-dark)}
  table.ws tbody td.cell:last-child{border-bottom:0}
  table.ws tbody td.cell::before{content:"";display:block;font-family:var(--ff-b);font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--gold-deep);padding:8px 12px 0}
@@ -639,10 +639,10 @@ body.booklet .page{transition:transform 1.2s cubic-bezier(.3,.4,.2,1),opacity .5
         <table class="ws">
           <thead>
             <tr>
-              <th class="q">What to ask each agency</th>
-              <th><input class="agencyname" data-field placeholder="Agency 1"></th>
-              <th><input class="agencyname" data-field placeholder="Agency 2"></th>
-              <th><input class="agencyname" data-field placeholder="Agency 3"></th>
+              <th id="ws-questions-header" class="q" scope="col">What to ask each agency</th>
+              <th id="ws-agency-1-header" scope="col"><input id="ws-agency-1" class="agencyname" data-field type="text" aria-label="Agency 1 name" placeholder="Agency 1"></th>
+              <th id="ws-agency-2-header" scope="col"><input id="ws-agency-2" class="agencyname" data-field type="text" aria-label="Agency 2 name" placeholder="Agency 2"></th>
+              <th id="ws-agency-3-header" scope="col"><input id="ws-agency-3" class="agencyname" data-field type="text" aria-label="Agency 3 name" placeholder="Agency 3"></th>
             </tr>
           </thead>
           <tbody>
@@ -650,7 +650,7 @@ body.booklet .page{transition:transform 1.2s cubic-bezier(.3,.4,.2,1),opacity .5
           </tbody>
         </table>
       </div>
-      <p class="ws-scorehint">In the small gold box, score each answer from <b>1</b> (poor) to <b>10</b> (excellent). The totals below add up as you go &mdash; the highest score is your strongest match.</p>
+      <p class="ws-scorehint" id="ws-score-hint">In the small gold box, score each answer from <b>1</b> (poor) to <b>10</b> (excellent). The totals below add up as you go &mdash; the highest score is your strongest match.</p>
       <div class="ws-totals" id="wsTotals" aria-live="polite">
         <div class="ws-total"><div class="wt-badge">Top choice</div><div class="wt-name">Agency 1</div><div class="wt-score">&ndash;<small> / 110</small></div></div>
         <div class="ws-total"><div class="wt-badge">Top choice</div><div class="wt-name">Agency 2</div><div class="wt-score">&ndash;<small> / 110</small></div></div>
@@ -752,12 +752,16 @@ body.booklet .page{transition:transform 1.2s cubic-bezier(.3,.4,.2,1),opacity .5
     "How the first conversation felt"
   ];
   var tb=document.querySelector('table.ws tbody'); var html='';
-  function wsCell(agency){
-    return '<td class="cell"><div class="cw"><input class="cellbox" data-field type="text">'+
-      '<input class="scorebox" data-field type="number" min="1" max="10" step="1" inputmode="numeric" placeholder="1\u201310" aria-label="Score from 1 to 10 for agency '+agency+'"></div></td>';
+  function wsCell(agency,row){
+    var questionId='ws-q-'+(row+1);
+    var agencyHeaderId='ws-agency-'+agency+'-header';
+    var cellHeaders=questionId+' '+agencyHeaderId;
+    return '<td class="cell" headers="'+cellHeaders+'"><div class="cw"><input id="ws-answer-'+(row+1)+'-'+agency+'" class="cellbox" data-field type="text" aria-labelledby="'+cellHeaders+'">'+
+      '<input id="ws-score-'+(row+1)+'-'+agency+'" class="scorebox" data-field type="number" min="1" max="10" step="1" inputmode="numeric" placeholder="1\u201310" aria-labelledby="'+cellHeaders+'" aria-describedby="ws-score-hint"></div></td>';
   }
   for(var i=0;i<ROWS.length;i++){
-    html+='<tr><td class="q">'+ROWS[i]+'</td>'+wsCell(1)+wsCell(2)+wsCell(3)+'</tr>';
+    var questionId='ws-q-'+(i+1);
+    html+='<tr><th class="q" scope="row" id="'+questionId+'">'+ROWS[i]+'</th>'+wsCell(1,i)+wsCell(2,i)+wsCell(3,i)+'</tr>';
   }
   tb.innerHTML=html;
 
