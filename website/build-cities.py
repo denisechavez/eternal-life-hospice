@@ -345,6 +345,22 @@ def faq_html(faqs):
         parts.append(f'  <details class="faq-item"{open_attr}><summary>{f["q"]}</summary><p>{f["a"]}</p></details>')
     return "\n".join(parts)
 
+
+def local_faqs(faqs):
+    """Keep the city FAQ focused on questions with location-specific value.
+
+    The general hospice, Medicare and timing explainers already have dedicated
+    resource pages. Each city page keeps its service-area answer and its final
+    locally tailored question, so the FAQ remains useful without repeating the
+    same educational block across the entire local cluster.
+    """
+    if not faqs:
+        return []
+    selected = [faqs[0]]
+    if len(faqs) > 1 and faqs[-1] != faqs[0]:
+        selected.append(faqs[-1])
+    return selected
+
 # ── Nearby-city links builder ───────────────────────────────────────────────────
 
 def nearby_links_html(nearby_city_pages):
@@ -393,7 +409,7 @@ def render_page(c):
         f"<b>Board-and-care homes</b> &mdash; small group settings in {city} and nearby communities",
         "<b>Skilled-nursing facilities</b> &mdash; layered onto existing nursing care"
     ])
-    faqs        = c["faqItems"]
+    faqs        = local_faqs(c["faqItems"])
     last_update = c.get("lastMaterialUpdate", "2026-07-22")
 
     schemas = [
@@ -457,53 +473,9 @@ def render_page(c):
 </section>
 
 <section class="sec wrap">
-  <h2>At a glance</h2>
-  <div class="prov">
-    <div><span>&#10003;</span><span><b>Physician-supported hospice care</b> &mdash; with a nurse on call 24/7</span></div>
-    <div><span>&#10003;</span><span><b>Medicare-certified</b> &mdash; Medicare Part A eligible</span></div>
-    <div><span>&#10003;</span><span><b>CDPH-licensed</b> &mdash; California Dept. of Public Health</span></div>
-    <div><span>&#10003;</span><span><b>ACHC-accredited</b> &mdash; Accreditation Commission for Health Care</span></div>
-    <div><span>&#10003;</span><span><b>{county} service area</b> &mdash; serving {city} and {subregion}</span></div>
-    <div><span>&#10003;</span><span><b>Same-day evaluation</b> &mdash; may be available when clinically appropriate and operationally available</span></div>
-  </div>
-</section>
-
-<section class="sec wrap">
-  <h2>When to consider hospice</h2>
-  <p>Hospice is appropriate when a patient and their physicians agree that comfort is the right priority. Common signs that a conversation with a hospice team may be timely include:</p>
-  <ul class="body-list">
-    <li>Increased hospitalizations or emergency care visits</li>
-    <li>Progressive functional decline despite ongoing treatment</li>
-    <li>Growing need for daily personal care assistance</li>
-    <li>Uncontrolled pain, breathlessness or other distressing symptoms</li>
-    <li>Unexplained weight loss or reduced appetite</li>
-    <li>Significant caregiver burden within the household</li>
-    <li>A shift in goals toward comfort and quality of remaining time</li>
-  </ul>
-  <p>Eligibility requires a clinical evaluation and physician certification. Call 805.953.7273 and we will guide you through the process clearly.</p>
-</section>
-
-<section class="sec wrap">
-  <h2>The First 48 Hours of Hospice Care</h2>
-  <p><a href="/resources/first-48-hours">Review the First 48 Hours of Hospice Care</a> for a complete walkthrough of what to expect when care begins.</p>
-  <div class="prov">
-    <div><span>1</span><span><b>First call and eligibility conversation</b> &mdash; we answer questions and gather what is needed to begin</span></div>
-    <div><span>2</span><span><b>Clinical evaluation and admission</b> &mdash; a nurse visits the patient to complete enrollment</span></div>
-    <div><span>3</span><span><b>Medication review</b> &mdash; the team transitions to a comfort-focused medication plan</span></div>
-    <div><span>4</span><span><b>Equipment and supply coordination</b> &mdash; Medications, equipment and supplies are coordinated and delivered based on the patient&rsquo;s clinical needs</span></div>
-    <div><span>5</span><span><b>Family education</b> &mdash; we explain the plan, what to expect and how to reach us at any hour</span></div>
-    <div><span>6</span><span><b>Ongoing communication</b> &mdash; scheduled visits begin and a nurse remains on call around the clock</span></div>
-  </div>
-</section>
-
-<section class="sec wrap">
-  <h2>Eternal Standard</h2>
-  <div class="prov">
-    <div><span>&#8227;</span><span><b>Clinical Confidence</b> &mdash; Physician support, skilled nursing, symptom management and coordinated care.</span></div>
-    <div><span>&#8227;</span><span><b>Guided Presence</b> &mdash; Families understand what is happening, what comes next and who to reach.</span></div>
-    <div><span>&#8227;</span><span><b>Whole-Person Comfort</b> &mdash; Medical, emotional, social and spiritual support centered on the patient and family.</span></div>
-    <div><span>&#8227;</span><span><b>Compliance-Led Care</b> &mdash; Accurate information, privacy, ethical operations and responsible documentation.</span></div>
-  </div>
+  <h2>Hospice services for {city} families</h2>
+  <p>Hospice care is comfort-focused care for an eligible patient with a terminal illness, provided under physician direction after a clinical evaluation. Eternal Life Hospice coordinates nursing, aide support, social work, chaplaincy, medications, equipment and family education around one individualized plan of care.</p>
+  <p>Read <a href="/resources/when-is-it-time">when it may be time to consider hospice</a>, <a href="/resources/first-48-hours">what happens in the first 48 hours</a>, and <a href="/resources/medicare-hospice-benefit">how the Medicare hospice benefit works</a>. A conversation with our team can clarify the next step without pressure.</p>
 </section>
 
 <section class="sec wrap">
@@ -517,12 +489,8 @@ def render_page(c):
 </section>
 
 <section class="sec wrap">
-  <h2>Helpful resources for families in {city}</h2>
-  <div class="prov">
-    <div><span>&#8227;</span><span><a href="family-guide"><b>Family Guide</b></a> &mdash; eligibility, what to expect and questions to ask when choosing a provider</span></div>
-    <div><span>&#8227;</span><span><a href="/resources/first-48-hours"><b>The First 48 Hours</b></a> &mdash; what happens when hospice care begins</span></div>
-    <div><span>&#8227;</span><span><a href="/resources/how-to-choose-a-hospice"><b>How to Choose</b></a> &mdash; questions to ask before enrolling</span></div>
-  </div>
+  <h2>Resources for families in {city}</h2>
+  <p>Use the <a href="family-guide">Family Guide</a> to compare providers and prepare for a hospice conversation, or read <a href="/resources/how-to-choose-a-hospice">how to choose a hospice</a>. These resources explain the general process; our team can answer questions about care in {city} and {county}.</p>
 </section>
 
 <section class="sec wrap">

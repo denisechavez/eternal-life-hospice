@@ -19,10 +19,13 @@ accidentally re-introduces blocking scripts is caught before it ships.
 """
 
 import importlib.util
+import html as html_lib
+import itertools
 import json
 import os
 import re
 import sys
+from collections import Counter
 
 # ── Load build-cities as a module (handles the hyphenated filename) ────────────
 
@@ -85,6 +88,71 @@ def find_city_hero_preload(head_html, slug):
                     tag, re.IGNORECASE)):
             return tag
     return None
+
+
+def visible_text(html):
+    """Return normalized search-visible text, excluding scripts and styles."""
+    text = re.sub(
+        r'<(script|style)\b[^>]*>.*?</\1>',
+        ' ',
+        html,
+        flags=re.DOTALL | re.IGNORECASE,
+    )
+    text = re.sub(r'<[^>]+>', ' ', text)
+    return re.sub(r'\s+', ' ', html_lib.unescape(text)).strip().lower()
+
+
+def word_shingles(text, size=8):
+    """Return normalized word shingles used for city-page overlap checks."""
+    words = re.findall(r"[a-z0-9]+(?:'[a-z]+)?", text)
+    return {
+        ' '.join(words[i:i + size])
+        for i in range(max(0, len(words) - size + 1))
+    }
+
+
+def content_similarity_errors(rendered_pages):
+    """Flag city clusters that regress toward doorway-like template overlap."""
+    shingles = {
+        slug: word_shingles(visible_text(page))
+        for slug, page in rendered_pages.items()
+    }
+    errors = []
+    worst = (0.0, 0, '', '')
+
+    for left, right in itertools.combinations(sorted(shingles), 2):
+        shared = shingles[left] & shingles[right]
+        union = shingles[left] | shingles[right]
+        score = len(shared) / len(union) if union else 0.0
+        if score > worst[0]:
+            worst = (score, len(shared), left, right)
+
+    max_pair_jaccard = 0.63
+    if worst[0] > max_pair_jaccard:
+        errors.append(
+            f"city-content-overlap: {worst[2]} and {worst[3]} have "
+            f"eight-word Jaccard similarity {worst[0]:.3f} "
+            f"({worst[1]} shared passages; limit {max_pair_jaccard:.2f})"
+        )
+
+    frequency = Counter(
+        passage
+        for page_shingles in shingles.values()
+        for passage in page_shingles
+    )
+    near_universal_floor = max(2, len(shingles) - 5)
+    near_universal = sum(
+        count >= near_universal_floor for count in frequency.values()
+    )
+    max_near_universal = 575
+    if near_universal > max_near_universal:
+        errors.append(
+            f"city-content-overlap: {near_universal} eight-word passages "
+            f"occur on at least {near_universal_floor} city pages "
+            f"(limit {max_near_universal})"
+        )
+
+    return errors, worst, near_universal, near_universal_floor
 
 
 # CDN substrings that must ONLY appear dynamically inside deferred loaders,
@@ -187,10 +255,12 @@ print(f"[ 1–3 ] Scanning all {len(_published)} published cities …")
 
 all_errors = []   # list of (slug, error_string) pairs
 pass_count = 0
+rendered_pages = {}
 
 for city_data in _published:
     slug = city_data['slug']
     html = _mod.render_page(city_data)
+    rendered_pages[slug] = html
     city_errs = collect_errors(html)
     if city_errs:
         for e in city_errs:
@@ -202,6 +272,23 @@ for city_data in _published:
 if not all_errors:
     print(f"  ✓  all {pass_count} cities clean  "
           f"(no blocking scripts · no bare CDN srcs · deferred-loader patterns present)")
+
+print("\n[ 3b ] City-content distinctiveness …")
+content_errors, worst_pair, near_universal, near_universal_floor = (
+    content_similarity_errors(rendered_pages)
+)
+if content_errors:
+    for error in content_errors:
+        print(f"  ✗  {error}")
+else:
+    print(
+        f"  ✓  worst eight-word Jaccard similarity is {worst_pair[0]:.3f} "
+        f"({worst_pair[2]} / {worst_pair[3]}; {worst_pair[1]} shared passages)"
+    )
+    print(
+        f"  ✓  {near_universal} passages occur on at least "
+        f"{near_universal_floor} pages (limit 575)"
+    )
 
 # ── [4] Mutation self-tests (run once on the first published city's HTML) ─────
 
@@ -245,6 +332,17 @@ if any('missing-deferred-pattern' in e for e in _errs_c):
     print("  ✓  Mutation C: removed analytics.js script is caught")
 else:
     msg = "Mutation C FAILED: guard did not catch removal of analytics.js deferred script"
+    print(f"  ✗  {msg}")
+    mutation_errors.append(msg)
+
+_content_mutant_errors, _, _, _ = content_similarity_errors({
+    'duplicate-a': _base_html,
+    'duplicate-b': _base_html,
+})
+if any('city-content-overlap' in e for e in _content_mutant_errors):
+    print("  ✓  Mutation C2: duplicate city content is caught")
+else:
+    msg = "Mutation C2 FAILED: guard did not catch duplicate city-page content"
     print(f"  ✗  {msg}")
     mutation_errors.append(msg)
 
@@ -653,6 +751,7 @@ if _resources_sync_errors:
 print()
 
 combined_errors = (all_errors
+                   + [("city-content", e) for e in content_errors]
                    + [(f"mutation/{_base_slug}", e) for e in mutation_errors]
                    + _stale_alias_errors
                    + [("services.html", e) for e in _services_sync_errors]
