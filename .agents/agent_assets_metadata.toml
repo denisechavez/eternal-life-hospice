@@ -167,1191 +167,1404 @@ id = "qLfrLYeW6vnnXMfZ4rxbP"
 uri = "file://attached_assets/ELH-QR_eternallifehospice_cream.png"
 type = "image"
 title = "QR Code — Cream background (for light/cream surfaces)"
+logical_id = "0305beac-850e-4f67-bf9e-f9d1d463047c"
 
 [[outputs]]
 id = "yaQobLvwN1e1GeZI0iPz9"
 uri = "file://attached_assets/ELH-QR_eternallifehospice_transparent.png"
 type = "image"
 title = "QR Code — Transparent background (for dark/plum surfaces)"
+logical_id = "2e3e5e29-2c94-4569-a9dd-58e0db1038f5"
 
 [[outputs]]
 id = "dtRvwpy1mLlpBlcNQacQi"
 uri = "file://attached_assets/generated_images/amethyst_a.png"
 type = "image"
 title = "A — Geode interior (glowing center)"
+logical_id = "9f1ca829-ac01-4700-88d2-e0e6dc8fada9"
 
 [[outputs]]
 id = "q_Md3liWq6KxFqm7OeWSM"
 uri = "file://attached_assets/generated_images/amethyst_b.png"
 type = "image"
 title = "B — Crystal crown (soft light bloom)"
+logical_id = "d758aa71-8bb6-465d-b461-e1c9aa1d1655"
 
 [[outputs]]
 id = "aCfeGcIAHJvbWUL5Udc0o"
 uri = "file://attached_assets/generated_images/amethyst_c.png"
 type = "image"
 title = "C — Light through the peak (sunburst)"
+logical_id = "b4e2816e-b73b-42f4-8e03-4646e2903a47"
 
 [[outputs]]
 id = "3pEEsNRhakE5IapYEFl6a"
 uri = "file://attached_assets/generated_images/amethyst_d.png"
 type = "image"
 title = "D — Single point on dark velvet (minimal)"
+logical_id = "3e21b747-44a1-4464-a533-4345332c5c99"
 
 [[outputs]]
 id = "fgz-YTCHX3K6VPK2-ZeNJ"
 uri = "file://attached_assets/generated_images/amethyst_e.png"
 type = "image"
 title = "E — Geode slice, top-down (banded)"
+logical_id = "0b5dcece-ffcd-46ac-b718-dfa3c1877291"
 
 [[outputs]]
 id = "keXqBt7uAD0EDBRMRPPFi"
 uri = "file://attached_assets/stock_images/malibu_coast_1.jpg"
 type = "image"
 title = "Malibu coastline ocean"
+logical_id = "fc637360-a8c8-48f4-9584-13a2550a64f0"
 
 [[outputs]]
 id = "Ghxi3ydODlo1cE6EbTFUu"
 uri = "file://attached_assets/stock_images/malibu_coast_2.jpg"
 type = "image"
 title = "Malibu coastline ocean"
+logical_id = "5b8bb4b3-1116-460e-8c89-e0a822c7a14e"
 
 [[outputs]]
 id = "EmfREeZHYPLakP5ZvgtXb"
 uri = "file://attached_assets/stock_images/malibu_coast_3.jpg"
 type = "image"
 title = "Malibu coastline ocean"
+logical_id = "ac5809a4-d9a4-4605-82c3-f17bb1a94ac1"
 
 [[outputs]]
 id = "o87mbFylZFgjFurubVMmg"
 uri = "file://attached_assets/stock_images/malibu_pier_1.jpg"
 type = "image"
 title = "Malibu Pier California landmark"
+logical_id = "97e51b2a-e925-43d7-a827-346296b05479"
 
 [[outputs]]
 id = "eXCo-jCPBx2UM0pSnMzwx"
 uri = "file://attached_assets/stock_images/malibu_pier_2.jpg"
 type = "image"
 title = "Malibu Pier California landmark"
+logical_id = "4a75afb8-4dc2-4b03-9c23-e1e4287b7a05"
 
 [[outputs]]
 id = "SzFgtRWI4VeOp49FnWc2p"
 uri = "file://attached_assets/stock_images/malibu_pier_3.jpg"
 type = "image"
 title = "Malibu Pier California landmark"
+logical_id = "927f4187-7f9b-475c-b75a-b7a8f4477750"
 
 [[outputs]]
 id = "TurLU4lc_vPtAfas9ppP9"
 uri = "file://attached_assets/stock_images/malibu_pier_4.jpg"
 type = "image"
 title = "Malibu Pier California landmark"
+logical_id = "c5c0a72a-a40a-438e-882d-9b2ed32ba8dc"
 
 [[outputs]]
 id = "sm-fmjJ5FaDkVOlxQzDbL"
 uri = "file://attached_assets/stock_images/camarillo_1.jpg"
 type = "image"
 title = "Camarillo California Ranch House landmark"
+logical_id = "adffb4bd-067e-4449-9f32-58170368028b"
 
 [[outputs]]
 id = "yOzflJcPR08JgSgd6wU0h"
 uri = "file://attached_assets/stock_images/camarillo_2.jpg"
 type = "image"
 title = "Camarillo California Ranch House landmark"
+logical_id = "3a670d08-259c-44dc-bf7e-3caaff73d2a0"
 
 [[outputs]]
 id = "RmwBVkn9YjY8znwgKSn-u"
 uri = "file://attached_assets/stock_images/camarillo_3.jpg"
 type = "image"
 title = "Camarillo California Ranch House landmark"
+logical_id = "e585da29-5ab6-4eb5-8bae-5ead175871a7"
 
 [[outputs]]
 id = "8vtyqluJnjN71gktuRTym"
 uri = "file://attached_assets/stock_images/moorpark_1.jpg"
 type = "image"
 title = "Moorpark California High Street town"
+logical_id = "e603ab41-d603-4ecc-8e46-24a68863a895"
 
 [[outputs]]
 id = "5skYWx5yNVSOi0fA0wRMK"
 uri = "file://attached_assets/stock_images/moorpark_2.jpg"
 type = "image"
 title = "Moorpark California High Street town"
+logical_id = "14fd13fa-47cc-4178-a715-48c1ebf7d5aa"
 
 [[outputs]]
 id = "EdQe_ud5PihtjodTymTMB"
 uri = "file://attached_assets/stock_images/moorpark_3.jpg"
 type = "image"
 title = "Moorpark California High Street town"
+logical_id = "5f2d7a67-2115-4f61-896b-027c04702f98"
 
 [[outputs]]
 id = "_aYAyiNiQsxXnqbJ55ZjZ"
 uri = "file://attached_assets/stock_images/newbury_park_1.jpg"
 type = "image"
 title = "Boney Mountain Newbury Park California"
+logical_id = "3ca763ad-7029-46bf-a673-79c1413e5c33"
 
 [[outputs]]
 id = "L1qOmb0oIjQSCP6zTf9tq"
 uri = "file://attached_assets/stock_images/newbury_park_2.jpg"
 type = "image"
 title = "Boney Mountain Newbury Park California"
+logical_id = "393bef0a-d25b-447a-a1a4-719fce45afd9"
 
 [[outputs]]
 id = "mv3ItSVY-B9Aph1lxP6hd"
 uri = "file://attached_assets/stock_images/newbury_park_3.jpg"
 type = "image"
 title = "Boney Mountain Newbury Park California"
+logical_id = "5116787e-9b2f-4de1-968b-1d9e7048d1bd"
 
 [[outputs]]
 id = "IB--tU_WhsNiObTLzJf5-"
 uri = "file://attached_assets/stock_images/oxnard_1.jpg"
 type = "image"
 title = "Channel Islands Harbor Oxnard California"
+logical_id = "ff62b6e4-54e6-4c9d-a785-e912f9c68ca1"
 
 [[outputs]]
 id = "J0Uc8zOTGe38-zcKGdPv7"
 uri = "file://attached_assets/stock_images/oxnard_2.jpg"
 type = "image"
 title = "Channel Islands Harbor Oxnard California"
+logical_id = "da032eab-41c1-47a8-9fab-3154b7f4f78e"
 
 [[outputs]]
 id = "doq7WKAoqoDZdTx_w8Ssy"
 uri = "file://attached_assets/stock_images/oxnard_3.jpg"
 type = "image"
 title = "Channel Islands Harbor Oxnard California"
+logical_id = "b77ee2ab-b209-4fba-82ec-f6b314bf1c94"
 
 [[outputs]]
 id = "BIYU42UVhpYcUPsOTztKX"
 uri = "file://attached_assets/stock_images/simi_valley_1.jpg"
 type = "image"
 title = "Reagan Presidential Library Simi Valley California"
+logical_id = "be40454a-3aad-4bae-b187-3a38093654d8"
 
 [[outputs]]
 id = "-kJZjUANq7YeG6e2-OVHj"
 uri = "file://attached_assets/stock_images/simi_valley_2.jpg"
 type = "image"
 title = "Reagan Presidential Library Simi Valley California"
+logical_id = "35e89550-4f06-4402-b7c3-99da2dc11ab3"
 
 [[outputs]]
 id = "uYUx-xgMPDx269suR-s8I"
 uri = "file://attached_assets/stock_images/simi_valley_3.jpg"
 type = "image"
 title = "Reagan Presidential Library Simi Valley California"
+logical_id = "44a232d2-7240-4673-a8a0-221f4a5c9da7"
 
 [[outputs]]
 id = "ZM5JHtgU5vKZyzvWsZQr6"
 uri = "file://attached_assets/stock_images/thousand_oaks_1.jpg"
 type = "image"
 title = "Thousand Oaks California Conejo Valley landscape"
+logical_id = "1e7aa92b-980f-43b5-b886-07a17836d00e"
 
 [[outputs]]
 id = "euYL0AGEyzCEnCttcQyK6"
 uri = "file://attached_assets/stock_images/thousand_oaks_2.jpg"
 type = "image"
 title = "Thousand Oaks California Conejo Valley landscape"
+logical_id = "a95cd12e-c39a-46aa-a787-60d0ec98855c"
 
 [[outputs]]
 id = "moGnPEPzaqIe63_p0XK2s"
 uri = "file://attached_assets/stock_images/thousand_oaks_3.jpg"
 type = "image"
 title = "Thousand Oaks California Conejo Valley landscape"
+logical_id = "8c0ef52a-b7dd-460c-a114-32b155cdf9ca"
 
 [[outputs]]
 id = "WOzD2EUTLZF-L1U3wMsvg"
 uri = "file://attached_assets/stock_images/ventura_1.jpg"
 type = "image"
 title = "Ventura California pier ocean"
+logical_id = "c76c60d9-0cc0-4377-b6a3-ea6c2d7ac9c1"
 
 [[outputs]]
 id = "2aSgCxzNiRHCCqrz6zmEt"
 uri = "file://attached_assets/stock_images/ventura_2.jpg"
 type = "image"
 title = "Ventura California pier ocean"
+logical_id = "e183bfd0-08f8-457c-a01b-2ed0cb63b415"
 
 [[outputs]]
 id = "3pZI1_goh4nDkmLzSgMdN"
 uri = "file://attached_assets/stock_images/ventura_3.jpg"
 type = "image"
 title = "Ventura California pier ocean"
+logical_id = "b5f88d97-b897-4558-9b03-5e1b10aab913"
 
 [[outputs]]
 id = "0WMAn2h4C2uGz1A7821Yq"
 uri = "file://attached_assets/stock_images/westlake_village_1.jpg"
 type = "image"
 title = "Westlake Village California lake"
+logical_id = "b19f52ca-fa98-489b-98c5-6aafb9afa073"
 
 [[outputs]]
 id = "bBMYVex91f0G3J1PY9RuX"
 uri = "file://attached_assets/stock_images/westlake_village_2.jpg"
 type = "image"
 title = "Westlake Village California lake"
+logical_id = "ff94bca0-2458-4878-8a77-464eb3bcdeb5"
 
 [[outputs]]
 id = "Kl4UGQTsIGbJLWXCyJrNX"
 uri = "file://attached_assets/stock_images/westlake_village_3.jpg"
 type = "image"
 title = "Westlake Village California lake"
+logical_id = "af87c033-2581-48bb-9003-33b0cb9f8b6b"
 
 [[outputs]]
 id = "0CDdTvwU6ofgCjMfBsJyQ"
 uri = "file://attached_assets/stock_images/agoura_hills_1.jpg"
 type = "image"
 title = "Ladyface Mountain Agoura Hills California"
+logical_id = "cfb7217d-6975-4461-a712-85d3e162bafc"
 
 [[outputs]]
 id = "HwTdOY-rfYD3wtVdKNXuP"
 uri = "file://attached_assets/stock_images/agoura_hills_2.jpg"
 type = "image"
 title = "Ladyface Mountain Agoura Hills California"
+logical_id = "495a47bd-e0ae-43fa-b149-e6972f9e51c5"
 
 [[outputs]]
 id = "PORD9tIgTHL2mHhsN1JrJ"
 uri = "file://attached_assets/stock_images/agoura_hills_3.jpg"
 type = "image"
 title = "Ladyface Mountain Agoura Hills California"
+logical_id = "59457a2f-c7c2-4cc9-8f20-2489800321b5"
 
 [[outputs]]
 id = "Ol5xbe_cW7p690AQNFMHj"
 uri = "file://attached_assets/stock_images/calabasas_1.jpg"
 type = "image"
 title = "Calabasas California hills landscape"
+logical_id = "bf4fb566-cbbf-45ea-8399-3fcdf929a2b4"
 
 [[outputs]]
 id = "T3XwRp5tGorxH6CR0jNeb"
 uri = "file://attached_assets/stock_images/calabasas_2.jpg"
 type = "image"
 title = "Calabasas California hills landscape"
+logical_id = "7fb1a652-6c3d-4375-9184-3478a6973047"
 
 [[outputs]]
 id = "Tsauok32r5lmSuGhjbDVK"
 uri = "file://attached_assets/stock_images/calabasas_3.jpg"
 type = "image"
 title = "Calabasas California hills landscape"
+logical_id = "89228682-2cc0-4591-b800-3dd5770764f0"
 
 [[outputs]]
 id = "H9DBIziIU8zMR3S-KfdM8"
 uri = "file://attached_assets/stock_images/encino_1.jpg"
 type = "image"
 title = "Lake Balboa Encino California"
+logical_id = "5348ba78-0421-4bde-9ae7-cd3447f633d4"
 
 [[outputs]]
 id = "XuOH3ifQIJL1xkF2U-5J1"
 uri = "file://attached_assets/stock_images/encino_2.jpg"
 type = "image"
 title = "Lake Balboa Encino California"
+logical_id = "d8d8096f-29e8-4650-ae99-62ff81cb66a9"
 
 [[outputs]]
 id = "sCBwsWA9zesPSQ5x6bfl1"
 uri = "file://attached_assets/stock_images/encino_3.jpg"
 type = "image"
 title = "Lake Balboa Encino California"
+logical_id = "eb34b611-2e6d-4cbb-ba3b-16b5ac4a2ab8"
 
 [[outputs]]
 id = "3ZuhILJ0TwuOiepHWZiYK"
 uri = "file://attached_assets/stock_images/santa_monica_1.jpg"
 type = "image"
 title = "Santa Monica Pier California"
+logical_id = "c8e407b2-f775-4112-8b54-109e6ff09866"
 
 [[outputs]]
 id = "9od-oMTXsBFY8YH3-vgLK"
 uri = "file://attached_assets/stock_images/santa_monica_2.jpg"
 type = "image"
 title = "Santa Monica Pier California"
+logical_id = "38190ec6-f19a-4626-8028-558d431b1bdb"
 
 [[outputs]]
 id = "Bo8pt4wtrS658pDYph3L6"
 uri = "file://attached_assets/stock_images/santa_monica_3.jpg"
 type = "image"
 title = "Santa Monica Pier California"
+logical_id = "72409d41-d791-4f71-9876-95b6467f22f1"
 
 [[outputs]]
 id = "vNh3v6J0omTS4d9PxM4Pp"
 uri = "file://attached_assets/stock_images/sherman_oaks_1.jpg"
 type = "image"
 title = "Ventura Boulevard Sherman Oaks California"
+logical_id = "73c35aeb-9d5a-44de-bf2d-dd171c1b8904"
 
 [[outputs]]
 id = "XZ0692jxel0-zxQ7LgokP"
 uri = "file://attached_assets/stock_images/sherman_oaks_2.jpg"
 type = "image"
 title = "Ventura Boulevard Sherman Oaks California"
+logical_id = "651948e1-249a-40e1-a807-69f1f4bc7b74"
 
 [[outputs]]
 id = "IIFOzUun5kD4YEZwXtie8"
 uri = "file://attached_assets/stock_images/sherman_oaks_3.jpg"
 type = "image"
 title = "Ventura Boulevard Sherman Oaks California"
+logical_id = "35a96bb3-ed01-4196-bbdb-cf149361fcc6"
 
 [[outputs]]
 id = "wTtBwY1Y5ISyHJ_FYUrHU"
 uri = "file://attached_assets/stock_images/tarzana_1.jpg"
 type = "image"
 title = "Tarzana California San Fernando Valley street"
+logical_id = "f6f8aab0-d6f5-4be0-afc7-4d7273b39184"
 
 [[outputs]]
 id = "anQ1ttNCW3NZ-HoWRaH3B"
 uri = "file://attached_assets/stock_images/tarzana_2.jpg"
 type = "image"
 title = "Tarzana California San Fernando Valley street"
+logical_id = "7c3e8cba-3e37-4f04-8dc4-41f1e80bdded"
 
 [[outputs]]
 id = "bydP-tO_d6GijE4gj3kCJ"
 uri = "file://attached_assets/stock_images/tarzana_3.jpg"
 type = "image"
 title = "Tarzana California San Fernando Valley street"
+logical_id = "394167d4-5f5f-4b0b-9868-04a0361950b1"
 
 [[outputs]]
 id = "6S-8hOVJ-sTtsR3K19L4S"
 uri = "file://attached_assets/stock_images/woodland_hills_1.jpg"
 type = "image"
 title = "Warner Center Woodland Hills California"
+logical_id = "f8be7fcc-f955-4fe1-bbeb-47d726250c91"
 
 [[outputs]]
 id = "rdTSVT8XyuaFUPIerVC8C"
 uri = "file://attached_assets/stock_images/woodland_hills_2.jpg"
 type = "image"
 title = "Warner Center Woodland Hills California"
+logical_id = "93233c7c-bb68-4310-8d74-d06d50201c04"
 
 [[outputs]]
 id = "VLSvRR6x6xp24arJgm4J0"
 uri = "file://attached_assets/stock_images/woodland_hills_3.jpg"
 type = "image"
 title = "Warner Center Woodland Hills California"
+logical_id = "ed42a29b-8064-44f0-89a5-59388f4660d6"
 
 [[outputs]]
 id = "xyOYaRA5lQZNqpSLWnPc8"
 uri = "file://attached_assets/stock_images/camarillo_b_1.jpg"
 type = "image"
 title = "strawberry fields farmland Ventura County California"
+logical_id = "71ac5ea8-904c-4624-9b93-2be79e41350c"
 
 [[outputs]]
 id = "qZyOby-6WnQ5fpKV5O8-U"
 uri = "file://attached_assets/stock_images/camarillo_b_2.jpg"
 type = "image"
 title = "strawberry fields farmland Ventura County California"
+logical_id = "53db6f51-7c36-4896-ad66-eaf05fbb8416"
 
 [[outputs]]
 id = "zLXS1i9r0N8q7gvHPT8I_"
 uri = "file://attached_assets/stock_images/camarillo_b_3.jpg"
 type = "image"
 title = "strawberry fields farmland Ventura County California"
+logical_id = "03960269-704f-41c2-82e6-78d34c5e0d44"
 
 [[outputs]]
 id = "822SJFVMQoNkHEaYtcQ-Q"
 uri = "file://attached_assets/stock_images/moorpark_b_1.jpg"
 type = "image"
 title = "oak trees rolling golden hills Southern California countryside"
+logical_id = "7ee09cc4-fc49-40ae-87c1-318b3cb904ad"
 
 [[outputs]]
 id = "WjPKHNi_7tRb2zaSVH3km"
 uri = "file://attached_assets/stock_images/moorpark_b_2.jpg"
 type = "image"
 title = "oak trees rolling golden hills Southern California countryside"
+logical_id = "56b0d033-4be9-4837-83e5-81faa3f9d18c"
 
 [[outputs]]
 id = "G05wv3dLZzRcLJFvmWISd"
 uri = "file://attached_assets/stock_images/moorpark_b_3.jpg"
 type = "image"
 title = "oak trees rolling golden hills Southern California countryside"
+logical_id = "f6198f4f-c424-49bf-8e5a-c6b3e19057c5"
 
 [[outputs]]
 id = "vqkU-oYj1ZZjhcwq3qBy0"
 uri = "file://attached_assets/stock_images/tarzana_b_1.jpg"
 type = "image"
 title = "Santa Monica Mountains overlook San Fernando Valley California"
+logical_id = "5e0f29ed-95e0-4703-b1b2-fdfde91eb100"
 
 [[outputs]]
 id = "o3nXyZGTIPXFX3JhhXnbx"
 uri = "file://attached_assets/stock_images/tarzana_b_2.jpg"
 type = "image"
 title = "Santa Monica Mountains overlook San Fernando Valley California"
+logical_id = "0556279b-5a2e-4dd2-890d-e43947db698e"
 
 [[outputs]]
 id = "_oBkrO_s--UYyWzS7eKrC"
 uri = "file://attached_assets/stock_images/tarzana_b_3.jpg"
 type = "image"
 title = "Santa Monica Mountains overlook San Fernando Valley California"
+logical_id = "894ac984-9c34-410a-bdcb-998c30f4223f"
 
 [[outputs]]
 id = "ZCfzX7rvxWmBJgc-gBPB3"
 uri = "file://attached_assets/stock_images/westlake_village_b_1.jpg"
 type = "image"
 title = "lakeside homes marina Southern California suburb"
+logical_id = "6ff075d6-1e38-4652-8003-b03d7e8b8e45"
 
 [[outputs]]
 id = "W77qpJ8sktaVqxnJSNWW9"
 uri = "file://attached_assets/stock_images/westlake_village_b_2.jpg"
 type = "image"
 title = "lakeside homes marina Southern California suburb"
+logical_id = "d1c10ee1-f904-4d49-8df7-de42143eddd8"
 
 [[outputs]]
 id = "sQTpOwPWMIuA1WESh3sIr"
 uri = "file://attached_assets/stock_images/westlake_village_b_3.jpg"
 type = "image"
 title = "lakeside homes marina Southern California suburb"
+logical_id = "c093b429-9c77-4a31-8f2a-45a0dbebe1cb"
 
 [[outputs]]
 id = "83JPWFUR_3_CGP-su5GwZ"
 uri = "file://attached_assets/stock_images/agoura_hills_b_1.jpg"
 type = "image"
 title = "Malibu Creek State Park rock formation Santa Monica Mountains California"
+logical_id = "1d775f20-5af8-4bc6-a39b-ebae78bb3568"
 
 [[outputs]]
 id = "cuE-GrBsBhUk8J0PMehBX"
 uri = "file://attached_assets/stock_images/agoura_hills_b_2.jpg"
 type = "image"
 title = "Malibu Creek State Park rock formation Santa Monica Mountains California"
+logical_id = "64bd9bc9-5635-4223-9940-676c37db4ab1"
 
 [[outputs]]
 id = "85IgzkA52QkOhMxxtFuAd"
 uri = "file://attached_assets/stock_images/agoura_hills_b_3.jpg"
 type = "image"
 title = "Malibu Creek State Park rock formation Santa Monica Mountains California"
+logical_id = "0ef62ea5-20d0-4a68-ab13-3d5507222e14"
 
 [[outputs]]
 id = "uxr4F-QXyrW8eodOwbAMc"
 uri = "file://attached_assets/previews/elh_photo_picks.png"
 type = "image"
 title = "City photo picks — 15 pages"
+logical_id = "1d070ccb-e4b2-4688-acb4-e477a89253c4"
 
 [[outputs]]
 id = "I0xI9bV9joKXSlbFIgXER"
 uri = "file://attached_assets/stock_images/camarillo_c_1.jpg"
 type = "image"
 title = "Ventura County coastal farmland green mountains California sunny"
+logical_id = "bdc5cefa-0258-43ec-8e0e-66d600e81ac8"
 
 [[outputs]]
 id = "mmXL0qKgEhRypwzsaKR0n"
 uri = "file://attached_assets/stock_images/camarillo_c_2.jpg"
 type = "image"
 title = "Ventura County coastal farmland green mountains California sunny"
+logical_id = "e6be1258-82d3-4c62-ab22-2bec4b67ec99"
 
 [[outputs]]
 id = "DYTwGZpXIcRfqSgKI0YYW"
 uri = "file://attached_assets/stock_images/camarillo_c_3.jpg"
 type = "image"
 title = "Ventura County coastal farmland green mountains California sunny"
+logical_id = "41d4bcb0-f002-46fc-b8d9-efce22902516"
 
 [[outputs]]
 id = "7nnaHuNRRVX5AqjuJ2-YZ"
 uri = "file://attached_assets/stock_images/newbury_park_c_1.jpg"
 type = "image"
 title = "Boney Mountain Conejo Valley chaparral hills California"
+logical_id = "e925158c-b572-4a30-a95b-7d850bb7bc48"
 
 [[outputs]]
 id = "6_xiJiVJkEup8imruBIpZ"
 uri = "file://attached_assets/stock_images/newbury_park_c_2.jpg"
 type = "image"
 title = "Boney Mountain Conejo Valley chaparral hills California"
+logical_id = "b406c570-28a3-4c3f-83f3-417b3f173c63"
 
 [[outputs]]
 id = "GL7mc7Zr_IZF_8tGWjqvv"
 uri = "file://attached_assets/stock_images/newbury_park_c_3.jpg"
 type = "image"
 title = "Boney Mountain Conejo Valley chaparral hills California"
+logical_id = "47cd67b4-fa9b-4577-9d79-4f4886c47a4b"
 
 [[outputs]]
 id = "ZlbsINcWeqL9N_0L0Xty8"
 uri = "file://attached_assets/stock_images/thousand_oaks_c_1.jpg"
 type = "image"
 title = "Conejo Valley green hills oak trees California suburb"
+logical_id = "1bc07e26-3cc6-4a69-9a06-0a0c1e94109c"
 
 [[outputs]]
 id = "uDgAyYmWmVP2DzT0rdhuT"
 uri = "file://attached_assets/stock_images/thousand_oaks_c_2.jpg"
 type = "image"
 title = "Conejo Valley green hills oak trees California suburb"
+logical_id = "63105db5-0c6e-4173-86ec-5ed3e342cd29"
 
 [[outputs]]
 id = "-48C7NMSdctSGc1h11RVz"
 uri = "file://attached_assets/stock_images/thousand_oaks_c_3.jpg"
 type = "image"
 title = "Conejo Valley green hills oak trees California suburb"
+logical_id = "723242a1-9acc-49f8-be1a-c947c1df746a"
 
 [[outputs]]
 id = "IWWCGIqL9h1o6UA1UtJu2"
 uri = "file://attached_assets/stock_images/tarzana_c_1.jpg"
 type = "image"
 title = "San Fernando Valley sunset hills palm trees California"
+logical_id = "9c0ce6b2-2109-4ef9-9cd3-8c4383611777"
 
 [[outputs]]
 id = "-Zb7RqxeNMDtQ7xnt404v"
 uri = "file://attached_assets/stock_images/tarzana_c_2.jpg"
 type = "image"
 title = "San Fernando Valley sunset hills palm trees California"
+logical_id = "98bdb628-2daf-4331-85eb-c99274e375d7"
 
 [[outputs]]
 id = "vJN6jhs7PNheuQiGT3V21"
 uri = "file://attached_assets/stock_images/tarzana_c_3.jpg"
 type = "image"
 title = "San Fernando Valley sunset hills palm trees California"
+logical_id = "6331b013-0e2d-41db-81df-92aade0142a2"
 
 [[outputs]]
 id = "7xJGW27F1EFrOziRPS2up"
 uri = "file://attached_assets/stock_images/westlake_village_c_1.jpg"
 type = "image"
 title = "calm lake reflection mountains palm trees California"
+logical_id = "5170a9d8-9d2c-4fb0-80f8-b49156a36a22"
 
 [[outputs]]
 id = "72cSUneoDQ7aL_N_dl_m9"
 uri = "file://attached_assets/stock_images/westlake_village_c_2.jpg"
 type = "image"
 title = "calm lake reflection mountains palm trees California"
+logical_id = "f25c5cd2-6c71-49ab-84bb-b8de08690f78"
 
 [[outputs]]
 id = "2H57LhXoovViBbb735fXs"
 uri = "file://attached_assets/stock_images/westlake_village_c_3.jpg"
 type = "image"
 title = "calm lake reflection mountains palm trees California"
+logical_id = "aeab1396-caf6-4f99-a2ec-a6a0d43d81c4"
 
 [[outputs]]
 id = "e_GgRhvcJHyoHRwffbYDP"
 uri = "file://attached_assets/stock_images/singing_bowl_1.jpg"
 type = "image"
 title = "brass bowl meditation"
+logical_id = "d1432d07-dd78-449f-8781-602fe4d74b8c"
 
 [[outputs]]
 id = "SD2wq2Ww41gNE0JRSWnpu"
 uri = "file://attached_assets/stock_images/singing_bowl_2.jpg"
 type = "image"
 title = "brass bowl meditation"
+logical_id = "d73c4537-802f-427e-84d4-6d6da25a92d8"
 
 [[outputs]]
 id = "pTMaXQ2cnqjbDLa0WkKOg"
 uri = "file://attached_assets/stock_images/singing_bowl_3.jpg"
 type = "image"
 title = "brass bowl meditation"
+logical_id = "087d0442-3b76-464c-87e6-0d9482ec847f"
 
 [[outputs]]
 id = "-VJyMsy4qx_tgbP7J2zkv"
 uri = "file://attached_assets/stock_images/singing_bowl_4.jpg"
 type = "image"
 title = "brass bowl meditation"
+logical_id = "2b18087a-f942-47e7-8b3a-9b84bc80211d"
 
 [[outputs]]
 id = "HU3GiZe7HBBC7QJYVCw2R"
 uri = "file://.canvas/assets/og-qr.png"
 type = "image"
 title = "Scan to view the share card on your phone"
+logical_id = "f88f26be-3564-479b-bf79-80b768f989c3"
 
 [[outputs]]
 id = "i3u9Ynd5Ay63ocOu6mlKr"
 uri = "file://website/elh-preview/assets/og-image.jpg"
 type = "image"
 title = "Eternal Life Hospice — share card"
+logical_id = "48bee867-da9d-4ca6-a243-f9faa0b57a28"
 
 [[outputs]]
 id = "ljBT8_MEggFoIbnTf62zw"
 uri = "file://exports/eternal-life-rack-card.pdf"
 type = "pdf"
 title = "Eternal Life Hospice — Rack Card (4×9, print-ready)"
+logical_id = "f0a60d4b-697b-4072-a687-f2e2aff199d2"
 
 [[outputs]]
 id = "OL7YFL58vOV-cRFO4PKLA"
 uri = "file://exports/eternal-life-provider-deck.pdf"
 type = "pdf"
 title = "Eternal Life Hospice — Referral Partner Deck (10 slides, 16:9)"
+logical_id = "fa8e5b96-ff01-434a-8619-ade1a152768c"
 
 [[outputs]]
 id = "s2QJVe-oP6KytAe3_4CdQ"
 uri = "file://exports/strategy/eternal-life-growth-roadmap.pdf"
 type = "pdf"
 title = "Eternal Life Hospice — Growth & Acquisition-Readiness Roadmap (8 pages)"
+logical_id = "ce93949e-edd4-45f5-9876-fff0d49b4222"
 
 [[outputs]]
 id = "p7MfhpScOBPyFE-eKRcMw"
 uri = "file://dist/ContainerChiq_Brand_Files.zip"
 type = "unspecified"
 title = "Container Chiq Brand Files (logos, brand docs, story copy)"
+logical_id = "b54c5b52-0fce-47fe-a9d0-3a90da1d45c8"
 
 [[outputs]]
 id = "pC8LkM5Z4xqlpNjdY1RQp"
 uri = "file://exports/print/eternal-life-business-card-aleksandra-dubina.pdf"
 type = "pdf"
 title = "Business Card — Aleksandra Dubina (CEO)"
+logical_id = "3f0ffd0c-fd97-4f50-835b-d48e38535e9f"
 
 [[outputs]]
 id = "paWTWalgX7YvpFmCbpg1n"
 uri = "file://exports/print/eternal-life-referral-card-1-capability-hero.pdf"
 type = "pdf"
 title = "Card 1 — logos inside the purple header"
+logical_id = "5530177f-b44a-498b-aa63-87d8a33e58c9"
 
 [[outputs]]
 id = "NpM4tRRmVzLvKY35YAuHL"
 uri = "file://exports/print/eternal-life-referral-card-2-refer-with-confidence.pdf"
 type = "pdf"
 title = "Card 2 — official seal + cleanup"
+logical_id = "76b2391f-1ac6-4944-8bff-d9facd69eb34"
 
 [[outputs]]
 id = "qWW62pG2Yay3ZUXCrwiJ8"
 uri = "file://exports/print/eternal-life-referral-card-3-minimal-premium.pdf"
 type = "pdf"
 title = "Card 3 — official ACHC seal"
+logical_id = "daa816f0-963c-4b31-a475-dee8d0cded7c"
 
 [[outputs]]
 id = "7x-G_hK55WxuhXzsQdCnh"
 uri = "file://exports/print/eternal-life-referral-card-4-credentials-forward.pdf"
 type = "pdf"
 title = "Card 4 — logos below the band, no boxes"
+logical_id = "b6428b2a-2423-47a0-a251-b5cad07a236f"
 
 [[outputs]]
 id = "JctcDaT2AvEk8xWydQpz-"
 uri = "file://exports/print/eternal-life-referral-card-5-quick-referral-action.pdf"
 type = "pdf"
 title = "Card 5 design master (RGB)"
+logical_id = "ab72ad6d-b520-43b8-b547-1d240a907817"
 
 [[outputs]]
 id = "7AlniOf0kWVIo6z-OXzNW"
 uri = "file://exports/print/eternal-life-brand-color-reference-cmyk.pdf"
 type = "pdf"
 title = "Brand Color Match Sheet (send with every print job)"
+logical_id = "c0e39920-9a8f-4bf6-86ad-b026147b36bb"
 
 [[outputs]]
 id = "W8PsdAJD1wUsoXt3jAsVG"
 uri = "file://attached_assets/J52551_RubenA_948_RACK_CARD-01-RA-REV1-FINAL.p1_1782784647101.pdf"
 type = "pdf"
 title = "Uploaded Rack Card 01 — Front"
+logical_id = "258883cb-2ab2-4241-906b-4432b50583cf"
 
 [[outputs]]
 id = "LeOe6JMhfCt7DG8-Q0vhR"
 uri = "file://attached_assets/J52551_RubenA_948_RACK_CARD-01-RA-REV1-FINAL.p2_1782784647101.pdf"
 type = "pdf"
 title = "Uploaded Rack Card 01 — Back"
+logical_id = "e29146e5-ff2a-4372-bf6b-778690e9e237"
 
 [[outputs]]
 id = "1feBp-5zF6yu2j56gXfRy"
 uri = "file://attached_assets/J52551_RubenA_948_RACK_CARD-02-RA-REV1-FINAL.p1_1782784647101.pdf"
 type = "pdf"
 title = "Uploaded Rack Card 02 — Front"
+logical_id = "af04b885-77a3-4faa-82b1-621db8246f3a"
 
 [[outputs]]
 id = "__y_6HRGbcdEYCuWPyUqF"
 uri = "file://attached_assets/J52551_RubenA_948_RACK_CARD-02-RA-REV1-FINAL.p2_1782784647101.pdf"
 type = "pdf"
 title = "Uploaded Rack Card 02 — Back"
+logical_id = "2f787d81-e7df-4caf-b8e8-1d9f7746b380"
 
 [[outputs]]
 id = "hRku4f5ucERRohTW0tNPl"
 uri = "file://attached_assets/J52551_RubenA_948_RACK_CARD-03-RA-REV1-FINAL.p1_1782784647101.pdf"
 type = "pdf"
 title = "Uploaded Rack Card 03 — Front"
+logical_id = "e1e0724e-9430-4c4d-b55e-a60e8e761d7f"
 
 [[outputs]]
 id = "z1cVb2mBFX9rFPFWJR8PJ"
 uri = "file://attached_assets/J52551_RubenA_948_RACK_CARD-03-RA-REV1-FINAL.p2_1782784647101.pdf"
 type = "pdf"
 title = "Uploaded Rack Card 03 — Back"
+logical_id = "5b4519da-1914-4b14-ad62-e0ea39d544e1"
 
 [[outputs]]
 id = "YDsQf2gopPReoN7_l62y6"
 uri = "file://attached_assets/J52551_RubenA_948_RACK_CARD-04-RA-REV1-FINAL.p1_1782784647100.pdf"
 type = "pdf"
 title = "Uploaded Rack Card 04 — Front"
+logical_id = "6bcf0b82-d919-4fce-8505-2a0ad7c81a18"
 
 [[outputs]]
 id = "mCKqHyEAqeUEQj7FpAyxY"
 uri = "file://attached_assets/J52551_RubenA_948_RACK_CARD-04-RA-REV1-FINAL.p2_1782784647099.pdf"
 type = "pdf"
 title = "Uploaded Rack Card 04 — Back"
+logical_id = "e0d3e213-adb8-4f95-ba6e-e25da43e8c0d"
 
 [[outputs]]
 id = "rhUEw7-hv04wd9cC-bRi2"
 uri = "file://attached_assets/J52551_EternalLife_Folder_CX-prf.p1_1782784647102.pdf"
 type = "pdf"
 title = "Uploaded Presentation Folder — Outside"
+logical_id = "d1bf7027-c907-4f55-beb2-9cccd738a2be"
 
 [[outputs]]
 id = "bIb78OzCvueNY9FrMxVck"
 uri = "file://attached_assets/J52551_EternalLife_Folder_CX-prf.p2_1782784647102.pdf"
 type = "pdf"
 title = "Uploaded Presentation Folder — Inside"
+logical_id = "c5275862-7a67-4b87-81c7-d722e05588ef"
 
 [[outputs]]
 id = "WlKfyxVzIvgY--ynvuBC-"
 uri = "file://attached_assets/card-previews/rack01-front.jpg"
 type = "image"
 title = "Uploaded Rack Card 01 — Front"
+logical_id = "fb8d89d3-2cf8-4efb-8fad-6dfb6d6f27bf"
 
 [[outputs]]
 id = "AqMq13eXsBZYFcNgH_Npj"
 uri = "file://attached_assets/card-previews/rack01-back.jpg"
 type = "image"
 title = "Uploaded Rack Card 01 — Back"
+logical_id = "5f01a6d0-02bf-4be8-803e-7ed5c22b913c"
 
 [[outputs]]
 id = "dzpa3-_nOTbje53F70Ptw"
 uri = "file://attached_assets/card-previews/rack02-front.jpg"
 type = "image"
 title = "Uploaded Rack Card 02 — Front"
+logical_id = "b85619fa-e3cc-4b77-8f0d-63c6214ba05d"
 
 [[outputs]]
 id = "F3J-DVHKqnsQBeBwkVPAq"
 uri = "file://attached_assets/card-previews/rack02-back.jpg"
 type = "image"
 title = "Uploaded Rack Card 02 — Back"
+logical_id = "45bff673-ca1e-4091-a4d0-a74a51a18af6"
 
 [[outputs]]
 id = "oGPUqkldGd-RlQg9z7Gi4"
 uri = "file://attached_assets/card-previews/rack03-front.jpg"
 type = "image"
 title = "Uploaded Rack Card 03 — Front"
+logical_id = "230200fa-3ad9-4cb6-8274-1a7b19207805"
 
 [[outputs]]
 id = "-y8GjOk47KSAL9HtrVfZu"
 uri = "file://attached_assets/card-previews/rack03-back.jpg"
 type = "image"
 title = "Uploaded Rack Card 03 — Back"
+logical_id = "c1fc0d12-2a10-41b5-8eec-636a21d81f08"
 
 [[outputs]]
 id = "LaHTfYbnYtSfPRVa5pA23"
 uri = "file://attached_assets/card-previews/rack04-front.jpg"
 type = "image"
 title = "Uploaded Rack Card 04 — Front"
+logical_id = "b94b4e76-c1a3-4a3b-9553-ca7751cd544a"
 
 [[outputs]]
 id = "EgZfzqpSLFjldQ3b7roN3"
 uri = "file://attached_assets/card-previews/rack04-back.jpg"
 type = "image"
 title = "Uploaded Rack Card 04 — Back"
+logical_id = "6c9f7b8a-2aa4-4590-8a3e-d77ded1f61e0"
 
 [[outputs]]
 id = "Mg0RtKUJiC_6V9YdVJc9k"
 uri = "file://attached_assets/card-previews/folder-outside.jpg"
 type = "image"
 title = "Uploaded Presentation Folder — Outside"
+logical_id = "68cf1a22-7ccc-4523-8e9c-fa8321745601"
 
 [[outputs]]
 id = "FZ_ebqLHrOws1UScWBAiL"
 uri = "file://attached_assets/card-previews/folder-inside.jpg"
 type = "image"
 title = "Uploaded Presentation Folder — Inside"
+logical_id = "1a5806ee-8671-4e8d-983e-20157822b654"
 
 [[outputs]]
 id = "KzhExgdc70KmoEuwwVZk7"
 uri = "file://exports/print/press-kit/eternal-life-rackcard-1-clinical-confidence.pdf"
 type = "pdf"
 title = "Pillar Rack Card 1 — Clinical Confidence"
+logical_id = "56933837-3e50-4a92-b376-a6915c60d866"
 
 [[outputs]]
 id = "f2bwnp6bfrmF64t7W35ds"
 uri = "file://exports/print/press-kit/eternal-life-rackcard-2-guided-presence.pdf"
 type = "pdf"
 title = "Pillar Rack Card 2 — Guided Presence"
+logical_id = "9d0bd3a9-0dc2-45d5-970f-c5e4a2409754"
 
 [[outputs]]
 id = "GLBzVuCumEzw9eQYTUkTo"
 uri = "file://exports/print/press-kit/eternal-life-rackcard-3-whole-person-comfort.pdf"
 type = "pdf"
 title = "Pillar Rack Card 3 — Whole-Person Comfort"
+logical_id = "b6d6dde2-1888-447d-8d22-1858516d77eb"
 
 [[outputs]]
 id = "wlR49JLO43urGm10RWblF"
 uri = "file://exports/print/press-kit/eternal-life-rackcard-4-compliance-led-care.pdf"
 type = "pdf"
 title = "Pillar Rack Card 4 — Compliance-Led Care"
+logical_id = "da1e1c66-5630-4f96-85e9-20c3e92b37e3"
 
 [[outputs]]
 id = "K5LQV65165p6dNtfwNXdy"
 uri = "file://exports/diagrams/build-and-publish-flow.png"
 type = "image"
 title = "How Your Website Gets Built & Published — Flow Infographic"
+logical_id = "200e6712-8338-4d0d-8291-05580e0fc854"
 
 [[outputs]]
 id = "S3ZlbSm4wUPWvraPyZIcS"
 uri = "file://exports/print/previews/referral-card-1-front-back.png"
 type = "image"
 title = "Card 1 preview — logos inside the purple header"
+logical_id = "8b245eae-415f-4b74-8927-65e02f5f3851"
 
 [[outputs]]
 id = "Y91mnHz3gIfACoeLJ7JA5"
 uri = "file://exports/print/previews/referral-card-2-front-back.png"
 type = "image"
 title = "Card 2 preview"
+logical_id = "9d7bea32-d3f4-454a-bc57-f4cd8cf9e755"
 
 [[outputs]]
 id = "x5uptaAuuBUmjGQBoLDB8"
 uri = "file://exports/print/previews/referral-card-3-front-back.png"
 type = "image"
 title = "Card 3 preview"
+logical_id = "1908644a-d16b-4a69-8fcd-6ab77cb6ad6c"
 
 [[outputs]]
 id = "UFEBAJ7j3PODqSL7DRoLd"
 uri = "file://exports/print/previews/referral-card-4-front-back.png"
 type = "image"
 title = "Card 4 preview — logos below the band, no boxes"
+logical_id = "3939e9e8-8cb3-400e-8dd9-3d1ab438983e"
 
 [[outputs]]
 id = "Cs-SFZPqR0g3zoZWphEn4"
 uri = "file://exports/print/previews/referral-card-5-front-back.png"
 type = "image"
 title = "Card 5 final preview — high-res throughout"
+logical_id = "c8cd41a3-bd3e-49fd-90a2-fce937f5b71a"
 
 [[outputs]]
 id = "Oep7hVhR8kGLgEnV8oA0x"
 uri = "file://exports/print/print-ready-cmyk/eternal-life-referral-card-5-quick-referral-action-CMYK.pdf"
 type = "pdf"
 title = "Card 5 CMYK — SEND THIS TO MOO"
+logical_id = "443b058b-68a1-4f8d-b5b5-44099e37f5e8"
 
 [[outputs]]
 id = "OZ3TjhN3GcMwu8BUDv5No"
 uri = "file://exports/print/print-ready-cmyk/eternal-life-referral-card-5-FRONT-CMYK.pdf"
 type = "pdf"
 title = "Card 5 FRONT — CMYK for MOO"
+logical_id = "5d6d92eb-7ad8-4bdf-a643-d150d93f7857"
 
 [[outputs]]
 id = "KRKOwNB7FnVFMyTwkRJsm"
 uri = "file://exports/print/print-ready-cmyk/eternal-life-referral-card-5-BACK-CMYK.pdf"
 type = "pdf"
 title = "Card 5 BACK — CMYK for MOO"
+logical_id = "c43e848b-ee73-44fe-b46a-5ad77411ec04"
 
 [[outputs]]
 id = "HdNLQQJQWvqvIpAS67THF"
 uri = "file://exports/print/previews/referral-card-5-MOO-front-back.png"
 type = "image"
 title = "MOO rack card — full-size, no cutting needed"
+logical_id = "2a1e0333-d8bd-4e2b-9aa1-29d0731bb93e"
 
 [[outputs]]
 id = "OHTG7-msX-2nyg6bzVLnT"
 uri = "file://exports/print/print-ready-cmyk/eternal-life-referral-card-5-MOO-rack-FRONT-CMYK.pdf"
 type = "pdf"
 title = "Rack Card FRONT — CMYK (MOO upload)"
+logical_id = "6ab28d4c-7bc3-4878-a0de-44ed58cfbdc0"
 
 [[outputs]]
 id = "C8_EFhzjG8zjsbG0CwX69"
 uri = "file://exports/print/print-ready-cmyk/eternal-life-referral-card-5-MOO-rack-BACK-CMYK.pdf"
 type = "pdf"
 title = "Rack Card BACK — CMYK (MOO upload)"
+logical_id = "08c94716-f46e-47fb-abd6-311d238c3dba"
 
 [[outputs]]
 id = "CqWHf3IUC-FxhiqwllWus"
 uri = "file://exports/diagrams/full-circle-of-care.png"
 type = "image"
 title = "Full Circle of Care — Children's Workshop Giving Graphic"
+logical_id = "fd4d4ff1-0c2d-4db2-b6f2-bc14c5d83550"
 
 [[outputs]]
 id = "APCEX5r8IcyGiIlmvtW4h"
 uri = "file://exports/digital/eternal-life-press-kit-digital.pdf"
 type = "pdf"
 title = "Media Kit — corrected page order (12 pages)"
+logical_id = "2a095284-cc76-49b5-a211-007edc55feb5"
 
 [[outputs]]
 id = "SmpVeSU6eVlw0CE_QEOsC"
 uri = "file://exports/digital/eternal-life-referral-card-digital.pdf"
 type = "pdf"
 title = "Referral Card — digital (front & back)"
+logical_id = "a3bb908f-39a6-421e-adbd-e995df4f99de"
 
 [[outputs]]
 id = "Sgi9n8Oz0X85XB0I2z2OV"
 uri = "file://exports/ops/eternal-life-website-costs-and-roadmap.xlsx"
 type = "table"
 title = "ELH Website — Costs & Roadmap (for Aleksandra)"
+logical_id = "c3a40f94-3986-4417-b37c-c7e8f4ff3614"
 
 [[outputs]]
 id = "4G93tYntOGCgkQGfsKZDV"
 uri = "file://exports/newsletter/elh-newsletter-review-kit.zip"
 type = "unspecified"
 title = "ELH Newsletter Review Kit (print-ready ZIP)"
+logical_id = "1b4c1668-cc8f-4cc4-aa56-aa043b55e83e"
 
 [[outputs]]
 id = "BaLOevnRvDAqO87lxKQoL"
 uri = "file://exports/strategy/eternal-life-seo-gbp-analytics-status.pdf"
 type = "pdf"
 title = "Website SEO, Google Business Profile & Analytics — Status & Action Guide"
+logical_id = "ba4113ef-a66e-485b-a27d-ded6a0e00648"
 
 [[outputs]]
 id = "cbDzFKPtC0XogSlDt1Nwz"
 uri = "file://exports/newsletter/elh-newsletter-review.pdf"
 type = "pdf"
 title = "ELH Monthly Newsletter — Review Kit (one continuous PDF)"
+logical_id = "75227805-a7a7-4ebe-acce-14f380568f7c"
 
 [[outputs]]
 id = "PAXWadaeiXfWjWwUJGvH7"
 uri = "file://exports/social/elh-hero-care-that-honors-life.png"
 type = "image"
 title = "Hero Image — Care That Honors Life (for Google Business Profile)"
+logical_id = "21ac8de1-3fb8-4485-9547-6a7d6ac62bdd"
 
 [[outputs]]
 id = "Lm_ETkHowyVDkA7dUa9wH"
 uri = "file://SEO_AUDIT_IMPLEMENTATION.md"
 type = "text"
 title = "SEO & AI-Search Audit — Implementation Report"
+logical_id = "8086afee-da77-4d0d-b8ea-ddc8afd559fb"
 
 [[outputs]]
 id = "t1fYQ8To9XRG0O-ImVoJH"
 uri = "file://exports/print/print-ready-cmyk/eternal-life-rack-card-CMYK.pdf"
 type = "pdf"
 title = "Main Rack Card (CMYK, print-ready)"
+logical_id = "6f976509-4962-44cb-8f29-e1af84829cf6"
 
 [[outputs]]
 id = "B90uMUUYK6S-sLh0zj096"
 uri = "file://exports/print/print-ready-cmyk/press-kit/eternal-life-rackcard-1-clinical-confidence-CMYK.pdf"
 type = "pdf"
 title = "Pillar 1 — Clinical Confidence (CMYK)"
+logical_id = "440bf6a2-1115-4ad9-9255-dedb237d24a9"
 
 [[outputs]]
 id = "oHqHkbn-PIojEBjm6sb61"
 uri = "file://exports/print/print-ready-cmyk/press-kit/eternal-life-rackcard-2-guided-presence-CMYK.pdf"
 type = "pdf"
 title = "Pillar 2 — Guided Presence (CMYK)"
+logical_id = "3f528352-ef36-4276-9c2c-9bd0c3117788"
 
 [[outputs]]
 id = "nb0BqFJtOGCeR1byfCmNM"
 uri = "file://exports/print/print-ready-cmyk/press-kit/eternal-life-rackcard-3-whole-person-comfort-CMYK.pdf"
 type = "pdf"
 title = "Pillar 3 — Whole-Person Comfort (CMYK)"
+logical_id = "2ea3e6d9-98cf-431b-8f34-3320874dfbdd"
 
 [[outputs]]
 id = "l1tV6ukMW_p_QOzZHwxtZ"
 uri = "file://exports/print/print-ready-cmyk/press-kit/eternal-life-rackcard-4-compliance-led-care-CMYK.pdf"
 type = "pdf"
 title = "Pillar 4 — Compliance-Led Care (CMYK)"
+logical_id = "ddd912a1-8e88-41a5-9c59-295aa451836e"
 
 [[outputs]]
 id = "wqfEgtSwtaOeBIe5oMFHa"
 uri = "file://exports/print/print-ready-cmyk/eternal-life-referral-card-5-MOO-rack-CMYK.pdf"
 type = "pdf"
 title = "Referral Rack Card — MOO CMYK (for the printer)"
+logical_id = "2f33e941-2fe9-40ec-8d89-3c2b6b659651"
 
 [[outputs]]
 id = "nKHxT1VnhtvTI7rwvbHGX"
 uri = "file://exports/print/eternal-life-referral-card-5-MOO-rack.pdf"
 type = "pdf"
 title = "Eternal Life Referral Card 5 — MOO Rack (updated)"
+logical_id = "706ff8a1-92a3-4146-9ea4-f41a0627f320"
 
 [[outputs]]
 id = "ZE5LuieahWOHpH-kLTGg7"
 uri = "file://exports/print/eternal-life-referral-card-5-crop-marks-press.pdf"
 type = "pdf"
 title = "Referral Card 5 — Crop-Mark Press File (front + back)"
+logical_id = "46011553-6792-4977-b429-342d5d6d7d8e"
 
 [[outputs]]
 id = "CBhnA4mgsG14CVJuBts4l"
 uri = "file://exports/print/print-ready-cmyk/eternal-life-referral-card-5-crop-marks-press-CMYK.pdf"
 type = "pdf"
 title = "Referral Card 5 — Crop-Mark Press File (CMYK — send THIS to the printer)"
+logical_id = "0394aaf4-b314-496b-a560-1c66b922284c"
 
 [[outputs]]
 id = "Il-Y4x2zUtZAmx0vF7Dvd"
 uri = "file://screenshots/footer-desktop.jpg"
 type = "image"
 title = "\"Visit us here\" label with the social icons — desktop"
+logical_id = "39e5cdfa-954f-415a-9b3b-e71ff2245569"
 
 [[outputs]]
 id = "C0yTynTmAQvoMupcGKAPM"
 uri = "file://screenshots/footer-mobile.jpg"
 type = "image"
 title = "\"Visit us here\" label with the social icons — mobile"
+logical_id = "20ed9050-2508-4d7f-b4fa-76400de2a781"
 
 [[outputs]]
 id = "d8jRrsK7FRWjPQhvaC-BE"
 uri = "file://exports/email/care-brief-introduction-email.zip"
 type = "unspecified"
 title = "Full email kit (HTML + how-to)"
+logical_id = "126f620e-5de4-40e8-b824-9d9de6b94f10"
 
 [[outputs]]
 id = "S2jE65GtwpDI_8D09nlQu"
 uri = "file://exports/email/eternal-care-brief-introduction-email-HOW-TO.txt"
 type = "text"
 title = "How to load and send it (plain-language steps)"
+logical_id = "ddff02dc-b7ca-466e-ae22-37396e0abea2"
 
 [[outputs]]
 id = "nuQYgJcq9nUT54vcJxGSV"
 uri = "file://exports/email/care-brief-email-code.txt"
 type = "text"
 title = "Care Brief Intro Email — HTML code (copy-paste ready)"
+logical_id = "c46f6183-75b3-4cd3-9caa-073812ea43a2"
 
 [[outputs]]
 id = "2ghMmXCGggjuLSyiP0MkP"
 uri = "file://website/elh-preview/assets/downloads/eternal-life-press-kit-digital.pdf"
 type = "pdf"
 title = "Digital Press Kit (13 pages — welcome letter, coverage, 24/7 line, 4 pillar cards front+back)"
+logical_id = "90da1a40-9bb1-4201-8a17-84d2d8ac75bb"
 
 [[outputs]]
 id = "JeCqsAWM2tCKcWnlC_jKc"
 uri = "file://website/elh-preview/assets/downloads/eternal-life-referral-card-digital.pdf"
 type = "pdf"
 title = "Referral Card (front + back)"
+logical_id = "e3bbd344-6f47-4131-ac91-d1de6413cf89"
 
 [[outputs]]
 id = "R0NZgFtISKTqg_PABNhUQ"
 uri = "file://exports/social/elh-master-content-drafts.md"
 type = "text"
 title = "ELH Master Content Drafts — Complete Library"
+logical_id = "dfba1b0f-5ae6-458b-a90a-1302242059a2"
 
 [[outputs]]
 id = "HNNhGb3uhpWaMUihgRK_9"
 uri = "file://exports/social/elh-social-brand-brief.pdf"
 type = "pdf"
 title = "ELH Social Brand Brief — PDF"
+logical_id = "a96b06a8-e97d-40ae-a018-8101613e3755"
 
 [[outputs]]
 id = "WUsVxzfyDgVn9px1Ic2YF"
 uri = "file://exports/email/email-signatures.zip"
 type = "unspecified"
 title = "Email Signatures — Aleksandra & Denise (+ install instructions)"
+logical_id = "6df4556e-dbc7-4ea2-aff3-18f9a2c0f1ae"
 
 [[outputs]]
 id = "7oNF2XYtFy-g7usAl55Bi"
 uri = "file://exports/email/issue1-follow-up-drafts.md"
 type = "text"
 title = "Issue 01 Follow-Up Email Drafts (for your review)"
+logical_id = "907f0dd1-fe45-4070-baa3-87dca8880dcc"
 
 [[outputs]]
 id = "3BNqRhdvpGMZnSk2QJdJg"
 uri = "file://exports/email/eternal-care-brief-issue1-campaign-recap.pdf"
 type = "pdf"
 title = "Care Brief Issue 1 — Campaign Recap (for Aleksandra)"
+logical_id = "525bd274-615e-4093-8a6a-57e1bf480613"
 
 [[outputs]]
 id = "kKccK9Yfi0SCzkr4nX7Yq"
 uri = "file://exports/email/PIH-Health-follow-up-letters-FOR-REVIEW.pdf"
 type = "pdf"
 title = "PIH Health Follow-Up Letters — For Aleksandra’s Review"
+logical_id = "b3ff171c-a462-47a3-a1d3-63424b388395"
 
 [[outputs]]
 id = "T1BFIFjr4WAF6F1f-m_Zr"
 uri = "file://exports/email/PIH-Health-all-8-letters-FOR-REVIEW.pdf"
 type = "pdf"
 title = "All 8 Combined (PDF)"
+logical_id = "2830c536-d550-42b2-bb13-1e71bbb1fa3d"
 
 [[outputs]]
 id = "zQ9bKMB6EC-4ETyP_hrpp"
 uri = "file://exports/email/pih-letters/cristy-hernandez.pdf"
 type = "pdf"
 title = "Cristy Hernandez — Sample Letter"
+logical_id = "4010dcfb-c9e5-43ce-8af9-1516aed0a0d0"
 
 [[outputs]]
 id = "7Cn28aAjDZ5Vg8hdqa4GB"
 uri = "file://exports/email/pih-letters/melissa-perez.pdf"
 type = "pdf"
 title = "2. Melissa Perez"
+logical_id = "ae516986-f33c-47fe-9317-b6b7b693cd29"
 
 [[outputs]]
 id = "KljwoQAukZ8NG7Ryk7yGc"
 uri = "file://exports/email/pih-letters/brent-melton.pdf"
 type = "pdf"
 title = "3. Brent Melton"
+logical_id = "fe5fda62-c8e8-4f4a-9a44-e129c7f358b9"
 
 [[outputs]]
 id = "Y-zegINIexqWoWKA7B9fB"
 uri = "file://exports/email/pih-letters/jeanette-wehrberg.pdf"
 type = "pdf"
 title = "4. Jeanette Wehrberg"
+logical_id = "c41966f5-37ad-4e4f-b348-8fa19a5efb58"
 
 [[outputs]]
 id = "h58ngfJKLWR_NemzP7t1j"
 uri = "file://exports/email/pih-letters/noel-coppinger.pdf"
 type = "pdf"
 title = "5. Noel Coppinger"
+logical_id = "0a163188-8f68-4ae9-a302-7fc8c26778f5"
 
 [[outputs]]
 id = "pSuEVUIjNM0C_qWKqPwsr"
 uri = "file://exports/email/pih-letters/scott-bremer.pdf"
 type = "pdf"
 title = "6. Scott Bremer"
+logical_id = "9a7c68c5-1c12-48a3-908a-1f9bbafe4499"
 
 [[outputs]]
 id = "zDutIp0F2t6S65ACvid7I"
 uri = "file://exports/email/pih-letters/jeanette-abundis.pdf"
 type = "pdf"
 title = "7. Jeanette Abundis"
+logical_id = "73a4351f-bd55-4dac-bce2-9eebbd0b51ab"
 
 [[outputs]]
 id = "OiN0pzrtFuVS-Jquk2Emj"
 uri = "file://exports/email/pih-letters/stephanie-jones.pdf"
 type = "pdf"
 title = "8. Stephanie Jones"
+logical_id = "9594da6c-9266-41e6-9a3f-80309dbeb66c"
 
 [[outputs]]
 id = "m6_M-UaL6j8TgH67BKmCT"
 uri = "file://exports/email/PIH-Health-letters.zip"
 type = "unspecified"
 title = "PIH Health Letters — All 8 (ZIP)"
+logical_id = "3b75e02c-f225-4459-85c8-c6a0b145ad58"
 
 [[outputs]]
 id = "jUwNMJyoB1tfjYgbSNuWo"
 uri = "file://exports/print/ELH-JD-Administrative-Support-Coordinator.pdf"
 type = "pdf"
 title = "JD — Administrative Support Coordinator ($18–$23/hr)"
+logical_id = "0a321734-05fc-478d-94a4-43dfeafe68f5"
 
 [[outputs]]
 id = "hOvfPshgKbnkUCLu6TQH9"
 uri = "file://exports/print/ELH-JD-Marketing-Design-Digital-Media-Coordinator.pdf"
 type = "pdf"
 title = "JD — Marketing, Design & Digital Media Coordinator (updated)"
+logical_id = "f5ca892c-9408-4914-9878-adeff3745c7d"
 
 [[outputs]]
 id = "yjxZAwzKjQYd0Cxtlbg3I"
 uri = "file://exports/print/ELH-JD-Community-Outreach-Referral-Relations-Coordinator.pdf"
 type = "pdf"
 title = "JD — Community Outreach & Referral Relations Coordinator (final)"
+logical_id = "81ccee82-4b2d-4506-b035-e14bb90decb1"
 
 [[outputs]]
 id = "-H7epQKB9vo9QOiGoJ6OJ"
 uri = "file://exports/ELH-AJCC-Job-Descriptions.zip"
 type = "unspecified"
 title = "All 3 AJCC Job Descriptions — Updated (ZIP)"
+logical_id = "6e7351eb-b0f7-41d3-a280-a43436104ea6"
 
 [[outputs]]
 id = "0IEWA0L8AQ5c7vM8JWkcF"
 uri = "file://exports/social/family-guide-post.png"
 type = "image"
 title = "Organic Post Image — Family Guide"
+logical_id = "dded269f-4b6f-4798-bba3-7a822ab5b5e3"
 
 [[outputs]]
 id = "8TEU33QvSm_NSFzuterZx"
 uri = "file://exports/social/referral-ad-creative.png"
 type = "image"
 title = "Facebook & Instagram Ad Creative — Referral"
+logical_id = "bbc91b3b-9e44-4c74-a792-185e67e95860"
 
 [[outputs]]
 id = "4uqNxFQbziDxpouKCj2m0"
 uri = "file://exports/social/gbp-post-image.png"
 type = "image"
 title = "Google Business Profile Post Image"
+logical_id = "b7d17ef0-7e64-456a-8942-f3a31b5797de"
 
 [[outputs]]
 id = "rvW4aEMtHzGwhBCergS8h"
 uri = "file://exports/social/gbp-family-guide-post-FINAL.png"
 type = "image"
 title = "GBP Post Image — Family Guide (with real cover)"
+logical_id = "141e3244-5d51-4d33-8f87-db83449f3622"
 
 [[outputs]]
 id = "uW_-_p9cVWiC_qmaAaXZQ"
 uri = "file://exports/social/guide-fb-linkedin.jpg"
 type = "image"
 title = "Facebook + LinkedIn image (1280×720)"
+logical_id = "de4a0b79-cc48-4afc-909b-f2faf62b416d"
 
 [[outputs]]
 id = "GqrEvNflTzap2btf-OJHU"
 uri = "file://exports/social/guide-gbp.jpg"
 type = "image"
 title = "GBP image — exactly 1200×900"
+logical_id = "0b504023-d364-417e-bfd7-23a52ea8ae28"
 
 [[outputs]]
 id = "ES_oZJJPMTzCcuXnoRtyg"
 uri = "file://attached_assets/gif_previews/option1_pulse_ring.gif"
 type = "image"
 title = "Option 1 — Pulse Ring (slower)"
+logical_id = "747a111f-b6fe-420d-ac12-d70507c298ba"
 
 [[outputs]]
 id = "gW3j7V6-wBEx3JCeX3IKj"
 uri = "file://attached_assets/gif_previews/option2_bounce_arrow.gif"
 type = "image"
 title = "Option 2 — Bounce Arrow (slower)"
+logical_id = "1a67ac2a-7f2a-454f-86bf-592b38e61010"
 
 [[outputs]]
 id = "GKCtTxuioqulPhfeW3Q0u"
 uri = "file://attached_assets/gif_previews/option3_shimmer.gif"
 type = "image"
 title = "Option 3 — Shimmer Sweep (slower)"
+logical_id = "a5defd76-f581-49f0-b9d6-7dba284927b8"
 
 [[outputs]]
 id = "bczw5OnqbGIRroa4UikjB"
 uri = "file://exports/social/post-medicare-1200x900.jpg"
 type = "image"
 title = "GBP Post — Medicare Coverage (1200×900)"
+logical_id = "88ecac0e-96e0-49e4-b40d-5e33e34c1ac8"
 
 [[outputs]]
 id = "JxlQkcO461NgAj6BYqrnC"
 uri = "file://exports/social/post-founder-linkedin-1200x627.jpg"
 type = "image"
 title = "LinkedIn Post — Founder Quote (1200×627)"
+logical_id = "f5015001-f06a-4a93-8c6e-46e4f84bd36e"
+
+[[outputs]]
+id = "7iULfWeG2KvgcpcgJ78A9"
+uri = "file://exports/seo/elh-forensic-seo-audit-2026-09-02.pdf"
+type = "pdf"
+title = "Eternal Life Hospice — Current Forensic SEO Audit"
+description = "Full read-only forensic SEO audit dated September 2, 2026. Includes confirmed production findings, healthy checks, limitations, evidence, and prioritized remediation order."
+logical_id = "1e28722b-2713-4b1d-b553-4bb115f001fc"
+content_hash = "sha256:25658e161a3accb461e82dacacacef451db7406c66224428404aa110afc64716"
+size = 329028
+mtime_ms = 1788338088658
+storage_uri = "gcs://replit-rams-assets-kirk/rams/assets/repl:e1b2f643-7869-4565-af0e-10c34575ee8d/1e28722b-2713-4b1d-b553-4bb115f001fc/3a2c72f8-70c6-4d70-bd25-19e565456a67"
+storage_version_token = "1788338109071360"
+content_type = "application/pdf"

@@ -1,0 +1,581 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Current Forensic SEO Audit — Eternal Life Hospice</title>
+<style>
+  @page { size: Letter; margin: 0.68in 0.7in 0.72in; }
+  :root {
+    --plum: #43213f;
+    --plum-dark: #2d1730;
+    --gold: #ad7d38;
+    --gold-soft: #f5ead4;
+    --ink: #27232a;
+    --muted: #665f68;
+    --line: #ddd5dc;
+    --soft: #f7f4f6;
+    --red: #9e3f3f;
+    --red-soft: #fae9e9;
+    --amber: #8b631f;
+    --amber-soft: #fff4dd;
+    --green: #296844;
+    --green-soft: #eaf5ed;
+  }
+  * { box-sizing: border-box; }
+  html { color: var(--ink); background: #fff; }
+  body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 9.6pt;
+    line-height: 1.45;
+  }
+  h1, h2, h3, h4 {
+    font-family: Georgia, "Times New Roman", serif;
+    color: var(--plum);
+    line-height: 1.18;
+    margin: 0 0 0.28em;
+  }
+  h1 { font-size: 28pt; letter-spacing: -0.02em; }
+  h2 { font-size: 18pt; margin-top: 1.25em; padding-bottom: 0.22em; border-bottom: 2px solid var(--gold); }
+  h3 { font-size: 13pt; margin-top: 1em; }
+  h4 { font-size: 10.5pt; margin-top: 0.8em; }
+  p { margin: 0.42em 0 0.7em; }
+  ul, ol { margin: 0.35em 0 0.8em 1.35em; padding: 0; }
+  li { margin: 0.22em 0; }
+  a { color: var(--plum); }
+  code, pre {
+    font-family: "Courier New", Courier, monospace;
+    font-size: 8.1pt;
+  }
+  code { color: var(--plum-dark); }
+  pre {
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+    background: #f3f0f3;
+    border-left: 3px solid var(--gold);
+    padding: 0.65em 0.8em;
+    margin: 0.6em 0 0.8em;
+  }
+  .cover {
+    min-height: 8.8in;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 0.45in 0.1in 0.2in;
+    page-break-after: always;
+  }
+  .brand-mark {
+    display: inline-block;
+    border: 1px solid var(--gold);
+    color: var(--gold);
+    letter-spacing: 0.16em;
+    font-size: 8pt;
+    font-weight: bold;
+    padding: 0.55em 0.8em;
+    margin-bottom: 1.4in;
+  }
+  .cover h1 { max-width: 6.1in; }
+  .cover .subtitle {
+    font-family: Georgia, serif;
+    color: var(--muted);
+    font-size: 14pt;
+    max-width: 5.9in;
+    margin-top: 0.2in;
+  }
+  .cover-rule { width: 1.1in; border-top: 4px solid var(--gold); margin: 0.38in 0; }
+  .cover-meta {
+    border-top: 1px solid var(--line);
+    padding-top: 0.22in;
+    color: var(--muted);
+    font-size: 9pt;
+  }
+  .cover-meta strong { color: var(--plum); }
+  .eyebrow {
+    color: var(--gold);
+    font-size: 8pt;
+    text-transform: uppercase;
+    letter-spacing: 0.13em;
+    font-weight: bold;
+    margin-bottom: 0.18em;
+  }
+  .lead {
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 12.5pt;
+    color: var(--plum-dark);
+    background: var(--gold-soft);
+    border-left: 4px solid var(--gold);
+    padding: 0.75em 0.9em;
+    margin: 0.8em 0 1em;
+  }
+  .summary-grid, .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    margin: 0.7em 0 1em;
+  }
+  .stat {
+    background: var(--soft);
+    border: 1px solid var(--line);
+    border-top: 3px solid var(--gold);
+    padding: 0.6em 0.7em;
+  }
+  .stat strong { display: block; color: var(--plum); font-size: 16pt; font-family: Georgia, serif; }
+  .stat span { color: var(--muted); font-size: 8.2pt; }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0.55em 0 1em;
+    page-break-inside: avoid;
+  }
+  th, td {
+    border: 1px solid var(--line);
+    padding: 0.42em 0.5em;
+    vertical-align: top;
+    text-align: left;
+  }
+  th {
+    background: var(--plum);
+    color: #fff;
+    font-size: 8.2pt;
+  }
+  td { font-size: 8.7pt; }
+  tr:nth-child(even) td { background: #fbfafb; }
+  .severity {
+    display: inline-block;
+    min-width: 3.9em;
+    text-align: center;
+    border-radius: 3px;
+    padding: 0.13em 0.35em;
+    font-size: 7.6pt;
+    font-weight: bold;
+    text-transform: uppercase;
+  }
+  .high { background: var(--red-soft); color: var(--red); }
+  .medium { background: var(--amber-soft); color: var(--amber); }
+  .low { background: #eef0f4; color: #505967; }
+  .info { background: var(--green-soft); color: var(--green); }
+  .finding {
+    page-break-inside: avoid;
+    border: 1px solid var(--line);
+    border-left: 4px solid var(--gold);
+    padding: 0.65em 0.78em 0.45em;
+    margin: 0.7em 0;
+  }
+  .finding.high-border { border-left-color: var(--red); }
+  .finding.medium-border { border-left-color: var(--amber); }
+  .finding-title { display: flex; justify-content: space-between; gap: 1em; align-items: baseline; }
+  .finding-title h3 { margin: 0; }
+  .label { color: var(--muted); font-weight: bold; }
+  .small { color: var(--muted); font-size: 8.4pt; }
+  .good {
+    background: var(--green-soft);
+    border-left: 4px solid var(--green);
+    padding: 0.7em 0.85em;
+    margin: 0.65em 0;
+  }
+  .note {
+    background: var(--soft);
+    border-left: 4px solid #8d8290;
+    padding: 0.65em 0.85em;
+    margin: 0.6em 0;
+  }
+  .page-break { page-break-before: always; }
+  .avoid { page-break-inside: avoid; }
+  .footer-note {
+    border-top: 1px solid var(--line);
+    margin-top: 1.2em;
+    padding-top: 0.5em;
+    color: var(--muted);
+    font-size: 8pt;
+  }
+  .url-list { columns: 2; column-gap: 2em; }
+  .url-list li { break-inside: avoid; overflow-wrap: anywhere; font-size: 8.3pt; }
+  .check { color: var(--green); font-weight: bold; }
+  .warn { color: var(--amber); font-weight: bold; }
+  @media print {
+    a { color: inherit; text-decoration: none; }
+    h2, h3 { break-after: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<section class="cover">
+  <div>
+    <div class="brand-mark">ETERNAL LIFE HOSPICE</div>
+    <div class="eyebrow">Forensic search and technical review</div>
+    <h1>Current Forensic SEO Audit</h1>
+    <div class="cover-rule"></div>
+    <p class="subtitle">Evidence-based findings from the current repository, live production site, sitemap crawl, regression checks, and deployment response headers.</p>
+  </div>
+  <div class="cover-meta">
+    <p><strong>Audit date:</strong> September 2, 2026</p>
+    <p><strong>Production:</strong> https://eternallifehospice.com</p>
+    <p><strong>Branch:</strong> main &nbsp; <strong>Commit:</strong> ee466b6c</p>
+    <p><strong>Audit mode:</strong> Read-only. No application, deployment, configuration, asset, secret, or external-system changes were made.</p>
+  </div>
+</section>
+
+<section>
+  <div class="eyebrow">At a glance</div>
+  <h2 style="margin-top:0">Executive summary</h2>
+  <p class="lead">The current site has a strong technical SEO foundation, but three production issues deserve priority: the Care Brief redirect loop, failed HTTPS on the www hostname, and disabled caching/compression for static responses.</p>
+  <div class="summary-grid">
+    <div class="stat"><strong>177</strong><span>unique sitemap URLs</span></div>
+    <div class="stat"><strong>176</strong><span>sitemap URLs returning HTTP 200</span></div>
+    <div class="stat"><strong>145</strong><span>city pages passing specialized checks</span></div>
+    <div class="stat"><strong>606</strong><span>coverage assertions passing</span></div>
+    <div class="stat"><strong>0</strong><span>production dependency vulnerabilities</span></div>
+    <div class="stat"><strong>3</strong><span>high-priority findings</span></div>
+  </div>
+  <h3>Top priorities</h3>
+  <ol>
+    <li><strong>Fix the Care Brief loop.</strong> `/care-brief` is in the sitemap and `llms.txt`, but alternates between `/care-brief` and `/care-brief/` with 301 redirects.</li>
+    <li><strong>Repair the www certificate/domain configuration.</strong> `https://www.eternallifehospice.com` fails TLS, while HTTP sends users to that failing HTTPS hostname.</li>
+    <li><strong>Restore production caching and compression.</strong> Sampled HTML, CSS, JavaScript, JSON, and image responses return `Cache-Control: no-store`; no gzip or Brotli encoding was observed.</li>
+  </ol>
+  <p>Other findings are primarily indexation governance for internal artifact pages, missing image dimensions, security-header deployment consistency, fallback Netlify configuration ambiguity, and small social metadata gaps.</p>
+</section>
+
+<section>
+  <h2>Verified baseline</h2>
+  <table>
+    <tr><th>Item</th><th>Current result</th></tr>
+    <tr><td>Branch</td><td><code>main</code></td></tr>
+    <tr><td>Current commit</td><td><code>ee466b6cf120471ff9868ef52f1562f7c472c2aa</code></td></tr>
+    <tr><td>Local working tree</td><td>Clean</td></tr>
+    <tr><td>Raw HTML files</td><td>199</td></tr>
+    <tr><td>Sitemap URLs</td><td>177 unique URLs</td></tr>
+    <tr><td>Production robots.txt</td><td>HTTP 200, valid plain text</td></tr>
+    <tr><td>Production sitemap.xml</td><td>HTTP 200, valid XML</td></tr>
+    <tr><td>Production /health</td><td>HTTP 200, <code>ok</code></td></tr>
+    <tr><td>Production /healthz</td><td>HTTP 404</td></tr>
+    <tr><td>Sitemap crawl</td><td>176 HTTP 200 pages; one redirect-loop failure</td></tr>
+    <tr><td>Published city pages</td><td>145</td></tr>
+    <tr><td>npm production vulnerabilities</td><td>0</td></tr>
+  </table>
+  <div class="note"><strong>Deployment parity:</strong> production HTML differs from local HTML only by a Replit-injected analytics script immediately before <code>&lt;/body&gt;</code>. First-party JavaScript assets sampled from production matched the repository byte-for-byte.</div>
+</section>
+
+<section class="page-break">
+  <div class="eyebrow">Confirmed defects</div>
+  <h2>Findings register</h2>
+
+  <div class="finding high-border">
+    <div class="finding-title"><h3>ELH-F-001 — Care Brief redirect loop</h3><span class="severity high">High</span></div>
+    <p><span class="label">Category:</span> Crawlability, redirects, sitemap and AI readiness &nbsp; <span class="label">Status:</span> Confirmed</p>
+    <p><span class="label">Affected URL:</span> <code>https://eternallifehospice.com/care-brief</code></p>
+    <p><span class="label">Evidence:</span></p>
+    <pre>/care-brief  → 301 Location: /care-brief/
+/care-brief/ → 301 Location: /care-brief</pre>
+    <p>The URL is included in <code>sitemap.xml</code>, main navigation, footer navigation, breadcrumb schema, internal links, and <code>llms.txt</code>. The direct file <code>/care-brief.html</code> returns HTTP 200.</p>
+    <p><span class="label">Impact:</span> Google and AI crawlers cannot reach the Care Brief archive through the intended canonical route, and users can encounter a redirect error.</p>
+    <p><span class="label">Recommended fix:</span> Make <code>/care-brief</code> the one canonical HTTP 200 route. Redirect <code>/care-brief/</code> to it in one hop, and keep sitemap, canonical, navigation, schema, and <code>llms.txt</code> aligned.</p>
+    <p class="small"><strong>Aesthetic impact:</strong> None expected. Technical approval only.</p>
+  </div>
+
+  <div class="finding high-border">
+    <div class="finding-title"><h3>ELH-F-002 — HTTPS www hostname fails TLS</h3><span class="severity high">High</span></div>
+    <p><span class="label">Category:</span> Canonical domain, crawlability and deployment &nbsp; <span class="label">Status:</span> Confirmed</p>
+    <p><span class="label">Evidence:</span> Three independent HTTPS attempts to <code>https://www.eternallifehospice.com/</code> failed with a TLS “unexpected EOF” error and HTTP status 000.</p>
+    <p>HTTP currently responds with:</p>
+    <pre>http://www.eternallifehospice.com/
+→ 301 Location: https://www.eternallifehospice.com:443/</pre>
+    <p><span class="label">Impact:</span> Visitors, crawlers, old bookmarks, listings, and backlinks using the www hostname can fail before reaching the canonical site.</p>
+    <p><span class="label">Recommended fix:</span> Confirm the www custom domain and certificate in the active Replit deployment. Configure a direct 301 from www HTTPS to the non-www canonical domain, preserving path and query string.</p>
+    <p class="small"><strong>Aesthetic impact:</strong> None. Requires domain/DNS and deployment access.</p>
+  </div>
+
+  <div class="finding high-border">
+    <div class="finding-title"><h3>ELH-F-003 — Production disables browser caching</h3><span class="severity high">High</span></div>
+    <p><span class="label">Category:</span> Performance and deployment &nbsp; <span class="label">Status:</span> Confirmed</p>
+    <p>Production returned <code>Cache-Control: no-store</code> for sampled homepage HTML, CSS, JavaScript, JSON, and image responses. The active Python server applies <code>no-store</code> whenever a response does not already have another cache policy. The Netlify <code>_headers</code> file is not automatically applied by the Replit Python server.</p>
+    <p>Sampled assets included:</p>
+    <ul>
+      <li>Homepage HTML: approximately 247 KB</li>
+      <li>Shared CSS: approximately 60 KB</li>
+      <li>Header JavaScript: approximately 13 KB</li>
+      <li>Search index JSON: approximately 71 KB</li>
+      <li>Somis JPEG: approximately 8.87 MB</li>
+    </ul>
+    <p><span class="label">Impact:</span> Repeat visits redownload or revalidate assets unnecessarily, increasing bandwidth and mobile load time.</p>
+    <p><span class="label">Recommended fix:</span> Add endpoint-specific caching in the active Replit server. Use short revalidation for HTML and longer public caching for versioned static assets.</p>
+    <p class="small"><strong>Aesthetic impact:</strong> None if implemented as HTTP headers only.</p>
+  </div>
+
+  <div class="finding high-border">
+    <div class="finding-title"><h3>ELH-F-004 — No observed production compression</h3><span class="severity high">High</span></div>
+    <p><span class="label">Category:</span> Performance &nbsp; <span class="label">Status:</span> Confirmed for sampled responses</p>
+    <p>Requests sent with compression support did not receive <code>Content-Encoding: gzip</code> or <code>Content-Encoding: br</code>.</p>
+    <p><span class="label">Impact:</span> Larger text transfers and slower first visits on mobile networks.</p>
+    <p><span class="label">Recommended fix:</span> Enable Brotli or gzip for HTML, CSS, JavaScript, JSON, XML, and SVG. Do not recompress JPEG, PNG, WebP, PDF, or other already-compressed formats.</p>
+    <p class="small"><strong>Aesthetic impact:</strong> None. Technical approval only.</p>
+  </div>
+</section>
+
+<section class="page-break">
+  <div class="eyebrow">Indexation and performance</div>
+  <h2>Additional findings</h2>
+
+  <div class="finding medium-border">
+    <div class="finding-title"><h3>ELH-F-005 — Public utility/artifact HTML lacks indexation controls</h3><span class="severity medium">Medium</span></div>
+    <p><span class="label">Status:</span> Confirmed; indexing intent requires a decision</p>
+    <p>Fourteen internal social/gallery artifact pages are publicly crawlable, absent from the sitemap, and do not contain <code>noindex</code>. <code>/referral-card</code> is also omitted from the sitemap but is not marked noindex.</p>
+    <p>Examples include:</p>
+    <ul class="url-list">
+      <li><code>/assets/img/amethyst-tmp/gallery</code></li>
+      <li><code>/assets/social/elh-social-brand-brief</code></li>
+      <li><code>/assets/social/mosaic-m1</code></li>
+      <li><code>/assets/social/mosaic-m3</code></li>
+      <li><code>/assets/social/mosaic-m5</code></li>
+      <li><code>/assets/social/mosaic-m7</code></li>
+      <li><code>/assets/social/mosaic-m9</code></li>
+      <li><code>/assets/social/mosaic-pinterest</code></li>
+      <li><code>/assets/social/stillness-card</code></li>
+      <li><code>/referral-card</code></li>
+    </ul>
+    <p><span class="label">Impact:</span> Search engines may discover low-value internal design artifacts and spend crawl attention on them.</p>
+    <p><span class="label">Recommended fix:</span> Decide which routes are intentionally public. For internal-only tools, remove them from deployment or add <code>noindex, nofollow</code>. Do not add full SEO metadata solely to satisfy an audit score.</p>
+    <p class="small"><strong>Approval:</strong> Business/brand decision required for <code>/referral-card</code>.</p>
+  </div>
+
+  <div class="finding medium-border">
+    <div class="finding-title"><h3>ELH-F-006 — Missing explicit image dimensions</h3><span class="severity medium">Medium</span></div>
+    <p><span class="label">Category:</span> Performance and layout stability &nbsp; <span class="label">Status:</span> Confirmed</p>
+    <p>Across the 177 sitemap pages, 631 image occurrences lack either an explicit <code>width</code> or <code>height</code>.</p>
+    <p><span class="label">Impact:</span> The browser may not reserve image space before loading, creating layout-shift risk under slower network conditions. The prior Lighthouse baseline showed CLS 0, so this is preventive rather than proof of a current field CLS failure.</p>
+    <p><span class="label">Recommended fix:</span> Add accurate intrinsic dimensions while preserving responsive CSS such as <code>max-width:100%; height:auto;</code>. Verify mobile, tablet, and desktop screenshots before release.</p>
+    <p class="small"><strong>Aesthetic impact:</strong> Possible if dimensions are inaccurate. Visual regression testing required.</p>
+  </div>
+
+  <div class="finding">
+    <div class="finding-title"><h3>ELH-F-007 — Image loading strategy is not explicit on many images</h3><span class="severity medium">Low–Med</span></div>
+    <p><span class="label">Status:</span> Confirmed inventory; not every occurrence is a defect</p>
+    <p>Across sitemap pages, 355 image occurrences have neither <code>loading</code> nor <code>fetchpriority</code>. The city-page guard confirms that all 145 city pages have a WebP hero preload and appropriate hero markup.</p>
+    <p><span class="label">Recommended fix:</span> Classify images by position: eager/high priority for LCP heroes, default for immediately visible supporting images, and lazy loading for below-the-fold content. Do not lazy-load every image automatically.</p>
+  </div>
+
+  <div class="finding">
+    <div class="finding-title"><h3>ELH-F-008 — Large fallback JPEG inventory</h3><span class="severity low">Info–Med</span></div>
+    <p><span class="label">Status:</span> Confirmed inventory; active transfer risk is mitigated for modern browsers</p>
+    <p>85 deployable assets exceed 500 KB. Seventy-three city JPEGs exceed 500 KB. The largest are Somis at 8.87 MB and Stevenson Ranch at 8.75 MB.</p>
+    <p>All 73 large city JPEGs have WebP versions. For example, Somis is approximately 8.87 MB as JPEG versus 92 KB as WebP, a 99% reduction.</p>
+    <p><span class="label">Recommended fix:</span> Do not delete or replace approved imagery automatically. Review whether fallback JPEG quality can be reduced while preserving the approved crop and appearance.</p>
+  </div>
+</section>
+
+<section class="page-break">
+  <div class="eyebrow">Deployment and metadata</div>
+  <h2>Additional findings, continued</h2>
+
+  <div class="finding medium-border">
+    <div class="finding-title"><h3>ELH-F-009 — Production does not apply repository security headers</h3><span class="severity medium">Medium</span></div>
+    <p><span class="label">Status:</span> Confirmed</p>
+    <p>Live sampled HTML included HSTS, but did not include the repository’s intended Content-Security-Policy, X-Content-Type-Options, Referrer-Policy, Permissions-Policy, or frame restrictions.</p>
+    <p>The Netlify fallback CSP also needs review because it combines <code>frame-src 'none'</code> with another frame source and does not clearly cover every active third-party runtime host.</p>
+    <p><span class="label">Impact:</span> This is not a direct ranking defect, but it weakens browser security and creates inconsistent behavior between Replit and the frozen Netlify fallback.</p>
+    <p><span class="label">Recommended fix:</span> Define appropriate headers in the active Replit server or supported edge, then test chat, forms, UserWay, Metricool, WhatConverts, Clarity, Brevo, and analytics before tightening CSP.</p>
+    <p class="small"><strong>Aesthetic impact:</strong> Normally none. Widget behavior must be browser-tested.</p>
+  </div>
+
+  <div class="finding medium-border">
+    <div class="finding-title"><h3>ELH-F-010 — Duplicate Netlify build configurations</h3><span class="severity medium">Medium</span></div>
+    <p><span class="label">Affected files:</span> <code>netlify.toml</code> and <code>website/elh-preview/netlify.toml</code></p>
+    <p>The root configuration uses <code>website/elh-preview</code> as its base, strips form-routing attributes, and runs the full predeployment chain. The nested configuration assumes the site directory is the root, regenerates city data and the search index, and invokes a PageSpeed plugin.</p>
+    <p><span class="label">Impact:</span> The active Replit deployment is not dependent on these files, but the frozen Netlify fallback could build differently depending on which configuration Netlify treats as authoritative.</p>
+    <p><span class="label">Recommended fix:</span> Verify the Netlify project base directory and dashboard build settings before deciding which file is authoritative. Do not change either file blindly.</p>
+  </div>
+
+  <div class="finding">
+    <div class="finding-title"><h3>ELH-F-011 — Alternate Replit hostname serves a duplicate copy</h3><span class="severity low">Low–Med</span></div>
+    <p><span class="label">Affected hostname:</span> <code>https://eternal-life-hospice.replit.app</code></p>
+    <p>The Replit hostname returns HTTP 200 and body content identical to the canonical hostname. Page canonicals correctly point to <code>https://eternallifehospice.com</code>.</p>
+    <p><span class="label">Impact:</span> Current canonicals provide duplicate-content protection, but two publicly accessible hostnames create unnecessary crawl surfaces.</p>
+    <p><span class="label">Recommended fix:</span> If feasible, redirect normal HTML page requests on the Replit hostname to the canonical domain while preserving required API and proxy routes. Audit the form/chat architecture before redirecting APIs.</p>
+  </div>
+
+  <div class="finding">
+    <div class="finding-title"><h3>ELH-F-012 — Small remaining social metadata gaps</h3><span class="severity low">Low</span></div>
+    <p>The article <code>/blog/the-caregiver-who-needs-care</code> has an OG image but lacks <code>og:image:width</code> and <code>og:image:height</code>.</p>
+    <p>The HTML sitemap page <code>/sitemap</code> lacks <code>twitter:title</code>, <code>twitter:description</code>, and <code>twitter:image</code>.</p>
+    <p><span class="label">Impact:</span> Possible inconsistency in shared-link previews; no direct indexation impact.</p>
+  </div>
+
+  <div class="finding">
+    <div class="finding-title"><h3>ELH-F-013 — Six descriptions exceed 160 characters</h3><span class="severity low">Low</span></div>
+    <p>All sitemap pages have descriptions, and none are empty or duplicated. The following exceed 160 characters:</p>
+    <table>
+      <tr><th>Route</th><th>Length</th></tr>
+      <tr><td><code>/hospice-care</code></td><td>187</td></tr>
+      <tr><td><code>/about/aleksandra-dubina</code></td><td>252</td></tr>
+      <tr><td><code>/resources/pain-symptom-management</code></td><td>193</td></tr>
+      <tr><td><code>/resources/volunteer</code></td><td>161</td></tr>
+      <tr><td><code>/services</code></td><td>188</td></tr>
+      <tr><td><code>/care-brief</code></td><td>201</td></tr>
+    </table>
+    <p>Google may truncate or rewrite these descriptions. This is not itself a ranking defect.</p>
+  </div>
+</section>
+
+<section class="page-break">
+  <div class="eyebrow">Entity consistency and testing</div>
+  <h2>Additional findings, continued</h2>
+
+  <div class="finding">
+    <div class="finding-title"><h3>ELH-F-014 — Address formatting is not uniform</h3><span class="severity low">Low–Med</span></div>
+    <p><span class="label">Status:</span> Confirmed</p>
+    <p>Both <code>Ste. 325B</code> and <code>Suite 325B</code> appear. Observed source counts were 37 occurrences of the approved abbreviated form and 157 occurrences of the longer form across 151 files.</p>
+    <p>Both formats identify the same suite and are unlikely to create a major local SEO issue, but strict NAP consistency is preferable.</p>
+    <p><span class="label">Recommended fix:</span> Confirm the preferred postal format against the Google Business Profile, then use it consistently in visible contact information, Organization schema, city-page schema, and directory listings.</p>
+    <p class="small"><strong>Approval:</strong> Brand and Google Business Profile confirmation required.</p>
+  </div>
+
+  <div class="finding medium-border">
+    <div class="finding-title"><h3>ELH-F-015 — Missing automated SEO guard scripts</h3><span class="severity medium">Medium</span></div>
+    <p>The project has a passing structured-data guard, but these planned guards are absent:</p>
+    <pre>website/check-og-metadata.py
+website/check-img-alt.py
+website/check-sitemap.py</pre>
+    <p><span class="label">Impact:</span> Current predeployment checks would not automatically block the missing OG dimensions or the live Care Brief redirect loop.</p>
+    <p><span class="label">Recommended fix:</span> Add route-aware checks for sitemap resolution, noindex/sitemap conflicts, required social metadata, image alt attributes, canonical/sitemap consistency, and redirect loops.</p>
+  </div>
+
+  <div class="finding">
+    <div class="finding-title"><h3>ELH-F-016 — Form endpoint uses 404 for unsupported GET</h3><span class="severity low">Low</span></div>
+    <p><code>GET /api/form-submit</code> returns HTTP 404. Valid forms use POST, and the source handler includes same-origin enforcement, global and client rate limits, body-size limits, form parsing, delivery error handling, and no request-body logging.</p>
+    <p>This does not prove form submission is broken. A 405 Method Not Allowed response with <code>Allow: POST</code> would be more semantically precise.</p>
+    <p>A real production submission was not attempted because it could send emails, trigger webhooks, or mutate an external system.</p>
+  </div>
+
+  <div class="finding">
+    <div class="finding-title"><h3>ELH-F-017 — Replit injects an additional production script</h3><span class="severity info">Info</span></div>
+    <p>Production HTML contains a Replit-injected script from <code>i.replit.com</code> immediately before <code>&lt;/body&gt;</code>. This is the only observed HTML difference from the repository samples. First-party JavaScript assets matched byte-for-byte.</p>
+    <p>No change is recommended without confirming the feature that controls the script and its performance/privacy behavior.</p>
+  </div>
+</section>
+
+<section>
+  <div class="eyebrow">Controls that passed</div>
+  <h2>Healthy areas</h2>
+  <div class="good"><strong>Structure and sitemap:</strong> robots.txt and sitemap.xml are valid; 177 unique canonical-domain URLs are listed; all successful sitemap pages have titles and self-consistent canonicals.</div>
+  <div class="good"><strong>Titles, descriptions and headings:</strong> zero missing titles, zero duplicate titles, zero titles over 65 characters, zero missing descriptions, zero duplicate descriptions, and every sitemap page has exactly one H1.</div>
+  <div class="good"><strong>Structured data:</strong> 653 JSON-LD blocks were inventoried; no malformed JSON-LD was found; the project structured-data regression check passed.</div>
+  <div class="good"><strong>Internal linking:</strong> no confirmed broken local HTML routes were found by the static route-aware scan. Header parity passed on all standard pages with 21 documented intentional exceptions.</div>
+  <div class="good"><strong>City pages:</strong> all 145 city pages passed the specialized regression check. WebP hero preloads, hero markup, coverage aliases, analytics loading, and deferred-script expectations passed. Current distinctiveness checks did not confirm a blanket doorway-page problem.</div>
+  <div class="good"><strong>Analytics:</strong> <code>/assets/analytics.js</code> appears on all 177 sitemap pages. Chat appears on 174 pages; the three exclusions are specialized Media Kit/Care Brief reader experiences.</div>
+  <div class="good"><strong>Coverage and chat:</strong> 51 server/chat/coverage regression checks passed, along with all 606 coverage lookup assertions.</div>
+  <div class="good"><strong>Dependencies:</strong> the read-only production dependency audit reported zero critical, high, moderate, or low vulnerabilities.</div>
+</section>
+
+<section class="page-break">
+  <div class="eyebrow">Supporting evidence</div>
+  <h2>Performance observations</h2>
+  <p>A fresh Google PageSpeed request was attempted, but Google returned HTTP 429 because the public API quota was exceeded. A current Lighthouse score was therefore not verifiable in this pass.</p>
+  <p>The latest previously supplied mobile baseline remains historical context only:</p>
+  <table>
+    <tr><th>Metric</th><th>Historical result</th></tr>
+    <tr><td>Performance</td><td>79</td></tr>
+    <tr><td>Accessibility</td><td>91</td></tr>
+    <tr><td>Best Practices</td><td>100</td></tr>
+    <tr><td>SEO</td><td>100</td></tr>
+    <tr><td>FCP</td><td>2.3 seconds</td></tr>
+    <tr><td>LCP</td><td>4.4 seconds</td></tr>
+    <tr><td>TBT</td><td>0 ms</td></tr>
+    <tr><td>CLS</td><td>0</td></tr>
+  </table>
+  <h3>Current network timing samples</h3>
+  <table>
+    <tr><th>URL</th><th>TTFB</th><th>Total</th></tr>
+    <tr><td>Homepage</td><td>0.288s</td><td>0.358s</td></tr>
+    <tr><td>Somis city page</td><td>0.136s</td><td>0.139s</td></tr>
+    <tr><td>Resources</td><td>0.193s</td><td>0.225s</td></tr>
+    <tr><td>Referral page</td><td>0.173s</td><td>0.174s</td></tr>
+  </table>
+
+  <h2>AI-search readiness</h2>
+  <p><code>llms.txt</code> exists, contains 171 internal URLs, and uses an intentional distinction between retrieval/search assistants and training crawlers. Selected answer assistants are allowed, while selected training crawlers are disallowed.</p>
+  <p>The only broken internal destination found in <code>llms.txt</code> was <code>/care-brief</code>, because of the redirect loop documented above.</p>
+</section>
+
+<section>
+  <h2>Forms and conversion paths</h2>
+  <p>The source contains eight form elements across the principal conversion pages. Active forms post to <code>/api/form-submit</code>. The handler includes:</p>
+  <ul>
+    <li>Same-origin enforcement</li>
+    <li>Global and client rate limiting</li>
+    <li>Request-body size limits</li>
+    <li>Form and upload parsing</li>
+    <li>Delivery error handling</li>
+    <li>No request-body logging</li>
+  </ul>
+  <p>Real production submissions were intentionally not performed because they could send emails, trigger webhooks, or mutate external systems. A controlled future test should verify the family request, professional referral, Care Brief signup, careers upload, Brevo delivery, alert webhook, and acknowledgement behavior.</p>
+
+  <h2>External-link audit limitations</h2>
+  <p>Fifty-five external links were inventoried. Twenty-three non-social-share links were tested:</p>
+  <ul>
+    <li>18 returned HTTP 200</li>
+    <li>Two CDPH URLs failed local certificate verification</li>
+    <li>Two Instagram URLs returned 429/login behavior</li>
+    <li>One Yelp short link returned 403 to the automated checker</li>
+  </ul>
+  <p>These results do not prove those links are broken. CDPH, Instagram, and Yelp commonly restrict automated clients and should be verified manually in a normal browser before changing them.</p>
+</section>
+
+<section class="page-break">
+  <div class="eyebrow">Scope boundaries</div>
+  <h2>Items not verifiable with current access</h2>
+  <ul>
+    <li>Actual Google Search Console coverage and indexing data</li>
+    <li>Google-selected canonicals</li>
+    <li>“Crawled, currently not indexed” URLs</li>
+    <li>Search queries, impressions, and click-through rates</li>
+    <li>Manual actions or security reports in Search Console</li>
+    <li>Field Core Web Vitals</li>
+    <li>Current PageSpeed score, because the API returned HTTP 429</li>
+    <li>Backlink quality or toxic-link profile</li>
+    <li>Google Business Profile dashboard values</li>
+    <li>Netlify dashboard configuration and fallback runtime behavior</li>
+    <li>GitHub branch protection and account-level Actions settings</li>
+    <li>Deployed secret configuration</li>
+    <li>Brevo delivery and alert webhook delivery</li>
+    <li>Full axe/WCAG browser audit</li>
+    <li>Rich Results Test eligibility</li>
+  </ul>
+  <p>These items should not be treated as passing or failing without the appropriate platform data.</p>
+
+  <h2>Visual and compliance risk classification</h2>
+  <table>
+    <tr><th>Change class</th><th>Examples</th><th>Review needed</th></tr>
+    <tr><td>No expected visual impact</td><td>Routing, TLS, compression, caching, security headers, OG/Twitter metadata, noindex, sitemap and regression checks</td><td>Technical</td></tr>
+    <tr><td>Requires visual regression testing</td><td>Image dimensions, image loading behavior, JPEG fallback compression, CSS or font delivery</td><td>Technical plus visual QA</td></tr>
+    <tr><td>Requires brand/business approval</td><td>Indexation of referral card and internal artifacts; final address format; long-description rewrites</td><td>Brand/business</td></tr>
+    <tr><td>Requires compliance/privacy review</td><td>Third-party analytics behavior, CSP changes, medical-benefit or cost wording, form-data handling</td><td>Compliance/privacy</td></tr>
+  </table>
+</section>
+
+<section>
+  <div class="eyebrow">If implementation is approved</div>
+  <h2>Recommended remediation order</h2>
+  <ol>
+    <li><strong>Priority 0:</strong> Fix the Care Brief redirect loop.</li>
+    <li><strong>Priority 0:</strong> Repair TLS and canonical redirection for the www hostname.</li>
+    <li><strong>Priority 0:</strong> Re-crawl all 177 sitemap URLs.</li>
+    <li><strong>Priority 1:</strong> Implement correct browser caching for static assets.</li>
+    <li><strong>Priority 1:</strong> Enable Brotli or gzip for text-based responses.</li>
+    <li><strong>Priority 1:</strong> Apply security headers through the active Replit server or supported edge.</li>
+    <li><strong>Priority 1:</strong> Run fresh mobile and desktop Lighthouse tests.</li>
+    <li><strong>Priority 2:</strong> Decide whether internal social/gallery pages should be deployed or marked noindex.</li>
+    <li><strong>Priority 2:</strong> Decide whether <code>/referral-card</code> should be indexable.</li>
+    <li><strong>Priority 2:</strong> Ensure the canonical Care Brief route is the only indexable archive URL.</li>
+    <li><strong>Priority 3:</strong> Add OG image dimensions to the caregiver article and Twitter metadata to the HTML sitemap.</li>
+    <li><strong>Priority 3:</strong> Review the six long descriptions.</li>
+    <li><strong>Priority 3:</strong> Standardize <code>Ste. 325B</code> versus <code>Suite 325B</code> after confirming Google Business Profile format.</li>
+    <li><strong>Priority 4:</strong> Add accurate intrinsic image dimensions and classify eager versus lazy loading.</li>
+    <li><strong>Priority 4:</strong> Review JPEG fallback compression without changing approved crops.</li>
+    <li><strong>Priority 4:</strong> Add missing SEO regression guards, including live redirect-loop detection.</li>
+  </ol>
+  <div class="footer-note"><strong>Final no-change confirmation:</strong> This PDF is a review deliverable only. The application, deployment, configuration, assets, dependencies, secrets, workflows, and external systems were not changed during the audit.</div>
+</section>
+
+</body>
+</html>
