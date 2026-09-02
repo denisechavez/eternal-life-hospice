@@ -7,6 +7,8 @@ The Replit deployment serves the public domain and owns form intake, reviews,
 chat, and coverage lookup without requiring Netlify functions.
 """
 import http.server
+import gzip
+import io
 import json
 import os
 import socket
@@ -44,6 +46,13 @@ NEWSLETTER_DIR = os.path.abspath(os.path.join(BASE, "..", "exports", "newsletter
 REPORTS_DIR = os.path.abspath(os.path.join(BASE, "..", "exports", "campaign-reports"))
 CHAT_CLIENT_RATE_LIMITER = SlidingWindowRateLimiter(20, 10 * 60)
 CHAT_GLOBAL_RATE_LIMITER = SlidingWindowRateLimiter(120, 10 * 60)
+CANONICAL_HTML_ROUTES = {
+    "/hospice-care",
+    "/resources",
+    "/blog",
+    "/services",
+    "/care-brief",
+}
 
 # The marketing site owns these historical page aliases. Keep API and tracker
 # forwarding rules out of this table: those services have separate ownership.
@@ -110,7 +119,7 @@ class PrettyURLHandler(http.server.SimpleHTTPRequestHandler):
         # SimpleHTTPRequestHandler sees the /resources/ or /blog/ directory
         # redirect stub, so the canonical archive URL serves the final
         # document directly.
-        if clean.rstrip("/") in ("/hospice-care", "/resources", "/blog", "/services"):
+        if clean.rstrip("/") in CANONICAL_HTML_ROUTES:
             return os.path.join(ROOT, clean.rstrip("/").lstrip("/") + ".html")
         resolved = super().translate_path(path)
         if not os.path.exists(resolved):
@@ -119,12 +128,123 @@ class PrettyURLHandler(http.server.SimpleHTTPRequestHandler):
                 return resolved + ".html"
         return resolved
 
-    def end_headers(self):
-        if not any(
-            header.lower().startswith(b"cache-control:")
+    def _has_header(self, name):
+        prefix = f"{name.lower()}:".encode("ascii")
+        return any(
+            header.lower().startswith(prefix)
             for header in getattr(self, "_headers_buffer", [])
+        )
+
+    def _cache_control_for_path(self):
+        path = urlsplit(self.path).path
+        if path.startswith("/api/") or path in ("/health", "/healthz"):
+            return None
+        if path in ("/robots.txt", "/sitemap.xml", "/llms.txt"):
+            return "public, max-age=300, must-revalidate"
+        if path == "/assets/search-index.json":
+            return "public, max-age=0, must-revalidate"
+        if path.startswith("/assets/"):
+            return "public, max-age=86400, stale-while-revalidate=604800"
+        if path.endswith(".html") or not os.path.splitext(path)[1]:
+            return "public, max-age=0, must-revalidate"
+        return "public, max-age=300"
+
+    def _is_internal_artifact(self):
+        path = urlsplit(self.path).path
+        return (
+            path.startswith("/assets/social/")
+            or path.startswith("/assets/img/amethyst-tmp/gallery")
+        )
+
+    def send_head(self):
+        """Serve compressible static responses with a smaller wire payload.
+
+        Conditional and range requests stay on the stdlib implementation so
+        Last-Modified and byte-range semantics remain intact.
+        """
+        path = self.translate_path(self.path)
+        suffix = os.path.splitext(path)[1].lower()
+        compressible = {
+            ".css",
+            ".html",
+            ".js",
+            ".json",
+            ".svg",
+            ".txt",
+            ".webmanifest",
+            ".xml",
+        }
+        if (
+            suffix not in compressible
+            or not os.path.isfile(path)
+            or self.headers.get("Range")
+            or self.headers.get("If-Modified-Since")
+            or "gzip" not in (self.headers.get("Accept-Encoding") or "").lower()
         ):
-            self.send_header("Cache-Control", "no-store")
+            return super().send_head()
+
+        try:
+            with open(path, "rb") as source:
+                raw = source.read()
+                modified = os.fstat(source.fileno()).st_mtime
+        except OSError:
+            return super().send_head()
+
+        if len(raw) < 512:
+            return super().send_head()
+
+        compressed = gzip.compress(raw, compresslevel=6, mtime=0)
+        self.send_response(200)
+        self.send_header("Content-type", self.guess_type(path))
+        self.send_header("Content-Encoding", "gzip")
+        self.send_header("Vary", "Accept-Encoding")
+        self.send_header("Content-Length", str(len(compressed)))
+        self.send_header("Last-Modified", self.date_time_string(modified))
+        self.end_headers()
+        return io.BytesIO(compressed)
+
+    def end_headers(self):
+        if not self._has_header("Cache-Control"):
+            cache_control = self._cache_control_for_path()
+            if cache_control:
+                self.send_header("Cache-Control", cache_control)
+        security_headers = {
+            "X-Content-Type-Options": "nosniff",
+            "X-Frame-Options": "SAMEORIGIN",
+            "Referrer-Policy": "strict-origin-when-cross-origin",
+            "Permissions-Policy": "geolocation=(), microphone=(), camera=()",
+            "Content-Security-Policy": (
+                "default-src 'self'; "
+                "script-src 'self' 'unsafe-inline' "
+                "https://i.replit.com https://www.googletagmanager.com "
+                "https://www.clarity.ms https://scripts.clarity.ms "
+                "https://cdn.brevo.com https://sibautomation.com "
+                "https://www.google-analytics.com "
+                "https://s.ksrndkehqnwntyxlhgto.com "
+                "https://tracker.metricool.com https://cdn.userway.org; "
+                "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com "
+                "https://cdn.userway.org; "
+                "font-src 'self' https://fonts.gstatic.com data: "
+                "https://cdn.userway.org; "
+                "img-src 'self' data: https:; "
+                "connect-src 'self' https://www.google-analytics.com "
+                "https://region1.google-analytics.com https://www.clarity.ms "
+                "https://in.clarity.ms https://cdn.brevo.com https://api.brevo.com "
+                "https://stats.g.doubleclick.net https://www.google.com "
+                "https://s.ksrndkehqnwntyxlhgto.com "
+                "https://p.ksrndkehqnwntyxlhgto.com "
+                "https://process.iconnode.com https://cdn.userway.org "
+                "https://widget.userway.org https://api.userway.org "
+                "https://tracker.metricool.com; "
+                "media-src 'self'; frame-src https://cdn.userway.org; "
+                "frame-ancestors 'self'; form-action 'self';"
+            ),
+        }
+        for name, value in security_headers.items():
+            if not self._has_header(name):
+                self.send_header(name, value)
+        if self._is_internal_artifact() and not self._has_header("X-Robots-Tag"):
+            self.send_header("X-Robots-Tag", "noindex, nofollow")
         super().end_headers()
 
     def _send_health(self, head_only=False):
@@ -167,6 +287,16 @@ class PrettyURLHandler(http.server.SimpleHTTPRequestHandler):
             self._send_json(
                 405,
                 {"error": "method_not_allowed", "message": "Use POST /api/chat."},
+            )
+            return
+        if parsed.path == "/api/form-submit":
+            self._send_json(
+                405,
+                {
+                    "error": "method_not_allowed",
+                    "message": "Use POST /api/form-submit.",
+                },
+                extra_headers={"Allow": "POST"},
             )
             return
         if parsed.path == "/api/coverage":

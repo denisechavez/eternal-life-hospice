@@ -282,6 +282,16 @@ try:
             and "noindex" not in blog_archive.lower(),
         )
 
+    with no_redirect.open(base_url + "/care-brief", timeout=5) as response:
+        care_brief_archive = response.read().decode("utf-8", errors="replace")
+        check(
+            "canonical Care Brief archive serves directly",
+            response.status == 200
+            and response.geturl() == base_url + "/care-brief"
+            and "The Eternal Care Brief" in care_brief_archive
+            and "noindex" not in care_brief_archive.lower(),
+        )
+
     try:
         no_redirect.open(base_url + "/blog/?source=journal", timeout=5)
     except urllib.error.HTTPError as exc:
