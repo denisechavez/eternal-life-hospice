@@ -155,7 +155,7 @@ thread = threading.Thread(target=server.serve_forever, daemon=True)
 thread.start()
 base_url = f"http://127.0.0.1:{server.server_port}"
 try:
-    with urllib.request.urlopen(base_url + "/healthz", timeout=5) as response:
+    with urllib.request.urlopen(base_url + "/health", timeout=5) as response:
         check(
             "HTTP health route returns a lightweight 200",
             response.status == 200
@@ -163,7 +163,7 @@ try:
             and response.headers.get("Cache-Control") == "no-store",
         )
 
-    health_head = urllib.request.Request(base_url + "/healthz", method="HEAD")
+    health_head = urllib.request.Request(base_url + "/health", method="HEAD")
     with urllib.request.urlopen(health_head, timeout=5) as response:
         check(
             "HTTP health route supports HEAD",
