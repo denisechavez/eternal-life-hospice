@@ -223,7 +223,9 @@ try:
         "/resources/what-hospice-covers": "/resources/medicare-hospice-benefit",
         "/blog/the-second-patient": "/blog/the-caregiver-who-needs-care",
         "/insurance/": "/resources/medicare-hospice-benefit",
-        "/faqs/": "/resources.html",
+        "/faqs": "/resources",
+        "/faqs/": "/resources",
+        "/care-brief/?source=archive": "/care-brief?source=archive",
         "/about-us/": "/about/aleksandra-dubina",
         "/contact/": "/refer",
     }
@@ -238,6 +240,25 @@ try:
             )
         else:
             raise AssertionError(f"legacy URL did not redirect: {source}")
+
+    head_redirect_cases = {
+        "/faqs?source=head": "/resources?source=head",
+        "/faqs/?source=head": "/resources?source=head",
+        "/care-brief/?source=head": "/care-brief?source=head",
+    }
+    for source, expected_location in head_redirect_cases.items():
+        request = urllib.request.Request(base_url + source, method="HEAD")
+        try:
+            no_redirect.open(request, timeout=5)
+        except urllib.error.HTTPError as exc:
+            check(
+                f"HEAD canonical redirect: {source}",
+                exc.code == 301
+                and exc.headers.get("Location") == expected_location
+                and exc.read() == b"",
+            )
+        else:
+            raise AssertionError(f"HEAD URL did not redirect: {source}")
 
     for canonical_hub in (
         "/hospice-care",

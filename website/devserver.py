@@ -65,13 +65,14 @@ LEGACY_PAGE_REDIRECTS = {
     "/aleksandradubina": "/about/aleksandra-dubina",
     "/insurance": "/resources/medicare-hospice-benefit",
     "/insurance/": "/resources/medicare-hospice-benefit",
-    "/faqs": "/resources.html",
-    "/faqs/": "/resources.html",
+    "/faqs": "/resources",
+    "/faqs/": "/resources",
     "/about-us": "/about/aleksandra-dubina",
     "/about-us/": "/about/aleksandra-dubina",
     "/contact": "/refer",
     "/contact/": "/refer",
     "/assets/og-image-v2.jpg": "/assets/og-image.jpg",
+    "/care-brief/": "/care-brief",
     "/care-brief/hospice-is-part-of-life-a-continuation-of-care": "/care-brief/issue-1",
     "/care-brief/caring-for-the-caregiver": "/blog/the-caregiver-who-needs-care",
     "/blog/caring-for-the-caregiver": "/blog/the-caregiver-who-needs-care",
@@ -137,10 +138,21 @@ class PrettyURLHandler(http.server.SimpleHTTPRequestHandler):
         if not head_only:
             self.wfile.write(body)
 
+    def _send_canonical_redirect(self, parsed):
+        destination = LEGACY_PAGE_REDIRECTS.get(parsed.path)
+        if not destination and parsed.path in ("/blog/", "/services/"):
+            destination = parsed.path.rstrip("/")
+        if not destination:
+            return False
+        self._send_redirect(destination, parsed.query)
+        return True
+
     def do_HEAD(self):
         parsed = urlsplit(self.path)
         if parsed.path in ("/health", "/healthz"):
             self._send_health(head_only=True)
+            return
+        if self._send_canonical_redirect(parsed):
             return
         super().do_HEAD()
 
@@ -149,18 +161,7 @@ class PrettyURLHandler(http.server.SimpleHTTPRequestHandler):
         if parsed.path in ("/health", "/healthz"):
             self._send_health()
             return
-        destination = LEGACY_PAGE_REDIRECTS.get(parsed.path)
-        if destination:
-            self._send_redirect(destination, parsed.query)
-            return
-        # Keep the extensionless, non-trailing-slash URL as the single
-        # canonical Journal archive URL. Without this, the on-disk
-        # blog/index.html noindex stub wins for /blog/.
-        if parsed.path == "/blog/":
-            self._send_redirect("/blog", parsed.query)
-            return
-        if parsed.path == "/services/":
-            self._send_redirect("/services", parsed.query)
+        if self._send_canonical_redirect(parsed):
             return
         if parsed.path == "/api/chat":
             self._send_json(

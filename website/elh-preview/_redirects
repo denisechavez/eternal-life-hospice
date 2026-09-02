@@ -22,8 +22,8 @@ http://eternallifehospice.com/*       https://eternallifehospice.com/:splat  301
 # host if an old bookmark has already been forwarded there.
 /insurance       /resources/medicare-hospice-benefit  301!
 /insurance/      /resources/medicare-hospice-benefit  301!
-/faqs            /resources.html                       301!
-/faqs/           /resources.html                       301!
+/faqs            /resources                            301!
+/faqs/           /resources                            301!
 /about-us        /about/aleksandra-dubina              301!
 /about-us/       /about/aleksandra-dubina              301!
 /contact         /refer                               301!
@@ -76,6 +76,10 @@ http://eternalhospice.com/*       https://eternallifehospice.com/:splat  301!
 # keeping /blog as the sitemap and canonical URL.
 /blog/        /blog                     301!
 /blog         /blog.html                200!
+
+# Canonical Care Brief archive — prevent the legacy directory index from
+# creating a second indexable response for the same extensionless URL.
+/care-brief/  /care-brief               301!
 
 # What Hospice Covers — legacy path corrected to canonical
 /resources/what-hospice-covers  /resources/medicare-hospice-benefit  301
