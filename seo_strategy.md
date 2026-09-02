@@ -10,13 +10,15 @@ Static marketing website for Eternal Life Hospice, Inc., a Medicare-certified ho
 - Blog index and blog detail pages under `/blog/`
 - 146 city/location pages (`/hospice-*-ca.html`) — programmatic local SEO
 - County hub and regional hub pages
+- Media Kit, referral eCard, and Care Brief pages for audit coverage, with exception status considered in prioritization
 
-## Out of scope
+## Out of scope / exceptions
 - Digital business cards (`/card-aleksandra-dubina`, `/card-denise-chavez`, `/aleksandradubina`) — not public marketing pages
-- `referral-card.html` — print/QR reference card, not indexable
+- Internal social/asset working documents and agent/OpenAPI files — not normal public UI pages
 - `privacy-policy.html`, `terms.html` — utility pages, low SEO priority
-- `media-kit.html` — press kit page, secondary priority
 - `404.html` — error page
+- `referral-card.html` — print/QR reference card; audit as an exception rather than a normal landing page
+- `media-kit.html` — included in the current task but secondary priority as a press-kit page
 
 ## Target audience
 1. **Physicians, hospital discharge planners, social workers, case managers** — primary referral sources
@@ -36,8 +38,8 @@ Generate qualified hospice referrals that convert into admissions. Every page sh
 - Site is fully static HTML — all content visible to Googlebot and AI crawlers without JavaScript rendering
 - HTTPS enforced via Netlify redirects (no HTTP/mixed-content issues)
 - www → non-www canonical enforced via `_redirects`
-- `llms.txt` exists but is incomplete (covers only 28 of 146 city pages)
-- No intentional AI crawler blocking in `robots.txt`
+- `llms.txt` is present and the current source scan found links for all 146 city/location pages plus the principal public content routes; recheck when new pages are added
+- No intentional AI crawler blocking in `robots.txt`; answer/search crawlers are allowed while training-only crawlers are separated according to current policy
 
 ## Dismissed categories
 - HTTPS / SSL issues — handled by Netlify automatically
