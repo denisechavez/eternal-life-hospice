@@ -236,7 +236,7 @@
       if (fetching) return;
       if (sr) sr.innerHTML = '<div class="search-empty">Loading search index...</div>';
       fetching = true;
-      fetch('/assets/search-index.json').then(function (r) { return r.json(); }).then(function (data) { idx = data; fetching = false; render(); }).catch(function () { fetching = false; if (sr) sr.innerHTML = '<div class="search-empty">Unable to load search. Try again.</div>'; });
+      fetch('/assets/search-index.json', { cache: 'no-cache' }).then(function (r) { return r.json(); }).then(function (data) { idx = data; fetching = false; render(); }).catch(function () { fetching = false; if (sr) sr.innerHTML = '<div class="search-empty">Unable to load search. Try again.</div>'; });
       return;
     }
     render();
