@@ -1,0 +1,152 @@
+smartphone
+Mobile
+
+computer
+Desktop
+
+Discover what your real users are experiencing
+No Data
+
+Diagnose performance issues
+100
+Performance
+100
+Accessibility
+92
+Best Practices
+100
+SEO
+3/3
+Agentic Browsing
+100
+FCP
++10
+LCP
++25
+TBT
++30
+CLS
++25
+SI
++10
+Performance
+Values are estimated and may vary. The performance score is calculated directly from these metrics.See calculator.
+0–49
+50–89
+90–100
+Final Screenshot
+
+Metrics
+Expand view
+First Contentful Paint
+0.5 s
+Largest Contentful Paint
+0.8 s
+Total Blocking Time
+0 ms
+Cumulative Layout Shift
+0.002
+Speed Index
+0.6 s
+Captured at Sep 3, 2026, 12:51 AM PDT
+Emulated Desktop with Lighthouse 13.4.1
+Single page session
+Initial page load
+Custom throttling
+Using HeadlessChromium 151.0.7922.71 with lr
+View Treemap
+Screenshot
+Screenshot
+Screenshot
+Screenshot
+Screenshot
+Screenshot
+Screenshot
+Screenshot
+Show audits relevant to:
+
+All
+
+FCP
+
+LCP
+
+TBT
+
+CLS
+Insights
+Improve image delivery Est savings of 7 KiB
+Reducing the download time of images can improve the perceived load time of the page and LCP. Learn more about optimizing image sizeLCPFCPUnscored
+URL
+Resource Size
+Est Savings
+eternallifehospice.com 1st party
+8.6 KiB	7.0 KiB
+Eternal Life Hospice logo
+<img class="s sym-cream" src="/assets/img/elh-logo-h2-cream.webp" alt="Eternal Life Hospice logo" width="331" height="74">
+…img/elh-logo-h2-cream.webp(eternallifehospice.com)
+8.6 KiB
+7.0 KiB
+Increasing the image compression factor could improve this image's download size.
+4.6 KiB
+This image file is larger than it needs to be (332x74) for its displayed dimensions (206x46). Use responsive images to reduce the image download size.
+5.3 KiB
+Forced reflow
+A forced reflow occurs when JavaScript queries geometric properties (such as offsetWidth) after styles have been invalidated by a change to the DOM state. This can result in poor performance. Learn more about forced reflows and possible mitigations.Unscored
+Source
+Total reflow time
+https://eternallifehospice.com:1768:63
+96 ms
+Network dependency tree
+Avoid chaining critical requests by reducing the length of chains, reducing the download size of resources, or deferring the download of unnecessary resources to improve page load.LCPUnscored
+Maximum critical path latency: 431 ms
+Initial Navigation
+https://eternallifehospice.com - 172 ms, 243.81 KiB
+/api/google-reviews(eternallifehospice.com) - 431 ms, 3.08 KiB
+/assets/header-nav.css?v=20260901ab(eternallifehospice.com) - 254 ms, 4.46 KiB
+Preconnected origins
+preconnect hints help the browser establish a connection earlier in the page load, saving time when the first request for that origin is made. The following are the origins that the page preconnected to.
+no origins were preconnected
+Preconnect candidates
+Add preconnect hints to your most important origins, but try to use no more than 4.
+No additional origins are good candidates for preconnecting
+Use efficient cache lifetimes Est savings of 2 KiB
+A long cache lifetime can speed up repeat visits to your page. Learn more about caching.LCPFCPUnscored
+Request
+Cache TTL
+Transfer Size
+userway.org
+7 KiB
+/widget.js(cdn.userway.org)
+1h
+2 KiB
+…2026-09-01-10-22-26/widget_base.css?v=178…(cdn.userway.org)
+10d
+5 KiB
+Document request latency Est savings of 162 KiB
+Your first network request is the most important. Reduce its latency by avoiding redirects, ensuring a fast server response, and enabling text compression.LCPFCPUnscored
+Avoids redirects
+Server responds quickly (observed 17 ms)
+No compression applied
+Render-blocking requests
+Requests are blocking the page's initial render, which may delay LCP. Deferring or inlining can move these network requests out of the critical path.LCPFCPUnscored
+URL
+Transfer Size
+Duration
+eternallifehospice.com 1st party
+4.5 KiB	0 ms
+/assets/header-nav.css?v=20260901ab(eternallifehospice.com)
+4.5 KiB
+Legacy JavaScript Est savings of 11 KiB
+Polyfills and transforms enable older browsers to use new JavaScript features. However, many aren't necessary for modern browsers. Consider modifying your JavaScript build process to not transpile Baseline features, unless you know you must support older browsers. Learn why most sites can deploy ES6+ code without transpilingLCPFCPUnscored
+URL
+Wasted bytes
+userway.org
+10.5 KiB
+…2026-09-01-10-22-26/widget_app_base_178….js(cdn.userway.org)
+10.5 KiB
+…2026-09-01-10-22-26/widget_app_base_178….js:1:3736(cdn.userway.org)
+Array.prototype.find
+…2026-09-01-10-22-26/widget_app_base_178….js:1:3625(cdn.userway.org)
+Math.imul
+Layout shift culprits
