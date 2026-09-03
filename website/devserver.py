@@ -164,6 +164,12 @@ class PrettyURLHandler(http.server.SimpleHTTPRequestHandler):
         Last-Modified and byte-range semantics remain intact.
         """
         path = self.translate_path(self.path)
+        if os.path.isdir(path):
+            for index_name in ("index.html", "index.htm"):
+                index_path = os.path.join(path, index_name)
+                if os.path.isfile(index_path):
+                    path = index_path
+                    break
         suffix = os.path.splitext(path)[1].lower()
         compressible = {
             ".css",

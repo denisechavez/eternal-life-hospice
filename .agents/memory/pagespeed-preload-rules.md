@@ -101,3 +101,14 @@ chain on slow mobile connections.
 
 **How to apply:** Preserve the visible fallback and hourly refresh behavior, but do not
 make the initial review fetch render-blocking or part of above-the-fold startup.
+
+## Root document compression
+
+Directory-style routes must resolve their index document before the server decides
+whether the response is compressible.
+
+**Why:** The raw `/` path initially resolves to a directory, so suffix-based gzip
+detection can miss `index.html` and send the full homepage document uncompressed.
+
+**How to apply:** Keep a regression check that requests `/` with
+`Accept-Encoding: gzip` and requires a gzip-encoded HTML response.

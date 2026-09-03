@@ -185,6 +185,17 @@ try:
             response.headers.get("Content-Encoding") == "gzip",
         )
 
+    gzip_home_request = urllib.request.Request(
+        base_url + "/",
+        headers={"Accept-Encoding": "gzip"},
+    )
+    with urllib.request.urlopen(gzip_home_request, timeout=5) as response:
+        check(
+            "homepage HTML is served with gzip",
+            response.headers.get("Content-Encoding") == "gzip"
+            and response.headers.get_content_type() == "text/html",
+        )
+
     with urllib.request.urlopen(base_url + "/api/coverage?city=Pasadena", timeout=5) as response:
         routed_coverage = json.loads(response.read())
         check(
