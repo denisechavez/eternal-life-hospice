@@ -79,6 +79,15 @@ faster and produced a substantially better LCP.
 `<source>` URL, use a versioned filename when re-encoding it, and never lazy-load the LCP
 image. Judge LCP formats by render delay as well as transfer size.
 
+Shared header CSS must be render-blocking when it controls header positioning or height.
+
+**Why:** Loading those rules with the `preload`/`onload` stylesheet pattern allowed an
+initial fixed header to become sticky after first paint, shifting the entire mobile page
+by the header height and producing a large, intermittent CLS penalty.
+
+**How to apply:** Use a normal stylesheet link for geometry-critical shared chrome.
+Reserve asynchronous stylesheet loading for rules that cannot change initial layout.
+
 ## Static asset cache policy
 
 Static assets use a one-year immutable browser cache; the generated search index remains
