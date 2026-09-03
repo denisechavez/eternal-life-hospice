@@ -69,3 +69,13 @@ report avoidable repeat-visit transfer cost.
 
 **How to apply:** Whenever a named CSS or JavaScript file changes, bump its query-string
 version in the shared page sources. Do not apply immutable caching to the search index or HTML.
+
+The production proxy may rewrite the asset directive from `public` to `private` while
+preserving the one-year `max-age`; verify the TTL and `immutable` flag rather than expecting
+the origin header text to remain identical.
+
+**Why:** The deployed production response applies its own cache privacy policy even when the
+origin server and fallback headers specify public caching.
+
+**How to apply:** Treat a production asset response as fixed when it has the intended long
+`max-age` and `immutable` behavior, while leaving HTML and search-index revalidation intact.
