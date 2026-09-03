@@ -69,6 +69,15 @@ Chrome select the next 800w candidate.
 **How to apply:** For mobile images declared as `100vw`, include a compressed candidate in
 the 768w range rather than relying on a 720w-to-800w jump.
 
+For the homepage LCP hero, prefer a preloaded AVIF source with the existing WebP fallback.
+
+**Why:** Once request discovery, priority, compression, TBT, and CLS are already optimal,
+mobile Lighthouse variance can leave LCP near the scoring boundary. AVIF materially reduces
+the hero transfer without changing layout or delaying accessibility features.
+
+**How to apply:** Keep the AVIF preload URL identical to the first matching mobile
+`<source>` URL, retain WebP as the next `<source>`, and never lazy-load the LCP image.
+
 ## Static asset cache policy
 
 Static assets use a one-year immutable browser cache; the generated search index remains
