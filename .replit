@@ -1,7 +1,7 @@
 modules = ["nodejs-20", "python-3.11", "python3", "postgresql-16"]
 [nix]
 channel = "stable-25_05"
-packages = ["freetype", "glibcLocales", "jbig2dec", "mupdf", "qpdf"]
+packages = ["freetype", "glibcLocales", "gumbo", "harfbuzz", "jbig2dec", "libjpeg_turbo", "mupdf", "openjpeg", "qpdf", "swig", "xcbuild"]
 
 [agent]
 expertMode = true
