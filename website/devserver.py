@@ -229,7 +229,7 @@ class PrettyURLHandler(http.server.SimpleHTTPRequestHandler):
                 "font-src 'self' https://fonts.gstatic.com data: "
                 "https://cdn.userway.org; "
                 "img-src 'self' data: https:; "
-                "connect-src 'self' https://www.google-analytics.com "
+                "connect-src 'self' https://i.replit.com https://www.google-analytics.com "
                 "https://region1.google-analytics.com https://www.clarity.ms "
                 "https://in.clarity.ms https://cdn.brevo.com https://api.brevo.com "
                 "https://stats.g.doubleclick.net https://www.google.com "

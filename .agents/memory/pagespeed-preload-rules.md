@@ -79,3 +79,13 @@ origin server and fallback headers specify public caching.
 
 **How to apply:** Treat a production asset response as fixed when it has the intended long
 `max-age` and `immutable` behavior, while leaving HTML and search-index revalidation intact.
+
+The CSP `connect-src` list must include `https://i.replit.com` because Replit's injected
+telemetry script may post there during Lighthouse runs; the origin is already explicitly
+trusted in `script-src`.
+
+**Why:** Omitting the matching connection permission creates a browser-console CSP error and
+lowers Lighthouse Best Practices even when the application itself is healthy.
+
+**How to apply:** Keep the Replit origin in both the local server response policy and the
+static-host fallback headers, without broadening the policy to unrelated origins.
