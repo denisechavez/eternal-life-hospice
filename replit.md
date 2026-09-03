@@ -5,8 +5,8 @@ Static marketing website for **Eternal Life Hospice, Inc.** — an independent,
 Medicare-certified hospice serving **Ventura & Los Angeles County, CA**.
 
 - **Live site:** https://eternallifehospice.com
-- **Publishing flow:** edit here → user clicks **Git → Sync** in Replit → Netlify
-  auto-deploys to the live domain.
+- **Publishing flow:** edit and validate here → publish the Replit Autoscale
+  deployment to the live domain.
 - **Website source:** `website/elh-preview/` (this folder, and only this folder,
   is what publishes to the live site).
 - **Approved coverage:** Ventura + Los Angeles County only.

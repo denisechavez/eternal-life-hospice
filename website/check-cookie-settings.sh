@@ -2,7 +2,7 @@
 # ─────────────────────────────────────────────────────────────────────────────
 # check-cookie-settings.sh
 # Flags any .html file under elh-preview/ that is missing a "Cookie Settings"
-# link.  Run this before every publish / Netlify deploy.
+# link. Run this before every Replit publish.
 #
 # Usage:  bash website/check-cookie-settings.sh
 # Exit:   0 = all clear,  1 = one or more files missing the link

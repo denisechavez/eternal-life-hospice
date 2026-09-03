@@ -22,9 +22,9 @@ description: Decisions made implementing the 36-point technical SEO brief (July 
 - Twitter cards: every page should also have `twitter:title`, `twitter:description`, `twitter:image`.
 
 ## Canonical redirect strategy
-- Netlify handles http→https at CDN level automatically.
-- `_redirects` adds belt-and-suspenders rules for www/http variants → canonical https non-www (3 rules, `301!` force).
-- Never add a Netlify preview deploy URL anywhere in content — they change per deploy.
+- Replit Publishing manages HTTPS and the custom domain.
+- The Replit server owns historical page redirects and canonical extensionless routes.
+- Never add a development or generated deployment URL to public content.
 
 ## Content claims requiring human sign-off (not auto-fixed — accuracy depends on operational reality)
 1. **"integrative therapies offered in every plan at no expense"** (homepage about section, ~line 1593) — Brief flags this. If true, it's fine; if not universally offered, add qualifier "when appropriate for the patient's care plan."

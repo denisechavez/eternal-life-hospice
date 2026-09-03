@@ -13,7 +13,6 @@ from devserver import CANONICAL_HTML_ROUTES, LEGACY_PAGE_REDIRECTS
 BASE = Path(__file__).resolve().parent
 SITE = BASE / "elh-preview"
 SITEMAP = SITE / "sitemap.xml"
-REDIRECTS = SITE / "_redirects"
 NS = {"sm": "http://www.sitemaps.org/schemas/sitemap/0.9"}
 CANONICAL_ORIGIN = "https://eternallifehospice.com"
 
@@ -66,40 +65,7 @@ def route_resolution_error(path, site=SITE, canonical_routes=CANONICAL_HTML_ROUT
     return "route has no source file"
 
 
-def parse_redirects(text):
-    redirects = {}
-    for raw in text.splitlines():
-        line = raw.strip()
-        if not line or line.startswith("#"):
-            continue
-        parts = line.split()
-        if len(parts) < 3 or not parts[0].startswith("/") or not parts[1].startswith("/"):
-            continue
-        if parts[2].rstrip("!") in {"301", "302", "303", "307", "308"}:
-            redirects[parts[0]] = parts[1]
-    return redirects
-
-
-def redirect_cycles(redirects):
-    cycles = []
-    for start in redirects:
-        seen = []
-        current = start
-        while current in redirects:
-            if current in seen:
-                cycle = seen[seen.index(current):] + [current]
-                label = " -> ".join(cycle)
-                if label not in cycles:
-                    cycles.append(label)
-                break
-            seen.append(current)
-            current = redirects[current]
-    return cycles
-
-
 def self_test():
-    if not redirect_cycles({"/a": "/b", "/b": "/a"}):
-        raise AssertionError("redirect-cycle guard did not catch known-bad input")
     with tempfile.TemporaryDirectory() as tmp:
         root = Path(tmp)
         (root / "loop").mkdir()
@@ -121,10 +87,6 @@ def main():
     if len(urls) != len(set(urls)):
         errors.append("sitemap contains duplicate URLs")
 
-    redirects = parse_redirects(REDIRECTS.read_text(encoding="utf-8"))
-    for cycle in redirect_cycles(redirects):
-        errors.append(f"_redirects contains a cycle: {cycle}")
-
     for url in urls:
         parsed = urlsplit(url)
         if f"{parsed.scheme}://{parsed.netloc}" != CANONICAL_ORIGIN:
@@ -132,7 +94,7 @@ def main():
             continue
         if parsed.query or parsed.fragment:
             errors.append(f"{url}: sitemap URL contains a query string or fragment")
-        if parsed.path in LEGACY_PAGE_REDIRECTS or parsed.path in redirects:
+        if parsed.path in LEGACY_PAGE_REDIRECTS:
             errors.append(f"{url}: sitemap URL is configured as a redirect")
         route_error = route_resolution_error(parsed.path)
         if route_error:

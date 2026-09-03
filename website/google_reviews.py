@@ -18,8 +18,8 @@ from urllib.request import Request, urlopen
 
 GOOGLE_PLACES_BASE = "https://places.googleapis.com/v1"
 CANONICAL_MAPS_URL = "https://maps.google.com/?cid=9771388271577679785"
-# This is the canonical "Eternal Life Hospice" listing already used by the
-# retired Netlify review function.  It is not the lingering "Inc." duplicate.
+# This is the canonical "Eternal Life Hospice" listing. It is not the
+# lingering "Inc." duplicate.
 CANONICAL_PLACE_ID = "ChIJteBBU6vdfEcRqUfOqdzxmoc"
 CACHE_TTL_SECONDS = 60 * 60
 REQUEST_TIMEOUT_SECONDS = 8

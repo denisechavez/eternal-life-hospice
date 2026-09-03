@@ -1,7 +1,7 @@
 # SEO Strategy — Eternal Life Hospice
 
 ## Site overview
-Static marketing website for Eternal Life Hospice, Inc., a Medicare-certified hospice serving Ventura and Los Angeles County, CA. Published via Netlify from `website/elh-preview/`. No JavaScript SPA — all pages are static HTML served directly.
+Static marketing website for Eternal Life Hospice, Inc., a Medicare-certified hospice serving Ventura and Los Angeles County, CA. Published through Replit Autoscale from `website/elh-preview/`. No JavaScript SPA — all pages are static HTML served directly.
 
 ## In scope
 - Homepage (`index.html`) — primary referral-generation landing page
@@ -36,12 +36,12 @@ Generate qualified hospice referrals that convert into admissions. Every page sh
 
 ## Crawler and AI assumptions
 - Site is fully static HTML — all content visible to Googlebot and AI crawlers without JavaScript rendering
-- HTTPS enforced via Netlify redirects (no HTTP/mixed-content issues)
-- www → non-www canonical enforced via `_redirects`
+- HTTPS and the custom domain are managed by Replit Publishing
+- www → non-www canonical is enforced at the domain/publishing layer
 - `llms.txt` is present and the current source scan found links for all 146 city/location pages plus the principal public content routes; recheck when new pages are added
 - No intentional AI crawler blocking in `robots.txt`; answer/search crawlers are allowed while training-only crawlers are separated according to current policy
 
 ## Dismissed categories
-- HTTPS / SSL issues — handled by Netlify automatically
+- HTTPS / SSL issues — handled by Replit Publishing
 - JavaScript rendering issues — site is fully static HTML, not a SPA
 - Missing favicon — confirmed custom branded favicon at `assets/favicon.png`

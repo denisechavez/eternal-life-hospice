@@ -86,9 +86,8 @@ Verified the file is well-formed XML with all 41 URLs intact.
 These require account/DNS/registrar access outside this repository:
 
 1. **Legacy domain 301.** Point `eternalhospice.com` → `https://eternallifehospice.com`
-   at the DNS/host level (e.g. add it as a domain alias in Netlify with a 301). A
-   repo `_redirects` file only handles paths on the primary host, not a cross-domain
-   redirect from a domain not served by this site.
+   at the DNS/host level. A cross-domain redirect requires the legacy domain to be
+   configured with a host that can issue the redirect.
 2. **Google Search Console:** verify the property, submit `sitemap.xml`, and request
    re-indexing so the removed placeholder testimonials/Orange County text drop out of
    results.
@@ -108,4 +107,4 @@ These require account/DNS/registrar access outside this repository:
 - `website/elh-preview/404.html` — added meta description + canonical.
 - `website/elh-preview/sitemap.xml` — refreshed `lastmod` on edited pages.
 
-> Changes go live after **Git → Sync** in Replit (Netlify auto-deploys the primary domain).
+> Changes go live after publishing the Replit Autoscale deployment.

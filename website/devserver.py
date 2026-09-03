@@ -1,10 +1,9 @@
 #!/usr/bin/env python3
 """Static-site server and production API endpoints.
 
-Mimics Netlify's "pretty URLs": /care-brief resolves to care-brief.html,
-so internal links behave the same in the Replit preview as on the live site.
+Provides extensionless routes such as /care-brief for the static HTML site.
 The Replit deployment serves the public domain and owns form intake, reviews,
-chat, and coverage lookup without requiring Netlify functions.
+chat, and coverage lookup.
 """
 import http.server
 import gzip

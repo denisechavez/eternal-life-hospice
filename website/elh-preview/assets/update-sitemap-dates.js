@@ -6,11 +6,8 @@
  * commit that touched the corresponding HTML source file.
  *
  * Why Git commit dates, not filesystem mtimes
- *   Netlify (and most CI systems) use a shallow Git clone, so all files get
- *   the same checkout timestamp. Filesystem mtime is therefore meaningless in
- *   CI — every entry would show today's date regardless of whether the page
- *   actually changed. Git's own commit history is the canonical source of
- *   per-file change dates.
+ *   Filesystem timestamps can change during clones and workspace restores.
+ *   Git's own commit history is the canonical source of per-file change dates.
  *
  * Why lastmod accuracy matters for this site
  *   Google uses lastmod as a freshness signal. When city pages receive content
@@ -20,10 +17,8 @@
  *   Console long after they have been updated.
  *
  * Prerequisite
- *   The Netlify build command must run `git fetch --unshallow 2>/dev/null || true`
- *   before this script so that shallow clones are converted to full history.
- *   Without full history, `git log -1` only looks back one commit and will
- *   return empty for any file that was not touched in the most-recent commit.
+ *   Run this where the repository's Git history is available. Without history,
+ *   `git log -1` returns empty and the existing <lastmod> value is preserved.
  *
  * How it works
  *   1. Reads sitemap.xml
@@ -39,7 +34,7 @@
  * Usage
  *   node website/elh-preview/assets/update-sitemap-dates.js
  *
- * Wired into netlify.toml so it runs automatically before every deploy.
+ * Run by the Replit validation chain before production publishes.
  */
 
 'use strict';
@@ -56,9 +51,9 @@ const BASE_URL  = 'https://eternallifehospice.com';
 // ── URL → relative file path (relative to SITE_ROOT) ─────────────────────────
 /**
  * Given a full sitemap URL, returns the relative file path within SITE_ROOT
- * that Netlify would serve for that URL, or null if no file is found.
+ * that the Replit server serves for that URL, or null if no file is found.
  *
- * Resolution order (mirrors Netlify pretty-URL precedence):
+ * Resolution order (mirrors the Replit server's extensionless routing):
  *   1. {pathname}.html          e.g. hospice-malibu-ca.html
  *   2. {pathname}/index.html    e.g. blog/index.html
  *   3. index.html               for the root URL

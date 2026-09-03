@@ -22,8 +22,7 @@
  *   node website/elh-preview/assets/build-search-index.js
  *   node website/elh-preview/assets/build-search-index.js --check
  *
- * It is wired into the Netlify build command in netlify.toml so it runs
- * automatically before every production deploy.
+ * It is run by the Replit validation chain before production publishes.
  */
 
 'use strict';

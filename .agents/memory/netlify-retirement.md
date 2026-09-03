@@ -1,10 +1,15 @@
 ---
-name: Netlify retirement
-description: Freeze the legacy Netlify site before changing DNS or completing the Replit cutover.
+name: Netlify retired
+description: Records the decision to remove the legacy fallback and use Replit Autoscale exclusively.
 ---
 
-The retirement target is to disable the Netlify project, not delete it, after the Replit cutover and DNS redirects are verified.
+The legacy Netlify fallback is retired. Replit Autoscale is the only supported
+production host, and the repository must not retain old Netlify configuration,
+functions, plugins, redirects, or build scripts.
 
-**Why:** Disabling takes the Netlify site offline so public traffic uses Replit, while preserving the project configuration and allowing the site to be re-enabled if needed. Stopped builds alone leave the old site publicly reachable.
+**Why:** The owner explicitly chose a clean future setup over preserving a dormant
+fallback after the Replit cutover was verified.
 
-**How to apply:** Use Build status → Stopped builds during the transition, then Project configuration → General → Danger zone → Disable project. Keep the project; do not choose Delete. Verify the canonical domain after disabling; the old netlify.app URL should be offline while the Replit URL remains live. Google may retain historical Netlify URLs temporarily, but canonical DNS, canonical tags, and the canonical sitemap direct indexing to Replit.
+**How to apply:** Keep hosting, APIs, redirects, security headers, and validation
+Replit-native. If Netlify is ever requested again, configure it from scratch rather
+than restoring the retired implementation.

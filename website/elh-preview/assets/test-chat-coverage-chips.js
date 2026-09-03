@@ -3,10 +3,9 @@
  * Chat widget coverage-chip integration tests
  *
  * Tests the three behavioral paths inside chat.js's doCoverageCheck() and
- * the extractCityQuery() helper, without needing a real browser or a live
- * Netlify server.  The coverage.js Netlify handler is called directly
- * (same technique as test-coverage-lookup.js), and the chat.js logic is
- * reproduced with a minimal mock environment.
+ * the extractCityQuery() helper without needing a real browser. The current
+ * Replit coverage API is called over HTTP, and the chat.js logic is reproduced
+ * with a minimal mock environment.
  *
  * Paths covered:
  *   A. Coverage returns ambiguous → "did you mean?" chips are shown; AI is NOT called
@@ -22,19 +21,13 @@
 
 "use strict";
 
-const path = require("path");
-
-// ── Load the real coverage handler (no HTTP server needed) ────────────────────
-const fnDir = path.resolve(__dirname, "../netlify/functions");
-const handler = require(path.join(fnDir, "coverage.js")).handler;
+const API_BASE = process.env.ELH_TEST_BASE_URL || "http://127.0.0.1:5000";
 
 async function coverageCall(city) {
-  const event = {
-    httpMethod: "GET",
-    queryStringParameters: city ? { city } : {}
-  };
-  const resp = await handler(event);
-  return { status: resp.statusCode, body: JSON.parse(resp.body) };
+  const params = new URLSearchParams();
+  if (city) params.set("city", city);
+  const resp = await fetch(`${API_BASE}/api/coverage?${params}`);
+  return { status: resp.status, body: await resp.json() };
 }
 
 // ── Test harness ──────────────────────────────────────────────────────────────
@@ -123,7 +116,7 @@ async function doCoverageCheck(city, fromChip, fetchImpl, mocks) {
   }
 }
 
-// Helper: make a mock fetch that returns the real coverage handler response.
+// Helper: make a mock fetch that returns the real coverage API response.
 function realFetch(city) {
   return coverageCall(city).then(({ status, body }) => ({
     ok: status >= 200 && status < 300,

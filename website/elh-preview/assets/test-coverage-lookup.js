@@ -2,7 +2,7 @@
 /**
  * Coverage lookup regression test
  *
- * Calls the coverage.js handler directly (no HTTP server needed) and
+ * Calls the Replit coverage API and
  * verifies correct results across four categories:
  *
  *   1. All 145 published cities resolve to served:true with the right city name
@@ -16,25 +16,9 @@
 
 "use strict";
 
-// coverage.js uses require("../../../city-data.json") relative to its own
-// location.  We need the module resolver to start from the functions dir.
 const path = require("path");
-const Module = require("module");
-
-// Temporarily override require so the relative path inside coverage.js
-// is resolved correctly from its actual file location.
-const fnDir = path.resolve(__dirname, "../netlify/functions");
-const origLoad = Module._resolveFilename.bind(Module);
-const patchedLoad = function (request, parent, isMain, options) {
-  if (parent && parent.filename && parent.filename.includes("coverage.js") && request.startsWith(".")) {
-    return origLoad(request, parent, isMain, options);
-  }
-  return origLoad(request, parent, isMain, options);
-};
-
-// Load handler with its cwd-independent require path
-const handler = require(path.join(fnDir, "coverage.js")).handler;
 const cityData = require(path.resolve(__dirname, "../../city-data.json"));
+const API_BASE = process.env.ELH_TEST_BASE_URL || "http://127.0.0.1:5000";
 
 // ── Local normalise (mirrors coverage.js — keep in sync) ───────────────────────
 // Strips accents, lowercases, removes punctuation, collapses whitespace.
@@ -51,21 +35,15 @@ function normalise(s) {
 // ── Helpers ────────────────────────────────────────────────────────────────────
 
 async function query(city) {
-  const event = {
-    httpMethod: "GET",
-    queryStringParameters: city === null ? {} : { city }
-  };
-  const resp = await handler(event);
-  return { status: resp.statusCode, body: JSON.parse(resp.body) };
+  const params = new URLSearchParams();
+  if (city !== null) params.set("city", city);
+  const resp = await fetch(`${API_BASE}/api/coverage?${params}`);
+  return { status: resp.status, body: await resp.json() };
 }
 
 async function queryList() {
-  const event = {
-    httpMethod: "GET",
-    queryStringParameters: { list: "true" }
-  };
-  const resp = await handler(event);
-  return { status: resp.statusCode, body: JSON.parse(resp.body) };
+  const resp = await fetch(`${API_BASE}/api/coverage?list=true`);
+  return { status: resp.status, body: await resp.json() };
 }
 
 let passed = 0;

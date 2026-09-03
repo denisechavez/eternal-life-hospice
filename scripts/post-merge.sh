@@ -1,8 +1,8 @@
 #!/bin/bash
 set -e
 
-# Eternal Life Hospice is a static HTML site (website/elh-preview/) published to
-# Netlify. There is no build step and no dependencies to install, so post-merge
+# Eternal Life Hospice is a static HTML site (website/elh-preview/) served by
+# Replit Autoscale. There is no build step and no dependencies to install, so post-merge
 # setup is a fast, idempotent check that the published site directory is intact.
 # This keeps task merges reconciling cleanly without doing unnecessary work.
 

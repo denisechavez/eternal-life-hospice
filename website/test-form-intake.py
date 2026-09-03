@@ -195,9 +195,6 @@ class FormIntakeTests(unittest.TestCase):
         self.assertIn('.then(function (result)', chat)
         self.assertIn('data.name.split(" ")', chat)
         self.assertIn('result.receipt_id', chat)
-        self.assertIn("LEGACY NETLIFY COPY ONLY", (
-            root / "netlify" / "functions" / "submission-created.js"
-        ).read_text(encoding="utf-8"))
 
 
 class SyntheticEndToEndTest(unittest.TestCase):

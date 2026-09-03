@@ -1,8 +1,7 @@
 """Production form intake for the Eternal Life Hospice website.
 
-The public site is served by the Replit Python deployment, so Netlify form
-attributes are not a delivery mechanism.  This module validates same-origin
-form submissions and delivers them through Brevo without storing them locally.
+The Replit Python deployment validates same-origin form submissions and
+delivers them through Brevo without storing them locally.
 """
 
 from __future__ import annotations

@@ -9,9 +9,8 @@ Clarity `xddyi1rk95`), referenced with
 `<script async src="/assets/analytics.js"></script>` before `</head>` on every
 real page.
 
-**Why:** Before this, GA4/Clarity existed ONLY on `index.html` (inline) and
-Netlify does **not** inject any analytics snippet at deploy time — so 40+ pages
-had zero measurement. A shared file = one place to update, no per-page drift.
+**Why:** Before this, GA4/Clarity existed ONLY on `index.html` (inline), so 40+
+pages had zero measurement. A shared file = one place to update, no per-page drift.
 
 **How to apply:**
 - Any NEW page must include the shared tag, or it won't be measured.

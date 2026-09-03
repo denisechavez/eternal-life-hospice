@@ -144,7 +144,7 @@ def check_single_url(url: str, strategy: str, key: str, threshold: int, lcp_budg
     cache_audit = scores.get("uses-long-cache-ttl", {})
     cache_score = cache_audit.get("score")
     if cache_score is not None and cache_score < 50:
-        print(f"WARNING: Cache-TTL score is low ({cache_score}/100) — review _headers.", file=sys.stderr)
+        print(f"WARNING: Cache-TTL score is low ({cache_score}/100) — review production cache headers.", file=sys.stderr)
 
     passed = True
 

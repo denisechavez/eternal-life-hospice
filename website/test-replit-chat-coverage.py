@@ -135,7 +135,6 @@ chat_source = open(
 ).read()
 check("client uses Replit chat endpoint", 'ENDPOINT = "/api/chat"' in chat_source)
 check("client uses Replit coverage endpoint", 'COVERAGE_ENDPOINT = "/api/coverage"' in chat_source)
-check("runtime client has no Netlify function paths", "/.netlify/functions/" not in chat_source)
 
 public_files = [
     os.path.join("elh-preview", "AGENTS.md"),
@@ -145,10 +144,6 @@ public_files = [
 ]
 for relative in public_files:
     text = open(os.path.join(os.path.dirname(__file__), relative), encoding="utf-8").read()
-    check(
-        f"{relative} advertises no Netlify coverage endpoint",
-        "/.netlify/functions/coverage" not in text,
-    )
 
 server = QuietHTTPServer(("127.0.0.1", 0), PrettyURLHandler)
 thread = threading.Thread(target=server.serve_forever, daemon=True)

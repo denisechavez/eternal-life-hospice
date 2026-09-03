@@ -320,8 +320,7 @@
     <p class="lede" style="margin-bottom:1.6rem">Share just enough for our intake nurse to call you back and complete the referral securely. <strong>No protected health information is needed here</strong> &mdash; a general description is plenty.</p>
 
     <!-- Production routing: the Replit deployment validates this request and
-         delivers it to the referral inbox through Brevo. Netlify Forms is not
-         the processor for the public domain. -->
+         delivers it to the referral inbox through Brevo. -->
     <form id="referForm" class="apply-form" name="elh-physician" tool-name="submit-referral" tool-description="Submit a patient referral to Eternal Life Hospice. For healthcare professionals referring a patient for hospice evaluation." method="POST" action="/api/form-submit">
       <input type="hidden" name="form-name" value="elh-physician">
       <input type="hidden" name="audience" value="referral">

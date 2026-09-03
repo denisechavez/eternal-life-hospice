@@ -2,18 +2,15 @@
 # ─────────────────────────────────────────────────────────────────────────────
 # elh-predeploy.sh
 #
-# Netlify build wrapper — runs all pre-deploy checks and verifies that every
+# Replit publish validation wrapper — runs all pre-deploy checks and verifies that every
 # check script printed its SENTINEL self-test line.
 #
 # A check script that has been accidentally emptied (or whose self-test section
 # was removed) will exit 0 without printing its SENTINEL.  The sentinel-grep
 # step at the end catches that case and blocks the deploy.
 #
-# Run from website/elh-preview/ (Netlify's build.base directory):
+# Run from website/elh-preview/:
 #     bash ../elh-predeploy.sh
-#
-# Also called indirectly by website/test-predeploy-chain.sh when it reads the
-# command from netlify.toml — so local smoke-tests exercise this same path.
 #
 # Exit: 0 = all checks passed + all sentinels present,  1 = any failure
 # ─────────────────────────────────────────────────────────────────────────────
@@ -25,7 +22,7 @@ trap 'rm -f "$TMPOUT"' EXIT
 
 echo ""
 echo "╔══════════════════════════════════════════════════════════════════════╗"
-echo "║             ELH Netlify pre-deploy checks                           ║"
+echo "║             ELH Replit pre-deploy checks                            ║"
 echo "╚══════════════════════════════════════════════════════════════════════╝"
 echo ""
 
@@ -34,7 +31,6 @@ echo ""
 
 set +o pipefail
 (
-  git fetch --unshallow 2>/dev/null || true
   bash ../check-cookie-settings.sh
   node assets/test-chat-teaser.js
   node assets/test-a11y-forms.js
