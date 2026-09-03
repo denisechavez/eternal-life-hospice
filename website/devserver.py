@@ -146,7 +146,7 @@ class PrettyURLHandler(http.server.SimpleHTTPRequestHandler):
         if path == "/assets/search-index.json":
             return "public, max-age=0, must-revalidate"
         if path.startswith("/assets/"):
-            return "public, max-age=86400, stale-while-revalidate=604800"
+            return "public, max-age=31536000, immutable"
         if path.endswith(".html") or not os.path.splitext(path)[1]:
             return "public, max-age=0, must-revalidate"
         return "public, max-age=300"

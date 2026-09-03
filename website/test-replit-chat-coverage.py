@@ -171,6 +171,25 @@ try:
             and response.headers.get("Content-Length") == "3",
         )
 
+    with urllib.request.urlopen(
+        base_url + "/assets/img/inline-33ce6328f1-720.webp", timeout=5
+    ) as response:
+        check(
+            "static image assets use long immutable caching",
+            response.headers.get("Cache-Control")
+            == "public, max-age=31536000, immutable",
+        )
+
+    gzip_request = urllib.request.Request(
+        base_url + "/assets/chat.js?v=20260805",
+        headers={"Accept-Encoding": "gzip"},
+    )
+    with urllib.request.urlopen(gzip_request, timeout=5) as response:
+        check(
+            "compressible assets are served with gzip",
+            response.headers.get("Content-Encoding") == "gzip",
+        )
+
     with urllib.request.urlopen(base_url + "/api/coverage?city=Pasadena", timeout=5) as response:
         routed_coverage = json.loads(response.read())
         check(

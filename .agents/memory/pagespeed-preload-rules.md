@@ -57,3 +57,15 @@ load event fires at ~2–3s; Clarity can never interfere with LCP. analytics.js 
 2. Never remove Fraunces preloads to "fix LCP" — they don't cause LCP issues; they help FCP.
 3. The `crossorigin` attribute is required on all font preloads (even same-origin) to match
    the anonymous-CORS request that @font-face makes.
+
+## Static asset cache policy
+
+Static assets use a one-year immutable browser cache; the generated search index remains
+revalidated so site search cannot become stale.
+
+**Why:** The site's CSS and JavaScript references carry explicit version query strings, and
+images/fonts are deployment-controlled static files. A one-day cache caused Lighthouse to
+report avoidable repeat-visit transfer cost.
+
+**How to apply:** Whenever a named CSS or JavaScript file changes, bump its query-string
+version in the shared page sources. Do not apply immutable caching to the search index or HTML.
