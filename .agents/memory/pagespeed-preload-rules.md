@@ -89,3 +89,15 @@ lowers Lighthouse Best Practices even when the application itself is healthy.
 
 **How to apply:** Keep the Replit origin in both the local server response policy and the
 static-host fallback headers, without broadening the policy to unrelated origins.
+
+## Dynamic review loading
+
+Load the homepage's dynamic Google reviews after the window `load` event rather than
+during initial document parsing; keep the hourly refresh after that first load.
+
+**Why:** The review endpoint is not needed to paint the hero or establish the primary
+conversion path, and its network latency can lengthen Lighthouse's critical request
+chain on slow mobile connections.
+
+**How to apply:** Preserve the visible fallback and hourly refresh behavior, but do not
+make the initial review fetch render-blocking or part of above-the-fold startup.

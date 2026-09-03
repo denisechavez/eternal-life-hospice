@@ -31,7 +31,7 @@
 <link rel="preload" as="font" href="assets/fonts/inline-b6346d671c.woff2" type="font/woff2" crossorigin>
 <!-- Google Search Console verification (URL-prefix property for https://eternallifehospice.com/) -->
 <meta name="google-site-verification" content="HcHJe-U9QF8swQzKciQQs2GwuI8gdtrjLHYSo8VdBzE">
-<script defer src="/assets/analytics.js?v=20260727h"></script>
+<script defer src="/assets/analytics.js?v=20260903a"></script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
@@ -156,7 +156,7 @@ nav a:hover{color:var(--gold)}
 .sr-only{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important}
 .skip-link{position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden}
 .skip-link:focus{position:fixed;top:0;left:0;width:auto;height:auto;padding:.5rem 1.25rem;background:var(--plum);color:var(--cream);font-size:1rem;z-index:10000;border-radius:0 0 6px 0;outline:3px solid var(--gold);text-decoration:none}
-.mob-call-bar{display:none;position:fixed;bottom:0;left:0;right:0;z-index:998;background:var(--plum);color:var(--cream);text-align:center;padding:.85rem 1rem;font-family:var(--ff-b);font-size:15px;font-weight:700;text-decoration:none;letter-spacing:.02em;border-top:2px solid rgba(201,176,126,.35);transition:background .2s ease}
+.mob-call-bar{display:none;position:fixed;bottom:0;left:0;right:0;z-index:998;background:var(--plum);color:var(--cream);text-align:center;padding:1rem;font-family:var(--ff-b);font-size:15px;font-weight:700;text-decoration:none;letter-spacing:.02em;border-top:2px solid rgba(201,176,126,.35);min-height:48px;box-sizing:border-box;transition:background .2s ease}
 .mob-call-bar:hover,.mob-call-bar:focus{background:var(--deep)}
 @media(max-width:980px){
   .hdr-cta,.hdr-cta-note{display:none}
@@ -2075,8 +2075,12 @@ p,li,blockquote{text-wrap:pretty}
       .then(render)
       .catch(renderFallback);
   }
-  load();
-  window.setInterval(load,3600000);
+  function scheduleLoad(){
+    load();
+    window.setInterval(load,3600000);
+  }
+  if(document.readyState==='complete'){ window.setTimeout(scheduleLoad,0); }
+  else { window.addEventListener('load',scheduleLoad,{once:true}); }
 })();
 </script>
 <script src="/assets/header.js?v=20260901d" defer></script>

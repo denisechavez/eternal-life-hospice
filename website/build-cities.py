@@ -114,7 +114,7 @@ OUT_DIR   = os.path.join(BASE, "elh-preview")
 # ── Deferred script snippets (must NOT be inside an f-string — JS braces clash) ─
 
 HEAD_SCRIPTS = (
-    '<script defer src="/assets/analytics.js?v=20260727h"></script>'
+    '<script defer src="/assets/analytics.js?v=20260903a"></script>'
     # UserWay (accessibility, essential) and WhatConverts (call-tracking, marketing)
     # are both bootstrapped by analytics.js to respect the cookie consent gate.
 )
