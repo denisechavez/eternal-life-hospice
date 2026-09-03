@@ -80,6 +80,8 @@ LEGACY_PAGE_REDIRECTS = {
     "/about-us/": "/about/aleksandra-dubina",
     "/contact": "/refer",
     "/contact/": "/refer",
+    "/terms/": "/terms",
+    "/privacy-policy/": "/privacy-policy",
     "/assets/og-image-v2.jpg": "/assets/og-image.jpg",
     "/care-brief/": "/care-brief",
     "/care-brief/hospice-is-part-of-life-a-continuation-of-care": "/care-brief/issue-1",

@@ -228,6 +228,8 @@ try:
         "/care-brief/?source=archive": "/care-brief?source=archive",
         "/about-us/": "/about/aleksandra-dubina",
         "/contact/": "/refer",
+        "/terms/": "/terms",
+        "/privacy-policy/": "/privacy-policy",
     }
     for source, expected_location in redirect_cases.items():
         try:
@@ -245,6 +247,8 @@ try:
         "/faqs?source=head": "/resources?source=head",
         "/faqs/?source=head": "/resources?source=head",
         "/care-brief/?source=head": "/care-brief?source=head",
+        "/terms/?source=head": "/terms?source=head",
+        "/privacy-policy/?source=head": "/privacy-policy?source=head",
     }
     for source, expected_location in head_redirect_cases.items():
         request = urllib.request.Request(base_url + source, method="HEAD")

@@ -81,6 +81,11 @@ http://eternalhospice.com/*       https://eternallifehospice.com/:splat  301!
 # creating a second indexable response for the same extensionless URL.
 /care-brief/  /care-brief               301!
 
+# Canonical legal pages — keep trailing-slash variants on the public,
+# noindex canonical URLs.
+/terms/          /terms                 301!
+/privacy-policy/ /privacy-policy        301!
+
 # What Hospice Covers — legacy path corrected to canonical
 /resources/what-hospice-covers  /resources/medicare-hospice-benefit  301
 /resources/medical-aid-in-dying-california  /services/medical-aid-in-dying-california  301!
