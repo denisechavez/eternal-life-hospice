@@ -58,6 +58,17 @@ load event fires at ~2–3s; Clarity can never interfere with LCP. analytics.js 
 3. The `crossorigin` attribute is required on all font preloads (even same-origin) to match
    the anonymous-CORS request that @font-face makes.
 
+## Responsive candidates on Lighthouse mobile
+
+Include a source candidate slightly above 720px for full-viewport mobile images.
+
+**Why:** Lighthouse's 412px-wide Moto G Power profile uses DPR 1.75, producing a target of
+about 721 source pixels. A 720w candidate can miss that target through rounding and make
+Chrome select the next 800w candidate.
+
+**How to apply:** For mobile images declared as `100vw`, include a compressed candidate in
+the 768w range rather than relying on a 720w-to-800w jump.
+
 ## Static asset cache policy
 
 Static assets use a one-year immutable browser cache; the generated search index remains

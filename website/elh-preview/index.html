@@ -29,7 +29,6 @@
 <link rel="preload" as="font" href="assets/fonts/fraunces-italic-latin.woff2" type="font/woff2" crossorigin fetchpriority="high">
 <link rel="preload" as="font" href="assets/fonts/inline-a3c2438bfe.woff2" type="font/woff2" crossorigin>
 <link rel="preload" as="font" href="assets/fonts/inline-b6346d671c.woff2" type="font/woff2" crossorigin>
-<link rel="preconnect" href="https://i.replit.com" crossorigin>
 <!-- Google Search Console verification (URL-prefix property for https://eternallifehospice.com/) -->
 <meta name="google-site-verification" content="HcHJe-U9QF8swQzKciQQs2GwuI8gdtrjLHYSo8VdBzE">
 <script defer src="/assets/analytics.js?v=20260903a"></script>
@@ -1280,7 +1279,7 @@ p,li,blockquote{text-wrap:pretty}
 
     <div class="pcard pc1" data-i="1" id="stack-1">
       <div class="pcard-photo">
-        <picture><source srcset="assets/img/inline-5eebc45ba1-480.webp 480w, assets/img/inline-5eebc45ba1-720.webp 720w, assets/img/inline-5eebc45ba1.webp 800w" sizes="(max-width: 780px) 100vw, 50vw" type="image/webp"><img loading="lazy" decoding="async" src="assets/img/inline-5eebc45ba1.jpg" srcset="assets/img/inline-5eebc45ba1-480.jpg 480w, assets/img/inline-5eebc45ba1-720.jpg 720w, assets/img/inline-5eebc45ba1.jpg 800w" sizes="(max-width: 780px) 100vw, 50vw" alt="A hospice nurse with a stethoscope attending a patient at home" width="800" height="1000"></picture>
+        <picture><source srcset="assets/img/inline-5eebc45ba1-480.webp 480w, assets/img/inline-5eebc45ba1-720.webp 720w, assets/img/inline-5eebc45ba1-768.webp 768w, assets/img/inline-5eebc45ba1.webp 800w" sizes="(max-width: 780px) 100vw, 50vw" type="image/webp"><img loading="lazy" decoding="async" src="assets/img/inline-5eebc45ba1.jpg" srcset="assets/img/inline-5eebc45ba1-480.jpg 480w, assets/img/inline-5eebc45ba1-720.jpg 720w, assets/img/inline-5eebc45ba1-768.jpg 768w, assets/img/inline-5eebc45ba1.jpg 800w" sizes="(max-width: 780px) 100vw, 50vw" alt="A hospice nurse with a stethoscope attending a patient at home" width="800" height="1000"></picture>
       </div>
       <div class="pcard-copy">
         <div class="pcard-num">01</div>
@@ -1295,7 +1294,7 @@ p,li,blockquote{text-wrap:pretty}
 
     <div class="pcard pc2 flip" data-i="2" id="stack-2">
       <div class="pcard-photo">
-        <picture><source srcset="assets/img/inline-ce5cac9062-480.webp 480w, assets/img/inline-ce5cac9062.webp 800w" sizes="(max-width: 780px) 100vw, 50vw" type="image/webp"><img loading="lazy" decoding="async" src="assets/img/inline-ce5cac9062.jpg" srcset="assets/img/inline-ce5cac9062-480.jpg 480w, assets/img/inline-ce5cac9062.jpg 800w" sizes="(max-width: 780px) 100vw, 50vw" alt="A caregiver and a family member sitting together holding hands" width="800" height="1000"></picture>
+        <picture><source srcset="assets/img/inline-ce5cac9062-480.webp 480w, assets/img/inline-ce5cac9062-768.webp 768w, assets/img/inline-ce5cac9062.webp 800w" sizes="(max-width: 780px) 100vw, 50vw" type="image/webp"><img loading="lazy" decoding="async" src="assets/img/inline-ce5cac9062.jpg" srcset="assets/img/inline-ce5cac9062-480.jpg 480w, assets/img/inline-ce5cac9062-768.jpg 768w, assets/img/inline-ce5cac9062.jpg 800w" sizes="(max-width: 780px) 100vw, 50vw" alt="A caregiver and a family member sitting together holding hands" width="800" height="1000"></picture>
       </div>
       <div class="pcard-copy">
         <div class="pcard-num">02</div>
@@ -1765,11 +1764,6 @@ p,li,blockquote{text-wrap:pretty}
 
   
 
-  // header scroll
-  var hdr = document.getElementById('hdr');
-  function onScroll(){ hdr.classList.toggle('scrolled', window.scrollY > 60); }
-  onScroll(); window.addEventListener('scroll', onScroll, {passive:true});
-
   // reveal
   var io = new IntersectionObserver(function(es){ es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} }); }, {threshold:.12, rootMargin:'0px 0px -5% 0px'});
   document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
@@ -2081,8 +2075,9 @@ p,li,blockquote{text-wrap:pretty}
     load();
     window.setInterval(load,3600000);
   }
-  if(document.readyState==='complete'){ window.setTimeout(scheduleLoad,0); }
-  else { window.addEventListener('load',scheduleLoad,{once:true}); }
+  function deferLoad(){ window.setTimeout(scheduleLoad,5000); }
+  if(document.readyState==='complete'){ deferLoad(); }
+  else { window.addEventListener('load',deferLoad,{once:true}); }
 })();
 </script>
 <script src="/assets/header.js?v=20260901d" defer></script>
