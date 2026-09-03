@@ -1568,3 +1568,17 @@ mtime_ms = 1788338088658
 storage_uri = "gcs://replit-rams-assets-kirk/rams/assets/repl:e1b2f643-7869-4565-af0e-10c34575ee8d/1e28722b-2713-4b1d-b553-4bb115f001fc/9c2bf77f-536e-4c23-9e27-cb49655488a6"
 storage_version_token = "1788399736648929"
 content_type = "application/pdf"
+
+[[outputs]]
+id = "Nz4ugAGdil9bYNb8ro66X"
+uri = "file://exports/diagrams/elh-system-evolution.png"
+type = "image"
+title = "Eternal Life Hospice — Website System Evolution"
+description = "High-resolution illustration showing the original Replit-to-GitHub-to-Netlify publishing path, the period of parallel Replit and Netlify operation, and the current Replit-first system with Netlify preserved as fallback."
+logical_id = "9021176f-cbe9-4030-b8e4-a7c1106c3b11"
+content_hash = "sha256:9f7bff62bda103375c154efb307465041aa06ccc92c5b50eb470c72841f8e8a7"
+size = 676503
+mtime_ms = 1788402673490
+storage_uri = "gcs://replit-rams-assets-kirk/rams/assets/repl:e1b2f643-7869-4565-af0e-10c34575ee8d/9021176f-cbe9-4030-b8e4-a7c1106c3b11/6baf3fe8-4da7-4348-be8d-ad90fb7e6193"
+storage_version_token = "1788402688575373"
+content_type = "image/png"
