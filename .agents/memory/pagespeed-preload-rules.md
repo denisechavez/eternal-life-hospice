@@ -69,14 +69,15 @@ Chrome select the next 800w candidate.
 **How to apply:** For mobile images declared as `100vw`, include a compressed candidate in
 the 768w range rather than relying on a 720w-to-800w jump.
 
-For the homepage LCP hero, prefer a preloaded AVIF source with the existing WebP fallback.
+For the homepage LCP hero, prefer a compressed WebP over AVIF on the mobile path.
 
-**Why:** Once request discovery, priority, compression, TBT, and CLS are already optimal,
-mobile Lighthouse variance can leave LCP near the scoring boundary. AVIF materially reduces
-the hero transfer without changing layout or delaying accessibility features.
+**Why:** Although AVIF reduced transfer size, Lighthouse's emulated Moto G Power showed
+roughly two seconds of extra element render delay from the AVIF path; WebP decoded much
+faster and produced a substantially better LCP.
 
-**How to apply:** Keep the AVIF preload URL identical to the first matching mobile
-`<source>` URL, retain WebP as the next `<source>`, and never lazy-load the LCP image.
+**How to apply:** Keep the WebP preload URL identical to the first matching mobile
+`<source>` URL, use a versioned filename when re-encoding it, and never lazy-load the LCP
+image. Judge LCP formats by render delay as well as transfer size.
 
 ## Static asset cache policy
 
