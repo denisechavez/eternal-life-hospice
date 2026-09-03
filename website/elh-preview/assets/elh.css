@@ -644,3 +644,18 @@ details.cqn-col:not([open])>summary.cqn-county{margin-bottom:0;padding-bottom:0;
 .ft-lang:hover{border-color:rgba(201,176,126,.5);color:var(--cream);background:rgba(201,176,126,.08)}
 .ft-lang:focus-visible{outline:2px solid rgba(201,176,126,.8);outline-offset:2px}
 .ft-lang--active{border-color:rgba(201,176,126,.7);color:var(--cream);background:rgba(201,176,126,.15);font-weight:600;cursor:default}
+
+/* ===== ACCESSIBILITY LEGIBILITY & TOUCH TARGETS ===== */
+#site-footer .foot-legal,
+#site-footer .foot-col a,
+#site-footer .foot-col p,
+#site-footer .foot-qr span,
+#site-footer .fc-line{color:rgba(245,240,235,.82)}
+#site-footer .foot-disclaimer,
+#site-footer .foot-bottom{color:rgba(245,240,235,.82)}
+#site-footer .foot-disclaimer strong{color:var(--gold)!important}
+#site-footer .foot-bottom a{color:rgba(245,240,235,.82)}
+#site-footer .foot-col a:not(.fc-line){display:flex;align-items:center;min-height:32px}
+#site-footer .fc-line{min-height:32px}
+.ft-label{color:rgba(245,240,235,.82)}
+.ft-lang{color:rgba(245,240,235,.82)}

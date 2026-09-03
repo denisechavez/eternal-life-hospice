@@ -42,3 +42,4 @@
 - [PageSpeed mobile optimisation](pagespeed-preload-rules.md) — 72→97 formula: fetchpriority="high" on preload LINK (not img), all 3 font preloads, analytics defer, Brevo preconnect.
 - [Weekly email send rule](weekly-email-send-rule.md) — all weekly campaigns go to aggregate of ALL active Brevo lists; exclude system/test lists 3,6,11,12.
 - [NeverBounce verification rule](neverbounce-rule.md) — ALL emails verified through NeverBounce before adding to Brevo; no exceptions; invalid=remove, catchall/unknown=add with caution.
+- [Shared chrome accessibility](shared-chrome-accessibility.md) — footer updates have two generation paths; ensure desktop hit-target selectors never override mobile visibility rules.

@@ -18,7 +18,7 @@
 #hdr.scrolled .hdr-utility-row a:hover{color:var(--plum,#5B2E59)}
 #hdr .hdr-phone{padding-right:1rem;border-right:1px solid rgba(245,240,235,.2)}
 #hdr.scrolled .hdr-phone{border-right-color:rgba(91,46,89,.2)}
-#hdr .hdr-referral{color:var(--gold,#C9B07E)!important}
+#hdr .hdr-referral{display:inline-flex;align-items:center;min-height:32px;padding:0 .25rem;color:var(--gold,#C9B07E)!important}
 #hdr .hdr-referral:hover,#hdr .hdr-referral:focus,#hdr .hdr-referral:active{color:var(--cream-dark,#D8CDBF)!important}
 #hdr.scrolled .hdr-referral{color:var(--slate,#6793AC)!important}
 #hdr.scrolled .hdr-referral:hover,#hdr.scrolled .hdr-referral:focus,#hdr.scrolled .hdr-referral:active{color:#4F7396!important}
