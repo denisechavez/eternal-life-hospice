@@ -102,7 +102,7 @@ def check_homepage(errors: list[str]) -> None:
     organization = organizations[0]
     address = organization.get("address", {})
     geo = organization.get("geo", {})
-    if address.get("streetAddress") != "4165 E Thousand Oaks Blvd, Suite 325B":
+    if address.get("streetAddress") != "4165 E Thousand Oaks Blvd, Ste 325B":
         errors.append("index.html canonical organization address changed")
     if (
         geo.get("latitude") != 34.1386

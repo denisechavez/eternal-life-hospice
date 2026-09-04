@@ -219,7 +219,7 @@ def make_footer(county: str) -> str:
         '<svg class="fci" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">'
         '<path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>'
         '<circle cx="12" cy="10" r="3"/>'
-         '</svg><span>4165 E Thousand Oaks Blvd, Suite 325B<br>Westlake Village, CA 91362</span></a>\n'
+         '</svg><span>4165 E Thousand Oaks Blvd, Ste 325B<br>Westlake Village, CA 91362</span></a>\n'
          '      <div class="foot-subgroup"><h2>For Professionals</h2>'
          '<a href="/refer#referral-form">Physicians &amp; Referrals</a>'
          '<a href="/referral-card">Referral eCard</a>'

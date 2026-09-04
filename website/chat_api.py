@@ -49,7 +49,7 @@ usually 2 to 4 sentences. Never sound salesy. Do not repeat the phone number ref
 Known facts:
 - Eternal Life Hospice is independent, Medicare-certified, CDPH-licensed, and ACHC-accredited.
 - It serves Ventura and Los Angeles Counties. The office is at 4165 E Thousand Oaks Blvd,
-  Suite 325B, Westlake Village, CA 91362.
+  Ste 325B, Westlake Village, CA 91362.
 - The 24/7 phone number is {PHONE}; email is info@eternallifehospice.com.
 - Same-day admissions are often possible. Care is provided wherever home is.
 - Hospice is covered under Medicare Part A and the agency works with Medi-Cal and most plans.

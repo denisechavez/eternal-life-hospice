@@ -112,7 +112,7 @@ SAMEASES = [
 
 ADDRESS = {
     "@type": "PostalAddress",
-    "streetAddress": "4165 E Thousand Oaks Blvd, Suite 325B",
+    "streetAddress": "4165 E Thousand Oaks Blvd, Ste 325B",
     "addressLocality": "Westlake Village",
     "addressRegion": "CA",
     "postalCode": "91362",
