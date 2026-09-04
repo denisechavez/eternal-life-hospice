@@ -1,0 +1,798 @@
+ETERNAL LIFE HOSPICE — SEARCH + AI DISCOVERY IMPLEMENTATION
+FINAL REPLIT WORK ORDER
+
+Production domain:
+https://eternallifehospice.com
+
+Development environment:
+Replit is used for development and preview.
+
+IMPORTANT:
+Do not change hosting.
+Do not change DNS.
+Do not add Cloudflare.
+Do not change deployment architecture.
+Do not redesign pages.
+Do not rewrite content.
+Do not rename public URLs.
+Do not delete city pages.
+Do not make unrelated changes.
+
+OBJECTIVE
+
+Prepare Eternal Life Hospice for strong traditional search discovery and AI-assisted search/retrieval before handoff to the SEO team.
+
+This implementation should address:
+
+1. Crawlability
+2. Indexability
+3. Canonicalization
+4. Sitemap integrity
+5. Structured data
+6. AI/search crawler accessibility
+7. Business identity consistency
+8. Preview-domain indexing protection
+9. Privacy and public-file exposure
+10. Final technical documentation
+
+Work on a dedicated branch.
+
+Before making changes:
+- Create a checkpoint/commit of the current healthy state.
+- Record the current branch and commit hash.
+- Produce a pre-change audit of anything that will be modified.
+- Do not merge to the primary branch until the final implementation report has been reviewed.
+
+
+==================================================
+SECTION 1 — LOCKED BUSINESS IDENTITY / NAP
+==================================================
+
+The following information is LOCKED.
+
+Use these values throughout the production website and structured data.
+
+Business name:
+Eternal Life Hospice
+
+Legal name:
+Eternal Life Hospice, Inc.
+
+Production domain:
+https://eternallifehospice.com
+
+Phone:
+805.953.7273
+
+Schema telephone format:
++1-805-953-7273
+
+Fax:
+805.953.8530
+
+Schema fax format:
++1-805-953-8530
+
+Primary email:
+info@eternallifehospice.com
+
+Address:
+4165 E Thousand Oaks Blvd Ste 325B
+Westlake Village, CA 91362
+
+Service areas:
+Ventura County, California
+Los Angeles County, California
+
+Founder:
+Aleksandra Dubina
+
+Founder title:
+Founder and Chief Executive Officer
+
+STANDARDIZATION RULE:
+
+Use "Ste 325B" everywhere.
+
+Do not use:
+- Ste. 325B
+- Suite 325B
+- 325D
+- Ste 325D
+- Suite 325D
+
+Do not use these domains:
+- eternalhospice.com
+- eternallifehospice.org
+- any other Eternal domain variation
+
+The production website and Google Business Profile currently identify the business at:
+
+4165 E Thousand Oaks Blvd Ste 325B
+Westlake Village, CA 91362
+
+That is the source-of-truth address.
+
+
+==================================================
+SECTION 2 — FIRST RUN A BUSINESS IDENTITY SEARCH
+==================================================
+
+Before changing anything search the entire repository for all occurrences of:
+
+325B
+325D
+Ste 325B
+Ste. 325B
+Suite 325B
+Ste 325D
+Ste. 325D
+Suite 325D
+eternalhospice.com
+eternallifehospice.org
+eternallifehospice.com
+805.953.7273
+805-953-7273
+info@eternallifehospice.com
+
+Also search for:
+- alternate business phone numbers
+- alternate main email addresses
+- obsolete Eternal domains
+- old addresses
+- hardcoded structured-data values
+- footer contact information
+- header contact information
+- contact-page information
+- city-page contact information
+- metadata containing old domains
+- schema containing old information
+
+Produce the findings BEFORE normalization.
+
+Then normalize public business identity information to the locked values in Section 1.
+
+Do not replace legitimate individual staff email addresses merely because they differ from the primary business email.
+
+
+==================================================
+SECTION 3 — PRODUCTION ROBOTS.TXT
+==================================================
+
+Inspect the existing robots.txt first.
+
+The production file should be simple unless real application routes require additional rules.
+
+Use this baseline:
+
+User-agent: *
+Allow: /
+
+Sitemap: https://eternallifehospice.com/sitemap.xml
+
+Do not create separate groups for Googlebot, Bingbot, Applebot, OpenAI, Claude or Perplexity when all are receiving the same access.
+
+The wildcard group should permit normal access for search and retrieval systems including:
+
+Googlebot
+Bingbot
+Applebot
+OAI-SearchBot
+ChatGPT-User
+Claude-SearchBot
+Claude-User
+PerplexityBot
+Perplexity-User
+
+Do not add placeholder Disallow paths that do not exist.
+
+If actual administrative or nonpublic routes exist then document them first.
+
+Do not use robots.txt as a privacy or security mechanism.
+
+Do not make any new decision about model-training crawler permissions during this implementation unless specifically instructed.
+
+Do not add llms.txt merely because it is discussed as an AI SEO technique.
+
+
+==================================================
+SECTION 4 — PRODUCTION INDEXABILITY
+==================================================
+
+Inspect every production page template and every generated page.
+
+Check the final rendered HTML and HTTP response headers.
+
+Production pages intended for search must NOT contain:
+
+<meta name="robots" content="noindex">
+
+or equivalent noindex directives.
+
+Also inspect for:
+
+X-Robots-Tag: noindex
+
+Report every page intentionally configured as noindex.
+
+Do not blindly remove noindex from:
+- thank-you pages
+- internal utility pages
+- private areas
+- pages that clearly should not appear in search
+
+Public marketing, resource, provider, location, service and educational pages should generally remain indexable unless there is a documented reason otherwise.
+
+
+==================================================
+SECTION 5 — REPLIT PREVIEW MUST NOT BE INDEXED
+==================================================
+
+Replit is used for development and preview.
+
+DO NOT redirect the Replit preview domain to production.
+
+The preview must remain functional for development.
+
+Protect the Replit preview environment from indexing.
+
+Preferred implementation:
+
+X-Robots-Tag: noindex, nofollow
+
+If environment-specific response headers cannot be reliably implemented then use:
+
+<meta name="robots" content="noindex, nofollow">
+
+ONLY in the Replit development/preview environment.
+
+CRITICAL:
+
+Production must remain indexable.
+
+Verify both environments independently after implementation.
+
+Do not rely only on reading source code.
+
+Check the actual rendered HTML and actual HTTP headers.
+
+
+==================================================
+SECTION 6 — CANONICAL URLS
+==================================================
+
+Every indexable production page must have one valid canonical URL.
+
+Production canonicals must use:
+
+https://eternallifehospice.com
+
+Example:
+
+<link rel="canonical" href="https://eternallifehospice.com/resources">
+
+Verify:
+
+- no Replit preview URLs appear in canonical tags
+- no eternalhospice.com URLs appear
+- no eternallifehospice.org URLs appear
+- no HTTP canonicals appear
+- no conflicting canonical tags exist
+- no duplicate canonical tags exist
+- city pages canonicalize to themselves
+- resource pages canonicalize to themselves
+- provider pages canonicalize to themselves
+- blog/article pages canonicalize to themselves
+
+Do not change existing public URL paths during this assignment.
+
+
+==================================================
+SECTION 7 — SITEMAP.XML
+==================================================
+
+Confirm this URL exists:
+
+https://eternallifehospice.com/sitemap.xml
+
+If sitemap generation already exists inspect and validate it.
+
+If it does not exist implement an appropriate automatically generated sitemap.
+
+Requirements:
+
+- production .com URLs only
+- absolute URLs
+- canonical URLs only
+- no Replit preview URLs
+- no noindex pages
+- no redirecting URLs
+- no 404 URLs
+- no unnecessary query-string variants
+- no duplicate URL entries
+- accurate lastmod values where supported
+- automatically updated when pages are added or removed
+
+Cross-check sitemap URLs against actual site routes.
+
+Do not add a route to the sitemap merely because a file exists.
+
+Only legitimate public indexable canonical pages belong in the sitemap.
+
+
+==================================================
+SECTION 8 — STRUCTURED DATA / ENTITY GRAPH
+==================================================
+
+Inspect all existing schema before adding or replacing anything.
+
+Do not create duplicate competing organization objects.
+
+Build or normalize a consistent JSON-LD entity graph.
+
+PRIMARY ORGANIZATION ENTITY
+
+Stable @id:
+
+https://eternallifehospice.com/#organization
+
+Recommended type:
+
+MedicalOrganization
+
+Use the following locked identity information:
+
+name:
+Eternal Life Hospice
+
+legalName:
+Eternal Life Hospice, Inc.
+
+url:
+https://eternallifehospice.com
+
+telephone:
++1-805-953-7273
+
+faxNumber:
++1-805-953-8530
+
+email:
+info@eternallifehospice.com
+
+ADDRESS OBJECT:
+
+"address": {
+  "@type": "PostalAddress",
+  "streetAddress": "4165 E Thousand Oaks Blvd Ste 325B",
+  "addressLocality": "Westlake Village",
+  "addressRegion": "CA",
+  "postalCode": "91362",
+  "addressCountry": "US"
+}
+
+AREA SERVED:
+
+Ventura County, California
+Los Angeles County, California
+
+FOUNDER:
+
+Aleksandra Dubina
+Founder and Chief Executive Officer
+
+Connect the founder using an appropriate Person entity.
+
+Do not invent credentials, services, certifications or business claims.
+
+Only include:
+- Medicare certification
+- CDPH licensing
+- ACHC accreditation
+- 24/7 nurse accessibility
+- clinical claims
+- service claims
+
+when those facts are accurate and represented appropriately in visible website content.
+
+
+==================================================
+SECTION 9 — WEBSITE AND PAGE SCHEMA
+==================================================
+
+Create or normalize a WebSite entity with stable @id:
+
+https://eternallifehospice.com/#website
+
+Connect the WebSite entity to the MedicalOrganization.
+
+Use appropriate page-level schema when relevant.
+
+Possible types include:
+
+WebPage
+AboutPage
+ContactPage
+Article
+BlogPosting
+BreadcrumbList
+Person
+
+Do not add schema solely because a type exists.
+
+Schema must accurately represent visible content.
+
+Aleksandra Dubina's founder page should use appropriate Person/Profile relationships and connect back to Eternal Life Hospice.
+
+Avoid duplicating a full unrelated organization object on every page.
+
+Use stable @id relationships so search engines can understand that the organization, website, founder and individual pages belong to one entity graph.
+
+
+==================================================
+SECTION 10 — LOGO AND IMAGE REFERENCES IN SCHEMA
+==================================================
+
+Confirm the actual production logo asset URL.
+
+Do not guess the file path.
+
+Use only a production eternallifehospice.com asset URL.
+
+Confirm the logo:
+- exists
+- returns HTTP 200
+- is crawlable
+- represents the current Eternal Life Hospice brand
+
+Do not point schema to:
+- Replit preview assets
+- deprecated logos
+- broken files
+- old-domain assets
+
+
+==================================================
+SECTION 11 — SEARCH AND AI RETRIEVAL ACCESS
+==================================================
+
+Review application behavior for legitimate search and retrieval crawlers.
+
+Check for middleware, bot protection, rate limiting, authentication or application rules that could unintentionally return:
+
+401
+403
+429
+5xx
+
+Review compatibility with:
+
+Googlebot
+Bingbot
+Applebot
+OAI-SearchBot
+ChatGPT-User
+Claude-SearchBot
+Claude-User
+PerplexityBot
+Perplexity-User
+
+Do not weaken general site security simply to accommodate crawlers.
+
+Do not make speculative changes based only on a crawler user-agent string.
+
+Document anything that could interfere with legitimate indexing or retrieval.
+
+
+==================================================
+SECTION 12 — NO CLOUDFLARE CHANGES
+==================================================
+
+Eternal Life Hospice is not currently using Cloudflare as part of this implementation.
+
+Do not:
+- install Cloudflare
+- configure Cloudflare
+- change DNS to Cloudflare
+- add Cloudflare proxying
+- change nameservers
+- make assumptions about future Cloudflare architecture
+
+Cloudflare may be evaluated separately later with the SEO team.
+
+It is outside the scope of this implementation.
+
+
+==================================================
+SECTION 13 — PRIVACY AND PUBLIC EXPOSURE AUDIT
+==================================================
+
+This is a healthcare website.
+
+robots.txt is NOT a privacy control.
+
+Inspect the repository and publicly reachable production assets for:
+
+- intake information
+- form-submission records
+- form logs
+- uploaded documents
+- internal PDFs
+- draft documents
+- administrative pages
+- referral portal content
+- staff-only pages
+- database exports
+- CSV exports
+- backup files
+- temporary files
+- environment files
+- API keys
+- credentials
+- secrets
+- debug output
+- source maps that expose sensitive implementation details
+- unlinked but publicly accessible files
+- patient information of any kind
+
+Anything genuinely private must be protected through proper authentication and access control.
+
+Do not attempt to hide confidential content merely using:
+
+Disallow:
+
+or obscure URLs.
+
+If anything potentially sensitive is discovered:
+
+STOP.
+
+Do not delete it automatically.
+
+Report:
+- file/path
+- exposure method
+- severity
+- recommended remediation
+
+
+==================================================
+SECTION 14 — THANK-YOU AND FORM-CONFIRMATION PAGES
+==================================================
+
+Identify form confirmation and thank-you pages.
+
+Where appropriate these should normally use:
+
+noindex
+
+rather than being blocked only by robots.txt.
+
+Do not make this change blindly.
+
+Document each page and its purpose first.
+
+
+==================================================
+SECTION 15 — INTERNAL LINKING AND DISCOVERABILITY CHECK
+==================================================
+
+Perform a structural check of important public pages.
+
+Identify:
+
+- orphaned pages
+- important pages with weak internal linking
+- broken internal links
+- links pointing to old domains
+- links pointing to Replit preview URLs
+- redirects used unnecessarily in internal navigation
+- city pages that cannot be reached naturally
+- provider pages with poor discoverability
+- founder content with poor discoverability
+- resource pages disconnected from the rest of the site
+
+Do not redesign the internal-linking architecture during this task unless correcting an obvious broken or obsolete link.
+
+Report strategic internal-linking recommendations separately for the SEO team.
+
+
+==================================================
+SECTION 16 — HTTP STATUS AND REDIRECT AUDIT
+==================================================
+
+Review important production URLs.
+
+Identify:
+
+- 404 errors
+- 500 errors
+- redirect chains
+- redirect loops
+- HTTP URLs
+- obsolete-domain redirects
+- accidental Replit links
+- duplicate www/non-www versions if applicable
+
+Do not restructure URLs.
+
+Correct only clear technical errors within the existing architecture.
+
+Document every redirect changed.
+
+
+==================================================
+SECTION 17 — DO NOT MODIFY
+==================================================
+
+Do not:
+
+- change production hosting
+- change DNS
+- add Cloudflare
+- change deployment architecture
+- change the primary domain
+- redesign pages
+- rewrite marketing copy
+- change navigation strategy
+- rename public URLs
+- delete city pages
+- consolidate city pages
+- add speculative AI schema
+- add llms.txt merely for AI SEO
+- modify Google Business Profile
+- modify Google Search Console ownership
+- modify Bing Webmaster ownership
+- change tracking/analytics configuration unless required to correct an obvious technical defect
+- change training-crawler policies beyond existing behavior
+- make unrelated performance or design changes
+- merge automatically to the primary branch
+
+
+==================================================
+SECTION 18 — FINAL VERIFICATION
+==================================================
+
+After implementation verify all of the following.
+
+PRODUCTION
+
+[ ] https://eternallifehospice.com loads correctly
+
+[ ] robots.txt returns HTTP 200
+
+[ ] sitemap.xml returns HTTP 200
+
+[ ] sitemap contains only eternallifehospice.com production URLs
+
+[ ] production indexable pages do not contain accidental noindex directives
+
+[ ] production HTTP headers do not contain accidental X-Robots-Tag noindex directives
+
+[ ] canonical tags are present where required
+
+[ ] canonical tags use eternallifehospice.com
+
+[ ] no canonical points at Replit preview
+
+[ ] city pages self-canonicalize
+
+[ ] schema validates without material errors
+
+[ ] organization schema uses Ste 325B
+
+[ ] website visible address uses Ste 325B
+
+[ ] no Ste. 325B remains in active production-visible content
+
+[ ] no Suite 325B remains in active production-visible content
+
+[ ] no 325D remains in active production content or structured data
+
+[ ] phone is 805.953.7273
+
+[ ] main email is info@eternallifehospice.com
+
+[ ] primary domain is eternallifehospice.com
+
+[ ] old Eternal domains do not appear in active canonical/schema/business identity data
+
+PREVIEW
+
+[ ] Replit preview remains functional
+
+[ ] Replit preview is noindex
+
+[ ] Replit preview does not become the canonical site
+
+[ ] production does not inherit preview noindex behavior
+
+CRAWLING
+
+[ ] normal search crawler access is not unintentionally blocked
+
+[ ] Googlebot is not unintentionally blocked
+
+[ ] Bingbot is not unintentionally blocked
+
+[ ] Applebot is not unintentionally blocked
+
+[ ] OAI-SearchBot is not unintentionally blocked
+
+[ ] ChatGPT-User is not unintentionally blocked
+
+[ ] Claude-SearchBot is not unintentionally blocked
+
+[ ] Claude-User is not unintentionally blocked
+
+[ ] PerplexityBot is not unintentionally blocked
+
+PRIVACY
+
+[ ] no patient information is publicly exposed
+
+[ ] no confidential internal documents are publicly exposed
+
+[ ] no environment variables are exposed to the client
+
+[ ] no API secrets or credentials appear in public code/assets
+
+[ ] private areas use actual access controls rather than robots.txt
+
+
+==================================================
+SECTION 19 — FINAL HANDOFF REPORT
+==================================================
+
+At completion provide one clear report containing:
+
+1. Branch name
+2. Pre-change commit hash
+3. Post-change commit hash
+4. Every file modified
+5. Why each file was modified
+6. Before/after robots.txt
+7. Sitemap URL
+8. Number of sitemap URLs
+9. Any sitemap errors found
+10. Production pages checked for indexability
+11. Any noindex directives found
+12. Canonical audit results
+13. Any bad or conflicting canonicals corrected
+14. Structured-data types implemented
+15. Organization schema currently deployed
+16. Website schema currently deployed
+17. Founder/Person schema currently deployed
+18. Address inconsistencies found
+19. Domain inconsistencies found
+20. Email inconsistencies found
+21. Phone inconsistencies found
+22. Confirmation that Ste 325B is standardized
+23. Confirmation that 325D is absent from active production content/schema
+24. Replit preview indexing protection implemented
+25. Crawler-access findings
+26. Privacy/public-exposure findings
+27. Broken-link or redirect findings
+28. Items deliberately NOT changed
+29. Remaining recommendations for Kevin/SEO team
+30. Any unresolved warnings
+
+Do not merge to the primary branch until this report is reviewed.
+
+FINAL RULE:
+
+This is a bounded technical search and AI-discovery implementation.
+
+Make only changes necessary to improve:
+
+crawlability
+indexability
+canonical integrity
+sitemap integrity
+structured-data accuracy
+business identity consistency
+preview protection
+crawler accessibility
+privacy hygiene
+
+Preserve the current Eternal Life Hospice website architecture, content, visual design and public URL structure unless a clear technical defect requires correction.
