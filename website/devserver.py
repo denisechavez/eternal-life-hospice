@@ -45,6 +45,13 @@ NEWSLETTER_DIR = os.path.abspath(os.path.join(BASE, "..", "exports", "newsletter
 REPORTS_DIR = os.path.abspath(os.path.join(BASE, "..", "exports", "campaign-reports"))
 CHAT_CLIENT_RATE_LIMITER = SlidingWindowRateLimiter(20, 10 * 60)
 CHAT_GLOBAL_RATE_LIMITER = SlidingWindowRateLimiter(120, 10 * 60)
+
+
+def is_production_deployment():
+    """Return True only inside a published Replit deployment."""
+    return os.environ.get("REPLIT_DEPLOYMENT") == "1"
+
+
 CANONICAL_HTML_ROUTES = {
     "/hospice-care",
     "/resources",
@@ -97,6 +104,8 @@ class PrettyURLHandler(http.server.SimpleHTTPRequestHandler):
     def translate_path(self, path):
         clean = path.split("?", 1)[0].split("#", 1)[0]
         if clean.startswith("/canvas-hub/"):
+            if is_production_deployment():
+                return os.path.join(ROOT, "__not_found__")
             rel = os.path.normpath(clean[len("/canvas-hub/"):]).lstrip("/")
             if rel.startswith("emails/"):
                 base, rel = EMAILS_DIR, rel[len("emails/"):]
