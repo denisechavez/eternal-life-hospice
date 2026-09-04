@@ -40,9 +40,9 @@ BASE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.join(BASE, "elh-preview")
 # Internal-only routes for the workspace canvas hub (never published to the site):
 CANVAS_HUB = os.path.join(BASE, "canvas-hub")
-EMAILS_DIR = os.path.abspath(os.path.join(BASE, "..", "exports", "email"))
-NEWSLETTER_DIR = os.path.abspath(os.path.join(BASE, "..", "exports", "newsletter"))
-REPORTS_DIR = os.path.abspath(os.path.join(BASE, "..", "exports", "campaign-reports"))
+CONFIDENTIAL_CANVAS_NAMESPACES = frozenset(
+    {"emails", "newsletter", "campaign-reports"}
+)
 CHAT_CLIENT_RATE_LIMITER = SlidingWindowRateLimiter(20, 10 * 60)
 CHAT_GLOBAL_RATE_LIMITER = SlidingWindowRateLimiter(120, 10 * 60)
 
@@ -107,14 +107,10 @@ class PrettyURLHandler(http.server.SimpleHTTPRequestHandler):
             if is_production_deployment():
                 return os.path.join(ROOT, "__not_found__")
             rel = os.path.normpath(clean[len("/canvas-hub/"):]).lstrip("/")
-            if rel.startswith("emails/"):
-                base, rel = EMAILS_DIR, rel[len("emails/"):]
-            elif rel.startswith("newsletter/"):
-                base, rel = NEWSLETTER_DIR, rel[len("newsletter/"):]
-            elif rel.startswith("campaign-reports/"):
-                base, rel = REPORTS_DIR, rel[len("campaign-reports/"):]
-            else:
-                base, rel = CANVAS_HUB, rel
+            namespace = rel.split("/", 1)[0]
+            if namespace in CONFIDENTIAL_CANVAS_NAMESPACES:
+                return os.path.join(ROOT, "__not_found__")
+            base = CANVAS_HUB
             resolved = os.path.abspath(os.path.join(base, rel))
             try:
                 inside = os.path.commonpath([base, resolved]) == base

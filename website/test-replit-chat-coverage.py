@@ -178,18 +178,55 @@ try:
     canvas_preview_url = base_url + "/canvas-hub/social/index.html"
     with urllib.request.urlopen(canvas_preview_url, timeout=5) as response:
         check(
-            "canvas hub remains available in development preview",
+            "approved canvas hub tools remain available in development preview",
+            response.status == 200,
+        )
+
+    confidential_canvas_urls = {
+        "campaign report": (
+            base_url
+            + "/canvas-hub/campaign-reports/engagement-report-2026-07-30.html"
+        ),
+        "email correspondence": (
+            base_url + "/canvas-hub/emails/pih-letters/brent-melton.pdf"
+        ),
+        "newsletter review": (
+            base_url + "/canvas-hub/newsletter/elh-newsletter-review.pdf"
+        ),
+    }
+    for label, confidential_url in confidential_canvas_urls.items():
+        try:
+            urllib.request.urlopen(confidential_url, timeout=5)
+        except urllib.error.HTTPError as exc:
+            check(
+                f"{label} is unavailable in development preview",
+                exc.code == 404,
+            )
+        else:
+            raise AssertionError(
+                f"{label} unexpectedly served in development preview"
+            )
+
+    with urllib.request.urlopen(base_url + "/resources", timeout=5) as response:
+        check(
+            "normal public routes remain available after canvas containment",
             response.status == 200,
         )
 
     prior_deployment_flag = os.environ.get("REPLIT_DEPLOYMENT")
     os.environ["REPLIT_DEPLOYMENT"] = "1"
     try:
-        urllib.request.urlopen(canvas_preview_url, timeout=5)
-    except urllib.error.HTTPError as exc:
-        check("canvas hub returns 404 in production", exc.code == 404)
-    else:
-        raise AssertionError("canvas hub unexpectedly served in production")
+        production_canvas_urls = [canvas_preview_url]
+        production_canvas_urls.extend(confidential_canvas_urls.values())
+        for production_canvas_url in production_canvas_urls:
+            try:
+                urllib.request.urlopen(production_canvas_url, timeout=5)
+            except urllib.error.HTTPError as exc:
+                check("canvas hub returns 404 in production", exc.code == 404)
+            else:
+                raise AssertionError(
+                    "canvas hub unexpectedly served in production"
+                )
     finally:
         if prior_deployment_flag is None:
             os.environ.pop("REPLIT_DEPLOYMENT", None)
