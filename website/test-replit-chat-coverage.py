@@ -175,6 +175,27 @@ try:
             == "public, max-age=31536000, immutable",
         )
 
+    canvas_preview_url = base_url + "/canvas-hub/social/index.html"
+    with urllib.request.urlopen(canvas_preview_url, timeout=5) as response:
+        check(
+            "canvas hub remains available in development preview",
+            response.status == 200,
+        )
+
+    prior_deployment_flag = os.environ.get("REPLIT_DEPLOYMENT")
+    os.environ["REPLIT_DEPLOYMENT"] = "1"
+    try:
+        urllib.request.urlopen(canvas_preview_url, timeout=5)
+    except urllib.error.HTTPError as exc:
+        check("canvas hub returns 404 in production", exc.code == 404)
+    else:
+        raise AssertionError("canvas hub unexpectedly served in production")
+    finally:
+        if prior_deployment_flag is None:
+            os.environ.pop("REPLIT_DEPLOYMENT", None)
+        else:
+            os.environ["REPLIT_DEPLOYMENT"] = prior_deployment_flag
+
     gzip_request = urllib.request.Request(
         base_url + "/assets/chat.js?v=20260805",
         headers={"Accept-Encoding": "gzip"},
