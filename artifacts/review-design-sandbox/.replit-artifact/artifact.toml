@@ -1,0 +1,19 @@
+kind = "design"
+previewPath = "/__reviews-mockup/"
+title = "ELH Review Section Design"
+description = "Isolated current-versus-premium redesign comparison for the Eternal Life Hospice Google review section."
+version = "1.0.0"
+id = "artifacts/review-design-sandbox"
+router = "path"
+
+[[services]]
+name = "Component Preview Server"
+paths = [ "/__reviews-mockup/" ]
+localPort = 21921
+
+[services.development]
+run = "npm run dev"
+
+[services.env]
+PORT = "21921"
+BASE_PATH = "/__reviews-mockup/"
