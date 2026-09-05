@@ -8067,10 +8067,13 @@
     "latitude": 34.1705,
     "longitude": -118.8376,
     "canonicalUrl": "https://eternallifehospice.com/hospice-thousand-oaks-ca",
-    "title": "Hospice Care in Thousand Oaks, CA | Eternal Life Hospice",
+    "title": "Home Hospice Care in Thousand Oaks, CA | Eternal Life Hospice",
+    "searchMetaDescription": "Medicare-certified home hospice care in Thousand Oaks and the Conejo Valley. Physician-supported care, 24/7 nursing and family guidance. Call 805.953.7273.",
     "metaDescription": "Eternal Life Hospice provides Medicare-certified hospice care in Thousand Oaks, CA — near our Westlake Village headquarters, serving the Conejo Valley. Physician-supported comfort care at home or in a facility. Call 805.953.7273.",
     "h1": "Hospice Care in Thousand Oaks, California",
     "heroEyebrow": "Serving Thousand Oaks · Conejo Valley · Ventura County",
+    "analyticsVersion": "20260727h",
+    "heroIntroduction": "Eternal Life Hospice provides Medicare-certified, physician-supported home hospice care for eligible patients and families in Thousand Oaks and throughout the Conejo Valley. Our nurses, aides, social workers and chaplains support patients wherever they live—including private homes, assisted-living communities, residential-care settings and skilled-nursing facilities. Families can call for guidance at any time, and same-day admission may be available when clinically appropriate.",
     "atAGlanceSummary": "Eternal Life Hospice serves Thousand Oaks families with Medicare-certified, physician-supported hospice care — at home, in assisted-living communities and in skilled-nursing facilities throughout the Conejo Valley. Our headquarters in Westlake Village places us at the heart of this community and allows us to begin a clinical evaluation the same day a referral is received.",
     "localIntroduction": "Thousand Oaks is the largest city in Ventura County and the commercial and cultural center of the Conejo Valley. With a highly educated population, extensive senior living infrastructure and a community that values informed, quality care, families in Thousand Oaks often begin their hospice search with detailed questions. Eternal Life Hospice welcomes that — our clinical team provides clear answers and transparent care planning from the very first conversation.",
     "localNearbyParagraph": "We serve Newbury Park, Moorpark, Westlake Village, Camarillo and the broader Conejo Valley, giving Thousand Oaks families a care team rooted in the region.",
@@ -8090,6 +8093,21 @@
       {
         "slug": "hospice-camarillo-ca",
         "city": "Camarillo"
+      }
+    ],
+    "serviceOverviewHtml": "Hospice care is comfort-focused care for an eligible patient with a terminal illness, provided under physician direction after a clinical evaluation. Eternal Life Hospice coordinates nursing, aide support, social work, chaplaincy, medications, equipment and family education around one individualized plan of care. Learn more about <a href=\"/resources/pain-symptom-management\">pain and symptom management</a> and <a href=\"/blog/the-caregiver-who-needs-care\">support for family caregivers</a>.",
+    "displayFaqItems": [
+      {
+        "q": "Can hospice care be provided at home in Thousand Oaks?",
+        "a": "Yes. Hospice care can be provided in a private residence or another place the patient calls home, including assisted-living communities, residential-care homes, memory-care settings and skilled-nursing facilities. The hospice team coordinates nursing, aide support, social work, chaplaincy, equipment and medications related to the hospice diagnosis according to the individualized plan of care."
+      },
+      {
+        "q": "What services does a hospice agency provide in Thousand Oaks?",
+        "a": "For an eligible patient, hospice may include physician-directed nursing care, hospice aide visits, social work, chaplaincy, medications and equipment related to the hospice diagnosis, symptom support and education for family caregivers. Services are based on the patient’s clinical needs and individualized plan of care."
+      },
+      {
+        "q": "How quickly can hospice care begin in Thousand Oaks?",
+        "a": "Same-day evaluation may be available when clinically appropriate and operationally available. After a referral or intake call, a nurse schedules an assessment and reviews eligibility, care goals and enrollment requirements with the patient and family."
       }
     ],
     "faqItems": [

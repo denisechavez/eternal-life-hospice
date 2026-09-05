@@ -37,6 +37,9 @@ from fragments import HEADER_HTML
 
 def meta_description(c: dict) -> str:
     """Build a locally specific search snippet near the 150–160 character target."""
+    if c.get("searchMetaDescription"):
+        return c["searchMetaDescription"]
+
     city = c["city"]
     subregion = c["subregion"]
     county = c["county"]
@@ -398,6 +401,10 @@ def render_page(c):
     h1          = c["h1"]
     eyebrow     = c["heroEyebrow"]
     at_a_glance = c["atAGlanceSummary"]
+    hero_intro  = c.get(
+        "heroIntroduction",
+        f"Eternal Life Hospice provides physician-supported hospice care for eligible patients and families in {city} and surrounding communities. Care may be provided in private homes, assisted-living communities, residential-care settings and skilled-nursing facilities throughout {county}."
+    )
     intro       = c["localIntroduction"]
     nearby_para = c.get("localNearbyParagraph", "")
     provider_ctx= c.get("providerContext", "")
@@ -409,8 +416,19 @@ def render_page(c):
         f"<b>Board-and-care homes</b> &mdash; small group settings in {city} and nearby communities",
         "<b>Skilled-nursing facilities</b> &mdash; layered onto existing nursing care"
     ])
-    faqs        = local_faqs(c["faqItems"])
+    faqs        = c.get("displayFaqItems", local_faqs(c["faqItems"]))
+    service_overview = c.get(
+        "serviceOverviewHtml",
+        "Hospice care is comfort-focused care for an eligible patient with a terminal illness, provided under physician direction after a clinical evaluation. Eternal Life Hospice coordinates nursing, aide support, social work, chaplaincy, medications, equipment and family education around one individualized plan of care."
+    )
     last_update = c.get("lastMaterialUpdate", "2026-07-22")
+    head_scripts = HEAD_SCRIPTS
+    if c.get("analyticsVersion"):
+        head_scripts = re.sub(
+            r"analytics\.js\?v=[^\"']+",
+            f"analytics.js?v={c['analyticsVersion']}",
+            head_scripts,
+        )
 
     schemas = [
         json.dumps(webpage_schema(c), ensure_ascii=False),
@@ -446,7 +464,7 @@ def render_page(c):
   <link rel="stylesheet" href="assets/elh.css?v=20260901">
   <link rel="stylesheet" href="/assets/header-nav.css?v=20260901ab">
 {schema_tags}
-{HEAD_SCRIPTS}
+{head_scripts}
 </head><body>
 <a class="skip-link" href="#main-content">Skip to main content</a>
 {HEADER}
@@ -455,7 +473,7 @@ def render_page(c):
 <section class="hero hero--city hero--tall">{_hero_img_tag(slug, city)}
     <div class="eyebrow">{eyebrow}</div>
     <h1>{h1}</h1>
-    <p>Eternal Life Hospice provides physician-supported hospice care for eligible patients and families in {city} and surrounding communities. Care may be provided in private homes, assisted-living communities, residential-care settings and skilled-nursing facilities throughout {county}.</p>
+    <p>{hero_intro}</p>
     <div class="hero-btns"><a class="btn-gold" href="tel:18059537273">Call for Hospice Guidance</a><a class="btn-ghost" href="family-guide">Read the Family Guide &#8594;</a><a class="btn-ghost" href="/refer">Refer a Patient &#8594;</a></div>
 </section>
 <nav class="breadcrumb" aria-label="Breadcrumb"><ol><li><a href="/">Home</a></li><li><a href="hospice-ventura-and-los-angeles-county-ca">Service Area</a></li><li aria-current="page">{city} Hospice Care</li></ol></nav>
@@ -474,7 +492,7 @@ def render_page(c):
 
 <section class="sec wrap">
   <h2>Hospice services for {city} families</h2>
-  <p>Hospice care is comfort-focused care for an eligible patient with a terminal illness, provided under physician direction after a clinical evaluation. Eternal Life Hospice coordinates nursing, aide support, social work, chaplaincy, medications, equipment and family education around one individualized plan of care.</p>
+  <p>{service_overview}</p>
   <p>Read <a href="/resources/when-is-it-time">when it may be time to consider hospice</a>, <a href="/resources/first-48-hours">what happens in the first 48 hours</a>, and <a href="/resources/medicare-hospice-benefit">how the Medicare hospice benefit works</a>. A conversation with our team can clarify the next step without pressure.</p>
 </section>
 
