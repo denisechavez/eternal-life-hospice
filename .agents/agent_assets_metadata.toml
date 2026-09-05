@@ -1582,3 +1582,31 @@ mtime_ms = 1788402673490
 storage_uri = "gcs://replit-rams-assets-kirk/rams/assets/repl:e1b2f643-7869-4565-af0e-10c34575ee8d/9021176f-cbe9-4030-b8e4-a7c1106c3b11/6baf3fe8-4da7-4348-be8d-ad90fb7e6193"
 storage_version_token = "1788402688575373"
 content_type = "image/png"
+
+[[outputs]]
+id = "nmTa7grMxtZnPMZaYwQSc"
+uri = "file://screenshots/reviews-current.jpg"
+type = "image"
+title = "Current Google Reviews — Baseline"
+description = "Rendered desktop view of the existing review section."
+logical_id = "9db2c3c0-077e-4f90-921a-c9f117beabf5"
+content_hash = "sha256:08c6cbd3b78dc3d969954b7a9b1c91f5ab7145ed0c818bdf560019088a0e7ca5"
+size = 74353
+mtime_ms = 1788602893557
+storage_uri = "gcs://replit-rams-assets-kirk/rams/assets/repl:e1b2f643-7869-4565-af0e-10c34575ee8d/9db2c3c0-077e-4f90-921a-c9f117beabf5/b29715e1-0fde-45fd-80e4-de56837fde4d"
+storage_version_token = "1788625096977821"
+content_type = "image/jpeg"
+
+[[outputs]]
+id = "FldBlGOKm5mJ2FOwdLkh4"
+uri = "file://screenshots/reviews-premium-editorial.jpg"
+type = "image"
+title = "Premium Editorial Reviews — Proposal"
+description = "Rendered desktop view of the proposed premium editorial redesign."
+logical_id = "c9167218-5599-4628-b289-152a78a90c72"
+content_hash = "sha256:fd6b3e7e128c3fa4fb9014bba5eb8e7c99297f908e5ca1910076b09ed67fdbfe"
+size = 94557
+mtime_ms = 1788602895273
+storage_uri = "gcs://replit-rams-assets-kirk/rams/assets/repl:e1b2f643-7869-4565-af0e-10c34575ee8d/c9167218-5599-4628-b289-152a78a90c72/30b125fd-d09f-4ead-b5a6-f656dad54af5"
+storage_version_token = "1788625098062155"
+content_type = "image/jpeg"
