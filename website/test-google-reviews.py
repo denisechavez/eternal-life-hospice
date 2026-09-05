@@ -31,6 +31,10 @@ class GoogleReviewsTests(unittest.TestCase):
         google_reviews._cache = None
 
     def test_fetch_normalizes_and_limits_public_fields(self):
+        complete_review = (
+            "The team answered every question with patience and care. "
+            "They remained responsive throughout a difficult time. " * 5
+        ).strip()
         upstream = {
             "rating": 4.9,
             "userRatingCount": 27,
@@ -38,7 +42,7 @@ class GoogleReviewsTests(unittest.TestCase):
             "reviews": [
                 {
                     "rating": 5,
-                    "text": {"text": "A steady and responsive team."},
+                    "text": {"text": complete_review},
                     "authorAttribution": {"displayName": "A. Reviewer"},
                     "relativePublishTimeDescription": "a month ago",
                 }
@@ -52,6 +56,8 @@ class GoogleReviewsTests(unittest.TestCase):
         self.assertEqual(result["rating"], 4.9)
         self.assertEqual(result["reviewCount"], 27)
         self.assertEqual(result["reviews"][0]["author"], "A. Reviewer")
+        self.assertEqual(result["reviews"][0]["text"], complete_review)
+        self.assertGreater(len(result["reviews"][0]["text"]), 360)
         self.assertNotIn("GOOGLE_API_KEY", json.dumps(result))
         self.assertEqual(
             request_json.call_args.kwargs["field_mask"],

@@ -23,7 +23,6 @@ CANONICAL_MAPS_URL = "https://maps.google.com/?cid=9771388271577679785"
 CANONICAL_PLACE_ID = "ChIJteBBU6vdfEcRqUfOqdzxmoc"
 CACHE_TTL_SECONDS = 60 * 60
 REQUEST_TIMEOUT_SECONDS = 8
-MAX_REVIEW_LENGTH = 360
 MAX_REVIEWS = 5
 
 _cache = None
@@ -72,8 +71,6 @@ def _clean_review(review):
     text = (text_obj.get("text") or "").strip()
     if not text:
         return None
-    if len(text) > MAX_REVIEW_LENGTH:
-        text = text[: MAX_REVIEW_LENGTH - 1].rstrip() + "…"
     author = ((review.get("authorAttribution") or {}).get("displayName") or "").strip()
     return {
         "text": text,

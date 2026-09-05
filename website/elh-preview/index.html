@@ -942,24 +942,37 @@ p,li,blockquote{text-wrap:pretty}
 .mod-card.feat .mod-img{position:relative}
 .mod-tag{position:absolute;top:.75rem;right:.75rem;z-index:3;display:inline-flex;align-items:center;gap:.3em;background:linear-gradient(180deg,#D8C08C,#C4A86F);color:var(--deep);font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:.32rem .68rem;border-radius:999px;box-shadow:0 4px 12px rgba(60,28,59,.3)}
 .mod-card.feat .mod-badge{background:linear-gradient(180deg,#D8C08C,#C4A86F);color:var(--deep)}
-/* ===== Google Reviews scrolling ticker ===== */
-.rv-strip{display:flex;align-items:stretch;background:var(--cream);border-top:1px solid var(--cream-dark);border-bottom:1px solid var(--cream-dark)}
-.rv-badge{display:inline-flex;align-items:center;gap:.45rem;flex-shrink:0;padding:.75rem 1.1rem .75rem 1.3rem;border-right:1px solid var(--cream-dark);text-decoration:none;background:var(--cream);z-index:5;white-space:nowrap}
-.rv-badge:hover{background:#f5f0e8}
-.rv-reel-stars{color:#F5A623;font-size:.85rem;letter-spacing:.06em}
-.rv-reel-score{font-weight:700;color:var(--deep);font-size:.85rem}
-.rv-reel-label{color:var(--ink-soft);font-size:.78rem}
-.rv-scroll-wrap{flex:1;overflow:hidden;position:relative}
-.rv-scroll-wrap::after{content:'';position:absolute;top:0;right:0;bottom:0;width:60px;background:linear-gradient(to left,var(--cream),transparent);pointer-events:none;z-index:4}
-.rv-reel{display:flex;align-items:center;gap:0;animation:rvscroll 70s linear infinite;width:max-content;padding:.8rem 0;white-space:nowrap}
-.rv-reel.is-static{animation:none;width:100%}
-.rv-reel:hover{animation-play-state:paused}
-.rv-sep{color:var(--gold);font-size:.5rem;flex-shrink:0;padding:0 1rem;opacity:.7}
-.rv-item{font-size:.8rem;color:var(--ink-soft);padding:0 .2rem;white-space:nowrap}
-.rv-item em{font-style:normal;font-weight:600;color:var(--plum);padding-left:.3rem}
-.rv-live-status{color:var(--text-mid);font-style:italic}
-@keyframes rvscroll{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
-@media(max-width:480px){.rv-badge{padding:.65rem .8rem}.rv-reel-label{display:none}}
+/* ===== Google Reviews static cards ===== */
+.reviews-band{background:var(--cream);padding:5rem 2rem;border-top:1px solid var(--cream-dark);border-bottom:1px solid var(--cream-dark)}
+.reviews-inner{max-width:1120px;margin:0 auto}
+.reviews-head{text-align:center;max-width:720px;margin:0 auto 2.25rem}
+.reviews-eyebrow{font-size:12px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);margin-bottom:.65rem}
+.reviews-title{font-family:var(--ff-d);font-weight:300;font-size:clamp(2rem,4vw,3rem);line-height:1.12;color:var(--deep);margin-bottom:.8rem}
+.reviews-copy{font-size:16px;line-height:1.7;color:var(--text-mid)}
+.reviews-summary{display:flex;align-items:center;justify-content:center;gap:.65rem;flex-wrap:wrap;margin-top:1.2rem}
+.reviews-summary-stars,.review-card-stars{color:#F5A623;letter-spacing:.06em}
+.reviews-summary-rating{font-family:var(--ff-d);font-size:1.45rem;font-weight:600;color:var(--deep)}
+.reviews-summary-count{font-size:14px;color:var(--text-mid)}
+.reviews-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1.25rem;align-items:start}
+.reviews-grid[hidden]{display:none}
+.review-card{background:#fff;border:1px solid var(--cream-dark);border-radius:14px;padding:1.65rem;box-shadow:0 5px 18px rgba(56,27,55,.07)}
+.review-card-stars{font-size:1rem;margin-bottom:1rem}
+.review-card blockquote{margin:0}
+.review-card-text{font-family:var(--ff-b);font-size:16.5px;line-height:1.72;color:var(--ink-soft)}
+.review-expand{display:inline-flex;margin-top:.75rem;background:none;border:0;border-bottom:1px solid rgba(91,46,89,.35);padding:.15rem 0;color:var(--plum);font:600 13px var(--ff-b);cursor:pointer}
+.review-expand:hover{border-color:var(--plum)}
+.review-expand:focus-visible,.reviews-more:focus-visible,.reviews-google-link:focus-visible{outline:2px solid var(--gold);outline-offset:4px}
+.review-card-footer{margin-top:1.25rem;padding-top:1rem;border-top:1px solid var(--cream-dark)}
+.review-card cite{display:block;font-style:normal;font-size:14px;font-weight:600;color:var(--plum)}
+.review-card-meta{display:block;margin-top:.2rem;font-size:12px;color:var(--text-light)}
+.reviews-actions{display:flex;align-items:center;justify-content:center;gap:1.2rem;flex-wrap:wrap;margin-top:1.75rem}
+.reviews-more{border:1px solid var(--plum);border-radius:999px;background:transparent;color:var(--plum);padding:.7rem 1.2rem;font:600 13px var(--ff-b);cursor:pointer}
+.reviews-more:hover{background:var(--plum);color:#fff}
+.reviews-google-link{font-size:14px;font-weight:600;color:var(--plum);text-decoration:none;border-bottom:1px solid rgba(91,46,89,.35)}
+.reviews-google-link:hover{border-color:var(--plum)}
+.reviews-status{text-align:center;color:var(--text-mid);font-style:italic}
+@media(max-width:850px){.reviews-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:580px){.reviews-band{padding:3.5rem 1.1rem}.reviews-grid{grid-template-columns:1fr}.review-card{padding:1.5rem}}
 </style>
 <style id="elh-embedded-fonts">
 @font-face{font-family:"Fraunces";font-style:normal;font-weight:100 900;font-display:swap;src:url(assets/fonts/fraunces-latin.woff2) format("woff2")}
@@ -1195,20 +1208,23 @@ p,li,blockquote{text-wrap:pretty}
     </div>
   </div>
 </section>
-<!-- GOOGLE REVIEWS TICKER -->
-<div class="rv-strip" id="reviews" aria-label="Google Reviews">
-  <a class="rv-badge" id="rvBadge" href="https://maps.google.com/?cid=9771388271577679785" target="_blank" rel="noopener" aria-label="See the latest Google reviews">
-    <svg width="22" height="22" viewBox="0 0 48 48" aria-hidden="true"><path fill="#4285F4" d="M45.12 24.5c0-1.56-.14-3.06-.4-4.5H24v8.51h11.84c-.51 2.75-2.06 5.08-4.39 6.64v5.52h7.11c4.16-3.83 6.56-9.47 6.56-16.17z"/><path fill="#34A853" d="M24 46c5.94 0 10.92-1.97 14.56-5.33l-7.11-5.52c-1.97 1.32-4.49 2.1-7.45 2.1-5.73 0-10.58-3.87-12.31-9.07H4.34v5.7C7.96 41.07 15.4 46 24 46z"/><path fill="#FBBC05" d="M11.69 28.18C11.25 26.86 11 25.45 11 24s.25-2.86.69-4.18v-5.7H4.34A21.991 21.991 0 0 0 2 24c0 3.55.85 6.91 2.34 9.88l7.35-5.7z"/><path fill="#EA4335" d="M24 10.75c3.23 0 6.13 1.11 8.41 3.29l6.31-6.31C34.91 4.18 29.93 2 24 2 15.4 2 7.96 6.93 4.34 14.12l7.35 5.7c1.73-5.2 6.58-9.07 12.31-9.07z"/></svg>
-    <span class="rv-reel-stars" id="rvStars" aria-hidden="true">★★★★★</span>
-    <span class="rv-reel-score" id="rvScore">Loading</span>
-    <span class="rv-reel-label" id="rvLabel">&nbsp;· current Google reviews</span>
-  </a>
-  <div class="rv-scroll-wrap">
-    <div class="rv-reel is-static" id="rvReel" aria-live="polite">
-      <span class="rv-item rv-live-status" id="rvStatus">Loading current Google reviews…</span>
+<!-- GOOGLE REVIEWS -->
+<section class="reviews-band" id="reviews" aria-labelledby="reviewsTitle">
+  <div class="reviews-inner">
+    <header class="reviews-head">
+      <div class="reviews-eyebrow">Google Reviews</div>
+      <h2 class="reviews-title" id="reviewsTitle">Kind Words From Our Community</h2>
+      <p class="reviews-copy">Recent feedback shared through the Eternal Life Hospice Google Business Profile.</p>
+      <div class="reviews-summary" id="reviewsSummary" aria-live="polite"><span class="reviews-summary-count">Loading current Google rating…</span></div>
+    </header>
+    <div class="reviews-grid" id="reviewsGrid" aria-live="polite"><p class="reviews-status">Loading current Google reviews…</p></div>
+    <div class="reviews-grid" id="reviewsMoreGrid" hidden></div>
+    <div class="reviews-actions">
+      <button class="reviews-more" id="reviewsMore" type="button" aria-expanded="false" aria-controls="reviewsMoreGrid" hidden>View two more reviews</button>
+      <a class="reviews-google-link" id="reviewsGoogleLink" href="https://maps.google.com/?cid=9771388271577679785" target="_blank" rel="noopener">Read all reviews on Google →</a>
     </div>
   </div>
-</div>
+</section>
 <!-- GUIDED WALKTHROUGH -->
 <section class="guide-band" id="guide" tool-name="care-guide" tool-description="Interactive decision guide helping families, patients, or providers identify their next step with hospice care.">
   <div class="guide-card">
@@ -2000,82 +2016,137 @@ p,li,blockquote{text-wrap:pretty}
 </script>
 <script>
 (function(){
-  var badge=document.getElementById('rvBadge');
-  var stars=document.getElementById('rvStars');
-  var score=document.getElementById('rvScore');
-  var label=document.getElementById('rvLabel');
-  var reel=document.getElementById('rvReel');
-  var status=document.getElementById('rvStatus');
-  if(!badge||!stars||!score||!label||!reel||!status)return;
+  var summary=document.getElementById('reviewsSummary');
+  var grid=document.getElementById('reviewsGrid');
+  var moreGrid=document.getElementById('reviewsMoreGrid');
+  var moreButton=document.getElementById('reviewsMore');
+  var googleLink=document.getElementById('reviewsGoogleLink');
+  if(!summary||!grid||!moreGrid||!moreButton||!googleLink)return;
   var fallbackUrl='https://maps.google.com/?cid=9771388271577679785';
   function text(value){return value==null?'':String(value);}
-  function addSep(parent){
-    var sep=document.createElement('span');
-    sep.className='rv-sep';
-    sep.textContent='◆';
-    parent.appendChild(sep);
+  function sentenceExcerpt(value){
+    if(value.length<=280)return value;
+    var sentences=value.match(/[^.!?]+[.!?]+(?:[”"']+)?|[^.!?]+$/g)||[];
+    var excerpt='';
+    for(var i=0;i<sentences.length;i++){
+      var next=(excerpt+sentences[i]).trim();
+      if(excerpt&&next.length>280)break;
+      excerpt=next;
+      if(excerpt.length>=280)break;
+    }
+    return excerpt&&excerpt.length<value.length?excerpt:value;
   }
-  function addReview(parent,review){
-    addSep(parent);
-    var item=document.createElement('span');
-    item.className='rv-item';
-    item.appendChild(document.createTextNode('"'+text(review.text)+'"'));
-    var author=document.createElement('em');
-    author.textContent=' — '+text(review.author||'Google reviewer');
-    item.appendChild(author);
-    parent.appendChild(item);
+  function makeCard(review,index){
+    var full=text(review.text);
+    var excerpt=sentenceExcerpt(full);
+    var card=document.createElement('article');
+    card.className='review-card';
+    var stars=document.createElement('div');
+    stars.className='review-card-stars';
+    var rating=Number(review.rating);
+    var rounded=Number.isFinite(rating)?Math.max(0,Math.min(5,Math.round(rating))):0;
+    stars.textContent=rounded?'★'.repeat(rounded)+'☆'.repeat(5-rounded):'Google review';
+    stars.setAttribute('aria-label',Number.isFinite(rating)?rating.toFixed(1)+' out of 5 stars':'Google review');
+    card.appendChild(stars);
+    var quote=document.createElement('blockquote');
+    var body=document.createElement('p');
+    body.className='review-card-text';
+    body.id='reviewText'+index;
+    body.textContent=excerpt;
+    quote.appendChild(body);
+    card.appendChild(quote);
+    if(excerpt!==full){
+      var expand=document.createElement('button');
+      expand.type='button';
+      expand.className='review-expand';
+      expand.textContent='Read full review';
+      expand.setAttribute('aria-expanded','false');
+      expand.setAttribute('aria-controls',body.id);
+      expand.addEventListener('click',function(){
+        var open=expand.getAttribute('aria-expanded')==='true';
+        body.textContent=open?excerpt:full;
+        expand.setAttribute('aria-expanded',String(!open));
+        expand.textContent=open?'Read full review':'Show less';
+      });
+      card.appendChild(expand);
+    }
+    var footer=document.createElement('div');
+    footer.className='review-card-footer';
+    var cite=document.createElement('cite');
+    cite.textContent=text(review.author||'Google reviewer');
+    footer.appendChild(cite);
+    var meta=document.createElement('span');
+    meta.className='review-card-meta';
+    meta.textContent='Google review'+(review.published?' · '+text(review.published):'');
+    footer.appendChild(meta);
+    card.appendChild(footer);
+    return card;
   }
   function render(data){
     var rating=Number(data.rating);
     var count=Number(data.reviewCount);
     var rounded=Number.isFinite(rating)?Math.max(0,Math.min(5,Math.round(rating))):0;
-    stars.textContent=rounded?'★'.repeat(rounded)+'☆'.repeat(5-rounded):'Google';
+    summary.textContent='';
+    var stars=document.createElement('span');
+    stars.className='reviews-summary-stars';
     stars.setAttribute('aria-label',Number.isFinite(rating)?rating.toFixed(1)+' out of 5 stars':'Google reviews');
-    score.textContent=Number.isFinite(rating)?rating.toFixed(1):'Google';
-    label.textContent=' · '+(Number.isFinite(count)?count.toLocaleString()+' reviews':'latest reviews')+(data.stale?' · cached':' · live');
-    badge.href=data.googleMapsUrl||fallbackUrl;
-    badge.setAttribute('aria-label',(Number.isFinite(rating)?rating.toFixed(1)+' stars — ':'')+'See the latest Google reviews');
-    reel.textContent='';
+    stars.textContent=rounded?'★'.repeat(rounded)+'☆'.repeat(5-rounded):'Google';
+    summary.appendChild(stars);
+    if(Number.isFinite(rating)){
+      var score=document.createElement('span');
+      score.className='reviews-summary-rating';
+      score.textContent=rating.toFixed(1);
+      summary.appendChild(score);
+    }
+    var countLabel=document.createElement('span');
+    countLabel.className='reviews-summary-count';
+    countLabel.textContent=Number.isFinite(count)?count.toLocaleString()+' Google reviews':'Current Google reviews';
+    summary.appendChild(countLabel);
+    googleLink.href=data.googleMapsUrl||fallbackUrl;
+    grid.textContent='';
+    moreGrid.textContent='';
     var reviews=Array.isArray(data.reviews)?data.reviews.filter(function(r){return r&&r.text;}):[];
     if(!reviews.length){
-      reel.classList.add('is-static');
-      var empty=document.createElement('span');
-      empty.className='rv-item rv-live-status';
+      var empty=document.createElement('p');
+      empty.className='reviews-status';
       empty.textContent='See the latest reviews on Google.';
-      reel.appendChild(empty);
+      grid.appendChild(empty);
       return;
     }
-    reviews.forEach(function(review){addReview(reel,review);});
-    reviews.forEach(function(review){addReview(reel,review);});
-    reel.classList.remove('is-static');
+    reviews.slice(0,3).forEach(function(review,index){grid.appendChild(makeCard(review,index));});
+    reviews.slice(3,5).forEach(function(review,index){moreGrid.appendChild(makeCard(review,index+3));});
+    var extra=Math.min(2,Math.max(0,reviews.length-3));
+    if(extra){
+      moreButton.hidden=false;
+      moreButton.textContent=extra===2?'View two more reviews':'View one more review';
+    }
   }
   function renderFallback(){
-    score.textContent='Google';
-    stars.textContent='★★★★★';
-    stars.setAttribute('aria-label','Google reviews');
-    label.textContent=' · see current reviews on Google';
-    badge.href=fallbackUrl;
-    badge.setAttribute('aria-label','See the latest Google reviews');
-    reel.textContent='';
-    reel.classList.add('is-static');
-    var item=document.createElement('span');
-    item.className='rv-item rv-live-status';
-    item.textContent='Live reviews are temporarily unavailable. See the latest reviews on Google.';
-    reel.appendChild(item);
+    summary.textContent='';
+    var status=document.createElement('span');
+    status.className='reviews-summary-count';
+    status.textContent='See current reviews on Google';
+    summary.appendChild(status);
+    grid.textContent='';
+    moreGrid.textContent='';
+    moreGrid.hidden=true;
+    moreButton.hidden=true;
+    var item=document.createElement('p');
+    item.className='reviews-status';
+    item.textContent='Live reviews are temporarily unavailable. Please use the Google link below.';
+    grid.appendChild(item);
+    googleLink.href=fallbackUrl;
   }
-  function load(){
-    fetch('/api/google-reviews',{headers:{'Accept':'application/json'},credentials:'same-origin'})
-      .then(function(response){if(!response.ok)throw new Error('reviews unavailable');return response.json();})
-      .then(render)
-      .catch(renderFallback);
-  }
-  function scheduleLoad(){
-    load();
-    window.setInterval(load,3600000);
-  }
-  function deferLoad(){ window.setTimeout(scheduleLoad,5000); }
-  if(document.readyState==='complete'){ deferLoad(); }
-  else { window.addEventListener('load',deferLoad,{once:true}); }
+  moreButton.addEventListener('click',function(){
+    var open=moreButton.getAttribute('aria-expanded')==='true';
+    moreGrid.hidden=open;
+    moreButton.setAttribute('aria-expanded',String(!open));
+    moreButton.textContent=open?(moreGrid.children.length===2?'View two more reviews':'View one more review'):'Show fewer reviews';
+  });
+  fetch('/api/google-reviews',{headers:{'Accept':'application/json'},credentials:'same-origin'})
+    .then(function(response){if(!response.ok)throw new Error('reviews unavailable');return response.json();})
+    .then(render)
+    .catch(renderFallback);
 })();
 </script>
 <script src="/assets/header.js?v=20260901d" defer></script>
