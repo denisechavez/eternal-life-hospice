@@ -1,0 +1,174 @@
+Prepare a final factual handoff report for the Eternal Life Hospice website so an independent Claude Code forensic audit can be designed.
+
+This is a READ-ONLY reporting task.
+
+Do not modify, create, delete, rename or format any file. Do not install or update dependencies. Do not fix any issue. Do not commit, push, merge, deploy or change the live website. Do not change GitHub, DNS, Replit deployment settings, environment variables, analytics platforms or external services. Do not expose secret values.
+
+Report the current state based on direct repository and workspace evidence.
+
+Include:
+
+1. REPOSITORY STATE
+
+* Repository name and path
+* Current branch
+* Production branch if known
+* Current full commit hash
+* Whether the working tree is clean
+* Uncommitted or untracked files
+* Latest relevant commits
+* Remote repository configuration
+* Whether the current workspace matches GitHub
+* Any evidence showing which commit is currently serving eternallifehospice.com
+
+2. PRODUCTION AND DEPLOYMENT STATE
+
+* Current production host based on evidence
+* Current deployment process
+* Build and start commands
+* Runtime and package-manager versions
+* Replit deployment configuration
+* DNS or response-header evidence identifying the active host
+* Remaining Netlify files, settings, workflows, references or dependencies
+* Whether Netlify is fully inactive
+* Any risk that two deployments or divergent versions remain accessible
+* Canonical hostname and redirect behavior
+
+Clearly separate confirmed facts from assumptions.
+
+3. COMPLETED AUDITS AND REMEDIATION
+
+List every forensic audit and remediation pass completed by Replit agents.
+
+For each item include:
+
+* Date or sequence
+* Scope
+* Files examined
+* Findings
+* Changes made
+* Tests performed
+* Test results
+* Commit hash if available
+* Whether the change is currently in GitHub
+* Whether the change is confirmed on production
+* Any unresolved warning or limitation
+
+4. CURRENT TECHNICAL INVENTORY
+
+Report the current status of:
+
+* Application framework and architecture
+* Public routes
+* Internal, preview or confidential routes
+* Sitemap
+* robots.txt
+* Canonicals
+* Redirects
+* Indexable pages
+* Noindex pages
+* County coverage hubs
+* City pages
+* Structured-data types and total validated nodes
+* Organization and founder identity
+* Forms and submission endpoints
+* Telephone and email links
+* GA4
+* Google Tag Manager
+* Google Ads tags if present
+* WhatConverts
+* Microsoft Clarity
+* Consent or cookie controls
+* Security headers
+* Accessibility checks
+* Performance checks
+* Automated tests
+* Browser tests
+
+5. LOCKED AND INTENTIONAL DECISIONS
+
+Identify decisions that were intentionally implemented and should not be treated as defects by the next auditor.
+
+Include direct evidence for:
+
+* City-page noindex strategy
+* County pages as search hubs
+* Preview-domain protections
+* Confidential `/canvas-hub/*` handling
+* Canonical `.com` domain
+* Organization name `Eternal Life Hospice`
+* Legal name `Eternal Life Hospice, Inc.`
+* Founder title `Founder and Chief Executive Officer`
+* Address `4165 E Thousand Oaks Blvd, Ste 325B, Westlake Village, CA 91362`
+* Treatment of partial structured-data nodes
+* Netlify deactivation
+
+6. CURRENT TEST RESULTS
+
+Provide the exact most recent results for:
+
+* Clean installation
+* Lint
+* Type checking
+* Unit tests
+* Integration tests
+* Regression tests
+* Production build
+* Structured-data parsing
+* Internal-link checking
+* Sitemap validation
+* Lighthouse or PageSpeed testing
+* Mobile and desktop testing
+
+Include the command used, date, result and any warnings. Do not rerun a command if doing so could alter files. If current evidence is unavailable say “not verified.”
+
+7. UNRESOLVED ITEMS
+
+List every known:
+
+* Error
+* Warning
+* Technical debt item
+* Untested feature
+* Production-only uncertainty
+* External-account dependency
+* Tracking uncertainty
+* Form-delivery uncertainty
+* Performance concern
+* Security or privacy concern
+* Documentation gap
+
+Do not minimize unresolved items. Do not invent defects.
+
+8. CHANGE INVENTORY
+
+List the files changed during the latest audit and remediation sequence. Explain why each file changed and identify any file where the final state remains uncertain.
+
+9. CLAIM CONFIDENCE
+
+Label every material claim:
+
+* Confirmed by repository evidence
+* Confirmed on production
+* Reported but not independently verified
+* Inferred
+* Unknown
+
+10. FINAL HANDOFF BLOCK
+
+End with a self-contained section titled:
+
+MATERIAL FOR CODEX AND CLAUDE COWORK
+
+Include:
+
+* Current commit and branch
+* Verified production/deployment state
+* Completed work
+* Protected decisions
+* Current test results
+* Unresolved items
+* External checks still required
+* Questions the independent Claude Code audit must answer
+
+Do not write the Claude Code audit prompt. Do not begin another audit. Do not perform remediation. Stop after producing the report.
