@@ -1610,3 +1610,17 @@ mtime_ms = 1788602895273
 storage_uri = "gcs://replit-rams-assets-kirk/rams/assets/repl:e1b2f643-7869-4565-af0e-10c34575ee8d/c9167218-5599-4628-b289-152a78a90c72/30b125fd-d09f-4ead-b5a6-f656dad54af5"
 storage_version_token = "1788625098062155"
 content_type = "image/jpeg"
+
+[[outputs]]
+id = "CNF-AfTPFq2ocqr1h1AXt"
+uri = "file://exports/seo/elh-forensic-handoff-addendum-2026-09-09.md"
+type = "text"
+title = "ELH Forensic Handoff — Verified Addendum"
+description = "Downloadable untruncated ending with live GitHub verification, deployment fingerprint evidence, city-indexing history, confidence labels, and the complete Codex/Claude handoff block."
+logical_id = "0ccbf628-d8dc-4b52-a18f-9f1b3eda2578"
+content_hash = "sha256:d5930944eb6ac208d12e2cf57fc539bbcde4ccf2123f7f7a5568084b4b96c632"
+size = 15774
+mtime_ms = 1788946980938
+storage_uri = "gcs://replit-rams-assets-kirk/rams/assets/repl:e1b2f643-7869-4565-af0e-10c34575ee8d/0ccbf628-d8dc-4b52-a18f-9f1b3eda2578/4238f654-7cf0-472c-b7ac-12f74050225f"
+storage_version_token = "1788946986662732"
+content_type = "text/markdown"
