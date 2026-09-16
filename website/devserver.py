@@ -232,6 +232,7 @@ class PrettyURLHandler(http.server.SimpleHTTPRequestHandler):
                 "https://www.clarity.ms https://scripts.clarity.ms "
                 "https://cdn.brevo.com https://sibautomation.com "
                 "https://www.google-analytics.com "
+                "https://tags.tiqcdn.com "
                 "https://s.ksrndkehqnwntyxlhgto.com "
                 "https://tracker.metricool.com https://cdn.userway.org; "
                 "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com "
@@ -247,7 +248,7 @@ class PrettyURLHandler(http.server.SimpleHTTPRequestHandler):
                 "https://p.ksrndkehqnwntyxlhgto.com "
                 "https://process.iconnode.com https://cdn.userway.org "
                 "https://widget.userway.org https://api.userway.org "
-                "https://tracker.metricool.com; "
+                "https://tracker.metricool.com https://tags.tiqcdn.com; "
                 "media-src 'self'; frame-src https://cdn.userway.org; "
                 "frame-ancestors 'self'; form-action 'self';"
             ),
