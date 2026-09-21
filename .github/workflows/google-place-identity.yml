@@ -20,7 +20,7 @@ jobs:
     timeout-minutes: 5
     env:
       GOOGLE_API_KEY: ${{ secrets.GOOGLE_API_KEY }}
-      FORM_ALERT_WEBHOOK_URL: ${{ secrets.FORM_ALERT_WEBHOOK_URL }}
+      BREVO_API: ${{ secrets.BREVO_API }}
     steps:
       - name: Check out site
         uses: actions/checkout@v4
@@ -36,7 +36,7 @@ jobs:
           else
             python3 website/check-google-place-identity.py 2>&1 | tee identity-check-output.txt
           fi
-      - name: Notify compliance and operations owner
+      - name: Email compliance and operations owner
         if: steps.identity_check.outcome == 'failure'
         env:
           IDENTITY_CHECK_OUTPUT_FILE: identity-check-output.txt
