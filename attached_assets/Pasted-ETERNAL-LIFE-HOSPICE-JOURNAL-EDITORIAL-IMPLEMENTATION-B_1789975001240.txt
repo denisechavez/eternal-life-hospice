@@ -1,0 +1,446 @@
+ETERNAL LIFE HOSPICE
+JOURNAL EDITORIAL IMPLEMENTATION — BATCH 2
+ARTICLES #6–#10
+
+Batch 1 is editorially approved and frozen.
+
+DO NOT modify Batch 1.
+
+Use the approved Combined Legacy + Journal Editorial Architecture and the editorial standard established in Batch 1.
+
+This implementation batch contains Articles #6–#10 only.
+
+Do not publish.
+Do not begin Articles #11 or later.
+Stop for review when this batch is complete.
+
+==================================================
+STANDING EDITORIAL STANDARD
+==================================================
+
+Every article must:
+
+- Have one clearly defined primary search intent
+- Support its designated core page
+- Avoid competing with service, resource, city, county or legacy content
+- Be written for humans first
+- Use natural semantic language rather than keyword repetition
+- Be calm, clear, clinically responsible and useful
+- Avoid generic filler
+- Avoid repetitive definitions of hospice
+- Avoid unsupported medical claims
+- Avoid deterministic eligibility language
+- Avoid coverage guarantees
+- Avoid outcome claims
+- Avoid "best hospice" or superiority claims
+- Avoid response-time or admission-speed guarantees
+- Use authoritative sources for medical, regulatory or Medicare claims when appropriate
+- Preserve Eternal Life Hospice's established brand voice
+- Follow Eternal's editorial convention regarding commas
+- Keep JSON and staged HTML synchronized
+
+Use Eternal's brand architecture selectively where it naturally fits:
+
+The Eternal Standard
+Clinical Confidence
+Guided Presence
+Whole-Person Comfort
+Compliance-Led Care
+
+These are differentiation concepts, not keywords to force into every article.
+
+==================================================
+INFOGRAPHIC RULE — MOVING FORWARD
+==================================================
+
+Recommend an infographic only when the article materially benefits from visual explanation such as:
+
+- comparison
+- process
+- checklist
+- timeline
+- decision path
+- compact reference
+
+Do not create an infographic by default.
+
+Usage should remain selective and purposeful — approximately one infographic for every three to five articles when warranted.
+
+The article must remain complete and understandable without the graphic.
+
+For Batch 2:
+
+ARTICLE #6 is the only current infographic candidate.
+
+Recommend a simple hospice-vs-palliative-care comparison graphic if the finished article supports it.
+
+Do not create infographics for Articles #7–#10 unless a compelling visual need emerges during writing.
+
+Do not generate the graphic yet.
+
+For any recommended infographic return:
+- purpose
+- information it would contain
+- why visual presentation improves comprehension
+- suggested dimensions/use cases
+- whether it could also work for social or print
+
+==================================================
+ARTICLE #6
+==================================================
+
+CURRENT TITLE:
+Hospice vs Palliative Care: What Is the Difference?
+
+APPROVED FINAL DIRECTION:
+Hospice and Palliative Care: How the Goals and Timing Differ
+
+PRIMARY INTENT:
+Comparative informational.
+
+ARTICLE'S JOB:
+Help families understand the practical distinction between hospice and palliative care without turning the article into a generic hospice overview.
+
+CORE PAGE SUPPORTED:
+/hospice-care
+
+SEARCH CONCEPTS:
+- hospice vs palliative care
+- hospice and palliative care differences
+- comfort-focused care
+- timing of hospice and palliative care
+- goals of care
+
+COVER CLEARLY:
+- overall goals
+- timing
+- whether curative/disease-directed treatment may continue
+- general eligibility differences
+- where care may occur
+- care-team involvement
+- when families may want to ask about each option
+
+IMPORTANT:
+Do not imply that palliative care and hospice are interchangeable.
+Do not imply that all palliative programs operate identically.
+Do not turn the article into an eligibility decision tool.
+
+INTERNAL LINKS:
+- /hospice-care
+- /services
+- Article #1 evaluation guide
+- /family-guide
+
+INFOGRAPHIC:
+This article is a strong candidate for ONE simple comparison visual.
+
+Recommend but do not create it during this pass.
+
+==================================================
+ARTICLE #7
+==================================================
+
+CURRENT TITLE:
+Dementia and Hospice Eligibility: A Family Guide
+
+APPROVED FINAL DIRECTION:
+Dementia and Hospice: Questions for an Individualized Evaluation
+
+PRIMARY INTENT:
+Condition-specific informational.
+
+ARTICLE'S JOB:
+Help families understand what kinds of dementia-related changes may be worth discussing with a clinician or hospice team.
+
+CORE PAGE SUPPORTED:
+/hospice-care
+
+SEARCH CONCEPTS:
+- dementia hospice
+- Alzheimer's hospice
+- advanced dementia hospice questions
+- dementia decline and comfort planning
+
+FOCUS ON:
+- functional change
+- communication change
+- eating/swallowing concerns
+- recurrent infections where appropriate
+- increasing dependence
+- goals of care
+- caregiver observations
+- questions to bring to an evaluation
+
+DO NOT:
+- provide a deterministic eligibility checklist
+- give a prognosis
+- imply that one symptom qualifies someone for hospice
+- duplicate Article #2's general "changes that prompt a conversation"
+- turn this into a general dementia-care article
+
+INTERNAL LINKS:
+- /hospice-care
+- Article #1 evaluation guide
+- /family-guide
+- Article #21 only if after-hours concerns are relevant
+
+NO INFOGRAPHIC BY DEFAULT.
+
+==================================================
+ARTICLE #8
+==================================================
+
+CURRENT TITLE:
+Hospice Care for Advanced Cancer: What Families Can Expect
+
+APPROVED FINAL DIRECTION:
+Advanced Cancer and Hospice: Comfort-Focused Questions for Families
+
+PRIMARY INTENT:
+Condition-specific informational.
+
+ARTICLE'S JOB:
+Help families understand hospice conversations in advanced cancer while respecting the oncology team's role.
+
+CORE PAGE SUPPORTED:
+/hospice-care
+
+SEARCH CONCEPTS:
+- cancer hospice
+- advanced cancer hospice
+- comfort care for advanced cancer
+- hospice questions for cancer families
+
+FOCUS ON:
+- changing treatment goals
+- symptom burden
+- communication with oncology
+- medications and symptom-management questions
+- equipment questions when relevant
+- family priorities
+- care setting
+- what to ask during a hospice evaluation
+
+DO NOT:
+- recommend stopping cancer treatment
+- give treatment advice
+- make prognosis claims
+- prescribe symptom-management techniques
+- duplicate the generic hospice evaluation article
+
+INTERNAL LINKS:
+- /hospice-care
+- Article #1
+- Article #19 when medication coordination is relevant
+- Article #20 when equipment is relevant
+- /family-guide
+
+NO INFOGRAPHIC BY DEFAULT.
+
+==================================================
+ARTICLE #9
+==================================================
+
+CURRENT TITLE:
+Hospice and Advanced Heart Failure: Planning for Comfort
+
+APPROVED FINAL DIRECTION:
+Advanced Heart Failure and Hospice: Planning Around Changing Needs
+
+PRIMARY INTENT:
+Condition-specific informational.
+
+ARTICLE'S JOB:
+Help families understand hospice and comfort planning in the context of advanced heart failure's changing and sometimes unpredictable course.
+
+CORE PAGE SUPPORTED:
+/hospice-care
+
+SEARCH CONCEPTS:
+- heart failure hospice
+- advanced heart failure hospice
+- CHF hospice questions
+- comfort planning heart failure
+
+FOCUS ON:
+- changing function
+- recurrent hospital or emergency visits
+- breathlessness and fatigue as topics to report to clinicians
+- fluctuating good and difficult days
+- cardiology coordination
+- medication questions
+- caregiver planning
+- patient goals
+
+DO NOT:
+- predict prognosis
+- create an eligibility checklist
+- advise medication changes
+- imply that hospitalization automatically means hospice
+- duplicate Article #2
+
+INTERNAL LINKS:
+- /hospice-care
+- Article #1
+- Article #19
+- Article #21
+- /family-guide
+
+NO INFOGRAPHIC BY DEFAULT.
+
+==================================================
+ARTICLE #10
+==================================================
+
+CURRENT TITLE:
+Hospice Support for Advanced COPD: A Practical Family Guide
+
+APPROVED FINAL DIRECTION:
+Advanced COPD and Hospice: Questions About Comfort and Breathing Changes
+
+PRIMARY INTENT:
+Condition-specific informational.
+
+ARTICLE'S JOB:
+Help families prepare questions about advanced COPD, changing breathing symptoms and comfort-focused support.
+
+CORE PAGE SUPPORTED:
+/hospice-care
+
+SEARCH CONCEPTS:
+- COPD hospice
+- advanced COPD hospice
+- respiratory comfort hospice
+- breathlessness and hospice
+
+FOCUS ON:
+- changes families may observe
+- breathlessness as a symptom to report
+- activity tolerance
+- oxygen/equipment questions where appropriate
+- anxiety related to breathing difficulty
+- medication questions
+- caregiver concerns
+- when to call the hospice team
+- evaluation questions
+
+DO NOT:
+- give independent respiratory treatment instructions
+- advise oxygen changes
+- advise medication changes
+- provide emergency-treatment instructions beyond appropriate clinician/hospice guidance
+- make eligibility or prognosis determinations
+- duplicate Article #2
+
+INTERNAL LINKS:
+- /hospice-care
+- Article #1
+- Article #19
+- Article #21
+- /family-guide
+
+NO INFOGRAPHIC BY DEFAULT.
+
+==================================================
+CANNIBALIZATION BOUNDARIES
+==================================================
+
+Article #6:
+Comparison only.
+Do not become another hospice overview.
+
+Article #7:
+Dementia-specific questions.
+Do not reproduce the general signs article.
+
+Article #8:
+Advanced cancer-specific family questions.
+Do not reproduce general hospice services.
+
+Article #9:
+Heart-failure trajectory and planning.
+Do not reproduce generic eligibility guidance.
+
+Article #10:
+COPD and breathing-related family questions.
+Do not become an independent respiratory-treatment guide.
+
+Article #2 remains the GENERAL early-decision article.
+
+Article #1 remains the FAMILY EVALUATION PROCESS article.
+
+The condition articles must remain narrower than both.
+
+==================================================
+FACTUAL REVIEW
+==================================================
+
+For Articles #7–#10:
+
+Identify every substantive medical statement that requires external support.
+
+Use authoritative sources wherever possible such as:
+
+- CMS
+- Medicare
+- NIH
+- National Institute on Aging
+- major professional medical organizations
+- disease-specific professional organizations
+- recognized government health sources
+
+Do not cite blogs, commercial hospice competitors or low-authority medical-content sites for clinical claims when a primary or authoritative source is available.
+
+Do not over-source ordinary explanatory language.
+
+==================================================
+INTERNAL LINKING
+==================================================
+
+Use a small number of deliberate contextual links.
+
+Do not link every condition article to every other article.
+
+Do not create a related-content web merely because URLs exist.
+
+Each article should primarily strengthen its designated core owner.
+
+==================================================
+DELIVERABLE
+==================================================
+
+For each Article #6–#10 provide:
+
+1. Previous title
+2. Final title
+3. Complete revised body
+4. Primary search intent
+5. Core page supported
+6. Contextual internal links added
+7. Material removed or narrowed
+8. Healthcare claims reviewed
+9. Authoritative factual sources used
+10. Any statement requiring final human verification
+11. Word count before and after
+12. Infographic recommendation:
+    - YES or NO
+    - rationale
+
+Then provide:
+
+- Batch-level cannibalization check
+- JSON/HTML synchronization result
+- Exact files changed
+- Validation/test results
+
+Do not publish.
+
+Do not begin Article #11 or later.
+
+Do not modify Batch 1.
+
+Do not modify legacy articles.
+
+Do not modify core pages, city pages, county pages, schema, canonicals, analytics, forms, robots or production configuration.
+
+STOP FOR REVIEW.

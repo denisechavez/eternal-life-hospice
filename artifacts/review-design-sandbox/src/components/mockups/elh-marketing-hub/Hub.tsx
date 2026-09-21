@@ -24,7 +24,7 @@ const journalTitles = [
 ];
 
 const baseItems: Item[] = [
-  ...journalArticles.map((article, i) => ({ id: `journal-${i}`, title: article.title, type: "Journal", date: article.date, owner: "The Eternal Life Hospice Team", source: article, status: (i < 5 ? "Approved" : "Scheduled") as Status, excerpt: article.description })),
+  ...journalArticles.map((article, i) => ({ id: `journal-${i}`, title: article.title, type: "Journal", date: article.date, owner: "The Eternal Life Hospice Team", source: article, status: (i < 5 ? "Approved" : i < 10 ? "Needs review" : "Scheduled") as Status, excerpt: article.description })),
   ...emailCampaigns.map((campaign, i) => ({ id: `email-${i + 1}`, title: campaign.subject, type: "Weekly email", date: campaign.sendDate, owner: "The Eternal Life Hospice Team", emailIndex: i, status: (i === 0 ? "Needs review" : i === 1 ? "Approved" : "Draft") as Status, excerpt: campaign.preheader })),
   { id: "pub-1", title: "Hospice Is Part of Life — A Continuation of Care", type: "Care Brief", date: "Aug 28, 2026", owner: "Aleksandra D.", status: "Published", excerpt: "Issue One: hospice as a continuation of care, with guidance for care teams and families." },
   { id: "pub-2", title: "Family Guide — Starting the conversation", type: "Family Guide", date: "Sep 4, 2026", owner: "Aleksandra D.", status: "Published", excerpt: "A steady, readable guide for families considering hospice at home." },
