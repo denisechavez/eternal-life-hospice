@@ -5,11 +5,12 @@ description: Current ownership conflict for the former ELH Google Maps CID and h
 
 # Google Business Profile (local SEO)
 
-## Former Eternal listing now resolves to Westlake
-- As verified publicly on September 16, 2026, CID `9771388271577679785` resolves to **Westlake Village Hospice**, not Eternal Life Hospice.
-- The public listing shows `westlakevillagehospiceinc.com`, `(805) 870-0103`, and `4165 E Thousand Oaks Blvd Ste 325B`.
-- **Why:** linking Eternal pages to this CID now sends visitors and local-SEO signals to the separate Westlake agency.
-- **How to apply:** do not treat this CID as Eternal's canonical Maps listing. Verify the intended Eternal profile in GBP before adding or retaining any Maps/structured-data link.
+
+## Eternal and Westlake are separated
+- As verified through Google Places on September 20, 2026, Eternal uses CID `9771388271577679785`, phone `(805) 953-7273`, `eternallifehospice.com`, and Suite 325B.
+- Westlake uses a distinct CID `5753774355151396017`, phone `(818) 791-0611`, `westlakevillagehospiceinc.com`, and Suite 325D.
+- **Why:** these matching agency details and distinct identifiers prevent referrals, reviews, and local-search signals from crossing between the two businesses.
+- **How to apply:** Eternal's site may use only Eternal's verified identifier. Keep Westlake's CID, Place ID, phone, and domain blocked from Eternal public files.
 
 ## Retired duplicate — do NOT link it
 - An older listing **"Eternal Life Hospice, Inc."** (place_id `ChIJ8TnEjG4l6IARTsNF_xMDyyI`, CID 2507101001983837006) still shows in Google. The user "took it down" but it lingers; its old website eternallifehospiceinc.com now redirects to eternallifehospice.com.

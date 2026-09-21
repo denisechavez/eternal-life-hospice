@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Block Westlake Village Hospice profile identifiers from Eternal public files."""
+"""Block Westlake Village Hospice identifiers from Eternal public files."""
 
 from pathlib import Path
 import sys
@@ -8,15 +8,22 @@ import sys
 ROOT = Path(__file__).resolve().parent
 PUBLIC = ROOT / "elh-preview"
 FORBIDDEN = {
-    "9771388271577679785": "former Google Maps CID now assigned to Westlake",
-    "ChIJteBBU6vdfEcRqUfOqdzxmoc": "former Google place ID",
+    "5753774355151396017": "Westlake Google Maps CID",
+    "ChIJrRDxvAsl6IARsRyNjEqD2U8": "Westlake Google place ID",
     "westlakevillagehospiceinc.com": "Westlake website",
+    "818-791-0611": "Westlake phone",
+    "818.791.0611": "Westlake phone",
+    "(818) 791-0611": "Westlake phone",
     "805-870-0103": "Westlake phone",
     "805.870.0103": "Westlake phone",
     "(805) 870-0103": "Westlake phone",
 }
 TEXT_SUFFIXES = {".html", ".js", ".json", ".xml", ".txt"}
-FORMER_MAPS_URL = "https://maps.google.com/?cid=9771388271577679785"
+WESTLAKE_MAPS_URL = "https://maps.google.com/?cid=5753774355151396017"
+ETERNAL_MAPS_URL = "https://maps.google.com/?cid=9771388271577679785"
+RETIRED_ETERNAL_PLACE_URL = (
+    "https://www.google.com/maps/place/?q=place_id:ChIJ8TnEjG4l6IARTsNF_xMDyyI"
+)
 PRIMARY_FOOTER_PHONE = (
     '<a class="fc-line no-swap" href="tel:18059537273">'
 )
@@ -26,17 +33,18 @@ TRACKED_FOOTER_PHONE = (
 
 
 def fix_public_files() -> None:
-    """Remove known cross-agency links while the Eternal profile is unverified."""
+    """Remove known Westlake links and restore the verified Eternal target."""
     for path in sorted(PUBLIC.rglob("*.html")):
         text = path.read_text(encoding="utf-8")
-        updated = text.replace(FORMER_MAPS_URL, "#")
+        updated = text.replace(WESTLAKE_MAPS_URL, "#")
+        updated = updated.replace(RETIRED_ETERNAL_PLACE_URL, ETERNAL_MAPS_URL)
         updated = updated.replace(
-            '<a class="review-trust-link"',
-            '<a hidden class="review-trust-link"',
+            '<a hidden class="review-trust-link" data-review-link href="#"',
+            f'<a class="review-trust-link" data-review-link href="{ETERNAL_MAPS_URL}"',
         )
         updated = updated.replace(
-            '<a class="map-hq"',
-            '<a hidden class="map-hq"',
+            '<a hidden class="map-hq" href="#"',
+            f'<a class="map-hq" href="{ETERNAL_MAPS_URL}"',
         )
         if updated != text:
             path.write_text(updated, encoding="utf-8")

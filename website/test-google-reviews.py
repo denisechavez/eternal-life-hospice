@@ -30,13 +30,16 @@ class GoogleReviewsTests(unittest.TestCase):
         self.key_patch.stop()
         google_reviews._cache = None
 
-    def test_fetch_fails_closed_without_verified_eternal_profile(self):
-        with mock.patch.object(google_reviews, "_request_json") as request_json:
-            with self.assertRaises(google_reviews.GoogleReviewsError):
-                google_reviews._fetch_reviews()
-        request_json.assert_not_called()
-        self.assertFalse(google_reviews.REVIEWS_ENABLED)
-        self.assertEqual(google_reviews.CANONICAL_MAPS_URL, "")
+    def test_verified_eternal_profile_is_canonical(self):
+        self.assertTrue(google_reviews.REVIEWS_ENABLED)
+        self.assertEqual(
+            google_reviews.CANONICAL_PLACE_ID,
+            "ChIJteBBU6vdfEcRqUfOqdzxmoc",
+        )
+        self.assertEqual(
+            google_reviews.CANONICAL_MAPS_URL,
+            "https://maps.google.com/?cid=9771388271577679785",
+        )
 
     def test_hourly_cache_prevents_repeat_google_calls(self):
         live = {

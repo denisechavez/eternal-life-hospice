@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 """
 website/fragments.py  —  ELH shared HTML fragments
-===================================================
+---------------------------------------------------
 Single source of truth for the standard header, footer and post-footer
 scripts used across the site.
 
@@ -121,17 +121,8 @@ FOOTER_HTML = FOOTER_HTML.replace(
     '<span>805.295.4688 · Direct</span></a>',
     1,
 )
-# The former Eternal Maps CID now resolves to Westlake Village Hospice.
-# Keep Eternal's verified street address visible, but do not cross-link profiles.
-FOOTER_HTML = FOOTER_HTML.replace(
-    '<a class="fc-line fc-addr" href="https://maps.google.com/?cid=9771388271577679785" target="_blank" rel="noopener">',
-    '<span class="fc-line fc-addr">',
-    1,
-).replace(
-    'Westlake Village, CA 91362</span></a><div class="foot-subgroup">',
-    'Westlake Village, CA 91362</span></span><div class="foot-subgroup">',
-    1,
-)
+# Google Places verifies this CID belongs to Eternal Life Hospice and carries
+# Eternal's approved phone, domain, address, and Suite 325B.
 
 # The footer navigation mirrors the five expandable groups in HEADER_HTML.
 # Contact remains the existing footer contact block below this replacement.

@@ -17,12 +17,11 @@ from urllib.request import Request, urlopen
 
 
 GOOGLE_PLACES_BASE = "https://places.googleapis.com/v1"
-# Fail closed until Google provides Eternal Life Hospice with a distinct,
-# verified profile. The former Eternal identifiers now resolve publicly to
-# Westlake Village Hospice and must never be used for Eternal review data.
-REVIEWS_ENABLED = False
-CANONICAL_MAPS_URL = ""
-CANONICAL_PLACE_ID = ""
+# Verified Eternal Life Hospice profile. Google Places confirms this listing
+# uses Eternal's phone, domain, and Suite 325B; Westlake has a distinct profile.
+REVIEWS_ENABLED = True
+CANONICAL_MAPS_URL = "https://maps.google.com/?cid=9771388271577679785"
+CANONICAL_PLACE_ID = "ChIJteBBU6vdfEcRqUfOqdzxmoc"
 CACHE_TTL_SECONDS = 60 * 60
 REQUEST_TIMEOUT_SECONDS = 8
 MAX_REVIEWS = 5
