@@ -14,6 +14,8 @@ header/footer extracted byte-exact from a resources sub-page (root pages derive
 theirs via `.replace("../","")`).
 
 ## Conventions to keep consistent
+- **Attribution:** Show the sender/author as **“The Eternal Life Hospice Team.”**
+  Never invent individual staff names or use unverified placeholder identities.
 - **Human connection:** Journal CTAs should speak as a team of real people who
   listen, answer questions, and stay with the family through the next step. Avoid
   institutional wording that makes Eternal Life Hospice sound like an impersonal

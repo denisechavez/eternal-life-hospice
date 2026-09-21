@@ -4,7 +4,7 @@ Review-ready weekly email campaign plan. These are drafts for approval only; no 
 
 ## Shared production notes
 
-- **Recommended from name:** Eternal Life Hospice
+- **Recommended from name:** The Eternal Life Hospice Team
 - **Suggested send time:** Wednesday morning, local time, subject to approval
 - **Audience:** All opted-in, active Eternal Life Hospice newsletter contacts. Suppress unsubscribed, bounced, and known test contacts; apply the organization's usual consent and suppression rules before upload.
 - **Primary phone:** 805.953.7273 (shown in every email)
@@ -18,7 +18,7 @@ Review-ready weekly email campaign plan. These are drafts for approval only; no 
 - **Suggested send date:** Wednesday, September 23, 2026
 - **Subject:** Knowing When to Call: A Gentle Starting Point (45 characters)
 - **Preheader:** A conversation can begin before a crisis. Learn which changes may be worth discussing with a clinician.
-- **From-name recommendation:** Eternal Life Hospice
+- **From-name recommendation:** The Eternal Life Hospice Team
 - **Audience note:** All opted-in active contacts; especially useful for families caring for someone with a serious illness who may be noticing changes in daily function.
 - **Planned article URL:** https://eternallifehospice.com/blog/knowing-when-to-call
 - **Plain-text version:**
@@ -45,7 +45,7 @@ Review-ready weekly email campaign plan. These are drafts for approval only; no 
 - **Suggested send date:** Wednesday, September 30, 2026
 - **Subject:** Hospice, Palliative Care, and Medicare—Clearly (46 characters)
 - **Preheader:** A plain-language look at hospice, palliative care, and common Medicare coverage questions.
-- **From-name recommendation:** Eternal Life Hospice
+- **From-name recommendation:** The Eternal Life Hospice Team
 - **Audience note:** All opted-in active contacts; particularly relevant to families comparing care options or preparing insurance questions.
 - **Planned article URL:** https://eternallifehospice.com/blog/understanding-coverage-and-care
 - **Plain-text version:**
@@ -70,7 +70,7 @@ Review-ready weekly email campaign plan. These are drafts for approval only; no 
 - **Suggested send date:** Wednesday, October 7, 2026
 - **Subject:** Hospice Close to Home in the Conejo Valley (42 characters)
 - **Preheader:** Local, comfort-focused support for families in Thousand Oaks, Simi Valley, Camarillo, and nearby communities.
-- **From-name recommendation:** Eternal Life Hospice
+- **From-name recommendation:** The Eternal Life Hospice Team
 - **Audience note:** All opted-in active contacts; geographically relevant to Thousand Oaks, Simi Valley, Camarillo, Conejo Valley, and Moorpark contacts.
 - **Planned article URL:** https://eternallifehospice.com/blog/hospice-close-to-home
 - **Plain-text version:**
@@ -95,7 +95,7 @@ Review-ready weekly email campaign plan. These are drafts for approval only; no 
 - **Suggested send date:** Wednesday, October 14, 2026
 - **Subject:** What Hospice Support Really Includes (36 characters)
 - **Preheader:** Equipment, 24/7 nursing access, social work, and respite—see how a hospice team supports families.
-- **From-name recommendation:** Eternal Life Hospice
+- **From-name recommendation:** The Eternal Life Hospice Team
 - **Audience note:** All opted-in active contacts; especially helpful for current caregivers and families considering what day-to-day support may look like.
 - **Planned article URL:** https://eternallifehospice.com/blog/what-hospice-support-includes
 - **Plain-text version:**
