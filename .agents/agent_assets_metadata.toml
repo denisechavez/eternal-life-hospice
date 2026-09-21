@@ -1792,3 +1792,17 @@ mtime_ms = 1789974145817
 storage_uri = "gcs://replit-rams-assets-kirk/rams/assets/repl:e1b2f643-7869-4565-af0e-10c34575ee8d/0ada7da8-4af3-4244-be95-721393ae8b09/f59e1ae0-01bc-4237-bdae-df29fd3ebdc1"
 storage_version_token = "1789974187848783"
 content_type = "text/markdown"
+
+[[outputs]]
+id = "MpnXSiEBI6DYbVMt7-n5i"
+uri = "file://exports/journal-batch-2-articles-6-10-review.pdf"
+type = "pdf"
+title = "Journal Editorial Review — Articles 6–10"
+description = "A 13-page branded review PDF containing the complete revised Batch 2 articles, contents page, source links and editorial review notes. Not published."
+logical_id = "1758db6d-7e7d-47d8-9524-38a69e883649"
+content_hash = "sha256:dc542b34937fe0f3218ba20307c423f33090c174e8df3583ec030a41d4461fa7"
+size = 244503
+mtime_ms = 1789975576207
+storage_uri = "gcs://replit-rams-assets-kirk/rams/assets/repl:e1b2f643-7869-4565-af0e-10c34575ee8d/1758db6d-7e7d-47d8-9524-38a69e883649/b54835df-44ce-49ef-b668-4a4365b0990d"
+storage_version_token = "1789975615018877"
+content_type = "application/pdf"
