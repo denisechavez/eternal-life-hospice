@@ -1708,3 +1708,17 @@ mtime_ms = 1789971590423
 storage_uri = "gcs://replit-rams-assets-kirk/rams/assets/repl:e1b2f643-7869-4565-af0e-10c34575ee8d/390130c6-acf3-4e33-8375-6a87ff9ef027/cc02e536-fed5-40e1-ae75-879b25a3fb16"
 storage_version_token = "1789971614932020"
 content_type = "text/markdown"
+
+[[outputs]]
+id = "LbmOSfSKUltHlCG5BKaA4"
+uri = "file://exports/seo/search-console-seo-validation-2026-09-20.pdf"
+type = "pdf"
+title = "ELH Search Console SEO Validation — PDF"
+description = "Six-page PDF version of the complete analysis report for reliable viewing and download."
+logical_id = "de22d54e-cf93-4416-95fc-be4502cb04d7"
+content_hash = "sha256:ed66bacc7cdc1024ccacd4e2ed919ba66c6ded29258d7ed9781c84b4d2d305b9"
+size = 61777
+mtime_ms = 1789971796635
+storage_uri = "gcs://replit-rams-assets-kirk/rams/assets/repl:e1b2f643-7869-4565-af0e-10c34575ee8d/de22d54e-cf93-4416-95fc-be4502cb04d7/b63b16d2-3a5f-424a-83ec-29eea18940e3"
+storage_version_token = "1789971800709205"
+content_type = "application/pdf"
