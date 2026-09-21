@@ -1750,3 +1750,17 @@ mtime_ms = 1789972534182
 storage_uri = "gcs://replit-rams-assets-kirk/rams/assets/repl:e1b2f643-7869-4565-af0e-10c34575ee8d/a7756603-4b35-42f7-b072-8a0ec7964d24/6c58ea78-5a67-441c-8a98-f9c862f0db47"
 storage_version_token = "1789972552105774"
 content_type = "application/pdf"
+
+[[outputs]]
+id = "fqvS24SPfWWypymFSMiho"
+uri = "file://exports/seo/journal-batch-1-implementation-report-2026-09-20.pdf"
+type = "pdf"
+title = "Journal Editorial Implementation — Batch 1"
+description = "Review report for the five revised Journal articles, including scope changes, intent, supporting pages, contextual links, compliance review, verified word counts, and cannibalization check. Not published."
+logical_id = "4bf820c4-2e86-4633-ba7c-85b97d628694"
+content_hash = "sha256:a14934961a750656cb744f2e259f32f51f09987ecbb0d734470c07b30de9ac80"
+size = 27012
+mtime_ms = 1789973259101
+storage_uri = "gcs://replit-rams-assets-kirk/rams/assets/repl:e1b2f643-7869-4565-af0e-10c34575ee8d/4bf820c4-2e86-4633-ba7c-85b97d628694/1dc36406-6b95-4033-888a-7011adfd5ef5"
+storage_version_token = "1789973264895770"
+content_type = "application/pdf"
