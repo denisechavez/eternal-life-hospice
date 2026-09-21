@@ -9,7 +9,7 @@ import "./hub.css";
 import { emailCampaigns, journalArticles, type JournalArticle } from "./contentData";
 
 type Status = "Needs review" | "Approved" | "Scheduled" | "Draft" | "Published";
-type Item = { id: string; title: string; type: string; date: string; owner: string; status: Status; excerpt: string; source?: JournalArticle; emailIndex?: number; };
+type Item = { id: string; title: string; type: string; date: string; owner: string; status: Status; excerpt: string; source?: JournalArticle; emailIndex?: number; infographicRecommendation?: string; };
 
 const journalTitles = [
   "What happens during a hospice evaluation", "10 signs it may be time to consider hospice",
@@ -24,7 +24,7 @@ const journalTitles = [
 ];
 
 const baseItems: Item[] = [
-  ...journalArticles.map((article, i) => ({ id: `journal-${i}`, title: article.title, type: "Journal", date: article.date, owner: "The Eternal Life Hospice Team", source: article, status: (i < 5 ? "Approved" : i < 10 ? "Needs review" : "Scheduled") as Status, excerpt: article.description })),
+  ...journalArticles.map((article, i) => ({ id: `journal-${i}`, title: article.title, type: "Journal", date: article.date, owner: "The Eternal Life Hospice Team", source: article, status: (i < 10 ? "Approved" : "Scheduled") as Status, excerpt: article.description, infographicRecommendation: i === 5 ? "Hospice Care and Palliative Care: Understanding the Difference" : undefined })),
   ...emailCampaigns.map((campaign, i) => ({ id: `email-${i + 1}`, title: campaign.subject, type: "Weekly email", date: campaign.sendDate, owner: "The Eternal Life Hospice Team", emailIndex: i, status: (i === 0 ? "Needs review" : i === 1 ? "Approved" : "Draft") as Status, excerpt: campaign.preheader })),
   { id: "pub-1", title: "Hospice Is Part of Life — A Continuation of Care", type: "Care Brief", date: "Aug 28, 2026", owner: "Aleksandra D.", status: "Published", excerpt: "Issue One: hospice as a continuation of care, with guidance for care teams and families." },
   { id: "pub-2", title: "Family Guide — Starting the conversation", type: "Family Guide", date: "Sep 4, 2026", owner: "Aleksandra D.", status: "Published", excerpt: "A steady, readable guide for families considering hospice at home." },
@@ -50,7 +50,7 @@ function readStatuses(): Record<string, Status> {
 
 export default function Hub() {
   const [active, setActive] = useState("Overview");
-  const [items, setItems] = useState(() => baseItems.map(item => ({ ...item, status: readStatuses()[item.id] || item.status })));
+  const [items, setItems] = useState(() => baseItems.map(item => ({ ...item, status: item.id.startsWith("journal-") && Number(item.id.slice(7)) < 10 ? "Approved" : readStatuses()[item.id] || item.status })));
   const [query, setQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState("All");
   const [selected, setSelected] = useState<Item | null>(null);
@@ -133,8 +133,9 @@ function Detail({ item, onClose, onStatus }: { item: Item; onClose: () => void; 
           <div className="email-preview-label"><span>Rendered email</span><small>Sandboxed preview · links disabled</small></div>
           <iframe title={`Rendered preview of ${item.title}`} sandbox="" srcDoc={campaign.html.replaceAll("https://eternallifehospice.com", "about:blank")} />
           <div className="campaign-details"><h3>Campaign details</h3><dl><dt>Subject</dt><dd>{campaign.subject}</dd><dt>Preheader</dt><dd>{campaign.preheader}</dd><dt>Plain-text version</dt><dd><pre>{campaign.plainText}</pre></dd></dl></div>
-        </div> : article ? <div className="article-review">
+         </div> : article ? <div className="article-review">
           <div className="article-byline"><span>{article.category}</span><span>{article.readMinutes} min read</span><span>{article.date}</span><button className="read-full-btn" onClick={() => setFull(true)}>Read the full piece <ArrowUpRight size={14} /></button></div>
+           {item.infographicRecommendation && <div className="editorial-callout"><strong>Selective infographic recommendation</strong><span>{item.infographicRecommendation}</span><small>Article #6 only · visual asset not generated</small></div>}
           <p className="article-lede">{article.lede}</p>
           {article.sections.map(section => <section key={section.heading}><h3>{section.heading}</h3>{section.paragraphs.map((paragraph, index) => <p key={`${section.heading}-${index}`}>{paragraph}</p>)}</section>)}
           <div className="article-cta"><strong>{article.ctaHeading}</strong><p>{article.ctaCopy}</p></div>
