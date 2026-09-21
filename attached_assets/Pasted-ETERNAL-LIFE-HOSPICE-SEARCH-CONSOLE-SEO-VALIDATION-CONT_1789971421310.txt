@@ -1,0 +1,474 @@
+ETERNAL LIFE HOSPICE
+SEARCH CONSOLE SEO VALIDATION + CONTENT MAPPING WORK ORDER
+
+IMPORTANT:
+This is an ANALYSIS-FIRST assignment.
+
+Do not begin rewriting pages.
+Do not publish new blog posts.
+Do not delete existing blog posts.
+Do not merge to main.
+Do not alter production.
+Do not change indexing directives, canonicals, robots.txt, sitemap.xml or global schema.
+
+Work on a dedicated branch.
+
+The attached Excel file is an export from Google Search Console:
+https___eternallifehospice.com_-Performance-on-Search-2026-09-20.xlsx
+
+It contains real Google Search performance data for eternallifehospice.com.
+
+The purpose of this assignment is to use demonstrated search behavior to create an evidence-based SEO and content map before making any substantive changes to the website.
+
+==================================================
+PHASE 1 — VALIDATE THE SEARCH CONSOLE REPORT
+==================================================
+
+Read the workbook completely.
+
+Inventory:
+
+1. Queries
+2. Pages
+3. Clicks
+4. Impressions
+5. CTR
+6. Average position
+7. Device performance
+8. Date range
+
+Do not infer data that is not present.
+
+Important limitation:
+The workbook's Queries and Pages sheets are separate dimensions.
+
+Therefore do NOT state that a particular query belongs to a particular URL unless that relationship can independently be established.
+
+Use query clusters + existing page subject matter to PROPOSE mappings.
+
+Clearly distinguish:
+
+CONFIRMED BY SEARCH CONSOLE
+from
+PROPOSED SEO MAPPING
+
+==================================================
+PHASE 2 — INVENTORY THE CURRENT WEBSITE
+==================================================
+
+Inspect the current deployable Eternal Life Hospice site.
+
+Create an inventory of:
+
+- Homepage
+- Main hospice/service pages
+- County coverage pages
+- City/location pages
+- Resource pages
+- Blog hub
+- Every published blog post
+- Every blog post currently drafted or staged in the repository
+- Provider/referral pages
+- Family-facing educational pages
+
+For every URL record:
+
+- URL
+- current title
+- current meta description
+- H1
+- major H2 headings
+- index/noindex status
+- canonical
+- schema types
+- internal links pointing to it
+- internal links from it
+- primary topic
+- apparent search intent
+
+Do not change anything yet.
+
+==================================================
+PHASE 3 — CLASSIFY SEARCH INTENT
+==================================================
+
+Classify Search Console queries into these groups:
+
+A. LOCAL / COMMERCIAL HOSPICE INTENT
+Examples:
+- hospice Thousand Oaks
+- hospice care Thousand Oaks
+- hospice services Thousand Oaks
+- home hospice Thousand Oaks
+- in-home hospice Thousand Oaks
+- hospice agency Thousand Oaks
+
+B. FAMILY / INFORMATIONAL INTENT
+Examples:
+- does Medicare cover hospice
+- Medicare hospice benefit
+- hospice benefit periods
+- what hospice covers
+- hospice care benefits
+
+C. CLINICAL / CONDITION INTENT
+Examples where present:
+- dementia hospice
+- respiratory hospice
+- pain and symptom management
+- disease-specific hospice searches
+
+D. PROFESSIONAL / REFERRAL INTENT
+
+E. BRANDED INTENT
+Examples:
+- Eternal Life Hospice
+- Eternal Hospice
+- Aleksandra Dubina
+- Eternal Life Hospice Westlake Village
+
+F. IRRELEVANT OR ADJACENT INTENT
+Examples:
+- nursing homes
+- generic senior care
+- generic caregiving services
+- assisted living
+- unrelated care homes
+
+Do not optimize Eternal Life Hospice toward an adjacent service merely because the query generated impressions.
+
+Hospice relevance takes precedence over impression volume.
+
+==================================================
+PHASE 4 — BUILD KEYWORD CLUSTERS
+==================================================
+
+Do not treat every query as a separate keyword target.
+
+Group semantically equivalent searches into clusters.
+
+Example:
+
+THOUSAND OAKS CORE CLUSTER
+
+Primary concept:
+Hospice Care in Thousand Oaks
+
+Related language may include:
+- hospice Thousand Oaks
+- hospice services Thousand Oaks
+- home hospice Thousand Oaks
+- in-home hospice Thousand Oaks
+- at-home hospice Thousand Oaks
+- hospice agency Thousand Oaks
+- hospice nurse Thousand Oaks
+
+These should normally support ONE strong Thousand Oaks page.
+
+Do not create separate pages simply to target variants of the same search intent.
+
+Apply this same semantic-clustering methodology throughout the site.
+
+==================================================
+PHASE 5 — REVIEW CURRENT PRIORITY PAGES
+==================================================
+
+Pay particular attention to the following Search Console results.
+
+These are PAGE-level observations from the supplied report:
+
+Homepage
+https://eternallifehospice.com/
+1905 impressions
+100 clicks
+5.25% CTR
+12.50 average position
+
+Thousand Oaks
+/hospice-thousand-oaks-ca
+487 impressions
+2 clicks
+0.41% CTR
+11.35 average position
+
+Westlake Village
+/hospice-westlake-village-ca
+127 impressions
+5 clicks
+3.94% CTR
+6.98 average position
+
+Ventura + Los Angeles County hub
+/hospice-ventura-and-los-angeles-county-ca
+549 impressions
+2 clicks
+0.36% CTR
+15.62 average position
+
+Calabasas
+/hospice-calabasas-ca
+310 impressions
+0 clicks
+19.46 average position
+
+Simi Valley
+/hospice-simi-valley-ca
+100 impressions
+0 clicks
+30.22 average position
+
+Medicare Hospice Benefit
+/resources/medicare-hospice-benefit
+895 impressions
+0 clicks
+84.62 average position
+
+First 48 Hours
+/resources/first-48-hours
+36 impressions
+0 clicks
+10.36 average position
+
+Blog hub
+/blog
+154 impressions
+0 clicks
+7.39 average position
+
+Do not assume the same remediation for each page.
+
+Determine whether each page needs:
+
+- stronger topical relevance
+- better title/snippet
+- stronger introductory content
+- better heading hierarchy
+- additional useful content
+- stronger internal linking
+- clearer search intent
+- consolidation
+- protection because it already performs well
+- no change
+
+==================================================
+PHASE 6 — BLOG CONTENT AUDIT
+==================================================
+
+This is extremely important.
+
+We are currently at the beginning of a new blog/content program.
+
+Some posts may have already been approved but we can still revise them before publication.
+
+Inventory ALL:
+
+- existing published blog posts
+- approved unpublished posts
+- draft posts
+- planned posts if present in repository notes/content
+
+For each article determine:
+
+1. Primary search intent
+2. Primary topic
+3. Secondary supporting topics
+4. Which core Eternal page it should support
+5. Whether an existing page already owns that intent
+6. Cannibalization risk
+7. Whether the article should:
+   - remain as written
+   - be retitled
+   - be refocused
+   - be expanded
+   - be merged
+   - become a resource instead of a blog
+   - be held for later
+   - be abandoned because another page already owns the intent
+
+Do NOT publish or rewrite these posts during Phase 1.
+
+First give us the recommendations.
+
+==================================================
+PHASE 7 — BUILD A SITE-WIDE SEARCH INTENT MAP
+==================================================
+
+Create a table with at least:
+
+URL
+Page Type
+Primary Search Intent
+Primary Keyword/Concept
+Secondary Semantic Cluster
+Search Console Evidence
+Current Impressions
+Current Clicks
+Current CTR
+Current Position
+Current Title
+Current H1
+Recommended Title
+Recommended H1
+Recommended Content Action
+Internal-Link Targets
+Blog Support Opportunities
+Cannibalization Risk
+Priority
+Confidence
+Notes
+
+Use these priority labels:
+
+P1 = strong demonstrated opportunity
+P2 = meaningful opportunity
+P3 = build/protect
+HOLD = insufficient evidence
+DO NOT TARGET = wrong intent
+
+Do NOT assign P1 based simply on search volume.
+
+Consider:
+
+- relevance to hospice
+- commercial/referral intent
+- existing Google visibility
+- current ranking
+- existing page quality
+- likelihood the page satisfies the searcher
+- cannibalization risk
+
+==================================================
+PHASE 8 — INTERNAL LINKING ARCHITECTURE
+==================================================
+
+Recommend an internal-link system.
+
+The intended hierarchy is approximately:
+
+Educational Blog/Resource
+        ↓
+Core Hospice / Clinical Resource
+        ↓
+County / Relevant Local Page where appropriate
+        ↓
+Referral / Contact / Care pathway
+
+Do not insert geographic links unnaturally.
+
+Do not turn every blog into a location-page link farm.
+
+Recommend links only when contextually useful.
+
+==================================================
+PHASE 9 — PRESERVE ETERNAL'S BRAND ARCHITECTURE
+==================================================
+
+SEO language must support the brand.
+
+Do NOT replace or rewrite the established Eternal brand architecture:
+
+Care That Honors Life
+
+Here in Moments That Matter Most
+
+The Eternal Standard
+
+Four Pillars:
+- Clinical Confidence
+- Guided Presence
+- Whole-Person Comfort
+- Compliance-Led Care
+
+Search terms are acquisition language.
+
+The Eternal brand architecture is differentiation language.
+
+They should work together.
+
+Example:
+
+H1:
+Hospice Care in Thousand Oaks
+
+Brand/supporting language:
+Physician-supported care guided by The Eternal Standard.
+
+Do not force branded phrases into keyword roles for which there is no search demand.
+
+Do not remove brand language merely because it is not a high-volume keyword.
+
+==================================================
+PHASE 10 — HEALTHCARE CONTENT RULES
+==================================================
+
+Do not invent:
+
+- medical facts
+- coverage promises
+- response guarantees
+- same-day admission guarantees
+- outcome statistics
+- accreditation claims
+- licensing claims
+- insurance coverage claims
+- clinical capabilities
+
+Medicare/CMS-related content must remain factually accurate.
+
+Do not make "best hospice" claims merely because Search Console contains "best hospice" searches.
+
+Search query language does not authorize advertising claims.
+
+==================================================
+PHASE 11 — TECHNICAL FREEZE
+==================================================
+
+During this planning phase do NOT modify:
+
+- robots.txt
+- sitemap.xml
+- canonical strategy
+- index/noindex strategy
+- global Organization schema
+- founder identity/schema
+- analytics
+- Google tags
+- Microsoft Clarity
+- WhatConverts
+- cookie/consent logic
+- forms
+- production deployment configuration
+- hosting configuration
+
+Do not refactor unrelated code.
+
+==================================================
+PHASE 12 — DELIVERABLE AND STOP
+==================================================
+
+Produce:
+
+1. Search Console findings
+2. Keyword/query clusters
+3. Existing URL inventory
+4. Search-intent map
+5. Blog/content inventory
+6. Cannibalization report
+7. Recommended internal-link architecture
+8. Page-by-page recommendations
+9. Proposed titles/H1s/meta descriptions for P1 pages
+10. Proposed blog revisions
+11. Pages that should explicitly NOT be changed
+12. Proposed implementation sequence
+
+Then STOP.
+
+Do not edit website copy yet.
+
+Do not publish blogs.
+
+Do not commit content changes.
+
+Do not merge.
+
+Wait for approval of the SEO/content map before Phase 2 implementation.

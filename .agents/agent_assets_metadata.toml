@@ -1694,3 +1694,17 @@ mtime_ms = 1789965755846
 storage_uri = "gcs://replit-rams-assets-kirk/rams/assets/repl:e1b2f643-7869-4565-af0e-10c34575ee8d/a1339d27-ef46-4585-91f8-4aeb9563b6c7/f7227043-86fe-432d-acbe-a71392def1e3"
 storage_version_token = "1789965956944631"
 content_type = "text/html"
+
+[[outputs]]
+id = "91BZ2eY2aiGAOTgGq9EJC"
+uri = "file://exports/seo/search-console-seo-validation-2026-09-20.md"
+type = "text"
+title = "ELH Search Console SEO Validation"
+description = "Analysis-only Search Console findings, keyword clusters, URL and content inventory, search-intent map, cannibalization review, P1 recommendations, and proposed implementation sequence. No website changes were made."
+logical_id = "390130c6-acf3-4e33-8375-6a87ff9ef027"
+content_hash = "sha256:b8300ff6d957c2eced4a827a3b346814bbc205ab991c37f8acc49c5f0d708632"
+size = 27710
+mtime_ms = 1789971590423
+storage_uri = "gcs://replit-rams-assets-kirk/rams/assets/repl:e1b2f643-7869-4565-af0e-10c34575ee8d/390130c6-acf3-4e33-8375-6a87ff9ef027/cc02e536-fed5-40e1-ae75-879b25a3fb16"
+storage_version_token = "1789971614932020"
+content_type = "text/markdown"
