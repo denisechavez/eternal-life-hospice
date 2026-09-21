@@ -1764,3 +1764,31 @@ mtime_ms = 1789973259101
 storage_uri = "gcs://replit-rams-assets-kirk/rams/assets/repl:e1b2f643-7869-4565-af0e-10c34575ee8d/4bf820c4-2e86-4633-ba7c-85b97d628694/1dc36406-6b95-4033-888a-7011adfd5ef5"
 storage_version_token = "1789973264895770"
 content_type = "application/pdf"
+
+[[outputs]]
+id = "NZzQaO0cCOohpJ34cqbbE"
+uri = "file://exports/seo/journal-batch-1-final-review-package-2026-09-20.pdf"
+type = "pdf"
+title = "Journal Batch 1 — Final Review Package"
+description = "Fourteen-page review package with the five exact synchronized bodies, concise final diff, Article #12 archival confirmation and Medicare/CMS source list. Not published."
+logical_id = "739fa683-aacc-40de-9628-cf4730a54c18"
+content_hash = "sha256:676b37c452b8558b3a65cae0aafee8e064746d6a898b488cc7bc8a62875839e9"
+size = 132902
+mtime_ms = 1789974171501
+storage_uri = "gcs://replit-rams-assets-kirk/rams/assets/repl:e1b2f643-7869-4565-af0e-10c34575ee8d/739fa683-aacc-40de-9628-cf4730a54c18/885f0276-161c-4a67-948f-e44fd01db59d"
+storage_version_token = "1789974187145583"
+content_type = "application/pdf"
+
+[[outputs]]
+id = "eSpldQ_7dT38e8NYVmxlC"
+uri = "file://exports/seo/journal-batch-1-final-review-package-2026-09-20.md"
+type = "text"
+title = "Journal Batch 1 — Final Bodies (Markdown)"
+description = "Machine-readable review copy containing the exact final JSON body text for Articles #1–#5 and the final correction summary."
+logical_id = "0ada7da8-4af3-4244-be95-721393ae8b09"
+content_hash = "sha256:e9211f9ffafad48e603cee57b8917e00a6eed0be1278010475d99d610dd9d9d6"
+size = 29655
+mtime_ms = 1789974145817
+storage_uri = "gcs://replit-rams-assets-kirk/rams/assets/repl:e1b2f643-7869-4565-af0e-10c34575ee8d/0ada7da8-4af3-4244-be95-721393ae8b09/f59e1ae0-01bc-4237-bdae-df29fd3ebdc1"
+storage_version_token = "1789974187848783"
+content_type = "text/markdown"

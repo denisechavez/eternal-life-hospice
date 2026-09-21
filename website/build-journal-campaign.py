@@ -179,24 +179,32 @@ def card(article, featured=False):
 
 
 def build(articles):
+    active_articles = [article for article in articles
+                       if article.get("publicationStatus") != "archived"]
+    active_slugs = {article["slug"] for article in active_articles}
     template = next((p.read_text() for p in sorted(OUT.glob("*.html"))), None)
     if not template:
         raise FileNotFoundError("No existing Journal post template")
     OUT.mkdir(exist_ok=True)
     for article in articles:
+        if article["slug"] not in active_slugs:
+            stale_path = OUT / f'{article["slug"]}.html'
+            if stale_path.exists():
+                stale_path.unlink()
+    for article in active_articles:
         (OUT / f'{article["slug"]}.html').write_text(render_post(article, template), encoding="utf-8")
 
     archive = (PUBLIC / "blog.html").read_text()
-    newest = articles[-1]
+    newest = active_articles[-1]
     archive = re.sub(r'<div class="blog-featured">[\s\S]*?</div>\s*</div>', card(newest, True), archive, count=1)
-    cards = "\n".join(card(a) for a in reversed(articles[:-1]))
+    cards = "\n".join(card(a) for a in reversed(active_articles[:-1]))
     cards += "\n" + "\n".join(card(a) for a in LEGACY_POSTS)
     archive = re.sub(r'<div class="rgrid">[\s\S]*?</div>\s*</section>', f'<div class="rgrid">{cards}</div></section>', archive, count=1)
     # Add campaign BlogPosting records to the existing Blog JSON-LD.
     entries = [{"@type": "BlogPosting", "headline": a["title"], "url": BASE_URL + a["slug"],
                 "datePublished": a["date"], "dateModified": a["date"], "description": a["description"],
                 "author": {"@type": "Organization", "name": "Eternal Life Hospice"}}
-               for a in articles + LEGACY_POSTS]
+                for a in active_articles + LEGACY_POSTS]
     def merge_blog_schema(match):
         payload = json.loads(match.group(1))
         existing = payload.get("blogPost", [])
@@ -216,21 +224,21 @@ def build(articles):
                      merge_script, archive)
     (PUBLIC / "blog.html").write_text(archive, encoding="utf-8")
 
-    manifest = {"timezone": "America/Los_Angeles", "start": articles[0]["date"],
-                "end": articles[-1]["date"], "articles": [
+    manifest = {"timezone": "America/Los_Angeles", "start": active_articles[0]["date"],
+                "end": active_articles[-1]["date"], "articles": [
                     {"slug": a["slug"], "date": a["date"], "url": "/blog/" + a["slug"]}
-                    for a in articles]}
+                    for a in active_articles]}
     MANIFEST.write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
     # Sitemap entries are intentionally generated for the server-side filter.
     sitemap = PUBLIC / "sitemap.xml"
     xml = sitemap.read_text()
-    for article in articles:
+    for article in active_articles:
         xml = re.sub(
             rf'\s*<url>\s*<loc>https://eternallifehospice\.com/blog/{re.escape(article["slug"])}'
             r'</loc>[\s\S]*?</url>',
             "", xml,
         )
-    additions = "".join(f'  <url><loc>{BASE_URL}{a["slug"]}</loc><lastmod>{a["date"]}</lastmod><priority>0.6</priority></url>\n' for a in articles)
+    additions = "".join(f'  <url><loc>{BASE_URL}{a["slug"]}</loc><lastmod>{a["date"]}</lastmod><priority>0.6</priority></url>\n' for a in active_articles)
     sitemap.write_text(xml.replace("</urlset>", additions + "</urlset>"), encoding="utf-8")
     subprocess.run(["node", str(PUBLIC / "assets" / "build-search-index.js")],
                    check=True, cwd=str(ROOT))

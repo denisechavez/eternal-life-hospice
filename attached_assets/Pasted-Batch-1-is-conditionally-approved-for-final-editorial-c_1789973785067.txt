@@ -1,0 +1,23 @@
+Batch 1 is conditionally approved for final editorial correction. Do not publish and do not begin Batch 2.
+
+Synchronize the JSON and staged HTML so they contain one approved editorial version.
+
+Remove Article #12 from the future-publication path while retaining its source material for archival/editorial reference. It should no longer appear as a scheduled future article in the blog hub, sitemap or search index.
+
+Apply the following corrections to Articles #1–#5:
+
+Remove the word “overwhelming” from Article #2 and revise the sentence naturally.
+Remove scenic/geographic filler from Article #3.
+Replace Article #3's question about “how quickly an admission can begin” with neutral admission-process wording.
+Remove unnecessary city-name filler from Article #4.
+Tighten repetitive paragraphs across the five pieces. Do not preserve length merely to maintain word count.
+Vary article CTAs so they fit the reader's stage while maintaining Eternal's voice.
+Article #5: add the current Medicare benefit-period structure: two 90-day periods followed by unlimited 60-day periods subject to continued eligibility and recertification.
+Article #5: clarify that hospice election concerns treatment intended to cure the terminal illness and related conditions rather than unrelated medical care.
+Article #5: state current Medicare cost sharing accurately: up to $5 per outpatient prescription for pain/symptom management and 5% of the Medicare-approved amount for inpatient respite care.
+Article #5: clarify Medicare Advantage coordination using current Medicare guidance: Original Medicare pays for hospice even while the beneficiary remains enrolled in Medicare Advantage while the MA plan can continue to cover eligible unrelated care.
+Article #5: remove the statement that Eternal may cover selected complementary offerings at no additional expense unless an approved Eternal policy specifically supports that claim.
+Use current Medicare.gov/CMS sources for all federal-benefit assertions.
+Apply Eternal's editorial convention of avoiding Oxford commas.
+
+Return the final five synchronized bodies and a concise final diff. Do not publish. Stop for approval.

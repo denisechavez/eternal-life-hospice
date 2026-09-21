@@ -29,6 +29,17 @@ class JournalCampaignTests(unittest.TestCase):
         )
         self.assertEqual(len({a["slug"] for a in self.articles}), 30)
 
+    def test_archived_source_is_not_in_publication_schedule(self):
+        archived_slug = "can-a-family-request-a-hospice-evaluation"
+        archived = [a for a in self.articles if a["slug"] == archived_slug]
+        self.assertEqual(len(archived), 1)
+        self.assertEqual(archived[0].get("publicationStatus"), "archived")
+        active = [a for a in self.articles if a.get("publicationStatus") != "archived"]
+        self.assertEqual(len(active), 29)
+        manifest = json.loads((ROOT / "content" / "30-day-journal-manifest.json").read_text())
+        self.assertNotIn(archived_slug, {a["slug"] for a in manifest["articles"]})
+        self.assertFalse((ROOT / "elh-preview" / "blog" / f"{archived_slug}.html").exists())
+
     def test_publication_gating_uses_local_date(self):
         old = os.environ.get("ELH_JOURNAL_DATE")
         try:
@@ -53,8 +64,10 @@ class JournalCampaignTests(unittest.TestCase):
 
     def test_generated_metadata_and_schedule(self):
         manifest = json.loads((ROOT / "content" / "30-day-journal-manifest.json").read_text())
-        self.assertEqual(len(manifest["articles"]), 30)
+        self.assertEqual(len(manifest["articles"]), 29)
         for article in self.articles:
+            if article.get("publicationStatus") == "archived":
+                continue
             page = (ROOT / "elh-preview" / "blog" / f'{article["slug"]}.html').read_text()
             self.assertIn(f'<link rel="canonical" href="https://eternallifehospice.com/blog/{article["slug"]}">', page)
             self.assertIn(f'"datePublished":"{article["date"]}"', page.replace(" ", ""))

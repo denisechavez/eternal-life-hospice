@@ -42,3 +42,4 @@
 - [NeverBounce verification rule](neverbounce-rule.md) — ALL emails verified through NeverBounce before adding to Brevo; no exceptions; invalid=remove, catchall/unknown=add with caution.
 - [Shared chrome accessibility](shared-chrome-accessibility.md) — footer updates have two generation paths; ensure desktop hit-target selectors never override mobile visibility rules.
 - [Canvas organization](canvas-organization.md) — keep one consolidated ELH marketing/publications hub; remove redundant operational frames instead of adding parallel dashboards.
+- [Journal editorial conventions](journal-editorial-conventions.md) — avoid Oxford commas; archived Journal sources must stay out of every public-generation surface.
