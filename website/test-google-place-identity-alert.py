@@ -23,10 +23,12 @@ SPEC.loader.exec_module(identity_alert)
 
 class CaptureHandler(BaseHTTPRequestHandler):
     payload = None
+    api_key = None
 
     def do_POST(self):
         length = int(self.headers["content-length"])
         CaptureHandler.payload = json.loads(self.rfile.read(length))
+        CaptureHandler.api_key = self.headers["api-key"]
         self.send_response(204)
         self.end_headers()
 
@@ -49,7 +51,8 @@ class IdentityAlertTests(unittest.TestCase):
         thread = threading.Thread(target=server.serve_forever, daemon=True)
         thread.start()
         google_key = "AIza" + ("A" * 32)
-        webhook_url = f"http://127.0.0.1:{server.server_address[1]}/alert"
+        endpoint = f"http://127.0.0.1:{server.server_address[1]}/email"
+        brevo_key = "synthetic-brevo-api-key"
         try:
             with tempfile.NamedTemporaryFile("w", encoding="utf-8") as output:
                 output.write(result.stdout + f"\naccidental secret: {google_key}")
@@ -57,8 +60,9 @@ class IdentityAlertTests(unittest.TestCase):
                 with mock.patch.dict(
                     os.environ,
                     {
-                        "FORM_ALERT_WEBHOOK_URL": webhook_url,
+                        "BREVO_API": brevo_key,
                         "GOOGLE_API_KEY": google_key,
+                        "IDENTITY_ALERT_BREVO_ENDPOINT": endpoint,
                         "IDENTITY_CHECK_OUTPUT_FILE": output.name,
                         "IDENTITY_CHECK_RUN_URL": "https://github.example/actions/runs/123",
                     },
@@ -70,15 +74,15 @@ class IdentityAlertTests(unittest.TestCase):
             thread.join(timeout=2)
             server.server_close()
 
-        payload = CaptureHandler.payload
-        self.assertEqual(payload["owner"], identity_alert.ALERT_OWNER)
-        self.assertIn("Synthetic Google Place", payload["checker_output"])
-        self.assertEqual(
-            payload["failed_run_url"], "https://github.example/actions/runs/123"
-        )
-        serialized = json.dumps(payload)
+        message = CaptureHandler.payload
+        self.assertEqual(message["to"][0]["email"], identity_alert.ALERT_EMAIL)
+        self.assertIn(identity_alert.ALERT_OWNER, message["textContent"])
+        self.assertIn("Synthetic Google Place", message["textContent"])
+        self.assertIn("https://github.example/actions/runs/123", message["textContent"])
+        self.assertEqual(CaptureHandler.api_key, brevo_key)
+        serialized = json.dumps(message)
         self.assertNotIn(google_key, serialized)
-        self.assertNotIn(webhook_url, serialized)
+        self.assertNotIn(brevo_key, serialized)
         self.assertIn("[REDACTED]", serialized)
 
 
