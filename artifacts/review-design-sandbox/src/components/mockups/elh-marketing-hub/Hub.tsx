@@ -6,9 +6,10 @@ import {
   ShieldCheck, Sparkles, TrendingUp, Users, X
 } from "lucide-react";
 import "./hub.css";
+import { emailCampaigns, journalArticles, type JournalArticle } from "./contentData";
 
 type Status = "Needs review" | "Approved" | "Scheduled" | "Draft" | "Published";
-type Item = { id: string; title: string; type: string; date: string; owner: string; status: Status; excerpt: string; };
+type Item = { id: string; title: string; type: string; date: string; owner: string; status: Status; excerpt: string; source?: JournalArticle; emailIndex?: number; };
 
 const journalTitles = [
   "What happens during a hospice evaluation", "10 signs it may be time to consider hospice",
@@ -23,11 +24,8 @@ const journalTitles = [
 ];
 
 const baseItems: Item[] = [
-  ...journalTitles.map((title, i) => ({ id: `journal-${i}`, title, type: "Journal", date: `Sep ${21 + i}, 2026`, owner: i % 3 === 0 ? "Mara K." : "ELH Content", status: (i < 3 ? "Needs review" : i < 8 ? "Approved" : "Scheduled") as Status, excerpt: "Plain-language guidance for families navigating serious illness, with a calm next step and no pressure." })),
-  { id: "email-1", title: "Knowing When to Call: A Gentle Starting Point", type: "Weekly email", date: "Sep 23, 2026", owner: "Mara K.", status: "Needs review", excerpt: "A conversation can begin before a crisis. Learn which changes may be worth discussing with a clinician." },
-  { id: "email-2", title: "Hospice, Palliative Care, and Medicare—Clearly", type: "Weekly email", date: "Sep 30, 2026", owner: "Mara K.", status: "Approved", excerpt: "A plain-language look at hospice, palliative care, and common Medicare coverage questions." },
-  { id: "email-3", title: "Hospice Close to Home in the Conejo Valley", type: "Weekly email", date: "Oct 7, 2026", owner: "Mara K.", status: "Draft", excerpt: "Local, comfort-focused support for families in Thousand Oaks, Simi Valley, Camarillo, and nearby communities." },
-  { id: "email-4", title: "What Hospice Support Really Includes", type: "Weekly email", date: "Oct 14, 2026", owner: "Mara K.", status: "Draft", excerpt: "Equipment, 24/7 nursing access, social work, and respite—see how a hospice team supports families." },
+  ...journalArticles.map((article, i) => ({ id: `journal-${i}`, title: article.title, type: "Journal", date: article.date, owner: i % 3 === 0 ? "Mara K." : "ELH Content", source: article, status: (i < 3 ? "Needs review" : i < 8 ? "Approved" : "Scheduled") as Status, excerpt: article.description })),
+  ...emailCampaigns.map((campaign, i) => ({ id: `email-${i + 1}`, title: campaign.subject, type: "Weekly email", date: campaign.sendDate, owner: "Mara K.", emailIndex: i, status: (i === 0 ? "Needs review" : i === 1 ? "Approved" : "Draft") as Status, excerpt: campaign.preheader })),
   { id: "pub-1", title: "Care Brief — Hospice is part of life", type: "Care Brief", date: "Aug 28, 2026", owner: "Aleksandra D.", status: "Published", excerpt: "Issue one: a continuation of care, written for physicians and referral partners." },
   { id: "pub-2", title: "Family Guide — Starting the conversation", type: "Family Guide", date: "Sep 4, 2026", owner: "Aleksandra D.", status: "Published", excerpt: "A steady, readable guide for families considering hospice at home." },
   { id: "asset-1", title: "Referral card — 4 × 6 print", type: "Referral card", date: "Sep 9, 2026", owner: "Studio", status: "Approved", excerpt: "Double-sided referral card with 805.953.7273 and service area." },
@@ -116,5 +114,26 @@ function Worklist({ items, filter, setFilter, onOpen, onStatus, active }: { item
 function StatusPill({ status }: { status: Status }) { return <span className={`status ${status.toLowerCase().replace(" ", "-")}`}><i />{status}</span>; }
 
 function Detail({ item, onClose, onStatus }: { item: Item; onClose: () => void; onStatus: (id: string, s: Status) => void }) {
-  return <div className="detail-backdrop" onClick={onClose}><aside className="detail-drawer" onClick={e => e.stopPropagation()}><header><div><span className="panel-kicker">{item.type}</span><h2>Item preview</h2></div><button className="icon-btn" onClick={onClose} aria-label="Close preview"><X size={19} /></button></header><div className="detail-body"><StatusPill status={item.status} /><h1>{item.title}</h1><p className="detail-excerpt">{item.excerpt}</p><div className="meta-grid"><div><span>Owner</span><strong>{item.owner}</strong></div><div><span>Scheduled</span><strong>{item.date}</strong></div></div><div className="preview-paper"><div className="paper-brand"><HeartHandshake size={15} /> ETERNAL LIFE</div><div className="paper-line" /><span>EDITORIAL PREVIEW</span><h3>{item.title}</h3><p>Care that honors life begins with clear information and a calm next step. This is a preview of how the approved piece will appear to families and referral partners.</p><button>Read the full piece <ArrowUpRight size={14} /></button></div><div className="detail-actions">{item.status === "Needs review" ? <button className="approve-btn" onClick={() => onStatus(item.id, "Approved")}><Check size={16} /> Approve item</button> : <button className="secondary-btn" onClick={() => onStatus(item.id, "Needs review")}><Clock3 size={16} /> Return to review</button>}<button className="secondary-btn" onClick={() => onStatus(item.id, item.status === "Scheduled" ? "Draft" : "Scheduled")}><Send size={15} /> {item.status === "Scheduled" ? "Move to draft" : "Schedule"}</button></div></div></aside></div>;
+  const [full, setFull] = useState(false);
+  const article = item.source;
+  const campaign = item.emailIndex === undefined ? undefined : emailCampaigns[item.emailIndex];
+  return <div className="detail-backdrop" onClick={onClose}>
+    <aside className={`detail-drawer ${full ? "full-review" : ""}`} onClick={e => e.stopPropagation()} role="dialog" aria-modal="true" aria-label={`${item.type} review`}>
+      <header><div><span className="panel-kicker">{item.type}</span><h2>{full ? "Full review" : "Item preview"}</h2></div><button className="icon-btn" onClick={onClose} aria-label="Close preview"><X size={19} /></button></header>
+      <div className="detail-body"><StatusPill status={item.status} /><h1>{item.title}</h1><p className="detail-excerpt">{item.excerpt}</p>
+        <div className="meta-grid"><div><span>Owner</span><strong>{item.owner}</strong></div><div><span>Scheduled</span><strong>{item.date}</strong></div></div>
+        {campaign ? <div className="email-review">
+          <div className="email-preview-label"><span>Rendered email</span><small>Sandboxed preview · links disabled</small></div>
+          <iframe title={`Rendered preview of ${item.title}`} sandbox="" srcDoc={campaign.html.replaceAll("https://eternallifehospice.com", "about:blank")} />
+          <div className="campaign-details"><h3>Campaign details</h3><dl><dt>Subject</dt><dd>{campaign.subject}</dd><dt>Preheader</dt><dd>{campaign.preheader}</dd><dt>Plain-text version</dt><dd><pre>{campaign.plainText}</pre></dd></dl></div>
+        </div> : article ? <div className="article-review">
+          <div className="article-byline"><span>{article.category}</span><span>{article.readMinutes} min read</span><span>{article.date}</span><button className="read-full-btn" onClick={() => setFull(true)}>Read the full piece <ArrowUpRight size={14} /></button></div>
+          <p className="article-lede">{article.lede}</p>
+          {article.sections.map(section => <section key={section.heading}><h3>{section.heading}</h3>{section.paragraphs.map((paragraph, index) => <p key={`${section.heading}-${index}`}>{paragraph}</p>)}</section>)}
+          <div className="article-cta"><strong>{article.ctaHeading}</strong><p>{article.ctaCopy}</p></div>
+        </div> : <div className="preview-paper"><div className="paper-brand"><HeartHandshake size={15} /> ETERNAL LIFE</div><div className="paper-line" /><span>EDITORIAL PREVIEW</span><h3>{item.title}</h3><p>{item.excerpt}</p></div>}
+        <div className="detail-actions">{item.status === "Needs review" ? <button className="approve-btn" onClick={() => onStatus(item.id, "Approved")}><Check size={16} /> Approve item</button> : <button className="secondary-btn" onClick={() => onStatus(item.id, "Needs review")}><Clock3 size={16} /> Return to review</button>}<button className="secondary-btn" onClick={() => onStatus(item.id, item.status === "Scheduled" ? "Draft" : "Scheduled")}><Send size={15} /> {item.status === "Scheduled" ? "Move to draft" : "Schedule"}</button></div>
+      </div>
+    </aside>
+  </div>;
 }
