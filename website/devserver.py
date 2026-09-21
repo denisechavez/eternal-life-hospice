@@ -337,11 +337,8 @@ class PrettyURLHandler(http.server.SimpleHTTPRequestHandler):
                         "ok": False,
                         "error": "reviews_unavailable",
                         "message": (
-                            "Live Google reviews are temporarily unavailable. "
-                            "Please use the Google profile link to see the latest reviews."
-                        ),
-                        "googleMapsUrl": (
-                            "https://maps.google.com/?cid=9771388271577679785"
+                            "Google reviews are unavailable while the Eternal Life Hospice "
+                            "profile is being verified."
                         ),
                     },
                 )

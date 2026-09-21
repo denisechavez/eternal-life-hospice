@@ -30,39 +30,13 @@ class GoogleReviewsTests(unittest.TestCase):
         self.key_patch.stop()
         google_reviews._cache = None
 
-    def test_fetch_normalizes_and_limits_public_fields(self):
-        complete_review = (
-            "The team answered every question with patience and care. "
-            "They remained responsive throughout a difficult time. " * 5
-        ).strip()
-        upstream = {
-            "rating": 4.9,
-            "userRatingCount": 27,
-            "googleMapsUri": "https://maps.google.com/example",
-            "reviews": [
-                {
-                    "rating": 5,
-                    "text": {"text": complete_review},
-                    "authorAttribution": {"displayName": "A. Reviewer"},
-                    "relativePublishTimeDescription": "a month ago",
-                }
-            ],
-        }
-        with mock.patch.object(
-            google_reviews, "_request_json", return_value=upstream
-        ) as request_json:
-            result = google_reviews._fetch_reviews()
-
-        self.assertEqual(result["rating"], 4.9)
-        self.assertEqual(result["reviewCount"], 27)
-        self.assertEqual(result["reviews"][0]["author"], "A. Reviewer")
-        self.assertEqual(result["reviews"][0]["text"], complete_review)
-        self.assertGreater(len(result["reviews"][0]["text"]), 360)
-        self.assertNotIn("GOOGLE_API_KEY", json.dumps(result))
-        self.assertEqual(
-            request_json.call_args.kwargs["field_mask"],
-            "id,displayName,rating,userRatingCount,reviews,googleMapsUri",
-        )
+    def test_fetch_fails_closed_without_verified_eternal_profile(self):
+        with mock.patch.object(google_reviews, "_request_json") as request_json:
+            with self.assertRaises(google_reviews.GoogleReviewsError):
+                google_reviews._fetch_reviews()
+        request_json.assert_not_called()
+        self.assertFalse(google_reviews.REVIEWS_ENABLED)
+        self.assertEqual(google_reviews.CANONICAL_MAPS_URL, "")
 
     def test_hourly_cache_prevents_repeat_google_calls(self):
         live = {
@@ -136,6 +110,7 @@ class GoogleReviewsTests(unittest.TestCase):
                 app.server_close()
         self.assertEqual(payload["error"], "reviews_unavailable")
         self.assertNotIn("private detail", json.dumps(payload))
+        self.assertNotIn("googleMapsUrl", payload)
 
 
 if __name__ == "__main__":

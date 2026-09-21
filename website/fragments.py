@@ -104,6 +104,17 @@ FOOTER_HTML = FOOTER_HTML.replace(
     "Ste 325B",
     1,
 )
+# The former Eternal Maps CID now resolves to Westlake Village Hospice.
+# Keep Eternal's verified street address visible, but do not cross-link profiles.
+FOOTER_HTML = FOOTER_HTML.replace(
+    '<a class="fc-line fc-addr" href="https://maps.google.com/?cid=9771388271577679785" target="_blank" rel="noopener">',
+    '<span class="fc-line fc-addr">',
+    1,
+).replace(
+    'Westlake Village, CA 91362</span></a><div class="foot-subgroup">',
+    'Westlake Village, CA 91362</span></span><div class="foot-subgroup">',
+    1,
+)
 
 # The footer navigation mirrors the five expandable groups in HEADER_HTML.
 # Contact remains the existing footer contact block below this replacement.

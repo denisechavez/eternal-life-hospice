@@ -17,10 +17,12 @@ from urllib.request import Request, urlopen
 
 
 GOOGLE_PLACES_BASE = "https://places.googleapis.com/v1"
-CANONICAL_MAPS_URL = "https://maps.google.com/?cid=9771388271577679785"
-# This is the canonical "Eternal Life Hospice" listing. It is not the
-# lingering "Inc." duplicate.
-CANONICAL_PLACE_ID = "ChIJteBBU6vdfEcRqUfOqdzxmoc"
+# Fail closed until Google provides Eternal Life Hospice with a distinct,
+# verified profile. The former Eternal identifiers now resolve publicly to
+# Westlake Village Hospice and must never be used for Eternal review data.
+REVIEWS_ENABLED = False
+CANONICAL_MAPS_URL = ""
+CANONICAL_PLACE_ID = ""
 CACHE_TTL_SECONDS = 60 * 60
 REQUEST_TIMEOUT_SECONDS = 8
 MAX_REVIEWS = 5
@@ -81,6 +83,10 @@ def _clean_review(review):
 
 
 def _fetch_reviews():
+    if not REVIEWS_ENABLED:
+        raise GoogleReviewsError(
+            "Google reviews are disabled pending a verified Eternal Life Hospice profile."
+        )
     api_key = _api_key()
     place_id = _resolve_place_id(api_key)
     result = _request_json(
