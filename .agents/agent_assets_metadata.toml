@@ -1722,3 +1722,17 @@ mtime_ms = 1789971796635
 storage_uri = "gcs://replit-rams-assets-kirk/rams/assets/repl:e1b2f643-7869-4565-af0e-10c34575ee8d/de22d54e-cf93-4416-95fc-be4502cb04d7/b63b16d2-3a5f-424a-83ec-29eea18940e3"
 storage_version_token = "1789971800709205"
 content_type = "application/pdf"
+
+[[outputs]]
+id = "cL7f7MES7yaaJskQPn3_0"
+uri = "file://exports/seo/30-journal-editorial-architecture-2026-09-20.pdf"
+type = "pdf"
+title = "30 Journal Articles — Revised Editorial Architecture"
+description = "Seven-page planning document assigning one primary intent, supporting core page, unique job, cannibalization risk, internal links, and final action to every new article. No article bodies or site pages were changed."
+logical_id = "7dd7e167-0a1c-49bf-ae04-72602991ac4c"
+content_hash = "sha256:5a7ac2b5088c87f7cb5b4ab25f0aebdbc2f588520706d74052373d451907599b"
+size = 60764
+mtime_ms = 1789972351283
+storage_uri = "gcs://replit-rams-assets-kirk/rams/assets/repl:e1b2f643-7869-4565-af0e-10c34575ee8d/7dd7e167-0a1c-49bf-ae04-72602991ac4c/7a0127d2-8a89-41c8-80e6-86a4d30547b5"
+storage_version_token = "1789972355197565"
+content_type = "application/pdf"

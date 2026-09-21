@@ -1,0 +1,409 @@
+<!doctype html><html><head><meta charset="utf-8"><title>30 Journal Editorial Architecture</title><style>@page{size:Letter;margin:.58in}body{font-family:Arial,sans-serif;color:#2f2730;font-size:9.5px;line-height:1.46;max-width:8in;margin:auto}h1,h2,h3{color:#3c1c3b;page-break-after:avoid}h1{font-size:23px;border-bottom:2px solid #c9b07e;padding-bottom:8px}h2{font-size:15px;margin-top:22px;border-bottom:1px solid #ddd;padding-bottom:4px}h3{font-size:12px}table{border-collapse:collapse;width:100%;font-size:8px;margin:10px 0 16px}th,td{border:1px solid #d9d0ca;padding:4px;vertical-align:top}th{background:#eee4eb;color:#3c1c3b}tr{page-break-inside:avoid}code{background:#f3efeb;padding:1px 3px}pre{white-space:pre-wrap;font-family:Arial,sans-serif}a{color:#5b2e59}strong{color:#3c1c3b}li{margin-bottom:3px}</style></head><body><pre># Eternal Life Hospice — 30-Journal Revised Editorial Architecture
+
+**Status:** Analysis-only, pre-publication planning pass  
+**Source report:** `exports/seo/search-console-seo-validation-2026-09-20.md`  
+**Source records:** `website/content/30-day-journal/batch-1.json` through `batch-5.json`  
+**Scope:** Revise editorial ownership before publication. No article bodies, core pages, files, metadata, canonicals, schema, or indexing directives were changed.
+
+## Architecture rules
+
+1. **Core pages own acquisition intent.** Existing service, resource, county, and city pages own “hospice care,” Medicare-benefit, referral, and “hospice in [city]” searches. Journal articles explain a question, decision, care stage, or family situation and link to the owner.
+2. **One article, one primary job.** Each article has one dominant search intent; secondary questions must support that job rather than create a second landing page.
+3. **Local articles are supporting resources.** Articles may use a location in the title when the location changes the practical guidance, but they must not present themselves as alternate city landing pages. They should link to one matching city/region owner.
+4. **Evaluation/referral separation:** #1 owns the family-facing evaluation process. #12 is merged into #1 as a family-request section. #30 remains a professional/facility referral workflow and links to `/refer`; it must not repeat the family evaluation guide.
+5. **Post-enrollment separation:** #11 owns the first 48 hours; #19 owns medication management; #20 owns equipment planning; #21 owns after-hours/on-call use. None should re-explain eligibility or general hospice benefits.
+6. **Condition guides stay condition-specific.** #7–10 should answer disease-specific family questions and route to evaluation; they should not become generic “signs it is time” pages.
+7. **Evidence boundary:** Search Console confirms cluster/page performance, not query-to-URL attribution. Proposed owners below are editorial mappings based on semantic fit and existing page subject matter.
+8. **Healthcare safety:** Do not add coverage promises, outcome claims, “best hospice” claims, response guarantees, or deterministic eligibility language. Medicare/CMS references require factual review before publication.
+
+## Revised article architecture
+
+### 1. What Happens During a Hospice Evaluation?
+
+- **Current title:** What Happens During a Hospice Evaluation?
+- **Recommended final title:** What Happens During a Hospice Evaluation? A Family Guide
+- **Primary search intent:** Informational — understand the hospice evaluation process before deciding.
+- **Core page it supports:** `/hospice-care` and `/family-guide` (with `/refer` as the professional next step).
+- **Search cluster:** hospice evaluation; what to expect from a hospice evaluation; request information before enrollment.
+- **Article’s unique job:** Explain the sequence, participants, questions, records, and choices in an evaluation without deciding eligibility or selling enrollment.
+- **Cannibalization risk after revision:** Low–medium if it owns the family evaluation sequence and absorbs #12; high if it repeats referral workflow or first-48-hours material.
+- **Recommended internal links:** `/hospice-care`, `/family-guide`, `/refer`, `/resources/medicare-hospice-benefit`, and the county hub only where geography is relevant.
+- **Action:** **Keep**
+
+### 2. 10 Signs It May Be Time to Consider Hospice
+
+- **Current title:** 10 Signs It May Be Time to Consider Hospice
+- **Recommended final title:** 10 Changes That Can Prompt a Hospice Conversation
+- **Primary search intent:** Informational — recognize changes worth discussing with a clinician.
+- **Core page it supports:** `/hospice-care`.
+- **Search cluster:** signs to consider hospice; when to ask about hospice; family decision-stage questions.
+- **Article’s unique job:** Provide an early-stage observation checklist that prompts a conversation, explicitly not an eligibility test.
+- **Cannibalization risk after revision:** Medium with #7–10 and #25; reduced by removing disease-specific sections and refusal-conversation detail.
+- **Recommended internal links:** `/hospice-care`, #1 evaluation article, `/family-guide`, and one relevant condition guide only when contextually needed.
+- **Action:** **Retitle**
+
+### 3. Hospice at Home in Thousand Oaks: What Families Can Expect
+
+- **Current title:** Hospice at Home in Thousand Oaks: What Families Can Expect
+- **Recommended final title:** Preparing for Hospice at Home in Thousand Oaks: Questions for Families
+- **Primary search intent:** Informational/local support — prepare for home hospice logistics after choosing to learn more.
+- **Core page it supports:** `/hospice-thousand-oaks-ca`.
+- **Search cluster:** home hospice questions; hospice visits and caregivers; Thousand Oaks home-care logistics.
+- **Article’s unique job:** Explain practical household questions—setting, visits, equipment, communication, and caregiver roles—without targeting “hospice Thousand Oaks” as a landing page.
+- **Cannibalization risk after revision:** Low–medium with the Thousand Oaks page and #15; high if it repeats the city page’s service pitch or claims broad coverage.
+- **Recommended internal links:** One contextual link to `/hospice-thousand-oaks-ca`, `/hospice-care`, #20 equipment, #21 on-call, and the county hub only if useful.
+- **Action:** **Refocus**
+
+### 4. Can Hospice Begin After a Hospital Discharge?
+
+- **Current title:** Can Hospice Begin After a Hospital Discharge?
+- **Recommended final title:** Planning Hospice After Hospital Discharge: A Family Checklist
+- **Primary search intent:** Informational/transition — coordinate hospice questions and practical handoff after discharge.
+- **Core page it supports:** `/hospice-care` and `/refer`.
+- **Search cluster:** hospice after hospital discharge; discharge planning; hospital-to-home hospice transition.
+- **Article’s unique job:** Own the handoff timeline, records, equipment, medications, destination, and named responsibilities from hospital to next setting.
+- **Cannibalization risk after revision:** Low with #1 and #11 if it stops at discharge and does not explain the full evaluation or first 48 hours.
+- **Recommended internal links:** `/refer`, `/hospice-care`, #1 evaluation, #11 first 48 hours, and `/resources/first-48-hours`.
+- **Action:** **Keep**
+
+### 5. Does Medicare Cover Hospice Care?
+
+- **Current title:** Does Medicare Cover Hospice Care?
+- **Recommended final title:** Medicare Hospice Coverage: Questions to Confirm Before Choosing Care
+- **Primary search intent:** Informational — understand Medicare hospice-benefit basics and identify questions requiring confirmation.
+- **Core page it supports:** `/resources/medicare-hospice-benefit`.
+- **Search cluster:** Medicare hospice; Medicare hospice benefit; hospice coverage; benefit periods and cost questions.
+- **Article’s unique job:** Act as a plain-language orientation and question checklist that sends readers to the authoritative Medicare resource; it should not become a competing benefits page.
+- **Cannibalization risk after revision:** Medium–high with the Medicare resource; reduced by using a question-led structure, linking to the resource early, and avoiding duplicated exhaustive coverage detail.
+- **Recommended internal links:** `/resources/medicare-hospice-benefit`, `/family-guide`, `/hospice-care`, and `/refer`.
+- **Action:** **Refocus**
+
+### 6. Hospice vs Palliative Care: What Is the Difference?
+
+- **Current title:** Hospice vs Palliative Care: What Is the Difference?
+- **Recommended final title:** Hospice and Palliative Care: How the Goals and Timing Differ
+- **Primary search intent:** Comparative informational — distinguish hospice from palliative care.
+- **Core page it supports:** `/hospice-care`.
+- **Search cluster:** hospice versus palliative care; comfort-focused care options; care-setting comparison.
+- **Article’s unique job:** Provide a neutral comparison of purpose, timing, eligibility, and coordination without trying to own either service taxonomy.
+- **Cannibalization risk after revision:** Medium with `/hospice-care` and #2; reduced by keeping the comparison format and avoiding a generic hospice overview.
+- **Recommended internal links:** `/hospice-care`, `/services`, #1 evaluation, and `/family-guide`.
+- **Action:** **Retitle**
+
+### 7. Dementia and Hospice Eligibility: A Family Guide
+
+- **Current title:** Dementia and Hospice Eligibility: A Family Guide
+- **Recommended final title:** Dementia and Hospice: Questions for an Individualized Evaluation
+- **Primary search intent:** Condition-specific informational — understand what families can discuss when dementia is advancing.
+- **Core page it supports:** `/hospice-care`.
+- **Search cluster:** dementia hospice; Alzheimer’s hospice questions; dementia decline and comfort planning.
+- **Article’s unique job:** Explain dementia-specific observations and evaluation questions without giving an eligibility checklist or prognosis.
+- **Cannibalization risk after revision:** Low–medium with #2 and #1; low if generic “signs” sections are minimized.
+- **Recommended internal links:** `/hospice-care`, #1 evaluation, `/family-guide`, and #21 only for after-hours questions.
+- **Action:** **Retitle**
+
+### 8. Hospice Care for Advanced Cancer: What Families Can Expect
+
+- **Current title:** Hospice Care for Advanced Cancer: What Families Can Expect
+- **Recommended final title:** Advanced Cancer and Hospice: Comfort-Focused Questions for Families
+- **Primary search intent:** Condition-specific informational — understand hospice conversations and comfort planning in advanced cancer.
+- **Core page it supports:** `/hospice-care`.
+- **Search cluster:** cancer hospice; advanced cancer comfort care; oncology hospice questions.
+- **Article’s unique job:** Translate cancer-specific family questions into a goals-and-support conversation while respecting the oncology team.
+- **Cannibalization risk after revision:** Low–medium with #2 and #1; reduced by removing generic team/service explanations.
+- **Recommended internal links:** `/hospice-care`, #1 evaluation, #19 medication questions, #20 equipment, and `/family-guide`.
+- **Action:** **Retitle**
+
+### 9. Hospice and Advanced Heart Failure: Planning for Comfort
+
+- **Current title:** Hospice and Advanced Heart Failure: Planning for Comfort
+- **Recommended final title:** Advanced Heart Failure and Hospice: Planning Around Changing Needs
+- **Primary search intent:** Condition-specific informational — discuss hospice and comfort planning amid an unpredictable heart-failure course.
+- **Core page it supports:** `/hospice-care`.
+- **Search cluster:** heart failure hospice; advanced heart failure comfort planning; recurrent hospitalization questions.
+- **Article’s unique job:** Address fluctuating symptoms, cardiology coordination, caregiver planning, and goals without making clinical predictions.
+- **Cannibalization risk after revision:** Low–medium with #2 and #1; low if generic hospice definitions are shortened.
+- **Recommended internal links:** `/hospice-care`, #1 evaluation, #19 medication, #21 on-call, and `/family-guide`.
+- **Action:** **Retitle**
+
+### 10. Hospice Support for Advanced COPD: A Practical Family Guide
+
+- **Current title:** Hospice Support for Advanced COPD: A Practical Family Guide
+- **Recommended final title:** Advanced COPD and Hospice: Questions About Comfort and Breathing Changes
+- **Primary search intent:** Condition-specific informational — prepare questions about advanced COPD comfort and changing symptoms.
+- **Core page it supports:** `/hospice-care`.
+- **Search cluster:** COPD hospice; respiratory comfort; breathlessness and hospice questions.
+- **Article’s unique job:** Give families a condition-specific framework for observing changes, asking clinicians, and planning support; it must not provide independent treatment instructions.
+- **Cannibalization risk after revision:** Low–medium with #2 and #1; low if emergency and medication advice remains clinician-directed.
+- **Recommended internal links:** `/hospice-care`, #1 evaluation, #21 on-call, #19 medication, and `/family-guide`.
+- **Action:** **Retitle**
+
+### 11. The First 48 Hours of Hospice Care: A Calm, Practical Guide
+
+- **Current title:** The First 48 Hours of Hospice Care: A Calm, Practical Guide
+- **Recommended final title:** The First 48 Hours After Hospice Begins: A Family Timeline
+- **Primary search intent:** Post-enrollment informational — know what to expect immediately after hospice starts.
+- **Core page it supports:** `/resources/first-48-hours`.
+- **Search cluster:** first 48 hours of hospice; first hospice visit; starting hospice at home.
+- **Article’s unique job:** Own the immediate post-enrollment timeline: first visit, plan confirmation, contacts, equipment/medication checks, and questions.
+- **Cannibalization risk after revision:** Low with #1, #4, #19–21 if evaluation, discharge, and individual topic details are linked out rather than repeated.
+- **Recommended internal links:** `/resources/first-48-hours`, `/hospice-care`, #19, #20, #21, and `/refer` only for professional handoff context.
+- **Action:** **Refocus**
+
+### 12. Can a Family Request a Hospice Evaluation?
+
+- **Current title:** Can a Family Request a Hospice Evaluation?
+- **Recommended final title:** Family Questions to Bring to a Hospice Evaluation
+- **Primary search intent:** Family checklist — prepare questions for an evaluation rather than learn a second evaluation process.
+- **Core page it supports:** `/hospice-care` and #1.
+- **Search cluster:** can family request hospice evaluation; hospice questions; family referral process.
+- **Article’s unique job:** Recommended consolidation into #1 as a family-question section or working outline; it should not remain a standalone competing URL.
+- **Cannibalization risk after revision:** High if published separately; eliminated if its useful questions are merged into #1 before publication.
+- **Recommended internal links:** If retained temporarily, link only to #1, `/hospice-care`, `/family-guide`, and `/refer`.
+- **Action:** **Merge**
+
+### 13. Hospice Care in Simi Valley: Starting the Conversation
+
+- **Current title:** Hospice Care in Simi Valley: Starting the Conversation
+- **Recommended final title:** Starting a Hospice Conversation in Simi Valley: Questions for Families
+- **Primary search intent:** Informational/local support — help Simi Valley families prepare for a first conversation.
+- **Core page it supports:** `/hospice-simi-valley-ca`.
+- **Search cluster:** Simi Valley hospice questions; local hospice conversation; family planning.
+- **Article’s unique job:** Provide Simi Valley-specific practical questions and access context while leaving “hospice in Simi Valley” commercial ownership to the city page.
+- **Cannibalization risk after revision:** Low–medium with the city page and #15; high if it repeats service claims or generic local copy.
+- **Recommended internal links:** One link to `/hospice-simi-valley-ca`, `/hospice-care`, #1, and the county hub where appropriate.
+- **Action:** **Refocus**
+
+### 14. Home Hospice in Camarillo: A Family Guide
+
+- **Current title:** Home Hospice in Camarillo: A Family Guide
+- **Recommended final title:** Preparing for Home Hospice in Camarillo: A Family Checklist
+- **Primary search intent:** Informational/local support — prepare a Camarillo household for home-hospice questions.
+- **Core page it supports:** `/hospice-camarillo-ca`.
+- **Search cluster:** Camarillo home hospice questions; home setting; caregiver preparation.
+- **Article’s unique job:** Cover practical home-setting preparation, communication, and caregiver capacity specific to the article’s local context, not city-level acquisition.
+- **Cannibalization risk after revision:** Low–medium with the Camarillo page; low if it links to that page once and avoids a second service overview.
+- **Recommended internal links:** One contextual link to `/hospice-camarillo-ca`, #18 caregiver role, #20 equipment, #21 on-call, and `/hospice-care`.
+- **Action:** **Refocus**
+
+### 15. Hospice Care Across the Conejo Valley
+
+- **Current title:** Hospice Care Across the Conejo Valley
+- **Recommended final title:** Coordinating Hospice Questions Across the Conejo Valley
+- **Primary search intent:** Regional informational/navigation — understand how families and referral partners coordinate across settings and communities.
+- **Core page it supports:** `/hospice-conejo-valley-ca` and the county hub.
+- **Search cluster:** Conejo Valley hospice coordination; regional care setting; local referral logistics.
+- **Article’s unique job:** Explain regional coordination, setting/address questions, and handoffs among communities; it is not another regional landing page.
+- **Cannibalization risk after revision:** Medium with #3, #13, #16 and regional pages; reduced by making it a coordination guide rather than a service pitch.
+- **Recommended internal links:** `/hospice-conejo-valley-ca`, county hub, `/refer`, and only the relevant city owner for an example.
+- **Action:** **Refocus**
+
+### 16. Hospice Care in Moorpark: What to Know
+
+- **Current title:** Hospice Care in Moorpark: What to Know
+- **Recommended final title:** Before the First Hospice Call in Moorpark: Questions to Ask
+- **Primary search intent:** Informational/local support — prepare for a first hospice call in Moorpark.
+- **Core page it supports:** `/hospice-moorpark-ca`.
+- **Search cluster:** Moorpark hospice questions; first call; family planning.
+- **Article’s unique job:** Give a Moorpark family a concise preparation checklist while the city page owns local service discovery.
+- **Cannibalization risk after revision:** Low–medium with `/hospice-moorpark-ca` and #15; high if it keeps generic hospice basics and commercial CTA language.
+- **Recommended internal links:** One link to `/hospice-moorpark-ca`, #1, `/hospice-care`, and the county hub when useful.
+- **Action:** **Refocus**
+
+### 17. Hospice in Assisted Living and Skilled Nursing Facilities
+
+- **Current title:** Hospice in Assisted Living and Skilled Nursing Facilities
+- **Recommended final title:** How Hospice Partners With Assisted Living and Skilled Nursing Teams
+- **Primary search intent:** Professional/facility informational — understand roles, referrals, communication, and care-plan coordination.
+- **Core page it supports:** `/refer`.
+- **Search cluster:** hospice in assisted living; hospice in skilled nursing; facility referral workflow.
+- **Article’s unique job:** Explain the partnership boundary between facility staff and hospice, with a professional-facing handoff checklist.
+- **Cannibalization risk after revision:** Low with #30 if #30 owns referral steps and this owns the setting partnership; medium if both repeat facility referral basics.
+- **Recommended internal links:** `/refer`, #30 professional referral guide, `/hospice-care`, and the county hub only for service-area context.
+- **Action:** **Retitle**
+
+### 18. What Is the Family Caregiver’s Role in Home Hospice?
+
+- **Current title:** What Is the Family Caregiver’s Role in Home Hospice?
+- **Recommended final title:** The Family Caregiver’s Role in Home Hospice: What to Expect
+- **Primary search intent:** Caregiver informational — understand responsibilities, boundaries, communication, and support needs.
+- **Core page it supports:** `/family-guide` and `/hospice-care`.
+- **Search cluster:** family caregiver hospice role; home hospice responsibilities; caregiver boundaries.
+- **Article’s unique job:** Define what caregivers do and do not do, how to communicate with the team, and how to identify unsustainable workload.
+- **Cannibalization risk after revision:** Medium with #22 and the existing caregiver article; low if it avoids respite mechanics and grief content.
+- **Recommended internal links:** `/family-guide`, `/hospice-care`, #22 respite, #20 equipment, #21 on-call, and the existing caregiver support article only if its scope is distinct.
+- **Action:** **Refocus**
+
+### 19. How Hospice Manages Comfort Medications
+
+- **Current title:** How Hospice Manages Comfort Medications
+- **Recommended final title:** Hospice Comfort Medications: How Families Get Guidance
+- **Primary search intent:** Practical informational — understand medication coordination, safety, and when to call.
+- **Core page it supports:** `/hospice-care` and `/resources/first-48-hours`.
+- **Search cluster:** hospice comfort medications; medication questions at home; hospice medication safety.
+- **Article’s unique job:** Explain the communication and safety process, not specific drugs, dosages, or general hospice eligibility.
+- **Cannibalization risk after revision:** Low with #11 and #21 if medication ownership is explicit and emergency guidance remains narrow.
+- **Recommended internal links:** `/hospice-care`, `/resources/first-48-hours`, #11, #21, and #20 only when equipment affects medication safety.
+- **Action:** **Retitle**
+
+### 20. What Medical Equipment Can Hospice Provide?
+
+- **Current title:** What Medical Equipment Can Hospice Provide?
+- **Recommended final title:** Hospice Equipment at Home: What Families Should Ask
+- **Primary search intent:** Practical informational — understand assessment, ordering, setup, safety, and return of hospice equipment.
+- **Core page it supports:** `/hospice-care` and `/resources/first-48-hours`.
+- **Search cluster:** hospice medical equipment; hospital bed; oxygen/equipment planning; home setup.
+- **Article’s unique job:** Own equipment planning and safety while avoiding coverage guarantees or a generic service overview.
+- **Cannibalization risk after revision:** Low with #11 and #19; medium with Medicare content only where coverage is discussed.
+- **Recommended internal links:** `/hospice-care`, `/resources/first-48-hours`, #11, #21, and `/family-guide`.
+- **Action:** **Retitle**
+
+### 21. What 24/7 On-Call Hospice Support Means
+
+- **Current title:** What 24/7 On-Call Hospice Support Means
+- **Recommended final title:** When to Call Hospice After Hours: Understanding On-Call Support
+- **Primary search intent:** Urgent informational — know when and how to use hospice after-hours support.
+- **Core page it supports:** `/hospice-care` and `/resources/first-48-hours`.
+- **Search cluster:** hospice after-hours number; 24/7 hospice support; when to call hospice versus emergency services.
+- **Article’s unique job:** Explain the call process, information to have ready, limits of on-call care, and emergency distinction.
+- **Cannibalization risk after revision:** Low with #11, #19, and #20 if it avoids their detailed topics and owns after-hours decisions.
+- **Recommended internal links:** `/hospice-care`, `/resources/first-48-hours`, #19, #20, and the referral page for professional handoff.
+- **Action:** **Retitle**
+
+### 22. What Is Hospice Respite Care?
+
+- **Current title:** What Is Hospice Respite Care?
+- **Recommended final title:** Hospice Respite Care: How a Planned Caregiver Break Works
+- **Primary search intent:** Caregiver/service informational — understand the purpose, limits, planning, and transition of hospice respite.
+- **Core page it supports:** `/hospice-care` and `/family-guide`.
+- **Search cluster:** hospice respite care; caregiver break; short-term inpatient respite.
+- **Article’s unique job:** Own respite mechanics and caregiver relief; distinguish respite from routine home care, private-duty care, and hospital admission.
+- **Cannibalization risk after revision:** Low with #18 if #18 owns the caregiver role and this article owns the respite service.
+- **Recommended internal links:** `/family-guide`, `/hospice-care`, #18 caregiver role, `/resources/medicare-hospice-benefit`, and #30 only for facility coordination when needed.
+- **Action:** **Keep**
+
+### 23. How a Hospice Social Worker Supports the Family
+
+- **Current title:** How a Hospice Social Worker Supports the Family
+- **Recommended final title:** What a Hospice Social Worker Can Help Families Navigate
+- **Primary search intent:** Team-role informational — understand social-work support, practical navigation, and family communication.
+- **Core page it supports:** `/hospice-care` and `/family-guide`.
+- **Search cluster:** hospice social worker; hospice family support; care planning and resources.
+- **Article’s unique job:** Explain the social worker’s non-medical role without duplicating spiritual care, grief, or caregiver-respite pages.
+- **Cannibalization risk after revision:** Low with #18, #24, and #29 if role boundaries are explicit.
+- **Recommended internal links:** `/hospice-care`, `/family-guide`, #18, #24, #29, and #17 for facility communication where relevant.
+- **Action:** **Retitle**
+
+### 24. Spiritual Care in Hospice: Support Without Pressure
+
+- **Current title:** Spiritual Care in Hospice: Support Without Pressure
+- **Recommended final title:** Spiritual Care in Hospice: Support Guided by the Patient’s Values
+- **Primary search intent:** Whole-person informational — understand voluntary, patient-directed spiritual support.
+- **Core page it supports:** `/hospice-care`.
+- **Search cluster:** hospice spiritual care; chaplain support; faith and values in hospice.
+- **Article’s unique job:** Define non-coercive spiritual care for any faith or no faith, without drifting into wellness-product or clinical-treatment claims.
+- **Cannibalization risk after revision:** Low with #23 and the music/sound-bath extras; low if complementary content remains clearly separate.
+- **Recommended internal links:** `/hospice-care`, `/family-guide`, #23 social worker, and the grief article where emotional support is relevant.
+- **Action:** **Retitle**
+
+### 25. What to Do When a Parent Refuses Hospice
+
+- **Current title:** What to Do When a Parent Refuses Hospice
+- **Recommended final title:** When a Parent Says No to Hospice: A Respectful Family Conversation
+- **Primary search intent:** Family decision-support informational — respond to refusal while protecting autonomy and keeping communication open.
+- **Core page it supports:** `/family-guide` and #1.
+- **Search cluster:** parent refuses hospice; family disagreement; talking about hospice.
+- **Article’s unique job:** Address listening, consent, capacity questions, safety planning, and revisiting goals without conversion pressure.
+- **Cannibalization risk after revision:** Low–medium with #2 and #1; low if it does not re-teach evaluation steps.
+- **Recommended internal links:** `/family-guide`, #1 evaluation, `/hospice-care`, and #27 physician questions.
+- **Action:** **Retitle**
+
+### 26. How to Choose a Hospice Provider
+
+- **Current title:** How to Choose a Hospice Provider
+- **Recommended final title:** Questions to Compare Hospice Providers Before Choosing Care
+- **Primary search intent:** Commercial-investigational informational — compare providers using neutral, verifiable questions.
+- **Core page it supports:** `/hospice-care` and `/refer` (not a claim that Eternal is “best”).
+- **Search cluster:** choose a hospice; compare hospice providers; hospice provider questions.
+- **Article’s unique job:** Provide a neutral checklist for service area, communication, team roles, coverage questions, and escalation—without unsupported superiority claims.
+- **Cannibalization risk after revision:** Medium with local pages and #17/#30; reduced by avoiding a location landing-page format and keeping the checklist provider-neutral.
+- **Recommended internal links:** `/hospice-care`, `/refer`, `/resources/medicare-hospice-benefit`, `/family-guide`, and the county hub only for local-context questions.
+- **Action:** **Retitle**
+
+### 27. Questions to Ask a Doctor About Hospice
+
+- **Current title:** Questions to Ask a Doctor About Hospice
+- **Recommended final title:** Questions to Ask Your Doctor Before a Hospice Evaluation
+- **Primary search intent:** Decision-stage checklist — prepare for a clinician conversation before referral/evaluation.
+- **Core page it supports:** `/hospice-care` and #1.
+- **Search cluster:** questions for doctor about hospice; hospice appointment checklist; goals-of-care questions.
+- **Article’s unique job:** Own the physician-appointment checklist, distinct from #1’s hospice evaluation sequence and #25’s family refusal conversation.
+- **Cannibalization risk after revision:** Low–medium with #1 and #25 if it stays a question list and does not become another evaluation explainer.
+- **Recommended internal links:** `/hospice-care`, #1, `/family-guide`, `/resources/medicare-hospice-benefit`, and #25 where family disagreement is relevant.
+- **Action:** **Retitle**
+
+### 28. Eating and Drinking Changes Near the End of Life
+
+- **Current title:** Eating and Drinking Changes Near the End of Life
+- **Recommended final title:** Eating and Drinking Changes Near the End of Life: Comfort-Focused Questions
+- **Primary search intent:** Symptom/caregiver informational — respond safely and compassionately to appetite, thirst, swallowing, and comfort changes.
+- **Core page it supports:** `/hospice-care` and `/family-guide`.
+- **Search cluster:** end-of-life appetite changes; hospice eating and drinking; comfort feeding questions.
+- **Article’s unique job:** Explain comfort-focused observation, mouth care, swallowing questions, and when to call the care team without prescribing treatment.
+- **Cannibalization risk after revision:** Low–medium with #2 and condition guides; low if it stays symptom-specific and does not repeat eligibility.
+- **Recommended internal links:** `/hospice-care`, `/family-guide`, #21 on-call, #19 medication questions, and #1 evaluation only where appropriate.
+- **Action:** **Keep**
+
+### 29. Grief Support Before and After a Loss
+
+- **Current title:** Grief Support Before and After a Loss
+- **Recommended final title:** Anticipatory and Bereavement Grief: Support Before and After Loss
+- **Primary search intent:** Bereavement informational — understand grief before a death and after a loss, and identify support.
+- **Core page it supports:** `/family-guide` and the hospice bereavement/service pathway.
+- **Search cluster:** anticipatory grief; hospice bereavement support; grief before and after death.
+- **Article’s unique job:** Own the before/after grief distinction, practical support, and boundaries; do not compete with the caregiver or refusal articles.
+- **Cannibalization risk after revision:** Low–medium with the caregiver/children extras; low if grief stages and bereavement support remain central.
+- **Recommended internal links:** `/family-guide`, `/hospice-care`, #23 social worker, #24 spiritual care, and the children’s communication article where relevant.
+- **Action:** **Retitle**
+
+### 30. How Physicians and Facilities Refer a Patient to Hospice
+
+- **Current title:** How Physicians and Facilities Refer a Patient to Hospice
+- **Recommended final title:** How Professionals Refer a Patient to Hospice: A Facility and Physician Workflow
+- **Primary search intent:** Professional/referral informational — understand the provider/facility referral handoff.
+- **Core page it supports:** `/refer`.
+- **Search cluster:** hospice referral process; physician referral; facility referral; hospice intake handoff.
+- **Article’s unique job:** Own professional workflow: consent, records, contacts, setting, urgency, and handoff responsibilities. It should not repeat family-facing evaluation education.
+- **Cannibalization risk after revision:** Low with #1/#12 if professional language and workflow remain primary; medium with #17 if facility-specific partnership detail is duplicated.
+- **Recommended internal links:** `/refer`, `/referral-card`, #17 facility partnership, `/hospice-care`, and the county hub only for service-area verification.
+- **Action:** **Refocus**
+
+## Overlap-resolution decisions
+
+| Overlap | Decision |
+|---|---|
+| #1 / #12 / #30 evaluation and referral | #1 is the family evaluation owner; #12 is merged into #1; #30 remains a narrower professional workflow supporting `/refer`. |
+| #1 / #4 / #11 post-referral journey | #1 = evaluation; #4 = hospital discharge handoff; #11 = first 48 hours after hospice begins. |
+| #11 / #19 / #20 / #21 | Keep all four, with strict stage/topic ownership: timeline, medications, equipment, and after-hours support. |
+| #3 / #13–16 local articles | Keep as supporting guides only. Each links to one matching core location/region page; none should target the head “hospice in [place]” intent. |
+| #5 / Medicare resource | Keep one supporting article, but make `/resources/medicare-hospice-benefit` the authoritative owner. |
+| #7–10 / #2 | Keep four condition guides; #2 remains general observation guidance and must not reproduce disease-specific sections. |
+| #18 / #22 | #18 owns the caregiver’s ongoing role and boundaries; #22 owns planned respite mechanics. |
+| #23 / #24 / #29 | Distinguish social-work navigation, spiritual care, and grief/bereavement support. |
+| #25 / #27 | #25 owns family refusal and autonomy; #27 owns the doctor-appointment question list. |
+
+## Final action summary
+
+| Action | Count | Articles |
+|---|---:|---|
+| Keep | 4 | #1, #4, #22, #28 |
+| Retitle | 14 | #2, #6, #7, #8, #9, #10, #17, #19, #20, #21, #23, #24, #25, #26, #27, #29 |
+| Refocus | 9 | #3, #5, #11, #13, #14, #15, #16, #18, #30 |
+| Merge | 1 | #12 into #1 |
+| Hold | 0 | None |
+
+**Count note:** The row-level totals above contain 4 Keep + 16 Retitle + 9 Refocus + 1 Merge = 30 articles.
+
+## Stop point
+
+This architecture intentionally stops before body rewriting, publication, file merging/deletion, core-page changes, metadata changes, internal-link implementation, technical SEO changes, or production deployment.</pre></body></html>
