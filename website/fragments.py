@@ -104,6 +104,23 @@ FOOTER_HTML = FOOTER_HTML.replace(
     "Ste 325B",
     1,
 )
+# Keep Eternal's primary landline visible and immutable while displaying the
+# WhatConverts line separately. WhatConverts documents `no-swap` as the
+# supported opt-out class for dynamic number insertion.
+FOOTER_HTML = FOOTER_HTML.replace(
+    '<a class="fc-line" href="tel:18059537273">',
+    '<a class="fc-line no-swap" href="tel:18059537273">',
+    1,
+).replace(
+    '<span>805.953.7273</span></a><span class="fc-line fc-direct">',
+    '<span>805.953.7273 · Main</span></a>'
+    '<a class="fc-line fc-direct" href="tel:18052954688">',
+    1,
+).replace(
+    '<span>805.953.7273 · Direct</span></span>',
+    '<span>805.295.4688 · Direct</span></a>',
+    1,
+)
 # The former Eternal Maps CID now resolves to Westlake Village Hospice.
 # Keep Eternal's verified street address visible, but do not cross-link profiles.
 FOOTER_HTML = FOOTER_HTML.replace(
