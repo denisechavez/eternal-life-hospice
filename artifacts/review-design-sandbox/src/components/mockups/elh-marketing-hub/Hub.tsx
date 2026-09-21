@@ -24,7 +24,10 @@ const journalTitles = [
 ];
 
 const baseItems: Item[] = [
-  ...journalArticles.map((article, i) => ({ id: `journal-${i}`, title: article.title, type: "Journal", date: article.date, owner: "The Eternal Life Hospice Team", source: article, status: (i < 10 ? "Approved" : "Scheduled") as Status, excerpt: article.description, infographicRecommendation: i === 5 ? "Hospice Care and Palliative Care: Understanding the Difference" : undefined })),
+  ...journalArticles.map(article => {
+    const status: Status = article.date <= "2026-09-30" ? "Approved" : ["the-first-48-hours-of-hospice-care", "hospice-care-in-simi-valley-starting-the-conversation", "home-hospice-in-camarillo-a-family-guide", "hospice-care-across-the-conejo-valley"].includes(article.slug) ? "Needs review" : "Scheduled";
+    return { id: `journal-${article.slug}`, title: article.title, type: "Journal", date: article.date, owner: "The Eternal Life Hospice Team", source: article, status, excerpt: article.description, infographicRecommendation: article.slug === "hospice-vs-palliative-care-what-is-the-difference" ? "Hospice Care and Palliative Care: Understanding the Difference" : undefined };
+  }),
   ...emailCampaigns.map((campaign, i) => ({ id: `email-${i + 1}`, title: campaign.subject, type: "Weekly email", date: campaign.sendDate, owner: "The Eternal Life Hospice Team", emailIndex: i, status: (i === 0 ? "Needs review" : i === 1 ? "Approved" : "Draft") as Status, excerpt: campaign.preheader })),
   { id: "pub-1", title: "Hospice Is Part of Life — A Continuation of Care", type: "Care Brief", date: "Aug 28, 2026", owner: "Aleksandra D.", status: "Published", excerpt: "Issue One: hospice as a continuation of care, with guidance for care teams and families." },
   { id: "pub-2", title: "Family Guide — Starting the conversation", type: "Family Guide", date: "Sep 4, 2026", owner: "Aleksandra D.", status: "Published", excerpt: "A steady, readable guide for families considering hospice at home." },
@@ -50,7 +53,7 @@ function readStatuses(): Record<string, Status> {
 
 export default function Hub() {
   const [active, setActive] = useState("Overview");
-  const [items, setItems] = useState(() => baseItems.map(item => ({ ...item, status: item.id.startsWith("journal-") && Number(item.id.slice(7)) < 10 ? "Approved" : readStatuses()[item.id] || item.status })));
+  const [items, setItems] = useState(() => baseItems.map(item => ({ ...item, status: readStatuses()[item.id] || item.status })));
   const [query, setQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState("All");
   const [selected, setSelected] = useState<Item | null>(null);

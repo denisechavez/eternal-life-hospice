@@ -18,7 +18,7 @@ export type EmailCampaign = {
 };
 
 export const journalArticles: JournalArticle[] = [
-  ...batch1, ...batch2, ...batch3, ...batch4, ...batch5,
+  ...[...batch1, ...batch2, ...batch3, ...batch4, ...batch5].filter(article => !("publicationStatus" in article) || article.publicationStatus !== "archived"),
 ];
 
 const plainText = [
