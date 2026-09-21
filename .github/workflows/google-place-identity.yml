@@ -4,6 +4,12 @@ on:
   schedule:
     - cron: "17 16 * * *"
   workflow_dispatch:
+    inputs:
+      test_failure:
+        description: "Send a synthetic failure alert without calling Google"
+        required: false
+        type: boolean
+        default: false
 
 permissions:
   contents: read
@@ -14,8 +20,28 @@ jobs:
     timeout-minutes: 5
     env:
       GOOGLE_API_KEY: ${{ secrets.GOOGLE_API_KEY }}
+      FORM_ALERT_WEBHOOK_URL: ${{ secrets.FORM_ALERT_WEBHOOK_URL }}
     steps:
       - name: Check out site
         uses: actions/checkout@v4
       - name: Verify Eternal and Westlake Google Place identities
-        run: python3 website/check-google-place-identity.py
+        id: identity_check
+        continue-on-error: true
+        env:
+          TEST_FAILURE: ${{ inputs.test_failure || 'false' }}
+        run: |
+          set -o pipefail
+          if [[ "$TEST_FAILURE" == "true" ]]; then
+            python3 website/check-google-place-identity.py --test-failure 2>&1 | tee identity-check-output.txt
+          else
+            python3 website/check-google-place-identity.py 2>&1 | tee identity-check-output.txt
+          fi
+      - name: Notify compliance and operations owner
+        if: steps.identity_check.outcome == 'failure'
+        env:
+          IDENTITY_CHECK_OUTPUT_FILE: identity-check-output.txt
+          IDENTITY_CHECK_RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: python3 website/notify-google-place-identity.py
+      - name: Preserve failed check status
+        if: steps.identity_check.outcome == 'failure'
+        run: exit 1
