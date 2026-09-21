@@ -1,0 +1,1025 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ELH Internal Hub</title>
+<style>
+  :root{
+    --deep:#3C1C3B;--plum:#5B2E59;--gold:#C9B07E;--cream:#F5F0EB;
+    --muted:#9B8A99;--border:rgba(92,46,89,.12);--card:#fff;--bg:#F0EBE5;
+    --em:#5B2E59;--cb:#C9B07E;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:-apple-system,'Segoe UI',sans-serif;background:var(--bg);color:var(--deep);height:100vh;overflow:hidden;display:flex;flex-direction:column}
+
+  /* ── Top bar ── */
+  .topbar{background:var(--deep);color:var(--cream);height:46px;display:flex;align-items:center;padding:0 14px;gap:0;flex-shrink:0}
+  .tb-brand{display:flex;align-items:center;gap:7px;margin-right:auto}
+  .tb-leaf{width:26px;height:26px;border-radius:50%;background:rgba(201,176,126,.2);border:1px solid rgba(201,176,126,.4);display:flex;align-items:center;justify-content:center;font-size:12px}
+  .tb-name{font-size:.8rem;font-weight:600;letter-spacing:.02em}
+  .tb-dot{width:3px;height:3px;border-radius:50%;background:rgba(245,240,235,.25);margin:0 8px}
+  .tb-sub{font-size:.7rem;opacity:.45}
+  .tb-badge{background:rgba(201,176,126,.18);border:1px solid rgba(201,176,126,.3);color:var(--gold);font-size:.6rem;font-weight:700;padding:.18rem .5rem;border-radius:99px;letter-spacing:.07em}
+
+  /* ── Tab nav ── */
+  .tab-nav{background:var(--plum);height:36px;display:flex;align-items:stretch;padding:0 12px;gap:2px;flex-shrink:0}
+  .tab-btn{background:none;border:none;color:rgba(245,240,235,.55);font-size:.72rem;font-weight:600;padding:0 14px;cursor:pointer;border-bottom:2px solid transparent;letter-spacing:.03em;transition:color .14s,border-color .14s;display:flex;align-items:center;gap:5px}
+  .tab-btn:hover{color:rgba(245,240,235,.85)}
+  .tab-btn.on{color:var(--gold);border-bottom-color:var(--gold)}
+  .tab-ico{font-size:.85rem}
+
+  /* ── Body ── */
+  .body{flex:1;overflow:hidden;display:flex}
+
+  /* ── Sidebar ── */
+  .sidebar{background:var(--deep);width:200px;flex-shrink:0;display:flex;flex-direction:column;padding:10px 8px;overflow-y:auto}
+  .sb-section{font-size:.57rem;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:rgba(245,240,235,.3);padding:0 6px;margin-bottom:5px;margin-top:8px}
+  .sb-btn{display:flex;align-items:center;gap:7px;padding:5px 7px;border-radius:6px;cursor:pointer;color:rgba(245,240,235,.75);font-size:.73rem;transition:background .14s;border:none;background:none;width:100%;text-align:left}
+  .sb-btn:hover{background:rgba(255,255,255,.07)}
+  .sb-btn.on{background:rgba(255,255,255,.11);color:var(--cream)}
+  .sb-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+  .dot-gold{background:var(--gold)}
+  .dot-green{background:#5CB87A}
+  .dot-plum{background:rgba(201,176,126,.4);border:1px solid rgba(201,176,126,.5)}
+  .sb-div{border:none;border-top:1px solid rgba(255,255,255,.07);margin:7px 0}
+  .sb-stat{font-size:.62rem;color:rgba(245,240,235,.4);padding:3px 7px;display:flex;justify-content:space-between}
+  .sb-stat span:last-child{color:rgba(245,240,235,.7);font-weight:600}
+
+  /* ── Main content ── */
+  .main{flex:1;overflow-y:auto;padding:12px 14px;display:flex;flex-direction:column;gap:10px}
+  .main::-webkit-scrollbar{width:4px}
+  .main::-webkit-scrollbar-track{background:transparent}
+  .main::-webkit-scrollbar-thumb{background:rgba(92,46,89,.2);border-radius:2px}
+
+  /* ── Section header ── */
+  .sec-head{display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+  .sec-title{font-size:.9rem;font-weight:700;color:var(--deep)}
+  .sec-sub{font-size:.67rem;color:var(--muted);margin-top:2px}
+  .sec-badge{background:rgba(201,176,126,.18);border:1px solid rgba(201,176,126,.3);color:var(--gold);font-size:.58rem;font-weight:700;padding:.18rem .5rem;border-radius:99px;letter-spacing:.06em}
+
+  /* ── Cards ── */
+  .card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:12px 14px}
+  .card-title{font-size:.75rem;font-weight:700;color:var(--deep);margin-bottom:6px;display:flex;align-items:center;gap:6px}
+  .card-grid{display:grid;gap:10px}
+  .card-grid-2{grid-template-columns:1fr 1fr}
+  .card-grid-3{grid-template-columns:1fr 1fr 1fr}
+
+  /* ── Issue card ── */
+  .issue-card{background:var(--card);border:1.5px solid var(--border);border-radius:10px;overflow:hidden}
+  .issue-head{padding:10px 12px;display:flex;align-items:center;gap:10px}
+  .issue-num{width:32px;height:32px;border-radius:8px;background:var(--deep);color:var(--gold);display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:700;flex-shrink:0}
+  .issue-meta{flex:1}
+  .issue-name{font-size:.75rem;font-weight:700;color:var(--deep)}
+  .issue-date{font-size:.63rem;color:var(--muted);margin-top:1px}
+  .issue-status{font-size:.6rem;font-weight:700;padding:.15rem .5rem;border-radius:99px;white-space:nowrap}
+  .is-planning{background:#FFF7E6;color:#92600A}
+  .is-inprog{background:#EBF3FF;color:#1155CC}
+  .is-sent{background:#E6F4EA;color:#1A6E35}
+  .issue-body{padding:0 12px 12px;display:flex;flex-direction:column;gap:6px}
+  .checklist{display:flex;flex-direction:column;gap:3px}
+  .check-item{display:flex;align-items:center;gap:6px;font-size:.67rem;color:var(--muted);cursor:pointer;padding:2px 0}
+  .check-item.done{color:var(--deep)}
+  .check-box{width:14px;height:14px;border-radius:3px;border:1.5px solid var(--border);flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all .12s}
+  .check-item.done .check-box{background:var(--plum);border-color:var(--plum)}
+  .check-tick{font-size:.55rem;color:white}
+  .issue-brief-btn{margin-top:6px;background:none;border:1.5px solid var(--border);color:var(--plum);border-radius:6px;padding:5px 10px;font-size:.67rem;font-weight:600;cursor:pointer;transition:all .14s;text-align:left;width:100%}
+  .issue-brief-btn:hover{background:rgba(91,46,89,.05);border-color:var(--plum)}
+  .issue-brief-expanded{background:rgba(92,46,89,.03);border-radius:6px;padding:8px 10px;font-size:.65rem;color:var(--muted);line-height:1.7;white-space:pre-wrap;margin-top:4px;border:1px solid var(--border);display:none}
+  .issue-brief-expanded.open{display:block}
+
+  /* ── Week nav (email tab) ── */
+  .week-nav{display:flex;align-items:center;gap:8px;flex-shrink:0}
+  .wn-btn{background:rgba(92,46,89,.08);border:none;color:var(--deep);cursor:pointer;font-size:.85rem;padding:4px 10px;border-radius:5px;transition:background .14s}
+  .wn-btn:hover{background:rgba(92,46,89,.15)}
+  .wn-label{font-size:.73rem;font-weight:600;color:var(--deep);min-width:150px;text-align:center}
+  .wn-theme{font-size:.62rem;color:var(--muted);font-style:italic}
+
+  /* ── Email card ── */
+  .email-card{background:var(--card);border:1.5px solid var(--border);border-radius:10px;overflow:hidden}
+  .email-head{background:var(--deep);padding:10px 12px;display:flex;align-items:flex-start;gap:10px}
+  .email-icon{width:28px;height:28px;border-radius:6px;background:rgba(201,176,126,.2);border:1px solid rgba(201,176,126,.3);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:.8rem}
+  .email-hinfo{flex:1}
+  .email-htitle{font-size:.73rem;font-weight:700;color:var(--cream);line-height:1.3}
+  .email-hmeta{font-size:.62rem;color:rgba(245,240,235,.55);margin-top:2px}
+  .email-status{font-size:.57rem;font-weight:700;padding:.13rem .4rem;border-radius:99px;background:rgba(201,176,126,.25);color:var(--gold);border:1px solid rgba(201,176,126,.4)}
+  .email-body{padding:10px 12px;display:flex;flex-direction:column;gap:8px}
+  .email-subject{background:rgba(92,46,89,.04);border:1px solid var(--border);border-radius:6px;padding:6px 9px;font-size:.68rem;color:var(--deep);font-weight:600}
+  .email-subject span{font-size:.58rem;font-weight:400;color:var(--muted);display:block;margin-bottom:2px}
+  .email-audience{display:flex;gap:4px;flex-wrap:wrap}
+  .au-tag{font-size:.6rem;background:rgba(91,46,89,.07);color:var(--plum);padding:.12rem .38rem;border-radius:4px}
+  .email-copy-label{font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
+  .email-copy{background:var(--cream);border:1px solid var(--border);border-radius:6px;padding:8px 10px;font-size:.66rem;line-height:1.7;color:var(--deep);max-height:180px;overflow-y:auto;white-space:pre-wrap}
+  .email-copy::-webkit-scrollbar{width:3px}
+  .email-copy::-webkit-scrollbar-thumb{background:rgba(92,46,89,.2)}
+  .email-img{background:rgba(92,46,89,.04);border:1px solid var(--border);border-radius:6px;padding:6px 9px;font-size:.64rem;color:var(--muted);display:flex;align-items:flex-start;gap:5px}
+  .empty-email{background:var(--card);border:1.5px dashed rgba(92,46,89,.1);border-radius:10px;padding:24px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;color:var(--muted)}
+  .empty-email-ico{font-size:1.5rem;opacity:.3}
+  .empty-email-txt{font-size:.7rem}
+
+  /* ── Referral Card tab ── */
+  .rc-versions{display:flex;gap:8px;flex-shrink:0}
+  .rc-ver{background:var(--card);border:1.5px solid var(--border);border-radius:8px;padding:8px 12px;cursor:pointer;transition:all .14s;flex:1;text-align:center}
+  .rc-ver.on{border-color:var(--gold);background:rgba(201,176,126,.07)}
+  .rc-ver-num{font-size:.75rem;font-weight:700;color:var(--deep)}
+  .rc-ver-label{font-size:.6rem;color:var(--muted);margin-top:1px}
+  .rc-detail{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:12px 14px;display:flex;flex-direction:column;gap:10px}
+  .rc-spec{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+  .rc-spec-row{display:flex;flex-direction:column;gap:2px}
+  .rc-spec-label{font-size:.58rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
+  .rc-spec-val{font-size:.7rem;color:var(--deep)}
+  .rc-status-grid{display:flex;flex-direction:column;gap:4px}
+  .rc-srow{display:flex;align-items:center;justify-content:space-between;font-size:.67rem;color:var(--muted);padding:3px 0;border-bottom:1px solid rgba(92,46,89,.05)}
+  .rc-srow:last-child{border:none}
+  .rc-sbadge{font-size:.57rem;font-weight:700;padding:.12rem .38rem;border-radius:99px}
+  .rc-done{background:#E6F4EA;color:#1A6E35}
+  .rc-pending{background:#FFF7E6;color:#92600A}
+  .rc-not{background:rgba(92,46,89,.07);color:var(--muted)}
+
+  /* ── Outreach tab ── */
+  .oa-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .oa-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:12px 14px;display:flex;flex-direction:column;gap:8px}
+  .oa-card-title{font-size:.73rem;font-weight:700;color:var(--deep);display:flex;align-items:center;gap:6px}
+  .oa-card-ico{width:22px;height:22px;border-radius:5px;background:var(--deep);color:var(--gold);display:flex;align-items:center;justify-content:center;font-size:.7rem;flex-shrink:0}
+  .oa-card-body{font-size:.66rem;line-height:1.65;color:var(--muted)}
+  .oa-card-body strong{color:var(--deep)}
+  .oa-link{display:inline-flex;align-items:center;gap:4px;background:var(--plum);color:var(--cream);text-decoration:none;border-radius:6px;padding:5px 10px;font-size:.67rem;font-weight:600;transition:opacity .14s}
+  .oa-link:hover{opacity:.85}
+  .oa-stat{display:flex;justify-content:space-between;font-size:.65rem;color:var(--muted);padding:3px 0;border-bottom:1px solid rgba(92,46,89,.05)}
+  .oa-stat span:last-child{color:var(--deep);font-weight:600}
+
+  /* ── Toast ── */
+  .toast{position:fixed;bottom:14px;left:50%;transform:translateX(-50%);background:var(--deep);color:var(--cream);padding:6px 14px;border-radius:99px;font-size:.73rem;font-weight:600;z-index:999;opacity:0;transition:opacity .25s;pointer-events:none;white-space:nowrap}
+  .toast.on{opacity:1}
+
+  /* ── Hidden ── */
+  .tab-panel{display:none}
+  .tab-panel.on{display:flex;flex-direction:column;gap:10px;flex:1;overflow:hidden}
+</style>
+</head>
+<body>
+
+<!-- Top bar -->
+<div class="topbar">
+  <div class="tb-brand">
+    <div class="tb-leaf">🔒</div>
+    <span class="tb-name">ELH Internal Hub</span>
+    <span class="tb-dot"></span>
+    <span class="tb-sub">Eternal Life Hospice · Internal Use Only</span>
+  </div>
+  <span class="tb-badge">Partner & Outreach Tools</span>
+</div>
+
+<!-- Tab nav -->
+<div class="tab-nav">
+  <button class="tab-btn on" onclick="switchTab('cb',this)"><span class="tab-ico">★</span> Care Brief</button>
+  <button class="tab-btn" onclick="switchTab('em',this)"><span class="tab-ico">✉</span> Email — Care Ally</button>
+  <button class="tab-btn" onclick="switchTab('rc',this)"><span class="tab-ico">🗂</span> Referral Card</button>
+  <button class="tab-btn" onclick="switchTab('oa',this)"><span class="tab-ico">📊</span> Outreach App</button>
+</div>
+
+<div class="body">
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sb-section">Care Brief</div>
+    <button class="sb-btn on" onclick="switchTab('cb',document.querySelector('.tab-btn'))">
+      <span class="sb-dot dot-gold"></span> Issue 2 · Sep 9
+    </button>
+    <button class="sb-btn" onclick="switchTab('cb',document.querySelector('.tab-btn'))">
+      <span class="sb-dot dot-plum"></span> Issue 3 · Nov 4
+    </button>
+
+    <div class="sb-div"></div>
+    <div class="sb-section">Email Cadence</div>
+    <button class="sb-btn" onclick="switchTab('em',document.querySelectorAll('.tab-btn')[1])">
+      <span class="sb-dot dot-green"></span> Weekly · Tuesdays 9am
+    </button>
+    <div class="sb-stat"><span>Weeks scheduled</span><span>13</span></div>
+    <div class="sb-stat"><span>Audience</span><span>Care Allies</span></div>
+
+    <div class="sb-div"></div>
+    <div class="sb-section">Collateral</div>
+    <button class="sb-btn" onclick="switchTab('rc',document.querySelectorAll('.tab-btn')[2])">
+      <span class="sb-dot dot-gold"></span> Card 5 · Approved
+    </button>
+    <button class="sb-btn" onclick="switchTab('oa',document.querySelectorAll('.tab-btn')[3])">
+      <span class="sb-dot dot-green"></span> Outreach Tracker
+    </button>
+
+    <div class="sb-div"></div>
+    <div class="sb-section">Brevo Lists</div>
+    <div class="sb-stat"><span>List 8 · Master</span><span>709</span></div>
+    <div class="sb-stat"><span>List 7 · Care Brief</span><span>Active</span></div>
+    <div class="sb-stat"><span>List 10 · SYMPLR</span><span>Active</span></div>
+  </aside>
+
+  <!-- ══════════════════════════════════════════════ -->
+  <!-- TAB: CARE BRIEF                               -->
+  <!-- ══════════════════════════════════════════════ -->
+  <div class="tab-panel on" id="panel-cb">
+    <div class="main" style="padding:12px 14px">
+
+      <div class="sec-head">
+        <div>
+          <div class="sec-title">The Eternal Care Brief</div>
+          <div class="sec-sub">Bi-monthly clinical publication · Free for care professionals · Sent via Brevo (List 7 + List 8 + List 10)</div>
+        </div>
+        <span class="sec-badge">Bi-Monthly</span>
+      </div>
+
+      <!-- Issue 2 -->
+      <div class="issue-card">
+        <div class="issue-head">
+          <div class="issue-num">★ 2</div>
+          <div class="issue-meta">
+            <div class="issue-name">The Eternal Care Brief — Issue 2</div>
+            <div class="issue-date">Send date: Tuesday, September 9, 2026 · 8:00 AM</div>
+          </div>
+          <span class="issue-status is-planning">Planning</span>
+        </div>
+        <div class="issue-body">
+          <div class="card-title" style="font-size:.67rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)">Editorial Checklist</div>
+          <div class="checklist" id="cl2">
+            <label class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div> Content brief received from Aleksandra</label>
+            <label class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div> Section outlines drafted</label>
+            <label class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div> Full copy written &amp; reviewed</label>
+            <label class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div> Design started in Canva / InDesign</label>
+            <label class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div> First layout review</label>
+            <label class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div> Final layout approved</label>
+            <label class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div> HTML email version built in Brevo</label>
+            <label class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div> Test send reviewed (desktop + mobile)</label>
+            <label class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div> Open tracking confirmed ON</label>
+            <label class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div> ✔ GO-SEND — Sep 9, 8:00 AM</label>
+            <label class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div> Post-send: open rate logged</label>
+            <label class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div> Post-send: click-throughs recorded</label>
+          </div>
+
+          <div class="card-title" style="font-size:.67rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-top:4px">Issue 2 Contents</div>
+          <div style="font-size:.66rem;color:var(--muted);line-height:1.65;background:rgba(92,46,89,.03);border:1px solid var(--border);border-radius:6px;padding:8px 10px">
+            <strong style="color:var(--deep)">1.</strong> The Caregiver Burnout Crisis — what it costs families and how hospice helps<br>
+            <strong style="color:var(--deep)">2.</strong> 2026 Medicare Hospice Compliance Update — audit trends &amp; documentation best practices<br>
+            <strong style="color:var(--deep)">3.</strong> Case Study: A same-day admission that changed a family's final weeks<br>
+            <strong style="color:var(--deep)">4.</strong> Integrative Therapies — evidence base &amp; clinical documentation requirements<br>
+            <strong style="color:var(--deep)">5.</strong> Founder Note — "What I didn't expect about this work"<br>
+            <strong style="color:var(--deep)">6.</strong> Referral Resources — updated referral card, coverage map, fast-admit line
+          </div>
+
+          <button class="issue-brief-btn" onclick="toggleBrief('brief2',this)">📋 View Send Brief / Designer Notes ▾</button>
+          <div class="issue-brief-expanded" id="brief2">SUBJECT: The Eternal Care Brief | Issue 2 | September 2026
+
+SEND DATE: Tuesday Sep 9, 2026 · 8:00 AM
+SEND TO: List 7 (Care Brief subscribers) + List 8 (Master Verified) + List 10 (SYMPLR Network)
+
+SUBJECT LINE: The Eternal Care Brief | Issue 2 | September 2026
+
+PREVIEW TEXT: Caregiver burnout, Medicare compliance, and a same-day admission case study — free for care professionals.
+
+DESIGNER NOTES:
+- Match Issue 1 layout and typography
+- 8–10 pages, plum/gold/cream palette
+- Fraunces headers, Jost body text
+- Include Care Brief masthead, issue number, date
+- Subscriber opt-out footer required
+- HTML email version: test at 600px width (mobile + desktop)
+
+SOCIAL AMPLIFICATION (same week):
+- GBP: Monday Sep 7 teaser
+- LinkedIn: Tuesday Sep 9 "Out Now" post
+- Twitter thread: Issue 2 highlights
+- TikTok: What's inside the Care Brief
+- Facebook: Thursday — 3 key takeaways
+
+⚠ Content brief from Aleksandra required before design begins.</div>
+        </div>
+      </div>
+
+      <!-- Issue 3 -->
+      <div class="issue-card">
+        <div class="issue-head">
+          <div class="issue-num">★ 3</div>
+          <div class="issue-meta">
+            <div class="issue-name">The Eternal Care Brief — Issue 3</div>
+            <div class="issue-date">Send date: Tuesday, November 4, 2026 · 8:00 AM</div>
+          </div>
+          <span class="issue-status is-planning">Planning</span>
+        </div>
+        <div class="issue-body">
+          <div class="card-title" style="font-size:.67rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)">Editorial Checklist</div>
+          <div class="checklist" id="cl3">
+            <label class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div> Content brief received from Aleksandra</label>
+            <label class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div> Section outlines drafted</label>
+            <label class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div> Full copy written &amp; reviewed</label>
+            <label class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div> Design started in Canva / InDesign</label>
+            <label class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div> First layout review</label>
+            <label class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div> Final layout approved</label>
+            <label class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div> HTML email version built in Brevo</label>
+            <label class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div> Test send reviewed (desktop + mobile)</label>
+            <label class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div> Open tracking confirmed ON</label>
+            <label class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div> ✔ GO-SEND — Nov 4, 8:00 AM</label>
+            <label class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div> Post-send: open rate logged</label>
+            <label class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div> Post-send: click-throughs recorded</label>
+          </div>
+
+          <div class="card-title" style="font-size:.67rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-top:4px">Issue 3 Contents</div>
+          <div style="font-size:.66rem;color:var(--muted);line-height:1.65;background:rgba(92,46,89,.03);border:1px solid var(--border);border-radius:6px;padding:8px 10px">
+            <strong style="color:var(--deep)">1.</strong> Year-End Planning Guide — for care professionals navigating Q4 hospice conversations<br>
+            <strong style="color:var(--deep)">2.</strong> The Palliative-to-Hospice Transition — case study on timing and conversation<br>
+            <strong style="color:var(--deep)">3.</strong> 2026 Medicare Hospice Audit Update — what's being scrutinized, how to document cleanly<br>
+            <strong style="color:var(--deep)">4.</strong> Caregiver Burnout Research — new data from Q3 and what it means for referral timing<br>
+            <strong style="color:var(--deep)">5.</strong> Integrative Therapies — expanded program update and access guide<br>
+            <strong style="color:var(--deep)">6.</strong> Founder Note — "What three issues of the Care Brief have taught me"<br>
+            <strong style="color:var(--deep)">7.</strong> 2027 Preview — what's coming, what families will need
+          </div>
+
+          <button class="issue-brief-btn" onclick="toggleBrief('brief3',this)">📋 View Send Brief / Designer Notes ▾</button>
+          <div class="issue-brief-expanded" id="brief3">SUBJECT: The Eternal Care Brief | Issue 3 | November 2026
+
+SEND DATE: Tuesday Nov 4, 2026 · 8:00 AM
+SEND TO: List 7 (Care Brief subscribers) + List 8 (Master Verified) + List 10 (SYMPLR Network)
+
+SUBJECT LINE: The Eternal Care Brief | Issue 3 | November 2026
+
+PREVIEW TEXT: Year-end planning, palliative-to-hospice transitions, and what three issues have taught me — free for care professionals.
+
+DESIGNER NOTES:
+- Match Issue 1 and 2 layout exactly (series consistency)
+- 8–10 pages, plum/gold/cream palette
+- Fraunces headers, Jost body text
+- Issue number, date, and subscriber opt-out footer
+- HTML email version: test at 600px width
+
+SOCIAL AMPLIFICATION (same week):
+- Twitter: Monday Nov 2 preview tweet
+- GBP: Monday Nov 2 teaser
+- LinkedIn: Tuesday Nov 4 "Out Now" post
+- TikTok: Wednesday — what's inside Issue 3
+- GBP: Wednesday Nov 5 read-free post
+- Facebook: Thursday — year-end planning angle
+- LinkedIn: Friday — "Three issues, what I've learned"
+
+⚠ Content brief from Aleksandra required before design begins.</div>
+        </div>
+      </div>
+
+      <!-- Issue 1 reference -->
+      <div class="card">
+        <div class="card-title">Issue 1 — Reference (Sent Jul 14, 2026)</div>
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px">
+          <div style="background:rgba(92,46,89,.04);border:1px solid var(--border);border-radius:6px;padding:7px;text-align:center">
+            <div style="font-size:.9rem;font-weight:700;color:var(--deep)">1,873</div>
+            <div style="font-size:.6rem;color:var(--muted)">Sent</div>
+          </div>
+          <div style="background:rgba(92,46,89,.04);border:1px solid var(--border);border-radius:6px;padding:7px;text-align:center">
+            <div style="font-size:.9rem;font-weight:700;color:#1A6E35">54.9%</div>
+            <div style="font-size:.6rem;color:var(--muted)">Open Rate</div>
+          </div>
+          <div style="background:rgba(92,46,89,.04);border:1px solid var(--border);border-radius:6px;padding:7px;text-align:center">
+            <div style="font-size:.9rem;font-weight:700;color:#92600A">7.3%</div>
+            <div style="font-size:.6rem;color:var(--muted)">Bounce ⚠</div>
+          </div>
+          <div style="background:rgba(92,46,89,.04);border:1px solid var(--border);border-radius:6px;padding:7px;text-align:center">
+            <div style="font-size:.9rem;font-weight:700;color:var(--deep)">PIH Health</div>
+            <div style="font-size:.6rem;color:var(--muted)">Top Engager</div>
+          </div>
+        </div>
+        <div style="font-size:.63rem;color:var(--muted);margin-top:8px;line-height:1.5">⚠ Bounce rate 7.3% (3× benchmark). Clean list before Issue 2 send. Open tracking was active. Deep PIH Health engagement — 8 named leaders, 15–22 clicks each. Apparently circulated internally.</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════ -->
+  <!-- TAB: EMAIL — CARE ALLY                        -->
+  <!-- ══════════════════════════════════════════════ -->
+  <div class="tab-panel" id="panel-em">
+    <div class="main" style="padding:12px 14px">
+
+      <div class="sec-head">
+        <div>
+          <div class="sec-title">Email — Care Ally</div>
+          <div class="sec-sub">Weekly Tuesday 9am · Referral partners, discharge planners, case managers, hospital social workers</div>
+        </div>
+        <div class="week-nav">
+          <button class="wn-btn" onclick="navEmWeek(-1)">‹</button>
+          <div style="text-align:center">
+            <div class="wn-label" id="em-wlabel">Aug 10 – 14, 2026</div>
+            <div class="wn-theme" id="em-wtheme">Week 1 of 13</div>
+          </div>
+          <button class="wn-btn" onclick="navEmWeek(1)">›</button>
+        </div>
+      </div>
+
+      <div id="em-content"></div>
+
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════ -->
+  <!-- TAB: REFERRAL CARD                            -->
+  <!-- ══════════════════════════════════════════════ -->
+  <div class="tab-panel" id="panel-rc">
+    <div class="main" style="padding:12px 14px">
+
+      <div class="sec-head">
+        <div>
+          <div class="sec-title">Referral Card Program</div>
+          <div class="sec-sub">Rack cards distributed to referral partners · 4×9 print (4.25×9.25 with bleed)</div>
+        </div>
+        <span class="sec-badge">Card 5 · Approved</span>
+      </div>
+
+      <div class="rc-versions">
+        <div class="rc-ver on" onclick="selectCard(1,this)">
+          <div class="rc-ver-num">Card 1</div>
+          <div class="rc-ver-label">Archive</div>
+        </div>
+        <div class="rc-ver" onclick="selectCard(2,this)">
+          <div class="rc-ver-num">Card 2</div>
+          <div class="rc-ver-label">Archive</div>
+        </div>
+        <div class="rc-ver" onclick="selectCard(3,this)">
+          <div class="rc-ver-num">Card 3</div>
+          <div class="rc-ver-label">Archive</div>
+        </div>
+        <div class="rc-ver" onclick="selectCard(4,this)">
+          <div class="rc-ver-num">Card 4</div>
+          <div class="rc-ver-label">Archive</div>
+        </div>
+        <div class="rc-ver" onclick="selectCard(5,this)" style="border-color:var(--gold);background:rgba(201,176,126,.07)">
+          <div class="rc-ver-num" style="color:var(--deep)">Card 5</div>
+          <div class="rc-ver-label" style="color:var(--gold);font-weight:600">★ Flagship</div>
+        </div>
+      </div>
+
+      <div class="rc-detail" id="rc-detail">
+        <!-- Populated by JS -->
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════ -->
+  <!-- TAB: OUTREACH APP                             -->
+  <!-- ══════════════════════════════════════════════ -->
+  <div class="tab-panel" id="panel-oa">
+    <div class="main" style="padding:12px 14px">
+
+      <div class="sec-head">
+        <div>
+          <div class="sec-title">Field Outreach Tracker</div>
+          <div class="sec-sub">Internal tool for tracking in-person referral partner visits · Standalone Replit app</div>
+        </div>
+        <span class="sec-badge">Standalone App</span>
+      </div>
+
+      <div class="oa-grid">
+
+        <div class="oa-card">
+          <div class="oa-card-title">
+            <div class="oa-card-ico">📊</div> App Status
+          </div>
+          <div class="oa-card-body">
+            The Field Outreach Tracker is packaged as a <strong>standalone Replit app</strong> (exports/outreach-tracker-standalone.zip). It runs separately from the main ELH site.
+          </div>
+          <div>
+            <div class="oa-stat"><span>Package</span><span>outreach-tracker-standalone.zip</span></div>
+            <div class="oa-stat"><span>Schema</span><span>schema.sql included</span></div>
+            <div class="oa-stat"><span>Status</span><span>Packaged · Pending deploy</span></div>
+            <div class="oa-stat"><span>Visit data</span><span>Needs migration to standalone</span></div>
+          </div>
+        </div>
+
+        <div class="oa-card">
+          <div class="oa-card-title">
+            <div class="oa-card-ico">🗂</div> What It Tracks
+          </div>
+          <div class="oa-card-body">
+            <strong>Visit log:</strong> date, partner name, organization, role, conversation notes, follow-up needed.<br><br>
+            <strong>Partner directory:</strong> hospitals, skilled nursing facilities, physician groups, discharge planners, case managers.<br><br>
+            <strong>Follow-up queue:</strong> flag visits for follow-up, mark complete.
+          </div>
+        </div>
+
+        <div class="oa-card">
+          <div class="oa-card-title">
+            <div class="oa-card-ico">⚡</div> Next Steps
+          </div>
+          <div class="oa-card-body">
+            <strong>1.</strong> Deploy standalone Replit app from the zip package.<br><br>
+            <strong>2.</strong> Migrate existing visit data from the main ELH database to the new standalone instance.<br><br>
+            <strong>3.</strong> Share app URL with field staff (Aleksandra + outreach coordinator).<br><br>
+            <strong>4.</strong> Set up weekly export of visit summary for reporting.
+          </div>
+        </div>
+
+        <div class="oa-card">
+          <div class="oa-card-title">
+            <div class="oa-card-ico">👥</div> Target Partners
+          </div>
+          <div class="oa-card-body">
+            <strong>Ventura County:</strong> Community Memorial, Ventura County Medical Center, Los Robles, St. John's Pleasant Valley, Providence Holy Cross (Oxnard).<br><br>
+            <strong>LA County:</strong> PIH Health (strong engagement), Cedars-Sinai, UCLA Health, Providence, Kaiser Woodland Hills, Dignity Health.<br><br>
+            <strong>SNFs:</strong> Oaks of Thousand Oaks, Sunrise Simi Valley, Sunrise Westlake Village + others in service area.
+          </div>
+        </div>
+
+      </div>
+
+      <div class="card" style="margin-top:0">
+        <div class="card-title">Email Contact Sources</div>
+        <div style="font-size:.66rem;color:var(--muted);line-height:1.65">
+          Contact source: scraped VCSD database PDFs in Google Drive · Hospital domains verify ~25% valid ("unknown" category is large) · All emails NeverBounce-verified before adding to Brevo · PIH Health = highest engagement cohort (tracked since Issue 1).
+        </div>
+        <div style="margin-top:8px;display:flex;gap:6px;flex-wrap:wrap">
+          <span style="font-size:.62rem;background:rgba(91,46,89,.07);color:var(--plum);padding:.15rem .45rem;border-radius:4px">List 8 · Master Verified · 709 active</span>
+          <span style="font-size:.62rem;background:rgba(91,46,89,.07);color:var(--plum);padding:.15rem .45rem;border-radius:4px">List 9 · Catch-All</span>
+          <span style="font-size:.62rem;background:rgba(91,46,89,.07);color:var(--plum);padding:.15rem .45rem;border-radius:4px">List 10 · SYMPLR Network</span>
+          <span style="font-size:.62rem;background:rgba(91,46,89,.07);color:var(--plum);padding:.15rem .45rem;border-radius:4px">NeverBounce: all new emails verified</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div><!-- /body -->
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ── EMAIL DATA (all 13 weekly Care Ally emails) ───────────────────────────────
+const WEEKS = [
+  { label:'Aug 10 – 14, 2026', theme:'Myth-Busting + Medicare' },
+  { label:'Aug 17 – 21, 2026', theme:'The First 48 Hours' },
+  { label:'Aug 24 – 28, 2026', theme:'Whole-Person Comfort' },
+  { label:'Aug 31 – Sep 4, 2026', theme:'Care Brief Preview' },
+  { label:'Sep 7 – 11, 2026', theme:'★ Care Brief Issue 2 Launch' },
+  { label:'Sep 14 – 18, 2026', theme:'Caregiver Support' },
+  { label:'Sep 21 – 25, 2026', theme:'Team & Trust' },
+  { label:'Sep 28 – Oct 2, 2026', theme:'Service Area & Community' },
+  { label:'Oct 5 – 9, 2026', theme:'Sound Bath & Integrative' },
+  { label:'Oct 12 – 16, 2026', theme:'Family Stories & Testimonials' },
+  { label:'Oct 19 – 23, 2026', theme:'Referral Partner Focus' },
+  { label:'Oct 26 – 30, 2026', theme:'Year-End Planning' },
+  { label:'Nov 2 – 6, 2026', theme:'★ Care Brief Issue 3 Launch' },
+];
+
+const EMAILS = {
+  0:{ title:'Welcome + What Happens After You Refer', day:'Tue Aug 11', time:'9:00 AM', status:'Scheduled',
+    isBrief:false,
+    tags:['Referral partners','Discharge planners','Case managers','Hospital social workers'],
+    img:'Email header: ELH plum banner, gold rule, Aleksandra signature block.',
+    copy:`SUBJECT: What happens after you refer to Eternal Life Hospice
+
+Dear [First Name],
+
+When you refer a patient to us, here's exactly what happens next.
+
+Within 2 hours: Our admissions nurse reaches out to the family to begin the intake process.
+Within 4 hours: Care plan is drafted, medications coordinated, durable medical equipment ordered.
+Within 24 hours: First registered nurse visit — care is in place, family is educated.
+Within 48 hours: Full interdisciplinary team engaged — social worker, chaplain, aide.
+
+Our goal: take the next call off your plate completely.
+
+We accept same-day referrals when clinically appropriate. One call — 805.953.7273 — or refer online at eternallifehospice.com/refer.
+
+With gratitude,
+Aleksandra Dubina
+Founder & CEO, Eternal Life Hospice`},
+
+  1:{ title:'Medicare 100% — How to Explain It to Families', day:'Tue Aug 18', time:'9:00 AM', status:'Scheduled',
+    isBrief:false,
+    tags:['Discharge planners','Hospital social workers','Case managers','Referral partners'],
+    img:'Email header: ELH plum/gold. Simple layout. Aleksandra signature.',
+    copy:`SUBJECT: How to explain the Medicare hospice benefit to families (a quick guide)
+
+Dear [First Name],
+
+One of the most common blockers to timely referral is the family's assumption that hospice is expensive. Here's a simple script you can adapt:
+
+"The Medicare hospice benefit covers everything related to the terminal diagnosis — nursing visits, aide support, social work, chaplaincy, medications, and medical equipment. There is no deductible, no copay, and no bill sent to the family. For most families, the cost is $0."
+
+Key facts for families:
+• Medicare Part A covers the hospice benefit
+• Eligibility: physician prognosis of 6 months or less if the illness runs its natural course
+• Coverage includes: medications, DME, RN visits, aide, social work, chaplain, bereavement
+• Family members are not billed
+
+We verify eligibility for every admission and handle all Medicare coordination.
+
+Download the full family guide: eternallifehospice.com/family-guide
+
+Always here,
+Aleksandra Dubina`},
+
+  2:{ title:'Our Integrative Therapy Program', day:'Tue Aug 25', time:'9:00 AM', status:'Scheduled',
+    isBrief:false,
+    tags:['Referral partners','Case managers','Palliative care teams'],
+    img:'Email with sound bowl image or therapy collage header.',
+    copy:`SUBJECT: Beyond medication — integrative therapies at Eternal Life Hospice
+
+Dear [First Name],
+
+When you refer a patient to us, they receive more than clinical care.
+
+Our integrative therapy program — included at no additional expense — provides:
+
+• Sound baths (singing bowls) — for anxiety, agitation, and restlessness. Especially effective in dementia.
+• Music at the bedside — live or recorded, tailored to patient preference. Reduces PRN medication need.
+• Aromatherapy — lavender, peppermint, chamomile. Contraindication-screened against current medications.
+• Pet therapy — certified therapy dogs, infection-control protocols, patient consent.
+• Volunteer presence — trained companionship, respite for family caregivers.
+
+All modalities are clinically assessed, documented in the EMR, and coordinated with the medical director.
+
+These are part of why families report higher satisfaction with hospice care.
+
+With gratitude,
+Aleksandra Dubina`},
+
+  3:{ title:'The Eternal Care Brief — Issue 2 Preview', day:'Tue Sep 1', time:'9:00 AM', status:'Scheduled',
+    isBrief:false,
+    tags:['Referral partners','Physicians','Case managers','Social workers'],
+    img:'Email with Care Brief cover preview. Gold/plum header. Preview of Issue 2 table of contents.',
+    copy:`SUBJECT: Issue 2 of The Eternal Care Brief arrives next week
+
+Dear [First Name],
+
+Issue 2 of The Eternal Care Brief publishes September 9th.
+
+Inside Issue 2:
+→ The caregiver burnout crisis — what it costs families and how hospice helps
+→ Compliance update: 2026 Medicare hospice audit trends
+→ Case study: A same-day admission that changed a family's final weeks
+→ Integrative therapies — the clinical evidence and documentation requirements
+→ Founder note from Aleksandra: "What I didn't expect"
+
+The Care Brief is free for care professionals. If a colleague would benefit, forward this email — they can subscribe at eternallifehospice.com/care-brief.
+
+Issue 2 arrives in your inbox next Tuesday.
+
+With gratitude,
+Aleksandra Dubina`},
+
+  4:{ title:'★ CARE BRIEF ISSUE 2 — SEND DAY', day:'Tue Sep 9', time:'8:00 AM', status:'Scheduled',
+    isBrief:true,
+    tags:['All Care Brief subscribers','Master Verified list','SYMPLR Network'],
+    img:'The Eternal Care Brief Issue 2 full email layout. Designer to produce from content brief.',
+    copy:`★ THIS IS THE ETERNAL CARE BRIEF ISSUE 2 — SEND
+
+SUBJECT: The Eternal Care Brief | Issue 2 | September 2026
+
+INSIDE THIS ISSUE:
+1. The Caregiver Burnout Crisis — what it costs families and how hospice helps
+2. 2026 Medicare Hospice Compliance Update — audit trends and documentation best practices
+3. Case Study: A same-day admission that changed a family's final weeks
+4. Integrative Therapies — evidence base and clinical documentation requirements
+5. Founder Note — "What I didn't expect about this work"
+6. Referral Resources — updated referral card, coverage map, fast-admit line
+
+DESIGNER NOTE: Match Issue 1 layout and typography. 8–10 pages. Plum/gold/cream palette. Fraunces headers, Jost body. Include Care Brief masthead, issue number, date, and subscriber opt-out footer.
+
+CONTENT TO FOLLOW IN SEPARATE BRIEF FROM ALEKSANDRA.`},
+
+  5:{ title:'Same-Day Admissions — Our Process', day:'Tue Sep 15', time:'9:00 AM', status:'Scheduled',
+    isBrief:false,
+    tags:['Discharge planners','ER social workers','Hospital case managers'],
+    img:'Email: clean layout, ELH header. Process flow diagram: call → assessment → care in place.',
+    copy:`SUBJECT: How our same-day admission process works — step by step
+
+Dear [First Name],
+
+When you call us with an urgent referral, here's what happens:
+
+4:00 PM — You call 805.953.7273 with patient details
+4:15 PM — Our admissions nurse calls the patient or family
+4:30 PM — Insurance verified, clinical eligibility confirmed
+5:00 PM — Nurse arrives for admissions assessment
+6:30 PM — Care plan drafted, medications ordered, DME en route
+8:00 PM — First comfort measures in place. Family briefed.
+9:00 PM — Patient is home, under care.
+
+This is a real timeline. Not a best case. Our standard.
+
+For urgent admissions: 805.953.7273 (answered 24/7)
+For routine referrals: eternallifehospice.com/refer
+
+Aleksandra Dubina`},
+
+  6:{ title:'ACHC Accreditation — What It Means for Your Patients', day:'Tue Sep 22', time:'9:00 AM', status:'Scheduled',
+    isBrief:false,
+    tags:['Physicians','Hospital administrators','Discharge planners','Quality teams'],
+    img:'Email: ACHC seal prominent. ELH header. Clean layout.',
+    copy:`SUBJECT: Why ACHC accreditation matters when you refer
+
+Dear [First Name],
+
+Every hospice in California must hold two credentials: Medicare certification and CDPH licensure. We hold both.
+
+ACHC accreditation is different. It is voluntary.
+
+The Accreditation Commission for Health Care conducts an independent, on-site review of clinical standards, policies, staff competencies, patient outcomes, and organizational governance. They verify what other credentials only require us to assert.
+
+When you refer a patient to us, ACHC accreditation means:
+• An independent body has reviewed our clinical protocols
+• Our staff competencies have been externally validated
+• Our documentation and care planning meet standards above the minimum
+• You can explain our credentials to families with confidence
+
+Accreditation details: eternallifehospice.com/about
+
+Aleksandra Dubina`},
+
+  7:{ title:'Fall Planning for Families Facing Hard Conversations', day:'Tue Sep 29', time:'9:00 AM', status:'Scheduled',
+    isBrief:false,
+    tags:['Discharge planners','Hospital social workers','Palliative care teams','Physicians'],
+    img:'Email: seasonal warm header. ELH plum/gold. Simple layout.',
+    copy:`SUBJECT: Fall planning guide for families facing end-of-life conversations
+
+Dear [First Name],
+
+As the season changes, families often face an important question: do we want to be home for the holidays?
+
+For patients nearing the end of life, the answer is often yes — if the right support is in place.
+
+Hospice makes it possible. Here's what we can offer families who are planning ahead:
+
+• Advance care planning support — goals of care, advance directives, POLST completion
+• Family meeting facilitation — our social workers help navigate hard conversations
+• Same-day admissions when the time is right — no waiting
+• 24/7 nursing support so families can sleep
+
+For patients who are on a curative path but may be approaching a transition: now is a good time to introduce the hospice conversation.
+
+We're available to consult, even before a formal referral: 805.953.7273
+
+Aleksandra Dubina`},
+
+  8:{ title:'Our Sound Bath & Music Therapy Program', day:'Tue Oct 6', time:'9:00 AM', status:'Scheduled',
+    isBrief:false,
+    tags:['Palliative care teams','Social workers','Physicians','Case managers'],
+    img:'Email: sound bowl photo header. ELH branding. Clean layout.',
+    copy:`SUBJECT: How we use sound and music in hospice care — a clinical overview
+
+Dear [First Name],
+
+This month's brief from our clinical team covers our sound bath and music therapy program.
+
+Sound Baths (Singing Bowls)
+For: Anxiety, agitation, restlessness — particularly in dementia patients
+Evidence: Reduces cortisol markers; effective in non-verbal patients
+Administered by: Trained volunteers under RN supervision
+Documented: In EMR as part of the care plan
+
+Music Therapy
+For: Pain perception, mood, connection
+Evidence: Reduces PRN pain medication use in observational studies
+Format: Live or recorded, tailored to patient preference and cultural background
+Administered by: Music therapists and trained volunteers
+
+All modalities are assessed for patient appropriateness, screened for contraindications, and documented in the clinical record.
+
+Free resource: eternallifehospice.com/sound-bath
+
+Aleksandra Dubina`},
+
+  9:{ title:'How We Support Family Caregivers', day:'Tue Oct 13', time:'9:00 AM', status:'Scheduled',
+    isBrief:false,
+    tags:['Hospital social workers','Case managers','Discharge planners'],
+    img:'Email with family caregiver image. ELH header. Clean layout.',
+    copy:`SUBJECT: How hospice supports the people caring for your patients' families
+
+Dear [First Name],
+
+When you refer a patient to us, you're also referring their caregivers.
+
+Here's what our team does for family members from day one:
+
+• Caregiver needs assessment on admission — burnout screening, resource identification
+• Education: what to expect, how to manage medications, when to call
+• 24/7 on-call nursing — the 3am question gets answered
+• Volunteer companionship and respite care
+• Social worker support — counseling, resource navigation, family meeting facilitation
+• Chaplain support for spiritual and existential needs
+• Bereavement program — 13 months of support after loss
+
+For many families, the caregiver is also in crisis. We treat that as part of the care.
+
+Aleksandra Dubina`},
+
+  10:{ title:'Updated Service Area Map — Ventura and LA County', day:'Tue Oct 20', time:'9:00 AM', status:'Scheduled',
+    isBrief:false,
+    tags:['Discharge planners','Hospital social workers','Case managers','Physicians'],
+    img:'Email with service area map. List of key cities by county. ELH header.',
+    copy:`SUBJECT: Updated service area map — Ventura and Los Angeles County
+
+Dear [First Name],
+
+As we head into Q4, I wanted to share our current service area map and confirm where we can accept referrals.
+
+VENTURA COUNTY
+Thousand Oaks, Westlake Village, Camarillo, Oxnard, Ventura, Simi Valley, Moorpark, Newbury Park, Fillmore, Santa Paula, Ojai, Port Hueneme, Santa Rosa Valley, Conejo Valley
+
+LOS ANGELES COUNTY
+Calabasas, Agoura Hills, Woodland Hills, West Hills, Tarzana, Encino, Sherman Oaks, Chatsworth, Reseda, Canoga Park, Granada Hills, Northridge, Lancaster, Palmdale, Glendora, La Cañada Flintridge, Monterey Park, Hawthorne, Inglewood, Pacific Palisades, and surrounding communities
+
+If you have a patient in a city not listed, call us — our service area continues to expand.
+
+805.953.7273 | eternallifehospice.com/refer
+
+Aleksandra Dubina`},
+
+  11:{ title:'Year-End Hospice Planning — A Checklist for Care Teams', day:'Tue Oct 27', time:'9:00 AM', status:'Scheduled',
+    isBrief:false,
+    tags:['Hospital social workers','Discharge planners','Case managers','Palliative care'],
+    img:'Email: warm autumn-toned header. ELH plum/gold. Clean layout.',
+    copy:`SUBJECT: Year-end hospice planning — a checklist for care teams
+
+Dear [First Name],
+
+As we move into Q4, a few things worth keeping on your radar:
+
+1. Families often want to be home for the holidays. If a patient on your caseload has been declining and is likely eligible for hospice, now is a good time to start the conversation — before the holiday crunch.
+
+2. Medicare hospice benefit periods reset. Some patients who exhausted an earlier benefit period may have re-established eligibility. We can verify.
+
+3. Advance care planning — year-end is a natural moment for families to complete advance directives, POLST forms, and goals-of-care documentation. Our social workers support this.
+
+4. Same-day admissions remain available through the holiday season. We do not reduce capacity.
+
+5. The Eternal Care Brief Issue 3 arrives November 4th — with a year-end planning guide for care professionals.
+
+Always here,
+Aleksandra Dubina`},
+
+  12:{ title:'★ CARE BRIEF ISSUE 3 — SEND DAY', day:'Tue Nov 4', time:'8:00 AM', status:'Scheduled',
+    isBrief:true,
+    tags:['All Care Brief subscribers','Master Verified list','SYMPLR Network'],
+    img:'The Eternal Care Brief Issue 3 full email layout. Designer to produce from content brief. Match Issue 1 and 2 layout.',
+    copy:`★ THIS IS THE ETERNAL CARE BRIEF ISSUE 3 — SEND
+
+SUBJECT: The Eternal Care Brief | Issue 3 | November 2026
+
+INSIDE THIS ISSUE:
+1. Year-End Planning Guide — for care professionals navigating Q4 hospice conversations
+2. The Palliative-to-Hospice Transition — a case study on timing, conversation, and what changes
+3. 2026 Medicare Hospice Audit Update — what's being scrutinized and how to document cleanly
+4. Caregiver Burnout Research — new data from Q3 and what it means for referral timing
+5. Integrative Therapies — expanded program update and access guide
+6. Founder Note — "What three issues of the Care Brief have taught me"
+7. 2027 Preview — what's coming, what families will need
+
+DESIGNER NOTE: Match Issue 1 and 2 layout. 8–10 pages. Plum/gold/cream. Fraunces headers, Jost body. Include issue number, date, subscriber opt-out. Content brief from Aleksandra to follow.
+
+CONTENT TO FOLLOW IN SEPARATE BRIEF FROM ALEKSANDRA.`},
+};
+
+// ── REFERRAL CARD DATA ────────────────────────────────────────────────────────
+const CARDS = {
+  1:{ title:'Card 1', subtitle:'First version — retired', size:'4×9 + bleed', front:'Basic info, phone, Medicare note', back:'Team photo', printStatus:'Archive', designStatus:'Archive', distributeStatus:'Retired', notes:'Original version, retired after Card 2 redesign.' },
+  2:{ title:'Card 2', subtitle:'Interim — retired', size:'4×9 + bleed', front:'Myth-busting angle', back:'Care team list', printStatus:'Archive', designStatus:'Archive', distributeStatus:'Retired', notes:'Short run, retired.' },
+  3:{ title:'Card 3', subtitle:'Standard — retired', size:'4×9 + bleed', front:'Care process + phone', back:'Accreditations', printStatus:'Archive', designStatus:'Archive', distributeStatus:'Retired', notes:'Replaced by Card 4.' },
+  4:{ title:'Card 4', subtitle:'Pre-flagship — retired', size:'4×9 + bleed', front:'The Five visual system intro', back:'Medicare 100% + referral steps', printStatus:'Archive', designStatus:'Archive', distributeStatus:'Retired', notes:'Replaced by Card 5 (approved flagship).' },
+  5:{ title:'Card 5 ★', subtitle:'Approved Flagship — currently active', size:'4.25×9.25 (4×9 + 0.125" bleed)', front:'The Five visual brand system · Care That Honors Life headline · Aleksandra quote · Phone + URL', back:'Medicare coverage · The Eternal Standard · Referral steps · ACHC seal · QR code', printStatus:'Print-Ready', designStatus:'Approved', distributeStatus:'Active', notes:'Lock this design. Replicate layout for future referral cards. Print-ready PDF in exports/. Use logo-eternal-trans.png. Crop marks use SHEET coordinates. Cards rasterized to <img> to prevent reflow.' },
+};
+
+// ── STATE ─────────────────────────────────────────────────────────────────────
+let currentEmWeek = 0;
+let currentCard = 5;
+
+// ── TABS ─────────────────────────────────────────────────────────────────────
+function switchTab(id, el) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('on'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('on'));
+  document.getElementById('panel-' + id).classList.add('on');
+  // find correct tab-btn
+  document.querySelectorAll('.tab-btn').forEach(b => {
+    const txt = b.textContent.trim().toLowerCase();
+    if (id==='cb' && txt.includes('care brief')) b.classList.add('on');
+    else if (id==='em' && txt.includes('email')) b.classList.add('on');
+    else if (id==='rc' && txt.includes('referral')) b.classList.add('on');
+    else if (id==='oa' && txt.includes('outreach')) b.classList.add('on');
+  });
+  if (id==='em') renderEmailWeek(currentEmWeek);
+  if (id==='rc') renderCard(currentCard);
+}
+
+// ── EMAIL TAB ─────────────────────────────────────────────────────────────────
+function renderEmailWeek(w) {
+  document.getElementById('em-wlabel').textContent = WEEKS[w].label;
+  document.getElementById('em-wtheme').textContent = `Week ${w+1} of 13 · ${WEEKS[w].theme}`;
+  const em = EMAILS[w];
+  const el = document.getElementById('em-content');
+  if (!em) {
+    el.innerHTML = `<div class="empty-email"><div class="empty-email-ico">✉</div><div class="empty-email-txt">No email scheduled this week.</div></div>`;
+    return;
+  }
+  const isBrief = em.isBrief;
+  const headStyle = isBrief ? 'background:linear-gradient(135deg,#3C1C3B,#5B2E59)' : '';
+  el.innerHTML = `
+    <div class="email-card">
+      <div class="email-head" style="${headStyle}">
+        <div class="email-icon">${isBrief ? '★' : '✉'}</div>
+        <div class="email-hinfo">
+          <div class="email-htitle">${em.title}</div>
+          <div class="email-hmeta">${em.day} · ${em.time}${isBrief ? ' · ALL LISTS' : ' · Care Ally List'}</div>
+        </div>
+        <span class="email-status">${em.status}</span>
+      </div>
+      <div class="email-body">
+        <div class="email-subject">
+          <span>Subject Line</span>
+          ${em.copy.split('\n')[0].replace('SUBJECT: ','').replace('★ THIS IS THE ETERNAL CARE BRIEF ISSUE 2 — SEND','★ Care Brief Issue 2 Send Day').replace('★ THIS IS THE ETERNAL CARE BRIEF ISSUE 3 — SEND','★ Care Brief Issue 3 Send Day')}
+        </div>
+        <div>
+          <div class="email-copy-label" style="margin-bottom:4px">Audience</div>
+          <div class="email-audience">${(em.tags||[]).map(t=>`<span class="au-tag">${t}</span>`).join('')}</div>
+        </div>
+        <div>
+          <div class="email-copy-label" style="margin-bottom:4px">Full Copy</div>
+          <div class="email-copy">${em.copy}</div>
+        </div>
+        <div class="email-img">📸 <span>${em.img}</span></div>
+      </div>
+    </div>`;
+}
+
+function navEmWeek(dir) {
+  const nw = currentEmWeek + dir;
+  if (nw < 0 || nw >= WEEKS.length) return;
+  currentEmWeek = nw;
+  renderEmailWeek(currentEmWeek);
+}
+
+// ── REFERRAL CARD TAB ────────────────────────────────────────────────────────
+function renderCard(num) {
+  const c = CARDS[num];
+  if (!c) return;
+  const statusColor = (s) => {
+    if (s === 'Print-Ready' || s === 'Approved' || s === 'Active') return 'rc-done';
+    if (s === 'Retired' || s === 'Archive') return 'rc-not';
+    return 'rc-pending';
+  };
+  document.getElementById('rc-detail').innerHTML = `
+    <div class="rc-spec">
+      <div class="rc-spec-row"><div class="rc-spec-label">Card</div><div class="rc-spec-val">${c.title}</div></div>
+      <div class="rc-spec-row"><div class="rc-spec-label">Status</div><div class="rc-spec-val">${c.subtitle}</div></div>
+      <div class="rc-spec-row"><div class="rc-spec-label">Print Size</div><div class="rc-spec-val">${c.size}</div></div>
+    </div>
+    <div>
+      <div style="font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:5px">Front</div>
+      <div style="font-size:.68rem;color:var(--deep);background:rgba(92,46,89,.03);border:1px solid var(--border);border-radius:6px;padding:7px 9px">${c.front}</div>
+    </div>
+    <div>
+      <div style="font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:5px">Back</div>
+      <div style="font-size:.68rem;color:var(--deep);background:rgba(92,46,89,.03);border:1px solid var(--border);border-radius:6px;padding:7px 9px">${c.back}</div>
+    </div>
+    <div class="rc-status-grid">
+      <div class="rc-srow"><span>Design Status</span><span class="rc-sbadge ${statusColor(c.designStatus)}">${c.designStatus}</span></div>
+      <div class="rc-srow"><span>Print Status</span><span class="rc-sbadge ${statusColor(c.printStatus)}">${c.printStatus}</span></div>
+      <div class="rc-srow"><span>Distribution</span><span class="rc-sbadge ${statusColor(c.distributeStatus)}">${c.distributeStatus}</span></div>
+    </div>
+    <div style="font-size:.65rem;color:var(--muted);line-height:1.6;background:rgba(92,46,89,.03);border:1px solid var(--border);border-radius:6px;padding:7px 9px">${c.notes}</div>`;
+}
+
+function selectCard(num, el) {
+  document.querySelectorAll('.rc-ver').forEach(v => {
+    v.classList.remove('on');
+    v.style.borderColor = '';
+    v.style.background = '';
+    v.querySelector('.rc-ver-label').style.color = '';
+    v.querySelector('.rc-ver-label').style.fontWeight = '';
+  });
+  el.classList.add('on');
+  currentCard = num;
+  renderCard(num);
+}
+
+// ── CHECKLIST ─────────────────────────────────────────────────────────────────
+function toggleCheck(el) {
+  el.classList.toggle('done');
+  const box = el.querySelector('.check-box');
+  if (el.classList.contains('done')) {
+    box.innerHTML = '<span class="check-tick">✓</span>';
+  } else {
+    box.innerHTML = '';
+  }
+}
+
+// ── BRIEF EXPAND ──────────────────────────────────────────────────────────────
+function toggleBrief(id, btn) {
+  const el = document.getElementById(id);
+  el.classList.toggle('open');
+  btn.textContent = el.classList.contains('open')
+    ? '📋 Hide Send Brief / Designer Notes ▴'
+    : '📋 View Send Brief / Designer Notes ▾';
+}
+
+// ── TOAST ─────────────────────────────────────────────────────────────────────
+function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('on');setTimeout(()=>t.classList.remove('on'),3000);}
+
+// ── INIT ──────────────────────────────────────────────────────────────────────
+renderCard(5);
+</script>
+</body>
+</html>
