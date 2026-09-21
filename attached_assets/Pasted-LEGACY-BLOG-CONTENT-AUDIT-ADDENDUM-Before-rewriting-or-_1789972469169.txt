@@ -1,0 +1,67 @@
+LEGACY BLOG CONTENT AUDIT — ADDENDUM
+
+Before rewriting or finalizing the new 30-article Journal program, incorporate all previously published Eternal Life Hospice blog articles into the editorial architecture.
+
+IMPORTANT:
+The new 30 articles are pre-publication/new-development content and may be freely restructured.
+
+Previously published articles are existing SEO assets and must be evaluated before substantive alteration, consolidation, deletion, or redirect.
+
+For every previously published article, report:
+
+1. Title
+2. URL
+3. Publication date if available
+4. HTTP status
+5. Index/noindex status
+6. Canonical
+7. Sitemap presence
+8. Current H1
+9. Primary topic
+10. Apparent search intent
+11. Search Console impressions
+12. Search Console clicks
+13. CTR
+14. Average position
+15. Known query signals where page-to-query evidence is available
+16. Internal links pointing to the article
+17. Internal links from the article
+18. Core service/resource/location page it should support
+19. Overlap with any of the new 30 articles
+20. Cannibalization risk
+21. Recommended action:
+    - PROTECT
+    - REFRESH
+    - REFOCUS
+    - CONSOLIDATE
+    - RETIRE
+
+Do not delete or redirect any existing article during this audit.
+
+Do not rewrite established articles merely because a newer article covers a similar topic.
+
+Determine whether overlapping articles can serve distinct reader intents first.
+
+Specifically evaluate the existing articles already identified:
+
+- Five Hospice Myths That Cause Families to Wait
+- Music at the Bedside
+- Sound Baths: Ancient Comfort for Body and Spirit
+- Talking With Children When a Loved One Is Seriously Ill
+- The Caregiver Who Needs Care
+- The Quiet Work of Hospice Volunteers
+
+Cross-map each of these against the revised 30-article architecture.
+
+Return one combined editorial map containing BOTH:
+
+A. Existing/legacy articles
+B. The new 30-article Journal program
+
+Each topic should have a clearly identified owner.
+
+Stop after the combined map.
+Do not rewrite bodies.
+Do not delete.
+Do not redirect.
+Do not publish changes.

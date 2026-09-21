@@ -1736,3 +1736,17 @@ mtime_ms = 1789972351283
 storage_uri = "gcs://replit-rams-assets-kirk/rams/assets/repl:e1b2f643-7869-4565-af0e-10c34575ee8d/7dd7e167-0a1c-49bf-ae04-72602991ac4c/7a0127d2-8a89-41c8-80e6-86a4d30547b5"
 storage_version_token = "1789972355197565"
 content_type = "application/pdf"
+
+[[outputs]]
+id = "0I015-mGpN1P1MjJOxB8e"
+uri = "file://exports/seo/combined-journal-editorial-map-2026-09-20.pdf"
+type = "pdf"
+title = "Combined Journal Editorial Map"
+description = "Five-page audit combining six established Journal articles with the 30-article pre-publication program, including technical status, Search Console evidence, overlap analysis, article actions, and topic ownership."
+logical_id = "a7756603-4b35-42f7-b072-8a0ec7964d24"
+content_hash = "sha256:b3215d2f6b71f8c72a5b60e8cc14a99995d483710c542bf1fb2563c75ae80888"
+size = 60888
+mtime_ms = 1789972534182
+storage_uri = "gcs://replit-rams-assets-kirk/rams/assets/repl:e1b2f643-7869-4565-af0e-10c34575ee8d/a7756603-4b35-42f7-b072-8a0ec7964d24/6c58ea78-5a67-441c-8a98-f9c862f0db47"
+storage_version_token = "1789972552105774"
+content_type = "application/pdf"
