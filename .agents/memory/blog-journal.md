@@ -18,6 +18,9 @@ theirs via `.replace("../","")`).
   listen, answer questions, and stay with the family through the next step. Avoid
   institutional wording that makes Eternal Life Hospice sound like an impersonal
   company.
+- **Positive assurance:** Never use double negatives or a negative contrast to
+  support a positive statement. State the reassurance, benefit, or expectation
+  directly—especially in article endings and family-facing calls to action.
 - **Discoverability:** every post links from the site-wide footer "For Families"
   column (a `Journal` link sits between Resources and Volunteer on all pages).
   It is intentionally NOT in the top nav (that would touch ~28 files' nav markup).
