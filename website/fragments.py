@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 """
 website/fragments.py  —  ELH shared HTML fragments
-===================================================
+---------------------------------------------------
 Single source of truth for the standard header, footer and post-footer
 scripts used across the site.
 
@@ -104,6 +104,25 @@ FOOTER_HTML = FOOTER_HTML.replace(
     "Ste 325B",
     1,
 )
+# Keep Eternal's primary landline visible and immutable while displaying the
+# WhatConverts line separately. WhatConverts documents `no-swap` as the
+# supported opt-out class for dynamic number insertion.
+FOOTER_HTML = FOOTER_HTML.replace(
+    '<a class="fc-line" href="tel:18059537273">',
+    '<a class="fc-line no-swap" href="tel:18059537273">',
+    1,
+).replace(
+    '<span>805.953.7273</span></a><span class="fc-line fc-direct">',
+    '<span>805.953.7273 · Main</span></a>'
+    '<a class="fc-line fc-direct" href="tel:18052954688">',
+    1,
+).replace(
+    '<span>805.953.7273 · Direct</span></span>',
+    '<span>805.295.4688 · Direct</span></a>',
+    1,
+)
+# Google Places verifies this CID belongs to Eternal Life Hospice and carries
+# Eternal's approved phone, domain, address, and Suite 325B.
 
 # The footer navigation mirrors the five expandable groups in HEADER_HTML.
 # Contact remains the existing footer contact block below this replacement.

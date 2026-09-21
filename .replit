@@ -8,7 +8,7 @@ expertMode = true
 integrations = ["javascript_openai_ai_integrations:2.0.0", "google-drive:1.0.0"]
 
 [workflows]
-runButton = "Start application"
+runButton = "Project"
 
 [[workflows.workflow]]
 name = "Start application"
@@ -88,6 +88,15 @@ args = "bash website/test-predeploy-chain.sh"
 [workflows.workflow.metadata]
 outputType = "console"
 
+[[workflows.workflow]]
+name = "Project"
+mode = "parallel"
+author = "agent"
+
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "Start application"
+
 [[ports]]
 localPort = 3000
 externalPort = 3000
@@ -111,6 +120,10 @@ externalPort = 3002
 [[ports]]
 localPort = 8765
 externalPort = 4200
+
+[[ports]]
+localPort = 21921
+externalPort = 3003
 
 [postMerge]
 path = "scripts/post-merge.sh"

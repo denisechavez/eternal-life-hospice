@@ -19,7 +19,7 @@
 - [Build-flow infographic](build-flow-infographic.md) — internal PNG explainer of AI→Replit→GitHub→Netlify→live; tool marks via Simple Icons SVG tinted plum; render pattern.
 - [Community-giving collateral](community-giving-collateral.md) — VCCF/Children's Workshop graphic; standard non-affiliation disclosure block required on all philanthropy collateral.
 - [Field Outreach Tracker app](outreach-tracker.md) — packaged as `exports/outreach-tracker-standalone.zip`; removed from main repo; schema.sql + README included; existing visit data in main DB still needs migration to the new standalone Replit.
-- [Google Business Profile](google-business-profile.md) — canonical Maps listing = CID 9771388271577679785 ("Eternal Life Hospice"); an old "Inc" duplicate listing lingers — never link its place_id; site links via hasMap+sameAs+footer address.
+- [Google Business Profile](google-business-profile.md) — former Eternal CID now resolves to Westlake Village Hospice; do not cross-link agencies; verify Eternal’s intended profile in GBP.
 - [Monthly newsletter kit](newsletter-kit.md) — exports/newsletter/ 3 layouts+3 outlines+ops; fraud "trust" angle = consumer-ed only (CA State Auditor 2022 + license pause, never name a competitor); unsub placeholders need ESP tags.
 - [Media kit book order](media-kit-book-order.md) — /media-kit flipbook mirrors a physical folder: cover→inside-front(welcome)→pillar cards→inside-back(coverage)→back cover; flips in DOM order, don't sort by filename.
 - [Journal (blog)](blog-journal.md) — /blog "Eternal Journal"; posts mirror resources sub-page template + Article schema; footer-linked sitewide; backdating is cosmetic not SEO; Medicare "no copays" claim is inaccurate—use precise wording.

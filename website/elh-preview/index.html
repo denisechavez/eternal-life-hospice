@@ -942,24 +942,37 @@ p,li,blockquote{text-wrap:pretty}
 .mod-card.feat .mod-img{position:relative}
 .mod-tag{position:absolute;top:.75rem;right:.75rem;z-index:3;display:inline-flex;align-items:center;gap:.3em;background:linear-gradient(180deg,#D8C08C,#C4A86F);color:var(--deep);font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:.32rem .68rem;border-radius:999px;box-shadow:0 4px 12px rgba(60,28,59,.3)}
 .mod-card.feat .mod-badge{background:linear-gradient(180deg,#D8C08C,#C4A86F);color:var(--deep)}
-/* ===== Google Reviews scrolling ticker ===== */
-.rv-strip{display:flex;align-items:stretch;background:var(--cream);border-top:1px solid var(--cream-dark);border-bottom:1px solid var(--cream-dark)}
-.rv-badge{display:inline-flex;align-items:center;gap:.45rem;flex-shrink:0;padding:.75rem 1.1rem .75rem 1.3rem;border-right:1px solid var(--cream-dark);text-decoration:none;background:var(--cream);z-index:5;white-space:nowrap}
-.rv-badge:hover{background:#f5f0e8}
-.rv-reel-stars{color:#F5A623;font-size:.85rem;letter-spacing:.06em}
-.rv-reel-score{font-weight:700;color:var(--deep);font-size:.85rem}
-.rv-reel-label{color:var(--ink-soft);font-size:.78rem}
-.rv-scroll-wrap{flex:1;overflow:hidden;position:relative}
-.rv-scroll-wrap::after{content:'';position:absolute;top:0;right:0;bottom:0;width:60px;background:linear-gradient(to left,var(--cream),transparent);pointer-events:none;z-index:4}
-.rv-reel{display:flex;align-items:center;gap:0;animation:rvscroll 70s linear infinite;width:max-content;padding:.8rem 0;white-space:nowrap}
-.rv-reel.is-static{animation:none;width:100%}
-.rv-reel:hover{animation-play-state:paused}
-.rv-sep{color:var(--gold);font-size:.5rem;flex-shrink:0;padding:0 1rem;opacity:.7}
-.rv-item{font-size:.8rem;color:var(--ink-soft);padding:0 .2rem;white-space:nowrap}
-.rv-item em{font-style:normal;font-weight:600;color:var(--plum);padding-left:.3rem}
-.rv-live-status{color:var(--text-mid);font-style:italic}
-@keyframes rvscroll{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
-@media(max-width:480px){.rv-badge{padding:.65rem .8rem}.rv-reel-label{display:none}}
+/* ===== Google Reviews static cards ===== */
+.reviews-band{background:var(--cream);padding:5rem 2rem;border-top:1px solid var(--cream-dark);border-bottom:1px solid var(--cream-dark)}
+.reviews-inner{max-width:1120px;margin:0 auto}
+.reviews-head{text-align:center;max-width:720px;margin:0 auto 2.25rem}
+.reviews-eyebrow{font-size:12px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);margin-bottom:.65rem}
+.reviews-title{font-family:var(--ff-d);font-weight:300;font-size:clamp(2rem,4vw,3rem);line-height:1.12;color:var(--deep);margin-bottom:.8rem}
+.reviews-copy{font-size:16px;line-height:1.7;color:var(--text-mid)}
+.reviews-summary{display:flex;align-items:center;justify-content:center;gap:.65rem;flex-wrap:wrap;margin-top:1.2rem}
+.reviews-summary-stars,.review-card-stars{color:#F5A623;letter-spacing:.06em}
+.reviews-summary-rating{font-family:var(--ff-d);font-size:1.45rem;font-weight:600;color:var(--deep)}
+.reviews-summary-count{font-size:14px;color:var(--text-mid)}
+.reviews-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1.25rem;align-items:start}
+.reviews-grid[hidden]{display:none}
+.review-card{background:#fff;border:1px solid var(--cream-dark);border-radius:14px;padding:1.65rem;box-shadow:0 5px 18px rgba(56,27,55,.07)}
+.review-card-stars{font-size:1rem;margin-bottom:1rem}
+.review-card blockquote{margin:0}
+.review-card-text{font-family:var(--ff-b);font-size:16.5px;line-height:1.72;color:var(--ink-soft)}
+.review-expand{display:inline-flex;margin-top:.75rem;background:none;border:0;border-bottom:1px solid rgba(91,46,89,.35);padding:.15rem 0;color:var(--plum);font:600 13px var(--ff-b);cursor:pointer}
+.review-expand:hover{border-color:var(--plum)}
+.review-expand:focus-visible,.reviews-more:focus-visible,.reviews-google-link:focus-visible{outline:2px solid var(--gold);outline-offset:4px}
+.review-card-footer{margin-top:1.25rem;padding-top:1rem;border-top:1px solid var(--cream-dark)}
+.review-card cite{display:block;font-style:normal;font-size:14px;font-weight:600;color:var(--plum)}
+.review-card-meta{display:block;margin-top:.2rem;font-size:12px;color:var(--text-light)}
+.reviews-actions{display:flex;align-items:center;justify-content:center;gap:1.2rem;flex-wrap:wrap;margin-top:1.75rem}
+.reviews-more{border:1px solid var(--plum);border-radius:999px;background:transparent;color:var(--plum);padding:.7rem 1.2rem;font:600 13px var(--ff-b);cursor:pointer}
+.reviews-more:hover{background:var(--plum);color:#fff}
+.reviews-google-link{font-size:14px;font-weight:600;color:var(--plum);text-decoration:none;border-bottom:1px solid rgba(91,46,89,.35)}
+.reviews-google-link:hover{border-color:var(--plum)}
+.reviews-status{text-align:center;color:var(--text-mid);font-style:italic}
+@media(max-width:850px){.reviews-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:580px){.reviews-band{padding:3.5rem 1.1rem}.reviews-grid{grid-template-columns:1fr}.review-card{padding:1.5rem}}
 </style>
 <style id="elh-embedded-fonts">
 @font-face{font-family:"Fraunces";font-style:normal;font-weight:100 900;font-display:swap;src:url(assets/fonts/fraunces-latin.woff2) format("woff2")}
@@ -984,7 +997,6 @@ p,li,blockquote{text-wrap:pretty}
       "telephone": "+1-805-953-7273",
       "faxNumber": "+1-805-953-8530",
       "email": "info@eternallifehospice.com",
-      "hasMap": "https://maps.google.com/?cid=9771388271577679785",
       "priceRange": "$",
       "foundingDate": "2022",
       "sameAs": [
@@ -994,8 +1006,7 @@ p,li,blockquote{text-wrap:pretty}
         "https://www.youtube.com/@EternalLifeHospice",
         "https://yelp.to/uEz7kTDDl6",
         "https://www.pinterest.com/eternallifehospice/",
-        "https://x.com/eternallifehosp",
-        "https://maps.google.com/?cid=9771388271577679785"
+        "https://x.com/eternallifehosp"
       ],
       "medicalSpecialty": "https://schema.org/Hospice",
       "isAccreditedBy": [
@@ -1195,20 +1206,23 @@ p,li,blockquote{text-wrap:pretty}
     </div>
   </div>
 </section>
-<!-- GOOGLE REVIEWS TICKER -->
-<div class="rv-strip" id="reviews" aria-label="Google Reviews">
-  <a class="rv-badge" id="rvBadge" href="https://maps.google.com/?cid=9771388271577679785" target="_blank" rel="noopener" aria-label="See the latest Google reviews">
-    <svg width="22" height="22" viewBox="0 0 48 48" aria-hidden="true"><path fill="#4285F4" d="M45.12 24.5c0-1.56-.14-3.06-.4-4.5H24v8.51h11.84c-.51 2.75-2.06 5.08-4.39 6.64v5.52h7.11c4.16-3.83 6.56-9.47 6.56-16.17z"/><path fill="#34A853" d="M24 46c5.94 0 10.92-1.97 14.56-5.33l-7.11-5.52c-1.97 1.32-4.49 2.1-7.45 2.1-5.73 0-10.58-3.87-12.31-9.07H4.34v5.7C7.96 41.07 15.4 46 24 46z"/><path fill="#FBBC05" d="M11.69 28.18C11.25 26.86 11 25.45 11 24s.25-2.86.69-4.18v-5.7H4.34A21.991 21.991 0 0 0 2 24c0 3.55.85 6.91 2.34 9.88l7.35-5.7z"/><path fill="#EA4335" d="M24 10.75c3.23 0 6.13 1.11 8.41 3.29l6.31-6.31C34.91 4.18 29.93 2 24 2 15.4 2 7.96 6.93 4.34 14.12l7.35 5.7c1.73-5.2 6.58-9.07 12.31-9.07z"/></svg>
-    <span class="rv-reel-stars" id="rvStars" aria-hidden="true">★★★★★</span>
-    <span class="rv-reel-score" id="rvScore">Loading</span>
-    <span class="rv-reel-label" id="rvLabel">&nbsp;· current Google reviews</span>
-  </a>
-  <div class="rv-scroll-wrap">
-    <div class="rv-reel is-static" id="rvReel" aria-live="polite">
-      <span class="rv-item rv-live-status" id="rvStatus">Loading current Google reviews…</span>
+<!-- GOOGLE REVIEWS -->
+<section class="reviews-band" id="reviews" aria-labelledby="reviewsTitle" hidden>
+  <div class="reviews-inner">
+    <header class="reviews-head">
+      <div class="reviews-eyebrow">Google Reviews</div>
+      <h2 class="reviews-title" id="reviewsTitle">Kind Words From Our Community</h2>
+      <p class="reviews-copy">Recent feedback shared through the Eternal Life Hospice Google Business Profile.</p>
+      <div class="reviews-summary" id="reviewsSummary" aria-live="polite"><span class="reviews-summary-count">Loading current Google rating…</span></div>
+    </header>
+    <div class="reviews-grid" id="reviewsGrid" aria-live="polite"><p class="reviews-status">Loading current Google reviews…</p></div>
+    <div class="reviews-grid" id="reviewsMoreGrid" hidden></div>
+    <div class="reviews-actions">
+      <button class="reviews-more" id="reviewsMore" type="button" aria-expanded="false" aria-controls="reviewsMoreGrid" hidden>View two more reviews</button>
+      <span class="reviews-google-link" id="reviewsGoogleLink">Google profile verification in progress</span>
     </div>
   </div>
-</div>
+</section>
 <!-- GUIDED WALKTHROUGH -->
 <section class="guide-band" id="guide" tool-name="care-guide" tool-description="Interactive decision guide helping families, patients, or providers identify their next step with hospice care.">
   <div class="guide-card">
@@ -1749,7 +1763,7 @@ p,li,blockquote{text-wrap:pretty}
 <footer id="site-footer">
   <div class="foot-grid">
     <div><div class="foot-logo"><a href="/" aria-label="Eternal Life Hospice — home"><img loading="lazy" decoding="async" src="/assets/img/elh-logo-cream-g.webp" alt="Eternal Life Hospice logo" width="331" height="74"></a></div><p class="foot-tag">Care That Honors Life.</p><p class="foot-legal">Medicare-Certified · CDPH-Licensed · ACHC-Accredited. Serving families across Ventura and Los Angeles Counties.</p><div class="foot-qr"><img src="/assets/img/qr-cream.webp" alt="Scan to visit eternallifehospice.com" width="96" height="96" loading="lazy"><span>Scan to visit<br>on your phone</span></div></div>
-    <div class="foot-col"><h2>Hospice Care</h2><a href="/hospice-care">What Is Hospice Care?</a><a href="/resources/when-is-it-time">When Is It Time?</a><a href="/resources/first-48-hours">The First 48 Hours</a><a href="/resources/medicare-hospice-benefit">What Hospice Covers</a><a href="/resources/how-to-choose-a-hospice">How to Choose a Hospice</a></div><div class="foot-col"><h2>Services</h2><a href="/services">All Services</a><a href="/resources/pain-symptom-management">Pain &amp; Symptom Management</a><a href="/resources/comfort-therapies">Integrative &amp; Whole-Person Care</a><a href="/sound-bath">Sound Bath</a><a href="/services/medical-aid-in-dying-california">End-of-Life Care &amp; Choices</a></div><div class="foot-col"><h2>Resources</h2><a href="/family-guide">Family Guide</a><a href="/blog">The Eternal Journal</a><a href="/care-brief">Care Brief</a><a href="/volunteer">Volunteer</a><a href="/media-kit">Media Kit</a><a href="/careers">Careers</a></div><div class="foot-col"><h2>Service Areas</h2><a href="/hospice-thousand-oaks-ca">Thousand Oaks</a><a href="/hospice-simi-valley-ca">Simi Valley</a><a href="/hospice-calabasas-ca">Calabasas</a><a href="/hospice-ventura-and-los-angeles-county-ca">County Coverage</a></div><div class="foot-col"><h2>About</h2><a href="/about/aleksandra-dubina">Our Founder</a><a href="/#care-team">Our Team</a><a href="/#accreditations">Accreditations</a><a href="/#standard">Eternal Standard</a></div><div class="foot-col"><h2>Contact</h2><a class="fc-line" href="tel:18059537273"><svg class="fci" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 1 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg><span>805.953.7273</span></a><span class="fc-line fc-direct"><svg class="fci" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 1 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg><span>805.953.7273 · Direct</span></span><span class="fc-line fc-fax"><svg class="fci" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg><span>805.953.8530 fax</span></span><a class="fc-line" href="mailto:info@eternallifehospice.com"><svg class="fci" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"/><polyline points="22,6 12,13 2,6"/></svg><span>info@eternallifehospice.com</span></a><a class="fc-line fc-addr" href="https://maps.google.com/?cid=9771388271577679785" target="_blank" rel="noopener"><svg class="fci" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg><span>4165 E Thousand Oaks Blvd, Ste 325B<br>Westlake Village, CA 91362</span></a><div class="foot-subgroup"><h2>For Professionals</h2><a href="/refer#referral-form">Physicians &amp; Referrals</a><a href="/referral-card">Referral eCard</a><a href="/?lead=voice#leadcap">Schedule a Session</a></div></div>
+    <div class="foot-col"><h2>Hospice Care</h2><a href="/hospice-care">What Is Hospice Care?</a><a href="/resources/when-is-it-time">When Is It Time?</a><a href="/resources/first-48-hours">The First 48 Hours</a><a href="/resources/medicare-hospice-benefit">What Hospice Covers</a><a href="/resources/how-to-choose-a-hospice">How to Choose a Hospice</a></div><div class="foot-col"><h2>Services</h2><a href="/services">All Services</a><a href="/resources/pain-symptom-management">Pain &amp; Symptom Management</a><a href="/resources/comfort-therapies">Integrative &amp; Whole-Person Care</a><a href="/sound-bath">Sound Bath</a><a href="/services/medical-aid-in-dying-california">End-of-Life Care &amp; Choices</a></div><div class="foot-col"><h2>Resources</h2><a href="/family-guide">Family Guide</a><a href="/blog">The Eternal Journal</a><a href="/care-brief">Care Brief</a><a href="/volunteer">Volunteer</a><a href="/media-kit">Media Kit</a><a href="/careers">Careers</a></div><div class="foot-col"><h2>Service Areas</h2><a href="/hospice-thousand-oaks-ca">Thousand Oaks</a><a href="/hospice-simi-valley-ca">Simi Valley</a><a href="/hospice-calabasas-ca">Calabasas</a><a href="/hospice-ventura-and-los-angeles-county-ca">County Coverage</a></div><div class="foot-col"><h2>About</h2><a href="/about/aleksandra-dubina">Our Founder</a><a href="/#care-team">Our Team</a><a href="/#accreditations">Accreditations</a><a href="/#standard">Eternal Standard</a></div><div class="foot-col"><h2>Contact</h2><a class="fc-line no-swap" href="tel:18059537273"><svg class="fci" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 1 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg><span>805.953.7273 · Main</span></a><a class="fc-line fc-direct" href="tel:18052954688"><svg class="fci" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 1 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg><span>805.295.4688 · Direct</span></a><span class="fc-line fc-fax"><svg class="fci" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg><span>805.953.8530 fax</span></span><a class="fc-line" href="mailto:info@eternallifehospice.com"><svg class="fci" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"/><polyline points="22,6 12,13 2,6"/></svg><span>info@eternallifehospice.com</span></a><a class="fc-line fc-addr" href="https://maps.google.com/?cid=9771388271577679785" target="_blank" rel="noopener"><svg class="fci" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg><span>4165 E Thousand Oaks Blvd, Ste 325B<br>Westlake Village, CA 91362</span></a><div class="foot-subgroup"><h2>For Professionals</h2><a href="/refer#referral-form">Physicians &amp; Referrals</a><a href="/referral-card">Referral eCard</a><a href="/?lead=voice#leadcap">Schedule a Session</a></div></div>
   </div>
   <nav class="foot-social" aria-label="Eternal Life Hospice on social media"><span class="fs-label">Stay Connected</span><a href="https://www.linkedin.com/company/eternal-life-hospice/" target="_blank" rel="noopener" aria-label="Visit Eternal Life Hospice on LinkedIn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4V9h4v1.57A6 6 0 0 1 16 8z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg></a><a href="https://www.facebook.com/eternallifehospiceinc" target="_blank" rel="noopener" aria-label="Visit Eternal Life Hospice on Facebook"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg></a><a href="https://www.instagram.com/eternallifehospice/" target="_blank" rel="noopener" aria-label="Visit Eternal Life Hospice on Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg></a><a href="https://www.youtube.com/@EternalLifeHospice" target="_blank" rel="noopener" aria-label="Watch Eternal Life Hospice on YouTube"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z"/><polygon points="9.75 15.02 15.5 11.75 9.75 8.48"/></svg></a><a href="https://yelp.to/uEz7kTDDl6" target="_blank" rel="noopener" aria-label="Eternal Life Hospice on Yelp"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false"><path d="m7.6885 15.1415-3.6715.8483c-.3769.0871-.755.183-1.1452.155-.2611-.0188-.5122-.0414-.7606-.213a1.179 1.179 0 0 1-.331-.3594c-.3486-.5519-.3656-1.3661-.3697-2.0004a6.2874 6.2874 0 0 1 .3314-2.0642 1.857 1.857 0 0 1 .1073-.2474 2.3426 2.3426 0 0 1 .1255-.2165 2.4572 2.4572 0 0 1 .1563-.1975 1.1736 1.1736 0 0 1 .399-.2831 1.082 1.082 0 0 1 .4592-.0837c.2355.0016.5139.052.91.1734.0555.0191.1237.0382.1856.0572.3277.1013.7048.2404 1.1499.3987.6863.2404 1.3663.487 2.0463.7397l1.2117.4423c.2217.0807.4363.18.6412.297.174.0984.3273.2298.4512.387a1.217 1.217 0 0 1 .192.4309 1.2205 1.2205 0 0 1-.872 1.4522c-.0468.0151-.0852.0239-.1085.0293l-1.105.2553-.0031-.001zM18.8208 7.565a1.8506 1.8506 0 0 0-.2042-.1754 2.4082 2.4082 0 0 0-.2077-.1394 2.3607 2.3607 0 0 0-.2269-.109 1.1705 1.1705 0 0 0-.482-.0796 1.0862 1.0862 0 0 0-.4498.1263c-.2107.1048-.4388.2732-.742.5551-.042.0417-.0947.0886-.142.133-.2502.2351-.5286.5252-.8599.863a114.6363 114.6363 0 0 0-1.5166 1.5629l-.8962.9293a4.1897 4.1897 0 0 0-.4466.5483 1.541 1.541 0 0 0-.2364.5459 1.2199 1.2199 0 0 0 .0107.4518l.0046.02a1.218 1.218 0 0 0 1.4184.923 1.162 1.162 0 0 0 .1105-.0213l4.7781-1.104c.3766-.087.7587-.1667 1.097-.3631.2269-.1316.4428-.262.5909-.5252a1.1793 1.1793 0 0 0 .1405-.4683c.0733-.6512-.2668-1.3908-.5403-1.963a6.2792 6.2792 0 0 0-1.2001-1.7103zM8.9703.0754a8.6724 8.6724 0 0 0-.83.1564c-.2754.066-.548.1383-.8146.2236-.868.2844-2.0884.8063-2.295 1.8065-.1165.5655.1595 1.1439.3737 1.66.2595.6254.614 1.1889.9373 1.7777.8543 1.5545 1.7245 3.0993 2.5922 4.6457.259.4617.5416 1.0464 1.043 1.2856a1.058 1.058 0 0 0 .1013.0383c.2248.0851.4699.1016.7041.0471a4.3015 4.3015 0 0 0 .0418-.0097 1.2136 1.2136 0 0 0 .5658-.3397 1.1033 1.1033 0 0 0 .079-.0822c.3463-.435.3454-1.0833.3764-1.6134.1042-1.771.2139-3.5423.3009-5.3142.0332-.6712.1055-1.3333.0655-2.0096-.0328-.5579-.0368-1.1984-.3891-1.6563-.6218-.8073-1.9476-.741-2.8523-.6158zm2.084 15.9505a1.1053 1.1053 0 0 0-1.2306-.4145 1.1398 1.1398 0 0 0-.1526.0633 1.4806 1.4806 0 0 0-.2171.1354c-.1992.1475-.3668.3392-.5196.5315-.0386.049-.074.1143-.12.1562l-.7686 1.0573a113.9168 113.9168 0 0 0-1.2913 1.789c-.278.3895-.5184.7184-.7083 1.0094-.036.0547-.0734.116-.1075.1647-.2277.3522-.3566.6092-.4228.8381a1.0945 1.0945 0 0 0-.046.4721c.0211.1655.0768.3246.1635.467.046.0715.0957.1406.1487.207a2.334 2.334 0 0 0 .1754.1825 1.843 1.843 0 0 0 .2108.1732c.5304.369 1.1112.6342 1.722.8391a6.0958 6.0958 0 0 0 1.5716.3004c.091.0046.1821.0025.2728-.006a2.3878 2.3878 0 0 0 .2506-.0351 2.3862 2.3862 0 0 0 .2447-.071 1.1927 1.1927 0 0 0 .4175-.2658c.1127-.113.1994-.249.2541-.3989.0889-.2214.1473-.5026.1857-.92.0034-.0593.0118-.1305.0177-.1958.0304-.3463.0443-.7531.0666-1.2315.0375-.7357.067-1.4681.0903-2.2026 0 0 .0495-1.3053.0494-1.306.0113-.3008.002-.6342-.0814-.9336a1.396 1.396 0 0 0-.1756-.4054zm8.6754 2.0439c-.1605-.176-.3878-.3514-.7462-.5682-.0518-.0288-.1124-.0674-.1684-.1009-.2985-.1795-.658-.3684-1.078-.5965a120.7615 120.7615 0 0 0-1.9427-1.042l-1.1515-.6107c-.0597-.0175-.1203-.0607-.1766-.0878-.2212-.1058-.4558-.2045-.6992-.2498a1.4915 1.4915 0 0 0-.2545-.0265 1.1527 1.1527 0 0 0-.1648.01 1.1077 1.1077 0 0 0-.9227.9133 1.4186 1.4186 0 0 0 .0159.439c.0563.3065.1932.6096.3346.875l.615 1.1526c.3422.65.6884 1.2963 1.0435 1.9406.229.4202.4196.7799.5982 1.078.0338.056.0721.1163.1011.1682.2173.3584.392.584.569.7458.1146.1107.252.195.4026.247.1583.0525.326.071.4919.0546a2.368 2.368 0 0 0 .251-.0435c.0817-.022.1622-.048.241-.0784a1.863 1.863 0 0 0 .2475-.1143 6.1018 6.1018 0 0 0 1.2818-.9597c.4596-.4522.8659-.9454 1.182-1.51.044-.08.0819-.163.1138-.2483a2.49 2.49 0 0 0 .0773-.2411c.0186-.083.033-.1669.0429-.2513a1.188 1.188 0 0 0-.0565-.491 1.0933 1.0933 0 0 0-.248-.4041z"/></svg></a><span class="fs-invite">An invitation to learn, share &amp; contribute in The Eternal Care Brief</span><a class="foot-signup" href="/care-brief#signup">View the Care Brief &#8594;</a></nav>
   <div class="foot-disclaimer"><strong style="color:var(--gold)">Disclaimer:</strong> Eternal Life Hospice Inc. is a licensed and Medicare-certified hospice care provider. We do not sell, prescribe, dispense or ship prescription medications, and we do not operate an online pharmacy or telemedicine prescribing service. All hospice services are provided in person by licensed healthcare professionals. Any references to Medicare coverage, medication support or medical coordination relate solely to patient care delivered under physician direction and do not constitute prescription drug sales or online medical services. The integrative modalities described are complementary care offered for patient comfort and wellbeing; they are not intended to diagnose, treat, cure or prevent any medical condition. Medicare coverage details are subject to change; confirm current eligibility with your care team or call <a href="tel:18006334227" style="color:inherit;text-decoration:none">1.800.MEDICARE</a>.</div>
@@ -2000,82 +2014,139 @@ p,li,blockquote{text-wrap:pretty}
 </script>
 <script>
 (function(){
-  var badge=document.getElementById('rvBadge');
-  var stars=document.getElementById('rvStars');
-  var score=document.getElementById('rvScore');
-  var label=document.getElementById('rvLabel');
-  var reel=document.getElementById('rvReel');
-  var status=document.getElementById('rvStatus');
-  if(!badge||!stars||!score||!label||!reel||!status)return;
-  var fallbackUrl='https://maps.google.com/?cid=9771388271577679785';
+  var section=document.getElementById('reviews');
+  if(!section||section.hidden)return;
+  var summary=document.getElementById('reviewsSummary');
+  var grid=document.getElementById('reviewsGrid');
+  var moreGrid=document.getElementById('reviewsMoreGrid');
+  var moreButton=document.getElementById('reviewsMore');
+  var googleLink=document.getElementById('reviewsGoogleLink');
+  if(!summary||!grid||!moreGrid||!moreButton||!googleLink)return;
+  var fallbackUrl='';
   function text(value){return value==null?'':String(value);}
-  function addSep(parent){
-    var sep=document.createElement('span');
-    sep.className='rv-sep';
-    sep.textContent='◆';
-    parent.appendChild(sep);
+  function sentenceExcerpt(value){
+    if(value.length<=280)return value;
+    var sentences=value.match(/[^.!?]+[.!?]+(?:[”"']+)?|[^.!?]+$/g)||[];
+    var excerpt='';
+    for(var i=0;i<sentences.length;i++){
+      var next=(excerpt+sentences[i]).trim();
+      if(excerpt&&next.length>280)break;
+      excerpt=next;
+      if(excerpt.length>=280)break;
+    }
+    return excerpt&&excerpt.length<value.length?excerpt:value;
   }
-  function addReview(parent,review){
-    addSep(parent);
-    var item=document.createElement('span');
-    item.className='rv-item';
-    item.appendChild(document.createTextNode('"'+text(review.text)+'"'));
-    var author=document.createElement('em');
-    author.textContent=' — '+text(review.author||'Google reviewer');
-    item.appendChild(author);
-    parent.appendChild(item);
+  function makeCard(review,index){
+    var full=text(review.text);
+    var excerpt=sentenceExcerpt(full);
+    var card=document.createElement('article');
+    card.className='review-card';
+    var stars=document.createElement('div');
+    stars.className='review-card-stars';
+    var rating=Number(review.rating);
+    var rounded=Number.isFinite(rating)?Math.max(0,Math.min(5,Math.round(rating))):0;
+    stars.textContent=rounded?'★'.repeat(rounded)+'☆'.repeat(5-rounded):'Google review';
+    stars.setAttribute('aria-label',Number.isFinite(rating)?rating.toFixed(1)+' out of 5 stars':'Google review');
+    card.appendChild(stars);
+    var quote=document.createElement('blockquote');
+    var body=document.createElement('p');
+    body.className='review-card-text';
+    body.id='reviewText'+index;
+    body.textContent=excerpt;
+    quote.appendChild(body);
+    card.appendChild(quote);
+    if(excerpt!==full){
+      var expand=document.createElement('button');
+      expand.type='button';
+      expand.className='review-expand';
+      expand.textContent='Read full review';
+      expand.setAttribute('aria-expanded','false');
+      expand.setAttribute('aria-controls',body.id);
+      expand.addEventListener('click',function(){
+        var open=expand.getAttribute('aria-expanded')==='true';
+        body.textContent=open?excerpt:full;
+        expand.setAttribute('aria-expanded',String(!open));
+        expand.textContent=open?'Read full review':'Show less';
+      });
+      card.appendChild(expand);
+    }
+    var footer=document.createElement('div');
+    footer.className='review-card-footer';
+    var cite=document.createElement('cite');
+    cite.textContent=text(review.author||'Google reviewer');
+    footer.appendChild(cite);
+    var meta=document.createElement('span');
+    meta.className='review-card-meta';
+    meta.textContent='Google review'+(review.published?' · '+text(review.published):'');
+    footer.appendChild(meta);
+    card.appendChild(footer);
+    return card;
   }
   function render(data){
     var rating=Number(data.rating);
     var count=Number(data.reviewCount);
     var rounded=Number.isFinite(rating)?Math.max(0,Math.min(5,Math.round(rating))):0;
-    stars.textContent=rounded?'★'.repeat(rounded)+'☆'.repeat(5-rounded):'Google';
+    summary.textContent='';
+    var stars=document.createElement('span');
+    stars.className='reviews-summary-stars';
     stars.setAttribute('aria-label',Number.isFinite(rating)?rating.toFixed(1)+' out of 5 stars':'Google reviews');
-    score.textContent=Number.isFinite(rating)?rating.toFixed(1):'Google';
-    label.textContent=' · '+(Number.isFinite(count)?count.toLocaleString()+' reviews':'latest reviews')+(data.stale?' · cached':' · live');
-    badge.href=data.googleMapsUrl||fallbackUrl;
-    badge.setAttribute('aria-label',(Number.isFinite(rating)?rating.toFixed(1)+' stars — ':'')+'See the latest Google reviews');
-    reel.textContent='';
+    stars.textContent=rounded?'★'.repeat(rounded)+'☆'.repeat(5-rounded):'Google';
+    summary.appendChild(stars);
+    if(Number.isFinite(rating)){
+      var score=document.createElement('span');
+      score.className='reviews-summary-rating';
+      score.textContent=rating.toFixed(1);
+      summary.appendChild(score);
+    }
+    var countLabel=document.createElement('span');
+    countLabel.className='reviews-summary-count';
+    countLabel.textContent=Number.isFinite(count)?count.toLocaleString()+' Google reviews':'Current Google reviews';
+    summary.appendChild(countLabel);
+    if(data.googleMapsUrl){googleLink.href=data.googleMapsUrl;}
+    grid.textContent='';
+    moreGrid.textContent='';
     var reviews=Array.isArray(data.reviews)?data.reviews.filter(function(r){return r&&r.text;}):[];
     if(!reviews.length){
-      reel.classList.add('is-static');
-      var empty=document.createElement('span');
-      empty.className='rv-item rv-live-status';
+      var empty=document.createElement('p');
+      empty.className='reviews-status';
       empty.textContent='See the latest reviews on Google.';
-      reel.appendChild(empty);
+      grid.appendChild(empty);
       return;
     }
-    reviews.forEach(function(review){addReview(reel,review);});
-    reviews.forEach(function(review){addReview(reel,review);});
-    reel.classList.remove('is-static');
+    reviews.slice(0,3).forEach(function(review,index){grid.appendChild(makeCard(review,index));});
+    reviews.slice(3,5).forEach(function(review,index){moreGrid.appendChild(makeCard(review,index+3));});
+    var extra=Math.min(2,Math.max(0,reviews.length-3));
+    if(extra){
+      moreButton.hidden=false;
+      moreButton.textContent=extra===2?'View two more reviews':'View one more review';
+    }
   }
   function renderFallback(){
-    score.textContent='Google';
-    stars.textContent='★★★★★';
-    stars.setAttribute('aria-label','Google reviews');
-    label.textContent=' · see current reviews on Google';
-    badge.href=fallbackUrl;
-    badge.setAttribute('aria-label','See the latest Google reviews');
-    reel.textContent='';
-    reel.classList.add('is-static');
-    var item=document.createElement('span');
-    item.className='rv-item rv-live-status';
-    item.textContent='Live reviews are temporarily unavailable. See the latest reviews on Google.';
-    reel.appendChild(item);
+    summary.textContent='';
+    var status=document.createElement('span');
+    status.className='reviews-summary-count';
+    status.textContent='See current reviews on Google';
+    summary.appendChild(status);
+    grid.textContent='';
+    moreGrid.textContent='';
+    moreGrid.hidden=true;
+    moreButton.hidden=true;
+    var item=document.createElement('p');
+    item.className='reviews-status';
+    item.textContent='Live reviews are temporarily unavailable. Please use the Google link below.';
+    grid.appendChild(item);
+    googleLink.removeAttribute('href');
   }
-  function load(){
-    fetch('/api/google-reviews',{headers:{'Accept':'application/json'},credentials:'same-origin'})
-      .then(function(response){if(!response.ok)throw new Error('reviews unavailable');return response.json();})
-      .then(render)
-      .catch(renderFallback);
-  }
-  function scheduleLoad(){
-    load();
-    window.setInterval(load,3600000);
-  }
-  function deferLoad(){ window.setTimeout(scheduleLoad,5000); }
-  if(document.readyState==='complete'){ deferLoad(); }
-  else { window.addEventListener('load',deferLoad,{once:true}); }
+  moreButton.addEventListener('click',function(){
+    var open=moreButton.getAttribute('aria-expanded')==='true';
+    moreGrid.hidden=open;
+    moreButton.setAttribute('aria-expanded',String(!open));
+    moreButton.textContent=open?(moreGrid.children.length===2?'View two more reviews':'View one more review'):'Show fewer reviews';
+  });
+  fetch('/api/google-reviews',{headers:{'Accept':'application/json'},credentials:'same-origin'})
+    .then(function(response){if(!response.ok)throw new Error('reviews unavailable');return response.json();})
+    .then(render)
+    .catch(renderFallback);
 })();
 </script>
 <script src="/assets/header.js?v=20260901d" defer></script>

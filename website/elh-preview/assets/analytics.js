@@ -1,5 +1,5 @@
 /* Eternal Life Hospice — Cookie Consent + Analytics loader
-   (GA4 + Microsoft Clarity + Brevo)
+   (GA4 + Microsoft Clarity + Brevo + Thryv)
    Analytics load only after explicit visitor consent.
    Consent stored in localStorage: elh_cc = "all" | "essential"
    Global: window.elhCookieSettings() — re-opens preferences at any time  */
@@ -174,7 +174,8 @@
       'https://www.googletagmanager.com',
       'https://www.google-analytics.com',
       'https://www.clarity.ms',
-      'https://cdn.brevo.com'
+      'https://cdn.brevo.com',
+      'https://tags.tiqcdn.com'
     ];
     preconnects.forEach(function (origin) {
       var l = document.createElement('link');
@@ -207,6 +208,14 @@
     var b = document.createElement('script');
     b.async = true; b.src = 'https://cdn.brevo.com/js/sdk-loader.js';
     document.head.appendChild(b);
+
+    // Thryv Marketing Center website analytics and heatmap
+    window.utag_data = window.utag_data || {};
+    window.Parameters = window.Parameters || { ExternalUid: 'cii463' };
+    var thryv = document.createElement('script');
+    thryv.async = true;
+    thryv.src = 'https://tags.tiqcdn.com/utag/marketingcenter/common/prod/utag.js';
+    document.head.appendChild(thryv);
 
     // Metricool
     var mc = document.createElement('script');

@@ -84,6 +84,7 @@ SENTINELS=(
   "SENTINEL: check-header-parity.py self-test OK"
   "SENTINEL: test-header-mobile.py browser checks OK"
   "SENTINEL: check-footer-parity.py self-test OK"
+  "SENTINEL: check-agency-separation.py OK"
 )
 
 SENTINEL_FAIL=0
