@@ -462,7 +462,7 @@ def render_page(c):
   <link rel="preload" as="font" href="assets/fonts/JostELH-SemiBold.woff2" type="font/woff2" crossorigin>
   <link rel="preload" href="assets/elh.css?v=20260901" as="style">
   <link rel="stylesheet" href="assets/elh.css?v=20260901">
-  <link rel="stylesheet" href="/assets/header-nav.css?v=20260901ab">
+  <link rel="stylesheet" href="/assets/header-nav.css?v=20260920a">
 {schema_tags}
 {head_scripts}
 </head><body>

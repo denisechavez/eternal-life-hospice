@@ -44,6 +44,7 @@ set +o pipefail
   python3 ../test-header-mobile.py
   python3 ../check-footer-parity.py
   python3 ../check-agency-separation.py
+  python3 ../test-journal-campaign.py
   python3 ../test-google-reviews.py
   python3 ../test-replit-chat-coverage.py
   node assets/build-search-index.js --check
@@ -86,6 +87,7 @@ SENTINELS=(
   "SENTINEL: test-header-mobile.py browser checks OK"
   "SENTINEL: check-footer-parity.py self-test OK"
   "SENTINEL: check-agency-separation.py OK"
+  "SENTINEL: test-journal-campaign.py OK"
   "SENTINEL: test-google-reviews.py OK"
   "SENTINEL: test-replit-chat-coverage.py OK"
 )

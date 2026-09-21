@@ -15,6 +15,7 @@ const path = require('path');
 const BASE = path.join(__dirname, '..');
 const FAMILY_GUIDE = fs.readFileSync(path.join(BASE, 'family-guide.html'), 'utf8');
 const CHAT = fs.readFileSync(path.join(__dirname, 'chat.js'), 'utf8');
+const HEADER_CSS = fs.readFileSync(path.join(__dirname, 'header-nav.css'), 'utf8');
 let allPassed = true;
 
 function check(condition, message) {
@@ -46,6 +47,11 @@ check(
   /var callbackInstance = 0;/.test(CHAT) &&
     /var callbackPrefix = "elhc-callback-" \+ \(\+\+callbackInstance\) \+ "-";/.test(CHAT),
   'callback form IDs include an incrementing instance prefix'
+);
+check(
+  HEADER_CSS.includes('.skip-link{position:fixed;top:-100px') &&
+    HEADER_CSS.includes('.skip-link:focus,.skip-link:focus-visible{top:0}'),
+  'shared skip link stays offscreen until it receives keyboard focus'
 );
 
 const callbackFields = ['name', 'phone', 'email', 'time', 'notes'];

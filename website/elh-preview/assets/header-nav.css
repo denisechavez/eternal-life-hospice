@@ -1,4 +1,6 @@
 :root{--elh-header-height:112px}
+.skip-link{position:fixed;top:-100px;left:1rem;z-index:10000;padding:.72rem 1rem;border-radius:0 0 8px 8px;background:#fff;color:#3b1536;font-weight:700;box-shadow:0 4px 16px rgba(0,0,0,.18);transition:top .16s ease}
+.skip-link:focus,.skip-link:focus-visible{top:0}
 #hdr{position:sticky!important;top:0;left:0;right:0;z-index:1000;padding:0 2rem!important;background:var(--deep,#3C1C3B);transition:background .25s ease,box-shadow .25s ease}
 #hdr.scrolled{background:var(--cream,#F5F0EB);box-shadow:0 1px 0 var(--cream-dark,#D8CDBF),0 10px 26px rgba(56,27,55,.08)}
 #hdr+.cred-strip{margin-top:0!important}

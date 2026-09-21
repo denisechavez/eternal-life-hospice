@@ -1624,3 +1624,73 @@ mtime_ms = 1788946980938
 storage_uri = "gcs://replit-rams-assets-kirk/rams/assets/repl:e1b2f643-7869-4565-af0e-10c34575ee8d/0ccbf628-d8dc-4b52-a18f-9f1b3eda2578/4238f654-7cf0-472c-b7ac-12f74050225f"
 storage_version_token = "1788946986662732"
 content_type = "text/markdown"
+
+[[outputs]]
+id = "Z_74YO223WvTWcxs24Jc-"
+uri = "file://exports/email-campaigns/30-day-journal/campaign-plan.md"
+type = "text"
+title = "30-Day Journal Email Plan"
+description = "Subjects, audiences, dates, plain-text versions, and approval notes for all four weekly emails."
+logical_id = "b325dff9-cdf5-44c7-b0bb-5165d5fe5e60"
+content_hash = "sha256:456bd9d6a5f0980adac0b8746ff06cebc128bfcf678cd91c0d747022e8771c61"
+size = 7435
+mtime_ms = 1789965342133
+storage_uri = "gcs://replit-rams-assets-kirk/rams/assets/repl:e1b2f643-7869-4565-af0e-10c34575ee8d/b325dff9-cdf5-44c7-b0bb-5165d5fe5e60/45a33778-843c-4c12-8ff5-aaa7eb069235"
+storage_version_token = "1789965954373006"
+content_type = "text/markdown"
+
+[[outputs]]
+id = "GSLgpkQ5vYTm94gmluhcg"
+uri = "file://exports/email-campaigns/30-day-journal/campaign-1.html"
+type = "html"
+title = "Weekly Email 1 — Start With Clarity"
+description = "Review-ready HTML email proposed for September 23, 2026."
+logical_id = "a6f6c4f1-8509-4ad7-8acc-81f66b80e259"
+content_hash = "sha256:44da135c71e0dffa8549fc76000b6fcb698cdbc3378ab4c5415ba9c237696f83"
+size = 4032
+mtime_ms = 1789965755776
+storage_uri = "gcs://replit-rams-assets-kirk/rams/assets/repl:e1b2f643-7869-4565-af0e-10c34575ee8d/a6f6c4f1-8509-4ad7-8acc-81f66b80e259/31783997-630d-41be-8b82-3a690257bd0c"
+storage_version_token = "1789965955045915"
+content_type = "text/html"
+
+[[outputs]]
+id = "F56TW8RZVqueqQTty-3ai"
+uri = "file://exports/email-campaigns/30-day-journal/campaign-2.html"
+type = "html"
+title = "Weekly Email 2 — Diagnosis Guides"
+description = "Review-ready HTML email proposed for September 30, 2026."
+logical_id = "112a478c-cf81-4014-b1e2-6d8819c863a4"
+content_hash = "sha256:48545d666ebf0c303cca838f00086792bda57c6304bdbbe65e0af0174c3c5a27"
+size = 4196
+mtime_ms = 1789965755800
+storage_uri = "gcs://replit-rams-assets-kirk/rams/assets/repl:e1b2f643-7869-4565-af0e-10c34575ee8d/112a478c-cf81-4014-b1e2-6d8819c863a4/a5f67d20-e9a5-4ee3-a58c-6cd4b9314e21"
+storage_version_token = "1789965955656627"
+content_type = "text/html"
+
+[[outputs]]
+id = "bV3C0vh-7Sr5hFwUW_Kfl"
+uri = "file://exports/email-campaigns/30-day-journal/campaign-3.html"
+type = "html"
+title = "Weekly Email 3 — Care Settings"
+description = "Review-ready HTML email proposed for October 7, 2026."
+logical_id = "364e006d-0ba4-42bd-8bcd-2dd58fee8b67"
+content_hash = "sha256:a05a1e1a36a1aea69ab99b5a4977bd575111df42ec6aeadf6fdbe6f6399e5df0"
+size = 3718
+mtime_ms = 1789965755823
+storage_uri = "gcs://replit-rams-assets-kirk/rams/assets/repl:e1b2f643-7869-4565-af0e-10c34575ee8d/364e006d-0ba4-42bd-8bcd-2dd58fee8b67/08e58823-2ac6-41d3-9bf3-161fa2b211c3"
+storage_version_token = "1789965956266166"
+content_type = "text/html"
+
+[[outputs]]
+id = "bnnqKSrVI23Yiv-7ck6ZN"
+uri = "file://exports/email-campaigns/30-day-journal/campaign-4.html"
+type = "html"
+title = "Weekly Email 4 — Support for Families"
+description = "Review-ready HTML email proposed for October 14, 2026."
+logical_id = "a1339d27-ef46-4585-91f8-4aeb9563b6c7"
+content_hash = "sha256:785f24fd9ff6ddea38b5aeb280b4db31f5bdd0f47eec4e9cdffa789b73b563fe"
+size = 3904
+mtime_ms = 1789965755846
+storage_uri = "gcs://replit-rams-assets-kirk/rams/assets/repl:e1b2f643-7869-4565-af0e-10c34575ee8d/a1339d27-ef46-4585-91f8-4aeb9563b6c7/f7227043-86fe-432d-acbe-a71392def1e3"
+storage_version_token = "1789965956944631"
+content_type = "text/html"

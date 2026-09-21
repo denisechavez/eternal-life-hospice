@@ -10,9 +10,12 @@ import gzip
 import io
 import json
 import os
+import re
 import socket
 import sys
-from urllib.parse import parse_qs, urlsplit
+from datetime import datetime
+from zoneinfo import ZoneInfo
+from urllib.parse import parse_qs, unquote, urlsplit
 
 from chat_api import (
     ChatProviderError,
@@ -38,6 +41,7 @@ from google_reviews import GoogleReviewsError, get_reviews
 
 BASE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.join(BASE, "elh-preview")
+JOURNAL_MANIFEST = os.path.join(BASE, "content", "30-day-journal-manifest.json")
 # Internal-only routes for the workspace canvas hub (never published to the site):
 CANVAS_HUB = os.path.join(BASE, "canvas-hub")
 CONFIDENTIAL_CANVAS_NAMESPACES = frozenset(
@@ -133,6 +137,135 @@ class PrettyURLHandler(http.server.SimpleHTTPRequestHandler):
             if not ext and os.path.isfile(resolved + ".html"):
                 return resolved + ".html"
         return resolved
+
+    @staticmethod
+    def _journal_today():
+        """Return the publication date in the campaign's local timezone.
+
+        ELH_JOURNAL_DATE is deliberately supported for deterministic previews
+        and regression tests; production uses the real America/Los_Angeles date.
+        """
+        override = os.environ.get("ELH_JOURNAL_DATE")
+        if override:
+            try:
+                return datetime.strptime(override, "%Y-%m-%d").date().isoformat()
+            except ValueError:
+                return None
+        return datetime.now(ZoneInfo("America/Los_Angeles")).date().isoformat()
+
+    @classmethod
+    def _journal_manifest(cls):
+        try:
+            with open(JOURNAL_MANIFEST, encoding="utf-8") as source:
+                payload = json.load(source)
+            articles = payload["articles"]
+            if payload.get("timezone") != "America/Los_Angeles" or not isinstance(articles, list):
+                return None
+            if any(not isinstance(a, dict) or not isinstance(a.get("slug"), str)
+                   or not re.fullmatch(r"[a-z0-9]+(?:-[a-z0-9]+)*", a["slug"])
+                   or not re.fullmatch(r"2026-\d\d-\d\d", a.get("date", ""))
+                   for a in articles):
+                return None
+            return articles
+        except (OSError, ValueError, TypeError, KeyError):
+            return None
+
+    @classmethod
+    def _future_journal_path(cls, path):
+        if cls._journal_today() is None:
+            return True
+        try:
+            clean = unquote(path)
+            # A second decode catches double-encoded separators/hyphens.
+            clean = unquote(clean)
+        except Exception:
+            return True
+        clean = clean.rstrip("/")
+        if clean.endswith(".html"):
+            clean = clean[:-5]
+        if not clean.startswith("/blog/"):
+            return False
+        slug = clean[len("/blog/"):]
+        manifest = cls._journal_manifest()
+        if manifest is None:
+            return True
+        return any(item.get("slug") == slug and item.get("date", "") > cls._journal_today()
+                   for item in manifest)
+
+    def _send_journal_artifact(self, path):
+        """Filter generated campaign artifacts at request time."""
+        if self._journal_today() is None or self._journal_manifest() is None:
+            self.send_error(503, "Journal publication schedule unavailable")
+            return True
+        try:
+            with open(path, "rb") as source:
+                body = source.read()
+        except OSError:
+            return False
+        if path.endswith("/blog.html"):
+            text = body.decode("utf-8")
+            today = self._journal_today()
+            def remove_future(match):
+                return "" if match.group(1) > today else match.group(0)
+            text = re.sub(
+                r'<div class="blog-featured"[^>]+data-publish-date="([^"]+)"[^>]*>[\s\S]*?</div>\s*</div>',
+                remove_future, text,
+            )
+            text = re.sub(
+                r'<a class="rc"[^>]+data-publish-date="([^"]+)"[^>]*>[\s\S]*?</a>',
+                remove_future, text,
+            )
+            # Blog JSON-LD is also part of the public archive response.  Filter
+            # campaign postings there so crawlers cannot discover tomorrow's
+            # URL even though the generated source file is already staged.
+            campaign_dates = {"/blog/" + item["slug"]: item.get("date", "")
+                              for item in self._journal_manifest()}
+            def filter_ld(match):
+                try:
+                    payload = json.loads(match.group(1))
+                    if payload.get("@type") == "Blog" and isinstance(payload.get("blogPost"), list):
+                        payload["blogPost"] = [
+                            post for post in payload["blogPost"]
+                            if campaign_dates.get(urlsplit(post.get("url", "")).path, "") <= today
+                        ]
+                        return match.group(0).replace(match.group(1), json.dumps(payload, ensure_ascii=False))
+                except (ValueError, TypeError, AttributeError):
+                    pass
+                return match.group(0)
+            text = re.sub(r'<script type="application/ld\+json">([\s\S]*?)</script>',
+                          filter_ld, text)
+            body = text.encode("utf-8")
+        elif path.endswith("search-index.json"):
+            try:
+                entries = json.loads(body)
+                campaign = {"/blog/" + item["slug"]: item.get("date", "")
+                            for item in self._journal_manifest()}
+                entries = [entry for entry in entries
+                           if entry.get("url") not in campaign
+                           or campaign[entry["url"]] <= self._journal_today()]
+                body = json.dumps(entries, ensure_ascii=False, separators=(",", ":")).encode()
+            except (ValueError, TypeError, KeyError):
+                return False
+        elif path.endswith("sitemap.xml"):
+            text = body.decode("utf-8")
+            today = self._journal_today()
+            text = re.sub(
+                r'\s*<url>\s*<loc>https://eternallifehospice\.com/blog/([^<]+)</loc>\s*'
+                r'<lastmod>([^<]+)</lastmod>[\s\S]*?</url>',
+                lambda match: "" if match.group(2) > today else match.group(0),
+                text,
+            )
+            body = text.encode("utf-8")
+        else:
+            return False
+        self.send_response(200)
+        self.send_header("Content-Type", self.guess_type(path))
+        self.send_header("Content-Length", str(len(body)))
+        self.send_header("Cache-Control", "public, max-age=0, must-revalidate")
+        self.end_headers()
+        if self.command != "HEAD":
+            self.wfile.write(body)
+        return True
 
     def _has_header(self, name):
         prefix = f"{name.lower()}:".encode("ascii")
@@ -287,6 +420,15 @@ class PrettyURLHandler(http.server.SimpleHTTPRequestHandler):
             return
         if self._send_canonical_redirect(parsed):
             return
+        if self._future_journal_path(parsed.path):
+            self.send_error(404)
+            return
+        if parsed.path in ("/blog", "/blog/", "/blog.html"):
+            self._send_journal_artifact(os.path.join(ROOT, "blog.html"))
+            return
+        if parsed.path in ("/assets/search-index.json", "/sitemap.xml"):
+            self._send_journal_artifact(os.path.join(ROOT, parsed.path.lstrip("/")))
+            return
         super().do_HEAD()
 
     def do_GET(self):
@@ -295,6 +437,15 @@ class PrettyURLHandler(http.server.SimpleHTTPRequestHandler):
             self._send_health()
             return
         if self._send_canonical_redirect(parsed):
+            return
+        if self._future_journal_path(parsed.path):
+            self.send_error(404)
+            return
+        if parsed.path in ("/blog", "/blog/", "/blog.html"):
+            self._send_journal_artifact(os.path.join(ROOT, "blog.html"))
+            return
+        if parsed.path in ("/assets/search-index.json", "/sitemap.xml"):
+            self._send_journal_artifact(os.path.join(ROOT, parsed.path.lstrip("/")))
             return
         if parsed.path == "/api/chat":
             self._send_json(
