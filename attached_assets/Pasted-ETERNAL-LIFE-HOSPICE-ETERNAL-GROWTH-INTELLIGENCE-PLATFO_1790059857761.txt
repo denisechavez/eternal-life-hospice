@@ -1,0 +1,919 @@
+ETERNAL LIFE HOSPICE
+ETERNAL GROWTH INTELLIGENCE — PLATFORM REORGANIZATION
+
+We are reorganizing the current Marketing & Census workspace into a cleaner executive business-intelligence system.
+
+NEW PLATFORM NAME:
+
+ETERNAL GROWTH INTELLIGENCE
+
+Subtitle:
+
+Performance · Marketing · Census · Expansion
+
+The guiding principle is:
+
+WHAT GETS MEASURED GETS MANAGED.
+
+The primary navigation should focus on measurable outcomes, performance, trends, acquisition, census and market expansion.
+
+Content production should no longer occupy the main performance navigation.
+
+==================================================
+CORE OPERATING MODEL
+==================================================
+
+Eternal Growth Intelligence should answer:
+
+1. What is happening?
+2. What is driving it?
+3. Where is growth occurring?
+4. Where is performance weakening?
+5. What requires attention?
+6. What sources are producing calls, referrals, admissions and eventually census?
+
+The system should distinguish clearly between:
+
+MEASURE / ANALYZE / MANAGE
+
+and
+
+CREATE / REVIEW / PUBLISH
+
+The second function will live in a separate workspace called:
+
+ETERNAL STUDIO
+
+==================================================
+PRIMARY NAVIGATION
+==================================================
+
+Reorganize the main navigation into:
+
+1. EXECUTIVE
+2. MARKETING PERFORMANCE
+3. REFERRAL PERFORMANCE
+4. CENSUS
+5. EXPANSION
+6. ATTRIBUTION
+7. INTELLIGENCE
+
+Do not include Publishing as a main navigation category.
+
+==================================================
+1. EXECUTIVE
+==================================================
+
+Subtitle:
+
+Enterprise Performance
+
+Pages:
+
+- Executive Overview
+- Census Performance
+- Referral Performance
+- Marketing Performance
+- Growth Outlook
+
+The Executive Overview should provide a concise leadership view.
+
+Future KPI cards should include only metrics backed by reliable sources:
+
+- Current Census
+- Admissions MTD
+- Referrals MTD
+- Referral Conversion Rate
+- Website Calls
+- Organic Search Growth
+- Top Referral Sources
+- Top Markets
+- Month-over-Month Change
+
+If a reliable data source does not yet exist, do not invent a value.
+
+Display:
+
+Awaiting Source
+
+or
+
+Reporting Feed Pending
+
+==================================================
+2. MARKETING PERFORMANCE
+==================================================
+
+Subtitle:
+
+Visibility · Acquisition · Conversion
+
+Create measured performance areas for:
+
+SEO
+Website
+Calls & Conversions
+Google Business Profile
+Social Performance
+Email Performance
+Journal Performance
+Care Brief Performance
+Advertising
+Backlinks & PR
+
+--------------------------------------------------
+SEO
+--------------------------------------------------
+
+Source:
+Google Search Console
+
+Metrics:
+
+- Impressions
+- Clicks
+- CTR
+- Average Position
+- Search Queries
+- Top Pages
+- Keyword Movement
+- Non-Branded Search Growth
+- Local Search Performance
+
+--------------------------------------------------
+WEBSITE
+--------------------------------------------------
+
+Source:
+GA4
+
+Metrics:
+
+- Users
+- Sessions
+- Landing Pages
+- Traffic Sources
+- Engagement
+- Conversion Events where configured
+
+--------------------------------------------------
+CALLS & CONVERSIONS
+--------------------------------------------------
+
+Source:
+
+WhatConverts
+
+IMPORTANT:
+WhatConverts is already connected to the Eternal Life Hospice website for call tracking.
+
+Track where available:
+
+- Total Calls
+- Unique Calls
+- Calls by Source
+- Calls by Medium
+- Calls by Landing Page
+- Calls by Campaign
+- Organic Search Calls
+- Direct Calls
+- Paid Calls if applicable
+- Call Duration
+- Qualified / Unqualified status if configured
+
+Do not ingest patient names or clinical information.
+
+This is business attribution only.
+
+--------------------------------------------------
+GOOGLE BUSINESS PROFILE
+--------------------------------------------------
+
+Status:
+
+Connected through Thryv.
+
+Potential metrics:
+
+- Profile Views
+- Calls
+- Website Clicks
+- Direction Requests
+- Reviews
+- Review Velocity
+- Search Visibility where available
+
+Until a reliable reporting feed is confirmed, display:
+
+Connected — Reporting Feed Pending
+
+--------------------------------------------------
+SOCIAL PERFORMANCE
+--------------------------------------------------
+
+Social content is created outside Eternal Growth Intelligence.
+
+This system monitors results only.
+
+Future metrics:
+
+- Reach
+- Impressions
+- Engagement
+- Engagement Rate
+- Clicks
+- Follower Movement
+- Best Performing Content
+- Website Traffic
+- Leads where attributable
+
+Status:
+
+Connected through Thryv — Reporting Feed Pending
+
+--------------------------------------------------
+EMAIL PERFORMANCE
+--------------------------------------------------
+
+Email content is created in Eternal Studio.
+
+Growth Intelligence displays results only.
+
+Future metrics:
+
+- Sends
+- Delivered
+- Opens
+- Open Rate
+- Clicks
+- Click Rate
+- Unsubscribes
+- Website Visits
+- Calls / Conversions where attributable
+
+If the sending platform is not yet connected:
+
+Performance Connection Required
+
+--------------------------------------------------
+JOURNAL PERFORMANCE
+--------------------------------------------------
+
+Journal content is created in Eternal Studio.
+
+Measure:
+
+- Articles Published
+- Search Impressions
+- Organic Clicks
+- Average Position
+- Article Traffic
+- Engagement
+- Calls Assisted
+- Best Performing Topics
+
+Use Search Console, GA4 and WhatConverts where attribution is available.
+
+--------------------------------------------------
+CARE BRIEF PERFORMANCE
+--------------------------------------------------
+
+Measure once distribution begins:
+
+- Issues Published
+- Distribution
+- Opens
+- Clicks
+- Downloads
+- Website Visits
+- Referral Partner Engagement
+
+--------------------------------------------------
+ADVERTISING
+--------------------------------------------------
+
+If no paid media source is connected:
+
+Awaiting Source
+
+Future metrics:
+
+- Spend
+- Impressions
+- Clicks
+- CPC
+- Leads
+- Cost Per Lead
+- Referrals
+- Cost Per Referral
+- Admissions where attribution is reliable
+
+--------------------------------------------------
+BACKLINKS & PR
+--------------------------------------------------
+
+Track initially where supported:
+
+- External Links
+- Referring Domains
+- Earned Links
+- Media Mentions
+- Press Placements
+
+==================================================
+3. REFERRAL PERFORMANCE
+==================================================
+
+Subtitle:
+
+Relationships · Pipeline · Conversion
+
+Build the structure now.
+
+Do not fabricate results.
+
+Future metrics:
+
+- Total Referrals
+- New Referral Sources
+- Active Referral Sources
+- Referrals by Source
+- Referrals by Source Type
+- Physician Referrals
+- Hospital Referrals
+- Facility Referrals
+- Community Referrals
+- Referral → Evaluation Conversion
+- Evaluation → Admission Conversion
+- Referral → Admission Conversion
+- Top Referral Partners
+- Monthly Referral Trend
+
+Current status:
+
+Referral Data Source Required
+
+No PHI is required for this executive reporting system.
+
+==================================================
+4. CENSUS
+==================================================
+
+Subtitle:
+
+Admissions · Movement · Trends
+
+Build the dashboard structure but do not populate artificial data.
+
+Future KPIs:
+
+- Current Census
+- Beginning Census
+- Admissions
+- Deaths
+- Discharges
+- Transfers
+- Revocations if tracked
+- Ending Census
+- Net Census Change
+- Average Daily Census
+- Census Trend
+- Admissions by Source
+- Admissions by Geography
+- Admissions by Payer where appropriate
+
+Primary visualization:
+
+Beginning Census
+→ Admissions
+→ Census Losses
+→ Ending Census
+
+Trend views:
+
+- 30 Days
+- 90 Days
+- 6 Months
+- 12 Months
+
+Current status:
+
+Aggregate Census Data Source Required
+
+This system must remain non-PHI.
+
+==================================================
+5. EXPANSION
+==================================================
+
+Subtitle:
+
+Markets · Penetration · Opportunity
+
+Create geographic market-performance views.
+
+Initial markets:
+
+- Thousand Oaks
+- Westlake Village
+- Simi Valley
+- Calabasas
+- Camarillo
+- Moorpark
+- Ventura County
+- Los Angeles County
+
+For each market eventually display:
+
+- Search Impressions
+- Search Clicks
+- Average Position
+- Website Traffic
+- Calls
+- Referrals
+- Admissions
+- Referral Sources
+- Outreach Activity
+- Census Contribution
+
+Current measurable sources:
+
+- Search Console
+- GA4
+- WhatConverts where geography or landing-page attribution exists
+
+Referral and census fields should show:
+
+Awaiting Source
+
+until connected.
+
+==================================================
+GROWTH HOT ZONES
+==================================================
+
+Add a Growth Hot Zones feature under Expansion.
+
+Do not create this as a separate top-level menu item.
+
+Purpose:
+
+Show where visibility, inquiries and future business growth are concentrating geographically.
+
+Create three layers:
+
+1. VISIBILITY HOT ZONES
+
+Based on:
+
+- Search Impressions
+- Search Clicks
+- Local Page Performance
+- Website Traffic
+
+2. INQUIRY HOT ZONES
+
+Based on:
+
+- Website Calls
+- WhatConverts Attribution
+- Website Leads where available
+
+3. GROWTH HOT ZONES
+
+Future layer based on:
+
+- Referrals
+- Evaluations
+- Admissions
+- Census Contribution
+
+Until referral and census feeds exist, clearly label this future layer:
+
+Awaiting Referral / Census Data
+
+Also create:
+
+OPPORTUNITY ZONES
+
+Purpose:
+
+Identify areas with signs of demand but weak Eternal capture.
+
+Examples:
+
+- high search visibility + low calls
+- increasing impressions + weak ranking
+- strong traffic + weak conversion
+
+Do not invent market scores.
+
+Only calculate from connected sources.
+
+==================================================
+6. ATTRIBUTION
+==================================================
+
+Subtitle:
+
+Sources · Conversion · Census Contribution
+
+Build the framework now.
+
+Ultimate model:
+
+Source
+→ Interaction
+→ Lead
+→ Referral
+→ Evaluation
+→ Admission
+→ Census
+
+Current measurable example:
+
+Google Search
+→ Website
+→ WhatConverts Call
+
+Future complete examples:
+
+Google Search
+→ Website
+→ Call
+→ Referral
+→ Admission
+
+Physician Outreach
+→ Referral
+→ Admission
+
+Email
+→ Journal Article
+→ Website Call
+
+Google Business Profile
+→ Call
+→ Evaluation
+
+Clearly distinguish:
+
+- Measured
+- Partially Attributed
+- Awaiting Connection
+
+Do not imply end-to-end attribution where the data does not yet exist.
+
+==================================================
+7. INTELLIGENCE
+==================================================
+
+Subtitle:
+
+Patterns · Opportunities · Alerts
+
+This layer should interpret connected data.
+
+Create three categories:
+
+WINS
+WATCH
+OPPORTUNITY
+
+Examples only:
+
+Wins:
+- search visibility rising
+- referral conversion improving
+- strong article gaining traffic
+
+Watch:
+- traffic rising but calls flat
+- rankings improving without conversion
+
+Opportunity:
+- strong search demand with weak rankings
+- market visibility without conversion
+- geographic area with rising interest
+
+IMPORTANT:
+
+Do not generate insights from missing data.
+
+Every insight must trace back to a real source.
+
+==================================================
+ETERNAL STUDIO
+==================================================
+
+Create a separate tab/workspace called:
+
+ETERNAL STUDIO
+
+Subtitle:
+
+Create · Review · Publish
+
+This is not part of the main Growth Intelligence performance navigation.
+
+Inside Eternal Studio:
+
+- Eternal Journal
+- Email
+- Eternal Care Brief
+- Content Calendar
+- Review & Approvals
+- Asset Library
+
+For now these are the primary production workflows handled inside this platform.
+
+Social content is produced outside the platform.
+
+Social results are monitored in Eternal Growth Intelligence.
+
+==================================================
+SECONDARY OPERATIONS / DATA AREA
+==================================================
+
+Create a secondary utility area rather than a primary executive category.
+
+Sections:
+
+- Data Connections
+- Reporting Health
+- Change Log
+- Data Definitions
+
+==================================================
+DATA CONNECTIONS
+==================================================
+
+Show each source and status.
+
+GOOGLE SEARCH CONSOLE
+Status:
+Connected / Available
+
+Purpose:
+Organic search intelligence
+
+GA4
+Status:
+Available / confirm dashboard ingestion
+
+Purpose:
+Website traffic and engagement
+
+WHATCONVERTS
+Status:
+Connected to Website
+
+Purpose:
+Call Tracking & Attribution
+
+GOOGLE BUSINESS PROFILE
+Status:
+Connected through Thryv
+
+Dashboard feed:
+To Confirm
+
+SOCIAL ACCOUNTS
+Status:
+Connected through Thryv
+
+Dashboard feed:
+To Confirm
+
+THRYV
+Status:
+Onboarding
+
+Purpose:
+SEO, marketing and reporting support
+
+EMAIL PLATFORM
+Status:
+Performance Feed Required
+
+REFERRAL PIPELINE
+Status:
+Data Source Required
+
+CENSUS
+Status:
+Aggregate Data Source Required
+
+ADVERTISING
+Status:
+Awaiting Source
+
+==================================================
+REPORTING HEALTH
+==================================================
+
+Create a source-health view showing:
+
+- Connected
+- Partially Connected
+- Awaiting Source
+- Last Sync
+- Data Freshness
+- Sync Errors
+- Reporting Delays
+
+If a data source is stale or disconnected, say so clearly.
+
+Never silently display old data.
+
+==================================================
+CHANGE LOG
+==================================================
+
+Create a structured website / SEO change log.
+
+This is especially important because both Eternal's internal team and Thryv may contribute to SEO or website work.
+
+Track:
+
+- Date
+- URL / Page
+- Change
+- Reason
+- Keyword / Business Objective
+- Team Responsible
+- Expected Result
+- Validation
+- Notes
+
+Thryv contacts:
+
+Kevin Stack
+Account Executive
+
+Kellie Lester
+Client Success Manager
+
+Backend SEO implementation contact:
+
+@seoreporting
+seoreporting@thryv.com
+
+Any meaningful website or SEO change made by either team should be visible here.
+
+==================================================
+DATA DEFINITIONS
+==================================================
+
+Create a KPI dictionary.
+
+Every metric should have:
+
+- Metric Name
+- Definition
+- Data Source
+- Formula
+- Refresh Frequency
+- Known Limitations
+
+Examples:
+
+Organic CTR
+
+Source:
+Search Console
+
+Formula:
+Clicks ÷ Impressions
+
+Referral-to-Admission Conversion
+
+Source:
+Future Referral Pipeline
+
+Formula:
+Admissions from Referrals ÷ Qualified Referrals
+
+Net Census Change
+
+Source:
+Future Census Feed
+
+Formula:
+Ending Census − Beginning Census
+
+Do not allow different dashboards to calculate the same KPI differently.
+
+==================================================
+DESIGN PRINCIPLE
+==================================================
+
+The interface should remain:
+
+- calm
+- premium
+- executive
+- clear
+- restrained
+
+Do not flood screens with metrics.
+
+Prioritize:
+
+OUTCOME
+→ TREND
+→ DRIVER
+→ ACTION
+
+Each major dashboard should answer:
+
+1. What happened?
+2. Is it improving or declining?
+3. What is driving it?
+4. Where should attention go next?
+
+==================================================
+DATA INTEGRITY RULE
+==================================================
+
+The system must follow this rule:
+
+CONNECTED SOURCES ONLY.
+
+If there is no reliable source, display:
+
+Awaiting Source
+
+or
+
+Reporting Feed Pending
+
+Never populate invented, placeholder or illustrative business-performance data.
+
+==================================================
+DO NOT BUILD FUNNELS YET
+==================================================
+
+Funnels will be Phase Two.
+
+Do not build acquisition funnels during this reorganization.
+
+The sequence is:
+
+PHASE ONE:
+Complete Eternal Growth Intelligence
+
+PHASE TWO:
+Use the intelligence and Hot Zone data to design acquisition funnels.
+
+Do not mix these phases.
+
+==================================================
+IMPLEMENTATION SEQUENCE
+==================================================
+
+Before making broad structural changes:
+
+1. Inventory the existing navigation.
+2. Inventory existing working dashboard components.
+3. Map each existing component into the new architecture.
+4. Identify duplicate or obsolete sections.
+5. Confirm currently connected data sources.
+6. Identify metrics that can populate immediately.
+7. Identify metrics awaiting sources.
+8. Preserve all working integrations.
+9. Create a migration map.
+
+Then implement the new navigation and page organization.
+
+Do not modify the public Eternal Life Hospice website.
+
+This task applies only to the Eternal Growth Intelligence application.
+
+==================================================
+FINAL VALIDATION
+==================================================
+
+After implementation return:
+
+1. Old navigation → new navigation map
+2. Pages/components reused
+3. Pages/components removed or relocated
+4. Eternal Studio location and contents
+5. Connected sources confirmed
+6. Sources awaiting feeds
+7. WhatConverts connection status
+8. Hot Zone architecture
+9. Data-integrity safeguards
+10. Change Log status
+11. KPI dictionary status
+12. Exact files changed
+13. Build/typecheck results
+14. Visual review results
+15. Confirmation that the public hospice website was untouched
+
+STOP after the reorganization and validation.
+
+Do not build funnels yet.
+Do not add financial/EBITDA intelligence yet.
+Do not expand scope beyond Eternal Growth Intelligence and Eternal Studio.
