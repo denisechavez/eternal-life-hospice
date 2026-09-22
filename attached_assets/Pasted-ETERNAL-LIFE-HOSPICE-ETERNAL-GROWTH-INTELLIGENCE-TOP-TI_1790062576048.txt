@@ -1,0 +1,364 @@
+ETERNAL LIFE HOSPICE
+ETERNAL GROWTH INTELLIGENCE
+TOP-TIER VISUAL REFINEMENT PASS
+
+We are NOT changing the data architecture.
+We are NOT changing reporting logic.
+We are NOT adding features.
+We are upgrading the visual design so this product feels top-tier refined executive and brand-led.
+
+The current issue is not structure.
+The current issue is aesthetics.
+
+The interface still feels too thin too small too utility-like and not elevated enough.
+
+We need:
+
+- larger typography
+- stronger hierarchy
+- more breathing room
+- more distinction between Eternal Growth Intelligence and Eternal Studio
+- less micro text
+- a more luxurious executive feel
+- clearer visual confidence
+
+DESIGN GOAL:
+
+A top-tier executive intelligence platform with an elevated brand feel.
+
+Think:
+
+luxury editorial
++ executive dashboard
++ calm intelligence product
+
+Avoid:
+
+small admin-console typography
+overly thin interface language
+tiny labels
+flat undifferentiated sections
+generic SaaS styling
+
+==================================================
+1. TYPOGRAPHY — ENLARGE AND ELEVATE
+==================================================
+
+The typography is currently too small and too delicate.
+
+Increase type sizes across the product.
+
+Targets:
+
+PAGE TITLE
+Make larger and more elegant.
+The Executive Overview heading should feel strong and intentional.
+
+LEAD STATEMENT
+The leadership answer needs to feel important and confident.
+It should be visually commanding without shouting.
+
+PRIMARY CARD VALUES
+Make materially larger.
+Numbers and key states should be easy to scan instantly.
+
+CARD LABELS
+Increase size modestly.
+They are too small now.
+
+SIDEBAR LABELS
+Increase size and weight slightly.
+The sidebar should feel easier to scan.
+
+SECONDARY MICROCOPY
+Reduce reliance on tiny helper text.
+If small text remains it should still be readable and intentional.
+
+TYPOGRAPHIC DIRECTION
+
+- stronger contrast between headings and secondary text
+- slightly heavier body and label weights where needed
+- less frail feeling
+- more editorial confidence
+
+If current fonts are too delicate in the UI then keep the brand character for headings but use a more readable supporting UI font treatment for labels navigation cards and metadata.
+
+==================================================
+2. SPACING AND LAYOUT — MORE BREATHING ROOM
+==================================================
+
+The screen still feels cramped in spirit even though the structure is simplified.
+
+Increase whitespace and padding in:
+
+- sidebar header area
+- navigation groups
+- primary cards
+- page header
+- lower content panels
+- Studio section
+- Data & Settings utility
+
+Each major block should feel more composed and less compressed.
+
+Cards should breathe.
+
+Rows should not feel packed.
+
+Panels should have more internal padding.
+
+==================================================
+3. EXECUTIVE OVERVIEW — MAKE IT FEEL HIGH-END
+==================================================
+
+The Executive Overview should feel like a polished leadership dashboard.
+
+Refine it so the page hierarchy becomes:
+
+1. small refined eyebrow
+2. strong page title
+3. meaningful leadership statement
+4. row of 5 primary cards
+5. two supporting intelligence panels
+
+Improve the cards:
+
+- larger values
+- cleaner labels
+- more refined spacing
+- stronger visual separation
+- quieter metadata
+- more top-tier visual balance
+
+Cards should feel more like executive summary tiles and less like neutral system boxes.
+
+Use subtle depth tonal variation or more refined border treatment as long as the look stays elegant and restrained.
+
+==================================================
+4. REDUCE MICRO TEXT
+==================================================
+
+Too much tiny helper text makes the interface feel technical.
+
+Reduce visible microcopy throughout.
+
+Examples:
+- labels under numbers
+- secondary support lines
+- explanatory fragments
+- low-value instructions
+
+Keep only what actually helps decision-making.
+
+The page should not feel like it is apologizing for every metric.
+
+Use fewer words and larger type.
+
+==================================================
+5. SIDEBAR — MAKE IT FEEL MORE LUXURY
+==================================================
+
+The sidebar is cleaner now but still feels too utilitarian.
+
+Refine it further.
+
+Requirements:
+
+- slightly larger main nav labels
+- more breathing room between sections
+- cleaner dividers
+- stronger refinement in hover and active states
+- more subtle and elegant transitions
+- clearer separation between platform identity navigation Studio and utility
+
+The active state should feel intentional and top-tier.
+Not loud.
+Not flat.
+Not generic.
+
+Gold remains an accent.
+Use it with precision.
+
+==================================================
+6. ETERNAL STUDIO — CREATE REAL DISTINCTION
+==================================================
+
+Eternal Studio must feel like a distinct world.
+
+Right now it still feels too close to the performance navigation.
+
+Create stronger distinction.
+
+Possible approaches:
+- place Eternal Studio in its own clearly separated block
+- use a more pronounced divider or labeled band
+- use a slightly different tonal treatment for the Studio container
+- give Studio its own stronger heading treatment
+- use a more editorial or creative mood while still matching the brand
+- add subtle visual identity that says “creation space” rather than “performance space”
+
+Eternal Growth Intelligence = measure analyze manage
+
+Eternal Studio = create review publish
+
+That difference must be obvious at a glance.
+
+Do not make Studio flashy.
+Make it clearly distinct and elevated.
+
+The Studio area should feel like a creative suite nested inside the larger ecosystem.
+
+==================================================
+7. DATA & SETTINGS — MAKE IT QUIETER
+==================================================
+
+Data & Settings should remain visible but visually subordinate.
+
+It should not compete with Performance Marketing Census Expansion or Eternal Studio.
+
+Use smaller utility-style treatment.
+Keep it clean and understated.
+
+==================================================
+8. COLOR + CONTRAST REFINEMENT
+==================================================
+
+Refine the color usage for a more top-tier feel.
+
+Goals:
+
+- rich plum base
+- refined cream content surfaces
+- restrained gold accents
+- elegant contrast
+- slightly more depth
+
+Avoid:
+- dull flat panels
+- weak contrast
+- text that disappears into the background
+- too many similar shades with little hierarchy
+
+Do not introduce busy colors.
+
+Keep the palette disciplined.
+Just make it more elevated.
+
+==================================================
+9. PANEL DESIGN REFINEMENT
+==================================================
+
+All major content panels should be reviewed.
+
+Improve:
+
+- border treatment
+- radius consistency
+- internal spacing
+- heading alignment
+- body copy size
+- list readability
+
+The lower panels such as Markets to Watch and Attention / Opportunity should feel more editorial and polished.
+
+Less tiny utility styling.
+More composure.
+
+==================================================
+10. ICONOGRAPHY
+==================================================
+
+Review icons in the sidebar and cards.
+
+They should feel consistent clean and refined.
+No icon should look too small too weak or too generic.
+
+If necessary slightly enlarge them and improve alignment.
+
+==================================================
+11. PRODUCT LOCKUP
+==================================================
+
+At the top left preserve the Eternal brand presence but make the product lockup more elegant.
+
+Keep:
+
+ETERNAL GROWTH INTELLIGENCE
+
+Subtitle:
+Performance · Marketing · Census · Expansion
+
+Refine spacing scale and alignment so the lockup feels more premium and intentional.
+
+The Eternal logo should remain prominent but not dominate.
+
+==================================================
+12. VISUAL PRIORITY
+==================================================
+
+At a glance the eye should land in this order:
+
+1. Eternal brand / product identity
+2. Executive page title
+3. leadership answer
+4. primary KPI cards
+5. supporting insights
+6. navigation
+7. utility areas
+
+If the eye gets pulled first to tiny labels or too many small controls then the hierarchy is still wrong.
+
+==================================================
+13. RESPONSIVE POLISH
+==================================================
+
+Preserve responsive behavior.
+But even in desktop the composition should feel calmer and more premium.
+
+Review the 1280x720 view carefully since that appears to be a common working view.
+
+The above-the-fold experience should feel polished complete and top-tier.
+
+==================================================
+14. PRESERVE FUNCTION
+==================================================
+
+Do NOT change:
+
+- Search Console logic
+- GA4 logic
+- WhatConverts logic
+- Brevo logic
+- baseline values
+- Hot Zone logic
+- source readiness logic
+- Eternal Studio content structure
+- privacy boundaries
+
+This is a VISUAL REFINEMENT pass only.
+
+==================================================
+15. VALIDATION
+==================================================
+
+After implementation return:
+
+1. typography changes made
+2. spacing changes made
+3. card refinements made
+4. Eternal Studio distinction changes made
+5. sidebar refinement changes made
+6. Data & Settings de-emphasis changes made
+7. exact files changed
+8. build result
+9. typecheck result
+10. browser-console result
+11. visual review summary
+
+Also confirm:
+
+- reporting logic unchanged
+- architecture unchanged
+- public Eternal Life Hospice website untouched
+
+STOP after the top-tier visual refinement pass.

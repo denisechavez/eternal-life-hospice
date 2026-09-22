@@ -120,3 +120,177 @@
 .hub-sidebar .nav-items button{box-shadow:none}
 .hub-sidebar .nav-items button.active{background:rgba(255,255,255,.055)!important;color:#fff5eb!important;box-shadow:none;transform:none}
 .hub-sidebar .nav-items button.active:before{background:var(--gold)}
+
+/* Final visual pass — quiet executive suite */
+.hub-shell{
+  --ink:#342b35;
+  --muted:#756873;
+  --line:#ded2c9;
+  --paper:#fcfaf6;
+  --cream:#f3eee8;
+  --plum:#3c1c3b;
+  --plum-2:#63345f;
+  --gold:#c9b07e;
+  background:#f3eee8;
+  font-size:14px;
+}
+.hub-sidebar{
+  width:252px;
+  flex-basis:252px;
+  background:linear-gradient(165deg,#321b38 0%,#3c1c3b 64%,#284d61 135%);
+  padding:24px 16px 18px;
+  box-shadow:8px 0 30px rgba(49,27,56,.09);
+}
+.hub-sidebar .hub-brand{
+  min-height:106px;
+  height:106px;
+  margin:0 0 12px;
+  padding:2px 10px 18px;
+  justify-content:flex-start;
+  border-bottom:1px solid rgba(201,176,126,.28);
+}
+.hub-sidebar .hub-brand img{width:126px;max-height:90px}
+.product-lockup{
+  padding:17px 10px 20px;
+  border-bottom:1px solid rgba(201,176,126,.25);
+}
+.product-lockup strong{
+  font-size:27px;
+  line-height:.96;
+  letter-spacing:-.02em;
+}
+.product-lockup small{font-size:10px;line-height:1.5;color:#cdbcc6;max-width:185px}
+.hub-sidebar nav{margin-top:16px}
+.nav-group+.nav-group{margin-top:9px}
+.nav-group-trigger{
+  min-height:42px;
+  padding:11px 10px;
+  border-radius:7px;
+}
+.nav-group-trigger>svg:first-child{width:17px;height:17px}
+.nav-group-trigger b{font-size:12px;letter-spacing:.01em}
+.nav-group-trigger small{font-size:9px}
+.nav-group-trigger:hover{background:rgba(201,176,126,.12)!important;transform:translateX(2px)}
+.nav-group-trigger.expanded{background:rgba(255,255,255,.075);color:#fff7ef}
+.nav-items{padding:5px 0 8px 28px}
+.nav-items button{padding:8px 10px;font-size:11px;color:#cdbdc8}
+.nav-items button:hover{color:#fff6ec!important;background:rgba(255,255,255,.06)!important}
+.nav-items button.active{font-weight:700}
+.studio-nav{
+  margin-top:18px!important;
+  padding-top:14px;
+  border-top:1px solid rgba(201,176,126,.36);
+}
+.studio-nav .nav-group-trigger{
+  background:rgba(201,176,126,.09);
+  border:1px solid rgba(201,176,126,.18);
+}
+.studio-nav .nav-group-trigger>svg:first-child{color:var(--gold)}
+.studio-nav .nav-group-trigger b{font-family:FrauncesELH,Georgia,serif;font-size:15px;font-weight:500}
+.studio-nav .nav-group-trigger small{color:#d8c29c}
+.utility-nav{opacity:.78}
+.utility-nav .nav-group-trigger{min-height:38px}
+.utility-nav .nav-group-trigger b{font-size:11px;font-weight:600}
+.sidebar-foot{border-top-color:rgba(201,176,126,.24);padding-top:13px}
+.profile{border-top-color:rgba(201,176,126,.24)}
+
+.hub-topbar{
+  height:76px;
+  padding:0 40px;
+  background:rgba(252,250,247,.96);
+  border-bottom-color:#ded2c9;
+}
+.crumb{font-size:12px;color:#988b91}
+.crumb strong{color:var(--plum)}
+.search{height:38px;width:270px;border-radius:8px;background:#f1ebe5}
+.search input{font-size:13px}
+.top-actions{gap:17px}
+.icon-btn,.round-btn{transition:color .2s,transform .2s}
+.top-avatar{width:32px;height:32px}
+.hub-content{padding:42px 48px 72px;max-width:1500px}
+.page-heading{margin-bottom:34px;align-items:flex-end}
+.eyebrow,.kicker{font-size:10px;letter-spacing:.16em}
+.page-heading h1{
+  font-size:46px;
+  line-height:1.02;
+  letter-spacing:-.035em;
+  margin:12px 0 9px;
+}
+.page-heading p{font-size:14px;color:#756873;max-width:760px}
+.primary-btn,.approve-btn{border-radius:7px;padding:12px 17px;font-size:13px;box-shadow:0 5px 14px rgba(60,28,59,.12)}
+.primary-btn:hover,.approve-btn:hover{transform:translateY(-2px);background:var(--plum-2)}
+.metric-grid{gap:15px;margin-bottom:20px}
+.metric,.panel{border-radius:10px;border-color:#ded2c9;background:rgba(252,250,246,.94);box-shadow:0 7px 22px rgba(60,28,59,.055)}
+.metric{padding:21px 21px;min-height:132px}
+.metric>span{font-size:12px;color:#85777f}
+.metric strong{font-size:32px;margin:15px 0 6px}
+.metric small{font-size:11px;color:#8c7e84}
+.panel{padding:25px}
+.panel h2,.panel-head h2,.quick-panel h2{font-size:23px;line-height:1.15;margin-top:7px}
+.executive-answer{padding:7px 3px 15px}
+.executive-answer h2{font-size:32px;line-height:1.16;max-width:920px;margin-top:11px}
+.executive-metrics .metric{min-height:140px}
+.executive-metrics .metric strong{font-size:29px}
+.executive-lower{gap:20px}
+.watch-list{margin-top:18px}
+.watch-list button{padding:17px 2px}
+.watch-list strong,.attention-list b{font-size:13px}
+.watch-list span,.attention-list small{font-size:11px}
+.attention-list>span{padding:17px 0}
+.source-status-summary{border-radius:10px;padding:31px 34px}
+.source-status-summary h2{font-size:30px}
+.source-status-summary p{font-size:12px}
+.status-counts{gap:30px}
+.status-counts strong{font-size:32px}
+.source-groups{gap:15px;margin-top:2px}
+.source-groups .panel{padding:22px}
+.source-groups .panel>span{font-size:11px;padding:13px 0}
+
+.page-stack{gap:20px}
+.source-banner{
+  border-radius:8px;
+  padding:14px 17px;
+  font-size:12px;
+  background:#eee5dc;
+  border:1px solid #dfd0c3;
+}
+.source-banner b{font-size:12px}
+.source-banner span{font-size:11px}
+.split-grid,.main-grid,.lower-grid{gap:20px}
+.field-list{margin-top:17px}
+.field-list span{font-size:12px;padding:11px 0}
+.pending{padding:40px 36px;min-height:245px;display:flex;flex-direction:column;justify-content:center}
+.pending h2{font-size:29px}
+.pending p{font-size:13px;line-height:1.6}
+.market-tabs{gap:6px}
+.market-tabs button{padding:9px 12px;border-radius:6px;font-size:11px}
+.zone-data{padding:28px}
+.zone-table{margin-top:22px}
+.zone-row{padding:14px 10px;font-size:12px}
+
+/* Keep data tables editorial, not dense admin chrome. */
+.list-toolbar{padding:17px 21px}
+.list-tabs button,.filter-btn{font-size:12px;padding:8px 11px}
+.list-head{padding:13px 21px;font-size:9px}
+.list-row{padding:16px 21px}
+.item-name strong{font-size:12px}
+.item-name small,.channel,.date,.owner,.status{font-size:11px}
+.mini-type{width:32px;height:32px}
+.list-identity{padding:16px 21px}
+.list-identity strong{font-size:12px}
+.list-identity span{font-size:11px}
+
+@media(max-width:1050px){
+  .hub-sidebar{width:226px;flex-basis:226px}
+  .hub-content{padding:34px 28px 60px}
+  .page-heading h1{font-size:40px}
+}
+@media(max-width:720px){
+  .hub-sidebar{width:275px}
+  .hub-topbar{height:64px;padding:0 16px}
+  .hub-content{padding:28px 16px 50px}
+  .page-heading h1{font-size:36px}
+  .page-heading p{font-size:13px;line-height:1.5}
+  .panel{padding:19px}
+  .executive-answer h2{font-size:26px}
+}
