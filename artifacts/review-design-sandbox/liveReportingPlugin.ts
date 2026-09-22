@@ -108,7 +108,7 @@ function metric(row: { metricValues?: Array<{ value?: string }> } | undefined, i
 }
 
 async function buildReport(period: string) {
-  const rawCredential = process.env.GOOGLE_ANALYTICS_SERVICE_ACCOUNT_JSON;
+  const rawCredential = process.env.GOOGLE_REPORTING_SERVICE_ACCOUNT_JSON_V2;
   const propertyId = process.env.GA4_PROPERTY_ID;
   if (!rawCredential || !propertyId) {
     throw new Error('Google reporting credentials or GA4 property ID are not configured.');
