@@ -168,6 +168,10 @@ async function buildReport(period: string) {
     generatedAt: new Date().toISOString(),
     period: dates,
     errors,
+    sources: {
+      ga4: gaOverview.status === 'fulfilled',
+      gsc: gscOverview.status === 'fulfilled',
+    },
     metrics: {
       sessions: metric(gaTotal, 0),
       keyEvents: metric(gaTotal, 1),
