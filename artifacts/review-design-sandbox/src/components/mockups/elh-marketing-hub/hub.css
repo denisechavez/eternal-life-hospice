@@ -34,3 +34,13 @@
 @media(max-width:1050px){.growth-launcher{grid-template-columns:repeat(2,1fr)}.source-snapshot{grid-template-columns:repeat(3,1fr)}}
 @media(max-width:720px){.growth-banner{padding:18px}.growth-banner svg{display:none}.growth-launcher{grid-template-columns:1fr 1fr}.growth-launcher button{padding:13px}.growth-title{align-items:flex-start;flex-direction:column;gap:10px}.growth-title select{width:100%}.legacy-panel{align-items:flex-start;flex-wrap:wrap}.legacy-panel span{flex-basis:calc(100% - 28px);line-height:1.4}.legacy-panel select{width:100%}.source-snapshot{grid-template-columns:1fr 1fr}.funnel-inline{grid-template-columns:1fr 1fr}.bl-form-row{flex-wrap:wrap}.bl-form-row input{min-width:140px}.bl-form-row .primary-btn{width:auto;flex:auto}}
 @media(max-width:430px){.growth-launcher{grid-template-columns:1fr}.source-snapshot{grid-template-columns:1fr 1fr}.source-chip strong{font-size:23px}}
+
+/* Sidebar information architecture */
+.hub-sidebar{overflow:hidden}
+.hub-sidebar nav{overflow:auto;min-height:0;padding-right:2px;scrollbar-width:thin;scrollbar-color:#76576e transparent}
+.nav-group{display:grid;gap:4px}
+.nav-group+.nav-group{margin-top:13px}
+.nav-group-label{padding:7px 10px 4px;color:#c7aeca;text-transform:uppercase;letter-spacing:.14em;font-size:8px;font-weight:700}
+.nav-group:first-child .nav-group-label{padding-top:2px}
+.sidebar-foot{flex-shrink:0}
+.hub-logo{max-height:58px}

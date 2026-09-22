@@ -76,6 +76,13 @@ const nav = [
   ,{ label: "Backlinks", note: "Awaiting source", icon: Link2, key: "Backlinks" }
 ];
 
+const navGroups = [
+  { label: "Executive", keys: ["Overview", "Census"] },
+  { label: "Growth & Acquisition", keys: ["Growth", "SEO", "Advertising", "Social", "Referral", "Backlinks"] },
+  { label: "Content & Publishing", keys: ["Calendar", "Reviews", "Journal", "Emails", "CareBrief", "Publications", "Assets"] },
+  { label: "Data & Operations", keys: ["Connections", "Pipeline"] }
+];
+
 function readStatuses(): Record<string, Status> {
   try { return JSON.parse(localStorage.getItem("elh-hub-statuses") || "{}"); } catch { return {}; }
 }
@@ -116,9 +123,9 @@ export default function Hub() {
   return (
     <div className="hub-shell">
       <aside className={`hub-sidebar ${mobileNav ? "is-open" : ""}`}>
-         <div className="hub-brand"><img className="hub-logo" src="/__reviews-mockup/elh-logo-stacked-cream.png" alt="Eternal Life Hospice" /><button className="close-nav" onClick={() => setMobileNav(false)} aria-label="Close navigation"><X size={18} /></button></div>
+         <div className="hub-brand"><img className="hub-logo" src="/__reviews-mockup/elh-logo-stacked-gradient.png" alt="Eternal Life Hospice" /><button className="close-nav" onClick={() => setMobileNav(false)} aria-label="Close navigation"><X size={18} /></button></div>
         <div className="workspace-label">WORKSPACE <span>PRODUCTION</span></div>
-         <nav>{nav.map(({ label, note, icon: Icon, key, count }) => <button key={key} className={`${active === key ? "active" : ""} ${note ? "nav-product" : ""}`} onClick={() => { setActive(key); setStatusFilter("All"); setMobileNav(false); }}><Icon size={17} /><span>{label}{note && <small>{note}</small>}</span>{count && <b>{items.filter(i => i.status === "Needs review" && ["Journal", "Weekly email"].includes(i.type)).length}</b>}</button>)}</nav>
+          <nav>{navGroups.map(group => <div className="nav-group" key={group.label}><div className="nav-group-label">{group.label}</div>{nav.filter(item => group.keys.includes(item.key)).map(({ label, note, icon: Icon, key, count }) => <button key={key} className={`${active === key ? "active" : ""} ${note ? "nav-product" : ""}`} onClick={() => { setActive(key); setStatusFilter("All"); setMobileNav(false); }}><Icon size={17} /><span>{label}{note && <small>{note}</small>}</span>{count && <b>{items.filter(i => i.status === "Needs review" && ["Journal", "Weekly email"].includes(i.type)).length}</b>}</button>)}</div>)}</nav>
          <div className="sidebar-foot"><div className="sync"><span className="live-dot" /> Connected sources only <small>Source status available in Data connections</small></div><button><Settings2 size={16} /> Workspace settings</button><div className="profile"><div className="avatar">AD</div><div><strong>Aleksandra D.</strong><span>Founder & CEO</span></div><MoreHorizontal size={17} /></div></div>
       </aside>
       {mobileNav && <button className="nav-scrim" onClick={() => setMobileNav(false)} aria-label="Close menu" />}
