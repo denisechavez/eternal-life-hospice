@@ -294,3 +294,72 @@
   .panel{padding:19px}
   .executive-answer h2{font-size:26px}
 }
+
+/* Brand correction: generous editorial type and a deliberate product lockup. */
+.product-lockup{
+  padding:20px 10px 22px;
+  text-align:left;
+}
+.product-lockup strong{
+  display:block;
+  color:#fff8f0;
+  font:500 28px/1.02 FrauncesELH,Georgia,serif;
+  letter-spacing:-.025em;
+  white-space:nowrap;
+}
+.product-lockup strong span{display:block;font:inherit;color:inherit;letter-spacing:inherit;text-transform:none}
+.product-lockup small{
+  display:block;
+  margin-top:12px;
+  color:#d7c2cc;
+  font:500 11px/1.35 JostELH,system-ui,sans-serif;
+  letter-spacing:.045em;
+  text-transform:none;
+}
+.hub-sidebar .nav-group-trigger b{font-size:13px}
+.hub-sidebar .nav-group-trigger small{font-size:11px}
+.hub-sidebar .nav-items button{font-size:12px;padding-top:9px;padding-bottom:9px}
+.hub-sidebar .sidebar-foot>span{font-size:11px}
+.utility-nav .nav-group-trigger b{font-size:12px}
+.utility-nav .nav-items button{font-size:11px}
+.hub-topbar .crumb{font-size:13px}
+.hub-topbar .search input{font-size:13px}
+.hub-content .eyebrow,.hub-content .kicker{
+  font-size:11px;
+  letter-spacing:.14em;
+}
+.page-heading h1{font-size:48px}
+.page-heading p{font-size:15px;line-height:1.5}
+.metric>span{font-size:13px}
+.metric strong{font-size:34px}
+.metric small{font-size:12px;line-height:1.35}
+.panel h2,.panel-head h2,.quick-panel h2{font-size:25px}
+.panel p,.quiet,.data-caveat{font-size:13px;line-height:1.6}
+.watch-list strong,.attention-list b{font-size:14px}
+.watch-list span,.attention-list small{font-size:12px;line-height:1.45}
+.source-banner b{font-size:13px}
+.source-banner span{font-size:12px}
+.field-list span,.action-list div,.diagnostic-grid span{font-size:12px}
+.pending-pill,.readiness-status,.tag{font-size:11px}
+.executive-answer h2{font-size:34px;line-height:1.14}
+.executive-answer .text-btn{font-size:12px}
+.status-counts span{font-size:11px}
+.source-groups .panel>span{font-size:12px}
+.list-head{font-size:10px}
+.list-row .item-name strong,.list-row .channel,.list-row .date,.list-row .owner,.list-row .status{font-size:12px}
+.list-row .item-name small{font-size:11px}
+.list-footer{font-size:11px}
+.market-tabs button{font-size:12px}
+.zone-row{font-size:13px}
+
+@media(max-width:1050px){
+  .page-heading h1{font-size:43px}
+  .executive-answer h2{font-size:30px}
+}
+@media(max-width:720px){
+  .product-lockup strong{font-size:26px}
+  .hub-content .eyebrow,.hub-content .kicker{font-size:10px}
+  .page-heading h1{font-size:38px}
+  .page-heading p{font-size:14px}
+  .executive-answer h2{font-size:27px}
+}
