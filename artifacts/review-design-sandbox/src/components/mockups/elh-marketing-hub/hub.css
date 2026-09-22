@@ -44,7 +44,7 @@
 }
 .cover-grain{position:absolute;inset:0;pointer-events:none;opacity:.1;mix-blend-mode:screen;background:repeating-linear-gradient(115deg,transparent 0 3px,rgba(255,255,255,.035) 4px 5px)}
 .cover-panel{width:min(100%,1240px);min-height:calc(100dvh - 68px);position:relative;display:flex;flex-direction:column;justify-content:flex-start;padding:190px clamp(34px,7vw,96px) clamp(34px,7vw,96px);animation:cover-arrive .9s cubic-bezier(.2,.8,.2,1) both}
-.cover-mark{position:absolute;left:clamp(34px,7vw,96px);top:18px;width:190px;height:auto;opacity:.68;filter:drop-shadow(0 12px 24px rgba(0,0,0,.18));image-rendering:auto}
+.cover-mark{position:absolute;right:clamp(18px,3vw,44px);bottom:clamp(24px,4vw,48px);width:110px;height:auto;opacity:.56;filter:drop-shadow(0 10px 20px rgba(0,0,0,.16));image-rendering:auto}
 .cover-copy{animation:cover-rise .7s .1s both}
 .cover-kicker{display:flex;align-items:center;gap:11px;color:var(--cover-gold);font-size:10px;text-transform:uppercase;letter-spacing:.25em;margin:0 0 20px}
 .cover-kicker i{display:block;width:34px;height:1px;background:var(--cover-gold);opacity:.7}.cover-kicker i:last-child{width:12px}
@@ -58,12 +58,19 @@
 @keyframes cover-arrive{from{opacity:0;transform:translateY(18px) scale(.985)}to{opacity:1;transform:translateY(0) scale(1)}}@keyframes cover-rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}@keyframes logo-float{0%,100%{transform:translateY(0) rotate(-1deg)}50%{transform:translateY(-7px) rotate(1deg)}}@keyframes orbit-breathe{0%,100%{transform:scale(1);opacity:.55}50%{transform:scale(1.05);opacity:1}}
 .hub-shell-entered{animation:board-arrive .9s cubic-bezier(.2,.8,.2,1) both}@keyframes board-arrive{from{opacity:0;transform:scale(1.015)}to{opacity:1;transform:scale(1)}}
 .welcome-name{position:absolute;left:50%;transform:translateX(-50%);color:var(--blue-deep);font-size:17px;font-weight:650;letter-spacing:-.015em;text-align:center;white-space:nowrap}.welcome-name+.crumb{margin-left:0}.welcome-name~.top-actions{margin-left:auto}
-@media(max-width:620px){.growth-cover{padding:0}.cover-panel{min-height:100dvh;padding:158px 28px 42px}.cover-mark{left:28px;top:18px;width:128px;opacity:.68}.cover-copy h1{font-size:clamp(44px,11.5vw,58px);letter-spacing:-.02em}.cover-intro{font-size:13px;margin-top:22px}.domain-row{gap:10px 13px;margin:38px 0 30px;padding:15px 0}.domain-row strong{font-size:13px}.domain-row i{width:8px;height:8px}.entry-line{display:block;border:0}.entry-line input{width:100%;border-bottom:1px solid rgba(143,193,213,.62);padding:11px 0}.entry-line button{width:100%;justify-content:center;padding:13px;margin-top:12px}}
+@media(max-width:620px){.growth-cover{padding:0}.cover-panel{min-height:100dvh;padding:158px 28px 42px}.cover-mark{right:16px;bottom:20px;width:76px;opacity:.5}.cover-copy h1{font-size:clamp(44px,11.5vw,58px);letter-spacing:-.02em}.cover-intro{font-size:13px;margin-top:22px}.domain-row{gap:10px 13px;margin:38px 0 30px;padding:15px 0}.domain-row strong{font-size:13px}.domain-row i{width:8px;height:8px}.entry-line{display:block;border:0}.entry-line input{width:100%;border-bottom:1px solid rgba(143,193,213,.62);padding:11px 0}.entry-line button{width:100%;justify-content:center;padding:13px;margin-top:12px}}
 @media(prefers-reduced-motion:reduce){.growth-cover *,.growth-cover::before,.hub-shell-entered{animation:none!important;transition:none!important}.cover-brand img{transform:none}}
 
 /* Data workspace typography: precise sans-serif throughout. */
 .hub-shell{--font-serif:JostELH,system-ui,sans-serif}
 .hub-shell h1,.hub-shell h2,.hub-shell h3,.hub-shell strong,.hub-shell b{font-family:JostELH,system-ui,sans-serif!important}
+.hub-sidebar .hub-brand{position:relative;justify-content:center;text-align:center}
+.hub-sidebar .hub-brand>img{margin-inline:auto}
+.hub-sidebar .hub-brand>button{position:absolute;right:0}
+.product-lockup{text-align:center}
+.product-lockup strong span{display:block;text-align:center}
+.product-lockup .product-domains{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px 10px;text-align:center}
+.product-lockup .product-domains span{display:block;min-width:0;white-space:nowrap;text-align:center}
 
 /* Command room atmosphere — the interface stays legible, while the surface carries a quiet pulse. */
 .hub-shell{
