@@ -48,8 +48,8 @@
 .cover-copy{animation:cover-rise .7s .1s both}
 .cover-kicker{display:flex;align-items:center;gap:11px;color:var(--cover-gold);font-size:10px;text-transform:uppercase;letter-spacing:.25em;margin:0 0 20px}
 .cover-kicker i{display:block;width:34px;height:1px;background:var(--cover-gold);opacity:.7}.cover-kicker i:last-child{width:12px}
-.cover-copy h1{font:300 clamp(50px,7.4vw,90px)/.92 JostELH,system-ui,sans-serif;letter-spacing:-.045em;margin:0;color:#f4ede4;max-width:900px;text-shadow:0 12px 35px rgba(0,0,0,.2)}
-.cover-copy h1 span{font-style:normal;font-weight:600;color:#a9d2df;letter-spacing:.015em}
+.cover-copy h1{font:300 clamp(50px,7.4vw,90px)/.92 JostELH,system-ui,sans-serif;font-variant-caps:small-caps;letter-spacing:.015em;margin:0;color:#f4ede4;max-width:900px;text-shadow:0 12px 35px rgba(0,0,0,.2)}
+.cover-copy h1 span{font-style:normal;font-weight:600;color:#a9d2df;letter-spacing:.045em}
 .cover-intro{max-width:390px;color:#c1b8b9;font-size:15px;line-height:1.7;margin:28px 0 0}
 .domain-row{display:flex;flex-wrap:wrap;align-items:center;gap:10px 24px;margin:clamp(34px,6vh,62px) 0 34px;padding:18px 0;border-top:1px solid rgba(143,193,213,.27);border-bottom:1px solid rgba(143,193,213,.27);animation:cover-rise .7s .2s both}
 .domain-row strong{font:650 clamp(13px,1.25vw,17px) JostELH,system-ui,sans-serif;letter-spacing:.075em;text-transform:uppercase;color:#eee5db;transition:color .25s ease,transform .25s ease}.domain-row strong:hover{color:#fff;transform:translateY(-2px)}.domain-row i{display:inline-block;width:10px;height:10px;border-radius:50%;overflow:hidden;color:transparent;background:var(--cover-blue);font-size:0;font-style:normal;box-shadow:0 0 18px rgba(143,193,213,.52)}
@@ -68,6 +68,7 @@
 .hub-sidebar .hub-brand>img{margin-inline:auto}
 .hub-sidebar .hub-brand>button{position:absolute;right:0}
 .product-lockup{text-align:center}
+.product-lockup strong{font-variant-caps:small-caps;letter-spacing:.045em}
 .product-lockup strong span{display:block;text-align:center}
 .product-lockup .product-domains{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px 10px;text-align:center}
 .product-lockup .product-domains span{display:block;min-width:0;white-space:nowrap;text-align:center}
