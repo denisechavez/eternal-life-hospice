@@ -33,3 +33,16 @@ current membership and the org's usage terms; hospitals/health systems
 "partners." Keep any future use factual and permission-backed.
 **How to apply:** if asked to add these to a website "affiliations/partners"
 section, flag this first and confirm membership/permission + framing before use.
+
+## Official-logo rule for apps
+
+Use an official Eternal Life Hospice logo asset in every ELH app and internal
+product. Do not substitute a generic icon, initials, or a recreated wordmark for
+the app-level brand identity.
+
+**Why:** The user established this as a standing brand rule so all ELH software
+surfaces remain visibly authentic and consistent.
+
+**How to apply:** Source the logo from `brand-assets/Medical/` or the canonical
+public-site logo assets. Choose the approved color variant that preserves
+contrast in its placement.
