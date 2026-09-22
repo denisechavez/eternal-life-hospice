@@ -47,9 +47,9 @@ export default function Hub(){
     <div className="cover-orbit cover-orbit-one"/><div className="cover-orbit cover-orbit-two"/>
     <div className="cover-grain"/>
     <section className="cover-panel">
-      <div className="cover-copy"><p className="cover-kicker"><i/> Eternal Life Hospice <i/></p><h1>Eternal Growth<br/><em>Intelligence</em></h1><p className="cover-intro">A considered view of the signals shaping what comes next.</p></div>
+      <div className="cover-copy"><h1>Eternal Growth<br/><em>Intelligence</em></h1><p className="cover-intro">A view of the signals shaping what comes next.</p></div>
       <div className="domain-row" aria-label="Intelligence domains">{["Performance","Marketing","Census","Expansion"].map(domain=><div className="domain" key={domain}><strong>{domain}</strong></div>)}</div>
-       <form className="cover-entry" onSubmit={submit}><label htmlFor="growth-first-name">First name</label><div className="entry-line"><input id="growth-first-name" autoComplete="given-name" maxLength={24} required value={firstName} onChange={event=>onFirstNameChange(event.target.value)} placeholder="Your first name" /><button type="submit" disabled={!firstName.trim()}><span>Open intelligence board</span><ArrowUpRight size={16}/></button></div><small>Your name simply personalizes this welcome. No account or authentication required.</small></form>
+      <form className="cover-entry" onSubmit={submit}><div className="entry-line"><input id="growth-first-name" aria-label="First name" autoComplete="given-name" maxLength={24} required value={firstName} onChange={event=>onFirstNameChange(event.target.value)} placeholder="Your first name" /><button type="submit" disabled={!firstName.trim()}><span>Open intelligence board</span><ArrowUpRight size={16}/></button></div><small>Your name simply personalizes this welcome. No account or authentication required.</small></form>
     </section>
   </main>
  }
