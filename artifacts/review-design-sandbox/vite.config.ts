@@ -7,6 +7,7 @@ import runtimeErrorOverlay from '@replit/vite-plugin-runtime-error-modal';
 import { mockupPreviewPlugin } from './mockupPreviewPlugin';
 import { liveReportingPlugin } from './liveReportingPlugin';
 import { brevoReportingPlugin } from './brevoReportingPlugin';
+import { whatConvertsReportingPlugin } from './whatConvertsReportingPlugin';
 
 const rawPort = process.env.PORT;
 
@@ -35,6 +36,7 @@ export default defineConfig({
   plugins: [
     liveReportingPlugin(),
     brevoReportingPlugin(),
+    whatConvertsReportingPlugin(),
     mockupPreviewPlugin(),
     react(),
     tailwindcss(),

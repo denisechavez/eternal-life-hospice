@@ -124,7 +124,7 @@ async function buildReport(period: string) {
   const gaUrl = `https://analyticsdata.googleapis.com/v1beta/properties/${encodeURIComponent(propertyId)}:runReport`;
   const gscUrl = `https://searchconsole.googleapis.com/webmasters/v3/sites/${encodeURIComponent('https://eternallifehospice.com/')}/searchAnalytics/query`;
 
-  const [gaOverview, gaLanding, gscOverview, gscQueries] = await Promise.allSettled([
+  const [gaOverview, gaLanding, gscOverview, gscQueries, gscPages] = await Promise.allSettled([
     googleJson<{
       rows?: Array<{ dimensionValues?: Array<{ value?: string }>; metricValues?: Array<{ value?: string }> }>;
       totals?: Array<{ metricValues?: Array<{ value?: string }> }>;
@@ -141,7 +141,7 @@ async function buildReport(period: string) {
       dateRanges: [{ startDate: dates.startDate, endDate: dates.endDate }],
       dimensions: [{ name: 'landingPagePlusQueryString' }],
       metrics: [{ name: 'sessions' }, { name: 'engagementRate' }, { name: 'keyEvents' }],
-      limit: 10,
+       limit: 1000,
       orderBys: [{ metric: { metricName: 'sessions' }, desc: true }],
     }),
     googleJson<{ rows?: Array<{ clicks?: number; impressions?: number; ctr?: number; position?: number }> }>(
@@ -154,6 +154,11 @@ async function buildReport(period: string) {
       token,
       { startDate: dates.startDate, endDate: dates.endDate, dimensions: ['query'], rowLimit: 10 },
     ),
+    googleJson<{ rows?: Array<{ keys?: string[]; clicks?: number; impressions?: number; ctr?: number; position?: number }> }>(
+      gscUrl,
+      token,
+      { startDate: dates.startDate, endDate: dates.endDate, dimensions: ['page'], rowLimit: 1000 },
+    ),
   ]);
 
   const errors: string[] = [];
@@ -162,6 +167,28 @@ async function buildReport(period: string) {
 
   const gaTotal = gaOverview.status === 'fulfilled' ? gaOverview.value.totals?.[0] : undefined;
   const searchTotal = gscOverview.status === 'fulfilled' ? gscOverview.value.rows?.[0] : undefined;
+
+  const marketDefinitions = [
+    { market: 'Thousand Oaks', terms: ['thousand-oaks', 'thousand oaks'] },
+    { market: 'Westlake Village', terms: ['westlake-village', 'westlake village'] },
+    { market: 'Simi Valley', terms: ['simi-valley', 'simi valley'] },
+    { market: 'Calabasas', terms: ['calabasas'] },
+    { market: 'Camarillo', terms: ['camarillo'] },
+    { market: 'Moorpark', terms: ['moorpark'] },
+    { market: 'Ventura County', terms: ['ventura-county', 'ventura county'] },
+    { market: 'Los Angeles County', terms: ['los-angeles-county', 'los angeles county'] },
+  ];
+  const gaRows = gaLanding.status === 'fulfilled' ? gaLanding.value.rows ?? [] : [];
+  const searchRows = gscPages.status === 'fulfilled' ? gscPages.value.rows ?? [] : [];
+  const visibilityMarkets = marketDefinitions.map(({ market, terms }) => {
+    const gaMatches = gaRows.filter((row) => terms.some((term) => (row.dimensionValues?.[0]?.value ?? '').toLowerCase().includes(term)));
+    const searchMatches = searchRows.filter((row) => terms.some((term) => (row.keys?.[0] ?? '').toLowerCase().includes(term)));
+    const sessions = gaMatches.reduce((sum, row) => sum + metric(row, 0), 0);
+    const clicks = searchMatches.reduce((sum, row) => sum + (row.clicks ?? 0), 0);
+    const impressions = searchMatches.reduce((sum, row) => sum + (row.impressions ?? 0), 0);
+    return { market, sessions, clicks, impressions };
+  }).filter((row) => row.sessions > 0 || row.clicks > 0 || row.impressions > 0)
+    .sort((a, b) => (b.impressions + b.sessions) - (a.impressions + a.sessions));
 
   return {
     live: errors.length === 0,
@@ -204,6 +231,7 @@ async function buildReport(period: string) {
           position: row.position ?? 0,
         }))
       : [],
+    visibilityMarkets,
   };
 }
 
