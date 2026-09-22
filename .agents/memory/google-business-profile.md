@@ -19,7 +19,7 @@ description: Verified canonical Google Business Profiles for Eternal and Westlak
 - Old web presences still indexed (confusing NAP signals): eternalhospice.com (yahoo email, old hours) and eternallifehospiceinc.com — worth cleaning up/redirecting at the source when possible.
 
 ## September 22, 2026 identity collision
-- Google’s live Places record for Eternal’s canonical CID became a hybrid: Westlake’s name and old phone `(805) 870-0103`, Eternal’s Suite 325B address and website.
+- Google’s live Places record for Eternal’s canonical CID became a hybrid: Westlake’s name and main phone `(805) 870-0103`, Eternal’s Suite 325B address and website.
 - Google simultaneously retained Westlake’s separate Suite 325D record with `(818) 791-0611`, so this is an entity conflation rather than a simple phone-field typo.
-- **Why:** both hospices share a building, category and related ownership, while Westlake’s own site, NPI record and directories strongly associate `(805) 870-0103` with Westlake. Google’s reconciliation can overwrite a manual correction when its entity graph remains merged.
+- **Why:** both hospices share a building, category and related ownership, while Westlake’s own site, NPI record and directories correctly associate its main number `(805) 870-0103` with Westlake. Google’s reconciliation can overwrite a manual correction when its entity graph remains merged.
 - **How to apply:** do not keep correcting only the phone. Escalate the hybrid CID to Google Business Profile support as an incorrect merge, providing both legal names, suites, phones, domains and distinct Place IDs/CIDs.
