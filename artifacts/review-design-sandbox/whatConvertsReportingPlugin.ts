@@ -3,6 +3,7 @@ import type { Plugin } from 'vite';
 
 type WhatConvertsLead = {
   lead_id?: number;
+  profile_id?: number;
   lead_type?: string;
   date_created?: string;
   lead_source?: string;
@@ -17,6 +18,14 @@ type WhatConvertsResponse = {
   total_pages?: number;
   page_number?: number;
   leads_per_page?: number;
+};
+
+type WhatConvertsAccountResponse = {
+  accounts?: Array<{
+    account_id?: number;
+    account_name?: string;
+    profiles?: Array<{ profile_id?: number; profile_name?: string; website_url?: string | null; timezone?: string | null }>;
+  }>;
 };
 
 const markets = [
@@ -45,16 +54,37 @@ async function buildReport() {
   const secret = process.env.WHATCONVERTS_SECRET;
   if (!token || !secret) throw new Error('WhatConverts credentials are not configured.');
 
-  const response = await fetch('https://app.whatconverts.com/api/v1/leads?leads_per_page=2500&page_number=1', {
-    headers: {
-      accept: 'application/json',
-      authorization: `Basic ${Buffer.from(`${token}:${secret}`).toString('base64')}`,
-    },
-  });
-  const payload = await response.json() as WhatConvertsResponse & { message?: string; error?: string };
-  if (!response.ok) throw new Error(payload.message || payload.error || `WhatConverts request failed (${response.status})`);
+  const authorization = `Basic ${Buffer.from(`${token}:${secret}`).toString('base64')}`;
+  const today = new Date();
+  const periodEnd = new Date(today);
+  periodEnd.setUTCDate(periodEnd.getUTCDate() - 2);
+  const periodStart = new Date(periodEnd);
+  periodStart.setUTCDate(periodStart.getUTCDate() - 27);
+  const diagnosticStart = new Date(periodEnd);
+  diagnosticStart.setUTCDate(diagnosticStart.getUTCDate() - 399);
+  const iso = (date: Date) => date.toISOString().slice(0, 10);
+  const fetchLeads = async (startDate: string, endDate: string) => {
+    const query = new URLSearchParams({ start_date: startDate, end_date: endDate, leads_per_page: '2500', page_number: '1' });
+    const response = await fetch(`https://app.whatconverts.com/api/v1/leads?${query}`, {
+      headers: { accept: 'application/json', authorization },
+    });
+    const payload = await response.json() as WhatConvertsResponse & { message?: string; error?: string };
+    if (!response.ok) throw new Error(payload.message || payload.error || `WhatConverts request failed (${response.status})`);
+    return payload;
+  };
+
+  const [payload, diagnosticPayload, accountResponse] = await Promise.all([
+    fetchLeads(iso(periodStart), iso(periodEnd)),
+    fetchLeads(iso(diagnosticStart), iso(periodEnd)),
+    fetch('https://app.whatconverts.com/api/v1/accounts', {
+      headers: { accept: 'application/json', authorization },
+    }),
+  ]);
+  const accounts = await accountResponse.json() as WhatConvertsAccountResponse & { error_message?: string };
+  if (!accountResponse.ok) throw new Error(accounts.error_message || `WhatConverts account request failed (${accountResponse.status})`);
 
   const leads = payload.leads ?? [];
+  const diagnosticLeads = diagnosticPayload.leads ?? [];
   const sources = new Map<string, number>();
   const media = new Map<string, number>();
   const landingPages = new Map<string, number>();
@@ -68,7 +98,7 @@ async function buildReport() {
     if (lead.landing_url) addCount(landingPages, lead.landing_url);
     const market = marketFor(lead.landing_url);
     if (market) addCount(marketCounts, market);
-    if (lead.lead_type === 'phone_call') {
+    if ((lead.lead_type ?? '').toLowerCase().replaceAll(' ', '_') === 'phone_call') {
       calls += 1;
       callDurationSeconds += Number(lead.call_duration_seconds ?? 0);
     }
@@ -77,9 +107,18 @@ async function buildReport() {
   const ranked = (map: Map<string, number>, limit = 10) =>
     [...map.entries()].sort((a, b) => b[1] - a[1]).slice(0, limit).map(([name, count]) => ({ name, count }));
 
+  const account = accounts.accounts?.[0];
+  const profile = account?.profiles?.[0];
+  const typeCounts = diagnosticLeads.reduce((map, lead) => {
+    addCount(map, lead.lead_type);
+    return map;
+  }, new Map<string, number>());
+  const diagnosticDates = diagnosticLeads.map((lead) => lead.date_created).filter((date): date is string => Boolean(date)).sort();
+
   return {
     live: true,
     generatedAt: new Date().toISOString(),
+    period: { startDate: iso(periodStart), endDate: iso(periodEnd), label: 'Last 28 days' },
     metrics: {
       totalLeads: payload.total_leads ?? leads.length,
       calls,
@@ -100,15 +139,27 @@ async function buildReport() {
       'Call duration',
     ],
     fieldsUnavailable: [
-      'Reliable unique callers',
-      'Qualified / unqualified status',
+      'Configured qualified / unqualified status',
       'Referral',
       'Admission',
       'Census contribution',
     ],
-    note: leads.length
-      ? 'Aggregates contain attribution fields only; names, phone numbers, recordings and clinical content are excluded.'
-      : 'Authentication succeeded, but the connected WhatConverts profile returned no leads.',
+    diagnostic: {
+      result: diagnosticLeads.length ? 'REPORTING CONFIGURATION ISSUE' : 'CONFIRMED ZERO LEADS',
+      accountId: account?.account_id ?? null,
+      accountName: account?.account_name ?? null,
+      profileId: profile?.profile_id ?? diagnosticLeads[0]?.profile_id ?? null,
+      profileName: profile?.profile_name ?? null,
+      websiteUrl: profile?.website_url ?? null,
+      timezone: profile?.timezone ?? 'Not returned by API',
+      queryWindow: { startDate: iso(diagnosticStart), endDate: iso(periodEnd), maximumDays: 400 },
+      totalLeads: diagnosticPayload.total_leads ?? diagnosticLeads.length,
+      leadTypes: ranked(typeCounts),
+      earliestLeadDate: diagnosticDates[0] ?? null,
+      latestLeadDate: diagnosticDates.at(-1) ?? null,
+      explanation: 'The earlier zero used the API default date because no start_date or end_date was supplied.',
+    },
+    note: 'Aggregates contain business attribution only; names, phone numbers, recordings, transcripts and call content are excluded.',
   };
 }
 

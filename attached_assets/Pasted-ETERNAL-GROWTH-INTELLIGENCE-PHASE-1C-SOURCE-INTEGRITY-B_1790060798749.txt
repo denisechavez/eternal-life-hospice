@@ -1,0 +1,267 @@
+ETERNAL GROWTH INTELLIGENCE
+PHASE 1C — SOURCE INTEGRITY + BASELINE LOCK
+
+Do not add new major dashboard sections.
+
+Do not restructure navigation.
+
+Do not build funnels.
+
+Do not add census, referral or financial estimates.
+
+Preserve Eternal Growth Intelligence exactly as currently implemented.
+
+The goal of this phase is to validate the live reporting sources and establish a trustworthy operating baseline.
+
+==================================================
+1. WHATCONVERTS VALIDATION
+==================================================
+
+The WhatConverts API authenticates successfully but currently returns zero leads.
+
+Perform a read-only diagnostic.
+
+Confirm:
+
+- authenticated account/profile
+- profile ID used
+- website/profile associated with the API credentials
+- query date range
+- timezone
+- lead-type filters
+- whether phone-call leads exist outside the current query
+- whether form leads exist
+- whether the API exposes totals under another supported endpoint
+- earliest and latest reportable lead dates if available
+
+Do not retrieve or expose:
+
+- caller names
+- phone numbers
+- recordings
+- transcripts
+- patient information
+- call content
+
+Business reporting fields only.
+
+Return one of:
+
+CONFIRMED ZERO LEADS
+
+or
+
+REPORTING CONFIGURATION ISSUE
+
+or
+
+WRONG PROFILE / ACCOUNT
+
+or
+
+INSUFFICIENT API DATA
+
+Do not alter the public website tracking implementation during this diagnostic.
+
+==================================================
+2. BREVO REPORTING VALIDATION
+==================================================
+
+Brevo authentication succeeds and returns:
+
+- 3 campaigns
+- 3 sent campaigns
+- 10 active lists
+- 2,011 memberships
+
+However campaign delivery, open and click statistics are returning zero.
+
+Perform read-only validation.
+
+Determine whether:
+
+- zero values are genuinely stored
+- a different Brevo statistics endpoint is required
+- campaign-specific stats must be queried separately
+- API permissions limit performance statistics
+- archived/historical campaign statistics exist elsewhere
+
+Confirm which fields can reliably populate:
+
+- Sent
+- Delivered
+- Opens
+- Unique Opens
+- Clicks
+- Unique Clicks
+- Bounces
+- Unsubscribes
+
+Do not infer missing performance.
+
+==================================================
+3. SEARCH CONSOLE → GA4 VALIDATION
+==================================================
+
+Review the current 28-day geographic/local-page reporting.
+
+Specifically inspect:
+
+Thousand Oaks:
+431 impressions
+1 Search Console click
+0 GA4 sessions
+
+Westlake Village:
+21 impressions
+4 Search Console clicks
+1 GA4 session
+
+Calabasas:
+199 impressions
+0 clicks
+0 sessions
+
+Determine whether the discrepancy between Search Console clicks and GA4 sessions is explainable by:
+
+- reporting windows
+- timezone differences
+- URL normalization
+- canonical URLs
+- landing-page path matching
+- consent / analytics behavior
+- GA4 session definitions
+- filtering logic
+
+Do not expect Search Console clicks and GA4 sessions to match exactly.
+
+The purpose is only to confirm that the dashboard joins and filters are technically correct.
+
+==================================================
+4. SOURCE TIMESTAMPS
+==================================================
+
+For each live source display:
+
+- Source
+- Connection Status
+- Reporting Period
+- Last Successful Refresh
+- Data Freshness
+- Current Limitation
+
+Sources:
+
+Google Search Console
+GA4
+WhatConverts
+Brevo
+
+Pending sources:
+
+Google Business Profile / Thryv
+Social / Thryv
+Referral Pipeline
+Census
+Advertising
+
+==================================================
+5. BASELINE LOCK
+==================================================
+
+Create a 28-day baseline record for current live sources.
+
+Capture:
+
+SEO:
+- Impressions
+- Clicks
+- CTR
+- Average Position
+
+Website:
+- Sessions
+- Key Events
+
+Calls:
+- WhatConverts lead/call total once validated
+
+Email:
+- only validated Brevo metrics
+
+Markets:
+- Thousand Oaks
+- Westlake Village
+- Simi Valley
+- Calabasas
+- Camarillo
+- Moorpark
+- Los Angeles County
+
+Store the baseline date and reporting window.
+
+This becomes the comparison point for future:
+
+7-day
+28-day
+90-day
+
+performance reviews.
+
+==================================================
+6. HOT ZONE LANGUAGE
+==================================================
+
+Keep the current layers:
+
+Visibility Hot Zones
+Inquiry Hot Zones
+Growth Hot Zones
+Opportunity Zones
+
+Do not assign Growth Hot Zones until referral/admission/census data exists.
+
+Visibility Hot Zones may use:
+
+Search Console
+GA4
+
+Inquiry Hot Zones may use:
+
+WhatConverts only after validated
+
+Growth Hot Zones must remain:
+
+Awaiting Referral / Census Data
+
+Opportunity Zones may identify observable mismatches such as:
+
+high impressions + weak click-through
+
+or
+
+traffic + weak call conversion
+
+but must not create arbitrary market scores.
+
+==================================================
+7. VALIDATION
+
+Return:
+
+1. WhatConverts diagnostic result
+2. Brevo diagnostic result
+3. Search Console / GA4 join validation
+4. Source freshness table
+5. Locked 28-day baseline
+6. Hot Zone data-source confirmation
+7. Exact files changed
+8. Build/typecheck result
+9. Browser-console result
+10. Confirmation public ELH website was untouched
+
+STOP after validation.
+
+Do not build funnels.
+Do not build financial intelligence.
+Do not connect census or referral data yet.

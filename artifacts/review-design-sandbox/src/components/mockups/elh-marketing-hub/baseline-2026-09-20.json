@@ -1,0 +1,43 @@
+{
+  "lockedAt": "2026-09-22",
+  "period": {
+    "startDate": "2026-08-24",
+    "endDate": "2026-09-20",
+    "label": "28-day baseline"
+  },
+  "seo": {
+    "impressions": 3005,
+    "clicks": 60,
+    "ctr": 0.019966722129783693,
+    "averagePosition": 31.87487520798669
+  },
+  "website": {
+    "sessions": 99,
+    "keyEvents": 0
+  },
+  "calls": {
+    "whatConvertsLeads": 5,
+    "phoneCalls": 5
+  },
+  "email": {
+    "campaignsSent": 0,
+    "sent": 0,
+    "delivered": 0,
+    "opens": 0,
+    "uniqueOpens": 0,
+    "clicks": 0,
+    "uniqueClicks": 0,
+    "bounces": 0,
+    "unsubscriptions": 0,
+    "note": "No Brevo campaigns were sent within the locked 28-day window."
+  },
+  "markets": [
+    { "market": "Thousand Oaks", "impressions": 431, "clicks": 1, "sessions": 0 },
+    { "market": "Westlake Village", "impressions": 21, "clicks": 4, "sessions": 1 },
+    { "market": "Simi Valley", "impressions": 86, "clicks": 0, "sessions": 0 },
+    { "market": "Calabasas", "impressions": 199, "clicks": 0, "sessions": 0 },
+    { "market": "Camarillo", "impressions": 3, "clicks": 0, "sessions": 0 },
+    { "market": "Moorpark", "impressions": 4, "clicks": 0, "sessions": 0 },
+    { "market": "Los Angeles County", "impressions": 181, "clicks": 1, "sessions": 1 }
+  ]
+}

@@ -4,7 +4,9 @@ import type { Plugin } from 'vite';
 type BrevoStats = {
   sent?: number;
   delivered?: number;
+  viewed?: number;
   uniqueViews?: number;
+  clickers?: number;
   uniqueClicks?: number;
   hardBounces?: number;
   softBounces?: number;
@@ -22,6 +24,7 @@ type BrevoCampaign = {
   sentDate?: string;
   statistics?: {
     globalStats?: BrevoStats;
+    campaignStats?: BrevoStats[];
   };
 };
 
@@ -49,6 +52,20 @@ async function brevoJson<T>(path: string, apiKey: string): Promise<T> {
 
 function safeNumber(value: number | undefined): number {
   return Number.isFinite(value) ? Number(value) : 0;
+}
+
+function campaignTotals(campaign: BrevoCampaign): Required<BrevoStats> {
+  const base: Required<BrevoStats> = { sent: 0, delivered: 0, viewed: 0, uniqueViews: 0, clickers: 0, uniqueClicks: 0, hardBounces: 0, softBounces: 0, unsubscriptions: 0, complaints: 0 };
+  const rows = campaign.statistics?.campaignStats;
+  if (rows?.length) {
+    return rows.reduce<Required<BrevoStats>>((acc, stats) => {
+      for (const key of Object.keys(base) as Array<keyof BrevoStats>) acc[key] = acc[key] + safeNumber(stats[key]);
+      return acc;
+    }, { ...base });
+  }
+  const stats = campaign.statistics?.globalStats;
+  for (const key of Object.keys(base) as Array<keyof BrevoStats>) base[key] = safeNumber(stats?.[key]);
+  return base;
 }
 
 async function buildBrevoReport() {
@@ -80,23 +97,42 @@ async function buildBrevoReport() {
   });
   const campaigns = campaignSummaries.map((campaign) => detailedById.get(campaign.id) ?? campaign);
   const lists = listResult.lists ?? [];
-  const totals = campaigns.reduce(
+  const periodEnd = new Date();
+  periodEnd.setUTCDate(periodEnd.getUTCDate() - 2);
+  const periodStart = new Date(periodEnd);
+  periodStart.setUTCDate(periodStart.getUTCDate() - 27);
+  const inPeriod = (campaign: BrevoCampaign) => {
+    if (!campaign.sentDate) return false;
+    const sent = new Date(campaign.sentDate);
+    return sent >= periodStart && sent < new Date(periodEnd.getTime() + 86_400_000);
+  };
+  const reduceCampaigns = (source: BrevoCampaign[]) => source.reduce(
     (acc, campaign) => {
-      const stats = campaign.statistics?.globalStats;
-      acc.sent += safeNumber(stats?.sent);
-      acc.delivered += safeNumber(stats?.delivered);
-      acc.uniqueViews += safeNumber(stats?.uniqueViews);
-      acc.uniqueClicks += safeNumber(stats?.uniqueClicks);
-      acc.bounces += safeNumber(stats?.hardBounces) + safeNumber(stats?.softBounces);
-      acc.unsubscriptions += safeNumber(stats?.unsubscriptions);
+      const stats = campaignTotals(campaign);
+      acc.sent += stats.sent;
+      acc.delivered += stats.delivered;
+      acc.opens += stats.viewed;
+      acc.uniqueViews += stats.uniqueViews;
+      acc.clicks += stats.clickers;
+      acc.uniqueClicks += stats.uniqueClicks;
+      acc.bounces += stats.hardBounces + stats.softBounces;
+      acc.unsubscriptions += stats.unsubscriptions;
       return acc;
     },
-    { sent: 0, delivered: 0, uniqueViews: 0, uniqueClicks: 0, bounces: 0, unsubscriptions: 0 },
+    { sent: 0, delivered: 0, opens: 0, uniqueViews: 0, clicks: 0, uniqueClicks: 0, bounces: 0, unsubscriptions: 0 },
   );
+  const totals = reduceCampaigns(campaigns);
+  const periodCampaigns = campaigns.filter(inPeriod);
+  const periodTotals = reduceCampaigns(periodCampaigns);
 
   return {
     live: true,
     generatedAt: new Date().toISOString(),
+    period: {
+      startDate: periodStart.toISOString().slice(0, 10),
+      endDate: periodEnd.toISOString().slice(0, 10),
+      label: 'Last 28 days',
+    },
     metrics: {
       campaigns: campaignResult.count ?? campaigns.length,
       sentCampaigns: campaigns.filter((campaign) => campaign.status === 'sent').length,
@@ -107,8 +143,17 @@ async function buildBrevoReport() {
       ),
       ...totals,
     },
+    periodMetrics: {
+      campaigns: periodCampaigns.length,
+      ...periodTotals,
+    },
+    diagnostic: {
+      result: 'CAMPAIGN-SPECIFIC STATS REQUIRED',
+      explanation: 'Brevo globalStats is present but zero. Valid delivery and engagement totals are stored in statistics.campaignStats and must be summed across recipient lists.',
+      historicalCampaignsValidated: campaigns.length,
+    },
     campaigns: campaigns.map((campaign) => {
-      const stats = campaign.statistics?.globalStats;
+      const stats = campaignTotals(campaign);
       return {
         id: campaign.id,
         name: campaign.name || 'Untitled campaign',
@@ -117,13 +162,13 @@ async function buildBrevoReport() {
         type: campaign.type || 'classic',
         scheduledAt: campaign.scheduledAt || null,
         sentDate: campaign.sentDate || null,
-        sent: safeNumber(stats?.sent),
-        delivered: safeNumber(stats?.delivered),
-        uniqueViews: safeNumber(stats?.uniqueViews),
-        uniqueClicks: safeNumber(stats?.uniqueClicks),
-        hardBounces: safeNumber(stats?.hardBounces),
-        softBounces: safeNumber(stats?.softBounces),
-        unsubscriptions: safeNumber(stats?.unsubscriptions),
+        sent: stats.sent,
+        delivered: stats.delivered,
+        uniqueViews: stats.uniqueViews,
+        uniqueClicks: stats.uniqueClicks,
+        hardBounces: stats.hardBounces,
+        softBounces: stats.softBounces,
+        unsubscriptions: stats.unsubscriptions,
       };
     }),
     lists: lists.map((list) => ({
