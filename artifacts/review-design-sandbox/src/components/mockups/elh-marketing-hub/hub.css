@@ -620,3 +620,78 @@
 .primary-btn,.approve-btn{background:var(--blue)}
 .primary-btn:hover,.approve-btn:hover{background:var(--blue-deep)}
 .panel:hover,.metric:hover{border-color:#aac5d0}
+
+/* Interactive market filters and complete Studio reviews */
+.market-tabs button.active{
+  border-color:var(--blue);
+  background:var(--blue);
+  color:#fff;
+  box-shadow:0 5px 14px rgba(23,78,107,.16);
+}
+.market-tabs button:focus-visible{outline:3px solid rgba(23,78,107,.2);outline-offset:2px}
+.market-scope{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  min-height:38px;
+  padding:8px 12px;
+  border:1px solid #c9d8de;
+  background:#edf4f6;
+  color:#5b6870;
+  font-size:11px;
+}
+.market-scope svg{color:var(--blue)}
+.market-scope strong{color:var(--blue-deep)}
+.market-scope button{margin-left:auto;border:0;background:none;color:var(--blue);font-weight:700}
+.detail-drawer.full-review{width:min(820px,100%)}
+.full-review .detail-body{padding-bottom:0}
+.article-review{
+  max-width:690px;
+  margin:0 auto;
+  color:#594f56;
+  font-size:14px;
+  line-height:1.78;
+}
+.article-byline{margin-bottom:24px}
+.article-lede{font-size:17px}
+.article-review section{padding:24px 0 6px}
+.article-review section h3{font-size:23px;color:var(--blue-deep)}
+.article-cta{border-left-color:var(--blue);background:#edf4f6}
+.article-cta strong{color:var(--blue-deep)}
+.review-actions{
+  position:sticky;
+  bottom:0;
+  z-index:2;
+  margin:32px -25px 0;
+  padding:16px 25px;
+  border-top:1px solid #d8cdc5;
+  background:rgba(251,248,243,.96);
+  box-shadow:0 -8px 24px rgba(45,30,43,.07);
+  backdrop-filter:blur(8px);
+}
+.email-template-note{
+  display:flex;
+  align-items:flex-start;
+  gap:10px;
+  margin:0 0 18px;
+  padding:13px 15px;
+  border:1px solid #c8d9df;
+  background:#edf4f6;
+  color:#637078;
+  font-size:11px;
+  line-height:1.55;
+}
+.email-template-note svg{flex:0 0 auto;color:var(--blue);margin-top:2px}
+.email-template-note strong{display:block;color:var(--blue-deep);font-size:12px}
+.full-review .email-review iframe{
+  height:720px;
+  border:1px solid #cfc4bc;
+  box-shadow:0 12px 30px rgba(45,30,43,.08);
+}
+@media(max-width:720px){
+  .market-scope{align-items:flex-start;flex-wrap:wrap}
+  .market-scope button{margin-left:22px}
+  .article-review{font-size:13px}
+  .article-lede{font-size:16px}
+  .article-review section h3{font-size:20px}
+}
