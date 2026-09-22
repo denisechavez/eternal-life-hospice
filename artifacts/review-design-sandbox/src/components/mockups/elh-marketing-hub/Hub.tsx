@@ -77,10 +77,10 @@ const nav = [
 ];
 
 const navGroups = [
-  { label: "Executive", keys: ["Overview", "Census"] },
-  { label: "Growth & Acquisition", keys: ["Growth", "SEO", "Advertising", "Social", "Referral", "Backlinks"] },
-  { label: "Content & Publishing", keys: ["Calendar", "Reviews", "Journal", "Emails", "CareBrief", "Publications", "Assets"] },
-  { label: "Data & Operations", keys: ["Connections", "Pipeline"] }
+  { label: "Executive", purpose: "Oversight & census", icon: LayoutDashboard, keys: ["Overview", "Census"] },
+  { label: "Growth", purpose: "Acquisition & reach", icon: TrendingUp, keys: ["Growth", "SEO", "Advertising", "Social", "Referral", "Backlinks"] },
+  { label: "Publishing", purpose: "Content & approvals", icon: BookOpen, keys: ["Calendar", "Reviews", "Journal", "Emails", "CareBrief", "Publications", "Assets"] },
+  { label: "Operations", purpose: "Sources & reporting", icon: Cable, keys: ["Connections", "Pipeline"] }
 ];
 
 function readStatuses(): Record<string, Status> {
@@ -89,6 +89,7 @@ function readStatuses(): Record<string, Status> {
 
 export default function Hub() {
   const [active, setActive] = useState(() => new URLSearchParams(window.location.search).get("view") || "Overview");
+  const [openGroup, setOpenGroup] = useState(() => navGroups.findIndex(group => group.keys.includes(new URLSearchParams(window.location.search).get("view") || "Overview")));
   const [items, setItems] = useState(() => baseItems.map(item => ({ ...item, status: readStatuses()[item.id] || item.status })));
   const [query, setQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState("All");
@@ -125,7 +126,7 @@ export default function Hub() {
       <aside className={`hub-sidebar ${mobileNav ? "is-open" : ""}`}>
          <div className="hub-brand"><img className="hub-logo" src="/__reviews-mockup/elh-logo-stacked-gradient.png" alt="Eternal Life Hospice" /><button className="close-nav" onClick={() => setMobileNav(false)} aria-label="Close navigation"><X size={18} /></button></div>
         <div className="workspace-label">WORKSPACE <span>PRODUCTION</span></div>
-          <nav>{navGroups.map(group => <div className="nav-group" key={group.label}><div className="nav-group-label">{group.label}</div>{nav.filter(item => group.keys.includes(item.key)).map(({ label, note, icon: Icon, key, count }) => <button key={key} className={`${active === key ? "active" : ""} ${note ? "nav-product" : ""}`} onClick={() => { setActive(key); setStatusFilter("All"); setMobileNav(false); }}><Icon size={17} /><span>{label}{note && <small>{note}</small>}</span>{count && <b>{items.filter(i => i.status === "Needs review" && ["Journal", "Weekly email"].includes(i.type)).length}</b>}</button>)}</div>)}</nav>
+          <nav className="mode-nav">{navGroups.map((group, groupIndex) => { const ModeIcon = group.icon; const isOpen = openGroup === groupIndex; return <section className={`mode-card mode-${groupIndex} ${isOpen ? "is-open" : ""}`} key={group.label}><button className="mode-trigger" aria-expanded={isOpen} aria-controls={`mode-panel-${groupIndex}`} onClick={() => setOpenGroup(isOpen ? -1 : groupIndex)}><span className="mode-icon"><ModeIcon size={16} /></span><span className="mode-copy"><strong>{group.label}</strong><small>{group.purpose}</small></span><ChevronRight size={15} className="mode-chevron" /></button>{isOpen && <div id={`mode-panel-${groupIndex}`} className="mode-panel">{nav.filter(item => group.keys.includes(item.key)).map(({ label, note, icon: Icon, key, count }) => <button key={key} className={`${active === key ? "active" : ""} ${note ? "nav-product" : ""}`} onClick={() => { setActive(key); setOpenGroup(groupIndex); setStatusFilter("All"); setMobileNav(false); }}><Icon size={16} /><span>{label}{note && <small>{note}</small>}</span>{count && <b>{items.filter(i => i.status === "Needs review" && ["Journal", "Weekly email"].includes(i.type)).length}</b>}</button>)}</div>}</section>; })}</nav>
          <div className="sidebar-foot"><div className="sync"><span className="live-dot" /> Connected sources only <small>Source status available in Data connections</small></div><button><Settings2 size={16} /> Workspace settings</button><div className="profile"><div className="avatar">AD</div><div><strong>Aleksandra D.</strong><span>Founder & CEO</span></div><MoreHorizontal size={17} /></div></div>
       </aside>
       {mobileNav && <button className="nav-scrim" onClick={() => setMobileNav(false)} aria-label="Close menu" />}

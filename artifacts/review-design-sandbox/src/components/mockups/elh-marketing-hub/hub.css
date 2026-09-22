@@ -44,3 +44,24 @@
 .nav-group:first-child .nav-group-label{padding-top:2px}
 .sidebar-foot{flex-shrink:0}
 .hub-logo{max-height:58px}
+
+/* Four-mode progressive disclosure: each card is a workspace doorway. */
+.mode-nav{display:grid!important;gap:8px!important}
+.mode-card{border:1px solid rgba(214,190,205,.2);border-radius:9px;background:rgba(33,22,47,.24);overflow:hidden;transition:background .2s,border-color .2s}
+.mode-card:hover{border-color:rgba(201,176,126,.5);background:rgba(26,82,118,.2)}
+.mode-card.is-open{border-color:rgba(201,176,126,.62);background:rgba(30,20,43,.34)}
+.mode-trigger{width:100%;min-height:62px!important;padding:10px 11px!important;border-radius:0!important;gap:10px!important;color:#f4e9e5!important}
+.mode-icon{width:30px;height:30px;display:grid;place-items:center;border-radius:7px;color:#f3d79e;background:linear-gradient(145deg,rgba(91,46,89,.9),rgba(26,82,118,.75));flex:0 0 30px}
+.mode-1 .mode-icon{color:#a9d0e1;background:linear-gradient(145deg,rgba(26,82,118,.92),rgba(91,46,89,.75))}
+.mode-2 .mode-icon{color:#e2c995;background:linear-gradient(145deg,rgba(91,46,89,.9),rgba(126,91,62,.68))}
+.mode-3 .mode-icon{color:#b9d8cd;background:linear-gradient(145deg,rgba(26,82,118,.82),rgba(66,114,96,.72))}
+.mode-copy{display:block;min-width:0;text-align:left;line-height:1.15}
+.mode-copy strong{display:block;font-size:11px;letter-spacing:.02em}
+.mode-copy small{display:block;color:#b8a7b5;font-size:9px;margin-top:5px;letter-spacing:.01em}
+.mode-chevron{margin-left:auto;color:#a995a2;transition:transform .2s}
+.mode-card.is-open .mode-chevron{transform:rotate(90deg);color:var(--gold)}
+.mode-panel{padding:0 6px 7px;border-top:1px solid rgba(214,190,205,.15)}
+.mode-panel>button{padding:8px 9px!important;border-radius:6px!important;font-size:10px}
+.mode-panel>button:hover{transform:translateX(2px)}
+.mode-panel>button.active{background:#f3eee7;color:var(--plum);box-shadow:none}
+.mode-panel>button.active small{color:#8e7489}
