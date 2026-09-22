@@ -38,6 +38,19 @@
 @media(max-width:850px){.readiness-grid{grid-template-columns:1fr}.readiness-grid>b{display:none}.readiness-row{display:grid;grid-template-columns:1fr 1fr;border-top:1px solid var(--line);padding:10px 0}.readiness-row>*{border:0;padding:4px 8px}.field-list{grid-template-columns:1fr}.zone-table{grid-template-columns:minmax(130px,1.3fr) repeat(3,minmax(60px,.7fr))}}
 @media(max-width:850px){.readiness-grid.integrity{grid-template-columns:1fr}.diagnostic-grid{grid-template-columns:1fr 1fr}.baseline-grid{grid-template-columns:1fr 1fr}.validation-notes{grid-template-columns:1fr}.baseline-markets{grid-template-columns:minmax(130px,1.3fr) repeat(3,minmax(60px,.7fr))}}
 
+/* Executive UX simplification */
+.hub-sidebar{width:232px;flex-basis:232px;padding:18px 15px 14px;overflow:auto}
+.hub-brand{height:66px;min-height:66px;padding:0 10px 12px}.hub-brand img{width:82px;max-height:57px;object-fit:contain}
+.product-lockup{padding:18px 10px 20px}.product-lockup strong{font-size:24px;line-height:.98;margin:0 0 10px}.product-lockup small{font-size:8px;letter-spacing:.03em}
+.hub-sidebar nav{margin-top:14px}.nav-group{border:0;border-radius:5px;margin:0 0 5px!important}.nav-group-trigger{padding:11px 10px;color:#ddced9;border-radius:5px}.nav-group-trigger small{font-size:8px;margin-top:4px}.nav-group-trigger:hover{background:#432847;transform:none}.nav-group-trigger.expanded{background:#412744;color:#fff4e8}.nav-group-trigger.expanded>svg:first-child{color:var(--gold)}.nav-items{padding:4px 0 8px 27px}.nav-items button{position:relative;padding:8px 10px;color:#cbbcc7;background:transparent!important}.nav-items button:hover{color:#fff;background:#ffffff08!important}.nav-items button.active{color:#fff6eb!important;background:#ffffff0b!important;font-weight:700}.nav-items button.active:before{content:"";position:absolute;left:0;top:7px;bottom:7px;width:2px;background:var(--gold);border-radius:2px}
+.studio-nav{margin-top:16px!important;padding-top:12px;border-top:1px solid #5a3d5c}.sidebar-foot{margin-top:auto;border-top:1px solid #5a3d5c;padding-top:10px;background:transparent}.sidebar-foot>span{padding:4px 10px 8px}.utility-nav .nav-items{padding-left:25px}.profile{margin-top:8px}
+.hub-content{max-width:1510px}.page-heading{margin-bottom:24px}.page-heading h1{font-size:39px}.page-heading p{font-size:12px}
+.executive-answer{display:flex;align-items:end;justify-content:space-between;gap:20px;padding:5px 2px 9px}.executive-answer h2{font:400 27px/1.22 FrauncesELH,Georgia,serif;color:var(--plum);max-width:850px;margin:8px 0 0}.executive-metrics{grid-template-columns:repeat(5,1fr)}.executive-metrics .metric{min-height:124px;padding:18px}.executive-metrics .metric strong{font-size:25px}.executive-lower{grid-template-columns:1.08fr .92fr}
+.watch-list button{width:100%;display:grid;grid-template-columns:1fr 1fr auto;gap:12px;align-items:center;border:0;border-top:1px solid var(--line);background:none;text-align:left;padding:15px 2px;color:#6d6068}.watch-list button:hover{color:var(--plum)}.watch-list strong{color:var(--plum);font-size:11px}.watch-list span{font-size:10px}.attention-list>span{display:grid;grid-template-columns:20px 1fr;gap:4px 8px;border-top:1px solid var(--line);padding:15px 0}.attention-list svg{grid-row:1/3;color:#a7784b}.attention-list b{font-size:11px;color:var(--plum)}.attention-list small{font-size:10px;color:#887a81;line-height:1.5}
+.source-status-summary{display:flex;justify-content:space-between;align-items:end;gap:24px;background:var(--plum);color:#f8eee7;padding:27px 29px}.source-status-summary h2{font:400 26px FrauncesELH,Georgia,serif;margin:7px 0}.source-status-summary p{color:#cdbec8;font-size:11px;margin:0}.status-counts{display:flex;gap:25px}.status-counts span{color:#cdbec8;font-size:9px;white-space:nowrap}.status-counts strong{display:block;color:#fff5e9;font:400 28px FrauncesELH,Georgia,serif;margin-bottom:3px}.source-groups{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.source-groups .panel{padding:18px}.source-groups .panel>span{display:flex;align-items:center;gap:8px;border-top:1px solid var(--line);padding:11px 0;color:#6e6069;font-size:10px}.source-groups i{width:7px;height:7px;border-radius:50%}.connected-dot{background:var(--green)}.pending-dot{background:var(--gold)}.awaiting-dot{background:#a99da3}.detail-toggle{justify-self:start;display:flex;align-items:center;gap:6px;border:0;background:none;color:#28617d;font-weight:700;padding:5px 0;font-size:10px}
+@media(max-width:1050px){.hub-sidebar{width:218px;flex-basis:218px}.executive-metrics{grid-template-columns:repeat(3,1fr)}.status-counts{gap:14px}}
+@media(max-width:720px){.hub-sidebar{width:275px}.executive-answer,.source-status-summary{align-items:flex-start;flex-direction:column}.executive-metrics{grid-template-columns:1fr 1fr}.source-groups{grid-template-columns:1fr}.status-counts{width:100%;justify-content:space-between}.executive-lower{grid-template-columns:1fr}}
+
 /* Executive suite finish: Eternal Life plum, cream, gold and the official blue accent. */
 .hub-shell{--blue:#1a5276;--blue-2:#286b91;background:linear-gradient(135deg,#f6f2ed 0%,#f8f4ef 60%,#edf3f4 100%)}
 .hub-sidebar{background:linear-gradient(160deg,var(--plum) 0%,#321b3a 62%,#173f59 100%);box-shadow:8px 0 28px rgba(26,82,118,.12)}
@@ -97,3 +110,13 @@
 .hub-sidebar .mode-panel>button.active{background:rgba(201,176,126,.1);color:#fff4e8;box-shadow:inset 2px 0 var(--gold);transform:none}
 .hub-sidebar .mode-panel>button.active svg{color:var(--gold)}
 .hub-sidebar .mode-panel>button.active small{color:#b9a9b4}
+
+/* Final sidebar hierarchy overrides */
+.hub-sidebar .hub-brand{min-height:92px;height:92px;margin:0;padding:4px 10px 14px;border-bottom:1px solid rgba(201,176,126,.24)}
+.hub-sidebar .hub-brand img{width:112px;max-height:78px;object-fit:contain}
+.hub-sidebar .nav-group-trigger b{margin:0;background:none;color:inherit;border-radius:0;padding:0;font-size:11px}
+.hub-sidebar .nav-group-trigger:hover{background:#432847;transform:none}
+.hub-sidebar .nav-group-trigger.expanded{background:rgba(255,255,255,.055);color:#fff5eb}
+.hub-sidebar .nav-items button{box-shadow:none}
+.hub-sidebar .nav-items button.active{background:rgba(255,255,255,.055)!important;color:#fff5eb!important;box-shadow:none;transform:none}
+.hub-sidebar .nav-items button.active:before{background:var(--gold)}
