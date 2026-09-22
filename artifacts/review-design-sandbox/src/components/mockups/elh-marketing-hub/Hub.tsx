@@ -22,8 +22,8 @@ const items:Item[] = [...journalArticles.map(a=>({id:`j-${a.slug}`,title:a.title
 const pending = "Awaiting Source";
 
 export default function Hub(){
- const initialView=new URLSearchParams(window.location.search).get("view")||"Overview"; const initialGroup=groups.find(g=>g.items.some(i=>i[1]===initialView))?.name||(studio.some(i=>i[1]===initialView)?"Eternal Studio":utility.some(i=>i[1]===initialView)?"Data & Settings":"Performance");
-  const [active,setActive]=useState(initialView); const [open,setOpen]=useState(initialGroup); const [mobile,setMobile]=useState(false); const [query,setQuery]=useState(""); const [notice,setNotice]=useState(""); const [selected,setSelected]=useState<Item|null>(null); const [statuses,setStatuses]=useState<Record<string,Item["status"]>>({}); const [firstName,setFirstName]=useState(""); const [entered,setEntered]=useState(false);
+ const initialView=new URLSearchParams(window.location.search).get("view")||"Overview";
+  const [active,setActive]=useState(initialView); const [open,setOpen]=useState(""); const [mobile,setMobile]=useState(false); const [query,setQuery]=useState(""); const [notice,setNotice]=useState(""); const [selected,setSelected]=useState<Item|null>(null); const [statuses,setStatuses]=useState<Record<string,Item["status"]>>({}); const [firstName,setFirstName]=useState(""); const [entered,setEntered]=useState(false);
  const currentGroup=groups.find(g=>g.items.some(i=>i[1]===active))?.name || (studio.some(i=>i[1]===active)?"Eternal Studio":"Data & Settings");
  const setView=(v:string,g:string)=>{setActive(v);setOpen(g);setMobile(false);const url=new URL(window.location.href);url.searchParams.set("view",v);window.history.replaceState(null,"",url)};
  const flash=(s:string)=>{setNotice(s);window.setTimeout(()=>setNotice(""),2200)};
@@ -47,8 +47,9 @@ export default function Hub(){
     <div className="cover-orbit cover-orbit-one"/><div className="cover-orbit cover-orbit-two"/>
     <div className="cover-grain"/>
     <section className="cover-panel">
-      <div className="cover-copy"><h1>Eternal Growth<br/><em>Intelligence</em></h1><p className="cover-intro">A view of the signals shaping what comes next.</p></div>
-      <div className="domain-row" aria-label="Intelligence domains">{["Performance","Marketing","Census","Expansion"].map(domain=><div className="domain" key={domain}><strong>{domain}</strong></div>)}</div>
+      <img className="cover-mark" src="/__reviews-mockup/logo-eternal-trans.png" alt="Eternal Life Hospice"/>
+      <div className="cover-copy"><h1>Eternal Growth<br/><span>Intelligence</span></h1><p className="cover-intro">A view of the signals shaping what comes next.</p></div>
+      <div className="domain-row" aria-label="Intelligence domains"><strong>Performance</strong><i>•</i><strong>Marketing</strong><i>•</i><strong>Census</strong><i>•</i><strong>Expansion</strong></div>
       <form className="cover-entry" onSubmit={submit}><div className="entry-line"><input id="growth-first-name" aria-label="First name" autoComplete="given-name" maxLength={24} required value={firstName} onChange={event=>onFirstNameChange(event.target.value)} placeholder="Your first name" /><button type="submit" disabled={!firstName.trim()}><span>Open intelligence board</span><ArrowUpRight size={16}/></button></div><small>Your name simply personalizes this welcome. No account or authentication required.</small></form>
     </section>
   </main>
