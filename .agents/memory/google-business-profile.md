@@ -1,6 +1,6 @@
 ---
 name: Google Business Profile linkage
-description: Current ownership conflict for the former ELH Google Maps CID and how to avoid cross-linking the two agencies.
+description: Verified canonical Google Business Profiles for Eternal and Westlake, plus the retired Eternal duplicate that must remain blocked.
 ---
 
 # Google Business Profile (local SEO)
