@@ -47,7 +47,7 @@ export default function Hub(){
     <div className="cover-grain"/>
     <section className="cover-panel">
       <img className="cover-mark" src="/__reviews-mockup/logo-eternal-trans.png" alt="Eternal Life Hospice"/>
-      <div className="cover-copy"><h1>Eternal Growth<br/><span>Intelligence</span></h1><p className="cover-intro">A view of the signals shaping what comes next.</p></div>
+      <div className="cover-copy"><h1><span className="cover-title-line">Eternal</span><span className="cover-title-line">Growth</span><span className="cover-title-line cover-title-accent">Intelligence</span></h1><p className="cover-intro">A view of the signals shaping what comes next.</p></div>
       <div className="domain-row" aria-label="Intelligence domains"><strong>Performance</strong><i>•</i><strong>Marketing</strong><i>•</i><strong>Census</strong><i>•</i><strong>Expansion</strong></div>
       <form className="cover-entry" onSubmit={submit}><div className="entry-line"><input id="growth-first-name" aria-label="First name" autoComplete="given-name" maxLength={24} required value={firstName} onChange={event=>onFirstNameChange(event.target.value)} placeholder="Your first name" /><button type="submit" disabled={!firstName.trim()}><span>Open intelligence board</span><ArrowUpRight size={16}/></button></div></form>
     </section>
