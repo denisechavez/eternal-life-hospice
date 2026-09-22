@@ -964,15 +964,7 @@
     linear-gradient(112deg,#103d57,#174e6b 64%,#225f7c);
   box-shadow:0 22px 52px rgba(16,61,87,.22);
 }
-.executive-answer::after{
-  content:"";
-  position:absolute;
-  inset:0;
-  pointer-events:none;
-  background:linear-gradient(115deg,transparent 42%,rgba(255,255,255,.055) 50%,transparent 58%);
-  transform:translateX(-70%);
-  animation:leadership-sheen 8s ease-in-out infinite;
-}
+.executive-answer::after{content:none}
 .source-status-summary{
   position:relative;
   overflow:hidden;
@@ -1020,7 +1012,6 @@
 }
 @keyframes rise-in{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
 @keyframes bar-rise{from{transform:scaleY(0);opacity:.2}to{transform:scaleY(1);opacity:.92}}
-@keyframes leadership-sheen{0%,68%{transform:translateX(-75%)}88%,100%{transform:translateX(75%)}}
 @media(prefers-reduced-motion:reduce){
   .hub-shell *,.hub-shell *::before,.hub-shell *::after{
     animation-duration:.001ms!important;
