@@ -17,8 +17,11 @@
 /* Executive suite finish: Eternal Life plum, cream, gold and the official blue accent. */
 .hub-shell{--blue:#1a5276;--blue-2:#286b91;background:linear-gradient(135deg,#f6f2ed 0%,#f8f4ef 60%,#edf3f4 100%)}
 .hub-sidebar{background:linear-gradient(160deg,var(--plum) 0%,#321b3a 62%,#173f59 100%);box-shadow:8px 0 28px rgba(26,82,118,.12)}
-.hub-brand{min-height:118px;justify-content:center;padding-top:4px}
+.hub-brand{min-height:118px;justify-content:center;padding-top:4px;margin-bottom:8px}
 .hub-logo{display:block;width:132px;height:auto;max-height:108px;object-fit:contain;object-position:center}
+.command-center-title{border-top:1px solid rgba(201,176,126,.42);padding:15px 10px 13px;text-align:center}
+.command-center-title span{display:block;color:#cdbdc7;font-size:8px;font-weight:600;letter-spacing:.18em;text-transform:uppercase}
+.command-center-title strong{display:block;margin-top:4px;color:#fff8f0;font:500 17px/1.1 FrauncesELH,Georgia,serif;letter-spacing:.01em}
 .hub-sidebar nav button:hover{background:rgba(26,82,118,.48);transform:translateX(2px)}
 .hub-sidebar nav button.active{box-shadow:inset 3px 0 var(--blue)}
 .hub-topbar{background:rgba(251,250,248,.94)}

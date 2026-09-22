@@ -58,7 +58,7 @@ const baseItems: Item[] = [
 ];
 
 const nav = [
-  { label: "Command center", icon: LayoutDashboard, key: "Overview" },
+  { label: "Overview", icon: LayoutDashboard, key: "Overview" },
   { label: "Census & performance", icon: TrendingUp, key: "Census" },
   { label: "SEO analytics", note: "GA4 + Search Console", icon: BarChart3, key: "SEO" },
   { label: "Data connections", note: "Reporting layer", icon: Cable, key: "Connections" },
@@ -124,7 +124,7 @@ export default function Hub() {
     <div className="hub-shell">
       <aside className={`hub-sidebar ${mobileNav ? "is-open" : ""}`}>
          <div className="hub-brand"><img className="hub-logo" src="/__reviews-mockup/elh-logo-stacked-cream-gold.png" alt="Eternal Life Hospice" /><button className="close-nav" onClick={() => setMobileNav(false)} aria-label="Close navigation"><X size={18} /></button></div>
-        <div className="workspace-label">WORKSPACE <span>PRODUCTION</span></div>
+        <div className="command-center-title"><span>Marketing &amp; Census</span><strong>Command Center</strong></div>
           <nav className="mode-nav">{navGroups.map((group, groupIndex) => { const ModeIcon = group.icon; const isOpen = openGroup === groupIndex; return <section className={`mode-card mode-${groupIndex} ${isOpen ? "is-open" : ""}`} key={group.label}><button className="mode-trigger" aria-expanded={isOpen} aria-controls={`mode-panel-${groupIndex}`} onClick={() => setOpenGroup(isOpen ? -1 : groupIndex)}><span className="mode-icon"><ModeIcon size={16} /></span><span className="mode-copy"><strong>{group.label}</strong><small>{group.purpose}</small></span><ChevronRight size={15} className="mode-chevron" /></button>{isOpen && <div id={`mode-panel-${groupIndex}`} className="mode-panel">{nav.filter(item => group.keys.includes(item.key)).map(({ label, note, icon: Icon, key, count }) => <button key={key} className={`${active === key ? "active" : ""} ${note ? "nav-product" : ""}`} onClick={() => { setActive(key); setOpenGroup(groupIndex); setStatusFilter("All"); setMobileNav(false); }}><Icon size={16} /><span>{label}{note && <small>{note}</small>}</span>{count && <b>{items.filter(i => i.status === "Needs review" && ["Journal", "Weekly email"].includes(i.type)).length}</b>}</button>)}</div>}</section>; })}</nav>
          <div className="sidebar-foot"><div className="sync"><span className="live-dot" /> Connected sources only <small>Source status available in Data connections</small></div><button><Settings2 size={16} /> Workspace settings</button><div className="profile"><div className="avatar">AD</div><div><strong>Aleksandra D.</strong><span>Founder & CEO</span></div><MoreHorizontal size={17} /></div></div>
       </aside>
