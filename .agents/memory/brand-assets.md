@@ -40,9 +40,16 @@ Use an official Eternal Life Hospice logo asset in every ELH app and internal
 product. Do not substitute a generic icon, initials, or a recreated wordmark for
 the app-level brand identity.
 
+For dark app headers and sidebars, the approved locked treatment is the
+transparent stacked logo with translucent cream artwork and gold
+“LIFE HOSPICE” lettering. Do not add a plaque, card, box, or other background
+behind the logo, and do not recolor the logo with a custom gradient.
+
 **Why:** The user established this as a standing brand rule so all ELH software
-surfaces remain visibly authentic and consistent.
+surfaces remain visibly authentic and consistent, then explicitly approved this
+dark-surface treatment on September 21, 2026.
 
 **How to apply:** Source the logo from `brand-assets/Medical/` or the canonical
 public-site logo assets. Choose the approved color variant that preserves
-contrast in its placement.
+contrast in its placement. For dark app chrome, use the cream-and-gold stacked
+transparent asset without a backing shape.
