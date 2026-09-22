@@ -133,3 +133,8 @@ timeoutMs = 30000
 [deployment]
 deploymentTarget = "autoscale"
 run = ["bash", "-c", "python3 website/devserver.py"]
+
+[userenv]
+
+[userenv.shared]
+GA4_PROPERTY_ID = "543455947"

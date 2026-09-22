@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   ArrowUpRight, Bell, BookOpen, CalendarDays, Check, ChevronRight, CircleHelp, Clock3,
   FileCheck2, FileText, Filter, FolderOpen, HeartHandshake, LayoutDashboard,
@@ -11,6 +11,16 @@ import { emailCampaigns, journalArticles, type JournalArticle } from "./contentD
 
 type Status = "Needs review" | "Approved" | "Scheduled" | "Draft" | "Published";
 type Item = { id: string; title: string; type: string; date: string; owner: string; status: Status; excerpt: string; source?: JournalArticle; emailIndex?: number; infographicRecommendation?: string; };
+type LiveSeoData = {
+  live: boolean;
+  generatedAt?: string;
+  period?: { startDate: string; endDate: string; label: string };
+  errors?: string[];
+  metrics?: { sessions: number; keyEvents: number; searchClicks: number; impressions: number; ctr: number; averagePosition: number };
+  trend?: Array<{ date: string; sessions: number; keyEvents: number }>;
+  landingPages?: Array<{ page: string; sessions: number; engagementRate: number; keyEvents: number }>;
+  queries?: Array<{ query: string; clicks: number; impressions: number; ctr: number; position: number }>;
+};
 
 const journalTitles = [
   "What happens during a hospice evaluation", "10 signs it may be time to consider hospice",
@@ -140,20 +150,43 @@ function CensusView({ onNavigate }: { onNavigate: (key: string) => void }) {
 function SeoView({ connections, onConnect }: { connections: { ga4: boolean; gsc: boolean }; onConnect: (target: "ga4" | "gsc") => void }) {
   const [range, setRange] = useState("Last 28 days");
   const [tab, setTab] = useState("Overview");
+  const [report, setReport] = useState<LiveSeoData | null>(null);
+  const [loading, setLoading] = useState(true);
   const tabs = ["Overview", "Landing pages", "Search queries", "Indexing health"];
+  useEffect(() => {
+    const controller = new AbortController();
+    const period = range === "Previous 28 days" ? "previous" : range === "Year to date" ? "ytd" : "last28";
+    setLoading(true);
+    fetch(`${import.meta.env.BASE_URL}api/elh-reporting?period=${period}`, { signal: controller.signal })
+      .then(async response => {
+        const data = await response.json() as LiveSeoData;
+        if (!response.ok) throw new Error(data.errors?.join(" ") || "Live reporting request failed.");
+        setReport(data);
+      })
+      .catch(error => {
+        if (error instanceof DOMException && error.name === "AbortError") return;
+        setReport({ live: false, errors: [error instanceof Error ? error.message : String(error)] });
+      })
+      .finally(() => setLoading(false));
+    return () => controller.abort();
+  }, [range]);
+  const metrics = report?.metrics;
+  const format = (value: number | undefined) => loading ? "…" : value === undefined ? "—" : Math.round(value).toLocaleString();
+  const bars = report?.trend?.slice(-12) ?? [];
+  const maxSessions = Math.max(1, ...bars.map(point => point.sessions));
   return <div className="analytics-view">
-    <div className="data-note"><Activity size={15} /><strong>{connections.ga4 || connections.gsc ? "Partially connected reporting" : "Sample SEO reporting"}</strong><span>{connections.ga4 ? "GA4 connected." : "GA4 is instrumented on the website, but not connected to this reporting layer."} {connections.gsc ? "Search Console connected." : "Search Console is available to connect."}</span><button onClick={() => onConnect(connections.gsc ? "ga4" : "gsc")}>{connections.gsc ? "Manage connections" : "Connect Search Console"} <Cable size={13} /></button></div>
+    <div className={`data-note ${report?.live ? "is-live" : ""}`}><Activity size={15} /><strong>{loading ? "Loading live reporting" : report?.live ? "Live Google reporting" : "Reporting connection needs attention"}</strong><span>{loading ? "Requesting GA4 and Search Console data…" : report?.live ? `GA4 and Search Console · ${report.period?.startDate}–${report.period?.endDate} · refreshed ${new Date(report.generatedAt || "").toLocaleTimeString([], {hour:"numeric", minute:"2-digit"})}` : report?.errors?.join(" ")}</span><button onClick={() => window.location.reload()}><RefreshCw size={13} /> Refresh</button></div>
     <div className="view-toolbar"><div><span className="panel-kicker">Website discovery & action</span><h2>SEO analytics that ends in a useful question</h2></div><select aria-label="SEO date range" value={range} onChange={e => setRange(e.target.value)}><option>Last 28 days</option><option>Previous 28 days</option><option>Year to date</option></select></div>
-    <div className="metric-grid four"><Metric label="Website sessions" value="1,284" detail="+12.6% vs prior period" trend="up" icon={Globe2} /><Metric label="Conversion actions" value="38" detail="Calls, forms, evaluation starts" trend="up" icon={HeartHandshake} /><Metric label="Search clicks" value="842" detail="Awaiting Search Console" trend="neutral" icon={Search} /><Metric label="Avg. position" value="18.4" detail="Awaiting Search Console" trend="neutral" icon={TrendingUp} /></div>
+    <div className="metric-grid four"><Metric label="Website sessions" value={format(metrics?.sessions)} detail="GA4 sessions" trend="neutral" icon={Globe2} /><Metric label="Key events" value={format(metrics?.keyEvents)} detail="GA4 configured key events" trend="neutral" icon={HeartHandshake} /><Metric label="Search clicks" value={format(metrics?.searchClicks)} detail={`${format(metrics?.impressions)} impressions`} trend="neutral" icon={Search} /><Metric label="Avg. position" value={loading ? "…" : metrics ? metrics.averagePosition.toFixed(1) : "—"} detail={metrics ? `${(metrics.ctr * 100).toFixed(1)}% search CTR` : "Search Console"} trend="neutral" icon={TrendingUp} /></div>
     <div className="tab-strip" role="tablist">{tabs.map(item => <button role="tab" aria-selected={tab === item} className={tab === item ? "selected" : ""} onClick={() => setTab(item)} key={item}>{item}</button>)}</div>
-    {tab === "Overview" && <div className="two-panel"><section className="panel"><div className="panel-head"><div><span className="panel-kicker">Sample GA4 trend · {range}</span><h2>Traffic and meaningful actions</h2></div><BarChart3 size={18} className="muted-icon" /></div><div className="mini-chart"><div className="mini-bars">{[42,58,48,67,55,74,62,86,70,92,78,99].map((height, i) => <i style={{height:`${height}%`}} key={i} />)}</div><div className="mini-axis"><span>Aug 26</span><span>Sep 08</span><span>Sep 22</span></div></div><div className="legend"><span><i className="legend-plum" />Sessions</span><span><i className="legend-gold" />Conversion actions</span><strong>38 <small>sample actions</small></strong></div></section><section className="panel"><div className="panel-head"><div><span className="panel-kicker">Conversion actions · sample</span><h2>What visitors chose</h2></div></div><div className="action-list">{[["Phone click","18","47%"],["Evaluation request","11","29%"],["Directions / location","06","16%"],["Care guide download","03","8%"]].map(([label,value,share]) => <div key={label}><span>{label}</span><b>{value}</b><small>{share}</small></div>)}</div></section></div>}
-    {tab === "Landing pages" && <SeoTable title="Top landing pages" headers={["Landing page","Sessions","Engaged","Actions"]} rows={[["/","428","71.4%","12"],["/hospice-care","287","68.1%","9"],["/blog/hospice-at-home","164","74.6%","7"],["/contact","96","62.8%","6"]]} />}
-    {tab === "Search queries" && <SeoTable title="Search Console queries · awaiting connection" headers={["Query","Clicks","Impressions","Position"]} rows={[["hospice care thousand oaks","—","—","—"],["hospice at home near me","—","—","—"],["when to consider hospice","—","—","—"],["hospice in simi valley","—","—","—"]]} empty />}
+    {tab === "Overview" && <div className="two-panel"><section className="panel"><div className="panel-head"><div><span className="panel-kicker">Live GA4 trend · {range}</span><h2>Traffic and meaningful actions</h2></div><BarChart3 size={18} className="muted-icon" /></div><div className="mini-chart"><div className="mini-bars">{bars.length ? bars.map((point, i) => <i title={`${point.sessions} sessions`} style={{height:`${Math.max(3, point.sessions / maxSessions * 100)}%`}} key={`${point.date}-${i}`} />) : <span className="chart-empty">{loading ? "Loading trend…" : "No GA4 trend data returned"}</span>}</div><div className="mini-axis"><span>{report?.period?.startDate || "—"}</span><span>{report?.period?.endDate || "—"}</span></div></div><div className="legend"><span><i className="legend-plum" />Sessions</span><strong>{format(metrics?.keyEvents)} <small>GA4 key events</small></strong></div></section><section className="panel"><div className="panel-head"><div><span className="panel-kicker">Search Console · live</span><h2>Organic search visibility</h2></div></div><div className="action-list">{[["Clicks",format(metrics?.searchClicks)],["Impressions",format(metrics?.impressions)],["Click-through rate",metrics ? `${(metrics.ctr * 100).toFixed(1)}%` : "—"],["Average position",metrics ? metrics.averagePosition.toFixed(1) : "—"]].map(([label,value]) => <div key={label}><span>{label}</span><b>{value}</b></div>)}</div></section></div>}
+    {tab === "Landing pages" && <SeoTable title="Top landing pages" headers={["Landing page","Sessions","Engaged","Key events"]} rows={(report?.landingPages ?? []).map(row => [row.page,row.sessions.toLocaleString(),`${(row.engagementRate * 100).toFixed(1)}%`,row.keyEvents.toLocaleString()])} empty={!loading && !(report?.landingPages?.length)} live />}
+    {tab === "Search queries" && <SeoTable title="Top Google Search queries" headers={["Query","Clicks","Impressions","Position"]} rows={(report?.queries ?? []).map(row => [row.query,row.clicks.toLocaleString(),row.impressions.toLocaleString(),row.position.toFixed(1)])} empty={!loading && !(report?.queries?.length)} live />}
     {tab === "Indexing health" && <div className="two-panel"><section className="panel connection-empty"><Globe2 size={24} /><h2>Indexing health awaits Search Console</h2><p>Once connected, this view will show indexed pages, excluded pages, crawl signals, and issues that could keep a family from finding the right guide.</p><button className="secondary-btn" onClick={() => onConnect("gsc")}><Cable size={14} /> Connect Search Console</button></section><section className="panel capability-list"><span className="panel-kicker">Supported reporting</span>{["Indexed pages and exclusions","Clicks, impressions, CTR, position","Queries by service area","Landing pages and conversion actions"].map(x => <div key={x}><Check size={14} />{x}</div>)}</section></div>}
   </div>;
 }
 
-function SeoTable({ title, headers, rows, empty = false }: { title: string; headers: string[]; rows: string[][]; empty?: boolean }) { return <section className="panel seo-table"><div className="panel-head"><div><span className="panel-kicker">{empty ? "Awaiting connection" : "Sample GA4 reporting"}</span><h2>{title}</h2></div><button className="filter-btn"><Filter size={14} /> Filter</button></div><div className="table-grid" style={{gridTemplateColumns:`minmax(180px,2fr) repeat(${headers.length - 1},1fr)`}}>{headers.map(h => <span className="table-heading" key={h}>{h}</span>)}{rows.map(row => row.map((cell, i) => <span className={i === 0 ? "table-primary" : "table-cell"} key={`${row[0]}-${i}`}>{cell}</span>))}</div></section>; }
+function SeoTable({ title, headers, rows, empty = false, live = false }: { title: string; headers: string[]; rows: string[][]; empty?: boolean; live?: boolean }) { return <section className="panel seo-table"><div className="panel-head"><div><span className="panel-kicker">{empty ? "No data returned" : live ? "Live Google reporting" : "Reporting"}</span><h2>{title}</h2></div><button className="filter-btn"><Filter size={14} /> Filter</button></div><div className="table-grid" style={{gridTemplateColumns:`minmax(180px,2fr) repeat(${headers.length - 1},1fr)`}}>{headers.map(h => <span className="table-heading" key={h}>{h}</span>)}{rows.map(row => row.map((cell, i) => <span className={i === 0 ? "table-primary" : "table-cell"} key={`${row[0]}-${i}`}>{cell}</span>))}{empty && <span className="table-primary">No reporting rows are available for this period.</span>}</div></section>; }
 
 function ConnectionsView({ connections, onConnect }: { connections: { ga4: boolean; gsc: boolean }; onConnect: (target: "ga4" | "gsc") => void }) {
   return <div className="analytics-view"><div className="connection-hero"><div><span className="panel-kicker">Private reporting layer</span><h2>Only connected sources become reporting</h2><p>Keep the distinction clear: instrumented is not connected, and sample is never presented as live.</p></div><ShieldCheck size={28} /></div><div className="connection-grid"><ConnectionCard icon={BarChart3} name="Google Analytics 4" code="GA4" status={connections.ga4 ? "Connected" : "Instrumented on website"} detail={connections.ga4 ? "Website events can now be reviewed in this prototype." : "The website has GA4 instrumentation. This console is not yet receiving its reporting feed."} action={connections.ga4 ? "Connected" : "Connect reporting"} onClick={() => onConnect("ga4")} live={connections.ga4} /><ConnectionCard icon={Search} name="Google Search Console" code="GSC" status={connections.gsc ? "Connected" : "Available to connect"} detail={connections.gsc ? "Search queries, indexing, clicks, impressions, and position are available." : "Connect to bring search demand and indexing health into the command center."} action={connections.gsc ? "Connected" : "Connect Search Console"} onClick={() => onConnect("gsc")} live={connections.gsc} /></div><div className="capability-panel panel"><div className="panel-head"><div><span className="panel-kicker">Operational capabilities</span><h2>Directory, GBP, reviews & social</h2></div><span className="awaiting-tag">Not connected</span></div><div className="capability-grid">{[["Directory listings",MapPin,"Presence checks and referral consistency"],["Google Business Profile",Globe2,"Profile health, calls, direction requests"],["Reviews",MessageSquare,"Review volume, response rhythm, sentiment"],["Social distribution",ExternalLink,"Outbound publishing and referral context"]].map(([name,Icon,detail]) => <div key={name as string}><Icon size={17} /><strong>{name as string}</strong><span>{detail as string}</span><small>Capability area · awaiting connection</small></div>)}</div></div></div>;
