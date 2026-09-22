@@ -17,8 +17,8 @@
 /* Executive suite finish: Eternal Life plum, cream, gold and the official blue accent. */
 .hub-shell{--blue:#1a5276;--blue-2:#286b91;background:linear-gradient(135deg,#f6f2ed 0%,#f8f4ef 60%,#edf3f4 100%)}
 .hub-sidebar{background:linear-gradient(160deg,var(--plum) 0%,#321b3a 62%,#173f59 100%);box-shadow:8px 0 28px rgba(26,82,118,.12)}
-.hub-brand{min-height:52px}
-.hub-logo{display:block;width:min(198px,100%);height:auto;max-height:48px;object-fit:contain;object-position:left center}
+.hub-brand{min-height:118px;justify-content:center;padding-top:4px}
+.hub-logo{display:block;width:132px;height:auto;max-height:108px;object-fit:contain;object-position:center}
 .hub-sidebar nav button:hover{background:rgba(26,82,118,.48);transform:translateX(2px)}
 .hub-sidebar nav button.active{box-shadow:inset 3px 0 var(--blue)}
 .hub-topbar{background:rgba(251,250,248,.94)}

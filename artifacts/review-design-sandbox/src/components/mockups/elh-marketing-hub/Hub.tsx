@@ -116,7 +116,7 @@ export default function Hub() {
   return (
     <div className="hub-shell">
       <aside className={`hub-sidebar ${mobileNav ? "is-open" : ""}`}>
-         <div className="hub-brand"><img className="hub-logo" src="/__reviews-mockup/elh-logo-header-cream.png" alt="Eternal Life Hospice" /><button className="close-nav" onClick={() => setMobileNav(false)} aria-label="Close navigation"><X size={18} /></button></div>
+         <div className="hub-brand"><img className="hub-logo" src="/__reviews-mockup/elh-logo-stacked-cream.png" alt="Eternal Life Hospice" /><button className="close-nav" onClick={() => setMobileNav(false)} aria-label="Close navigation"><X size={18} /></button></div>
         <div className="workspace-label">WORKSPACE <span>PRODUCTION</span></div>
          <nav>{nav.map(({ label, note, icon: Icon, key, count }) => <button key={key} className={`${active === key ? "active" : ""} ${note ? "nav-product" : ""}`} onClick={() => { setActive(key); setStatusFilter("All"); setMobileNav(false); }}><Icon size={17} /><span>{label}{note && <small>{note}</small>}</span>{count && <b>{items.filter(i => i.status === "Needs review" && ["Journal", "Weekly email"].includes(i.type)).length}</b>}</button>)}</nav>
          <div className="sidebar-foot"><div className="sync"><span className="live-dot" /> Connected sources only <small>Source status available in Data connections</small></div><button><Settings2 size={16} /> Workspace settings</button><div className="profile"><div className="avatar">AD</div><div><strong>Aleksandra D.</strong><span>Founder & CEO</span></div><MoreHorizontal size={17} /></div></div>
