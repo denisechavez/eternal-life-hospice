@@ -36,6 +36,19 @@ campaign targeting a preview list, then `POST /sendNow`. If you forget to PUT
 the queued campaign, the preview looks fixed but the real blast still sends the
 old version.
 
+# Approved layout applies to every email
+
+All outgoing Eternal emails should use the approved original Eternal template
+layout consistently, not only the first one or two examples.
+
+**Why:** The user explicitly rejected mixing approved-template examples with
+later emails that switch to a visibly different draft format.
+
+**How to apply:** Keep campaign-specific copy, links, disclosures, and product
+identity intact, but render every email with the same approved Eternal layout
+system. Journal and Care Brief remain distinct publications even when they
+share the organization-level email chrome.
+
 # Care Brief masthead (intro email)
 
 `exports/email/eternal-care-brief-introduction-email.html` masthead is a

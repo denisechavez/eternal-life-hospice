@@ -20,6 +20,23 @@ export type EmailCampaign = {
   framework: "approved" | "journal-draft";
 };
 
+const approvedJournalTemplate = (html: string) => html
+  .replaceAll("background:#f5f0eb", "background:#EDE6DE")
+  .replaceAll("background:#fff;", "background:#ffffff;")
+  .replace(
+    /<tr><td style="background:#3c1c3b;padding:24px 30px;border-bottom:5px solid #c9b07e;">[\s\S]*?<\/td><\/tr>/,
+    `<tr><td style="background-color:#EDE6DE;padding:8px 28px;text-align:center;">
+      <span style="font-family:Arial,Helvetica,sans-serif;font-size:11px;color:#7a6a5a;">Having trouble viewing this email? <a href="{{ mirror }}" style="color:#381B37;text-decoration:underline;">View it in your browser</a>.</span>
+    </td></tr>
+    <tr><td style="background-color:#381B37;padding:11px 28px;text-align:center;">
+      <div style="font-family:Arial,Helvetica,sans-serif;font-size:10px;font-weight:bold;letter-spacing:3px;text-transform:uppercase;color:#C9B07E;">HERE IN MOMENTS THAT MATTER MOST</div>
+    </td></tr>
+    <tr><td align="center" style="background-color:#F5F0EB;padding:26px 40px 22px;">
+      <a href="https://eternallifehospice.com" style="text-decoration:none;"><img src="https://eternallifehospice.com/assets/img/logo-eternal-trans.png" width="176" alt="Eternal Life Hospice" style="display:block;width:176px;max-width:100%;height:auto;border:0;"></a>
+    </td></tr>
+    <tr><td style="height:5px;line-height:5px;background-color:#C9B07E;font-size:0;">&nbsp;</td></tr>`,
+  );
+
 export const journalArticles: JournalArticle[] = [
   ...[...batch1, ...batch2, ...batch3, ...batch4, ...batch5].filter(article => !("publicationStatus" in article) || article.publicationStatus !== "archived"),
 ];
@@ -48,8 +65,8 @@ export const emailCampaigns: EmailCampaign[] = [
     sendDate: "Approved template",
     framework: "approved",
   },
-  { html: campaign1, subject: "Knowing When to Call: A Gentle Starting Point", preheader: "A conversation can begin before a crisis. Learn which changes may be worth discussing with a clinician.", plainText: plainText[0], sendDate: "Sep 23, 2026", framework: "journal-draft" },
-  { html: campaign2, subject: "Hospice, Palliative Care, and Medicare—Clearly", preheader: "A plain-language look at hospice, palliative care, and common Medicare coverage questions.", plainText: plainText[1], sendDate: "Sep 30, 2026", framework: "journal-draft" },
-  { html: campaign3, subject: "Hospice Close to Home in the Conejo Valley", preheader: "Local, comfort-focused support for families in Thousand Oaks, Simi Valley, Camarillo, and nearby communities.", plainText: plainText[2], sendDate: "Oct 7, 2026", framework: "journal-draft" },
-  { html: campaign4, subject: "What Hospice Support Really Includes", preheader: "Equipment, 24/7 nursing access, social work, and respite—see how a hospice team supports families.", plainText: plainText[3], sendDate: "Oct 14, 2026", framework: "journal-draft" },
+  { html: approvedJournalTemplate(campaign1), subject: "Knowing When to Call: A Gentle Starting Point", preheader: "A conversation can begin before a crisis. Learn which changes may be worth discussing with a clinician.", plainText: plainText[0], sendDate: "Sep 23, 2026", framework: "approved" },
+  { html: approvedJournalTemplate(campaign2), subject: "Hospice, Palliative Care, and Medicare—Clearly", preheader: "A plain-language look at hospice, palliative care, and common Medicare coverage questions.", plainText: plainText[1], sendDate: "Sep 30, 2026", framework: "approved" },
+  { html: approvedJournalTemplate(campaign3), subject: "Hospice Close to Home in the Conejo Valley", preheader: "Local, comfort-focused support for families in Thousand Oaks, Simi Valley, Camarillo, and nearby communities.", plainText: plainText[2], sendDate: "Oct 7, 2026", framework: "approved" },
+  { html: approvedJournalTemplate(campaign4), subject: "What Hospice Support Really Includes", preheader: "Equipment, 24/7 nursing access, social work, and respite—see how a hospice team supports families.", plainText: plainText[3], sendDate: "Oct 14, 2026", framework: "approved" },
 ];
