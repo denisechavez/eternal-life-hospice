@@ -111,8 +111,11 @@ class PrettyURLHandler(http.server.SimpleHTTPRequestHandler):
 
     def translate_path(self, path):
         clean = path.split("?", 1)[0].split("#", 1)[0]
+        if clean.rstrip("/") == "/growth-intelligence":
+            return os.path.join(CANVAS_HUB, "dashboard", "index.html")
         if clean.startswith("/canvas-hub/"):
-            if is_production_deployment():
+            is_growth_dashboard = clean.startswith("/canvas-hub/dashboard/")
+            if is_production_deployment() and not is_growth_dashboard:
                 return os.path.join(ROOT, "__not_found__")
             rel = os.path.normpath(clean[len("/canvas-hub/"):]).lstrip("/")
             namespace = rel.split("/", 1)[0]
@@ -504,9 +507,6 @@ class PrettyURLHandler(http.server.SimpleHTTPRequestHandler):
             "/canvas-hub/dashboard/api/brevo-reporting": "brevo",
         }
         if parsed.path in growth_sources:
-            if is_production_deployment():
-                self.send_error(404)
-                return
             try:
                 period = parse_qs(parsed.query).get("period", ["last28"])[0]
                 completed = subprocess.run(
