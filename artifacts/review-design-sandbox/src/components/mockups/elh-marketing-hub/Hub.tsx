@@ -18,8 +18,10 @@ const groups = [
 const utility = [["Data Connections","Connections"],["Reporting Health","Health"],["Change Log","ChangeLog"],["KPI Dictionary","Definitions"],["Workspace Settings","Settings"]];
 const studio = [["Eternal Journal","Journal"],["Email","Emails"],["Eternal Care Brief","CareBrief"],["Content Calendar","Calendar"],["Review & Approvals","Reviews"],["Asset Library","Assets"]];
 const markets = ["Thousand Oaks","Westlake Village","Simi Valley","Calabasas","Camarillo","Moorpark","Ventura County","Los Angeles County"];
-const items:Item[] = [...journalArticles.map(a=>({id:`j-${a.slug}`,title:a.title,type:"Journal",date:a.date,owner:"Eternal Life Hospice",status:"Approved" as const,excerpt:a.description,source:a})),...emailCampaigns.map((e,i)=>({id:`e-${i}`,title:e.subject,type:"Email",date:e.sendDate,owner:"Eternal Studio",status:"Approved" as const,excerpt:e.preheader,emailIndex:i}))];
-const approvalStorageKey = "egi-publication-statuses-v2";
+const approvalCutoff = "2026-09-30";
+const publicationStatusFor = (date:string):Item["status"] => date==="Approved template"||date<=approvalCutoff?"Approved":"Needs review";
+const items:Item[] = [...journalArticles.map(a=>({id:`j-${a.slug}`,title:a.title,type:"Journal",date:a.date,owner:"Eternal Life Hospice",status:publicationStatusFor(a.date),excerpt:a.description,source:a})),...emailCampaigns.map((e,i)=>({id:`e-${i}`,title:e.subject,type:"Email",date:e.sendDate,owner:"Eternal Studio",status:(i<2?"Approved":"Needs review") as Item["status"],excerpt:e.preheader,emailIndex:i}))];
+const approvalStorageKey = "egi-publication-statuses-v4";
 const pending = "Awaiting Source";
 const assetLibrary = [
   {title:"The Seven-Link Chain",kind:"Owned image",source:"Eternal Growth Intelligence",href:"/__reviews-mockup/egi-measurement-chain.png",preview:"/__reviews-mockup/egi-measurement-chain.png"},
@@ -48,7 +50,7 @@ const calendarEntries = [
 const publicationKeywords = ["hospice","Medicare","palliative care","comfort","family","caregiver","physician","quality of life","24/7"];
 
 export default function Hub(){
-  const [active,setActive]=useState(""); const [open,setOpen]=useState(""); const [mobile,setMobile]=useState(false); const [query,setQuery]=useState(""); const [notice,setNotice]=useState(""); const [selected,setSelected]=useState<Item|null>(null); const [statuses,setStatuses]=useState<Record<string,Item["status"]>>(()=>{const approved=Object.fromEntries(items.map(item=>[item.id,"Approved" as const]));try{const saved=window.localStorage.getItem(approvalStorageKey);return saved?{...approved,...JSON.parse(saved)}:approved}catch{return approved}}); const [openingDirection,setOpeningDirection]=useState<"chain"|"center">("chain");
+  const [active,setActive]=useState(""); const [open,setOpen]=useState(""); const [mobile,setMobile]=useState(false); const [query,setQuery]=useState(""); const [notice,setNotice]=useState(""); const [selected,setSelected]=useState<Item|null>(null); const [statuses,setStatuses]=useState<Record<string,Item["status"]>>(()=>{const initial=Object.fromEntries(items.map(item=>[item.id,item.status]));try{const saved=window.localStorage.getItem(approvalStorageKey);return saved?{...initial,...JSON.parse(saved)}:initial}catch{return initial}}); const [openingDirection,setOpeningDirection]=useState<"chain"|"center">("chain");
   useEffect(()=>{window.localStorage.setItem(approvalStorageKey,JSON.stringify(statuses))},[statuses]);
  const currentGroup=active?(groups.find(g=>g.items.some(i=>i[1]===active))?.name || (studio.some(i=>i[1]===active)?"Eternal Studio":"Data & Settings")):"";
  const setView=(v:string,g:string)=>{setActive(v);setOpen(g);setMobile(false);const url=new URL(window.location.href);url.searchParams.set("view",v);window.history.replaceState(null,"",url)};
