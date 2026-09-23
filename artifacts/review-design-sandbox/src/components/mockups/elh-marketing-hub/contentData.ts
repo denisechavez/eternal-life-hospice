@@ -65,8 +65,8 @@ export const emailCampaigns: EmailCampaign[] = [
     sendDate: "Approved template",
     framework: "approved",
   },
-  { html: approvedJournalTemplate(campaign1), subject: "Knowing When to Call: A Gentle Starting Point", preheader: "A conversation can begin before a crisis. Learn which changes may be worth discussing with a clinician.", plainText: plainText[0], sendDate: "Sep 23, 2026", framework: "approved" },
-  { html: approvedJournalTemplate(campaign2), subject: "Hospice, Palliative Care, and Medicare—Clearly", preheader: "A plain-language look at hospice, palliative care, and common Medicare coverage questions.", plainText: plainText[1], sendDate: "Sep 30, 2026", framework: "approved" },
-  { html: approvedJournalTemplate(campaign3), subject: "Hospice Close to Home in the Conejo Valley", preheader: "Local, comfort-focused support for families in Thousand Oaks, Simi Valley, Camarillo, and nearby communities.", plainText: plainText[2], sendDate: "Oct 7, 2026", framework: "approved" },
-  { html: approvedJournalTemplate(campaign4), subject: "What Hospice Support Really Includes", preheader: "Equipment, 24/7 nursing access, social work, and respite—see how a hospice team supports families.", plainText: plainText[3], sendDate: "Oct 14, 2026", framework: "approved" },
+  { html: approvedJournalTemplate(campaign1), subject: "Knowing When to Call: A Gentle Starting Point", preheader: "A conversation can begin before a crisis. Learn which changes may be worth discussing with a clinician.", plainText: plainText[0], sendDate: "Sep 24, 2026", framework: "approved" },
+  { html: approvedJournalTemplate(campaign2), subject: "Hospice, Palliative Care, and Medicare—Clearly", preheader: "A plain-language look at hospice, palliative care, and common Medicare coverage questions.", plainText: plainText[1], sendDate: "Oct 1, 2026", framework: "approved" },
+  { html: approvedJournalTemplate(campaign3), subject: "Hospice Close to Home in the Conejo Valley", preheader: "Local, comfort-focused support for families in Thousand Oaks, Simi Valley, Camarillo, and nearby communities.", plainText: plainText[2], sendDate: "Oct 8, 2026", framework: "approved" },
+  { html: approvedJournalTemplate(campaign4), subject: "What Hospice Support Really Includes", preheader: "Equipment, 24/7 nursing access, social work, and respite—see how a hospice team supports families.", plainText: plainText[3], sendDate: "Oct 15, 2026", framework: "approved" },
 ];
