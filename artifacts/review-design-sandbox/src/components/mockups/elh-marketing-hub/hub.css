@@ -1083,3 +1083,79 @@
 }
 .growth-cover .cover-entry{width:min(100%,760px)}
 .growth-cover .entry-line input{text-align:center}
+
+/* High-legibility cover scale for the large canvas frame */
+.growth-cover .cover-panel{
+  width:min(100%,1380px);
+  padding:clamp(54px,7vh,88px) clamp(42px,6vw,92px);
+}
+.growth-cover .cover-copy h1{
+  max-width:1120px;
+  font-size:clamp(68px,7.4vw,112px);
+  line-height:.88;
+  letter-spacing:.01em;
+  text-shadow:0 16px 42px rgba(0,0,0,.3);
+}
+.growth-cover .cover-copy h1 .cover-title-line{letter-spacing:.03em}
+.growth-cover .cover-copy h1 .cover-title-accent{
+  color:#b8e0ec;
+  text-shadow:0 12px 34px rgba(93,154,176,.2);
+}
+.growth-cover .cover-intro{
+  max-width:620px;
+  margin-top:32px;
+  color:#e0d7d7;
+  font-size:18px;
+  line-height:1.6;
+}
+.growth-cover .domain-row{
+  width:min(100%,1080px);
+  gap:14px 30px;
+  margin:clamp(38px,5.5vh,58px) 0 38px;
+  padding:22px 0;
+  border-color:rgba(184,224,236,.36);
+}
+.growth-cover .domain-row strong{
+  color:#fff8f0;
+  font-size:clamp(15px,1.25vw,19px);
+  letter-spacing:.09em;
+}
+.growth-cover .domain-row i{
+  width:11px;
+  height:11px;
+  background:#8fc1d5;
+  box-shadow:0 0 20px rgba(143,193,213,.7);
+}
+.growth-cover .cover-entry{width:min(100%,900px)}
+.growth-cover .entry-line{border-bottom-color:rgba(184,224,236,.72)}
+.growth-cover .entry-line input{
+  min-height:64px;
+  color:#fffaf5;
+  font-size:22px;
+  font-weight:500;
+}
+.growth-cover .entry-line input::placeholder{color:#d2c9d1}
+.growth-cover .entry-line button{
+  min-height:64px;
+  padding:0 32px;
+  background:#9bc9da;
+  color:#102936;
+  font-size:14px;
+  box-shadow:0 12px 28px rgba(7,31,45,.24);
+}
+.growth-cover .cover-mark{
+  width:145px;
+  opacity:.9;
+  filter:drop-shadow(0 12px 28px rgba(0,0,0,.28));
+}
+@media(max-width:620px){
+  .growth-cover .cover-panel{padding:58px 24px 104px}
+  .growth-cover .cover-copy h1{font-size:clamp(46px,13vw,64px)}
+  .growth-cover .cover-intro{font-size:15px;margin-top:24px}
+  .growth-cover .domain-row{gap:10px 14px;margin:30px 0 24px;padding:16px 0}
+  .growth-cover .domain-row strong{font-size:12px}
+  .growth-cover .domain-row i{width:8px;height:8px}
+  .growth-cover .entry-line input{font-size:18px;min-height:54px}
+  .growth-cover .entry-line button{min-height:54px}
+  .growth-cover .cover-mark{width:96px;opacity:.82}
+}
