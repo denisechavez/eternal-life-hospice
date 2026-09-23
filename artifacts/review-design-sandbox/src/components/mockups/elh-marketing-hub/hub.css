@@ -1312,6 +1312,7 @@
   transform:none;
   flex:0 1 auto;
   margin-right:18px;
+  padding-right:7px;
   text-align:left;
 }
 .hub-topbar .welcome-name~.top-actions{margin-left:auto}
