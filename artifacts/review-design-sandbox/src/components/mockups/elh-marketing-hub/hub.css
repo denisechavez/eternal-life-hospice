@@ -1274,7 +1274,7 @@
 
 /* Opening concepts occupy the dashboard workspace until a menu item is chosen. */
 .hub-content.is-blank{max-width:none;height:calc(100vh - 68px);min-height:0;padding:14px 18px 18px;overflow:hidden}
-.dashboard-opening{height:100%;min-height:0;display:grid;grid-template-rows:auto minmax(0,1fr);gap:10px;background:#fbf8f3;border:1px solid #e4dad2;box-shadow:0 8px 28px rgba(60,28,59,.08);padding:14px 16px;overflow:hidden}
+.dashboard-opening{height:100%;min-height:0;display:grid;background:#fbf8f3;overflow:hidden}
 .dashboard-opening-head{display:flex;justify-content:space-between;align-items:flex-start;gap:22px}
 .dashboard-opening-head h1{font:500 clamp(24px,2.5vw,36px)/1.05 FrauncesELH,Georgia,serif;color:#3c1c3b;margin:6px 0 5px}
 .dashboard-opening-head p{margin:0;color:#81747b;font-size:12px}
@@ -1284,4 +1284,7 @@
 .dashboard-opening-switch button:hover{border-color:#c9b07e;background:#f8f0e4}
 .dashboard-opening figure{margin:0;min-width:0;min-height:0;width:100%;height:100%;display:grid;place-items:center;overflow:hidden}
 .dashboard-opening figure img{display:block;width:100%;height:100%;min-width:0;min-height:0;object-fit:contain;object-position:center;border:1px solid #ded4cc;box-shadow:0 12px 34px rgba(60,28,59,.11)}
+.dashboard-opening-visual{width:100%;height:100%;min-width:0;min-height:0;padding:0;border:0;background:transparent;display:grid;place-items:center;overflow:hidden;cursor:pointer}
+.dashboard-opening-visual img{display:block;width:100%;height:100%;min-width:0;min-height:0;object-fit:contain;object-position:center}
+.dashboard-opening-visual:focus-visible{outline:3px solid #9bc9da;outline-offset:-3px}
 @media(max-width:720px){.hub-content.is-blank{height:calc(100vh - 60px);padding:12px}.dashboard-opening{padding:15px}.dashboard-opening-head{flex-direction:column}.dashboard-opening-switch{width:100%;justify-content:space-between}.dashboard-opening-head h1{font-size:28px}}

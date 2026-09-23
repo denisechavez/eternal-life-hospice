@@ -42,8 +42,7 @@ export default function Hub(){
  function DashboardOpening({kind,onChange}:{kind:"chain"|"center";onChange:(kind:"chain"|"center")=>void}){
    const chain=kind==="chain";
    return <div className="dashboard-opening">
-     <div className="dashboard-opening-head"><div><Kicker>{chain?"Opening view · measurement path":"Opening view · systems view"}</Kicker><h1>{chain?"The Seven-Link Chain":"Growth Intelligence Center"}</h1><p>{chain?"Every link needs its own clean source.":"A connected view of performance, marketing, census, and expansion."}</p></div><div className="dashboard-opening-switch"><span>{chain?"01":"02"} / 02</span><button type="button" onClick={()=>onChange(chain?"center":"chain")}>{chain?"View second direction":"Back to The Seven-Link Chain"}<ArrowUpRight size={14}/></button></div></div>
-     <figure><img src={chain?"/__reviews-mockup/egi-measurement-chain.png":"/__reviews-mockup/egi-dashboard-overview.png"} alt={chain?"The Seven-Link Chain from visibility through census":"Growth Intelligence Center overview"}/></figure>
+     <button className="dashboard-opening-visual" type="button" onClick={()=>onChange(chain?"center":"chain")} aria-label={chain?"View the Growth Intelligence Center direction":"View The Seven-Link Chain direction"}><img src={chain?"/__reviews-mockup/egi-measurement-chain.png":"/__reviews-mockup/egi-dashboard-overview.png"} alt={chain?"The Seven-Link Chain from visibility through census":"Growth Intelligence Center overview"}/></button>
    </div>
  }
 function timeGreeting(firstName:string){
