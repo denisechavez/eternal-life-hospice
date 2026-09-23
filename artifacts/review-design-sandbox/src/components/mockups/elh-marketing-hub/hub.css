@@ -1288,7 +1288,8 @@
 .dashboard-opening-visual img{display:block;width:100%;height:100%;min-width:0;min-height:0;object-fit:contain;object-position:center;border:0;outline:0;box-shadow:none}
 .explainer-nav{display:grid;grid-template-columns:1fr 1fr;gap:5px;padding:10px 8px 4px}
 .explainer-nav button{border:1px solid rgba(181,219,226,.25);background:transparent;color:#b8cfd7;padding:7px 4px;font-size:8px;letter-spacing:.08em;text-transform:uppercase}
-.explainer-nav button.active{background:rgba(181,219,226,.14);border-color:rgba(181,219,226,.55);color:#fff}
+.explainer-nav button:hover{background:rgba(181,219,226,.1);border-color:rgba(181,219,226,.48);color:#fff}
+.explainer-nav button.active,.explainer-nav button[aria-pressed="true"]{background:#f5eee7;border-color:#f5eee7;color:#3c1c3b;font-weight:800}
 .explainer-next{position:absolute;right:18px;bottom:18px;border:0;background:rgba(60,28,59,.92);color:#fff8f1;padding:11px 14px;display:flex;align-items:center;gap:8px;font-size:10px;font-weight:700;letter-spacing:.03em;box-shadow:0 8px 24px rgba(60,28,59,.2)}
 .explainer-next:hover{background:#5b2e59;transform:translateY(-1px)}
 .explainer-next:focus-visible{outline:2px solid #9bc9da;outline-offset:3px}
