@@ -1233,3 +1233,18 @@
   .conversation-actions{width:100%}
   .conversation-actions button{flex:1}
 }
+
+/* Post-sign-in opening directions are reviewed one page at a time. */
+.opening-direction{min-height:100dvh;padding:clamp(24px,4vw,54px);background:linear-gradient(145deg,#211429 0%,#302039 52%,#173846 140%);color:#f6eee6;display:grid;grid-template-rows:auto auto minmax(0,1fr) auto;gap:clamp(20px,3vh,34px);overflow:auto}
+.opening-direction header{display:flex;align-items:center;gap:18px;border-bottom:1px solid rgba(181,219,226,.22);padding-bottom:18px;color:#b8d4d8;text-transform:uppercase;letter-spacing:.18em;font-size:10px}
+.opening-direction header img{width:88px}.opening-direction header small{margin-left:auto;color:#bca8b6}
+.opening-direction-copy p{margin:0 0 8px;color:#b4d9df;text-transform:uppercase;letter-spacing:.2em;font-size:10px;font-weight:700}
+.opening-direction-copy h1{margin:0;font:500 clamp(38px,5vw,72px)/1 FrauncesELH,Georgia,serif;color:#f5eee7}
+.opening-direction-copy span{display:block;margin-top:12px;color:#cbbfc5;font-size:14px}
+.opening-direction figure{margin:0;min-height:0;display:grid;place-items:center}
+.opening-direction figure img{display:block;max-width:100%;max-height:62vh;width:auto;height:auto;object-fit:contain;background:#f7f2ed;border:1px solid rgba(181,219,226,.3);box-shadow:0 24px 70px rgba(8,9,17,.38)}
+.opening-direction footer{display:flex;align-items:center;justify-content:space-between;gap:24px;border-top:1px solid rgba(181,219,226,.22);padding-top:18px}
+.opening-direction footer p{margin:0;max-width:670px;color:#bdaeb7;font-size:12px;line-height:1.6}
+.opening-direction footer button{border:1px solid #b4d9df;background:#f5eee7;color:#321c38;padding:13px 17px;display:flex;align-items:center;gap:9px;font-weight:700;white-space:nowrap}
+.opening-direction footer button:hover{background:#fff;transform:translateY(-1px)}
+@media(max-width:620px){.opening-direction{padding:22px 17px}.opening-direction header span{display:none}.opening-direction-copy h1{font-size:42px}.opening-direction footer{align-items:stretch;flex-direction:column}.opening-direction footer button{justify-content:center}}

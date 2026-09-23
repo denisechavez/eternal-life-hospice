@@ -22,13 +22,15 @@ const items:Item[] = [...journalArticles.map(a=>({id:`j-${a.slug}`,title:a.title
 const pending = "Awaiting Source";
 
 export default function Hub(){
-  const [active,setActive]=useState(""); const [open,setOpen]=useState(""); const [mobile,setMobile]=useState(false); const [query,setQuery]=useState(""); const [notice,setNotice]=useState(""); const [selected,setSelected]=useState<Item|null>(null); const [statuses,setStatuses]=useState<Record<string,Item["status"]>>({}); const [firstName,setFirstName]=useState(""); const [entered,setEntered]=useState(false);
+  const [active,setActive]=useState(""); const [open,setOpen]=useState(""); const [mobile,setMobile]=useState(false); const [query,setQuery]=useState(""); const [notice,setNotice]=useState(""); const [selected,setSelected]=useState<Item|null>(null); const [statuses,setStatuses]=useState<Record<string,Item["status"]>>({}); const [firstName,setFirstName]=useState(""); const [openingStep,setOpeningStep]=useState<0|1|2|3>(0);
  const currentGroup=active?(groups.find(g=>g.items.some(i=>i[1]===active))?.name || (studio.some(i=>i[1]===active)?"Eternal Studio":"Data & Settings")):"";
  const setView=(v:string,g:string)=>{setActive(v);setOpen(g);setMobile(false);const url=new URL(window.location.href);url.searchParams.set("view",v);window.history.replaceState(null,"",url)};
  const flash=(s:string)=>{setNotice(s);window.setTimeout(()=>setNotice(""),2200)};
  const list=useMemo(()=>items.filter(i=>`${i.title} ${i.type}`.toLowerCase().includes(query.toLowerCase())),[query]);
   const greeting=timeGreeting(firstName);
-  if(!entered) return <Cover firstName={firstName} onFirstNameChange={setFirstName} onEnter={()=>setEntered(true)}/>;
+  if(openingStep===0) return <Cover firstName={firstName} onFirstNameChange={setFirstName} onEnter={()=>setOpeningStep(1)}/>;
+  if(openingStep===1) return <OpeningDirection kind="chain" onNext={()=>setOpeningStep(2)}/>;
+  if(openingStep===2) return <OpeningDirection kind="center" onNext={()=>setOpeningStep(3)}/>;
   return <div className="hub-shell hub-shell-entered">
     <aside className={`hub-sidebar ${mobile?"is-open":""}`}><div className="hub-brand"><img src="/__reviews-mockup/elh-logo-stacked-cream-gold.png" alt="Eternal Life Hospice"/><button onClick={()=>setMobile(false)}><X size={17}/></button></div><div className="product-lockup"><strong><span>Eternal Growth</span><span>Intelligence</span></strong><small className="product-domains"><span>Performance</span><span>Marketing</span><span>Census</span><span>Expansion</span></small></div>
    <nav>{groups.map(g=>{const Icon=g.icon;const expanded=open===g.name;return <div className="nav-group" key={g.name}><button className={`nav-group-trigger ${expanded?"expanded":""}`} onClick={()=>setOpen(expanded?"":g.name)}><Icon size={15}/><span><b>{g.name}</b></span><ChevronDown size={13}/></button>{expanded&&<div className="nav-items">{g.items.map(([label,key])=><button className={active===key?"active":""} key={key} onClick={()=>setView(key,g.name)}>{label}</button>)}</div>}</div>})}<div className="nav-group studio-nav"><button className={`nav-group-trigger ${open==="Eternal Studio"?"expanded":""}`} onClick={()=>setOpen(open==="Eternal Studio"?"":"Eternal Studio")}><BookOpen size={15}/><span><b>Eternal Studio</b><small>Create · Review · Publish</small></span><ChevronDown size={13}/></button>{open==="Eternal Studio"&&<div className="nav-items">{studio.map(([label,key])=><button className={active===key?"active":""} key={key} onClick={()=>setView(key,"Eternal Studio")}>{label}</button>)}</div>}</div></nav>
@@ -41,31 +43,27 @@ export default function Hub(){
  </div>
 }
  function Cover({firstName,onFirstNameChange,onEnter}:{firstName:string;onFirstNameChange:(name:string)=>void;onEnter:()=>void}){
-   const [conversation,setConversation]=useState<"center"|"chain"|"blend"|"other"|null>(null);
    const submit=(event:FormEvent<HTMLFormElement>)=>{event.preventDefault();if(firstName.trim())onEnter()};
-   const note=(choice:"center"|"chain"|"blend"|"other")=>setConversation(choice);
    return <main className="growth-cover">
      <div className="cover-orbit cover-orbit-one"/><div className="cover-orbit cover-orbit-two"/>
      <div className="cover-grain"/>
      <section className="cover-panel">
        <div className="cover-topline"><img className="cover-mark" src="/__reviews-mockup/elh-logo-stacked-cream-gold.png" alt="Eternal Life Hospice"/><span>Private leadership measurement environment</span><span className="cover-rule"/></div>
-       <div className="cover-copy"><p className="cover-kicker"><i/>A working session for Aleksandra</p><h1><span className="cover-title-line">Eternal Growth</span><span className="cover-title-line cover-title-accent">Intelligence</span></h1><p className="cover-intro">Before you enter the command room, two strong ways of seeing it are ready for discussion.</p></div>
-       <div className="concept-intro"><span>Two visual directions</span><p>There is no right answer to choose here. Notice what feels useful, borrow from both, or propose a different way forward.</p></div>
-       <div className="concept-grid">
-         <article className={`concept-card ${conversation==="center"?"is-noted":""}`}>
-           <div className="concept-image"><img src="/__reviews-mockup/egi-dashboard-overview.png" alt="Growth Intelligence Center overview visual reference"/><span className="concept-index">01</span></div>
-           <div className="concept-body"><p className="concept-label">Direction one · systems view</p><h2>Growth Intelligence Center</h2><p>A central view connecting performance, marketing, census, and expansion around the signals that shape the next decision.</p><button type="button" className="concept-action" onClick={()=>note("center")}>{conversation==="center"?"Noted for discussion":"This direction resonates"}<ArrowUpRight size={14}/></button></div>
-         </article>
-         <article className={`concept-card ${conversation==="chain"?"is-noted":""}`}>
-           <div className="concept-image"><img src="/__reviews-mockup/egi-measurement-chain.png" alt="Seven-link measurement chain visual reference"/><span className="concept-index">02</span></div>
-           <div className="concept-body"><p className="concept-label">Direction two · measurement path</p><h2>The seven-link chain</h2><p>A clear line from visibility to census, with each link named, sourced, and held honestly when a feed is still awaiting source.</p><button type="button" className="concept-action" onClick={()=>note("chain")}>{conversation==="chain"?"Noted for discussion":"This direction resonates"}<ArrowUpRight size={14}/></button></div>
-         </article>
-       </div>
-       <div className={`conversation-note ${conversation?"is-active":""}`} role="status"><span className="conversation-dot"/><p>{conversation==="center"?"Direction one is noted as a conversation starter — not a selection.":conversation==="chain"?"Direction two is noted as a conversation starter — not a selection.":"Your perspective leads this. You can prefer one, combine elements from both, or suggest another direction."}</p><div className="conversation-actions"><button type="button" onClick={()=>note("blend")}>{conversation==="blend"?"Combination noted":"I see a blend of both"}</button><button type="button" onClick={()=>note("other")}>{conversation==="other"?"Alternative noted":"I have another direction"}</button></div></div>
-       <form className="cover-entry" onSubmit={submit}><label htmlFor="growth-first-name">Enter together</label><div className="entry-line"><input id="growth-first-name" aria-label="First name" autoComplete="given-name" maxLength={24} required value={firstName} onChange={event=>onFirstNameChange(event.target.value)} placeholder="Your first name" /><button type="submit" disabled={!firstName.trim()}><span>Enter the dashboard</span><ArrowUpRight size={16}/></button></div><small>The final set of measurements will be decided together.</small></form>
+       <div className="cover-copy"><p className="cover-kicker"><i/>A working session for Aleksandra</p><h1><span className="cover-title-line">Eternal Growth</span><span className="cover-title-line cover-title-accent">Intelligence</span></h1><p className="cover-intro">A view of the signals shaping what comes next.</p></div>
+       <div className="domain-row" aria-label="Intelligence domains"><strong>Performance</strong><i>•</i><strong>Marketing</strong><i>•</i><strong>Census</strong><i>•</i><strong>Expansion</strong></div>
+       <form className="cover-entry" onSubmit={submit}><label htmlFor="growth-first-name">Sign in</label><div className="entry-line"><input id="growth-first-name" aria-label="First name" autoComplete="given-name" maxLength={24} required value={firstName} onChange={event=>onFirstNameChange(event.target.value)} placeholder="Your first name" /><button type="submit" disabled={!firstName.trim()}><span>Continue</span><ArrowUpRight size={16}/></button></div></form>
      </section>
    </main>
   }
+ function OpeningDirection({kind,onNext}:{kind:"chain"|"center";onNext:()=>void}){
+   const chain=kind==="chain";
+   return <main className="opening-direction">
+     <header><img src="/__reviews-mockup/elh-logo-stacked-cream-gold.png" alt="Eternal Life Hospice"/><span>Eternal Growth Intelligence</span><small>{chain?"01":"02"} / 02</small></header>
+     <section className="opening-direction-copy"><p>{chain?"Measurement path":"Systems view"}</p><h1>{chain?"The Seven-Link Chain":"Growth Intelligence Center"}</h1><span>{chain?"Every link needs its own clean source.":"A connected view of performance, marketing, census, and expansion."}</span></section>
+     <figure><img src={chain?"/__reviews-mockup/egi-measurement-chain.png":"/__reviews-mockup/egi-dashboard-overview.png"} alt={chain?"The Seven-Link Chain from visibility through census":"Growth Intelligence Center overview"}/></figure>
+     <footer><p>{chain?"This is the first direction for discussion.":"Use one direction, combine elements from both, or suggest another. We will decide what to measure together."}</p><button type="button" onClick={onNext}><span>{chain?"Next direction":"Enter the dashboard"}</span><ArrowUpRight size={16}/></button></footer>
+   </main>
+ }
 function timeGreeting(firstName:string){
  const name=firstName.trim();
  const hour=new Date().getHours();
