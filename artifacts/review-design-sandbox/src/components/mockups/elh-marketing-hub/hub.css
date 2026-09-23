@@ -1316,6 +1316,19 @@
   text-align:left;
 }
 .hub-topbar .welcome-name~.top-actions{margin-left:auto}
+.hub-sidebar .hub-brand>.logo-cover-link{
+  display:block;
+  position:static;
+  margin:0 auto;
+}
+.hub-sidebar .hub-brand>.close-nav{
+  display:none;
+  position:absolute;
+  right:0;
+}
+@media(max-width:720px){
+  .hub-sidebar .hub-brand>.close-nav{display:block}
+}
 
 /* Keep the left greeting and right-side controls compact on MacBook viewports. */
 @media (min-width:721px) and (max-width:1300px){
