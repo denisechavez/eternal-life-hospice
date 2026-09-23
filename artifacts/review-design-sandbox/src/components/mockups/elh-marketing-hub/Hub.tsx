@@ -41,18 +41,31 @@ export default function Hub(){
  </div>
 }
  function Cover({firstName,onFirstNameChange,onEnter}:{firstName:string;onFirstNameChange:(name:string)=>void;onEnter:()=>void}){
-  const submit=(event:FormEvent<HTMLFormElement>)=>{event.preventDefault();if(firstName.trim())onEnter()};
-  return <main className="growth-cover">
-    <div className="cover-orbit cover-orbit-one"/><div className="cover-orbit cover-orbit-two"/>
-    <div className="cover-grain"/>
-    <section className="cover-panel">
-      <img className="cover-mark" src="/__reviews-mockup/elh-logo-stacked-cream-gold.png" alt="Eternal Life Hospice"/>
-      <div className="cover-copy"><h1><span className="cover-title-line">Eternal</span><span className="cover-title-line">Growth</span><span className="cover-title-line cover-title-accent">Intelligence</span></h1><p className="cover-intro">A view of the signals shaping what comes next.</p></div>
-      <div className="domain-row" aria-label="Intelligence domains"><strong>Performance</strong><i>•</i><strong>Marketing</strong><i>•</i><strong>Census</strong><i>•</i><strong>Expansion</strong></div>
-      <form className="cover-entry" onSubmit={submit}><div className="entry-line"><input id="growth-first-name" aria-label="First name" autoComplete="given-name" maxLength={24} required value={firstName} onChange={event=>onFirstNameChange(event.target.value)} placeholder="Your first name" /><button type="submit" disabled={!firstName.trim()}><span>Open intelligence board</span><ArrowUpRight size={16}/></button></div></form>
-    </section>
-  </main>
- }
+   const [conversation,setConversation]=useState<"center"|"chain"|"blend"|"other"|null>(null);
+   const submit=(event:FormEvent<HTMLFormElement>)=>{event.preventDefault();if(firstName.trim())onEnter()};
+   const note=(choice:"center"|"chain"|"blend"|"other")=>setConversation(choice);
+   return <main className="growth-cover">
+     <div className="cover-orbit cover-orbit-one"/><div className="cover-orbit cover-orbit-two"/>
+     <div className="cover-grain"/>
+     <section className="cover-panel">
+       <div className="cover-topline"><img className="cover-mark" src="/__reviews-mockup/elh-logo-stacked-cream-gold.png" alt="Eternal Life Hospice"/><span>Private leadership measurement environment</span><span className="cover-rule"/></div>
+       <div className="cover-copy"><p className="cover-kicker"><i/>A working session for Aleksandra</p><h1><span className="cover-title-line">Eternal Growth</span><span className="cover-title-line cover-title-accent">Intelligence</span></h1><p className="cover-intro">Before you enter the command room, two strong ways of seeing it are ready for discussion.</p></div>
+       <div className="concept-intro"><span>Two visual directions</span><p>There is no right answer to choose here. Notice what feels useful, borrow from both, or propose a different way forward.</p></div>
+       <div className="concept-grid">
+         <article className={`concept-card ${conversation==="center"?"is-noted":""}`}>
+           <div className="concept-image"><img src="/__reviews-mockup/egi-dashboard-overview.png" alt="Growth Intelligence Center overview visual reference"/><span className="concept-index">01</span></div>
+           <div className="concept-body"><p className="concept-label">Direction one · systems view</p><h2>Growth Intelligence Center</h2><p>A central view connecting performance, marketing, census, and expansion around the signals that shape the next decision.</p><button type="button" className="concept-action" onClick={()=>note("center")}>{conversation==="center"?"Noted for discussion":"This direction resonates"}<ArrowUpRight size={14}/></button></div>
+         </article>
+         <article className={`concept-card ${conversation==="chain"?"is-noted":""}`}>
+           <div className="concept-image"><img src="/__reviews-mockup/egi-measurement-chain.png" alt="Seven-link measurement chain visual reference"/><span className="concept-index">02</span></div>
+           <div className="concept-body"><p className="concept-label">Direction two · measurement path</p><h2>The seven-link chain</h2><p>A clear line from visibility to census, with each link named, sourced, and held honestly when a feed is still awaiting source.</p><button type="button" className="concept-action" onClick={()=>note("chain")}>{conversation==="chain"?"Noted for discussion":"This direction resonates"}<ArrowUpRight size={14}/></button></div>
+         </article>
+       </div>
+       <div className={`conversation-note ${conversation?"is-active":""}`} role="status"><span className="conversation-dot"/><p>{conversation==="center"?"Direction one is noted as a conversation starter — not a selection.":conversation==="chain"?"Direction two is noted as a conversation starter — not a selection.":"Your perspective leads this. You can prefer one, combine elements from both, or suggest another direction."}</p><div className="conversation-actions"><button type="button" onClick={()=>note("blend")}>{conversation==="blend"?"Combination noted":"I see a blend of both"}</button><button type="button" onClick={()=>note("other")}>{conversation==="other"?"Alternative noted":"I have another direction"}</button></div></div>
+       <form className="cover-entry" onSubmit={submit}><label htmlFor="growth-first-name">Enter together</label><div className="entry-line"><input id="growth-first-name" aria-label="First name" autoComplete="given-name" maxLength={24} required value={firstName} onChange={event=>onFirstNameChange(event.target.value)} placeholder="Your first name" /><button type="submit" disabled={!firstName.trim()}><span>Enter the dashboard</span><ArrowUpRight size={16}/></button></div><small>The final set of measurements will be decided together.</small></form>
+     </section>
+   </main>
+  }
 function timeGreeting(firstName:string){
  const name=firstName.trim();
  const hour=new Date().getHours();
