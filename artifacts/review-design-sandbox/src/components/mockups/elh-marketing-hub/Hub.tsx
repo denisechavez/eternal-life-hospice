@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import type { ReactNode } from "react";
+import type { FormEvent, ReactNode } from "react";
 import { Activity, AlertCircle, ArrowUpRight, BarChart3, Bell, BookOpen, CalendarDays, Check, ChevronDown, ChevronRight, CircleDot, Database, FileCheck2, FileText, Globe2, HeartHandshake, ImageIcon, LayoutDashboard, Link2, Menu, Moon, MoonStar, RefreshCw, Search, Send, Settings2, ShieldCheck, Sparkles, Sun, TrendingUp, Users, Video, X } from "lucide-react";
 import { emailCampaigns, journalArticles, type JournalArticle } from "./contentData";
 import baseline from "./baseline-2026-09-20.json";
@@ -69,14 +69,15 @@ const publicationKeywordCounts = Object.fromEntries(publicationKeywordCandidates
 const publicationKeywords = publicationKeywordCandidates.filter(keyword=>publicationKeywordCounts[keyword.toLowerCase()]>=8).sort((a,b)=>b.length-a.length);
 
 export default function Hub(){
-  const [active,setActive]=useState(""); const [open,setOpen]=useState(""); const [mobile,setMobile]=useState(false); const [query,setQuery]=useState(""); const [notice,setNotice]=useState(""); const [selected,setSelected]=useState<Item|null>(null); const [statuses,setStatuses]=useState<Record<string,Item["status"]>>(()=>{const initial=Object.fromEntries(items.map(item=>[item.id,item.status]));try{const saved=window.localStorage.getItem(approvalStorageKey);return saved?{...initial,...JSON.parse(saved)}:initial}catch{return initial}}); const [openingDirection,setOpeningDirection]=useState<"chain"|"center">("chain");
+  const [active,setActive]=useState(""); const [open,setOpen]=useState(""); const [mobile,setMobile]=useState(false); const [query,setQuery]=useState(""); const [notice,setNotice]=useState(""); const [selected,setSelected]=useState<Item|null>(null); const [statuses,setStatuses]=useState<Record<string,Item["status"]>>(()=>{const initial=Object.fromEntries(items.map(item=>[item.id,item.status]));try{const saved=window.localStorage.getItem(approvalStorageKey);return saved?{...initial,...JSON.parse(saved)}:initial}catch{return initial}}); const [openingDirection,setOpeningDirection]=useState<"chain"|"center">("chain"); const [firstName,setFirstName]=useState(""); const [entered,setEntered]=useState(false);
   useEffect(()=>{document.title="Eternal Growth Intelligence";window.localStorage.setItem(approvalStorageKey,JSON.stringify(statuses))},[statuses]);
  const currentGroup=active?(groups.find(g=>g.items.some(i=>i[1]===active))?.name || (studio.some(i=>i[1]===active)?"Eternal Studio":"Data & Settings")):"";
  const setView=(v:string,g:string)=>{setActive(v);setOpen(g);setMobile(false);const url=new URL(window.location.href);url.searchParams.set("view",v);window.history.replaceState(null,"",url)};
- const showCover=()=>{setActive("");setOpen("");setMobile(false);const url=new URL(window.location.href);url.searchParams.delete("view");window.history.replaceState(null,"",url)};
+ const showCover=()=>{setEntered(false);setActive("");setOpen("");setMobile(false);const url=new URL(window.location.href);url.searchParams.delete("view");window.history.replaceState(null,"",url)};
  const flash=(s:string)=>{setNotice(s);window.setTimeout(()=>setNotice(""),2200)};
  const list=useMemo(()=>items.filter(i=>`${i.title} ${i.type}`.toLowerCase().includes(query.toLowerCase())),[query]);
-   const greeting=timeGreeting(currentUser.firstName);
+   const greeting=timeGreeting(firstName||currentUser.firstName);
+  if(!entered)return <Cover firstName={firstName} onFirstNameChange={setFirstName} onEnter={()=>setEntered(true)}/>;
   const GreetingIcon=greeting.icon;
   return <div className="hub-shell hub-shell-entered">
     <aside className={`hub-sidebar ${mobile?"is-open":""}`}><div className="hub-brand"><button className="cover-link logo-cover-link" onClick={showCover} aria-label="Return to cover page"><img src={dashboardAsset("elh-logo-stacked-cream-gold.png")} alt="Eternal Life Hospice"/></button><button className="close-nav" onClick={()=>setMobile(false)} aria-label="Close navigation"><X size={17}/></button></div><button className="product-lockup cover-link" onClick={showCover} aria-label="Return to cover page"><strong><span>Eternal Growth</span><span>Intelligence</span></strong><small className="product-domains"><span>Performance</span><span>Marketing</span><span>Census</span><span>Expansion</span></small></button>{!active&&<div className="explainer-nav" aria-label="Opening explainers"><button type="button" aria-pressed={openingDirection==="chain"} className={openingDirection==="chain"?"active":""} onClick={()=>setOpeningDirection("chain")}>Explainer 1</button><button type="button" aria-pressed={openingDirection==="center"} className={openingDirection==="center"?"active":""} onClick={()=>setOpeningDirection("center")}>Explainer 2</button></div>}
@@ -89,6 +90,19 @@ export default function Hub(){
    </section></main>{selected&&<Detail item={{...selected,status:statuses[selected.id]||selected.status}} onClose={()=>setSelected(null)} onStatus={(s)=>{setStatuses({...statuses,[selected.id]:s});flash(`Moved to ${s}`)}}/>}{notice&&<div className="toast"><Check size={15}/>{notice}</div>}
  </div>
 }
+ function Cover({firstName,onFirstNameChange,onEnter}:{firstName:string;onFirstNameChange:(name:string)=>void;onEnter:()=>void}){
+   const submit=(event:FormEvent<HTMLFormElement>)=>{event.preventDefault();if(firstName.trim())onEnter()};
+   return <main className="growth-cover">
+     <div className="cover-orbit cover-orbit-one"/><div className="cover-orbit cover-orbit-two"/>
+     <div className="cover-grain"/>
+     <section className="cover-panel">
+       <div className="cover-topline"><img className="cover-mark" src={dashboardAsset("elh-logo-stacked-cream-gold.png")} alt="Eternal Life Hospice"/><span>Private leadership measurement environment</span><span className="cover-rule"/></div>
+       <div className="cover-copy"><p className="cover-kicker"><i/>A working session for Aleksandra</p><h1><span className="cover-title-line">Eternal Growth</span><span className="cover-title-line cover-title-accent">Intelligence</span></h1><p className="cover-intro">A view of the signals shaping what comes next.</p></div>
+       <div className="domain-row" aria-label="Intelligence domains"><strong>Performance</strong><i>•</i><strong>Marketing</strong><i>•</i><strong>Census</strong><i>•</i><strong>Expansion</strong></div>
+       <form className="cover-entry" onSubmit={submit}><label htmlFor="growth-first-name">Sign in</label><div className="entry-line"><input id="growth-first-name" aria-label="First name" autoComplete="given-name" maxLength={24} required value={firstName} onChange={event=>onFirstNameChange(event.target.value)} placeholder="Your first name"/><button type="submit" disabled={!firstName.trim()}><span>Continue</span><ArrowUpRight size={16}/></button></div><small>Private workspace · enter your first name to continue</small></form>
+     </section>
+   </main>
+ }
  function DashboardOpening({kind}:{kind:"chain"|"center"}){
    const chain=kind==="chain";
    return <div className="dashboard-opening">
