@@ -13,6 +13,25 @@ paths, `.article/.lede/.ask/.note-panel/.kicker/.cta/.related/.rgrid/.rc` classe
 header/footer extracted byte-exact from a resources sub-page (root pages derive
 theirs via `.replace("../","")`).
 
+## Publication boundary: Journal vs. Care Brief
+
+The **Eternal Journal** and **The Eternal Care Brief** are separate publications
+and must never share identity, cadence, attribution, or template labels:
+
+- **Eternal Journal:** the website blog, with a daily publishing plan for the
+  next 30 days.
+- **Eternal Care Brief:** a bi-monthly publication. Only Issue One has been
+  produced so far, and it comes from Aleksandra.
+
+**Why:** Treating a Care Brief email as the Journal's email template falsely
+combines two intentionally different editorial products and misstates the
+Care Brief's authorship and publishing history.
+
+**How to apply:** Keep separate dashboard sections, template names, campaign
+labels, schedules, and source assets. Never call a Care Brief or Family Guide
+email the approved Journal template. A Journal email template is not confirmed
+until the user identifies or approves one specifically for the Journal.
+
 ## Conventions to keep consistent
 - **Attribution:** Show the sender/author as **“The Eternal Life Hospice Team.”**
   Never invent individual staff names or use unverified placeholder identities.
