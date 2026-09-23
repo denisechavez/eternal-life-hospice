@@ -12,6 +12,7 @@ import json
 import os
 import re
 import socket
+import subprocess
 import sys
 from datetime import datetime
 from zoneinfo import ZoneInfo
@@ -44,6 +45,9 @@ ROOT = os.path.join(BASE, "elh-preview")
 JOURNAL_MANIFEST = os.path.join(BASE, "content", "30-day-journal-manifest.json")
 # Internal-only routes for the workspace canvas hub (never published to the site):
 CANVAS_HUB = os.path.join(BASE, "canvas-hub")
+GROWTH_INTELLIGENCE_REPORTER = os.path.join(
+    BASE, "growth-intelligence-reporting.mjs"
+)
 CONFIDENTIAL_CANVAS_NAMESPACES = frozenset(
     {"emails", "newsletter", "campaign-reports"}
 )
@@ -491,6 +495,47 @@ class PrettyURLHandler(http.server.SimpleHTTPRequestHandler):
                             "Google reviews are unavailable while the Eternal Life Hospice "
                             "profile is being verified."
                         ),
+                    },
+                )
+            return
+        growth_sources = {
+            "/canvas-hub/dashboard/api/elh-reporting": "google",
+            "/canvas-hub/dashboard/api/whatconverts-reporting": "whatconverts",
+            "/canvas-hub/dashboard/api/brevo-reporting": "brevo",
+        }
+        if parsed.path in growth_sources:
+            if is_production_deployment():
+                self.send_error(404)
+                return
+            try:
+                period = parse_qs(parsed.query).get("period", ["last28"])[0]
+                completed = subprocess.run(
+                    [
+                        "node",
+                        GROWTH_INTELLIGENCE_REPORTER,
+                        growth_sources[parsed.path],
+                        period,
+                    ],
+                    cwd=os.path.dirname(BASE),
+                    capture_output=True,
+                    text=True,
+                    timeout=45,
+                    check=False,
+                )
+                payload = json.loads(completed.stdout)
+                self._send_json(
+                    200 if completed.returncode == 0 else 503,
+                    payload,
+                    cache_control="private, max-age=300",
+                )
+            except (OSError, ValueError, subprocess.SubprocessError) as error:
+                self._send_json(
+                    503,
+                    {
+                        "live": False,
+                        "errors": [
+                            f"Growth Intelligence reporting unavailable: {error}"
+                        ],
                     },
                 )
             return

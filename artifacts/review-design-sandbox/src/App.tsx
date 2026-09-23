@@ -130,11 +130,12 @@ function getPreviewPath(): string | null {
 
 function App() {
   const previewPath = getPreviewPath();
+  const defaultComponent = import.meta.env.VITE_DEFAULT_COMPONENT as string | undefined;
 
-  if (previewPath) {
+  if (previewPath || defaultComponent) {
     return (
       <PreviewRenderer
-        componentPath={previewPath}
+        componentPath={previewPath ?? defaultComponent!}
         modules={discoveredModules}
       />
     );

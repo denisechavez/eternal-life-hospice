@@ -49,7 +49,7 @@ function addCount(map: Map<string, number>, key: string | undefined): void {
   map.set(clean, (map.get(clean) ?? 0) + 1);
 }
 
-async function buildReport() {
+export async function buildReport() {
   const token = process.env.WHATCONVERTS_TOKEN;
   const secret = process.env.WHATCONVERTS_SECRET;
   if (!token || !secret) throw new Error('WhatConverts credentials are not configured.');

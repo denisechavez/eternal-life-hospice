@@ -20,15 +20,16 @@ const studio = [["Eternal Journal","Journal"],["Email","Emails"],["Eternal Care 
 const markets = ["Thousand Oaks","Westlake Village","Simi Valley","Calabasas","Camarillo","Moorpark","Ventura County","Los Angeles County"];
 const currentUser = {name:"Aleksandra Dubina",firstName:"Aleksandra",role:"Founder & CEO"};
 const initialsFor = (name:string) => name.trim().split(/\s+/).slice(0,2).map(part=>part[0]?.toUpperCase()||"").join("");
+const dashboardAsset = (name:string) => `${import.meta.env.BASE_URL}${name}`;
 const approvalCutoff = "2026-09-30";
 const publicationStatusFor = (date:string):Item["status"] => date==="Approved template"||date<=approvalCutoff?"Approved":"Needs review";
 const items:Item[] = [...journalArticles.map(a=>({id:`j-${a.slug}`,title:a.title,type:"Journal",date:a.date,owner:"Eternal Life Hospice",status:publicationStatusFor(a.date),excerpt:a.description,source:a})),...emailCampaigns.map((e,i)=>({id:`e-${i}`,title:e.subject,type:"Email",date:e.sendDate,owner:"Eternal Studio",status:(i<2?"Approved":"Needs review") as Item["status"],excerpt:e.preheader,emailIndex:i}))];
 const approvalStorageKey = "egi-publication-statuses-v4";
 const pending = "Awaiting Source";
 const assetLibrary = [
-  {title:"The Seven-Link Chain",kind:"Owned image",source:"Eternal Growth Intelligence",href:"/__reviews-mockup/egi-measurement-chain.png",preview:"/__reviews-mockup/egi-measurement-chain.png"},
-  {title:"Growth Intelligence Center",kind:"Owned image",source:"Eternal Growth Intelligence",href:"/__reviews-mockup/egi-dashboard-overview.png",preview:"/__reviews-mockup/egi-dashboard-overview.png"},
-  {title:"Eternal transparent brand mark",kind:"Brand asset",source:"Eternal Life Hospice",href:"/__reviews-mockup/logo-eternal-trans.png",preview:"/__reviews-mockup/logo-eternal-trans.png"},
+  {title:"The Seven-Link Chain",kind:"Owned image",source:"Eternal Growth Intelligence",href:dashboardAsset("egi-measurement-chain.png"),preview:dashboardAsset("egi-measurement-chain.png")},
+  {title:"Growth Intelligence Center",kind:"Owned image",source:"Eternal Growth Intelligence",href:dashboardAsset("egi-dashboard-overview.png"),preview:dashboardAsset("egi-dashboard-overview.png")},
+  {title:"Eternal transparent brand mark",kind:"Brand asset",source:"Eternal Life Hospice",href:dashboardAsset("logo-eternal-trans.png"),preview:dashboardAsset("logo-eternal-trans.png")},
   {title:"Hospice family-care photography",kind:"Adobe Stock link",source:"Adobe Stock search",href:"https://stock.adobe.com/search?k=hospice+family+care"},
   {title:"Compassionate nurse photography",kind:"Adobe Stock link",source:"Adobe Stock search",href:"https://stock.adobe.com/search?k=compassionate+hospice+nurse"},
   {title:"Hospice-care video references",kind:"Video link",source:"Vimeo search",href:"https://vimeo.com/search?q=hospice%20care"},
@@ -69,15 +70,16 @@ const publicationKeywords = publicationKeywordCandidates.filter(keyword=>publica
 
 export default function Hub(){
   const [active,setActive]=useState(""); const [open,setOpen]=useState(""); const [mobile,setMobile]=useState(false); const [query,setQuery]=useState(""); const [notice,setNotice]=useState(""); const [selected,setSelected]=useState<Item|null>(null); const [statuses,setStatuses]=useState<Record<string,Item["status"]>>(()=>{const initial=Object.fromEntries(items.map(item=>[item.id,item.status]));try{const saved=window.localStorage.getItem(approvalStorageKey);return saved?{...initial,...JSON.parse(saved)}:initial}catch{return initial}}); const [openingDirection,setOpeningDirection]=useState<"chain"|"center">("chain");
-  useEffect(()=>{window.localStorage.setItem(approvalStorageKey,JSON.stringify(statuses))},[statuses]);
+  useEffect(()=>{document.title="Eternal Growth Intelligence";window.localStorage.setItem(approvalStorageKey,JSON.stringify(statuses))},[statuses]);
  const currentGroup=active?(groups.find(g=>g.items.some(i=>i[1]===active))?.name || (studio.some(i=>i[1]===active)?"Eternal Studio":"Data & Settings")):"";
  const setView=(v:string,g:string)=>{setActive(v);setOpen(g);setMobile(false);const url=new URL(window.location.href);url.searchParams.set("view",v);window.history.replaceState(null,"",url)};
+ const showCover=()=>{setActive("");setOpen("");setMobile(false);const url=new URL(window.location.href);url.searchParams.delete("view");window.history.replaceState(null,"",url)};
  const flash=(s:string)=>{setNotice(s);window.setTimeout(()=>setNotice(""),2200)};
  const list=useMemo(()=>items.filter(i=>`${i.title} ${i.type}`.toLowerCase().includes(query.toLowerCase())),[query]);
    const greeting=timeGreeting(currentUser.firstName);
   const GreetingIcon=greeting.icon;
   return <div className="hub-shell hub-shell-entered">
-    <aside className={`hub-sidebar ${mobile?"is-open":""}`}><div className="hub-brand"><img src="/__reviews-mockup/elh-logo-stacked-cream-gold.png" alt="Eternal Life Hospice"/><button onClick={()=>setMobile(false)}><X size={17}/></button></div><div className="product-lockup"><strong><span>Eternal Growth</span><span>Intelligence</span></strong><small className="product-domains"><span>Performance</span><span>Marketing</span><span>Census</span><span>Expansion</span></small></div>{!active&&<div className="explainer-nav" aria-label="Opening explainers"><button type="button" aria-pressed={openingDirection==="chain"} className={openingDirection==="chain"?"active":""} onClick={()=>setOpeningDirection("chain")}>Explainer 1</button><button type="button" aria-pressed={openingDirection==="center"} className={openingDirection==="center"?"active":""} onClick={()=>setOpeningDirection("center")}>Explainer 2</button></div>}
+    <aside className={`hub-sidebar ${mobile?"is-open":""}`}><div className="hub-brand"><button className="cover-link logo-cover-link" onClick={showCover} aria-label="Return to cover page"><img src={dashboardAsset("elh-logo-stacked-cream-gold.png")} alt="Eternal Life Hospice"/></button><button onClick={()=>setMobile(false)}><X size={17}/></button></div><button className="product-lockup cover-link" onClick={showCover} aria-label="Return to cover page"><strong><span>Eternal Growth</span><span>Intelligence</span></strong><small className="product-domains"><span>Performance</span><span>Marketing</span><span>Census</span><span>Expansion</span></small></button>{!active&&<div className="explainer-nav" aria-label="Opening explainers"><button type="button" aria-pressed={openingDirection==="chain"} className={openingDirection==="chain"?"active":""} onClick={()=>setOpeningDirection("chain")}>Explainer 1</button><button type="button" aria-pressed={openingDirection==="center"} className={openingDirection==="center"?"active":""} onClick={()=>setOpeningDirection("center")}>Explainer 2</button></div>}
    <nav>{groups.map(g=>{const Icon=g.icon;const expanded=open===g.name;return <div className="nav-group" key={g.name}><button className={`nav-group-trigger ${expanded?"expanded":""}`} onClick={()=>setOpen(expanded?"":g.name)}><Icon size={15}/><span><b>{g.name}</b></span><ChevronDown size={13}/></button>{expanded&&<div className="nav-items">{g.items.map(([label,key])=><button className={active===key?"active":""} key={key} onClick={()=>setView(key,g.name)}>{label}</button>)}</div>}</div>})}<div className="nav-group studio-nav"><button className={`nav-group-trigger ${open==="Eternal Studio"?"expanded":""}`} onClick={()=>setOpen(open==="Eternal Studio"?"":"Eternal Studio")}><BookOpen size={15}/><span><b>Eternal Studio</b><small>Create · Review · Publish</small></span><ChevronDown size={13}/></button>{open==="Eternal Studio"&&<div className="nav-items">{studio.map(([label,key])=><button className={active===key?"active":""} key={key} onClick={()=>setView(key,"Eternal Studio")}>{label}</button>)}</div>}</div></nav>
     <div className="sidebar-foot"><span><i/> Sources connected</span><div className="nav-group utility-nav"><button className={`nav-group-trigger ${open==="Data & Settings"?"expanded":""}`} onClick={()=>setOpen(open==="Data & Settings"?"":"Data & Settings")}><Settings2 size={15}/><span><b>Data & Settings</b></span><ChevronDown size={13}/></button>{open==="Data & Settings"&&<div className="nav-items">{utility.map(([label,key])=><button className={active===key?"active":""} key={key} onClick={()=>setView(key,"Data & Settings")}>{label}</button>)}</div>}</div><div className="profile"><b>{initialsFor(currentUser.name)}</b><span>{currentUser.name}<small>{currentUser.role}</small></span></div></div>
   </aside>{mobile&&<button className="nav-scrim" onClick={()=>setMobile(false)} aria-label="Close navigation"/>}
@@ -90,7 +92,7 @@ export default function Hub(){
  function DashboardOpening({kind}:{kind:"chain"|"center"}){
    const chain=kind==="chain";
    return <div className="dashboard-opening">
-     <div className={`dashboard-opening-visual ${chain?"chain":"center"}`}><img src={chain?"/__reviews-mockup/egi-measurement-chain.png":"/__reviews-mockup/egi-dashboard-overview.png"} alt={chain?"The Seven-Link Chain from visibility through census":"Growth Intelligence Center overview"}/></div>
+      <div className={`dashboard-opening-visual ${chain?"chain":"center"}`}><img src={dashboardAsset(chain?"egi-measurement-chain.png":"egi-dashboard-overview.png")} alt={chain?"The Seven-Link Chain from visibility through census":"Growth Intelligence Center overview"}/></div>
    </div>
  }
 function timeGreeting(firstName:string){

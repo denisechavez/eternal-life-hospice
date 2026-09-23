@@ -68,7 +68,7 @@ function campaignTotals(campaign: BrevoCampaign): Required<BrevoStats> {
   return base;
 }
 
-async function buildBrevoReport() {
+export async function buildBrevoReport() {
   const apiKey = process.env.BREVO_API;
   if (!apiKey) {
     throw new Error('Brevo is not configured.');

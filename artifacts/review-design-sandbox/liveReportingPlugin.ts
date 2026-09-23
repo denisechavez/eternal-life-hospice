@@ -107,7 +107,7 @@ function metric(row: { metricValues?: Array<{ value?: string }> } | undefined, i
   return Number(row?.metricValues?.[index]?.value ?? 0);
 }
 
-async function buildReport(period: string) {
+export async function buildReport(period: string) {
   const rawCredential = process.env.GOOGLE_REPORTING_SERVICE_ACCOUNT_JSON_V2;
   const propertyId = process.env.GA4_PROPERTY_ID;
   if (!rawCredential || !propertyId) {
