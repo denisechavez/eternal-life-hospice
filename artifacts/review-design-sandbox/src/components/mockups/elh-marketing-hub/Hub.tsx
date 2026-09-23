@@ -31,21 +31,29 @@ const assetLibrary = [
   {title:"Compassionate nurse photography",kind:"Adobe Stock link",source:"Adobe Stock search",href:"https://stock.adobe.com/search?k=compassionate+hospice+nurse"},
   {title:"Hospice-care video references",kind:"Video link",source:"Vimeo search",href:"https://vimeo.com/search?q=hospice%20care"},
 ];
-const calendarEntries = [
-  {date:"2026-09-21",time:"Published",channel:"Journal",title:"What Happens During a Hospice Evaluation? A Family Guide",status:"Posted"},
-  {date:"2026-09-22",time:"Published",channel:"Journal",title:"10 Changes That Can Prompt a Hospice Conversation",status:"Posted"},
-  {date:"2026-09-24",time:"8:00 AM",channel:"Email",title:"Knowing When to Call: A Gentle Starting Point",status:"Scheduled"},
-  {date:"2026-09-23",time:"9:00 AM",channel:"Journal",title:"Knowing When to Call",status:"Scheduled"},
+const calendarDateFor = (value:string) => {
+  const parsed=new Date(`${value} 12:00:00`);
+  return Number.isNaN(parsed.getTime())?"":`${parsed.getFullYear()}-${String(parsed.getMonth()+1).padStart(2,"0")}-${String(parsed.getDate()).padStart(2,"0")}`;
+};
+const supportingCalendarEntries = [
   {date:"2026-09-24",time:"10:30 AM",channel:"Google Business",title:"When is it time to ask about hospice?",status:"Ready"},
   {date:"2026-09-26",time:"11:00 AM",channel:"Social",title:"A conversation can begin before a crisis",status:"Draft"},
-  {date:"2026-10-01",time:"8:00 AM",channel:"Email",title:"Hospice, Palliative Care, and Medicare—Clearly",status:"Scheduled"},
-  {date:"2026-09-30",time:"9:00 AM",channel:"Journal",title:"Understanding Coverage and Care",status:"Ready"},
   {date:"2026-10-02",time:"10:30 AM",channel:"Google Business",title:"Hospice and palliative care: the difference",status:"Draft"},
-  {date:"2026-10-08",time:"8:00 AM",channel:"Email",title:"Hospice Close to Home in the Conejo Valley",status:"Scheduled"},
-  {date:"2026-10-07",time:"9:00 AM",channel:"Journal",title:"Hospice Close to Home",status:"Ready"},
   {date:"2026-10-09",time:"11:00 AM",channel:"Social",title:"Care wherever a person calls home",status:"Draft"},
-  {date:"2026-10-15",time:"8:00 AM",channel:"Email",title:"What Hospice Support Really Includes",status:"Scheduled"},
-  {date:"2026-10-14",time:"9:00 AM",channel:"Journal",title:"What Support Really Includes",status:"Ready"},
+];
+const calendarEntries = [
+  ...journalArticles.map(article=>({
+    date:article.date,
+    time:article.date<="2026-09-22"?"Published":"9:00 AM",
+    channel:"Journal",
+    title:article.title,
+    status:article.date<="2026-09-22"?"Posted":article.date<=approvalCutoff?"Approved":"Needs review",
+  })),
+  ...emailCampaigns.flatMap((email,index)=>{
+    const date=calendarDateFor(email.sendDate);
+    return date?[{date,time:"8:00 AM",channel:"Email",title:email.subject,status:index<2?"Approved":"Needs review"}]:[];
+  }),
+  ...supportingCalendarEntries,
 ];
 const publicationKeywords = ["hospice","Medicare","palliative care","comfort","family","caregiver","physician","quality of life","24/7"];
 
