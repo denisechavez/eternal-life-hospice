@@ -27,4 +27,4 @@ description: Verified canonical Google Business Profiles for Eternal and Westlak
 ## Google Business Profile call tracking
 - Eternal’s dedicated WhatConverts number for Google Business Profile is `(805) 410-1151`; it forwards to Eternal’s permanent main number `(805) 953-7273`.
 - **Why:** the tracking number measures Google Business Profile calls while the permanent main number preserves Eternal’s identity and citation consistency.
-- **How to apply:** use `(805) 410-1151` as the Google profile’s primary number and retain `(805) 953-7273` as its additional number. Do not publish the tracking number as Eternal’s canonical website phone.
+- **How to apply:** use `(805) 410-1151` as the Google profile phone. If Google exposes an additional-number field, retain `(805) 953-7273` there; if the profile allows only one number, keep `(805) 953-7273` canonical on the website and citations. Do not publish the tracking number as Eternal’s canonical website phone.
