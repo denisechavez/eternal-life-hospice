@@ -17,15 +17,17 @@ from urllib.request import Request, urlopen
 
 
 GOOGLE_PLACES_BASE = "https://places.googleapis.com/v1"
-# Verified Eternal Life Hospice profile. Google Places confirms this listing
-# uses Eternal's phone, domain, and Suite 325B; Westlake has a distinct profile.
+# Verified Eternal Life Hospice profile. The Google listing uses Eternal's
+# dedicated call-tracking number (which forwards to its permanent main number),
+# domain, and Suite 325B; Westlake has a distinct profile. The website and
+# citations continue to use Eternal's permanent main number.
 REVIEWS_ENABLED = True
 CANONICAL_MAPS_URL = "https://maps.google.com/?cid=9771388271577679785"
 CANONICAL_PLACE_ID = "ChIJteBBU6vdfEcRqUfOqdzxmoc"
 WESTLAKE_PLACE_ID = "ChIJrRDxvAsl6IARsRyNjEqD2U8"
 APPROVED_ETERNAL_IDENTITY = {
     "displayName": "Eternal Life Hospice",
-    "nationalPhoneNumber": "(805) 953-7273",
+    "nationalPhoneNumber": "(805) 410-1151",
     "websiteDomain": "eternallifehospice.com",
     "formattedAddress": (
         "4165 E Thousand Oaks Blvd Ste 325B, Westlake Village, CA 91362, USA"

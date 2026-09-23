@@ -53,7 +53,7 @@ class GoogleReviewsTests(unittest.TestCase):
             "name": f"places/{place_id}",
             "displayName": {"text": name},
             "nationalPhoneNumber": (
-                "(818) 791-0611" if is_westlake else "(805) 953-7273"
+                "(818) 791-0611" if is_westlake else "(805) 410-1151"
             ),
             "websiteUri": (
                 "https://westlakevillagehospiceinc.com/"
@@ -84,6 +84,17 @@ class GoogleReviewsTests(unittest.TestCase):
         )
         self.assertEqual(
             google_reviews.validate_agency_identities(eternal, westlake), []
+        )
+
+    def test_live_identity_check_rejects_unapproved_eternal_phone(self):
+        eternal = self._identity(google_reviews.CANONICAL_PLACE_ID)
+        eternal["nationalPhoneNumber"] = "(805) 953-7273"
+        westlake = self._identity(
+            google_reviews.WESTLAKE_PLACE_ID, "Westlake Village Hospice Inc"
+        )
+        violations = google_reviews.validate_agency_identities(eternal, westlake)
+        self.assertTrue(
+            any("Eternal nationalPhoneNumber changed" in item for item in violations)
         )
 
     def test_live_identity_check_rejects_shared_identifier(self):
