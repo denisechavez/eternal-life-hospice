@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import type { FormEvent, ReactNode } from "react";
+import type { ReactNode } from "react";
 import { Activity, AlertCircle, ArrowUpRight, BarChart3, Bell, BookOpen, CalendarDays, Check, ChevronDown, ChevronRight, CircleDot, Database, FileCheck2, FileText, Globe2, HeartHandshake, LayoutDashboard, Menu, RefreshCw, Search, Send, Settings2, ShieldCheck, Sparkles, TrendingUp, Users, X } from "lucide-react";
 import { emailCampaigns, journalArticles, type JournalArticle } from "./contentData";
 import baseline from "./baseline-2026-09-20.json";
@@ -22,13 +22,12 @@ const items:Item[] = [...journalArticles.map(a=>({id:`j-${a.slug}`,title:a.title
 const pending = "Awaiting Source";
 
 export default function Hub(){
-  const [active,setActive]=useState(""); const [open,setOpen]=useState(""); const [mobile,setMobile]=useState(false); const [query,setQuery]=useState(""); const [notice,setNotice]=useState(""); const [selected,setSelected]=useState<Item|null>(null); const [statuses,setStatuses]=useState<Record<string,Item["status"]>>({}); const [firstName,setFirstName]=useState(""); const [entered,setEntered]=useState(false); const [openingDirection,setOpeningDirection]=useState<"chain"|"center">("chain");
+  const [active,setActive]=useState(""); const [open,setOpen]=useState(""); const [mobile,setMobile]=useState(false); const [query,setQuery]=useState(""); const [notice,setNotice]=useState(""); const [selected,setSelected]=useState<Item|null>(null); const [statuses,setStatuses]=useState<Record<string,Item["status"]>>({}); const [openingDirection,setOpeningDirection]=useState<"chain"|"center">("chain");
  const currentGroup=active?(groups.find(g=>g.items.some(i=>i[1]===active))?.name || (studio.some(i=>i[1]===active)?"Eternal Studio":"Data & Settings")):"";
  const setView=(v:string,g:string)=>{setActive(v);setOpen(g);setMobile(false);const url=new URL(window.location.href);url.searchParams.set("view",v);window.history.replaceState(null,"",url)};
  const flash=(s:string)=>{setNotice(s);window.setTimeout(()=>setNotice(""),2200)};
  const list=useMemo(()=>items.filter(i=>`${i.title} ${i.type}`.toLowerCase().includes(query.toLowerCase())),[query]);
-  const greeting=timeGreeting(firstName);
-  if(!entered) return <Cover firstName={firstName} onFirstNameChange={setFirstName} onEnter={()=>setEntered(true)}/>;
+  const greeting=timeGreeting("Aleksandra");
   return <div className="hub-shell hub-shell-entered">
     <aside className={`hub-sidebar ${mobile?"is-open":""}`}><div className="hub-brand"><img src="/__reviews-mockup/elh-logo-stacked-cream-gold.png" alt="Eternal Life Hospice"/><button onClick={()=>setMobile(false)}><X size={17}/></button></div><div className="product-lockup"><strong><span>Eternal Growth</span><span>Intelligence</span></strong><small className="product-domains"><span>Performance</span><span>Marketing</span><span>Census</span><span>Expansion</span></small></div>
    <nav>{groups.map(g=>{const Icon=g.icon;const expanded=open===g.name;return <div className="nav-group" key={g.name}><button className={`nav-group-trigger ${expanded?"expanded":""}`} onClick={()=>setOpen(expanded?"":g.name)}><Icon size={15}/><span><b>{g.name}</b></span><ChevronDown size={13}/></button>{expanded&&<div className="nav-items">{g.items.map(([label,key])=><button className={active===key?"active":""} key={key} onClick={()=>setView(key,g.name)}>{label}</button>)}</div>}</div>})}<div className="nav-group studio-nav"><button className={`nav-group-trigger ${open==="Eternal Studio"?"expanded":""}`} onClick={()=>setOpen(open==="Eternal Studio"?"":"Eternal Studio")}><BookOpen size={15}/><span><b>Eternal Studio</b><small>Create · Review · Publish</small></span><ChevronDown size={13}/></button>{open==="Eternal Studio"&&<div className="nav-items">{studio.map(([label,key])=><button className={active===key?"active":""} key={key} onClick={()=>setView(key,"Eternal Studio")}>{label}</button>)}</div>}</div></nav>
@@ -40,19 +39,6 @@ export default function Hub(){
    </section></main>{selected&&<Detail item={{...selected,status:statuses[selected.id]||selected.status}} onClose={()=>setSelected(null)} onStatus={(s)=>{setStatuses({...statuses,[selected.id]:s});flash(`Moved to ${s}`)}}/>}{notice&&<div className="toast"><Check size={15}/>{notice}</div>}
  </div>
 }
- function Cover({firstName,onFirstNameChange,onEnter}:{firstName:string;onFirstNameChange:(name:string)=>void;onEnter:()=>void}){
-   const submit=(event:FormEvent<HTMLFormElement>)=>{event.preventDefault();if(firstName.trim())onEnter()};
-   return <main className="growth-cover">
-     <div className="cover-orbit cover-orbit-one"/><div className="cover-orbit cover-orbit-two"/>
-     <div className="cover-grain"/>
-     <section className="cover-panel">
-       <div className="cover-topline"><img className="cover-mark" src="/__reviews-mockup/elh-logo-stacked-cream-gold.png" alt="Eternal Life Hospice"/><span>Private leadership measurement environment</span><span className="cover-rule"/></div>
-       <div className="cover-copy"><p className="cover-kicker"><i/>A working session for Aleksandra</p><h1><span className="cover-title-line">Eternal Growth</span><span className="cover-title-line cover-title-accent">Intelligence</span></h1><p className="cover-intro">A view of the signals shaping what comes next.</p></div>
-       <div className="domain-row" aria-label="Intelligence domains"><strong>Performance</strong><i>•</i><strong>Marketing</strong><i>•</i><strong>Census</strong><i>•</i><strong>Expansion</strong></div>
-       <form className="cover-entry" onSubmit={submit}><label htmlFor="growth-first-name">Sign in</label><div className="entry-line"><input id="growth-first-name" aria-label="First name" autoComplete="given-name" maxLength={24} required value={firstName} onChange={event=>onFirstNameChange(event.target.value)} placeholder="Your first name" /><button type="submit" disabled={!firstName.trim()}><span>Continue</span><ArrowUpRight size={16}/></button></div></form>
-     </section>
-   </main>
-  }
  function DashboardOpening({kind,onChange}:{kind:"chain"|"center";onChange:(kind:"chain"|"center")=>void}){
    const chain=kind==="chain";
    return <div className="dashboard-opening">
