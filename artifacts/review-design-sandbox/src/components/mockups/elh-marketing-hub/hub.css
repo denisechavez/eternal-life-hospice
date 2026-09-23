@@ -1068,3 +1068,18 @@
   .detail-drawer.full-review{width:100%}
   .email-review iframe{height:520px}
 }
+
+/* Center-justified welcome cover */
+.growth-cover .cover-panel{
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+}
+.growth-cover .cover-copy h1{margin-inline:auto}
+.growth-cover .cover-intro{margin-left:auto;margin-right:auto}
+.growth-cover .domain-row{
+  width:min(100%,960px);
+  justify-content:center;
+}
+.growth-cover .cover-entry{width:min(100%,760px)}
+.growth-cover .entry-line input{text-align:center}
