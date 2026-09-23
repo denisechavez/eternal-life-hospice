@@ -42,7 +42,8 @@ export default function Hub(){
  function DashboardOpening({kind,onChange}:{kind:"chain"|"center";onChange:(kind:"chain"|"center")=>void}){
    const chain=kind==="chain";
    return <div className="dashboard-opening">
-     <button className="dashboard-opening-visual" type="button" onClick={()=>onChange(chain?"center":"chain")} aria-label={chain?"View the Growth Intelligence Center direction":"View The Seven-Link Chain direction"}><img src={chain?"/__reviews-mockup/egi-measurement-chain.png":"/__reviews-mockup/egi-dashboard-overview.png"} alt={chain?"The Seven-Link Chain from visibility through census":"Growth Intelligence Center overview"}/></button>
+     <div className="dashboard-opening-visual"><img src={chain?"/__reviews-mockup/egi-measurement-chain.png":"/__reviews-mockup/egi-dashboard-overview.png"} alt={chain?"The Seven-Link Chain from visibility through census":"Growth Intelligence Center overview"}/></div>
+     <button className="explainer-next" type="button" onClick={()=>onChange(chain?"center":"chain")}><span>{chain?"Next explainer":"Back to first explainer"}</span><ArrowUpRight size={15}/></button>
    </div>
  }
 function timeGreeting(firstName:string){
