@@ -29,6 +29,8 @@ const assetLibrary = [
   {title:"Hospice-care video references",kind:"Video link",source:"Vimeo search",href:"https://vimeo.com/search?q=hospice%20care"},
 ];
 const calendarEntries = [
+  {date:"2026-09-21",time:"Published",channel:"Journal",title:"What Happens During a Hospice Evaluation? A Family Guide",status:"Posted"},
+  {date:"2026-09-22",time:"Published",channel:"Journal",title:"10 Changes That Can Prompt a Hospice Conversation",status:"Posted"},
   {date:"2026-09-23",time:"8:00 AM",channel:"Email",title:"Knowing When to Call: A Gentle Starting Point",status:"Scheduled"},
   {date:"2026-09-23",time:"9:00 AM",channel:"Journal",title:"Knowing When to Call",status:"Scheduled"},
   {date:"2026-09-24",time:"10:30 AM",channel:"Google Business",title:"When is it time to ask about hospice?",status:"Ready"},
