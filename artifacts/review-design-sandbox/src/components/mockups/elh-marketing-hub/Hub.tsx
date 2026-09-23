@@ -42,9 +42,8 @@ export default function Hub(){
  function DashboardOpening({kind,onChange}:{kind:"chain"|"center";onChange:(kind:"chain"|"center")=>void}){
    const chain=kind==="chain";
    return <div className="dashboard-opening">
-     <div className="dashboard-opening-head"><div><Kicker>{chain?"Opening view · measurement path":"Opening view · systems view"}</Kicker><h1>{chain?"The Seven-Link Chain":"Growth Intelligence Center"}</h1><p>{chain?"Every link needs its own clean source.":"A connected view of performance, marketing, census, and expansion."}</p></div><span>{chain?"01":"02"} / 02</span></div>
+     <div className="dashboard-opening-head"><div><Kicker>{chain?"Opening view · measurement path":"Opening view · systems view"}</Kicker><h1>{chain?"The Seven-Link Chain":"Growth Intelligence Center"}</h1><p>{chain?"Every link needs its own clean source.":"A connected view of performance, marketing, census, and expansion."}</p></div><div className="dashboard-opening-switch"><span>{chain?"01":"02"} / 02</span><button type="button" onClick={()=>onChange(chain?"center":"chain")}>{chain?"View second direction":"Back to The Seven-Link Chain"}<ArrowUpRight size={14}/></button></div></div>
      <figure><img src={chain?"/__reviews-mockup/egi-measurement-chain.png":"/__reviews-mockup/egi-dashboard-overview.png"} alt={chain?"The Seven-Link Chain from visibility through census":"Growth Intelligence Center overview"}/></figure>
-     <div className="dashboard-opening-foot"><p>{chain?"This is the first direction for discussion. Choose a menu item whenever you are ready to begin.":"Use one direction, combine elements from both, or suggest another. We will decide what to measure together."}</p><button type="button" onClick={()=>onChange(chain?"center":"chain")}><span>{chain?"View second direction":"Back to The Seven-Link Chain"}</span><ArrowUpRight size={15}/></button></div>
    </div>
  }
 function timeGreeting(firstName:string){
