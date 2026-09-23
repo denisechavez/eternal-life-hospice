@@ -1248,3 +1248,26 @@
 .opening-direction footer button{border:1px solid #b4d9df;background:#f5eee7;color:#321c38;padding:13px 17px;display:flex;align-items:center;gap:9px;font-weight:700;white-space:nowrap}
 .opening-direction footer button:hover{background:#fff;transform:translateY(-1px)}
 @media(max-width:620px){.opening-direction{padding:22px 17px}.opening-direction header span{display:none}.opening-direction-copy h1{font-size:42px}.opening-direction footer{align-items:stretch;flex-direction:column}.opening-direction footer button{justify-content:center}}
+
+/* Restored EGI sign-in cover. */
+.growth-cover{display:grid;place-items:center;overflow:hidden;padding:28px 20px}
+.growth-cover .cover-panel{width:min(760px,100%);min-height:calc(100dvh - 56px);margin:0;padding:48px 0 34px;justify-content:flex-start}
+.growth-cover .cover-topline{display:flex;align-items:center;gap:16px;width:100%;animation:cover-rise .7s both}
+.growth-cover .cover-topline .cover-mark{position:static;width:92px;opacity:.82;filter:drop-shadow(0 10px 20px rgba(0,0,0,.16))}
+.growth-cover .cover-topline>span:not(.cover-rule){color:#b8d4d8;font-size:9px;letter-spacing:.17em;text-transform:uppercase;white-space:nowrap}
+.growth-cover .cover-topline .cover-rule{height:1px;flex:1;background:rgba(143,193,213,.24)}
+.growth-cover .cover-copy{max-width:none;margin:60px auto 0;text-align:center}
+.growth-cover .cover-copy h1{font-size:clamp(58px,7vw,88px);line-height:.84;max-width:none}
+.growth-cover .cover-intro{margin:30px auto 0;max-width:420px}
+.growth-cover .domain-row{justify-content:center;margin:48px 0 30px}
+.growth-cover .cover-entry{width:min(560px,100%);margin:0 auto}
+.growth-cover .cover-entry label{text-align:center}
+@media(max-width:620px){
+  .growth-cover{overflow:auto}
+  .growth-cover .cover-panel{padding:30px 8px 42px}
+  .growth-cover .cover-topline{align-items:flex-start}
+  .growth-cover .cover-topline .cover-mark{width:78px}
+  .growth-cover .cover-topline>span:not(.cover-rule){font-size:7px;white-space:normal;line-height:1.4}
+  .growth-cover .cover-copy{margin-top:58px}
+  .growth-cover .cover-copy h1{font-size:clamp(50px,15vw,68px)}
+}
