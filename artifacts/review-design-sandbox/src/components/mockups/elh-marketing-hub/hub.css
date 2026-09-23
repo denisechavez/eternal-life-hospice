@@ -1041,3 +1041,30 @@
   .executive-metrics .metric{min-height:138px}
   .executive-answer h2{font-size:24px}
 }
+
+/* Header legibility and canonical email-template review */
+.hub-topbar .welcome-name{
+  font-size:22px;
+  font-weight:700;
+  letter-spacing:-.02em;
+  color:#103d57;
+}
+.studio-intro p{
+  margin:6px 0 0;
+  color:var(--muted);
+  font-size:12px;
+  line-height:1.5;
+}
+.detail-drawer.full-review{width:min(960px,100%)}
+.email-review iframe{height:640px}
+.email-template-note.approved{
+  border-color:rgba(66,114,96,.3);
+  background:rgba(66,114,96,.08);
+}
+.email-template-note.approved svg,
+.email-template-note.approved strong{color:var(--green)}
+@media(max-width:720px){
+  .hub-topbar .welcome-name{font-size:16px;max-width:42vw}
+  .detail-drawer.full-review{width:100%}
+  .email-review iframe{height:520px}
+}

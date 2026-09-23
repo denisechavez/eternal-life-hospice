@@ -7,6 +7,8 @@ import campaign1 from "../../../../../../exports/email-campaigns/30-day-journal/
 import campaign2 from "../../../../../../exports/email-campaigns/30-day-journal/campaign-2.html?raw";
 import campaign3 from "../../../../../../exports/email-campaigns/30-day-journal/campaign-3.html?raw";
 import campaign4 from "../../../../../../exports/email-campaigns/30-day-journal/campaign-4.html?raw";
+import approvedFamilyGuide from "../../../../../../exports/email/elh-family-guide-email-2.html?raw";
+import approvedCareBrief from "../../../../../../exports/email/eternal-care-brief-introduction-email.html?raw";
 
 export type JournalArticle = (typeof batch1)[number];
 export type EmailCampaign = {
@@ -15,6 +17,7 @@ export type EmailCampaign = {
   preheader: string;
   plainText: string;
   sendDate: string;
+  framework: "approved" | "journal-draft";
 };
 
 export const journalArticles: JournalArticle[] = [
@@ -29,8 +32,24 @@ const plainText = [
 ];
 
 export const emailCampaigns: EmailCampaign[] = [
-  { html: campaign1, subject: "Knowing When to Call: A Gentle Starting Point", preheader: "A conversation can begin before a crisis. Learn which changes may be worth discussing with a clinician.", plainText: plainText[0], sendDate: "Sep 23, 2026" },
-  { html: campaign2, subject: "Hospice, Palliative Care, and Medicare—Clearly", preheader: "A plain-language look at hospice, palliative care, and common Medicare coverage questions.", plainText: plainText[1], sendDate: "Sep 30, 2026" },
-  { html: campaign3, subject: "Hospice Close to Home in the Conejo Valley", preheader: "Local, comfort-focused support for families in Thousand Oaks, Simi Valley, Camarillo, and nearby communities.", plainText: plainText[2], sendDate: "Oct 7, 2026" },
-  { html: campaign4, subject: "What Hospice Support Really Includes", preheader: "Equipment, 24/7 nursing access, social work, and respite—see how a hospice team supports families.", plainText: plainText[3], sendDate: "Oct 14, 2026" },
+  {
+    html: approvedFamilyGuide,
+    subject: "A Complimentary Family Guide for Patients and Caregivers",
+    preheader: "A practical hospice resource created to support families and healthcare professionals.",
+    plainText: "A complimentary family guide for patients and caregivers.\n\nA practical hospice resource created to support families and healthcare professionals.\n\nOpen the Family Guide: https://eternallifehospice.com/family-guide\n\nQuestions? Call 805.953.7273\nEternal Life Hospice | Care That Honors Life.\nUnsubscribe: {{ unsubscribe }}",
+    sendDate: "Approved template",
+    framework: "approved",
+  },
+  {
+    html: approvedCareBrief,
+    subject: "Introducing The Eternal Care Brief",
+    preheader: "Issue One is here—hospice as a continuation of care.",
+    plainText: "Introducing The Eternal Care Brief.\n\nIssue One reframes hospice as a continuation of care, not its end.\n\nRead Issue One: https://eternallifehospice.com/care-brief/hospice-is-part-of-life-a-continuation-of-care\n\nQuestions? Call 805.953.7273\nEternal Life Hospice | Care That Honors Life.\nUnsubscribe: {{ unsubscribe }}",
+    sendDate: "Approved template",
+    framework: "approved",
+  },
+  { html: campaign1, subject: "Knowing When to Call: A Gentle Starting Point", preheader: "A conversation can begin before a crisis. Learn which changes may be worth discussing with a clinician.", plainText: plainText[0], sendDate: "Sep 23, 2026", framework: "journal-draft" },
+  { html: campaign2, subject: "Hospice, Palliative Care, and Medicare—Clearly", preheader: "A plain-language look at hospice, palliative care, and common Medicare coverage questions.", plainText: plainText[1], sendDate: "Sep 30, 2026", framework: "journal-draft" },
+  { html: campaign3, subject: "Hospice Close to Home in the Conejo Valley", preheader: "Local, comfort-focused support for families in Thousand Oaks, Simi Valley, Camarillo, and nearby communities.", plainText: plainText[2], sendDate: "Oct 7, 2026", framework: "journal-draft" },
+  { html: campaign4, subject: "What Hospice Support Really Includes", preheader: "Equipment, 24/7 nursing access, social work, and respite—see how a hospice team supports families.", plainText: plainText[3], sendDate: "Oct 14, 2026", framework: "journal-draft" },
 ];
