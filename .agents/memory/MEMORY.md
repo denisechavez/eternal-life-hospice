@@ -14,7 +14,7 @@
 - [Crop-mark press coords](cropmark-press-coords.md) — crop marks use SHEET coords, in-`.bleed` children use bleed-LOCAL (sheet-MARGIN); mixing shifts card past trim. Cards rasterized→fixed `<img>` so they can't reflow.
 - [Sound Bath page](soundbath-page.md) — sound-bath.html: Web Audio engine + player CSS duplicated from index.html (update both); strict compliance framing (no efficacy claims, Medicare-not-covered, WebPage schema not Medical).
 - [Canvas image ops](canvas-image-ops.md) — image shapes need `.canvas/assets/` on port 5904; create uses `shape` + clean URL, update uses `updates`+`shapeType`+`?v=`; presentArtifact only works for iframes.
-- [OG share card](og-image.md) — assets/og-image.jpg (1200×630) is shared site-wide; regen via temp og-card.html + headless chromium screenshot; 100vw/vh fill avoids white band; share.google is Google's wrapper.
+- [OG share card](og-image.md) — public metadata points directly to og-image.jpg; legacy v2 URL redirects only for old shares; cache-busting must still preserve direct image fetches.
 - [Brand asset library](brand-assets.md) — repo-root brand-assets/ (unpublished): Medical/ = ELH's own logos, ELH-affiliates-and-partners/ = 13 third-party logos; NEVER publish partner logos without a compliance review (Anti-Kickback/false-affiliation).
 - [Build-flow infographic](build-flow-infographic.md) — internal PNG explainer of AI→Replit→GitHub→Netlify→live; tool marks via Simple Icons SVG tinted plum; render pattern.
 - [Community-giving collateral](community-giving-collateral.md) — VCCF/Children's Workshop graphic; standard non-affiliation disclosure block required on all philanthropy collateral.

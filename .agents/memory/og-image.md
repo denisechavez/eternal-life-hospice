@@ -5,10 +5,10 @@ description: How the eternallifehospice.com share-preview image is made and how 
 
 # OG / social share card
 
-The link-preview image is a **versioned filename** (currently
-`assets/og-image-v2.jpg`, 2400×1260, 1.91:1). **Every page references the same
-file**, except a few that point at their own hero (sound-bath, carebidet, city
-pages). Replacing the file content alone is NOT enough — see cache gotcha below.
+The link-preview image is `assets/og-image.jpg` (2400×1260, 1.91:1).
+Public OG, Twitter, and JSON-LD image references must use the **final image URL
+directly**, not `og-image-v2.jpg`, which redirects to it solely for previously
+shared links. Most pages use the same card; some use their own hero.
 
 **Cropping:** social platforms (FB/LinkedIn) crop a square card to 1.91:1 and
 chop the logo top + domain bottom. Always build the card **WIDE 1200×630**, not
@@ -16,13 +16,11 @@ square.
 
 **Cache gotcha (the "still blurry / still old" trap):** FB & LinkedIn cache the
 image **keyed by its URL** for ~days; re-uploading the SAME filename does not
-refresh them, and the LinkedIn Post Inspector often won't bust it either. When
-the live file is already correct (verify with `curl -sL -o /dev/null -w '%{size_download}'
-https://eternallifehospice.com/assets/<file>` and compare byte size to local)
-but previews stay stale, **rename the image** (og-image.jpg → og-image-v2.jpg)
-and sed-update every `og:image` meta + JSON-LD `"image"` across all *.html, then
-Git Sync. New URL = no cache = fresh fetch. **Why:** content-only swaps can't
-beat URL-keyed caches.
+refresh them, and the LinkedIn Post Inspector often won't bust it either.
+**Why:** content-only swaps can't beat URL-keyed caches.
+**How to apply:** when a new share-image URL is genuinely needed, create the
+image file at that URL and update every OG, Twitter and JSON-LD image reference,
+including page generators. Never emit a URL that redirects to the actual image.
 
 **How it's generated:** build a temporary `og-card.html` at the repo root
 (website/elh-preview/) styled with the site's embedded Fraunces + Jost @font-face
@@ -33,7 +31,7 @@ chromium --headless=new --disable-gpu --no-sandbox --hide-scrollbars \
   --screenshot=/tmp/og.png http://localhost:5000/og-card.html
 # Keep the 2x render (2400×1260) — do NOT downscale. Encode 4:4:4 (no chroma
 # subsampling) at q95 so colored text/edges stay crisp:
-magick /tmp/og.png -quality 95 -sampling-factor 1x1 -strip assets/og-image-v2.jpg
+magick /tmp/og.png -quality 95 -sampling-factor 1x1 -strip assets/og-image.jpg
 ```
 **Blur cause (fixed):** the old command downscaled to 1200×630 AND used
 `-sampling-factor 4:2:0`, which blurred the gold/plum text edges and looked soft

@@ -451,9 +451,9 @@ def render_page(c):
   <meta property="og:title" content="{title}">
   <meta property="og:description" content="{meta_desc}">
   <meta property="og:url" content="{canonical}">
-  <meta property="og:image" content="https://eternallifehospice.com/assets/og-image-v2.jpg">
+  <meta property="og:image" content="https://eternallifehospice.com/assets/og-image.jpg">
   <meta property="og:site_name" content="Eternal Life Hospice"><meta property="og:locale" content="en_US"><meta property="og:image:width" content="2400"><meta property="og:image:height" content="1260"><meta property="og:image:alt" content="{title}">
-  <meta name="twitter:card" content="summary_large_image"><meta name="twitter:site" content="@EternalLifeHospice"><meta name="twitter:title" content="{title}"><meta name="twitter:description" content="{meta_desc}"><meta name="twitter:image" content="https://eternallifehospice.com/assets/og-image-v2.jpg">
+  <meta name="twitter:card" content="summary_large_image"><meta name="twitter:site" content="@EternalLifeHospice"><meta name="twitter:title" content="{title}"><meta name="twitter:description" content="{meta_desc}"><meta name="twitter:image" content="https://eternallifehospice.com/assets/og-image.jpg">
   <link rel="icon" type="image/png" href="assets/favicon.png">
   {_hero_preload_tag(slug)}
   <link rel="preload" as="font" href="assets/fonts/fraunces-latin.woff2" type="font/woff2" crossorigin fetchpriority="high">
