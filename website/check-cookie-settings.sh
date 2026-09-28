@@ -62,6 +62,6 @@ else
   done
   echo ""
   echo "Add the foot-bottom-links block from the template in:"
-  echo "    website/elh-preview/FOOTER-SNIPPET.md"
+  echo "    website/elh-preview/FOOTER-SNIPPET.md (workspace-only; not publicly served)"
   exit 1
 fi

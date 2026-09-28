@@ -30,7 +30,7 @@
 - [Media Kit page](media-kit-page.md) — /media-kit is booklet-only (closed folder→turnable pages), referral card removed; "Open the Kit" CTA is viewport-fixed not on-cover; page JPGs drive both viewer & PDFs; downloads must live in elh-preview/.
 - [Media Kit flipbook mechanics](media-kit-flipbook.md) — two-page spread stays sharp via "static spread + transient leaf" (transforms only on the turning leaf); filter leaf transitionend to transform-on-leaf or the .face::after shadow snaps the flip shut halfway.
 - [Site analytics coverage](analytics-coverage.md) — GA4+Clarity load via shared /assets/analytics.js on every real page; keep index single-sourced (no inline duplicate); 3 redirect stubs excluded.
-- [Netlify retired](netlify-retirement.md) — legacy fallback removed by decision; Replit Autoscale is the only host, and any future Netlify use starts clean.
+- [Netlify retired](netlify-retirement.md) — Replit Autoscale only; workspace drafts need server-side exclusion, not just sitemap omission or noindex.
 - [Autoscale health monitoring](autoscale-health-monitoring.md) — startup healthcheck failures can precede a healthy instance; monitor `/healthz`, and treat Python access lines labeled ERROR as status-based evidence.
 - [Accreditations & Affiliations section](accreditations-affiliations.md) — homepage #accreditations trust block: list only HELD creds (Medicare/CDPH/ACHC), no unheld-membership badges; verify-links point to official PORTALS (Care Compare per-org deep-link errors).
 - [Aleksandra ownership & card rules](aleksandra-ownership.md) — owns ELH + Westlake Village Hospice Inc; ELH collateral references ELH only; title = two lines (Founder & CEO / Certified Hospice Administrator).

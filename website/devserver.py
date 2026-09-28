@@ -10,6 +10,7 @@ import gzip
 import io
 import json
 import os
+import posixpath
 import re
 import socket
 import subprocess
@@ -296,11 +297,29 @@ class PrettyURLHandler(http.server.SimpleHTTPRequestHandler):
         return "public, max-age=300"
 
     def _is_internal_artifact(self):
-        path = urlsplit(self.path).path
+        """Keep workspace-only material out of the public static server.
+
+        Noindex is insufficient here: it still sends the draft to the caller.
+        Match decoded paths so percent-encoded requests cannot bypass this rule.
+        """
+        raw_path = unquote(urlsplit(self.path).path).lower()
+        path = "/" + posixpath.normpath(raw_path).lstrip("/")
+        parts = raw_path.split("/")
         return (
-            path.startswith("/assets/social/")
-            or path.startswith("/assets/img/amethyst-tmp/gallery")
+            path.endswith((".md", ".py"))
+            or path.startswith(("/assets/social/", "/assets/img/amethyst-tmp/"))
+            or path in ("/assets/social", "/assets/img/amethyst-tmp")
+            or any(part.startswith(".") for part in parts[1:] if part != ".well-known")
+            or (path.startswith("/assets/") and (
+                parts[-1].startswith("test-")
+                or parts[-1] in ("build-search-index.js", "update-sitemap-dates.js")
+            ))
         )
+
+    def list_directory(self, path):
+        # Directory indexes reveal unlinked draft and QA file names.
+        self.send_error(404)
+        return None
 
     def send_head(self):
         """Serve compressible static responses with a smaller wire payload.
@@ -396,8 +415,6 @@ class PrettyURLHandler(http.server.SimpleHTTPRequestHandler):
         for name, value in security_headers.items():
             if not self._has_header(name):
                 self.send_header(name, value)
-        if self._is_internal_artifact() and not self._has_header("X-Robots-Tag"):
-            self.send_header("X-Robots-Tag", "noindex, nofollow")
         super().end_headers()
 
     def _send_health(self, head_only=False):
@@ -422,6 +439,9 @@ class PrettyURLHandler(http.server.SimpleHTTPRequestHandler):
 
     def do_HEAD(self):
         parsed = urlsplit(self.path)
+        if self._is_internal_artifact():
+            self.send_error(404)
+            return
         if parsed.path in ("/health", "/healthz"):
             self._send_health(head_only=True)
             return
@@ -440,6 +460,9 @@ class PrettyURLHandler(http.server.SimpleHTTPRequestHandler):
 
     def do_GET(self):
         parsed = urlsplit(self.path)
+        if self._is_internal_artifact():
+            self.send_error(404)
+            return
         if parsed.path in ("/health", "/healthz"):
             self._send_health()
             return

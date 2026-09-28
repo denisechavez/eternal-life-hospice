@@ -47,6 +47,7 @@ set +o pipefail
   python3 ../test-journal-campaign.py
   python3 ../test-google-reviews.py
   python3 ../test-replit-chat-coverage.py
+  python3 ../test-public-artifact-exposure.py
   node assets/build-search-index.js --check
   node assets/build-search-index.js
   node assets/update-sitemap-dates.js
@@ -90,6 +91,7 @@ SENTINELS=(
   "SENTINEL: test-journal-campaign.py OK"
   "SENTINEL: test-google-reviews.py OK"
   "SENTINEL: test-replit-chat-coverage.py OK"
+  "SENTINEL: test-public-artifact-exposure.py OK"
 )
 
 SENTINEL_FAIL=0

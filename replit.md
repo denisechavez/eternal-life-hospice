@@ -6,7 +6,9 @@ Medicare-certified hospice serving **Ventura & Los Angeles County, CA**.
 
 - **Live site:** https://eternallifehospice.com
 - **Publishing flow:** edit and validate here → publish the Replit Autoscale
-  deployment to the live domain.
+  deployment to the live domain. GitHub `origin/main` is not the deployment
+  source; a Git branch comparison cannot prove what is live. After publishing,
+  verify the live domain's responses against the intended workspace changes.
 - **Website source:** `website/elh-preview/` (this folder, and only this folder,
   is what publishes to the live site).
 - **Approved coverage:** Ventura + Los Angeles County only.
