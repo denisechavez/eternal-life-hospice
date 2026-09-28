@@ -7,4 +7,4 @@ Keep discovery order stable whenever changing the design preview generator or it
 
 **Why:** A preview startup rewrote a tracked generated module in a different order without changing its components. Git marked the worktree dirty, which blocked synchronization during publishing. Reverting the module alone could be undone by the next startup.
 
-**How to apply:** Check that a preview build and a workflow restart leave Git clean. A standalone preview build requires the preview's configured PORT and BASE_PATH and rewrites tracked build output, so avoid carrying those incidental artifacts into a commit.
+**How to apply:** Check that a preview build and a workflow restart leave Git clean. A standalone preview build requires the preview's configured PORT and BASE_PATH and rewrites tracked build output, so avoid carrying those incidental artifacts into a commit. If Git sync is already paused mid-rebase, stop the running preview process before continuing the rebase; otherwise the generator can rewrite the tracked module between Git's picks and repeatedly interrupt synchronization. Restart the managed preview workflow after the rebase completes.
