@@ -238,10 +238,56 @@ try:
         base_url + "/assets/img/inline-33ce6328f1-720.webp", timeout=5
     ) as response:
         check(
-            "static image assets use long immutable caching",
+            "fingerprinted image assets use long immutable caching",
             response.headers.get("Cache-Control")
             == "public, max-age=31536000, immutable",
         )
+
+    with urllib.request.urlopen(
+        base_url + "/assets/fonts/inline-3c986c6628.woff2", timeout=5
+    ) as response:
+        check(
+            "fingerprinted fonts use long immutable caching",
+            response.headers.get_all("Cache-Control")
+            == ["public, max-age=31536000, immutable"],
+        )
+
+    for url in ("/assets/elh.css?v=20260901", "/assets/chat.js?v=20260805"):
+        with urllib.request.urlopen(base_url + url, timeout=5) as response:
+            check(
+                f"versioned asset {url} uses immutable caching",
+                response.headers.get_all("Cache-Control")
+                == ["public, max-age=31536000, immutable"],
+            )
+
+    for url in ("/assets/elh.css", "/assets/img/hero-mobile-640.webp"):
+        with urllib.request.urlopen(base_url + url, timeout=5) as response:
+            check(
+                f"unversioned asset {url} can refresh after deploy",
+                response.headers.get_all("Cache-Control")
+                == ["public, max-age=3600, must-revalidate"],
+            )
+
+    for url, expected in (
+        ("/", "public, max-age=0, must-revalidate"),
+        ("/assets/search-index.json", "public, max-age=0, must-revalidate"),
+        ("/robots.txt", "public, max-age=300, must-revalidate"),
+    ):
+        with urllib.request.urlopen(base_url + url, timeout=5) as response:
+            check(
+                f"{url} has a freshness-aware cache policy",
+                response.headers.get_all("Cache-Control") == [expected],
+            )
+
+    try:
+        urllib.request.urlopen(base_url + "/assets/not-real.png?v=1", timeout=5)
+    except urllib.error.HTTPError as exc:
+        check(
+            "missing versioned asset is not cached as immutable",
+            exc.code == 404 and exc.headers.get_all("Cache-Control") == ["no-store"],
+        )
+    else:
+        raise AssertionError("missing asset unexpectedly served")
 
     canvas_preview_url = base_url + "/canvas-hub/social/index.html"
     with urllib.request.urlopen(canvas_preview_url, timeout=5) as response:
@@ -308,7 +354,9 @@ try:
     with urllib.request.urlopen(gzip_request, timeout=5) as response:
         check(
             "compressible assets are served with gzip",
-            response.headers.get("Content-Encoding") == "gzip",
+            response.headers.get("Content-Encoding") == "gzip"
+            and response.headers.get_all("Cache-Control")
+            == ["public, max-age=31536000, immutable"],
         )
 
     gzip_home_request = urllib.request.Request(

@@ -90,15 +90,20 @@ Reserve asynchronous stylesheet loading for rules that cannot change initial lay
 
 ## Static asset cache policy
 
-Static assets use a one-year immutable browser cache; the generated search index remains
-revalidated so site search cannot become stale.
+Versioned or fingerprinted static assets use a one-year immutable browser cache; the generated
+search index remains revalidated so site search cannot become stale. Unversioned assets use a
+short reusable lifetime instead of immutable caching.
 
 **Why:** The site's CSS and JavaScript references carry explicit version query strings, and
-images/fonts are deployment-controlled static files. A one-day cache caused Lighthouse to
-report avoidable repeat-visit transfer cost.
+many generated images/fonts have content hashes in their filenames. A one-day cache for those
+versioned resources caused Lighthouse to report avoidable repeat-visit transfer cost. Plain
+filenames can change without a URL change on deploy; year-long immutable caching would leave
+visitors with stale resources. Missing asset responses must not inherit the immutable policy.
 
 **How to apply:** Whenever a named CSS or JavaScript file changes, bump its query-string
-version in the shared page sources. Do not apply immutable caching to the search index or HTML.
+version in the shared page sources. Use a versioned URL or fingerprinted filename for new
+assets that need long-lived caching. Do not apply immutable caching to unversioned assets, the
+search index, missing files or HTML.
 
 The production proxy may rewrite the asset directive from `public` to `private` while
 preserving the one-year `max-age`; verify the TTL and `immutable` flag rather than expecting

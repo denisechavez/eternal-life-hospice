@@ -283,7 +283,8 @@ class PrettyURLHandler(http.server.SimpleHTTPRequestHandler):
         )
 
     def _cache_control_for_path(self):
-        path = urlsplit(self.path).path
+        parsed = urlsplit(self.path)
+        path = parsed.path
         if path.startswith("/api/") or path in ("/health", "/healthz"):
             return None
         if path in ("/robots.txt", "/sitemap.xml", "/llms.txt"):
@@ -291,7 +292,17 @@ class PrettyURLHandler(http.server.SimpleHTTPRequestHandler):
         if path == "/assets/search-index.json":
             return "public, max-age=0, must-revalidate"
         if path.startswith("/assets/"):
-            return "public, max-age=31536000, immutable"
+            # Immutable URLs must change when their bytes change. Shared CSS/JS
+            # uses ?v=...; generated images/fonts use a hash in the filename.
+            # Plain filenames can be replaced on deploy, so give them a short
+            # reusable lifetime instead of making old versions stick for a year.
+            versioned = bool(parse_qs(parsed.query).get("v", [""])[0])
+            fingerprinted = bool(re.search(
+                r"-[a-f0-9]{10,}(?:-\d+)?\.[a-z0-9]+$", path, re.IGNORECASE
+            ))
+            if versioned or fingerprinted:
+                return "public, max-age=31536000, immutable"
+            return "public, max-age=3600, must-revalidate"
         if path.endswith(".html") or not os.path.splitext(path)[1]:
             return "public, max-age=0, must-revalidate"
         return "public, max-age=300"
@@ -374,9 +385,16 @@ class PrettyURLHandler(http.server.SimpleHTTPRequestHandler):
         self.end_headers()
         return io.BytesIO(compressed)
 
+    def send_response(self, code, message=None):
+        self._response_status = code
+        super().send_response(code, message)
+
     def end_headers(self):
         if not self._has_header("Cache-Control"):
-            cache_control = self._cache_control_for_path()
+            cache_control = (
+                "no-store" if getattr(self, "_response_status", 200) >= 400
+                else self._cache_control_for_path()
+            )
             if cache_control:
                 self.send_header("Cache-Control", cache_control)
         security_headers = {
