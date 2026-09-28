@@ -43,38 +43,18 @@ GET https://eternallifehospice.com/api/coverage?city=Pasadena
 - Matching is case-insensitive and diacritic-tolerant (`La Canada` → `La Cañada Flintridge`)
 - A `served: false` response does not mean the city is definitively unserved — callers should direct to the phone number for confirmation
 
-### Coverage lookup — full service area list
-Fetch all published cities in a single call. Use this to pre-load ELH's complete service area into a system prompt, knowledge base, or geographic filter — instead of making 58 individual city lookups.
+### Coverage lookup — published city-page list
+Fetch all currently published city-page records in a single call instead of looking up cities one at a time. Use the live response for geographic filters or knowledge bases; do not infer current coverage from a static example.
 
 ```
 GET https://eternallifehospice.com/api/coverage?list=true
 ```
 
-**Response:**
-```json
-{
-  "cities": [
-    {
-      "city": "Agoura Hills",
-      "county": "Los Angeles County",
-      "subregion": "Conejo Valley and nearby communities",
-      "pageUrl": "https://eternallifehospice.com/hospice-agoura-hills-ca"
-    },
-    {
-      "city": "Thousand Oaks",
-      "county": "Ventura County",
-      "subregion": "Conejo Valley and nearby communities",
-      "pageUrl": "https://eternallifehospice.com/hospice-thousand-oaks-ca"
-    }
-  ],
-  "total": 58,
-  "counties": ["Los Angeles County", "Ventura County"],
-  "phone": "805.953.7273"
-}
-```
+**Response contract:** `cities` contains every published city-page record, each with `city`, `county`, `subregion`, and `pageUrl`. `total` is the length of the returned `cities` array, not a fixed service-area count. `counties` lists the distinct counties in that array; `phone` is the 24/7 confirmation number.
 
 - Response is cached for 24 hours (`Cache-Control: public, max-age=86400`) — the list changes only when a new city page is published
 - Callers can filter the `cities` array by `county` or `subregion` as needed
+- A published city page is not an eligibility or clinical service guarantee. For an individual address or an unpublished city, call 805.953.7273 to confirm coverage.
 - Full OpenAPI spec: `https://eternallifehospice.com/.well-known/openapi.json`
 
 ## How to connect

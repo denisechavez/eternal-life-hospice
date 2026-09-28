@@ -3,6 +3,7 @@
 
 import json
 import os
+import re
 import sys
 import threading
 import urllib.error
@@ -50,7 +51,74 @@ status, data, _ = lookup_coverage({})
 check("missing city is rejected", status == 400 and data.get("error"))
 
 status, data, _ = lookup_coverage({"list": ["true"]})
-check("list mode returns all published cities", status == 200 and data["total"] == len(data["cities"]) >= 100)
+site_dir = os.path.dirname(os.path.abspath(__file__))
+with open(os.path.join(site_dir, "city-data.json"), encoding="utf-8") as handle:
+    published_cities = [
+        city for city in json.load(handle) if city.get("publishStatus") == "published"
+    ]
+expected_cities = [
+    {
+        "city": city["city"],
+        "county": city.get("county"),
+        "subregion": city.get("subregion"),
+        "pageUrl": city.get("canonicalUrl"),
+    }
+    for city in published_cities
+]
+check(
+    "list mode matches published-city source",
+    status == 200 and data["cities"] == expected_cities
+    and data["total"] == len(expected_cities)
+    and data["counties"] == sorted({city["county"] for city in expected_cities}),
+)
+
+with open(os.path.join(site_dir, "elh-preview", "AGENTS.md"), encoding="utf-8") as handle:
+    agent_guide = handle.read()
+with open(
+    os.path.join(site_dir, "elh-preview", ".well-known", "openapi.json"),
+    encoding="utf-8",
+) as handle:
+    openapi = json.load(handle)
+
+# A short example cannot be labeled a full list with a made-up total. Keep
+# counts out of prose unless explicitly checked against the published source.
+documented_counts = re.findall(
+    r"\b(\d+)\s+(?:individual\s+|published\s+|served\s+)?cit(?:y|ies)\b"
+    r'|["\']total["\']\s*:\s*(\d+)',
+    agent_guide,
+    flags=re.IGNORECASE,
+)
+check(
+    "agent guide has no stale fixed city count",
+    all(int(left or right) == data["total"] for left, right in documented_counts),
+)
+check(
+    "agent guide explains the live count and confirmation boundary",
+    "`total` is the length of the returned `cities` array" in agent_guide
+    and "call 805.953.7273 to confirm coverage" in agent_guide,
+)
+list_schema = openapi["components"]["schemas"]["CityList"]
+total_schema = list_schema["properties"]["total"]
+list_example = (
+    openapi["paths"]["/coverage"]["get"]["responses"]["200"]["content"]
+    ["application/json"]["examples"].get("city-list")
+)
+check(
+    "OpenAPI list counts match published source or are not pinned",
+    total_schema.get("example", data["total"]) == data["total"]
+    and (
+        list_example is None
+        or (
+            list_example["value"]["total"] == data["total"]
+            and list_example["value"]["cities"] == expected_cities
+        )
+    ),
+)
+check(
+    "OpenAPI describes a dynamic city-page count",
+    "Length of the cities array" in total_schema["description"]
+    and "do not guarantee" in openapi["paths"]["/coverage"]["get"]["description"],
+)
 
 status, data = process_chat(body("Call 911, this is an emergency"), {}, forbidden_opener)
 check("emergency is guarded locally", status == 200 and data.get("guarded") and "911" in data["reply"])
