@@ -22,6 +22,7 @@ WORKFLOW -- when the footer changes:
 """
 
 import os, re, sys
+from html.parser import HTMLParser
 
 # -- Import canonical footer ---------------------------------------------------
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
@@ -35,6 +36,73 @@ FOOTER_RE    = re.compile(r'<footer id="site-footer">.*?</footer>', re.DOTALL)
 CITY_PAGE_RE = re.compile(r'^hospice-.+-ca\.html$')
 COUNTY_HUB = "hospice-ventura-and-los-angeles-county-ca.html"
 STALE_HEADING_SELECTOR_RE = re.compile(r'(?:#site-footer\s+)?\.foot-col\s+h4\b')
+
+
+class FooterStructure(HTMLParser):
+    """Check the source nesting; browser DOM repair can hide nested anchors."""
+
+    def __init__(self):
+        super().__init__()
+        self.divs = []
+        self.next_div = 0
+        self.anchors = []
+        self.address_parent = None
+        self.address_closed = False
+        self.address_count = 0
+        self.subgroup_count = 0
+        self.issues = []
+
+    def handle_starttag(self, tag, attrs):
+        classes = dict(attrs).get("class", "").split()
+        if tag == "div":
+            if "foot-subgroup" in classes:
+                self.subgroup_count += 1
+                if self.anchors:
+                    self.issues.append("For Professionals subgroup is inside a link")
+                if self.address_count and (
+                    not self.address_closed or self.address_parent != self.divs[-1:]
+                ):
+                    self.issues.append("Address link and professional subgroup are not siblings")
+            self.next_div += 1
+            self.divs.append(self.next_div)
+        elif tag == "a":
+            if self.anchors:
+                self.issues.append("Nested anchors in footer")
+            is_address = "fc-addr" in classes
+            if is_address:
+                self.address_count += 1
+                self.address_parent = self.divs[-1:]
+                self.address_closed = False
+            self.anchors.append(is_address)
+        elif tag == "h2" and self.anchors:
+            self.issues.append("Footer heading inside a link")
+
+    def handle_endtag(self, tag):
+        if tag == "a" and self.anchors:
+            if self.anchors.pop():
+                self.address_closed = True
+        elif tag == "div" and self.divs:
+            self.divs.pop()
+
+
+def footer_structure_issues(footer, is_city):
+    structure = FooterStructure()
+    structure.feed(footer)
+    if structure.subgroup_count != 1:
+        structure.issues.append("Expected exactly one professional subgroup")
+    if not is_city and structure.address_count != 1:
+        structure.issues.append("Expected exactly one map address link")
+    return structure.issues
+
+
+# Make sure the semantic guard detects the original insertion-boundary bug.
+assert not footer_structure_issues(CANONICAL, False)
+_nested = CANONICAL.replace(
+    '</span></a><div class="foot-subgroup">',
+    '</span><div class="foot-subgroup">',
+    1,
+)
+assert _nested != CANONICAL and footer_structure_issues(_nested, False)
 
 # -- Required tokens present in EVERY footer (static and city) ----------------
 # These headings and links are invariant across all page types.
@@ -128,6 +196,9 @@ for dirpath, dirs, files in os.walk(ROOT):
         m = FOOTER_RE.search(html)
 
         is_city = bool(CITY_PAGE_RE.match(fn) and fn != COUNTY_HUB)
+        if m:
+            for issue in footer_structure_issues(m.group(0), is_city):
+                semantic_failures.append((rel, issue))
 
         if is_city:
             # City pages: token check only (Locations column varies by county)
