@@ -67,12 +67,28 @@ class JournalCampaignTests(unittest.TestCase):
     def test_generated_metadata_and_schedule(self):
         manifest = json.loads((ROOT / "content" / "30-day-journal-manifest.json").read_text())
         self.assertEqual(len(manifest["articles"]), 29)
+        archive = (ROOT / "elh-preview" / "blog.html").read_text()
         for article in self.articles:
             if article.get("publicationStatus") == "archived":
                 continue
             page = (ROOT / "elh-preview" / "blog" / f'{article["slug"]}.html').read_text()
             self.assertIn(f'<link rel="canonical" href="https://eternallifehospice.com/blog/{article["slug"]}">', page)
             self.assertIn(f'"datePublished":"{article["date"]}"', page.replace(" ", ""))
+            self.assertIn(f"background-image:url('..{article['heroImage']}')", page)
+            self.assertIn(f"https://eternallifehospice.com{article['heroImage']}", page)
+            self.assertNotIn('property="og:image:width"', page)
+            self.assertNotIn('property="og:image:height"', page)
+            self.assertIn(article["heroImage"], archive)
+
+    def test_every_public_journal_post_has_its_own_image(self):
+        active = [a for a in self.articles if a.get("publicationStatus") != "archived"]
+        posts = active + builder.LEGACY_POSTS
+        self.assertEqual(len({a["heroImage"] for a in posts}), len(posts))
+        for article in posts:
+            with self.subTest(slug=article["slug"]):
+                self.assertTrue(
+                    (ROOT / "elh-preview" / article["heroImage"].lstrip("/")).is_file()
+                )
 
     def test_newest_published_article_is_the_only_featured_story(self):
         old = os.environ.get("ELH_JOURNAL_DATE")
@@ -101,10 +117,13 @@ class JournalCampaignTests(unittest.TestCase):
                     archive = handler.wfile.getvalue().decode()
                     featured = re.findall(
                         r'<div class="blog-featured" data-publish-date="([^"]+)">'
-                        r'<a class="bf-img" href="([^"]+)"',
+                        r'<a class="bf-img" href="([^"]+)" '
+                        r'style="background-image:url\(\'([^\']+)\'\)"',
                         archive,
                     )
-                    self.assertEqual(featured, [(expected_date, f"blog/{slug}")])
+                    image = next(a["heroImage"] for a in
+                                 self.articles + builder.LEGACY_POSTS if a["slug"] == slug)
+                    self.assertEqual(featured, [(expected_date, f"blog/{slug}", image)])
                     self.assertNotIn(f'class="rc" data-publish-date="{expected_date}" href="blog/{slug}"', archive)
                     self.assertNotIn("can-a-family-request-a-hospice-evaluation", archive)
         finally:

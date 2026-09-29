@@ -9,6 +9,7 @@ devserver.py, rather than by relying on a deploy happening each morning.
 from __future__ import annotations
 
 import html
+import argparse
 import json
 import re
 import subprocess
@@ -72,6 +73,15 @@ def load_articles():
         ):
             raise ValueError(f"Invalid sections: {article['slug']}")
         seen_slugs.add(article["slug"]); seen_dates.add(article["date"])
+    public_posts = [a for a in articles if a.get("publicationStatus") != "archived"] + LEGACY_POSTS
+    images = [a["heroImage"] for a in public_posts]
+    if len(images) != len(set(images)):
+        repeated = sorted({image for image in images if images.count(image) > 1})
+        raise ValueError(f"Journal posts must have distinct images: {', '.join(repeated)}")
+    for article in public_posts:
+        image = article["heroImage"]
+        if not image.startswith("/assets/img/") or not (PUBLIC / image.lstrip("/")).is_file():
+            raise ValueError(f"Journal image missing or outside image assets: {article['slug']}: {image}")
     return articles
 
 
@@ -118,6 +128,8 @@ def render_post(article, template):
             rf'(<meta name="{prop}" content=")[^"]*(")',
             rf"\g<1>{value}\2", head, count=1
         )
+    # Image dimensions vary per article; inherited template values are misleading.
+    head = re.sub(r'<meta property="og:image:(?:width|height)" content="[^"]*">', '', head)
     head = re.sub(r'<section class="hero hero--photo"[\s\S]*?</article>', render_body(article), head, count=1)
     # Keep the established CTA/related/footer convention, but make CTA editorial.
     head = re.sub(r'<section class="cta">[\s\S]*?</section>', (
@@ -182,22 +194,7 @@ def card(article, featured=False):
             f'{article["readMinutes"]} min read</div><span class="rc-go">Read &#8594;</span></div></a>')
 
 
-def build(articles):
-    active_articles = [article for article in articles
-                       if article.get("publicationStatus") != "archived"]
-    active_slugs = {article["slug"] for article in active_articles}
-    template = next((p.read_text() for p in sorted(OUT.glob("*.html"))), None)
-    if not template:
-        raise FileNotFoundError("No existing Journal post template")
-    OUT.mkdir(exist_ok=True)
-    for article in articles:
-        if article["slug"] not in active_slugs:
-            stale_path = OUT / f'{article["slug"]}.html'
-            if stale_path.exists():
-                stale_path.unlink()
-    for article in active_articles:
-        (OUT / f'{article["slug"]}.html').write_text(render_post(article, template), encoding="utf-8")
-
+def write_archive(active_articles):
     archive = (PUBLIC / "blog.html").read_text()
     newest = active_articles[-1]
     archive, replaced = re.subn(
@@ -234,6 +231,59 @@ def build(articles):
                      merge_script, archive)
     (PUBLIC / "blog.html").write_text(archive, encoding="utf-8")
 
+
+def refresh_images(articles):
+    """Update images without overwriting editorial edits in existing article pages."""
+    active_articles = [a for a in articles if a.get("publicationStatus") != "archived"]
+    updates = []
+    for article in active_articles:
+        path = OUT / f'{article["slug"]}.html'
+        text = path.read_text(encoding="utf-8")
+        head, separator, body = text.partition("</head>")
+        if not separator:
+            raise ValueError(f"Article is missing its head: {path}")
+        head = re.sub(r'<meta property="og:image:(?:width|height)" content="[^"]*">', '', head)
+        match = re.search(
+            r'<section class="hero hero--photo" style="background-image:url\('
+            r'["\']?\.\.(\/assets\/img\/[^\'")]+)', body,
+        )
+        if match is None:
+            raise ValueError(f"Article is missing its hero image: {path}")
+        old_image = match.group(1)
+        if old_image != article["heroImage"]:
+            old_url = "https://eternallifehospice.com" + old_image
+            new_url = "https://eternallifehospice.com" + article["heroImage"]
+            if old_url not in head:
+                raise ValueError(f"Article is missing its share image: {path}")
+            head = head.replace(old_url, new_url)
+            old_hero = match.group(0)
+            new_hero = old_hero.replace(old_image, article["heroImage"])
+            body = body.replace(old_hero, new_hero, 1)
+        updated = head + separator + body
+        if updated != text:
+            updates.append((path, updated))
+    for path, text in updates:
+        path.write_text(text, encoding="utf-8")
+    write_archive(active_articles)
+
+
+def build(articles):
+    active_articles = [article for article in articles
+                       if article.get("publicationStatus") != "archived"]
+    active_slugs = {article["slug"] for article in active_articles}
+    template = next((p.read_text() for p in sorted(OUT.glob("*.html"))), None)
+    if not template:
+        raise FileNotFoundError("No existing Journal post template")
+    OUT.mkdir(exist_ok=True)
+    for article in articles:
+        if article["slug"] not in active_slugs:
+            stale_path = OUT / f'{article["slug"]}.html'
+            if stale_path.exists():
+                stale_path.unlink()
+    for article in active_articles:
+        (OUT / f'{article["slug"]}.html').write_text(render_post(article, template), encoding="utf-8")
+    write_archive(active_articles)
+
     manifest = {"timezone": "America/Los_Angeles", "start": active_articles[0]["date"],
                 "end": active_articles[-1]["date"], "articles": [
                     {"slug": a["slug"], "date": a["date"], "url": "/blog/" + a["slug"]}
@@ -255,5 +305,13 @@ def build(articles):
 
 
 if __name__ == "__main__":
-    build(load_articles())
-    print("Built 30 Journal campaign articles")
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--images-only", action="store_true",
+                        help="Update existing post images and archive cards without replacing article text")
+    args = parser.parse_args()
+    if args.images_only:
+        refresh_images(load_articles())
+        print("Updated Journal images without replacing article text")
+    else:
+        build(load_articles())
+        print("Built 30 Journal campaign articles")

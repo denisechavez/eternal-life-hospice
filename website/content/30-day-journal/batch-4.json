@@ -7,7 +7,7 @@
     "description": "Learn how a hospice team organizes comfort medications, explains safe use, and adjusts the plan around a person's changing needs at home or in care.",
     "category": "Understanding Hospice",
     "readMinutes": 7,
-    "heroImage": "/assets/img/pain-symptom-management.jpg",
+    "heroImage": "/assets/img/journal/medications.jpg",
     "lede": "Medication questions can feel especially urgent when a serious illness is changing quickly. Families may wonder what each medicine is for, who gives it, how refills happen, and what to do when a symptom appears at night. Hospice brings a structured, individualized process to those questions. The goal is comfort and clear communication, with decisions made by the hospice clinician and physician based on the person's condition, wishes, and care setting.",
     "sections": [
       {
@@ -64,7 +64,7 @@
     "description": "A practical guide to hospice equipment, delivery, setup, and safety, so families can prepare a comfortable home environment without last-minute guessing.",
     "category": "Family & Professional Care",
     "readMinutes": 7,
-    "heroImage": "/assets/img/first-48-hours.jpg",
+    "heroImage": "/assets/img/journal/equipment.jpg",
     "lede": "A hospital bed in the living room can feel like a major change, yet the right equipment often makes caregiving safer and more manageable. Hospice equipment is selected around the person's comfort, mobility, symptoms, and care setting. The team coordinates what is appropriate, explains how to use it, and revisits the arrangement as needs evolve. Not every person needs the same items, and equipment is provided only when ordered and covered under the applicable hospice plan.",
     "sections": [
       {
@@ -121,7 +121,7 @@
     "description": "Understand what hospice on-call support can help with after hours, what to expect when you call, and when to use emergency services first at home.",
     "category": "Understanding Hospice",
     "readMinutes": 6,
-    "heroImage": "/assets/img/first-48-hours.jpg",
+    "heroImage": "/assets/img/journal/on-call.jpg",
     "lede": "Nighttime can make every change feel bigger. A new symptom, a medication question, or uncertainty about what to do next can leave a family feeling alone. Hospice includes on-call support so a clinician can be reached outside routine visits. Understanding what that service is—and what it is not—helps families use it confidently. On-call support is responsive clinical guidance, not a promise of continuous bedside nursing.",
     "sections": [
       {
@@ -178,7 +178,7 @@
     "description": "Hospice respite care gives an eligible caregiver a planned short break through temporary inpatient care. Learn how it works and how to prepare.",
     "category": "Family & Professional Care",
     "readMinutes": 6,
-    "heroImage": "/assets/img/comfort-therapies.jpg",
+    "heroImage": "/assets/img/journal/respite.jpg",
     "lede": "Caregiving is an act of love, but love does not erase fatigue. Hospice respite care is designed to give an eligible caregiver a planned, short break while the person receiving hospice care stays in an approved inpatient setting. It is not a vacation from responsibility or a replacement for routine hospice care. It is a structured option that can help a family regroup, attend to health needs, or rest before returning to the bedside.",
     "sections": [
       {
@@ -236,7 +236,7 @@
     "description": "A hospice social worker helps families navigate emotions, communication, practical decisions, and community resources throughout serious illness and loss.",
     "category": "Family & Professional Care",
     "readMinutes": 7,
-    "heroImage": "/assets/img/volunteer.jpg",
+    "heroImage": "/assets/img/journal/social-worker.jpg",
     "lede": "Hospice social work is practical, personal, and available to the whole family. A social worker may help relatives talk about changing roles, locate community resources, prepare for difficult decisions, or find language for grief. They do not take over a family's choices. Instead, they listen, clarify options, and connect the care plan to the realities of a household in Ventura or Los Angeles County.",
     "sections": [
       {
@@ -293,7 +293,7 @@
     "description": "Hospice spiritual care welcomes belief, doubt, culture, and silence, offering companionship that follows the person's values rather than imposing a faith.",
     "category": "Whole-Person Care",
     "readMinutes": 6,
-    "heroImage": "/assets/img/holistic-medicine.jpg",
+    "heroImage": "/assets/img/end-of-life-doula.jpg",
     "lede": "Spiritual care in hospice is not a test of belief and does not require a particular religion. It is an invitation to talk about meaning, connection, hope, regret, gratitude, identity, or what helps a person feel grounded. A hospice spiritual-care counselor or chaplain follows the person's lead. They can pray when requested, sit in silence, help connect a family with its own faith leader, or simply listen without trying to fix the unfixable.",
     "sections": [
       {

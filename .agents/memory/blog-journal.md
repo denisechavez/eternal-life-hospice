@@ -78,6 +78,16 @@ point to a future article while later articles are already available.
 verify the featured article on dates before, during and after the scheduled
 campaign; the featured article should occur only once on the archive.
 
+For image-only Journal updates, preserve the existing editorial HTML rather
+than fully rebuilding posts from campaign JSON. Each published Journal story
+should also have its own actual photo, including legacy stories.
+**Why:** Some live article copy and links were refined after initial generation;
+a full rebuild silently replaces those edits, while recycled photos make the
+Journal look repetitive.
+**How to apply:** Use the image-only campaign refresh for photo changes, check
+article hero/share metadata and archive cards together, and reject duplicate
+images across published stories.
+
 ## Compliance guardrails (healthcare)
 - Integrative-therapy posts (e.g. music) must frame everything as **comfort/quality
   of life, never treatment or cure** — include an explicit "not intended to diagnose,
