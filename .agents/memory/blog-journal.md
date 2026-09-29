@@ -88,6 +88,16 @@ Journal look repetitive.
 article hero/share metadata and archive cards together, and reject duplicate
 images across published stories.
 
+Distinct image filenames are not enough: adjacent Journal cards must also feel
+visually different. Review the archive as a contact sheet and vary subjects,
+settings and composition rather than filling a run of posts with similar
+bedrooms, bedside hands or consultation scenes.
+**Why:** The user identified visually repeated imagery as unacceptable even
+when every article technically had a different image file.
+**How to apply:** Review new images beside their archive neighbors before
+publishing; choose article-specific scenes and preserve the calm, credible
+healthcare tone without implying a depicted person is an actual patient.
+
 ## Compliance guardrails (healthcare)
 - Integrative-therapy posts (e.g. music) must frame everything as **comfort/quality
   of life, never treatment or cure** — include an explicit "not intended to diagnose,

@@ -196,6 +196,7 @@ def card(article, featured=False):
 
 def write_archive(active_articles):
     archive = (PUBLIC / "blog.html").read_text()
+    active_articles = sorted(active_articles, key=lambda article: article["date"])
     newest = active_articles[-1]
     archive, replaced = re.subn(
         r'<div class="blog-featured"[^>]*>[\s\S]*?</div>\s*</div>'
@@ -204,7 +205,10 @@ def write_archive(active_articles):
     )
     if replaced != 1:
         raise ValueError("Journal archive is missing its featured story")
-    cards = "\n".join(card(a) for a in reversed(active_articles[:-1]))
+    # Keep a grid card for the staged lead story too. If a newer post is added
+    # later, the server can promote it and put the old lead back into the grid.
+    # The chosen lead's duplicate card is removed from the served response.
+    cards = "\n".join(card(a) for a in reversed(active_articles))
     cards += "\n" + "\n".join(card(a) for a in LEGACY_POSTS)
     archive = re.sub(r'<div class="rgrid">[\s\S]*?</div>\s*</section>', f'<div class="rgrid">{cards}</div></section>', archive, count=1)
     # Add campaign BlogPosting records to the existing Blog JSON-LD.

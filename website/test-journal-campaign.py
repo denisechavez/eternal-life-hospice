@@ -6,6 +6,7 @@ import json
 import os
 import re
 import sys
+import tempfile
 import unittest
 from datetime import date, timedelta
 from pathlib import Path
@@ -97,6 +98,7 @@ class JournalCampaignTests(unittest.TestCase):
                 ("2026-09-20", "2026-08-13", "the-caregiver-who-needs-care"),
                 ("2026-09-21", "2026-09-21", "what-happens-during-a-hospice-evaluation"),
                 ("2026-09-28", "2026-09-28", "hospice-care-for-advanced-cancer"),
+                ("2026-09-29", "2026-09-29", "hospice-and-advanced-heart-failure"),
                 ("2026-10-19", "2026-10-19", "grief-support-before-and-after-a-loss"),
                 ("2026-10-20", "2026-10-20", "how-physicians-and-facilities-refer-a-patient-to-hospice"),
             )
@@ -126,6 +128,104 @@ class JournalCampaignTests(unittest.TestCase):
                     self.assertEqual(featured, [(expected_date, f"blog/{slug}", image)])
                     self.assertNotIn(f'class="rc" data-publish-date="{expected_date}" href="blog/{slug}"', archive)
                     self.assertNotIn("can-a-family-request-a-hospice-evaluation", archive)
+        finally:
+            if old is None:
+                os.environ.pop("ELH_JOURNAL_DATE", None)
+            else:
+                os.environ["ELH_JOURNAL_DATE"] = old
+
+    def test_new_post_after_staged_lead_takes_featured_position(self):
+        article = {
+            "date": "2026-10-21",
+            "slug": "new-journal-story",
+            "title": "A New Journal Story",
+            "description": "A new story added after the original campaign.",
+            "category": "Family Support",
+            "readMinutes": 4,
+            "heroImage": "/assets/img/journal/referral.jpg",
+        }
+        source = (ROOT / "elh-preview" / "blog.html").read_text()
+        source = source.replace('<div class="rgrid">', '<div class="rgrid">' + builder.card(article), 1)
+        old = os.environ.get("ELH_JOURNAL_DATE")
+        try:
+            with tempfile.TemporaryDirectory() as directory:
+                path = Path(directory) / "blog.html"
+                path.write_text(source)
+                for today, expected_slug in (
+                    ("2026-10-20", "how-physicians-and-facilities-refer-a-patient-to-hospice"),
+                    ("2026-10-21", "new-journal-story"),
+                ):
+                    with self.subTest(today=today):
+                        os.environ["ELH_JOURNAL_DATE"] = today
+                        handler = PrettyURLHandler.__new__(PrettyURLHandler)
+                        handler.command = "GET"
+                        handler.wfile = io.BytesIO()
+                        statuses = []
+                        handler.send_response = statuses.append
+                        handler.send_header = lambda *_: None
+                        handler.end_headers = lambda: None
+                        self.assertTrue(handler._send_journal_artifact(str(path)))
+                        self.assertEqual(statuses, [200])
+                        archive = handler.wfile.getvalue().decode()
+                        featured = re.findall(
+                            r'<div class="blog-featured" data-publish-date="([^"]+)">'
+                            r'<a class="bf-img" href="([^"]+)"',
+                            archive,
+                        )
+                        self.assertEqual(featured, [(today, f"blog/{expected_slug}")])
+                        self.assertNotIn(
+                            f'class="rc" data-publish-date="{today}" href="blog/{expected_slug}"',
+                            archive,
+                        )
+                        if today == "2026-10-20":
+                            self.assertNotIn('href="blog/new-journal-story"', archive)
+                        else:
+                            self.assertIn(
+                                'class="rc" data-publish-date="2026-10-20" '
+                                'href="blog/how-physicians-and-facilities-refer-a-patient-to-hospice"',
+                                archive,
+                            )
+        finally:
+            if old is None:
+                os.environ.pop("ELH_JOURNAL_DATE", None)
+            else:
+                os.environ["ELH_JOURNAL_DATE"] = old
+
+    def test_old_featured_card_is_replaced_by_current_post(self):
+        source = (ROOT / "elh-preview" / "blog.html").read_text()
+        old_featured = builder.card(self.articles[0], featured=True)
+        source = re.sub(
+            r'<div class="blog-featured"[^>]*>[\s\S]*?</div>\s*</div>',
+            lambda _: old_featured,
+            source,
+            count=1,
+        )
+        old = os.environ.get("ELH_JOURNAL_DATE")
+        try:
+            os.environ["ELH_JOURNAL_DATE"] = "2026-09-29"
+            with tempfile.TemporaryDirectory() as directory:
+                path = Path(directory) / "blog.html"
+                path.write_text(source)
+                handler = PrettyURLHandler.__new__(PrettyURLHandler)
+                handler.command = "GET"
+                handler.wfile = io.BytesIO()
+                statuses = []
+                handler.send_response = statuses.append
+                handler.send_header = lambda *_: None
+                handler.end_headers = lambda: None
+                self.assertTrue(handler._send_journal_artifact(str(path)))
+                self.assertEqual(statuses, [200])
+                archive = handler.wfile.getvalue().decode()
+                self.assertIn(
+                    '<div class="blog-featured" data-publish-date="2026-09-29">'
+                    '<a class="bf-img" href="blog/hospice-and-advanced-heart-failure"',
+                    archive,
+                )
+                self.assertIn(
+                    'class="rc" data-publish-date="2026-09-21" '
+                    'href="blog/what-happens-during-a-hospice-evaluation"',
+                    archive,
+                )
         finally:
             if old is None:
                 os.environ.pop("ELH_JOURNAL_DATE", None)

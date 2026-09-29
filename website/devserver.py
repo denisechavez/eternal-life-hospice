@@ -215,27 +215,42 @@ class PrettyURLHandler(http.server.SimpleHTTPRequestHandler):
             text = body.decode("utf-8")
             today = self._journal_today()
             feature_slot = "<!-- JOURNAL_FEATURED_SLOT -->"
-            def filter_feature(match):
-                return feature_slot if match.group(1) > today else match.group(0)
-            text = re.sub(
+            featured_match = re.search(
                 r'<div class="blog-featured"[^>]+data-publish-date="([^"]+)"[^>]*>[\s\S]*?</div>\s*</div>',
-                filter_feature, text,
+                text,
             )
+            if featured_match is None:
+                self.send_error(503, "Journal featured story unavailable")
+                return True
+            card_pattern = (
+                r'<a class="rc"[^>]+data-publish-date="([^"]+)"'
+                r'[^>]+data-featured="([^"]+)"[^>]*>[\s\S]*?</a>'
+            )
+            visible_cards = [
+                match for match in re.finditer(card_pattern, text)
+                if match.group(1) <= today
+            ]
+            newest_card = max(visible_cards, key=lambda match: match.group(1), default=None)
+            featured_date = featured_match.group(1)
+            if featured_date <= today and (
+                newest_card is None or featured_date >= newest_card.group(1)
+            ):
+                featured = featured_match.group(0)
+                chosen_date = featured_date
+            elif newest_card is not None:
+                featured = html.unescape(newest_card.group(2))
+                chosen_date = newest_card.group(1)
+            else:
+                self.send_error(503, "Journal featured story unavailable")
+                return True
+            text = text[:featured_match.start()] + feature_slot + text[featured_match.end():]
             text = re.sub(
-                r'<a class="rc"[^>]+data-publish-date="([^"]+)"[^>]*>[\s\S]*?</a>',
-                lambda match: "" if match.group(1) > today else match.group(0), text,
+                card_pattern,
+                lambda match: "" if match.group(1) > today or match.group(1) == chosen_date
+                else match.group(0),
+                text,
             )
-            if feature_slot in text:
-                newest_visible = re.search(
-                    r'<a class="rc"[^>]+data-featured="([^"]+)"[^>]*>[\s\S]*?</a>',
-                    text,
-                )
-                if newest_visible is None:
-                    self.send_error(503, "Journal featured story unavailable")
-                    return True
-                featured = html.unescape(newest_visible.group(1))
-                text = text[:newest_visible.start()] + text[newest_visible.end():]
-                text = text.replace(feature_slot, featured, 1)
+            text = text.replace(feature_slot, featured, 1)
             # Blog JSON-LD is also part of the public archive response.  Filter
             # campaign postings there so crawlers cannot discover tomorrow's
             # URL even though the generated source file is already staged.

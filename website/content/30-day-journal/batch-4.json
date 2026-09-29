@@ -64,7 +64,7 @@
     "description": "A practical guide to hospice equipment, delivery, setup, and safety, so families can prepare a comfortable home environment without last-minute guessing.",
     "category": "Family & Professional Care",
     "readMinutes": 7,
-    "heroImage": "/assets/img/journal/equipment.jpg",
+    "heroImage": "/assets/img/journal/equipment-wheelchair.jpg",
     "lede": "A hospital bed in the living room can feel like a major change, yet the right equipment often makes caregiving safer and more manageable. Hospice equipment is selected around the person's comfort, mobility, symptoms, and care setting. The team coordinates what is appropriate, explains how to use it, and revisits the arrangement as needs evolve. Not every person needs the same items, and equipment is provided only when ordered and covered under the applicable hospice plan.",
     "sections": [
       {
@@ -121,7 +121,7 @@
     "description": "Understand what hospice on-call support can help with after hours, what to expect when you call, and when to use emergency services first at home.",
     "category": "Understanding Hospice",
     "readMinutes": 6,
-    "heroImage": "/assets/img/journal/on-call.jpg",
+    "heroImage": "/assets/img/journal/on-call-night.jpg",
     "lede": "Nighttime can make every change feel bigger. A new symptom, a medication question, or uncertainty about what to do next can leave a family feeling alone. Hospice includes on-call support so a clinician can be reached outside routine visits. Understanding what that service is—and what it is not—helps families use it confidently. On-call support is responsive clinical guidance, not a promise of continuous bedside nursing.",
     "sections": [
       {
@@ -178,7 +178,7 @@
     "description": "Hospice respite care gives an eligible caregiver a planned short break through temporary inpatient care. Learn how it works and how to prepare.",
     "category": "Family & Professional Care",
     "readMinutes": 6,
-    "heroImage": "/assets/img/journal/respite.jpg",
+    "heroImage": "/assets/img/journal/respite-outdoors.jpg",
     "lede": "Caregiving is an act of love, but love does not erase fatigue. Hospice respite care is designed to give an eligible caregiver a planned, short break while the person receiving hospice care stays in an approved inpatient setting. It is not a vacation from responsibility or a replacement for routine hospice care. It is a structured option that can help a family regroup, attend to health needs, or rest before returning to the bedside.",
     "sections": [
       {
