@@ -7,6 +7,7 @@ chat, and coverage lookup.
 """
 import http.server
 import gzip
+import html
 import io
 import json
 import os
@@ -213,16 +214,28 @@ class PrettyURLHandler(http.server.SimpleHTTPRequestHandler):
         if path.endswith("/blog.html"):
             text = body.decode("utf-8")
             today = self._journal_today()
-            def remove_future(match):
-                return "" if match.group(1) > today else match.group(0)
+            feature_slot = "<!-- JOURNAL_FEATURED_SLOT -->"
+            def filter_feature(match):
+                return feature_slot if match.group(1) > today else match.group(0)
             text = re.sub(
                 r'<div class="blog-featured"[^>]+data-publish-date="([^"]+)"[^>]*>[\s\S]*?</div>\s*</div>',
-                remove_future, text,
+                filter_feature, text,
             )
             text = re.sub(
                 r'<a class="rc"[^>]+data-publish-date="([^"]+)"[^>]*>[\s\S]*?</a>',
-                remove_future, text,
+                lambda match: "" if match.group(1) > today else match.group(0), text,
             )
+            if feature_slot in text:
+                newest_visible = re.search(
+                    r'<a class="rc"[^>]+data-featured="([^"]+)"[^>]*>[\s\S]*?</a>',
+                    text,
+                )
+                if newest_visible is None:
+                    self.send_error(503, "Journal featured story unavailable")
+                    return True
+                featured = html.unescape(newest_visible.group(1))
+                text = text[:newest_visible.start()] + text[newest_visible.end():]
+                text = text.replace(feature_slot, featured, 1)
             # Blog JSON-LD is also part of the public archive response.  Filter
             # campaign postings there so crawlers cannot discover tomorrow's
             # URL even though the generated source file is already staged.

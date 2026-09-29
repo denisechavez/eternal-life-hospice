@@ -1,8 +1,10 @@
 #!/usr/bin/env python3
 """Focused invariants for the Eternal Journal publication campaign."""
 import importlib.util
+import io
 import json
 import os
+import re
 import sys
 import unittest
 from datetime import date, timedelta
@@ -71,6 +73,45 @@ class JournalCampaignTests(unittest.TestCase):
             page = (ROOT / "elh-preview" / "blog" / f'{article["slug"]}.html').read_text()
             self.assertIn(f'<link rel="canonical" href="https://eternallifehospice.com/blog/{article["slug"]}">', page)
             self.assertIn(f'"datePublished":"{article["date"]}"', page.replace(" ", ""))
+
+    def test_newest_published_article_is_the_only_featured_story(self):
+        old = os.environ.get("ELH_JOURNAL_DATE")
+        try:
+            cases = (
+                ("2026-09-20", "2026-08-13", "the-caregiver-who-needs-care"),
+                ("2026-09-21", "2026-09-21", "what-happens-during-a-hospice-evaluation"),
+                ("2026-09-28", "2026-09-28", "hospice-care-for-advanced-cancer"),
+                ("2026-10-19", "2026-10-19", "grief-support-before-and-after-a-loss"),
+                ("2026-10-20", "2026-10-20", "how-physicians-and-facilities-refer-a-patient-to-hospice"),
+            )
+            for today, expected_date, slug in cases:
+                with self.subTest(today=today):
+                    os.environ["ELH_JOURNAL_DATE"] = today
+                    handler = PrettyURLHandler.__new__(PrettyURLHandler)
+                    handler.command = "GET"
+                    handler.wfile = io.BytesIO()
+                    statuses = []
+                    handler.send_response = statuses.append
+                    handler.send_header = lambda *_: None
+                    handler.end_headers = lambda: None
+                    self.assertTrue(handler._send_journal_artifact(
+                        str(ROOT / "elh-preview" / "blog.html")
+                    ))
+                    self.assertEqual(statuses, [200])
+                    archive = handler.wfile.getvalue().decode()
+                    featured = re.findall(
+                        r'<div class="blog-featured" data-publish-date="([^"]+)">'
+                        r'<a class="bf-img" href="([^"]+)"',
+                        archive,
+                    )
+                    self.assertEqual(featured, [(expected_date, f"blog/{slug}")])
+                    self.assertNotIn(f'class="rc" data-publish-date="{expected_date}" href="blog/{slug}"', archive)
+                    self.assertNotIn("can-a-family-request-a-hospice-evaluation", archive)
+        finally:
+            if old is None:
+                os.environ.pop("ELH_JOURNAL_DATE", None)
+            else:
+                os.environ["ELH_JOURNAL_DATE"] = old
 
 
 if __name__ == "__main__":

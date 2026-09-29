@@ -170,7 +170,11 @@ def card(article, featured=False):
                 f'{date.fromisoformat(article["date"]).strftime("%B %-d, %Y")}</time><span class="dot">&middot;</span>'
                 f'{article["readMinutes"]} min read</div><a class="bf-go" href="blog/{article["slug"]}">Read the post &#8594;</a>'
                 '</div></div>')
-    return (f'<a class="rc" data-publish-date="{article["date"]}" href="blog/{article["slug"]}">'
+    # The server promotes the newest *published* card as each scheduled date arrives.
+    # Store its ready-to-render featured form alongside the archive card.
+    featured_card = esc(card(article, True))
+    return (f'<a class="rc" data-publish-date="{article["date"]}" href="blog/{article["slug"]}" '
+            f'data-featured="{featured_card}">'
             f'<div class="rc-img" style="background-image:url({image})"></div><div class="rc-body">'
             f'<div class="rc-tag">{esc(article["category"])}</div><h3 class="rc-title">{esc(article["title"])}</h3>'
             f'<p class="rc-ex">{esc(article["description"])}</p><div class="rc-meta"><time datetime="{article["date"]}">'
@@ -196,7 +200,13 @@ def build(articles):
 
     archive = (PUBLIC / "blog.html").read_text()
     newest = active_articles[-1]
-    archive = re.sub(r'<div class="blog-featured">[\s\S]*?</div>\s*</div>', card(newest, True), archive, count=1)
+    archive, replaced = re.subn(
+        r'<div class="blog-featured"[^>]*>[\s\S]*?</div>\s*</div>'
+        r'|<a class="blog-featured"[^>]*>[\s\S]*?</a>',
+        card(newest, True), archive, count=1,
+    )
+    if replaced != 1:
+        raise ValueError("Journal archive is missing its featured story")
     cards = "\n".join(card(a) for a in reversed(active_articles[:-1]))
     cards += "\n" + "\n".join(card(a) for a in LEGACY_POSTS)
     archive = re.sub(r'<div class="rgrid">[\s\S]*?</div>\s*</section>', f'<div class="rgrid">{cards}</div></section>', archive, count=1)

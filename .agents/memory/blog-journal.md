@@ -68,6 +68,16 @@ hero-overlap card; older posts fall into the `.rgrid` below. When adding a newer
 post, move the prior featured post down into the grid and promote the new one.
 The resources-page Journal grid holds 3 recent posts (swap the oldest when adding).
 
+For date-scheduled Journal campaigns, "newest" means the latest article actually
+published as of the local publication date, not the last article pre-rendered
+for the campaign. Keep the archive's featured treatment and its regular cards
+in sync as scheduled articles become public.
+**Why:** A pre-rendered featured card can remain stuck on an older article or
+point to a future article while later articles are already available.
+**How to apply:** When changing the Journal generator or publication gate,
+verify the featured article on dates before, during and after the scheduled
+campaign; the featured article should occur only once on the archive.
+
 ## Compliance guardrails (healthcare)
 - Integrative-therapy posts (e.g. music) must frame everything as **comfort/quality
   of life, never treatment or cure** — include an explicit "not intended to diagnose,
