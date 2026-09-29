@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
-"""Build the 30-day Eternal Journal campaign.
+"""Build scheduled Eternal Journal stories.
 
-The source JSON remains the editorial source of truth.  This command validates
-all batches, renders the posts using the existing Journal chrome, and updates
-the archive/SEO artifacts.  Publication is enforced at request time by
-devserver.py, rather than by relying on a deploy happening each morning.
+The original 30-day batches remain fixed. New stories belong in additional-*.json
+arrays in the same directory. Existing article HTML is never regenerated; edit
+those pages directly if their published copy needs changing. Publication is
+enforced at request time by devserver.py.
 """
 from __future__ import annotations
 
@@ -15,6 +15,7 @@ import re
 import subprocess
 from datetime import date, timedelta
 from pathlib import Path
+from PIL import Image
 
 ROOT = Path(__file__).resolve().parent
 PUBLIC = ROOT / "elh-preview"
@@ -53,20 +54,28 @@ def load_articles():
             raise ValueError(f"{path} must contain an array")
         articles.extend(value)
     if len(articles) != 30:
-        raise ValueError(f"Expected 30 articles, found {len(articles)}")
+        raise ValueError(f"Expected 30 original articles, found {len(articles)}")
+    for index, article in enumerate(articles):
+        if not isinstance(article, dict) or not isinstance(article.get("date"), str) or \
+                date.fromisoformat(article["date"]) != date(2026, 9, 21) + timedelta(days=index):
+            raise ValueError("Original publication dates must be consecutive 2026-09-21 through 2026-10-20")
+    for path in sorted(CONTENT.glob("additional-*.json")):
+        value = json.loads(path.read_text())
+        if not isinstance(value, list):
+            raise ValueError(f"{path} must contain an array")
+        articles.extend(value)
     seen_slugs, seen_dates = set(), set()
-    expected = date(2026, 9, 21)
     required = {"date", "slug", "title", "seoTitle", "description", "category",
                 "readMinutes", "heroImage", "lede", "sections", "ctaHeading", "ctaCopy"}
     for index, article in enumerate(articles):
         if not isinstance(article, dict) or not required <= article.keys():
             raise ValueError(f"Article {index + 1} is missing required fields")
         published = date.fromisoformat(article["date"])
-        if published != expected + timedelta(days=index):
-            raise ValueError("Publication dates must be consecutive 2026-09-21 through 2026-10-20")
+        if index >= 30 and published <= date(2026, 10, 20):
+            raise ValueError("Additional publication dates must be after 2026-10-20")
         if article["slug"] in seen_slugs or article["date"] in seen_dates:
             raise ValueError("Slugs and publication dates must be unique")
-        if not re.fullmatch(r"[a-z0-9]+(?:-[a-z0-9]+)*", article["slug"]):
+        if article["slug"] in {a["slug"] for a in LEGACY_POSTS} or not re.fullmatch(r"[a-z0-9]+(?:-[a-z0-9]+)*", article["slug"]):
             raise ValueError(f"Invalid slug: {article['slug']}")
         if not article["sections"] or any(
             not s.get("heading") or not s.get("paragraphs") for s in article["sections"]
@@ -82,7 +91,7 @@ def load_articles():
         image = article["heroImage"]
         if not image.startswith("/assets/img/") or not (PUBLIC / image.lstrip("/")).is_file():
             raise ValueError(f"Journal image missing or outside image assets: {article['slug']}: {image}")
-    return articles
+    return sorted(articles, key=lambda article: article["date"])
 
 
 def esc(value):
@@ -128,7 +137,7 @@ def render_post(article, template):
             rf'(<meta name="{prop}" content=")[^"]*(")',
             rf"\g<1>{value}\2", head, count=1
         )
-    # Image dimensions vary per article; inherited template values are misleading.
+    # Image dimensions vary per article; the actual dimensions are set below.
     head = re.sub(r'<meta property="og:image:(?:width|height)" content="[^"]*">', '', head)
     head = re.sub(r'<section class="hero hero--photo"[\s\S]*?</article>', render_body(article), head, count=1)
     # Keep the established CTA/related/footer convention, but make CTA editorial.
@@ -194,7 +203,7 @@ def card(article, featured=False):
             f'{article["readMinutes"]} min read</div><span class="rc-go">Read &#8594;</span></div></a>')
 
 
-def write_archive(active_articles):
+def write_archive(active_articles, all_articles):
     archive = (PUBLIC / "blog.html").read_text()
     active_articles = sorted(active_articles, key=lambda article: article["date"])
     newest = active_articles[-1]
@@ -219,7 +228,9 @@ def write_archive(active_articles):
     def merge_blog_schema(match):
         payload = json.loads(match.group(1))
         existing = payload.get("blogPost", [])
-        by_url = {item.get("url"): item for item in existing if isinstance(item, dict)}
+        source_urls = {BASE_URL + a["slug"] for a in all_articles}
+        by_url = {item.get("url"): item for item in existing
+                  if isinstance(item, dict) and item.get("url") not in source_urls}
         by_url.update({item["url"]: item for item in entries})
         payload["blogPost"] = list(by_url.values())
         return '<script type="application/ld+json">' + json.dumps(payload, ensure_ascii=False) + "</script>"
@@ -234,6 +245,29 @@ def write_archive(active_articles):
     archive = re.sub(r'<script type="application/ld\+json">([\s\S]*?)</script>',
                      merge_script, archive)
     (PUBLIC / "blog.html").write_text(archive, encoding="utf-8")
+
+
+def update_image_dimensions(articles):
+    """Refresh only share-image dimensions; preserve all existing article copy."""
+    for article in articles:
+        path = OUT / f'{article["slug"]}.html'
+        text = path.read_text(encoding="utf-8")
+        head, separator, body = text.partition("</head>")
+        match = re.search(
+            r'<meta property="og:image" content="https://eternallifehospice\.com(/assets/img/[^"]+)">',
+            head,
+        )
+        if not match or not separator:
+            raise ValueError(f"Article is missing its share image or head: {path}")
+        with Image.open(PUBLIC / match.group(1).lstrip("/")) as image:
+            width, height = image.size
+        head = re.sub(r'<meta property="og:image:(?:width|height)" content="[^"]*">', '', head)
+        dimensions = (f'<meta property="og:image:width" content="{width}">'
+                      f'<meta property="og:image:height" content="{height}">')
+        head = head[:match.end()] + dimensions + head[match.end():]
+        updated = head + separator + body
+        if updated != text:
+            path.write_text(updated, encoding="utf-8")
 
 
 def refresh_images(articles):
@@ -268,7 +302,8 @@ def refresh_images(articles):
             updates.append((path, updated))
     for path, text in updates:
         path.write_text(text, encoding="utf-8")
-    write_archive(active_articles)
+    update_image_dimensions(active_articles)
+    write_archive(active_articles, articles)
 
 
 def build(articles):
@@ -285,9 +320,13 @@ def build(articles):
             if stale_path.exists():
                 stale_path.unlink()
     for article in active_articles:
-        (OUT / f'{article["slug"]}.html').write_text(render_post(article, template), encoding="utf-8")
-    write_archive(active_articles)
+        path = OUT / f'{article["slug"]}.html'
+        if not path.exists():
+            path.write_text(render_post(article, template), encoding="utf-8")
+    update_image_dimensions(active_articles)
+    write_archive(active_articles, articles)
 
+    active_articles.sort(key=lambda article: article["date"])
     manifest = {"timezone": "America/Los_Angeles", "start": active_articles[0]["date"],
                 "end": active_articles[-1]["date"], "articles": [
                     {"slug": a["slug"], "date": a["date"], "url": "/blog/" + a["slug"]}
@@ -296,7 +335,7 @@ def build(articles):
     # Sitemap entries are intentionally generated for the server-side filter.
     sitemap = PUBLIC / "sitemap.xml"
     xml = sitemap.read_text()
-    for article in active_articles:
+    for article in articles:
         xml = re.sub(
             rf'\s*<url>\s*<loc>https://eternallifehospice\.com/blog/{re.escape(article["slug"])}'
             r'</loc>[\s\S]*?</url>',
@@ -318,4 +357,4 @@ if __name__ == "__main__":
         print("Updated Journal images without replacing article text")
     else:
         build(load_articles())
-        print("Built 30 Journal campaign articles")
+        print("Built scheduled Journal articles")

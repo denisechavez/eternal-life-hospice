@@ -1,7 +1,7 @@
 {
   "timezone": "America/Los_Angeles",
   "start": "2026-09-21",
-  "end": "2026-10-20",
+  "end": "2026-10-21",
   "articles": [
     {
       "slug": "what-happens-during-a-hospice-evaluation",
@@ -147,6 +147,11 @@
       "slug": "how-physicians-and-facilities-refer-a-patient-to-hospice",
       "date": "2026-10-20",
       "url": "/blog/how-physicians-and-facilities-refer-a-patient-to-hospice"
+    },
+    {
+      "slug": "preparing-for-a-hospice-care-plan-conversation",
+      "date": "2026-10-21",
+      "url": "/blog/preparing-for-a-hospice-care-plan-conversation"
     }
   ]
 }

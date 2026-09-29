@@ -1184,7 +1184,7 @@
   },
   {
     "url": "/services",
-    "title": "Our Services",
+    "title": "Hospice Services in Ventura & Los Angeles Counties",
     "desc": "Hospice care that goes beyond the clinical — integrative therapies, whole-person comfort care, and the Sound Bath, offered at the bedside for every patient we serve. Ventura & LA counties.",
     "cat": "Service",
     "kw": ""
@@ -1431,6 +1431,13 @@
     "url": "/blog/when-a-parent-refuses-hospice",
     "title": "When a Parent Refuses Hospice: A Family Guide",
     "desc": "When a parent refuses hospice, steady conversation and practical questions can help. Learn how to listen, revisit care goals, and support choice.",
+    "cat": "Journal",
+    "kw": ""
+  },
+  {
+    "url": "/blog/preparing-for-a-hospice-care-plan-conversation",
+    "title": "How to Prepare for a Hospice Care Plan Conversation",
+    "desc": "A simple way for families to prepare for a hospice care plan conversation: gather questions, describe changes at home and agree on the next steps together.",
     "cat": "Journal",
     "kw": ""
   }

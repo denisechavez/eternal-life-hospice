@@ -16,7 +16,7 @@ import re
 import socket
 import subprocess
 import sys
-from datetime import datetime
+from datetime import date, datetime
 from zoneinfo import ZoneInfo
 from urllib.parse import parse_qs, unquote, urlsplit
 
@@ -45,6 +45,16 @@ from google_reviews import GoogleReviewsError, get_reviews
 BASE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.join(BASE, "elh-preview")
 JOURNAL_MANIFEST = os.path.join(BASE, "content", "30-day-journal-manifest.json")
+
+
+def _valid_journal_date(value):
+    try:
+        date.fromisoformat(value)
+        return True
+    except ValueError:
+        return False
+
+
 # Internal-only routes for the workspace canvas hub (never published to the site):
 CANVAS_HUB = os.path.join(BASE, "canvas-hub")
 GROWTH_INTELLIGENCE_REPORTER = os.path.join(
@@ -172,7 +182,9 @@ class PrettyURLHandler(http.server.SimpleHTTPRequestHandler):
                 return None
             if any(not isinstance(a, dict) or not isinstance(a.get("slug"), str)
                    or not re.fullmatch(r"[a-z0-9]+(?:-[a-z0-9]+)*", a["slug"])
-                   or not re.fullmatch(r"2026-\d\d-\d\d", a.get("date", ""))
+                   or not isinstance(a.get("date"), str)
+                   or not re.fullmatch(r"\d{4}-\d{2}-\d{2}", a["date"])
+                   or not _valid_journal_date(a["date"])
                    for a in articles):
                 return None
             return articles
@@ -285,10 +297,11 @@ class PrettyURLHandler(http.server.SimpleHTTPRequestHandler):
         elif path.endswith("sitemap.xml"):
             text = body.decode("utf-8")
             today = self._journal_today()
+            campaign = {item["slug"]: item["date"] for item in self._journal_manifest()}
             text = re.sub(
                 r'\s*<url>\s*<loc>https://eternallifehospice\.com/blog/([^<]+)</loc>\s*'
                 r'<lastmod>([^<]+)</lastmod>[\s\S]*?</url>',
-                lambda match: "" if match.group(2) > today else match.group(0),
+                lambda match: "" if campaign.get(match.group(1), "") > today else match.group(0),
                 text,
             )
             body = text.encode("utf-8")
