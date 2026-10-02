@@ -66,7 +66,12 @@ change how Google dates the content for ranking — it is cosmetic, not an SEO l
 The blog index (`blog.html`) features the single newest post in the `.blog-featured`
 hero-overlap card; older posts fall into the `.rgrid` below. When adding a newer
 post, move the prior featured post down into the grid and promote the new one.
-The resources-page Journal grid holds 3 recent posts (swap the oldest when adding).
+The resources-page Journal grid holds 3 recent published posts. Treat the archive
+as its editorial source rather than maintaining a second hand-picked list.
+**Why:** Separate selections drift behind the publishing schedule and create
+another place where future stories could be promoted too early.
+**How to apply:** Keep Resources aligned with published archive content and leave
+the separate Care Brief publication card outside the Journal selection.
 
 For date-scheduled Journal campaigns, "newest" means the latest article actually
 published as of the local publication date, not the last article pre-rendered

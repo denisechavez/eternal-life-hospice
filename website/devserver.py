@@ -41,6 +41,7 @@ from form_intake import (
     process_submission,
 )
 from google_reviews import GoogleReviewsError, get_reviews
+from journal_preview import render_resources_journal
 
 BASE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.join(BASE, "elh-preview")
@@ -223,7 +224,17 @@ class PrettyURLHandler(http.server.SimpleHTTPRequestHandler):
                 body = source.read()
         except OSError:
             return False
-        if path.endswith("/blog.html"):
+        if path.endswith("/resources.html"):
+            try:
+                with open(os.path.join(ROOT, "blog.html"), encoding="utf-8") as source:
+                    archive = source.read()
+                body = render_resources_journal(
+                    body.decode("utf-8"), archive, self._journal_manifest(), self._journal_today()
+                ).encode("utf-8")
+            except (OSError, ValueError):
+                self.send_error(503, "Resources Journal stories unavailable")
+                return True
+        elif path.endswith("/blog.html"):
             text = body.decode("utf-8")
             today = self._journal_today()
             feature_slot = "<!-- JOURNAL_FEATURED_SLOT -->"
@@ -512,6 +523,9 @@ class PrettyURLHandler(http.server.SimpleHTTPRequestHandler):
         if parsed.path in ("/blog", "/blog/", "/blog.html"):
             self._send_journal_artifact(os.path.join(ROOT, "blog.html"))
             return
+        if parsed.path in ("/resources", "/resources/", "/resources.html"):
+            self._send_journal_artifact(os.path.join(ROOT, "resources.html"))
+            return
         if parsed.path in ("/assets/search-index.json", "/sitemap.xml"):
             self._send_journal_artifact(os.path.join(ROOT, parsed.path.lstrip("/")))
             return
@@ -532,6 +546,9 @@ class PrettyURLHandler(http.server.SimpleHTTPRequestHandler):
             return
         if parsed.path in ("/blog", "/blog/", "/blog.html"):
             self._send_journal_artifact(os.path.join(ROOT, "blog.html"))
+            return
+        if parsed.path in ("/resources", "/resources/", "/resources.html"):
+            self._send_journal_artifact(os.path.join(ROOT, "resources.html"))
             return
         if parsed.path in ("/assets/search-index.json", "/sitemap.xml"):
             self._send_journal_artifact(os.path.join(ROOT, parsed.path.lstrip("/")))
