@@ -65,10 +65,54 @@ atomic per file, not a transaction across all destinations.
 
 This mode writes repository assets; it does **not** deploy the website.
 
+## Referral-card print proofs
+
+The two legacy print tools follow the same explicit modes. They use the
+workspace's existing `chromium`, `qpdf`, `gs` and `pdfinfo` system tools, with
+no additional Python packages.
+
+```sh
+python3 scripts/build-referral-card5-print.py --output-dir /tmp/elh-print-proofs
+python3 scripts/add-credential-logos-to-referral-cards.py --output-dir /tmp/elh-logo-proofs
+# Optional filename substrings select cards; omit to stamp all five.
+python3 scripts/add-credential-logos-to-referral-cards.py --temp-dir card-1 card-5
+```
+
+Each selected card produces a flat RGB PDF and a `-CMYK.pdf` in the proof
+directory. The logo tool reads approved RGB PDFs but never modifies them in
+proof mode. All selected RGB and CMYK outputs finish in staging before any
+destination is written, so rendering or conversion failure leaves existing
+outputs unchanged. Scratch HTML and overlays are deleted automatically.
+Proof files remain for review.
+
+**These scripts contain legacy artwork, not necessarily the current approved
+design.** Review proofs before publishing; these safety changes do not update
+artwork. Page geometry (two pages, 288×594pt), crop-mark coordinates and each
+tool's existing CMYK conversion settings are unchanged.
+
+The legacy card-5 builder still expects `assets/img/qr-refer-cream.png`.
+The repository currently keeps the WebP version instead; absent the historical
+PNG, a real build fails explicitly and leaves outputs untouched. Do not restore
+or regenerate approved QR assets just to run a proof. The regression test
+supplies the checked-in WebP bytes under the historical filename in a disposable
+input fixture (Chromium recognizes the image format from its contents).
+
+Only after approval, intentional replacement uses:
+
+```sh
+python3 scripts/build-referral-card5-print.py --publish --overwrite
+python3 scripts/add-credential-logos-to-referral-cards.py --publish --overwrite card-1
+```
+
+These commands replace RGB files in `exports/print/` and CMYK files in
+`exports/print/print-ready-cmyk/`. Card filters also limit publish preflight
+and replacement. An unmatched filter fails explicitly without writing files.
+
 ## Regression check
 
 ```sh
 python3 scripts/test-collateral-tools.py
+python3 scripts/test-referral-print-tools.py
 ```
 
 The check executes the actual builders without copying their scripts, verifies

@@ -8,23 +8,13 @@ target page with qpdf. Then regenerates the CMYK print-ready copies with gs.
 Coordinates are in PDF points, top-down, page = 288 x 594 pt (4.0 x 8.25 in).
 """
 import os, shutil, subprocess, sys, tempfile
+from collateral_output import output_plan
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PRINT = os.path.join(ROOT, "exports", "print")
 CMYK = os.path.join(PRINT, "print-ready-cmyk")
 LOGOS = os.path.join(ROOT, "brand-assets", "credential-logos")
 FONT = os.path.join(ROOT, "website", "elh-preview", "assets", "fonts", "JostELH-Medium.woff2")
-
-WORK = tempfile.mkdtemp(prefix="cardlogos-")
-for f in ["cms-centers-for-medicare-medicaid-services.png",
-          "cdph-california-department-of-public-health.png",
-          "achc-accredited-gold-seal.png",
-          "epic-systems.png",
-          "cms-centers-for-medicare-medicaid-services-white.png",
-          "cdph-california-department-of-public-health-white.png",
-          "epic-systems-white.png"]:
-    shutil.copy(os.path.join(LOGOS, f), WORK)
-shutil.copy(FONT, os.path.join(WORK, "JostELH-Medium.woff2"))
 
 CSS = """
 @page { size: 4in 8.25in; margin: 0; }
@@ -93,30 +83,61 @@ def run(cmd):
         print("CMD FAILED:", " ".join(cmd), "\n", r.stdout, r.stderr)
         sys.exit(1)
 
-only = sys.argv[1:]
-for card, (page, body) in overlays.items():
-    if only and not any(k in card for k in only):
-        continue
-    name = card.replace(".pdf", "")
-    html = os.path.join(WORK, name + ".html")
-    with open(html, "w") as f:
-        f.write(f"<!doctype html><html><head><meta charset='utf-8'><style>{CSS}</style></head>"
-                f"<body>{body}</body></html>")
-    ov_pdf = os.path.join(WORK, name + "-overlay.pdf")
-    run(["chromium", "--headless=new", "--no-sandbox", "--disable-gpu",
-         "--no-pdf-header-footer", f"--print-to-pdf={ov_pdf}", "file://" + html])
-    src = os.path.join(PRINT, card)
-    out = os.path.join(WORK, name + "-patched.pdf")
-    run(["qpdf", src, "--overlay", ov_pdf, "--to=" + str(page), "--", out])
-    shutil.move(out, src)
-    # regenerate CMYK print-ready copy
-    cmyk_out = os.path.join(CMYK, name + "-CMYK.pdf")
-    run(["gs", "-q", "-dBATCH", "-dNOPAUSE", "-dSAFER", "-sDEVICE=pdfwrite",
-         "-dProcessColorModel=/DeviceCMYK", "-sColorConversionStrategy=CMYK",
-         "-dOverrideICC=true", "-dPDFSETTINGS=/prepress", "-dAutoRotatePages=/None",
-         "-o", cmyk_out, src])
-    info = subprocess.run(["pdfinfo", src], capture_output=True, text=True).stdout
-    size = [l for l in info.splitlines() if "Page size" in l or "Pages" in l]
-    print(card, "->", "; ".join(s.strip() for s in size))
+def configure_parser(parser):
+    parser.add_argument("cards", nargs="*", metavar="CARD",
+                        help="Optional filename substrings (e.g. card-1 card-5); default: all five.")
 
-print("WORK DIR:", WORK)
+
+def selected_outputs(parser, args):
+    for selector in args.cards:
+        if not any(selector in card for card in overlays):
+            parser.error(f"No referral card matches: {selector}")
+    args.selected_cards = [card for card in overlays
+                           if not args.cards or any(k in card for k in args.cards)]
+    outputs = []
+    for card in args.selected_cards:
+        cmyk = card.replace(".pdf", "-CMYK.pdf")
+        outputs.extend([
+            (card, os.path.relpath(os.path.join(PRINT, card), ROOT)),
+            (cmyk, os.path.relpath(os.path.join(CMYK, cmyk), ROOT)),
+        ])
+    return outputs
+
+
+def main(argv=None):
+    plan = output_plan(__doc__, selected_outputs, argv,
+                       configure_parser=configure_parser)
+    # Validate all sources before rendering; never stamp a newly committed result.
+    for card in plan.args.selected_cards:
+        src = os.path.join(PRINT, card)
+        if not os.path.isfile(src):
+            plan.parser.error(f"Missing source PDF: {src}")
+    with plan.stage() as paths, tempfile.TemporaryDirectory(prefix="cardlogos-") as work:
+        for f in [CMS, CDPH, ACHC, EPIC, CMS_W, CDPH_W, EPIC_W]:
+            shutil.copy(os.path.join(LOGOS, f), work)
+        shutil.copy(FONT, os.path.join(work, "JostELH-Medium.woff2"))
+        for i, card in enumerate(plan.args.selected_cards):
+            page, body = overlays[card]
+            name = card.replace(".pdf", "")
+            html = os.path.join(work, name + ".html")
+            with open(html, "w") as f:
+                f.write(f"<!doctype html><html><head><meta charset='utf-8'><style>{CSS}</style></head>"
+                        f"<body>{body}</body></html>")
+            ov_pdf = os.path.join(work, name + "-overlay.pdf")
+            run(["chromium", "--headless=new", "--no-sandbox", "--disable-gpu",
+                 "--no-pdf-header-footer", f"--print-to-pdf={ov_pdf}", "file://" + html])
+            src = os.path.join(PRINT, card)
+            out, cmyk_out = paths[2*i:2*i+2]
+            run(["qpdf", src, "--overlay", ov_pdf, "--to=" + str(page), "--", str(out)])
+            run(["gs", "-q", "-dBATCH", "-dNOPAUSE", "-dSAFER", "-sDEVICE=pdfwrite",
+                 "-dProcessColorModel=/DeviceCMYK", "-sColorConversionStrategy=CMYK",
+                 "-dOverrideICC=true", "-dPDFSETTINGS=/prepress", "-dAutoRotatePages=/None",
+                 "-o", str(cmyk_out), str(out)])
+            info = subprocess.run(["pdfinfo", str(out)], capture_output=True, text=True,
+                                  check=True).stdout
+            size = [l for l in info.splitlines() if "Page size" in l or "Pages" in l]
+            print(card, "->", "; ".join(s.strip() for s in size))
+
+
+if __name__ == "__main__":
+    main()

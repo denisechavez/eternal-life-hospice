@@ -5,7 +5,16 @@ description: The approved, print-verified layout for the flagship referral rack 
 
 # Referral Card 5 — LOCKED design (user-approved, July 2026)
 
-Source of truth: `scripts/build-referral-card5-print.py` (edit + rerun; asserts 2pp 288×594pt, auto-builds CMYK). Trim 3.5×7.75in, file 3.75×8in (0.125in bleed + crop marks). Outputs to `exports/print/` (RGB) and `exports/print/print-ready-cmyk/` (send-to-MOO file).
+Approved PDFs take precedence over legacy builder templates. Do not assume
+rerunning a historical builder reproduces the currently approved design.
+
+**Why:** The approved design received later copy and credential revisions;
+legacy templates can still contain earlier artwork. Safety changes to tooling
+must not regenerate approved collateral.
+
+**How to apply:** Make disposable proofs and compare them with approved artwork
+before any intentional publish. Keep artwork changes separate from output-safety
+maintenance. The layout notes below include historical revisions.
 
 ## Front (deep plum background, cream/gold type)
 1. Logo lockup, centered: hi-res cream infinity mark image

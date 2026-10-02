@@ -71,8 +71,9 @@ class OutputPlan:
                 print(f"wrote {target}")
 
 
-def output_plan(description, outputs, argv=None, project_root=PROJECT_ROOT):
-    """outputs contains (flat proof filename, project-relative approved path)."""
+def output_plan(description, outputs, argv=None, project_root=PROJECT_ROOT,
+                configure_parser=None):
+    """outputs is a list (or args callback) of (proof name, approved path)."""
     parser = argparse.ArgumentParser(description=description)
     mode = parser.add_mutually_exclusive_group(required=True)
     mode.add_argument("--output-dir", type=Path,
@@ -84,7 +85,11 @@ def output_plan(description, outputs, argv=None, project_root=PROJECT_ROOT):
     parser.add_argument("--overwrite", action="store_true",
                         help="Intentionally replace existing outputs; publishing existing assets "
                              "requires both --publish and --overwrite.")
+    if configure_parser is not None:
+        configure_parser(parser)
     args = parser.parse_args(argv)
+    if callable(outputs):
+        outputs = outputs(parser, args)
     if args.temp_dir:
         args.output_dir = Path(tempfile.mkdtemp(prefix="elh-collateral-proof-"))
         print(f"Proof directory (kept for review): {args.output_dir}")

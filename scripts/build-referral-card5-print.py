@@ -9,27 +9,15 @@ Page 4.0x8.25in (trim 3.5x7.75 + 0.125 bleed + crop marks), chromium
 print-to-pdf (vector), then a CMYK copy for MOO in print-ready-cmyk/.
 """
 import os, shutil, subprocess, sys, tempfile
+from collateral_output import output_plan
 
-ROOT = "/home/runner/workspace"
+ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PRINT = os.path.join(ROOT, "exports", "print")
 LOGOS = os.path.join(ROOT, "brand-assets", "credential-logos")
 ASSETS = os.path.join(ROOT, "website", "elh-preview", "assets")
 CARD = os.path.join(PRINT, "eternal-life-referral-card-5-quick-referral-action.pdf")
 CMYK = os.path.join(PRINT, "print-ready-cmyk",
                     "eternal-life-referral-card-5-quick-referral-action-CMYK.pdf")
-
-WORK = tempfile.mkdtemp(prefix="c5build-")
-for f in ["cms-centers-for-medicare-medicaid-services.png",
-          "cdph-california-department-of-public-health.png",
-          "achc-accredited-gold-seal.png", "epic-systems.png"]:
-    shutil.copy(os.path.join(LOGOS, f), WORK)
-shutil.copy(os.path.join(ROOT, "brand-assets", "Medical",
-                         "eternal-life-hospice-infinity-cream-hires.png"),
-            os.path.join(WORK, "infinity-cream.png"))
-shutil.copy(os.path.join(ASSETS, "img", "qr-refer-cream.png"), WORK)
-for f in ["Fraunces-var.woff2", "Fraunces-Italic-var.woff2",
-          "JostELH-Regular.woff2", "JostELH-Medium.woff2", "JostELH-SemiBold.woff2"]:
-    shutil.copy(os.path.join(ASSETS, "fonts", f), WORK)
 
 DEEP = "#3C1C3B"; PLUM = "#5B2E59"; GOLD = "#C9B07E"; CREAM = "#F5F0EB"
 PANEL = "#EDE6DE"; BORDER = "#D8CDBF"; STEEL = "#6793AC"
@@ -194,36 +182,50 @@ HTML = f"""<!doctype html><html><head><meta charset="utf-8"><style>
 img {{ display:block; }}
 </style></head><body>{FRONT}{BACK}</body></html>"""
 
-with open(os.path.join(WORK, "card5.html"), "w") as fh:
-    fh.write(HTML)
-
-def run(cmd):
-    r = subprocess.run(cmd, capture_output=True, text=True, cwd=WORK)
+def run(cmd, work):
+    r = subprocess.run(cmd, capture_output=True, text=True, cwd=work)
     if r.returncode != 0:
         print("CMD FAILED:", " ".join(cmd), "\n", r.stdout, r.stderr)
         sys.exit(1)
     return r
 
-run(["chromium", "--headless=new", "--no-sandbox", "--disable-gpu",
-     "--force-color-profile=srgb", "--no-pdf-header-footer",
-     "--print-to-pdf=" + os.path.join(WORK, "card5.pdf"), "card5.html"])
+def main(argv=None):
+    plan = output_plan(__doc__, [
+        (os.path.basename(CARD), os.path.relpath(CARD, ROOT)),
+        (os.path.basename(CMYK), os.path.relpath(CMYK, ROOT)),
+    ], argv)
+    with plan.stage() as (card, cmyk), tempfile.TemporaryDirectory(prefix="c5build-") as work:
+        for f in [CMS, CDPH, ACHC, EPIC]:
+            shutil.copy(os.path.join(LOGOS, f), work)
+        shutil.copy(os.path.join(ROOT, "brand-assets", "Medical",
+                                 "eternal-life-hospice-infinity-cream-hires.png"),
+                    os.path.join(work, "infinity-cream.png"))
+        shutil.copy(os.path.join(ASSETS, "img", "qr-refer-cream.png"), work)
+        for f in ["Fraunces-var.woff2", "Fraunces-Italic-var.woff2",
+                  "JostELH-Regular.woff2", "JostELH-Medium.woff2", "JostELH-SemiBold.woff2"]:
+            shutil.copy(os.path.join(ASSETS, "fonts", f), work)
+        with open(os.path.join(work, "card5.html"), "w") as fh:
+            fh.write(HTML)
+        run(["chromium", "--headless=new", "--no-sandbox", "--disable-gpu",
+             "--force-color-profile=srgb", "--no-pdf-header-footer",
+             "--print-to-pdf=" + str(card), "card5.html"], work)
+        info = run(["pdfinfo", str(card)], work).stdout
+        print([l for l in info.splitlines() if l.startswith(("Pages", "Page size"))])
+        if "Pages:           2" not in info or "288 x 594" not in info:
+            raise RuntimeError("wrong page count/size")
+        run(["gs", "-dBATCH", "-dNOPAUSE", "-sDEVICE=pdfwrite",
+             "-sColorConversionStrategy=CMYK", "-dProcessColorModel=/DeviceCMYK",
+             "-dPDFSETTINGS=/prepress",
+             "-dDownsampleColorImages=false", "-dDownsampleGrayImages=false",
+             "-dDownsampleMonoImages=false",
+             "-dAutoFilterColorImages=false", "-dAutoFilterGrayImages=false",
+             "-dColorImageFilter=/FlateEncode", "-dGrayImageFilter=/FlateEncode",
+             "-sOutputFile=" + str(cmyk), str(card)], work)
+        rgb = subprocess.run(["bash", "-c",
+            f"gs -o /dev/null -sDEVICE=inkcov '{cmyk}' 2>/dev/null | grep -c DeviceRGB || true"],
+            capture_output=True, text=True).stdout.strip()
+        print("OK | CMYK done | DeviceRGB refs:", rgb)
 
-info = subprocess.run(["pdfinfo", os.path.join(WORK, "card5.pdf")],
-                      capture_output=True, text=True).stdout
-pages = [l for l in info.splitlines() if l.startswith(("Pages", "Page size"))]
-print(pages)
-assert "Pages:           2" in info and "288 x 594" in info, "wrong page count/size"
 
-shutil.copy(os.path.join(WORK, "card5.pdf"), CARD)
-run(["gs", "-dBATCH", "-dNOPAUSE", "-sDEVICE=pdfwrite",
-     "-sColorConversionStrategy=CMYK", "-dProcessColorModel=/DeviceCMYK",
-     "-dPDFSETTINGS=/prepress",
-     "-dDownsampleColorImages=false", "-dDownsampleGrayImages=false",
-     "-dDownsampleMonoImages=false",
-     "-dAutoFilterColorImages=false", "-dAutoFilterGrayImages=false",
-     "-dColorImageFilter=/FlateEncode", "-dGrayImageFilter=/FlateEncode",
-     "-sOutputFile=" + CMYK, CARD])
-rgb = subprocess.run(["bash", "-c",
-    f"gs -o /dev/null -sDEVICE=inkcov '{CMYK}' 2>/dev/null | grep -c DeviceRGB || true"],
-    capture_output=True, text=True).stdout.strip()
-print("OK", CARD, "| CMYK done | DeviceRGB refs:", rgb)
+if __name__ == "__main__":
+    main()
