@@ -1806,3 +1806,17 @@ mtime_ms = 1789977009358
 storage_uri = "gcs://replit-rams-assets-kirk/rams/assets/repl:e1b2f643-7869-4565-af0e-10c34575ee8d/1758db6d-7e7d-47d8-9524-38a69e883649/0f9d9b01-c4e8-4b56-a160-1f6a2ca110e4"
 storage_version_token = "1789977057374136"
 content_type = "application/pdf"
+
+[[outputs]]
+id = "9uu-gkx2pBWMupccAxC5o"
+uri = "file://exports/seo/city-content-pilot-review.html"
+type = "html"
+title = "City Content Audit & Five-Page Pilot"
+description = "Before-edit findings, proposed content structure, comparison measurements and the complete revised copy for Thousand Oaks, Westlake Village, Simi Valley, Calabasas and Ventura."
+logical_id = "969ca3a8-1fe0-4781-a132-7f6b4c2ff38b"
+content_hash = "sha256:cd2ed6e671fa7808e12cc9aa1371aaafe3ea545ea0ba123445378605f5dbb8dd"
+size = 68238
+mtime_ms = 1790903770677
+storage_uri = "gcs://replit-rams-assets-kirk/rams/assets/repl:e1b2f643-7869-4565-af0e-10c34575ee8d/969ca3a8-1fe0-4781-a132-7f6b4c2ff38b/1a2d8ea6-77eb-4aad-be94-9cd67b532c2c"
+storage_version_token = "1790903818206340"
+content_type = "text/html"

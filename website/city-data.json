@@ -999,13 +999,50 @@
     "latitude": 34.1583,
     "longitude": -118.6603,
     "canonicalUrl": "https://eternallifehospice.com/hospice-calabasas-ca",
-    "title": "Hospice Care in Calabasas, CA | Eternal Life Hospice",
-    "metaDescription": "Eternal Life Hospice provides Medicare-certified hospice care in Calabasas, CA — Conejo Valley, Los Angeles County. Physician-supported comfort care at home or in a care facility. Call 805.953.7273.",
-    "h1": "Hospice Care in Calabasas, California",
+    "title": "Hospice Care at Home in Calabasas, CA | Eternal Life Hospice",
+    "searchMetaDescription": "Calabasas hospice guidance: clinical evaluation, access planning and care settings for eligible patients in Los Angeles County. Call 805.953.7273.",
+    "metaDescription": "Calabasas hospice guidance: clinical evaluation, access planning and care settings for eligible patients in Los Angeles County. Call 805.953.7273.",
+    "h1": "Hospice Care in Calabasas: Planning for Care at Home",
     "heroEyebrow": "Serving Calabasas · Conejo Valley · Los Angeles County",
-    "atAGlanceSummary": "Eternal Life Hospice serves Calabasas families with Medicare-certified, physician-supported hospice care — at home, in assisted-living communities and in skilled-nursing facilities. Located at the Ventura–Los Angeles county border, our team is ideally positioned to serve Calabasas and can begin a clinical evaluation the same day a referral is received.",
-    "localIntroduction": "Calabasas straddles the Las Virgenes corridor between the western San Fernando Valley and the Conejo Valley. It is a close-knit, family-oriented community where many seniors live in private residences in gated neighborhoods and established developments. Eternal Life Hospice's headquarters in Westlake Village places us just minutes away, giving Calabasas families fast access to our full interdisciplinary team.",
-    "localNearbyParagraph": "We also serve Agoura Hills, West Hills, Woodland Hills, Westlake Village and neighboring Ventura County communities, providing seamless coverage across the county line.",
+    "heroIntroduction": "For a family in Calabasas considering hospice, the first step is a conversation and clinical evaluation. Eternal Life Hospice supports eligible patients in private homes and residential care settings, with visits and services shaped by an individualized plan of care.",
+    "atAGlanceSummary": "Calabasas is in Los Angeles County along the Las Virgenes corridor. Eternal Life Hospice can discuss hospice eligibility and evaluate whether physician-directed, comfort-focused care fits the patient's needs and goals.",
+    "localIntroductionHeading": "Making a home hospice plan workable in Calabasas",
+    "localIntroduction": "When a family in Calabasas asks about hospice at home, useful planning starts with the patient's daily routine and the practical layout of the place where care would occur. The evaluation is an opportunity to describe what has changed, what support is already in place and which symptoms or decisions are causing concern.\n\nThe Las Virgenes corridor includes Calabasas and communities toward the Conejo Valley. Eternal Life Hospice serves eligible patients in Calabasas as part of a broader Los Angeles and Ventura County service area. Where a residence has an entry procedure, controlled access or mobility constraint, a family can explain the steps when arranging the visit so the team can discuss what is needed for access.",
+    "localNearbyParagraph": "Families comparing care across the corridor can also review our pages for <a href=\"hospice-agoura-hills-ca\">Agoura Hills</a> and <a href=\"hospice-westlake-village-ca\">Westlake Village</a>, and the <a href=\"hospice-ventura-and-los-angeles-county-ca\">Ventura and Los Angeles County coverage area</a>.",
+    "serviceOverviewHtml": "Hospice is a comfort-focused benefit for a patient who meets clinical eligibility requirements and chooses this approach to care. Under physician direction, the team develops an individualized plan that may include nursing, social work, chaplaincy, hospice aide support, related medications and equipment, and teaching for those involved in care. The plan reflects assessed needs; it does not replace every service a family may need. <a href=\"/resources/pain-symptom-management\">Read about pain and symptom management</a> and <a href=\"/hospice-care\">learn what hospice care involves</a>.",
+    "serviceResourcesHtml": "For an overview of available support, see <a href=\"/services\">Eternal Life Hospice services</a>. Families preparing for a Calabasas home evaluation can also review <a href=\"/resources/first-48-hours\">the first 48 hours of hospice</a> and <a href=\"/resources/pain-symptom-management\">pain and symptom management</a>.",
+    "beginningCareHeading": "Beginning hospice care in Calabasas: plan the home evaluation",
+    "beginningCareHtml": "<p>A family can make the initial call without having every document or decision settled. It helps to identify who the patient wants involved, describe the illness and current concerns, and share the treating clinician's name. If the patient has difficulty moving from bed to a chair, using stairs or reaching the door, mention that when planning the visit. These details help the team understand the patient's situation and discuss a workable evaluation.</p>\n  <p>If the residence has a gate, call box, building entry procedure or other access instruction, provide the relevant directions in advance and confirm how the visiting clinician should reach the patient. A family member or authorized contact can also explain any mobility equipment or transfer assistance already in use. The clinical evaluation determines what support may be appropriate; a hospice aide visit, if included, is based on the plan of care and is not continuous caregiving.</p>\n  <p>During an evaluation, the clinician reviews the patient's condition, symptoms, goals and care setting, and discusses hospice eligibility and next steps. If hospice is appropriate and chosen, the team collaborates on a plan, clarifies who to contact with questions, and reviews what hospice does—and does not—provide. <a href=\"/resources/first-48-hours\">See what families may discuss during the first 48 hours</a>, or <a href=\"/refer#referral-form\">ask a clinician to submit a referral</a>.</p>",
+    "careSettings": [
+      "<b>Private residence</b> &mdash; home visits arranged around the patient's assessed needs and plan",
+      "<b>Assisted-living community</b> &mdash; hospice services coordinated with the resident and facility team",
+      "<b>Residential care home</b> &mdash; hospice complements, rather than replaces, the setting's daily support",
+      "<b>Skilled-nursing facility</b> &mdash; hospice may be added when appropriate and coordinated with facility care"
+    ],
+    "coverageHeading": "What hospice coverage means for a Calabasas family",
+    "coverageHtml": "<p>Medicare hospice coverage is not determined by a city or residence type. It depends on eligibility, the terminal diagnosis, the patient's election and the individualized plan of care. Most Medicare-covered hospice services have little to no out-of-pocket cost; limited copayments may apply in specific circumstances. Ask which services and medications are related to the hospice diagnosis and included in the plan. Hospice does not automatically cover every integrative therapy; when Eternal Life Hospice offers an included therapy, it is paid for by Eternal Life Hospice at no additional expense to the family. <a href=\"/resources/medicare-hospice-benefit\">Review the Medicare hospice benefit</a>.</p>",
+    "resourcesHeading": "Questions to bring to a hospice conversation",
+    "resourcesHtml": "<p>Consider asking how the evaluation works, which clinician will remain involved, how to reach the team with concerns, what services are in the written plan, and which daily tasks remain with family or residential staff. A hospice aide may provide personal-care support according to assessed need and the plan; the service is not a substitute for an around-the-clock caregiver. <a href=\"/family-guide\">Use the Family Guide</a> to compare providers, read <a href=\"/resources/how-to-choose-a-hospice\">how to choose a hospice</a>, or explore the <a href=\"hospice-ventura-and-los-angeles-county-ca\">county coverage hub</a>.</p>",
+    "providerContext": "A physician or care professional referring a Calabasas patient can share the clinical record and current care concerns through <a href=\"/refer#referral-form\">Eternal Life Hospice's referral form</a>. The clinical team reviews the information and discusses evaluation steps with the patient or authorized representative. Clinical eligibility is assessed during the evaluation.",
+    "familyContext": "A Calabasas family can ask questions before making a hospice decision. We can discuss the evaluation, the patient's goals, practical entry or mobility considerations, and what a plan of care may include.",
+    "displayFaqItems": [
+      {
+        "q": "What should a Calabasas family share before arranging a home hospice evaluation?",
+        "a": "Describe the patient's condition, immediate concerns, mobility needs and any entry instructions needed to reach the residence. If the patient wishes, identify the people to include in the conversation and the treating clinician. A clinician then assesses the patient's needs and hospice eligibility."
+      },
+      {
+        "q": "Does a hospice aide provide continuous caregiving at a Calabasas home?",
+        "a": "No. Aide support is based on the patient's assessed needs and individualized plan of care, and it is not continuous supervision or a replacement for a family or paid caregiver. The team can explain what personal-care assistance is appropriate for the patient."
+      },
+      {
+        "q": "Who should join a Calabasas home hospice evaluation, and how is home access arranged?",
+        "a": "The patient may invite family or another representative they want involved. Tell the hospice team who will be present and, if the residence has an entry procedure, share the needed instructions and confirm permission for the clinician to enter. The team can discuss mobility and evaluation needs with the patient or authorized representative."
+      },
+      {
+        "q": "Will Medicare hospice automatically cover integrative therapies?",
+        "a": "No. Hospice coverage is tied to eligibility and the individualized plan of care, and an integrative therapy is not automatically covered just because someone elects hospice. Ask the team whether a specific service is included. When Eternal Life Hospice offers an included therapy, Eternal pays for it at no additional expense to the family."
+      }
+    ],
     "nearbyCityPages": [
       {
         "slug": "hospice-agoura-hills-ca",
@@ -1026,31 +1063,23 @@
     ],
     "faqItems": [
       {
-        "q": "Does Eternal Life Hospice serve Calabasas?",
-        "a": "Yes. Calabasas is within our active service area and is near our Westlake Village headquarters. We provide hospice care at private residences, gated communities, assisted-living facilities and skilled-nursing settings throughout the city."
+        "q": "What should a Calabasas family share before arranging a home hospice evaluation?",
+        "a": "Describe the patient's condition, immediate concerns, mobility needs and any entry instructions needed to reach the residence. If the patient wishes, identify the people to include in the conversation and the treating clinician. A clinician then assesses the patient's needs and hospice eligibility."
       },
       {
-        "q": "Does Medicare cover hospice in Calabasas?",
-        "a": "Most Medicare-covered hospice services have little to no out-of-pocket cost for eligible patients. Limited copayments may apply in specific circumstances. Coverage depends on eligibility, terminal diagnosis and the individualized plan of care."
+        "q": "Does a hospice aide provide continuous caregiving at a Calabasas home?",
+        "a": "No. Aide support is based on the patient's assessed needs and individualized plan of care, and it is not continuous supervision or a replacement for a family or paid caregiver. The team can explain what personal-care assistance is appropriate for the patient."
       },
       {
-        "q": "Can hospice care be provided at home in Calabasas?",
-        "a": "Yes. Home is the most common care setting. Our nurses, aides, social workers and chaplains visit the patient at their residence. Medical equipment and medications related to the hospice diagnosis are coordinated and delivered as needed."
+        "q": "Who should join a Calabasas home hospice evaluation, and how is home access arranged?",
+        "a": "The patient may invite family or another representative they want involved. Tell the hospice team who will be present and, if the residence has an entry procedure, share the needed instructions and confirm permission for the clinician to enter. The team can discuss mobility and evaluation needs with the patient or authorized representative."
       },
       {
-        "q": "How quickly can hospice services begin in Calabasas?",
-        "a": "Same-day evaluation may be available when clinically appropriate and operationally available. After a referral or intake call, a nurse will schedule an in-person visit to complete the clinical assessment and enrollment paperwork."
-      },
-      {
-        "q": "Who qualifies for hospice care in Calabasas?",
-        "a": "Hospice is appropriate when a physician certifies that a patient has a terminal illness with a prognosis of six months or less if the illness follows its natural course, and the patient and family choose comfort-focused care over curative treatment."
-      },
-      {
-        "q": "Does Eternal Life Hospice provide care across the Ventura–Los Angeles county line near Calabasas?",
-        "a": "Yes. Our service area spans both Ventura and Los Angeles Counties. Families in Calabasas who have loved ones in neighboring Thousand Oaks, Westlake Village or Agoura Hills can use the same care team."
+        "q": "Will Medicare hospice automatically cover integrative therapies?",
+        "a": "No. Hospice coverage is tied to eligibility and the individualized plan of care, and an integrative therapy is not automatically covered just because someone elects hospice. Ask the team whether a specific service is included. When Eternal Life Hospice offers an included therapy, Eternal pays for it at no additional expense to the family."
       }
     ],
-    "lastMaterialUpdate": "2026-08-06",
+    "lastMaterialUpdate": "2026-10-01",
     "publishStatus": "published"
   },
   {
@@ -7323,13 +7352,50 @@
     "latitude": 34.2694,
     "longitude": -118.7815,
     "canonicalUrl": "https://eternallifehospice.com/hospice-simi-valley-ca",
-    "title": "Hospice Care in Simi Valley, CA | Eternal Life Hospice",
-    "metaDescription": "Eternal Life Hospice provides Medicare-certified hospice care in Simi Valley, CA — Ventura County · Conejo Valley Border, Ventura County. Physician-supported comfort care at home or in a care facility. Call 805.953.7273.",
-    "h1": "Hospice Care in Simi Valley, California",
+    "title": "Hospice Care and Caregiver Handoffs in Simi Valley, CA | Eternal Life Hospice",
+    "metaDescription": "Simi Valley hospice guidance: clinical evaluation, physician records, care-plan services and family handoffs in Ventura County. Eternal Life Hospice, 805.953.7273.",
+    "searchMetaDescription": "Simi Valley hospice guidance: clinical evaluation, physician records, care-plan services and family handoffs in Ventura County. Eternal Life Hospice, 805.953.7273.",
+    "h1": "Hospice Care in Simi Valley: Coordinating the Care Handoff",
     "heroEyebrow": "Serving Simi Valley · Ventura County · Conejo Valley Border",
-    "atAGlanceSummary": "Eternal Life Hospice serves Simi Valley families with Medicare-certified, physician-supported hospice care — at home, in assisted-living communities and in skilled-nursing facilities. Positioned between Ventura County and the San Fernando Valley, our team is well-placed to serve Simi Valley and can begin a clinical evaluation the same day a referral is received.",
-    "localIntroduction": "Simi Valley is one of Ventura County's largest cities — a largely residential community with established neighborhoods, a significant senior population and a range of assisted-living and skilled-nursing facilities. Eternal Life Hospice serves families throughout Simi Valley with the same quality of care available across our broader service area: physician-supported hospice, 24/7 nurse access, aide services, social work, chaplaincy and medication management.",
-    "localNearbyParagraph": "We also serve Moorpark, Thousand Oaks, Chatsworth, West Hills and the Conejo Valley, providing seamless care across the Ventura–Los Angeles county border.",
+    "heroIntroduction": "Simi Valley is in southeast Ventura County, adjacent to the San Fernando Valley. When an illness has involved clinicians on both sides of that regional divide, families may wonder how records and care conversations come together. Eternal Life Hospice can discuss a clinical evaluation for an eligible patient and, with appropriate permission, help coordinate information relevant to hospice planning.",
+    "atAGlanceSummary": "In Simi Valley, hospice care may be provided in a private home or another residential setting when the patient is eligible. Evaluation, services and caregiver support are individualized and coordinated with the patient's authorized care contacts.",
+    "localIntroductionHeading": "Bringing the care history together in Simi Valley",
+    "localIntroduction": "A patient in Simi Valley may have medical information held by more than one physician or care setting, including providers serving Ventura County or the San Fernando Valley. Families do not need to reconstruct every detail from memory before asking about hospice. With the patient's permission or other appropriate authorization, the team can request or review relevant clinical records as part of understanding the patient's condition and planning an evaluation. Availability of records and coordination with outside clinicians depend on the patient's circumstances and the necessary authorizations.\n\nA practical first conversation can identify the patient's current clinician, recent changes, medications, symptoms and the people who help with daily care. If a patient has recently moved between a hospital, facility and home, a brief timeline of those transitions can help clarify questions. Hospice is a separate clinical service, not a continuation of every prior treatment, and the evaluation explains whether hospice eligibility criteria are met and what comfort-focused care would mean for this person.",
+    "localNearbyParagraph": "Families comparing care across this regional corridor can also read about hospice in <a href=\"hospice-moorpark-ca\">Moorpark</a> and <a href=\"hospice-thousand-oaks-ca\">Thousand Oaks</a>, or view the <a href=\"hospice-ventura-and-los-angeles-county-ca\">Ventura and Los Angeles County coverage area</a>.",
+    "serviceOverviewHtml": "Hospice care is physician-directed, comfort-focused support for a patient who meets clinical eligibility requirements and chooses hospice. The interdisciplinary team creates an individualized plan that may include nursing, social work, chaplaincy, hospice aide support, medications and equipment related to the hospice diagnosis, and education for caregivers. What is included depends on the patient's assessed needs and plan. <a href=\"/hospice-care\">Learn about hospice care</a> and <a href=\"/resources/pain-symptom-management\">symptom management</a>.",
+    "serviceResourcesHtml": "See <a href=\"/services\">Eternal Life Hospice's services</a> for an overview. For families organizing a handoff between clinicians or care settings, <a href=\"/resources/first-48-hours\">the first 48 hours guide</a> and <a href=\"/resources/medicare-hospice-benefit\">Medicare hospice benefit explainer</a> offer useful preparation.",
+    "beginningCareHeading": "Beginning hospice care: records, evaluation and a shared plan",
+    "beginningCareHtml": "<p>For a Simi Valley family, a useful preparation step is to gather what is readily available: the names of treating clinicians, a medication list, recent discharge information and the patient's own priorities. Do not delay a conversation because one document is missing. The team can explain which information would be helpful and, when authorized, how relevant records may be requested. A referral or record review does not decide eligibility on its own.</p>\n  <p>A clinician evaluates the patient's condition, symptoms, goals and current setting. If the patient qualifies and elects hospice, the team works with the patient, representative and relevant care contacts to form an individualized plan. The conversation should clarify how to report a change, which clinician remains involved, what services are planned and how medications or equipment related to the terminal illness are addressed. For a transfer from a facility to home, ask which responsibilities will shift and which daily supports will remain with family or other caregivers.</p>\n  <p>Hospice aide visits may support personal care when the assessment and plan call for them; they are not continuous caregiving. Family members can ask the team to make responsibilities explicit so no one assumes that hospice replaces all hands-on help. Review <a href=\"/resources/first-48-hours\">what to expect in the first 48 hours</a> and use <a href=\"/refer#referral-form\">the professional referral form</a> when a clinician is initiating the referral.</p>",
+    "careSettings": [
+      "<b>Private residence</b> &mdash; the hospice team visits according to the individualized care plan",
+      "<b>Assisted-living community</b> &mdash; the hospice plan is coordinated with existing residential support",
+      "<b>Board-and-care home</b> &mdash; roles are discussed with the patient and authorized contacts",
+      "<b>Skilled-nursing facility</b> &mdash; hospice may supplement facility care when clinically appropriate"
+    ],
+    "coverageHeading": "Coverage and the plan of care in Simi Valley",
+    "coverageHtml": "<p>Medicare hospice coverage depends on clinical eligibility, the terminal diagnosis, the patient's election and the individualized plan of care. Most Medicare-covered hospice services have little to no out-of-pocket cost, though limited copayments may apply in specific circumstances. When a patient has clinicians in different communities, ask how authorization, records and communication will be handled; a care coordination step is not a guarantee that an outside provider participates. <a href=\"/resources/medicare-hospice-benefit\">Read about the Medicare hospice benefit</a>.</p>",
+    "resourcesHeading": "A family handoff checklist",
+    "resourcesHtml": "<p>Write down the patient's current location, preferred contact person, treating clinicians, questions about symptoms and any upcoming transition. Ask who will communicate with which clinician, what is still pending, and whom to contact after hours. If several family members share responsibilities, agree on one contact for updates when possible and clarify the patient's wishes about who may receive information. The <a href=\"/family-guide\">Family Guide</a> helps families compare providers; <a href=\"/resources/how-to-choose-a-hospice\">questions for choosing a hospice</a> can support that discussion. The <a href=\"hospice-ventura-and-los-angeles-county-ca\">county coverage hub</a> lists the broader service area.</p>",
+    "providerContext": "A Simi Valley physician or discharge professional can send relevant clinical information through <a href=\"/refer#referral-form\">the referral form</a>. With appropriate authorization, the hospice team can review available records and communicate with the referring clinician about evaluation and next steps.",
+    "familyContext": "Families in Simi Valley can ask us to help make the handoff understandable: what the evaluation covers, which records may be needed, which supports the plan includes and what remains a family or facility responsibility.",
+    "displayFaqItems": [
+      {
+        "q": "Can Eternal Life Hospice request records from a Simi Valley patient's different doctors?",
+        "a": "With the patient's permission or another appropriate authorization, the team can seek or review relevant records as part of an evaluation and care planning. Which records are available and how quickly they can be obtained depends on the providers and the patient's circumstances."
+      },
+      {
+        "q": "What should caregivers clarify when a Simi Valley patient moves from a facility back home?",
+        "a": "Ask who handles each daily task, which hospice services are included in the individualized plan, how changes or symptoms should be reported, and what support family or other caregivers must continue to provide. Hospice aide visits are plan-dependent and are not continuous caregiving."
+      },
+      {
+        "q": "What if a Simi Valley family is still gathering records for a hospice discussion?",
+        "a": "Call with the information already available, such as the patient's current clinician and recent care changes. The team can explain what clinical details are needed for an evaluation and, with appropriate authorization, how relevant records may be requested."
+      },
+      {
+        "q": "Can Eternal Life Hospice communicate with a Simi Valley patient's doctor in another region?",
+        "a": "With the patient's permission or appropriate authorization, the team can communicate with the clinician when relevant to evaluation and care planning. Share the clinician's name and contact details; communication depends on the patient's authorization and the provider's response."
+      }
+    ],
     "nearbyCityPages": [
       {
         "slug": "hospice-moorpark-ca",
@@ -7350,31 +7416,23 @@
     ],
     "faqItems": [
       {
-        "q": "Does Eternal Life Hospice serve Simi Valley?",
-        "a": "Yes. Simi Valley is within our active Ventura County service area. We provide hospice care at private residences, assisted-living communities, board-and-care homes and skilled-nursing facilities throughout the city."
+        "q": "Can Eternal Life Hospice request records from a Simi Valley patient's different doctors?",
+        "a": "With the patient's permission or another appropriate authorization, the team can seek or review relevant records as part of an evaluation and care planning. Which records are available and how quickly they can be obtained depends on the providers and the patient's circumstances."
       },
       {
-        "q": "Does Medicare cover hospice in Simi Valley?",
-        "a": "Most Medicare-covered hospice services have little to no out-of-pocket cost for eligible patients. Limited copayments may apply in specific circumstances. Coverage depends on eligibility, terminal diagnosis and the individualized plan of care."
+        "q": "What should caregivers clarify when a Simi Valley patient moves from a facility back home?",
+        "a": "Ask who handles each daily task, which hospice services are included in the individualized plan, how changes or symptoms should be reported, and what support family or other caregivers must continue to provide. Hospice aide visits are plan-dependent and are not continuous caregiving."
       },
       {
-        "q": "Can hospice care be provided at home in Simi Valley?",
-        "a": "Yes. Home is the most common care setting. Our nurses, aides, social workers and chaplains visit the patient at their residence. Medical equipment and medications related to the hospice diagnosis are coordinated and delivered as needed."
+        "q": "What if a Simi Valley family is still gathering records for a hospice discussion?",
+        "a": "Call with the information already available, such as the patient's current clinician and recent care changes. The team can explain what clinical details are needed for an evaluation and, with appropriate authorization, how relevant records may be requested."
       },
       {
-        "q": "How quickly can hospice services begin in Simi Valley?",
-        "a": "Same-day evaluation may be available when clinically appropriate and operationally available. After a referral or intake call, a nurse will schedule an in-person visit to complete the clinical assessment and enrollment paperwork."
-      },
-      {
-        "q": "Who qualifies for hospice care in Simi Valley?",
-        "a": "Hospice is appropriate when a physician certifies that a patient has a terminal illness with a prognosis of six months or less if the illness follows its natural course, and the patient and family choose comfort-focused care over curative treatment."
-      },
-      {
-        "q": "Does Eternal Life Hospice serve all neighborhoods in Simi Valley?",
-        "a": "Yes. Our team serves all neighborhoods in Simi Valley, including Berylwood, Brandeis, Madera, Mountain Gate, Oakridge and the surrounding residential communities throughout the city."
+        "q": "Can Eternal Life Hospice communicate with a Simi Valley patient's doctor in another region?",
+        "a": "With the patient's permission or appropriate authorization, the team can communicate with the clinician when relevant to evaluation and care planning. Share the clinician's name and contact details; communication depends on the patient's authorization and the provider's response."
       }
     ],
-    "lastMaterialUpdate": "2026-08-06",
+    "lastMaterialUpdate": "2026-10-01",
     "publishStatus": "published"
   },
   {
@@ -8067,16 +8125,17 @@
     "latitude": 34.1705,
     "longitude": -118.8376,
     "canonicalUrl": "https://eternallifehospice.com/hospice-thousand-oaks-ca",
-    "title": "Home Hospice Care in Thousand Oaks, CA | Eternal Life Hospice",
-    "searchMetaDescription": "Medicare-certified home hospice care in Thousand Oaks and the Conejo Valley. Physician-supported care, 24/7 nursing and family guidance. Call 805.953.7273.",
-    "metaDescription": "Eternal Life Hospice provides Medicare-certified hospice care in Thousand Oaks, CA — near our Westlake Village headquarters, serving the Conejo Valley. Physician-supported comfort care at home or in a facility. Call 805.953.7273.",
-    "h1": "Hospice Care in Thousand Oaks, California",
+    "title": "Hospice Care in Thousand Oaks, CA | Home and Caregiver Support",
+    "searchMetaDescription": "Thousand Oaks hospice care guidance: understand the care plan, aide support and everyday caregiving responsibilities. Eternal Life Hospice, 805.953.7273.",
+    "metaDescription": "Thousand Oaks hospice care guidance: understand the care plan, aide support and everyday caregiving responsibilities. Eternal Life Hospice, 805.953.7273.",
+    "h1": "Hospice Care in Thousand Oaks: Planning Support at Home",
     "heroEyebrow": "Serving Thousand Oaks · Conejo Valley · Ventura County",
     "analyticsVersion": "20260727h",
-    "heroIntroduction": "Eternal Life Hospice provides Medicare-certified, physician-supported home hospice care for eligible patients and families in Thousand Oaks and throughout the Conejo Valley. Our nurses, aides, social workers and chaplains support patients wherever they live—including private homes, assisted-living communities, residential-care settings and skilled-nursing facilities. Families can call for guidance at any time, and same-day admission may be available when clinically appropriate.",
-    "atAGlanceSummary": "Eternal Life Hospice serves Thousand Oaks families with Medicare-certified, physician-supported hospice care — at home, in assisted-living communities and in skilled-nursing facilities throughout the Conejo Valley. Our headquarters in Westlake Village places us at the heart of this community and allows us to begin a clinical evaluation the same day a referral is received.",
-    "localIntroduction": "Thousand Oaks is the largest city in Ventura County and the commercial and cultural center of the Conejo Valley. With a highly educated population, extensive senior living infrastructure and a community that values informed, quality care, families in Thousand Oaks often begin their hospice search with detailed questions. Eternal Life Hospice welcomes that — our clinical team provides clear answers and transparent care planning from the very first conversation.",
-    "localNearbyParagraph": "We serve Newbury Park, Moorpark, Westlake Village, Camarillo and the broader Conejo Valley, giving Thousand Oaks families a care team rooted in the region.",
+    "heroIntroduction": "In Thousand Oaks and the Conejo Valley, families often need to distinguish hospice visits from the everyday help a person needs at home. Eternal Life Hospice provides physician-supported care for patients who meet clinical eligibility requirements, with services organized around an individual care plan and the family's questions.",
+    "atAGlanceSummary": "Thousand Oaks is in Ventura County, next to the Santa Monica Mountains. Hospice may support an eligible patient at home or in a residential care setting, while family and other caregivers continue to provide day-to-day support outside the plan.",
+    "localIntroductionHeading": "Hospice care in the Conejo Valley: plan the support, not assumptions",
+    "localIntroduction": "A hospice plan in Thousand Oaks begins with the patient's condition, goals and day-to-day needs—not a standard schedule copied from another household. The clinical team evaluates the patient and discusses what comfort-focused care could involve. Families can describe the routines that have become difficult: bathing, repositioning, meals, medication questions, symptom changes or arranging help when the usual caregiver is away. The assessment helps identify which hospice services may be appropriate and which needs require another source of support.\n\nThis distinction matters because hospice aide assistance is care-plan dependent. Aide visits may help with specific personal-care tasks when indicated, but they are not continuous caregiving, supervision or a replacement for family, private-duty or facility staff. A family should not assume that every daily activity will be covered by hospice. Ask for the expected visit pattern and responsibilities to be explained clearly, and revisit the discussion if the patient's needs change. Eternal Life Hospice serves patients in Thousand Oaks and across the Conejo Valley, including at home and in residential care settings.",
+    "localNearbyParagraph": "Explore related service-area pages for <a href=\"hospice-newbury-park-ca\">Newbury Park</a> and <a href=\"hospice-westlake-village-ca\">Westlake Village</a>, or see our <a href=\"hospice-ventura-and-los-angeles-county-ca\">Ventura and Los Angeles County coverage hub</a>.",
     "nearbyCityPages": [
       {
         "slug": "hospice-newbury-park-ca",
@@ -8095,48 +8154,59 @@
         "city": "Camarillo"
       }
     ],
-    "serviceOverviewHtml": "Hospice care is comfort-focused care for an eligible patient with a terminal illness, provided under physician direction after a clinical evaluation. Eternal Life Hospice coordinates nursing, aide support, social work, chaplaincy, medications, equipment and family education around one individualized plan of care. Learn more about <a href=\"/resources/pain-symptom-management\">pain and symptom management</a> and <a href=\"/blog/the-caregiver-who-needs-care\">support for family caregivers</a>.",
+    "serviceOverviewHtml": "Hospice is a physician-directed benefit for a patient who meets eligibility requirements and elects comfort-focused care. Eternal Life Hospice's interdisciplinary team may include nursing, social work, chaplaincy and hospice aide support, along with medications and equipment related to the hospice diagnosis and caregiver education, as appropriate to the plan. These services address needs identified for the patient; they do not guarantee round-the-clock bedside care. Explore <a href=\"/resources/pain-symptom-management\">pain and symptom management</a> and <a href=\"/services\">Eternal Life Hospice services</a>.",
+    "serviceResourcesHtml": "Explore <a href=\"/services\">Eternal Life Hospice services</a> for an overview of the team's support. Families in Thousand Oaks can also read <a href=\"/resources/when-is-it-time\">when hospice may be appropriate</a> and <a href=\"/resources/first-48-hours\">what to expect at the start of care</a>.",
+    "beginningCareHeading": "Beginning hospice care: plan the day and needed support",
+    "beginningCareHtml": "<p>Before an evaluation, a Thousand Oaks family can write down the patient's usual day and note what has changed. Which tasks does the patient manage independently? When is hands-on help needed? Is one person providing most of the support, and what happens when that person needs rest or leaves the home? These questions help separate clinical concerns that hospice may address from practical caregiver coverage that must be arranged separately.</p>\n  <p>During the clinical evaluation, a clinician reviews the patient's condition, symptoms, goals and setting, then discusses hospice eligibility and possible next steps. If hospice is elected, services are organized under a plan of care and the team explains how to reach them with questions. Nursing visits, aide visits, social work, chaplaincy, medications and equipment are provided according to assessed need and the plan—not as an identical package for every household. Ask which caregiver tasks may be supported, which remain with family or another caregiver, and how the plan can be revisited if needs change.</p>\n  <p>If relatives live in different places, agree who will receive updates and who is available for day-to-day help. The hospice team can educate family caregivers, but education does not turn a visit-based service into ongoing supervision. Read <a href=\"/resources/first-48-hours\">what may happen in the first 48 hours</a>, explore <a href=\"/family-guide\">the Family Guide</a>, or have a clinician start a review through <a href=\"/refer#referral-form\">the referral form</a>.</p>",
+    "careSettings": [
+      "<b>Private home</b> &mdash; visits and support follow the patient's assessed needs and care plan",
+      "<b>Assisted living</b> &mdash; hospice coordinates with the resident and existing care staff",
+      "<b>Residential care home</b> &mdash; hospice support is distinct from daily staffing responsibilities",
+      "<b>Skilled-nursing facility</b> &mdash; hospice may complement facility services when appropriate"
+    ],
+    "coverageHeading": "Medicare hospice coverage and what is in the plan",
+    "coverageHtml": "<p>For eligible Thousand Oaks patients, most Medicare-covered hospice services have little to no out-of-pocket cost; limited copayments may apply in specific circumstances. Coverage and services depend on eligibility, diagnosis and the individualized plan of care. Families can ask whether medications, equipment or a proposed service relate to the hospice diagnosis and are part of that plan. Hospice does not automatically cover every integrative therapy; when Eternal Life Hospice offers an included therapy, Eternal pays for it at no additional expense to the family. <a href=\"/resources/medicare-hospice-benefit\">See how the Medicare hospice benefit works</a>.</p>",
+    "resourcesHeading": "A practical family guide to everyday support",
+    "resourcesHtml": "<p>Make a simple list of daily activities, who currently helps, which tasks feel unsafe or exhausting, and what backup is available. Use it when speaking with hospice and when organizing support beyond hospice visits. Ask how the plan distinguishes symptom management and personal-care assistance from meals, household tasks, transportation or continuous supervision. The answer depends on the patient's situation and the service being discussed. Read <a href=\"/resources/how-to-choose-a-hospice\">how to compare hospice providers</a>, then use the <a href=\"hospice-ventura-and-los-angeles-county-ca\">county coverage hub</a> to review the wider service area.</p>",
+    "providerContext": "A physician or discharge professional referring a Thousand Oaks patient can summarize recent changes, functional concerns and caregiver capacity through <a href=\"/refer#referral-form\">the professional referral form</a>. The hospice clinician evaluates eligibility and discusses a plan with the patient or authorized representative.",
+    "familyContext": "Families in Thousand Oaks can ask us to explain what a hospice visit can support, what remains a daily caregiver responsibility, and how care-plan decisions respond to the patient's assessed needs.",
     "displayFaqItems": [
       {
-        "q": "Can hospice care be provided at home in Thousand Oaks?",
-        "a": "Yes. Hospice care can be provided in a private residence or another place the patient calls home, including assisted-living communities, residential-care homes, memory-care settings and skilled-nursing facilities. The hospice team coordinates nursing, aide support, social work, chaplaincy, equipment and medications related to the hospice diagnosis according to the individualized plan of care."
+        "q": "Will a hospice aide stay with my family member all day?",
+        "a": "No. Hospice aide support is based on assessed need and the individualized plan of care. It may include personal-care assistance during visits, but it is not continuous caregiving or around-the-clock supervision. Ask the team which help is appropriate and what other caregiver coverage may be needed."
       },
       {
-        "q": "What services does a hospice agency provide in Thousand Oaks?",
-        "a": "For an eligible patient, hospice may include physician-directed nursing care, hospice aide visits, social work, chaplaincy, medications and equipment related to the hospice diagnosis, symptom support and education for family caregivers. Services are based on the patient’s clinical needs and individualized plan of care."
+        "q": "Which everyday tasks should families discuss when considering hospice at home?",
+        "a": "Describe the patient's routine and the tasks that have become difficult during an evaluation. The team can explain which services may be included in the individualized plan and which daily needs remain with family, facility staff or another caregiver."
       },
       {
-        "q": "How quickly can hospice care begin in Thousand Oaks?",
-        "a": "Same-day evaluation may be available when clinically appropriate and operationally available. After a referral or intake call, a nurse schedules an assessment and reviews eligibility, care goals and enrollment requirements with the patient and family."
+        "q": "Can relatives elsewhere in the Conejo Valley join a Thousand Oaks care-planning discussion?",
+        "a": "With the patient's consent or appropriate authorization, relatives the patient wants involved may take part. Tell the team whom to include and ask what ways are available to involve them; care visits and services remain arranged where the patient lives."
+      },
+      {
+        "q": "Does Medicare hospice automatically pay for every integrative therapy?",
+        "a": "No. Hospice coverage depends on eligibility and the individualized plan of care; an integrative therapy is not automatically covered. Ask whether a specific service is included. When Eternal Life Hospice offers an included therapy, Eternal pays for it at no additional expense to the family."
       }
     ],
     "faqItems": [
       {
-        "q": "Does Eternal Life Hospice serve Thousand Oaks?",
-        "a": "Yes. Thousand Oaks is near our Westlake Village headquarters and is one of our most active service areas. We provide hospice care at private residences, assisted-living communities and skilled-nursing facilities throughout the city."
+        "q": "Will a hospice aide stay with my family member all day?",
+        "a": "No. Hospice aide support is based on assessed need and the individualized plan of care. It may include personal-care assistance during visits, but it is not continuous caregiving or around-the-clock supervision. Ask the team which help is appropriate and what other caregiver coverage may be needed."
       },
       {
-        "q": "Does Medicare cover hospice in Thousand Oaks?",
-        "a": "Most Medicare-covered hospice services have little to no out-of-pocket cost for eligible patients. Limited copayments may apply in specific circumstances. Coverage depends on eligibility, terminal diagnosis and the individualized plan of care."
+        "q": "Which everyday tasks should families discuss when considering hospice at home?",
+        "a": "Describe the patient's routine and the tasks that have become difficult during an evaluation. The team can explain which services may be included in the individualized plan and which daily needs remain with family, facility staff or another caregiver."
       },
       {
-        "q": "Can hospice care be provided at home in Thousand Oaks?",
-        "a": "Yes. Home is the most common care setting. Our nurses, aides, social workers and chaplains visit the patient at their residence. Medical equipment and medications related to the hospice diagnosis are coordinated and delivered as needed."
+        "q": "Can relatives elsewhere in the Conejo Valley join a Thousand Oaks care-planning discussion?",
+        "a": "With the patient's consent or appropriate authorization, relatives the patient wants involved may take part. Tell the team whom to include and ask what ways are available to involve them; care visits and services remain arranged where the patient lives."
       },
       {
-        "q": "How quickly can hospice services begin in Thousand Oaks?",
-        "a": "Same-day evaluation may be available when clinically appropriate and operationally available. After a referral or intake call, a nurse will schedule an in-person visit to complete the clinical assessment and enrollment paperwork."
-      },
-      {
-        "q": "Who qualifies for hospice care in Thousand Oaks?",
-        "a": "Hospice is appropriate when a physician certifies that a patient has a terminal illness with a prognosis of six months or less if the illness follows its natural course, and the patient and family choose comfort-focused care over curative treatment."
-      },
-      {
-        "q": "Does Eternal Life Hospice coordinate with Los Robles Regional Medical Center or other Thousand Oaks hospitals?",
-        "a": "Yes. Our team coordinates with hospital social workers and discharge planners at local hospitals to ensure a smooth transition from an inpatient setting to home-based hospice care. Families can expect the same clinical team to follow through from admission to ongoing care."
+        "q": "Does Medicare hospice automatically pay for every integrative therapy?",
+        "a": "No. Hospice coverage depends on eligibility and the individualized plan of care; an integrative therapy is not automatically covered. Ask whether a specific service is included. When Eternal Life Hospice offers an included therapy, Eternal pays for it at no additional expense to the family."
       }
     ],
-    "lastMaterialUpdate": "2026-08-06",
+    "lastMaterialUpdate": "2026-10-01",
     "publishStatus": "published"
   },
   {
@@ -8519,13 +8589,50 @@
     "latitude": 34.2805,
     "longitude": -119.2945,
     "canonicalUrl": "https://eternallifehospice.com/hospice-ventura-ca",
-    "title": "Hospice Care in Ventura, CA | Eternal Life Hospice",
-    "metaDescription": "Eternal Life Hospice provides Medicare-certified hospice care in Ventura, CA — Ventura County Seat · Ventura Coast, Ventura County. Physician-supported comfort care at home or in a care facility. Call 805.953.7273.",
-    "h1": "Hospice Care in Ventura, California",
+    "title": "Ventura Hospice Care: Home or Facility Planning | Eternal Life Hospice",
+    "metaDescription": "Ventura hospice care guidance for families deciding about home or a residential facility, including discharge questions and care responsibilities.",
+    "searchMetaDescription": "Ventura hospice care guidance for families deciding about home or a residential facility, including discharge questions and care responsibilities.",
+    "h1": "Hospice Care in Ventura: Choose the Care Setting Together",
     "heroEyebrow": "Serving Ventura · Ventura County Seat · Ventura Coast",
-    "atAGlanceSummary": "Eternal Life Hospice serves Ventura families with Medicare-certified, physician-supported hospice care — at home, in assisted-living communities and in skilled-nursing facilities throughout the city and surrounding Ventura County. Our team can begin a clinical evaluation the same day a referral is received.",
-    "localIntroduction": "Ventura is the county seat of Ventura County — a vibrant coastal city with a diverse population, a historic downtown and a broad range of senior living and care settings. From beachside residences near the Promenade to assisted-living communities on the east side of the city, Eternal Life Hospice provides coordinated hospice care across all of Ventura's neighborhoods, with an interdisciplinary team that includes physicians, nurses, social workers, chaplains and certified aides.",
-    "localNearbyParagraph": "We serve Oxnard, Camarillo, Santa Paula, Ojai and Port Hueneme, making Eternal Life Hospice the hospice team for the entire central Ventura County coastal corridor.",
+    "heroIntroduction": "In Ventura, deciding where care will happen is often part of a family's hospice conversation—especially when someone may leave a hospital or another care setting. Eternal Life Hospice can discuss a clinical evaluation for an eligible patient and help the patient and family understand how a plan may work at home or in a residential facility.",
+    "atAGlanceSummary": "Ventura is a coastal city and the Ventura County seat. Hospice may be delivered at home or in an appropriate residential setting; the patient, family and care professionals should clarify each setting's responsibilities before a transition.",
+    "localIntroductionHeading": "Ventura hospice planning: home, assisted living or skilled nursing",
+    "localIntroduction": "Ventura families considering hospice may be weighing more than one question at once: whether the patient meets hospice eligibility requirements, where care can best be provided, and who will handle everyday needs in that setting. If a discharge is being discussed, it helps to raise those questions before a move is finalized. Hospice does not require every eligible patient to live at home, and a residential placement is not automatically required. The right setting depends on the patient's condition, preferences, available support and the responsibilities of the residence or facility.\n\nVentura is both a coastal city and the county seat. For a family coordinating with county-based clinicians or services, the city label alone does not determine what hospice covers or how a patient's plan is arranged. The team can discuss the patient's actual location and needs, coordinate with authorized care contacts, and explain how hospice visits and facility support fit together. The evaluation considers the individual patient's clinical needs and goals.",
+    "localNearbyParagraph": "For nearby service-area information, see <a href=\"hospice-oxnard-ca\">Oxnard</a> and <a href=\"hospice-camarillo-ca\">Camarillo</a>, or browse the <a href=\"hospice-ventura-and-los-angeles-county-ca\">Ventura and Los Angeles County coverage hub</a>.",
+    "serviceOverviewHtml": "Hospice is physician-directed comfort-focused care for a patient who meets clinical eligibility requirements and elects hospice. An individualized plan may include nursing, social work, chaplaincy, aide support, related medications and equipment, and caregiver education. The plan is based on assessed needs and is coordinated with the patient's setting; it does not replace all family or facility responsibilities. Read about <a href=\"/hospice-care\">hospice care</a> and <a href=\"/resources/pain-symptom-management\">symptom management</a>.",
+    "serviceResourcesHtml": "Review <a href=\"/services\">Eternal Life Hospice services</a> to understand the team's role. Families planning a transition can also read <a href=\"/resources/first-48-hours\">what happens at the start of hospice</a> and <a href=\"/resources/medicare-hospice-benefit\">how the Medicare hospice benefit works</a>.",
+    "beginningCareHeading": "Beginning hospice care in Ventura: plan the discharge setting",
+    "beginningCareHtml": "<p>If a Ventura patient may leave a hospital or another setting, ask the treating team and family to discuss the destination, practical support and the patient's wishes before the transition. A home plan should account for who will be present, how the patient moves through the day and which daily tasks need help. A facility plan should identify the facility's own services and how hospice may coordinate with its staff. Neither setting automatically supplies every form of care.</p>\n  <p>A hospice evaluation reviews the patient's clinical condition, symptoms, goals and eligibility. If the patient qualifies and elects hospice, the team develops an individualized plan and explains how to contact the team, what services may be included and how medication or equipment related to the hospice diagnosis is addressed. Ask which responsibilities remain with family, facility personnel or another provider. Hospice aide visits may support personal care when included in the plan; they are not continuous caregiving or a substitute for a facility's staffing obligations.</p>\n  <p>For a transition, clarify who will share records with authorization, which clinician is the contact for discharge questions, and whether the intended setting is ready to support the patient. The hospice team can discuss care coordination, but timing and services depend on clinical assessment and operational arrangements. Review <a href=\"/resources/first-48-hours\">the first 48 hours of hospice</a>, use <a href=\"/family-guide\">the Family Guide</a>, or ask a clinician to start a referral through <a href=\"/refer#referral-form\">the referral form</a>.</p>",
+    "careSettings": [
+      "<b>Private home</b> &mdash; family and other caregivers provide daily help beyond planned hospice visits",
+      "<b>Assisted-living community</b> &mdash; hospice coordinates with the resident and facility staff",
+      "<b>Residential care home</b> &mdash; clarify facility responsibilities alongside the hospice plan",
+      "<b>Skilled-nursing facility</b> &mdash; hospice may be coordinated with the facility's nursing services"
+    ],
+    "coverageHeading": "Hospice coverage and care-setting responsibilities",
+    "coverageHtml": "<p>Medicare hospice coverage depends on eligibility, the terminal diagnosis, the patient's election and the individualized plan of care. Most Medicare-covered hospice services have little to no out-of-pocket cost, though limited copayments may apply in specific circumstances. Ask whether a medication, piece of equipment or service is related to the hospice diagnosis and included in the plan. Hospice does not automatically cover every integrative therapy; if Eternal Life Hospice offers an included therapy, Eternal pays for it at no additional expense to the family. <a href=\"/resources/medicare-hospice-benefit\">Learn about the Medicare hospice benefit</a>.</p>",
+    "resourcesHeading": "Questions to settle before leaving a care setting",
+    "resourcesHtml": "<p>Ask where the patient will receive care, who will be present, what help is needed throughout an ordinary day, how the facility or family will coordinate with hospice, and whom to call if the plan becomes difficult to manage. Confirm the patient's preferences and make sure the responsible contacts understand their roles. For general preparation, read <a href=\"/resources/how-to-choose-a-hospice\">how to choose a hospice</a> and the <a href=\"/family-guide\">Family Guide</a>. The <a href=\"hospice-ventura-and-los-angeles-county-ca\">county coverage hub</a> provides information about surrounding communities.</p>",
+    "providerContext": "A Ventura discharge planner, physician or other professional can share relevant information using <a href=\"/refer#referral-form\">the referral form</a>. With appropriate authorization, the team can discuss the patient's clinical situation, care setting and planning needs with the patient or representative.",
+    "familyContext": "If a Ventura family is weighing home against a residential care setting, we can discuss the evaluation, the patient's goals and the practical responsibilities each setting involves before deciding on next steps.",
+    "displayFaqItems": [
+      {
+        "q": "Should a Ventura family choose home or a facility before a hospice evaluation?",
+        "a": "The family can discuss possible settings during the evaluation. The decision should account for the patient's wishes, clinical needs, available daily support and what a facility can provide. A hospice clinician can explain how services may fit each setting, but does not decide the patient's living arrangement."
+      },
+      {
+        "q": "If a Ventura patient goes home after discharge, does hospice provide all daily caregiving?",
+        "a": "No. Hospice visits and services follow the patient's individualized plan and do not automatically provide continuous caregiving. Family or another caregiver may need to provide daily assistance beyond planned hospice services; ask the team to clarify each responsibility."
+      },
+      {
+        "q": "What should a Ventura family ask an assisted-living or nursing facility about hospice?",
+        "a": "Ask what care the facility continues to provide, how staff and hospice communicate, who handles daily tasks, and which contact should be called about a change. The hospice plan complements care in the setting; it does not replace the facility's own responsibilities."
+      },
+      {
+        "q": "What should a Ventura family confirm about medications, equipment and daily support before discharge?",
+        "a": "Ask which medications and equipment related to the hospice diagnosis are included in the individualized plan, what arrangements are needed before the patient leaves, and who will provide daily help beyond planned hospice visits. Confirm responsibilities with the hospice team and the facility or clinician coordinating the discharge."
+      }
+    ],
     "nearbyCityPages": [
       {
         "slug": "hospice-oxnard-ca",
@@ -8546,31 +8653,23 @@
     ],
     "faqItems": [
       {
-        "q": "Does Eternal Life Hospice serve Ventura?",
-        "a": "Yes. Ventura is a core part of our service area. We provide hospice care at private residences, assisted-living communities, board-and-care homes and skilled-nursing facilities throughout the city."
+        "q": "Should a Ventura family choose home or a facility before a hospice evaluation?",
+        "a": "The family can discuss possible settings during the evaluation. The decision should account for the patient's wishes, clinical needs, available daily support and what a facility can provide. A hospice clinician can explain how services may fit each setting, but does not decide the patient's living arrangement."
       },
       {
-        "q": "Does Medicare cover hospice in Ventura?",
-        "a": "Most Medicare-covered hospice services have little to no out-of-pocket cost for eligible patients. Limited copayments may apply in specific circumstances. Coverage depends on eligibility, terminal diagnosis and the individualized plan of care."
+        "q": "If a Ventura patient goes home after discharge, does hospice provide all daily caregiving?",
+        "a": "No. Hospice visits and services follow the patient's individualized plan and do not automatically provide continuous caregiving. Family or another caregiver may need to provide daily assistance beyond planned hospice services; ask the team to clarify each responsibility."
       },
       {
-        "q": "Can hospice care be provided at home in Ventura?",
-        "a": "Yes. Home is the most common care setting. Our nurses, aides, social workers and chaplains visit the patient at their residence. Medical equipment and medications related to the hospice diagnosis are coordinated and delivered as needed."
+        "q": "What should a Ventura family ask an assisted-living or nursing facility about hospice?",
+        "a": "Ask what care the facility continues to provide, how staff and hospice communicate, who handles daily tasks, and which contact should be called about a change. The hospice plan complements care in the setting; it does not replace the facility's own responsibilities."
       },
       {
-        "q": "How quickly can hospice services begin in Ventura?",
-        "a": "Same-day evaluation may be available when clinically appropriate and operationally available. After a referral or intake call, a nurse will schedule an in-person visit to complete the clinical assessment and enrollment paperwork."
-      },
-      {
-        "q": "Who qualifies for hospice care in Ventura?",
-        "a": "Hospice is appropriate when a physician certifies that a patient has a terminal illness with a prognosis of six months or less if the illness follows its natural course, and the patient and family choose comfort-focused care over curative treatment."
-      },
-      {
-        "q": "Does Eternal Life Hospice coordinate with Community Memorial Hospital in Ventura?",
-        "a": "Yes. Our team coordinates with hospital social workers and discharge planners at Community Memorial Hospital and other area facilities to ensure smooth transitions from hospital to home-based hospice care."
+        "q": "What should a Ventura family confirm about medications, equipment and daily support before discharge?",
+        "a": "Ask which medications and equipment related to the hospice diagnosis are included in the individualized plan, what arrangements are needed before the patient leaves, and who will provide daily help beyond planned hospice visits. Confirm responsibilities with the hospice team and the facility or clinician coordinating the discharge."
       }
     ],
-    "lastMaterialUpdate": "2026-08-06",
+    "lastMaterialUpdate": "2026-10-01",
     "publishStatus": "published"
   },
   {
@@ -8829,13 +8928,46 @@
     "latitude": 34.1428,
     "longitude": -118.8191,
     "canonicalUrl": "https://eternallifehospice.com/hospice-westlake-village-ca",
-    "title": "Hospice Care in Westlake Village, CA | Eternal Life Hospice",
-    "metaDescription": "Eternal Life Hospice is based in Westlake Village, CA — providing Medicare-certified, physician-supported hospice care in the Conejo Valley and across Ventura County. Call 805.953.7273.",
-    "h1": "Hospice Care in Westlake Village, California",
+    "title": "Westlake Village Hospice Care and County Coverage | Eternal Life Hospice",
+    "metaDescription": "Westlake Village hospice care without an office visit: discuss eligibility, home and facility care, and the patient's service-area details. 805.953.7273.",
+    "searchMetaDescription": "Westlake Village hospice care without an office visit: discuss eligibility, home and facility care, and the patient's service-area details. 805.953.7273.",
+    "h1": "Hospice Care in Westlake Village: Care Comes to the Patient",
     "heroEyebrow": "Serving Westlake Village · Conejo Valley · Our Home Community",
-    "atAGlanceSummary": "Eternal Life Hospice is headquartered in Westlake Village at 4165 E Thousand Oaks Blvd, Ste 325B. We serve Westlake Village families with Medicare-certified, physician-supported hospice care — at home, in assisted-living communities and in skilled-nursing facilities. Our proximity means we can begin a clinical evaluation the same day a referral is received.",
-    "localIntroduction": "Westlake Village is home to Eternal Life Hospice's headquarters — which means Westlake Village families have direct, immediate access to our full care team. Located on Thousand Oaks Boulevard in the heart of the Conejo Valley, our office coordinates care across both Ventura and Los Angeles Counties from this central location. Patients in Westlake Village, whether in lakefront residences, master-planned communities or assisted-living facilities, receive care from the same team that manages our broader service area.",
-    "localNearbyParagraph": "We serve Thousand Oaks, Newbury Park, Agoura Hills, Calabasas and Moorpark — and our location makes us the natural choice for families throughout the Conejo Valley.",
+    "heroIntroduction": "Families in Westlake Village can speak with Eternal Life Hospice without bringing the patient to an office. Hospice care is delivered where the patient lives, when clinically appropriate and arranged through an individualized plan. A conversation can also help clarify which county or service-area details matter for the patient's actual residence.",
+    "atAGlanceSummary": "The master-planned Westlake community spans the Los Angeles–Ventura County line. The Los Angeles County portion is the incorporated City of Westlake Village; the Ventura County side was annexed to Thousand Oaks. Hospice evaluation focuses on the patient's location, clinical needs and eligibility—not a need to travel to an office.",
+    "localIntroductionHeading": "Westlake Village, county lines and access to hospice care",
+    "localIntroduction": "The name Westlake Village can describe the broader master-planned community that crosses the Los Angeles and Ventura County line. The Los Angeles County portion is incorporated as the City of Westlake Village; the Ventura County portion was annexed to Thousand Oaks. Because a community name, mailing address and jurisdiction are not necessarily interchangeable, families can tell the intake team where the patient is actually staying and ask which service-area details apply. This practical distinction helps avoid assumptions based only on a postal label.\n\nFamilies do not need to bring a patient to an office to ask about hospice. The initial discussion can happen by phone, and when clinically appropriate an evaluation is arranged with the patient at their residence or care setting. The clinical team considers the patient's condition, goals and needs; the location helps coordinate the visit and any records or facility communication. Eternal Life Hospice serves eligible patients in both Ventura and Los Angeles Counties. A county line does not determine clinical eligibility, and it does not make every service or timing automatic.",
+    "localNearbyParagraph": "For nearby coverage information, see our pages for <a href=\"hospice-thousand-oaks-ca\">Thousand Oaks</a> and <a href=\"hospice-agoura-hills-ca\">Agoura Hills</a>, plus the <a href=\"hospice-ventura-and-los-angeles-county-ca\">full Ventura and Los Angeles County coverage hub</a>.",
+    "serviceOverviewHtml": "Hospice is comfort-focused care for a patient who meets clinical eligibility requirements and chooses hospice, with care directed by physicians and guided by an individualized plan. Services may include nursing, social work, chaplaincy, hospice aide support, related medications and equipment, and education for family caregivers. The patient's residence and assessed needs determine how care is coordinated. <a href=\"/hospice-care\">Learn about hospice care</a> and <a href=\"/resources/pain-symptom-management\">pain and symptom support</a>.",
+    "serviceResourcesHtml": "For an overview of <a href=\"/services\">Eternal Life Hospice services</a>, see the services page. Westlake Village families can also read <a href=\"/resources/when-is-it-time\">when it may be time to consider hospice</a> and <a href=\"/resources/first-48-hours\">what families may discuss at the start of care</a>.",
+    "beginningCareHeading": "Beginning hospice care in Westlake Village without an office visit",
+    "beginningCareHtml": "<p>A family can call with questions before deciding whether to elect hospice. Be ready, if possible, to explain where the patient is currently staying, who the treating clinician is, what changes prompted the call and who the patient wants included. If the address or mailing city appears to differ from the local jurisdiction, share the full patient location with the intake team rather than trying to resolve the boundary alone. The team can clarify what information is relevant to arranging an evaluation.</p>\n  <p>If an evaluation is appropriate, a clinician meets with the patient in the care setting to review the medical situation, symptoms, goals and hospice eligibility. This is a clinical assessment, not a promise of admission. If the patient qualifies and chooses hospice, the team and patient or representative discuss an individualized plan, including how hospice works alongside existing residential or facility support. The family can ask how updates will be shared and which clinician or contact to reach with questions.</p>\n  <p>Patients in an assisted-living or skilled-nursing setting do not need to assume that their residence must change. Hospice may be coordinated in different settings when appropriate, with facility staff continuing their own responsibilities. Aide visits are planned according to assessed need and are not continuous caregiving. Read <a href=\"/resources/first-48-hours\">about the first 48 hours</a>, review <a href=\"/family-guide\">the Family Guide</a>, or have a clinician submit information through <a href=\"/refer#referral-form\">the referral form</a>.</p>",
+    "careSettings": [
+      "<b>Private residence</b> &mdash; care is arranged where the patient lives, subject to evaluation and the plan",
+      "<b>Assisted-living community</b> &mdash; hospice coordinates with the resident and facility care team",
+      "<b>Residential care setting</b> &mdash; facility support and hospice responsibilities are clarified separately",
+      "<b>Skilled-nursing facility</b> &mdash; hospice may be coordinated alongside the facility's services"
+    ],
+    "coverageHeading": "County details and Medicare hospice coverage",
+    "coverageHtml": "<p>County or mailing-address details may help route a conversation, but Medicare hospice coverage depends on the patient's eligibility, terminal diagnosis, election and individualized plan of care. Most Medicare-covered hospice services have little to no out-of-pocket cost; limited copayments may apply in specific circumstances. Confirm how a particular service or medication relates to the plan. Hospice does not automatically cover every integrative therapy; when Eternal Life Hospice offers an included therapy, Eternal pays for it at no additional expense to the family. <a href=\"/resources/medicare-hospice-benefit\">Review Medicare hospice coverage</a>.</p>",
+    "resourcesHeading": "A short checklist for a Westlake Village hospice call",
+    "resourcesHtml": "<p>Have the patient's current location, treating clinician, main questions and preferred contact person ready if available. Ask whether the team needs records or authorization to speak with another clinician, what an evaluation involves, and how care may be coordinated with an assisted-living or nursing facility. No office visit is required simply to start a discussion. For general guidance, use <a href=\"/resources/how-to-choose-a-hospice\">the hospice comparison questions</a> and the <a href=\"/family-guide\">Family Guide</a>. For service-area details, visit our <a href=\"hospice-ventura-and-los-angeles-county-ca\">county coverage hub</a>.</p>",
+    "providerContext": "A Westlake Village physician, facility professional or care coordinator can share a referral through <a href=\"/refer#referral-form\">the referral form</a>. Include the patient's actual location and appropriate authorization for information sharing. The team can review the request, discuss whether a clinical evaluation is appropriate and clarify applicable service-area details.",
+    "familyContext": "You can ask about hospice for a Westlake Village patient by phone. Share where the patient is staying and we can discuss evaluation, care-setting coordination and the next question to resolve—without asking the patient to travel to an office.",
+    "displayFaqItems": [
+      {
+        "q": "Does a Westlake Village patient need to visit the Eternal Life Hospice office to start hospice?",
+        "a": "No. A family can call to discuss the situation, and an evaluation, when appropriate, is arranged with the patient in their current care setting. The team can explain what information is needed before arranging a visit."
+      },
+      {
+        "q": "Why might a Westlake Village address raise a county question?",
+        "a": "The master-planned Westlake community spans the county line. The Los Angeles County portion is the incorporated City of Westlake Village, while the Ventura County side was annexed to Thousand Oaks. Tell the team where the patient is actually staying so service-area details can be clarified."
+      },
+      {
+        "q": "Can hospice be coordinated for a Westlake Village patient in assisted living?",
+        "a": "Hospice may be provided in an assisted-living or other residential setting when appropriate. The hospice plan is coordinated with the patient and facility team, while the facility retains its own care responsibilities."
+      }
+    ],
     "nearbyCityPages": [
       {
         "slug": "hospice-thousand-oaks-ca",
@@ -8856,31 +8988,19 @@
     ],
     "faqItems": [
       {
-        "q": "Is Eternal Life Hospice located in Westlake Village?",
-        "a": "Yes. Our headquarters is at 4165 E Thousand Oaks Blvd, Ste 325B, Westlake Village, CA 91362. This central Conejo Valley location allows us to provide fast, direct service to Westlake Village families and the surrounding communities."
+        "q": "Does a Westlake Village patient need to visit the Eternal Life Hospice office to start hospice?",
+        "a": "No. A family can call to discuss the situation, and an evaluation, when appropriate, is arranged with the patient in their current care setting. The team can explain what information is needed before arranging a visit."
       },
       {
-        "q": "Does Medicare cover hospice in Westlake Village?",
-        "a": "Most Medicare-covered hospice services have little to no out-of-pocket cost for eligible patients. Limited copayments may apply in specific circumstances. Coverage depends on eligibility, terminal diagnosis and the individualized plan of care."
+        "q": "Why might a Westlake Village address raise a county question?",
+        "a": "The master-planned Westlake community spans the county line. The Los Angeles County portion is the incorporated City of Westlake Village, while the Ventura County side was annexed to Thousand Oaks. Tell the team where the patient is actually staying so service-area details can be clarified."
       },
       {
-        "q": "Can hospice care be provided at home in Westlake Village?",
-        "a": "Yes. Home is the most common care setting. Our nurses, aides, social workers and chaplains visit the patient at their residence. Medical equipment and medications related to the hospice diagnosis are coordinated and delivered as needed."
-      },
-      {
-        "q": "How quickly can hospice services begin in Westlake Village?",
-        "a": "Same-day evaluation may be available when clinically appropriate and operationally available. After a referral or intake call, a nurse will schedule an in-person visit to complete the clinical assessment and enrollment paperwork."
-      },
-      {
-        "q": "Who qualifies for hospice care in Westlake Village?",
-        "a": "Hospice is appropriate when a physician certifies that a patient has a terminal illness with a prognosis of six months or less if the illness follows its natural course, and the patient and family choose comfort-focused care over curative treatment."
-      },
-      {
-        "q": "Does Eternal Life Hospice serve the assisted-living communities in Westlake Village?",
-        "a": "Yes. We work within assisted-living communities and residential care facilities in Westlake Village, coordinating with the facility's existing care team to layer hospice services seamlessly onto the resident's current plan of care."
+        "q": "Can hospice be coordinated for a Westlake Village patient in assisted living?",
+        "a": "Hospice may be provided in an assisted-living or other residential setting when appropriate. The hospice plan is coordinated with the patient and facility team, while the facility retains its own care responsibilities."
       }
     ],
-    "lastMaterialUpdate": "2026-08-06",
+    "lastMaterialUpdate": "2026-10-01",
     "publishStatus": "published"
   },
   {

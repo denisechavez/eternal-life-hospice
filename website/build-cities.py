@@ -406,6 +406,7 @@ def render_page(c):
         f"Eternal Life Hospice provides physician-supported hospice care for eligible patients and families in {city} and surrounding communities. Care may be provided in private homes, assisted-living communities, residential-care settings and skilled-nursing facilities throughout {county}."
     )
     intro       = c["localIntroduction"]
+    intro_heading = c.get("localIntroductionHeading", f"Hospice care at home in {city}, California")
     nearby_para = c.get("localNearbyParagraph", "")
     provider_ctx= c.get("providerContext", "")
     family_ctx  = c.get("familyContext", "")
@@ -420,6 +421,31 @@ def render_page(c):
     service_overview = c.get(
         "serviceOverviewHtml",
         "Hospice care is comfort-focused care for an eligible patient with a terminal illness, provided under physician direction after a clinical evaluation. Eternal Life Hospice coordinates nursing, aide support, social work, chaplaincy, medications, equipment and family education around one individualized plan of care."
+    )
+    service_resources_html = c.get(
+        "serviceResourcesHtml",
+        'Read <a href="/resources/when-is-it-time">when it may be time to consider hospice</a>, <a href="/resources/first-48-hours">what happens in the first 48 hours</a>, and <a href="/resources/medicare-hospice-benefit">how the Medicare hospice benefit works</a>. A conversation with our team can clarify the next step without pressure.'
+    )
+    beginning_care_html = c.get("beginningCareHtml", "")
+    beginning_care_section = (
+        f'<section class="sec wrap">\n  <h2>{c["beginningCareHeading"]}</h2>\n  {beginning_care_html}\n</section>'
+        if beginning_care_html else ""
+    )
+    coverage_section = (
+        f'<section class="sec wrap">\n  <h2>{c["coverageHeading"]}</h2>\n  {c["coverageHtml"]}\n</section>'
+        if c.get("coverageHtml") else
+        f'''<section class="sec wrap">
+  <h2>Medicare hospice coverage</h2>
+  <p>Most Medicare-covered hospice services have little to no out-of-pocket cost. Limited copayments may apply in specific circumstances. Coverage depends on eligibility, the terminal diagnosis and the individualized plan of care. <a href="/resources/medicare-hospice-benefit">Learn about Medicare hospice coverage</a>.</p>
+</section>'''
+    )
+    resources_section = (
+        f'<section class="sec wrap">\n  <h2>{c["resourcesHeading"]}</h2>\n  {c["resourcesHtml"]}\n</section>'
+        if c.get("resourcesHtml") else
+        f'''<section class="sec wrap">
+  <h2>Resources for families in {city}</h2>
+  <p>Use the <a href="family-guide">Family Guide</a> to compare providers and prepare for a hospice conversation, or read <a href="/resources/how-to-choose-a-hospice">how to choose a hospice</a>. These resources explain the general process; our team can answer questions about care in {city} and {county}.</p>
+</section>'''
     )
     last_update = c.get("lastMaterialUpdate", "2026-07-22")
     head_scripts = HEAD_SCRIPTS
@@ -484,16 +510,16 @@ def render_page(c):
 </section>
 
 <section class="sec wrap">
-  <h2>Hospice care at home in {city}, California</h2>
+  <h2>{intro_heading}</h2>
 {intro_html(intro)}
   {"<p>" + nearby_para + "</p>" if nearby_para else ""}
   {"<p>" + nearby_html + "</p>" if nearby_html else ""}
 </section>
-
+{beginning_care_section}
 <section class="sec wrap">
   <h2>Hospice services for {city} families</h2>
   <p>{service_overview}</p>
-  <p>Read <a href="/resources/when-is-it-time">when it may be time to consider hospice</a>, <a href="/resources/first-48-hours">what happens in the first 48 hours</a>, and <a href="/resources/medicare-hospice-benefit">how the Medicare hospice benefit works</a>. A conversation with our team can clarify the next step without pressure.</p>
+  <p>{service_resources_html}</p>
 </section>
 
 <section class="sec wrap">
@@ -501,15 +527,9 @@ def render_page(c):
 {care_settings_html(settings)}
 </section>
 
-<section class="sec wrap">
-  <h2>Medicare hospice coverage</h2>
-  <p>Most Medicare-covered hospice services have little to no out-of-pocket cost. Limited copayments may apply in specific circumstances. Coverage depends on eligibility, the terminal diagnosis and the individualized plan of care. <a href="/resources/medicare-hospice-benefit">Learn about Medicare hospice coverage</a>.</p>
-</section>
+{coverage_section}
 
-<section class="sec wrap">
-  <h2>Resources for families in {city}</h2>
-  <p>Use the <a href="family-guide">Family Guide</a> to compare providers and prepare for a hospice conversation, or read <a href="/resources/how-to-choose-a-hospice">how to choose a hospice</a>. These resources explain the general process; our team can answer questions about care in {city} and {county}.</p>
-</section>
+{resources_section}
 
 <section class="sec wrap">
   <h2>For physicians and care professionals in {city}</h2>
