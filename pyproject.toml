@@ -3,4 +3,9 @@ name = "repl-nix-workspace"
 version = "0.1.0"
 description = "Add your description here"
 requires-python = ">=3.11"
-dependencies = ["Pillow>=10.0.0"]
+dependencies = []
+
+# The web server uses only the standard library. Image generation is an
+# internal publication tool and must not block installing the live site.
+[project.optional-dependencies]
+newsletter = ["Pillow>=10.0.0"]

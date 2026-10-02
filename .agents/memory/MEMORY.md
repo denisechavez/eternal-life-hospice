@@ -47,3 +47,5 @@
 - [Growth Intelligence source APIs](growth-intelligence-source-apis.md) — WhatConverts needs explicit dates; Brevo campaign truth is in per-list campaignStats, not zeroed globalStats.
 - [Agent-facing coverage counts](agent-coverage-counts.md) — avoid fixed public city totals without operations sign-off; document live published-page counts, not guaranteed clinical coverage.
 - [City content differentiation](city-content-differentiation.md) — meaningful local guidance, not word swaps; five-city pilot requires approval before any wider rollout.
+- [Publishing tool dependencies](publishing-tool-dependencies.md) — keep internal image-generation libraries optional; working workspace imports do not prove publishing can install them.
+- [Shell callback newlines](shell-callback-newlines.md) — shell stdout may add CRLF; preserve source newlines when copying configuration through callbacks.
