@@ -5,6 +5,7 @@ import io
 import json
 import os
 import re
+import subprocess
 import sys
 import tempfile
 import unittest
@@ -40,6 +41,128 @@ class JournalCampaignTests(unittest.TestCase):
             with patch.object(builder, "PUBLIC", public), patch.object(builder, "OUT", posts), \
                  patch.object(builder, "MANIFEST", Path(directory) / "manifest.json"):
                 yield public, posts
+
+    @contextmanager
+    def metadata_fixture(self):
+        with tempfile.TemporaryDirectory() as directory:
+            public = Path(directory) / "elh-preview"
+            posts = public / "blog"
+            posts.mkdir(parents=True)
+            # No campaign JSON: discovery must cover legacy and staged HTML.
+            schema = {"@type": "BlogPosting", "headline": "Care & connection",
+                      "description": "A calm summary for families."}
+            page = (
+                "<html><head><title>Intentional SEO title | Eternal Life Hospice</title>"
+                "<meta content='A calm summary for families.' name='description'>"
+                "<meta content='A calm summary for families.' property='og:description'>"
+                "<meta content='A calm summary for families.' name='twitter:description'>"
+                "<meta property='og:title' content='Different share title'>"
+                "<meta name='twitter:title' content='Another share title'>"
+                f"<script type='application/ld+json'>{json.dumps(schema)}</script>"
+                "</head><body><section class='hero--photo hero'>"
+                "<h1>Care &amp; <em>connection</em></h1>"
+                "<p>A calm summary<br> for families.</p></section></body></html>"
+            )
+            path = posts / "edited-story.html"
+            path.write_text(page)
+            (public / "blog.html").write_text("Archive must remain untouched")
+            with patch.object(builder, "OUT", posts):
+                yield public, path, page, schema
+
+    def test_metadata_check_allows_seo_titles_and_normalizes_visible_copy(self):
+        with self.metadata_fixture() as (public, path, page, schema):
+            schema["headline"] = " Care &amp; connection "
+            schema["description"] = "A calm\n  summary for families."
+            # Also accept schema type arrays and @graph, ignoring archive nodes.
+            schema["@type"] = ["Article", "BlogPosting"]
+            graph = {"@graph": [schema, {"@type": "Blog", "blogPost": [
+                {"@type": "BlogPosting", "headline": "Unrelated card"}]}]}
+            path.write_text(page.replace(json.dumps({
+                "@type": "BlogPosting", "headline": "Care & connection",
+                "description": "A calm summary for families."}), json.dumps(graph)))
+            before = {p: p.read_bytes() for p in public.rglob("*") if p.is_file()}
+            self.assertEqual(builder.check_metadata(), [])
+            self.assertEqual(before, {p: p.read_bytes() for p in before})
+
+    def test_metadata_check_reports_each_stale_field_without_writing(self):
+        with self.metadata_fixture() as (public, path, page, schema):
+            for field in ("headline", "description", "og:description", "twitter:description",
+                          "meta description"):
+                with self.subTest(field=field):
+                    if field in ("headline", "description"):
+                        changed = dict(schema, **{field: "Earlier editorial copy"})
+                        stale = page.replace(json.dumps(schema), json.dumps(changed))
+                        label = f"BlogPosting[1].{field}"
+                    else:
+                        attribute = {"og:description": "property='og:description'",
+                                     "twitter:description": "name='twitter:description'",
+                                     "meta description": "name='description'"}[field]
+                        stale = page.replace(
+                            f"content='A calm summary for families.' {attribute}",
+                            f"content='Earlier editorial copy' {attribute}")
+                        label = "description" if field == "meta description" else field
+                    path.write_text(stale)
+                    before = {p: p.read_bytes() for p in public.rglob("*") if p.is_file()}
+                    issues = builder.check_metadata()
+                    self.assertEqual(len(issues), 1)
+                    self.assertIn(f"{path}: {label}:", issues[0])
+                    self.assertIn("Earlier editorial copy", issues[0])
+                    self.assertIn("hero=", issues[0])
+                    self.assertEqual(before, {p: p.read_bytes() for p in before})
+
+    def test_metadata_check_detects_missing_duplicate_and_broken_metadata(self):
+        with self.metadata_fixture() as (_, path, page, schema):
+            tag = "<meta content='A calm summary for families.' name='description'>"
+            for broken, label in (
+                (page.replace(tag, ""), "description"),
+                (page.replace(tag, tag * 2), "description"),
+                (page.replace(tag, "<meta name='description' content=' '>"), "description"),
+                (page.replace(json.dumps(schema), "{broken"), "JSON-LD"),
+                (page.replace(json.dumps(schema), json.dumps({"@type": "WebPage"})), "BlogPosting"),
+                (page.replace(json.dumps(schema), json.dumps([schema, schema])), "BlogPosting"),
+                (page.replace(json.dumps(schema), json.dumps(dict(schema, headline=None))), "headline"),
+                (page.replace(json.dumps(schema), json.dumps({"@type": "BlogPosting"})), "description"),
+                (page.replace("<h1>Care &amp; <em>connection</em></h1>", ""), "hero"),
+            ):
+                with self.subTest(label=label, broken=broken):
+                    path.write_text(broken)
+                    issues = builder.check_metadata()
+                    self.assertTrue(issues)
+                    self.assertTrue(any(label in issue for issue in issues))
+                    self.assertTrue(all(str(path) in issue for issue in issues))
+                    self.assertEqual(path.read_text(), broken)
+
+    def test_metadata_check_scans_all_pages_and_continues_after_invalid_hero(self):
+        with self.metadata_fixture() as (_, path, page, schema):
+            legacy = path.with_name("legacy-story.html")
+            staged = path.with_name("staged-story.html")
+            legacy.write_text(page.replace("Care &amp;", "Edited &amp;"))
+            staged.write_text(page.replace("<p>A calm summary<br> for families.</p>", ""))
+            issues = builder.check_metadata()
+            self.assertEqual(len(issues), 2)
+            self.assertTrue(any(str(legacy) in issue and "headline" in issue for issue in issues))
+            self.assertTrue(any(str(staged) in issue and "hero" in issue for issue in issues))
+            for article in path.parent.glob("*.html"):
+                article.unlink()
+            self.assertIn("no Journal article HTML", builder.check_metadata()[0])
+
+    def test_metadata_cli_is_read_only_and_returns_failure_for_stale_copy(self):
+        with self.metadata_fixture() as (public, path, page, _):
+            root = public.parent
+            for name in ("build-journal-campaign.py", "journal_metadata.py"):
+                (root / name).write_bytes((ROOT / name).read_bytes())
+            command = [sys.executable, str(root / "build-journal-campaign.py"), "--check-metadata"]
+            for text, expected_code in ((page, 0), (page.replace("Care &amp;", "Edited &amp;"), 1)):
+                path.write_text(text)
+                before = {p: p.read_bytes() for p in public.rglob("*") if p.is_file()}
+                result = subprocess.run(command, capture_output=True, text=True)
+                self.assertEqual(result.returncode, expected_code, result.stdout + result.stderr)
+                self.assertIn("no files changed", result.stdout)
+                if expected_code:
+                    self.assertIn(str(path), result.stdout)
+                    self.assertIn("BlogPosting[1].headline", result.stdout)
+                self.assertEqual(before, {p: p.read_bytes() for p in before})
+                self.assertFalse((root / "content").exists())
 
     def test_archive_sync_uses_visible_copy_and_preserves_pages(self):
         active = [a for a in self.articles if a.get("publicationStatus") != "archived"]

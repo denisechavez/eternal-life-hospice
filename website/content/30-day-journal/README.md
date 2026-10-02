@@ -32,6 +32,7 @@ After editing an article in `website/elh-preview/blog/`, run:
 
 ```sh
 python3 website/build-journal-campaign.py --archive-only
+python3 website/build-journal-campaign.py --check-metadata
 python3 website/test-journal-campaign.py
 ```
 
@@ -48,3 +49,30 @@ copy stops the sync before the archive is written, rather than silently
 reintroducing stale JSON. Fix the named page and rerun. Archived sources are
 excluded and do not need a page. Verify scheduled visibility in local preview
 using `ELH_JOURNAL_DATE`; syncing does not change publication dates.
+
+## Checking article search and social summaries
+
+Run `python3 website/build-journal-campaign.py --check-metadata` from the
+repository root after editing an article and before publishing. This is a
+**read-only** check: it never rebuilds pages or overwrites editorial text. It
+checks every HTML article in `website/elh-preview/blog/`, including legacy and
+staged stories, without using campaign JSON or filtering by publication date.
+
+The article-level `BlogPosting.headline` must match the visible hero heading.
+`BlogPosting.description`, `<meta name="description">`, `og:description` and
+`twitter:description` must match the visible hero summary. Inline hero formatting,
+HTML entities and whitespace differences are ignored. SEO `<title>`,
+`og:title` and `twitter:title` can intentionally differ and are not checked.
+Missing, empty or duplicate metadata, invalid JSON-LD and missing or ambiguous
+hero copy are also reported with the affected file path and field.
+
+Exit code **0** means the check passed; **1** means editorial review is needed.
+Read the reported metadata and hero values, then manually update the stale
+fields in the named article. A deliberately different summary is still flagged
+for review, not automatically replaced. Rerun the check after making any
+approved changes. The archive sync does not resolve these warnings.
+
+This command does not validate publication dates, Resources Journal picks or
+the generated search index. Run the normal build to refresh the search index
+after metadata edits. Focused checker regressions run with
+`python3 website/test-journal-campaign.py`.

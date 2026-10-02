@@ -17,6 +17,7 @@ from datetime import date, timedelta
 from html.parser import HTMLParser
 from pathlib import Path
 from PIL import Image
+from journal_metadata import article_metadata_issues
 
 ROOT = Path(__file__).resolve().parent
 PUBLIC = ROOT / "elh-preview"
@@ -160,6 +161,21 @@ def published_summary(article):
                          "one non-empty h1 and one non-empty summary paragraph")
     return dict(article, title=parser.values["h1"][0],
                 description=parser.values["p"][0])
+
+
+def check_metadata():
+    """Check every on-disk article, including staged posts, without writing."""
+    paths = sorted(OUT.glob("*.html"))
+    if not paths:
+        return [f"{OUT}: no Journal article HTML files found"]
+    issues = []
+    for path in paths:
+        try:
+            summary = published_summary({"slug": path.stem})
+            issues.extend(article_metadata_issues(path, summary["title"], summary["description"]))
+        except (OSError, ValueError) as error:
+            issues.append(f"{path}: cannot check article metadata: {error}")
+    return issues
 
 
 def render_body(article):
@@ -431,8 +447,17 @@ if __name__ == "__main__":
                         help="Update existing post images and archive cards without replacing article text")
     mode.add_argument("--archive-only", action="store_true",
                       help="Sync archive cards and Blog schema from visible article copy; do not modify articles")
+    mode.add_argument("--check-metadata", action="store_true",
+                      help="Read-only: report article metadata differing from visible hero copy (exit 1 on issues)")
     args = parser.parse_args()
-    if args.archive_only:
+    if args.check_metadata:
+        issues = check_metadata()
+        if issues:
+            print("Journal metadata needs editorial review (no files changed):")
+            print("\n".join(issues))
+            raise SystemExit(1)
+        print("Journal article metadata matches visible hero copy (no files changed)")
+    elif args.archive_only:
         articles = load_articles()
         write_archive([a for a in articles if a.get("publicationStatus") != "archived"], articles)
         print("Synced Journal archive from article pages without modifying articles")
