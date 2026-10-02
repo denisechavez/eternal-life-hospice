@@ -8,6 +8,7 @@ import re
 import sys
 import tempfile
 import unittest
+from contextlib import contextmanager
 from unittest.mock import patch
 from datetime import date, timedelta
 from pathlib import Path
@@ -24,6 +25,131 @@ class JournalCampaignTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.articles = builder.load_articles()
+
+    @contextmanager
+    def archive_fixture(self):
+        with tempfile.TemporaryDirectory() as directory:
+            public = Path(directory) / "elh-preview"
+            posts = public / "blog"
+            posts.mkdir(parents=True)
+            for source in (ROOT / "elh-preview" / "blog").glob("*.html"):
+                (posts / source.name).write_bytes(source.read_bytes())
+            for name in ("blog.html", "sitemap.xml"):
+                (public / name).write_bytes((ROOT / "elh-preview" / name).read_bytes())
+            (public / "assets").symlink_to(ROOT / "elh-preview" / "assets", target_is_directory=True)
+            with patch.object(builder, "PUBLIC", public), patch.object(builder, "OUT", posts), \
+                 patch.object(builder, "MANIFEST", Path(directory) / "manifest.json"):
+                yield public, posts
+
+    def test_archive_sync_uses_visible_copy_and_preserves_pages(self):
+        active = [a for a in self.articles if a.get("publicationStatus") != "archived"]
+        originals = json.dumps(self.articles + builder.LEGACY_POSTS, sort_keys=True)
+        with self.archive_fixture() as (public, posts):
+            expected = {}
+            # Cover an ordinary card, the staged feature and a legacy card.
+            for article in (active[0], active[-1], builder.LEGACY_POSTS[0]):
+                path = posts / f'{article["slug"]}.html'
+                title = 'Edited & "quoted" <title> ' + article["slug"]
+                summary = r'A fresh summary with \1, café & family support.'
+                hero = ("<section data-note='editorial' class='hero--photo hero'>"
+                        f"<h1>Edited &amp; <em>&quot;quoted&quot;</em> &lt;title&gt; {article['slug']}</h1>"
+                        "<p>A fresh <strong>summary</strong> with \\1,<br>café &amp; family support.</p></section>")
+                page = re.sub(r'<section class="hero hero--photo"[\s\S]*?</section>',
+                              lambda _: hero, path.read_text(), count=1)
+                path.write_text(page + "\n<!-- Keep this editorial note -->")
+                expected[article["slug"]] = dict(article, title=title, description=summary)
+            before = {p.name: p.read_bytes() for p in posts.glob("*.html")}
+            sitemap = (public / "sitemap.xml").read_bytes()
+            builder.write_archive(active, self.articles)
+            archive = (public / "blog.html").read_text()
+            entries = next(json.loads(text)["blogPost"] for text in re.findall(
+                r'<script type="application/ld\+json">([\s\S]*?)</script>', archive)
+                if json.loads(text).get("@type") == "Blog")
+            for slug, article in expected.items():
+                with self.subTest(slug=slug):
+                    self.assertIn(builder.card(article), archive)
+                    self.assertIn(builder.esc(builder.card(article, True)), archive)
+                    entry = next(e for e in entries if e["url"] == builder.BASE_URL + slug)
+                    self.assertEqual(entry["headline"], article["title"])
+                    self.assertEqual(entry["description"], article["description"])
+                    self.assertEqual(entry["datePublished"], article["date"])
+            self.assertIn(builder.card(expected[active[-1]["slug"]], True), archive)
+            self.assertNotIn("can-a-family-request-a-hospice-evaluation", archive)
+            # Runtime promotion must use edited copy, without leaking future
+            # stories through either the featured payload or Blog schema.
+            with patch.dict(os.environ, {"ELH_JOURNAL_DATE": active[0]["date"]}):
+                handler = PrettyURLHandler.__new__(PrettyURLHandler)
+                handler.command = "GET"
+                handler.wfile = io.BytesIO()
+                handler.send_response = lambda *_: None
+                handler.send_header = lambda *_: None
+                handler.end_headers = lambda: None
+                self.assertTrue(handler._send_journal_artifact(str(public / "blog.html")))
+                served = handler.wfile.getvalue().decode()
+                self.assertIn(builder.card(expected[active[0]["slug"]], True), served)
+                self.assertNotIn(active[-1]["slug"], served)
+                self.assertIn('"headline": ' + json.dumps(expected[active[0]["slug"]]["title"]), served)
+            builder.write_archive(active, self.articles)
+            self.assertEqual(archive, (public / "blog.html").read_text())
+            self.assertEqual(before, {p.name: p.read_bytes() for p in posts.glob("*.html")})
+            self.assertEqual(sitemap, (public / "sitemap.xml").read_bytes())
+            self.assertFalse(builder.MANIFEST.exists())
+        self.assertEqual(originals, json.dumps(self.articles + builder.LEGACY_POSTS, sort_keys=True))
+
+    def test_archive_sync_rejects_missing_or_ambiguous_copy_without_writing(self):
+        active = [a for a in self.articles if a.get("publicationStatus") != "archived"]
+        with self.archive_fixture() as (public, posts):
+            path = posts / f'{active[0]["slug"]}.html'
+            before = (public / "blog.html").read_bytes()
+            for hero in (
+                "<section class='hero'><h1>Title</h1></section>",
+                "<section class='hero'><h1> </h1><p>Summary</p></section>",
+                "<section class='hero'><h1>Title</h1><p>Summary</p><p>Other</p></section>",
+                "<section class='hero'><h1>Title</h1><h1>Other</h1><p>Summary</p></section>",
+                "<section class='hero'><h1>Title</h1><p>Summary</p></section>" * 2,
+                "<h1>Outside hero</h1><p>Outside hero summary</p>",
+            ):
+                with self.subTest(hero=hero):
+                    path.write_text(hero)
+                    with self.assertRaisesRegex(ValueError, active[0]["slug"]):
+                        builder.write_archive(active, self.articles)
+                    self.assertEqual(before, (public / "blog.html").read_bytes())
+            path.unlink()
+            with self.assertRaises(FileNotFoundError):
+                builder.write_archive(active, self.articles)
+            self.assertEqual(before, (public / "blog.html").read_bytes())
+
+    def test_archive_sync_rejects_broken_schema_without_writing(self):
+        active = [a for a in self.articles if a.get("publicationStatus") != "archived"]
+        with self.archive_fixture() as (public, posts):
+            path = public / "blog.html"
+            source = path.read_text()
+            for replacement in ('"@type": "WebPage"', '"@type": '):
+                broken = re.sub(r'"@type"\s*:\s*"Blog"', lambda _: replacement, source)
+                path.write_text(broken)
+                with self.assertRaisesRegex(ValueError, "valid Blog schema"):
+                    builder.write_archive(active, self.articles)
+                self.assertEqual(broken, path.read_text())
+
+    def test_full_build_and_image_refresh_sync_copy_without_overwriting_edits(self):
+        with self.archive_fixture() as (public, posts):
+            article = self.articles[0]
+            path = posts / f'{article["slug"]}.html'
+            page = re.sub(r'<h1>[\s\S]*?</h1>', '<h1>Published edited heading</h1>',
+                          path.read_text(), count=1)
+            page = re.sub(r'(<h1>Published edited heading</h1>)<p>[\s\S]*?</p>',
+                          r'\1<p>Published edited summary.</p>', page, count=1)
+            path.write_text(page)
+            with patch.object(builder.subprocess, "run"):
+                for sync in (builder.build, builder.refresh_images):
+                    with self.subTest(mode=sync.__name__):
+                        sync(self.articles)
+                        self.assertEqual(page, path.read_text())
+                        archive = (public / "blog.html").read_text()
+                        self.assertIn(builder.card(dict(article, title="Published edited heading",
+                                                       description="Published edited summary.")), archive)
+                        self.assertIn('"headline": "Published edited heading"', archive)
+                        self.assertIn('"description": "Published edited summary."', archive)
 
     def test_all_batches_are_consecutive_and_unique(self):
         self.assertGreater(len(self.articles), 30)
@@ -255,6 +381,9 @@ class JournalCampaignTests(unittest.TestCase):
             (public / "sitemap.xml").write_bytes((ROOT / "elh-preview" / "sitemap.xml").read_bytes())
             existing = posts / "what-happens-during-a-hospice-evaluation.html"
             existing.write_text((ROOT / "elh-preview" / "blog" / existing.name).read_text() + "\nEDITORIAL EDIT")
+            for legacy in builder.LEGACY_POSTS:
+                name = f'{legacy["slug"]}.html'
+                (posts / name).write_bytes((ROOT / "elh-preview" / "blog" / name).read_bytes())
             with patch.object(builder, "PUBLIC", public), patch.object(builder, "OUT", posts), \
                  patch.object(builder, "MANIFEST", Path(directory) / "manifest.json"), \
                  patch.object(builder.subprocess, "run") as search_build:

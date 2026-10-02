@@ -14,6 +14,7 @@ import json
 import re
 import subprocess
 from datetime import date, timedelta
+from html.parser import HTMLParser
 from pathlib import Path
 from PIL import Image
 
@@ -96,6 +97,69 @@ def load_articles():
 
 def esc(value):
     return html.escape(str(value), quote=True)
+
+
+class PublishedSummaryParser(HTMLParser):
+    """Read plain text from the hero only, never metadata or article body."""
+
+    def __init__(self):
+        super().__init__(convert_charrefs=True)
+        self.hero_depth = 0
+        self.hero_count = 0
+        self.field = None
+        self.parts = []
+        self.values = {"h1": [], "p": []}
+        self.invalid = False
+
+    def handle_starttag(self, tag, attrs):
+        if tag == "section":
+            if self.hero_depth:
+                self.hero_depth += 1
+            elif "hero" in dict(attrs).get("class", "").split():
+                self.hero_depth = 1
+                self.hero_count += 1
+        if self.hero_depth and tag in self.values:
+            if self.field:
+                self.invalid = True
+            self.field = tag
+            self.parts = []
+        if self.field and tag == "br":
+            self.parts.append(" ")
+        if self.hero_depth and tag in {"script", "style"}:
+            self.invalid = True
+
+    def handle_data(self, data):
+        if self.field:
+            self.parts.append(data)
+
+    def handle_endtag(self, tag):
+        if self.field == tag:
+            self.values[tag].append(" ".join("".join(self.parts).split()))
+            self.field = None
+        if tag == "section" and self.hero_depth:
+            if self.field:
+                self.invalid = True
+                self.field = None
+            self.hero_depth -= 1
+
+
+def published_summary(article):
+    """Overlay visible copy without changing source JSON or article HTML.
+
+    Missing or ambiguous hero copy is an error, not permission to fall back to
+    possibly stale JSON. Dates, categories and images remain source-controlled.
+    """
+    path = OUT / f'{article["slug"]}.html'
+    parser = PublishedSummaryParser()
+    parser.feed(path.read_text(encoding="utf-8"))
+    parser.close()
+    if parser.invalid or parser.hero_count != 1 or parser.hero_depth or parser.field or any(
+        len(values) != 1 or not values[0] for values in parser.values.values()
+    ):
+        raise ValueError(f"Cannot sync Journal summary: {path} needs one hero with "
+                         "one non-empty h1 and one non-empty summary paragraph")
+    return dict(article, title=parser.values["h1"][0],
+                description=parser.values["p"][0])
 
 
 def render_body(article):
@@ -204,13 +268,17 @@ def card(article, featured=False):
 
 
 def write_archive(active_articles, all_articles):
+    # Resolve every public page before writing anything; never trust stale JSON
+    # once the article exists. This also covers legacy cards and featured payloads.
+    active_articles = [published_summary(a) for a in active_articles]
+    legacy_posts = [published_summary(a) for a in LEGACY_POSTS]
     archive = (PUBLIC / "blog.html").read_text()
     active_articles = sorted(active_articles, key=lambda article: article["date"])
     newest = active_articles[-1]
     archive, replaced = re.subn(
         r'<div class="blog-featured"[^>]*>[\s\S]*?</div>\s*</div>'
         r'|<a class="blog-featured"[^>]*>[\s\S]*?</a>',
-        card(newest, True), archive, count=1,
+        lambda _: card(newest, True), archive, count=1,
     )
     if replaced != 1:
         raise ValueError("Journal archive is missing its featured story")
@@ -218,13 +286,18 @@ def write_archive(active_articles, all_articles):
     # later, the server can promote it and put the old lead back into the grid.
     # The chosen lead's duplicate card is removed from the served response.
     cards = "\n".join(card(a) for a in reversed(active_articles))
-    cards += "\n" + "\n".join(card(a) for a in LEGACY_POSTS)
-    archive = re.sub(r'<div class="rgrid">[\s\S]*?</div>\s*</section>', f'<div class="rgrid">{cards}</div></section>', archive, count=1)
+    cards += "\n" + "\n".join(card(a) for a in legacy_posts)
+    archive, replaced = re.subn(
+        r'<div class="rgrid">[\s\S]*?</div>\s*</section>',
+        lambda _: f'<div class="rgrid">{cards}</div></section>', archive, count=1)
+    if replaced != 1:
+        raise ValueError("Journal archive is missing its story grid")
     # Add campaign BlogPosting records to the existing Blog JSON-LD.
     entries = [{"@type": "BlogPosting", "headline": a["title"], "url": BASE_URL + a["slug"],
                 "datePublished": a["date"], "dateModified": a["date"], "description": a["description"],
                 "author": {"@type": "Organization", "name": "Eternal Life Hospice"}}
-                for a in active_articles + LEGACY_POSTS]
+                for a in active_articles + legacy_posts]
+    blog_count = 0
     def merge_blog_schema(match):
         payload = json.loads(match.group(1))
         existing = payload.get("blogPost", [])
@@ -233,17 +306,21 @@ def write_archive(active_articles, all_articles):
                   if isinstance(item, dict) and item.get("url") not in source_urls}
         by_url.update({item["url"]: item for item in entries})
         payload["blogPost"] = list(by_url.values())
-        return '<script type="application/ld+json">' + json.dumps(payload, ensure_ascii=False) + "</script>"
+        return '<script type="application/ld+json">' + json.dumps(payload, ensure_ascii=False).replace("<", r"\u003c") + "</script>"
     def merge_script(match):
+        nonlocal blog_count
         try:
             payload = json.loads(match.group(1))
         except json.JSONDecodeError:
             return match.group(0)
         if payload.get("@type") != "Blog":
             return match.group(0)
+        blog_count += 1
         return merge_blog_schema(match)
     archive = re.sub(r'<script type="application/ld\+json">([\s\S]*?)</script>',
                      merge_script, archive)
+    if blog_count != 1:
+        raise ValueError("Journal archive needs exactly one valid Blog schema")
     (PUBLIC / "blog.html").write_text(archive, encoding="utf-8")
 
 
@@ -349,10 +426,17 @@ def build(articles):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--images-only", action="store_true",
+    mode = parser.add_mutually_exclusive_group()
+    mode.add_argument("--images-only", action="store_true",
                         help="Update existing post images and archive cards without replacing article text")
+    mode.add_argument("--archive-only", action="store_true",
+                      help="Sync archive cards and Blog schema from visible article copy; do not modify articles")
     args = parser.parse_args()
-    if args.images_only:
+    if args.archive_only:
+        articles = load_articles()
+        write_archive([a for a in articles if a.get("publicationStatus") != "archived"], articles)
+        print("Synced Journal archive from article pages without modifying articles")
+    elif args.images_only:
         refresh_images(load_articles())
         print("Updated Journal images without replacing article text")
     else:

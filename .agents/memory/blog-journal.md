@@ -103,6 +103,18 @@ when every article technically had a different image file.
 publishing; choose article-specific scenes and preserve the calm, credible
 healthcare tone without implying a depicted person is an actual patient.
 
+## Published summary authority
+
+Use the visible hero heading and summary as the authority for archive copy once
+a Journal page exists. Keep scheduling and archival decisions editorial-source
+controlled. Do not infer a summary from the lede or SEO metadata when the hero
+is missing or ambiguous.
+**Why:** Published articles have editorial refinements that intentionally differ
+from the original campaign copy; treating that copy as authoritative reverses
+those refinements on archive cards.
+**How to apply:** Sync archive copy after page edits without rewriting the article.
+Article-level search/social metadata remains a separate editorial responsibility.
+
 ## Compliance guardrails (healthcare)
 - Integrative-therapy posts (e.g. music) must frame everything as **comfort/quality
   of life, never treatment or cure** — include an explicit "not intended to diagnose,
