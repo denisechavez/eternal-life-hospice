@@ -2,7 +2,7 @@
 """Exercise print protection with real renderers and disposable destinations.
 
 Run: python3 scripts/test-referral-print-tools.py
-Requires chromium, qpdf, gs and pdfinfo already available in the workspace.
+Requires chromium, qpdf, gs, pdfinfo, pdftoppm and OpenCV in the workspace.
 Never publishes into the real project; hashes all approved print PDFs and inputs.
 """
 from contextlib import redirect_stdout, redirect_stderr
@@ -37,10 +37,14 @@ class PrintProtectionTests(unittest.TestCase):
         cls.protected += [ROOT / "website/elh-preview/assets/img/qr-refer-cream.webp"]
         cls.protected = [p for p in cls.protected if p.is_file()]
         cls.before = hashes(cls.protected)
+        cls.retired_qr = ROOT / "website/elh-preview/assets/img/qr-refer-cream.png"
+        cls.retired_qr_existed = cls.retired_qr.exists()
 
     def tearDown(self):
         self.assertEqual(self.before, hashes(self.protected),
                          "Approved PDFs and source artwork must remain unchanged")
+        self.assertEqual(self.retired_qr_existed, self.retired_qr.exists(),
+                         "Proof builds must not restore the retired public PNG")
 
     def load(self, tool, root):
         # Import must not copy, render or write anything.
@@ -49,16 +53,6 @@ class PrintProtectionTests(unittest.TestCase):
             module = runpy.run_path(str(ROOT / "scripts" / tool))
         main = module["main"]
         main.__globals__["output_plan"] = functools.partial(output_plan, project_root=root)
-        if tool == TOOLS[0]:
-            # The legacy builder expects a PNG that was removed when public
-            # images moved to WebP. Chromium sniffs image bytes, so supply the
-            # checked-in QR bytes under its historical name ONLY in this fixture.
-            assets = root / "fixture-assets"
-            (assets / "img").mkdir(parents=True)
-            shutil.copytree(ROOT / "website/elh-preview/assets/fonts", assets / "fonts")
-            shutil.copy2(ROOT / "website/elh-preview/assets/img/qr-refer-cream.webp",
-                         assets / "img/qr-refer-cream.png")
-            main.__globals__["ASSETS"] = str(assets)
         return main
 
     def invoke(self, main, args, expected=None):
@@ -78,6 +72,42 @@ class PrintProtectionTests(unittest.TestCase):
         self.assertIn("Pages:           2", info)
         self.assertEqual(info.count("288 x 594 pts"), 2, info)
         subprocess.run(["qpdf", "--check", str(path)], capture_output=True, check=True)
+
+    def verify_qr(self, path):
+        import cv2
+
+        with tempfile.TemporaryDirectory(prefix="elh-qr-check-") as tmp:
+            prefix = Path(tmp) / "page"
+            subprocess.run(["pdftoppm", "-png", "-r", "300", str(path), str(prefix)],
+                           capture_output=True, check=True)
+            pages = sorted(Path(tmp).glob("page-*.png"))
+            self.assertEqual(len(pages), 2)
+            for page in pages:
+                data, _, _ = cv2.QRCodeDetector().detectAndDecode(cv2.imread(str(page)))
+                self.assertEqual(data, "https://eternallifehospice.com/refer",
+                                 f"QR must decode on {path.name}, {page.name}")
+
+    def test_moo_disposable_proofs_use_approved_webp(self):
+        # Use the import-safe builder and its explicit disposable proof destination.
+        with tempfile.TemporaryDirectory(prefix="elh-moo-test-") as tmp:
+            root = Path(tmp)
+            work = root / "work"
+            work.mkdir()
+            main = self.load("build-referral-card5-moo-print.py", root)
+            main.__globals__["prepare_work"](str(work))
+            source = ROOT / "website/elh-preview/assets/img/qr-refer-cream.webp"
+            self.assertEqual(source.read_bytes(), (work / source.name).read_bytes())
+            self.assertFalse((work / "qr-refer-cream.png").exists())
+            proofs = root / "proofs"
+            paths = [proofs / Path(main.__globals__[name]).name for name in ("CARD", "CMYK")]
+            self.invoke(main, ["--output-dir", str(proofs)])
+            for path in paths:
+                info = subprocess.run(["pdfinfo", "-f", "1", "-l", "2", str(path)],
+                                      capture_output=True, text=True, check=True).stdout
+                self.assertIn("Pages:           2", info)
+                self.assertEqual(info.count("276 x 624 pts"), 2, info)
+                subprocess.run(["qpdf", "--check", str(path)], capture_output=True, check=True)
+                self.verify_qr(path)
 
     def test_real_proofs_and_disposable_publish(self):
         for tool in TOOLS:
@@ -120,6 +150,8 @@ class PrintProtectionTests(unittest.TestCase):
                 self.assertEqual({p.name for p in targets}, {p.name for p in proofs.iterdir()})
                 for proof in proofs.iterdir():
                     self.verify_pdf(proof)
+                    if tool == TOOLS[0]:
+                        self.verify_qr(proof)
                 gs_calls = [cmd for cmd in calls if cmd[0] == "gs"]
                 self.assertEqual(len(gs_calls), len(names))
                 for cmd in gs_calls:

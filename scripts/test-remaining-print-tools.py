@@ -76,22 +76,7 @@ class RemainingPrintTests(unittest.TestCase):
         return [root / card.relative_to(ROOT), root / cmyk.relative_to(ROOT)]
 
     def fixture_inputs(self, module, root):
-        # Keep the missing legacy QR name out of the real tree. Supplying existing
-        # artwork under that name here exercises the renderer without changing
-        # its input policy (handled separately from this safety maintenance).
-        if "prepare_work" in module and "ASSETS" in module:
-            owner = module["main"].__globals__
-        elif "moo" in module:
-            owner = module["moo"].__dict__
-        else:
-            owner = None
-        if owner is not None:
-            assets = root / "fixture-assets"
-            (assets / "img").mkdir(parents=True)
-            shutil.copytree(ROOT / "website/elh-preview/assets/fonts", assets / "fonts")
-            shutil.copy2(ROOT / "website/elh-preview/assets/img/qr-refer-cream.webp",
-                         assets / "img/qr-refer-cream.png")
-            owner["ASSETS"] = str(assets)
+        # MOO and crop-mark proofs consume the checked-in WebP directly.
         if "source_card" in module["build"].__code__.co_varnames:
             source = root / "original.pdf"
             shutil.copy2(ROOT / "exports/print/eternal-life-referral-card-5-quick-referral-action.pdf",
@@ -257,7 +242,12 @@ class RemainingPrintTests(unittest.TestCase):
             for tool, constants in expected.items():
                 module = self.load(tool, Path(tmp))
                 for key, digest in constants.items():
-                    self.assertEqual(hashlib.sha256(module[key].encode()).hexdigest(), digest)
+                    artwork = module[key]
+                    if tool == TOOLS[0]:
+                        # Ignore only the intentional source-extension update;
+                        # preserve the existing baseline for every layout byte.
+                        artwork = artwork.replace("qr-refer-cream.webp", "qr-refer-cream.png")
+                    self.assertEqual(hashlib.sha256(artwork.encode()).hexdigest(), digest)
             crop = self.load(TOOLS[1], Path(tmp))
             html = crop["build_html"]("cardfront.png", "cardback.png")
             # Baseline includes every mark, edge-clamp slice and coordinate.

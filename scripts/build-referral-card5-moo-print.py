@@ -30,6 +30,13 @@ CMYK = os.path.join(PRINT, "print-ready-cmyk",
 
 PARTNERS = os.path.join(ROOT, "brand-assets", "ELH-affiliates-and-partners")
 
+DEEP = "#3C1C3B"; PLUM = "#5B2E59"; GOLD = "#C9B07E"; CREAM = "#F5F0EB"
+PANEL = "#EDE6DE"; BORDER = "#D8CDBF"; STEEL = "#6793AC"
+
+CMS = "cms-centers-for-medicare-medicaid-services.png"
+CDPH = "cdph-california-department-of-public-health.png"
+ACHC = "achc-accredited-gold-seal.png"
+
 def prepare_work(work):
     """Populate scratch inputs only after explicit output preflight."""
     for f in ["cms-centers-for-medicare-medicaid-services.png",
@@ -41,7 +48,7 @@ def prepare_work(work):
     shutil.copy(os.path.join(ROOT, "brand-assets", "Medical",
                              "eternal-life-hospice-infinity-cream-hires.png"),
                 os.path.join(work, "infinity-cream.png"))
-    shutil.copy(os.path.join(ASSETS, "img", "qr-refer-cream.png"), work)
+    shutil.copy(os.path.join(ASSETS, "img", "qr-refer-cream.webp"), work)
     for f in ["Fraunces-var.woff2", "Fraunces-Italic-var.woff2",
               "JostELH-Regular.woff2", "JostELH-Medium.woff2", "JostELH-SemiBold.woff2"]:
         shutil.copy(os.path.join(ASSETS, "fonts", f), work)
@@ -76,7 +83,7 @@ FRONT = f"""
       <div style="margin-top:12pt;font-family:Fraunces;font-weight:620;font-size:33.5pt;letter-spacing:0.5pt;color:{GOLD}">805.953.7273</div>
       <div style="margin-top:6pt;font-family:Jost;font-weight:500;font-size:10.5pt;color:{CREAM}">Fax referrals &middot; 805.953.8530</div>
       <div style="margin-top:16pt;background:{CREAM};border-radius:13pt;padding:6pt">
-        <img src="qr-refer-cream.png" style="width:98pt;display:block;border-radius:8pt"></div>
+        <img src="qr-refer-cream.webp" style="width:98pt;display:block;border-radius:8pt"></div>
       <div style="margin-top:11pt;font-family:Jost;font-weight:600;font-size:9pt;letter-spacing:2.6pt;color:{GOLD}">SCAN&nbsp;TO&nbsp;REFER&nbsp;ONLINE</div>
     </div>
     <!-- full-bleed cream credential band: spans the whole art/bleed width -->
@@ -162,7 +169,7 @@ BACK = f"""
                 display:flex;flex-direction:column;gap:4pt">
       <div style="display:flex;gap:11pt;align-items:center">
         <div style="flex:0 0 auto;background:#ffffff;border-radius:9pt;padding:4.5pt">
-          <img src="qr-refer-cream.png" style="width:44pt;display:block;border-radius:5pt"></div>
+          <img src="qr-refer-cream.webp" style="width:44pt;display:block;border-radius:5pt"></div>
         <div style="display:flex;flex-direction:column;gap:3.5pt;min-width:0">
           <div style="font-family:Jost;font-weight:600;font-size:7.5pt;letter-spacing:1.3pt;color:#A8874F;white-space:nowrap">24/7&nbsp;NURSE&nbsp;ACCESS</div>
           {crow("CALL 24/7", "805.953.7273", f"font-weight:600;font-size:9.6pt;color:{PLUM};white-space:nowrap")}

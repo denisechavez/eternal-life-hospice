@@ -60,7 +60,7 @@ FRONT = f"""
       <div style="margin-top:9pt;font-family:Fraunces;font-weight:620;font-size:33.5pt;letter-spacing:0.5pt;color:{GOLD}">805.953.7273</div>
       <div style="margin-top:6pt;font-family:Jost;font-weight:500;font-size:10.5pt;color:{CREAM}">Fax referrals &middot; 805.953.8530</div>
       <div style="margin-top:12pt;background:{CREAM};border-radius:13pt;padding:6pt">
-        <img src="qr-refer-cream.png" style="width:98pt;display:block;border-radius:8pt"></div>
+        <img src="qr-refer-cream.webp" style="width:98pt;display:block;border-radius:8pt"></div>
       <div style="margin-top:9pt;font-family:Jost;font-weight:600;font-size:9pt;letter-spacing:2.6pt;color:{GOLD}">SCAN&nbsp;TO&nbsp;REFER&nbsp;ONLINE</div>
     </div>
     <!-- full-bleed cream credential band: spans the whole art/bleed width -->
@@ -139,7 +139,7 @@ BACK = f"""
                 display:flex;flex-direction:column;gap:5pt">
       <div style="display:flex;gap:11pt;align-items:center">
         <div style="flex:0 0 auto;background:#ffffff;border-radius:9pt;padding:4.5pt">
-          <img src="qr-refer-cream.png" style="width:52pt;display:block;border-radius:5pt"></div>
+          <img src="qr-refer-cream.webp" style="width:52pt;display:block;border-radius:5pt"></div>
         <div style="display:flex;flex-direction:column;gap:3.5pt;min-width:0">
           <div style="font-family:Jost;font-weight:600;font-size:7.5pt;letter-spacing:2.2pt;color:#A8874F">REFER&nbsp;24/7</div>
           {crow("CALL 24/7", "805.953.7273", f"font-weight:600;font-size:9.6pt;color:{PLUM};white-space:nowrap")}
@@ -200,7 +200,7 @@ def main(argv=None):
         shutil.copy(os.path.join(ROOT, "brand-assets", "Medical",
                                  "eternal-life-hospice-infinity-cream-hires.png"),
                     os.path.join(work, "infinity-cream.png"))
-        shutil.copy(os.path.join(ASSETS, "img", "qr-refer-cream.png"), work)
+        shutil.copy(os.path.join(ASSETS, "img", "qr-refer-cream.webp"), work)
         for f in ["Fraunces-var.woff2", "Fraunces-Italic-var.woff2",
                   "JostELH-Regular.woff2", "JostELH-Medium.woff2", "JostELH-SemiBold.woff2"]:
             shutil.copy(os.path.join(ASSETS, "fonts", f), work)
