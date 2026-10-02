@@ -20,3 +20,11 @@ pages had zero measurement. A shared file = one place to update, no per-page dri
   `care-brief/index.html`) intentionally have NO analytics.
 - Root-relative `/assets/analytics.js` is required so pages in subfolders
   (`blog/`, `resources/`, `care-brief/`) resolve it correctly.
+
+## Conversion measurement semantics
+
+Website submission success means the intake endpoint accepted the request, not that a patient was admitted. Keep care-request intent separate from general team-contact intent when interpreting conversions.
+
+**Why:** ELH's objective is census growth, but website interaction counts cannot establish clinical eligibility, completed referrals or admissions. Combining unrelated contact clicks or treating submission attempts as completed intake would overstate the conversion funnel.
+
+**How to apply:** Distinguish clicks, starts, attempts and confirmed website submission outcomes in reporting. Do not label any of those outcomes as an admission without a separate verified operational source. Custom event metadata must not include visitor-entered care or referral details.

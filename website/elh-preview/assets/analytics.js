@@ -19,14 +19,21 @@
   }
 
   function trackEvent(name, data) {
-    if (!analyticsConsentGranted()) { return; }
+    if (!analyticsConsentGranted()) { return false; }
     try {
       if (window.umami && typeof window.umami.track === 'function') {
-        window.umami.track(name, data);
+        var result = window.umami.track(name, data);
+        if (result && typeof result.catch === 'function') {
+          result.catch(function () {
+            // Network failures must not produce unhandled rejections.
+          });
+        }
+        return true;
       }
     } catch (e) {
       // Analytics must never interrupt care-seeking or site navigation.
     }
+    return false;
   }
 
   // Shared, safe hook for form and chat code. Never pass visitor-entered text.
@@ -73,6 +80,14 @@
 
     document.addEventListener('click', function (event) {
       var target = event.target;
+      var category = target && target.closest ? target.closest('.lead-cat[data-cat]') : null;
+      if (category) {
+        var leadType = category.getAttribute('data-cat');
+        if (['family', 'physician', 'casemanager', 'coordinator', 'voice'].indexOf(leadType) !== -1) {
+          trackEvent('lead_type_selected', { page: pagePath(), lead_type: leadType });
+        }
+        return;
+      }
       var link = target && target.closest ? target.closest('a[href]') : null;
       if (!link) { return; }
 
@@ -135,9 +150,12 @@
 
       if (
         url.origin === window.location.origin &&
-        (url.searchParams.get('lead') === 'voice' || url.hash === '#leadcap')
+        (url.searchParams.get('lead') === 'family' ||
+          url.searchParams.get('lead') === 'voice' || url.hash === '#leadcap')
       ) {
-        trackEvent('schedule_session_click', data);
+        var lead = url.searchParams.get('lead');
+        trackEvent(lead === 'family' ? 'request_care_click' :
+          lead === 'voice' ? 'contact_team_click' : 'contact_cta_click', data);
       }
     });
 
@@ -145,11 +163,12 @@
       var target = event.target;
       var form = target && target.closest ? target.closest('form') : null;
       if (!form || form.getAttribute('data-analytics-started') === 'true') { return; }
-      form.setAttribute('data-analytics-started', 'true');
-      trackEvent('form_start', {
+      if (trackEvent('form_start', {
         page: pagePath(),
         form: safeFormName(form)
-      });
+      })) {
+        form.setAttribute('data-analytics-started', 'true');
+      }
     });
 
     document.addEventListener('submit', function (event) {
