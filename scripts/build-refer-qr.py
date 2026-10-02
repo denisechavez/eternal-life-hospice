@@ -10,7 +10,7 @@ Outputs two reusable masters (siblings of the existing homepage QRs):
   - website/elh-preview/assets/qr-refer.png        plum-on-WHITE  (for print on light/white tiles; matches qr-eternallifehospice.png placement)
   - website/elh-preview/assets/img/qr-refer-cream.png  plum-on-CREAM (light-backed variant for dark surfaces; matches qr-cream.png approach)
 
-The infinity glyph is lifted from the existing footer QR (assets/img/qr-cream.png)
+The infinity glyph is lifted from the existing footer QR (assets/img/qr-cream.webp)
 so the mark + metallic gradient stay byte-faithful to the brand.
 
 Run:  python3 scripts/build-refer-qr.py
@@ -30,7 +30,7 @@ CREAM     = (245, 240, 235) # #F5F0EB
 WHITE     = (255, 255, 255)
 
 ROOT = "website/elh-preview"
-GLYPH_SRC = f"{ROOT}/assets/img/qr-cream.png"
+GLYPH_SRC = f"{ROOT}/assets/img/qr-cream.webp"
 
 
 def extract_infinity_glyph():

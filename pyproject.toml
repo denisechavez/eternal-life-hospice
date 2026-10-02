@@ -5,7 +5,16 @@ description = "Add your description here"
 requires-python = ">=3.11"
 dependencies = []
 
-# The web server uses only the standard library. Image generation is an
-# internal publication tool and must not block installing the live site.
+# The web server uses only the standard library. Internal publication tools
+# must not block installing the live site. Install only the extra you need:
+# uv sync --extra newsletter / --extra print / --extra qr
 [project.optional-dependencies]
 newsletter = ["Pillow>=10.0.0"]
+print = ["Pillow>=10.0.0"]
+qr = [
+    "Pillow>=10.0.0",
+    "numpy>=1.26.0",
+    "qrcode>=7.4.2",
+    # Verification uses QRCodeDetector, not the GUI (avoid libGL/X11).
+    "opencv-python-headless>=4.8.0",
+]

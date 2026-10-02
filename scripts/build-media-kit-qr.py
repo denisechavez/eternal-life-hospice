@@ -21,7 +21,7 @@ URL = "https://eternallifehospice.com/media-kit"
 DEEP_PLUM = (60, 28, 59); PLUM = (91, 46, 89)
 CREAM = (245, 240, 235); WHITE = (255, 255, 255)
 ROOT = "website/elh-preview"
-GLYPH_SRC = f"{ROOT}/assets/img/qr-cream.png"
+GLYPH_SRC = f"{ROOT}/assets/img/qr-cream.webp"
 
 
 def extract_infinity_glyph():

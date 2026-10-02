@@ -23,3 +23,15 @@ commands. Verify a real installation without disabling the cache; import
 success and a `--no-cache` probe alone are not sufficient. Use the underlying
 module interpreter when rebuilding metadata, not a managed-directory link
 that could become self-referencing.
+
+Validate optional tooling by executing its complete output and verification
+paths against temporary copies of checked-in inputs, not only by importing
+its top-level modules.
+
+**Why:** QR scan verification imports its decoder lazily, and PDF generation
+needs working image codecs. Neither capability is proven by successful
+top-level imports or packages left over in an existing workspace.
+
+**How to apply:** Use a disposable Replit-managed layout with a separate package
+cache, run real builds without writing approved assets and verify that a
+default install still loads the public server without tooling packages.
