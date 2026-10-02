@@ -13,10 +13,13 @@ Outputs two reusable masters (siblings of the existing homepage QRs):
 The infinity glyph is lifted from the existing footer QR (assets/img/qr-cream.webp)
 so the mark + metallic gradient stay byte-faithful to the brand.
 
-Run:  python3 scripts/build-refer-qr.py
+Proof: python3 scripts/build-refer-qr.py --temp-dir
+       python3 scripts/build-refer-qr.py --output-dir /tmp/elh-proofs
+Replace approved masters intentionally: add --publish --overwrite instead.
 Verify is built in (re-decodes each PNG with OpenCV before finishing).
 """
 import sys
+from collateral_output import PROJECT_ROOT, output_plan
 import numpy as np
 from PIL import Image, ImageDraw, ImageFilter
 import qrcode
@@ -29,7 +32,7 @@ PLUM      = (91, 46, 89)    # #5B2E59  – module color matching qr-cream.png (c
 CREAM     = (245, 240, 235) # #F5F0EB
 WHITE     = (255, 255, 255)
 
-ROOT = "website/elh-preview"
+ROOT = PROJECT_ROOT / "website/elh-preview"
 GLYPH_SRC = f"{ROOT}/assets/img/qr-cream.webp"
 
 
@@ -98,23 +101,23 @@ def make_qr(size, module_color, bg_color, badge_fill, draw_badge_outline):
 
 def verify(path):
     import cv2
-    arr = cv2.imread(path)
+    arr = cv2.imread(str(path))
     data, _, _ = cv2.QRCodeDetector().detectAndDecode(arr)
     ok = data == REFER_URL
     print(f"  decode {path} -> {data!r} {'OK' if ok else 'FAIL'}")
     return ok
 
 
-def main():
-    white_path = f"{ROOT}/assets/qr-refer.png"
-    cream_path = f"{ROOT}/assets/img/qr-refer-cream.png"
-
-    make_qr(1480, DEEP_PLUM, WHITE, WHITE, draw_badge_outline=True).save(white_path)
-    make_qr(1024, PLUM, CREAM, (250, 247, 243), draw_badge_outline=False).save(cream_path)
-    print(f"wrote {white_path}\nwrote {cream_path}")
-
-    ok = verify(white_path) and verify(cream_path)
-    sys.exit(0 if ok else 1)
+def main(argv=None):
+    plan = output_plan(__doc__, [
+        ("qr-refer.png", "website/elh-preview/assets/qr-refer.png"),
+        ("qr-refer-cream.png", "website/elh-preview/assets/img/qr-refer-cream.png"),
+    ], argv)
+    with plan.stage() as (white_path, cream_path):
+        make_qr(1480, DEEP_PLUM, WHITE, WHITE, draw_badge_outline=True).save(white_path)
+        make_qr(1024, PLUM, CREAM, (250, 247, 243), draw_badge_outline=False).save(cream_path)
+        if not all([verify(white_path), verify(cream_path)]):
+            sys.exit("QR verification failed; no final outputs written.")
 
 
 if __name__ == "__main__":

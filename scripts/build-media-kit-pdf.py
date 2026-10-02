@@ -7,10 +7,14 @@ cover (welcome), the four Eternal Standard pillar cards front+back, inside back
 cover (coverage), back cover. Keeping this list in sync with the flipbook is what
 prevents the viewer and the download from diverging.
 
-Writes the PDF to the live site downloads folder and mirrors it to exports/digital/.
+Proof: python3 scripts/build-media-kit-pdf.py --temp-dir
+       python3 scripts/build-media-kit-pdf.py --output-dir /tmp/elh-proofs
+Only --publish writes the site download and exports/digital/ mirror.
+Replacing existing approved PDFs also requires --overwrite.
 """
 import os
 import shutil
+from collateral_output import output_plan
 from PIL import Image
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -50,21 +54,28 @@ def load(path):
     return im.convert("RGB")
 
 
-def main():
-    imgs = [load(os.path.join(KIT, f)) for f in PAGES]
-    os.makedirs(os.path.dirname(SITE_PDF), exist_ok=True)
-    imgs[0].save(
-        SITE_PDF, "PDF", save_all=True, append_images=imgs[1:],
-        resolution=RESOLUTION, quality=QUALITY, optimize=True,
-        title="Eternal Life Hospice — Media Kit",
-        author="Eternal Life Hospice, Inc.",
-    )
-    os.makedirs(os.path.dirname(EXPORT_PDF), exist_ok=True)
-    shutil.copy2(SITE_PDF, EXPORT_PDF)
-    size = os.path.getsize(SITE_PDF)
-    print(f"Built {len(PAGES)}-page PDF ({size/1024/1024:.2f} MB)")
-    print(f"  -> {SITE_PDF}")
-    print(f"  -> {EXPORT_PDF}")
+def main(argv=None):
+    filename = "eternal-life-press-kit-digital.pdf"
+    plan = output_plan(__doc__, [
+        (filename, os.path.relpath(SITE_PDF, ROOT)),
+        (filename, os.path.relpath(EXPORT_PDF, ROOT)),
+    ], argv)
+    with plan.stage() as paths:
+        imgs = [load(os.path.join(KIT, f)) for f in PAGES]
+        try:
+            imgs[0].save(
+                paths[0], "PDF", save_all=True, append_images=imgs[1:],
+                resolution=RESOLUTION, quality=QUALITY, optimize=True,
+                title="Eternal Life Hospice — Media Kit",
+                author="Eternal Life Hospice, Inc.",
+            )
+            for mirror in paths[1:]:
+                shutil.copy2(paths[0], mirror)
+            size = os.path.getsize(paths[0])
+            print(f"Built {len(PAGES)}-page PDF ({size/1024/1024:.2f} MB)")
+        finally:
+            for img in imgs:
+                img.close()
 
 
 if __name__ == "__main__":

@@ -9,9 +9,12 @@ Outputs:
   - website/elh-preview/assets/qr-media-kit.png        plum-on-WHITE (print / light tiles)
   - website/elh-preview/assets/img/qr-media-kit-cream.png  plum-on-CREAM (dark surfaces)
 
-Run: python3 scripts/build-media-kit-qr.py
+Proof: python3 scripts/build-media-kit-qr.py --temp-dir
+       python3 scripts/build-media-kit-qr.py --output-dir /tmp/elh-proofs
+Replace approved masters intentionally: use --publish --overwrite.
 """
 import sys
+from collateral_output import PROJECT_ROOT, output_plan
 import numpy as np
 from PIL import Image, ImageDraw, ImageFilter
 import qrcode
@@ -20,7 +23,7 @@ from qrcode.constants import ERROR_CORRECT_H
 URL = "https://eternallifehospice.com/media-kit"
 DEEP_PLUM = (60, 28, 59); PLUM = (91, 46, 89)
 CREAM = (245, 240, 235); WHITE = (255, 255, 255)
-ROOT = "website/elh-preview"
+ROOT = PROJECT_ROOT / "website/elh-preview"
 GLYPH_SRC = f"{ROOT}/assets/img/qr-cream.webp"
 
 
@@ -68,18 +71,22 @@ def make_qr(size, module_color, bg_color, badge_fill, outline):
 
 def verify(path):
     import cv2
-    data, _, _ = cv2.QRCodeDetector().detectAndDecode(cv2.imread(path))
+    data, _, _ = cv2.QRCodeDetector().detectAndDecode(cv2.imread(str(path)))
     ok = data == URL
     print(f"  decode {path} -> {data!r} {'OK' if ok else 'FAIL'}")
     return ok
 
 
-def main():
-    wp = f"{ROOT}/assets/qr-media-kit.png"; cp = f"{ROOT}/assets/img/qr-media-kit-cream.png"
-    make_qr(1480, DEEP_PLUM, WHITE, WHITE, True).save(wp)
-    make_qr(1024, PLUM, CREAM, (250, 247, 243), False).save(cp)
-    print(f"wrote {wp}\nwrote {cp}")
-    sys.exit(0 if (verify(wp) and verify(cp)) else 1)
+def main(argv=None):
+    plan = output_plan(__doc__, [
+        ("qr-media-kit.png", "website/elh-preview/assets/qr-media-kit.png"),
+        ("qr-media-kit-cream.png", "website/elh-preview/assets/img/qr-media-kit-cream.png"),
+    ], argv)
+    with plan.stage() as (wp, cp):
+        make_qr(1480, DEEP_PLUM, WHITE, WHITE, True).save(wp)
+        make_qr(1024, PLUM, CREAM, (250, 247, 243), False).save(cp)
+        if not all([verify(wp), verify(cp)]):
+            sys.exit("QR verification failed; no final outputs written.")
 
 
 if __name__ == "__main__":
