@@ -39,6 +39,11 @@ Option A (template HTML): edit eternal-life-business-card-TEMPLATE.html — chan
   Move out.pdf into exports/print/ and DELETE the temp HTML from elh-preview
   (the published site must not ship stray pages).
 Option B (generator): add an entry to the CARDS dict in
-  scripts/build-business-cards.py and re-run it (writes HTML into elh-preview),
-  then render + move + delete as above.
+  scripts/build-business-cards.py and run:
+    python3 scripts/build-business-cards.py --output-dir /tmp/elh-business-proof
+  Open the generated HTML locally or render its file:// URL to a disposable PDF.
+  The HTML uses read-only workspace asset URLs; no website scratch page is needed.
+  Existing proofs require --overwrite. Approved HTML export writes require
+  --publish; replacing existing approved HTML requires --publish --overwrite.
+  See scripts/print-output-safety.md. This generator does not regenerate PDFs.
 QR is reusable at website/elh-preview/assets/qr-eternallifehospice.png.

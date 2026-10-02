@@ -2,7 +2,10 @@
 """Build double-sided business card HTML for Eternal Life Hospice.
 Mirrors the rack-card print convention: 3.5x2in trim + 0.125 bleed, page 4.0x2.5in
 (288x180pt) with hand-drawn crop ticks, two .page divs (front/back) -> 2-page PDF."""
-import sys
+from pathlib import Path
+from collateral_output import output_plan
+
+ROOT = Path(__file__).resolve().parents[1]
 
 # ---- crop ticks (8) in the page margin, aligned to the 3.5x2 trim box ----
 # trim lines: L=0.25in R=3.75in T=0.25in B=2.25in ; ticks 0.125in long, in margin
@@ -116,9 +119,18 @@ CARDS = {
         "Full Name", "Title / Role", "name@eternallifehospice.com"),
 }
 
+def main(argv=None):
+    plan = output_plan(__doc__, [
+        (f"{slug}.html", f"exports/print/{slug}.html") for slug in CARDS
+    ], argv)
+    with plan.stage() as paths:
+        for path, (n, t, e) in zip(paths, CARDS.values()):
+            # The old HTML expected to sit beside the website's assets directory.
+            # Absolute read-only references keep both proofs and export HTML usable
+            # without copying or modifying approved assets.
+            html = build(n, t, e).replace('"assets/', f'"{(ROOT / "website/elh-preview/assets").as_uri()}/')
+            path.write_text(html, encoding="utf-8")
+
+
 if __name__ == "__main__":
-    outdir = sys.argv[1] if len(sys.argv) > 1 else "."
-    for slug, (n, t, e) in CARDS.items():
-        with open(f"{outdir}/{slug}.html", "w") as f:
-            f.write(build(n, t, e))
-        print(f"wrote {outdir}/{slug}.html")
+    main()

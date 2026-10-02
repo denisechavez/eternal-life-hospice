@@ -31,9 +31,11 @@ pdftoppm at 600 DPI) and placed as a fixed <img>, so nested-container reflow can
 never shift content past the trim. Assembled sheet is print-to-pdf'd via chromium,
 then a CMYK copy is written to print-ready-cmyk/.
 """
-import os, shutil, subprocess, importlib.util
+import os, subprocess, importlib.util, tempfile
+from pathlib import Path
+from collateral_output import output_plan
 
-ROOT = "/home/runner/workspace"
+ROOT = str(Path(__file__).resolve().parents[1])
 PRINT = os.path.join(ROOT, "exports", "print")
 OUT = os.path.join(PRINT, "eternal-life-referral-card-5-crop-marks-press.pdf")
 CMYK = os.path.join(PRINT, "print-ready-cmyk",
@@ -44,7 +46,6 @@ spec = importlib.util.spec_from_file_location(
     "c5moo", os.path.join(ROOT, "scripts", "build-referral-card5-moo-print.py"))
 moo = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(moo)
-WORK = moo.WORK  # tempdir already populated with all fonts + images
 
 # --- geometry in points (72pt/in) ---
 BLEED = 9.0     # 0.125in target bleed per side
@@ -91,25 +92,21 @@ BL, BT = 0.0, 0.0                                        # bleed box top-left (l
 RASTER_DPI = 600
 
 
-def rasterize(card, name):
+def rasterize(card, name, work):
     html = (f'<!doctype html><html><head><meta charset="utf-8"><style>'
             f'@page {{ size:{CW}pt {CH}pt; margin:0; }}'
             f'*{{margin:0;padding:0;box-sizing:border-box;'
             f'-webkit-print-color-adjust:exact;print-color-adjust:exact;}}'
             f'{moo.CARD_CSS}</style></head><body>{card}</body></html>')
-    with open(os.path.join(WORK, name + ".html"), "w") as fh:
+    with open(os.path.join(work, name + ".html"), "w") as fh:
         fh.write(html)
     moo.run(["chromium", "--headless=new", "--no-sandbox", "--disable-gpu",
              "--force-color-profile=srgb", "--no-pdf-header-footer",
-             "--print-to-pdf=" + os.path.join(WORK, name + ".pdf"), name + ".html"])
+             "--print-to-pdf=" + os.path.join(work, name + ".pdf"), name + ".html"], work)
     subprocess.run(["pdftoppm", "-png", "-r", str(RASTER_DPI), "-singlefile",
-                    os.path.join(WORK, name + ".pdf"),
-                    os.path.join(WORK, name)], check=True)
+                    os.path.join(work, name + ".pdf"),
+                    os.path.join(work, name)], check=True)
     return name + ".png"
-
-
-FRONT_PNG = rasterize(moo.FRONT, "cardfront")
-BACK_PNG = rasterize(moo.BACK, "cardback")
 
 
 def vmark(x, top):
@@ -173,7 +170,8 @@ def sheet(png):
             f'<div class="bleed">{"".join(pieces)}{fg}</div></div>')
 
 
-HTML = f"""<!doctype html><html><head><meta charset="utf-8"><style>
+def build_html(front_png, back_png):
+    return f"""<!doctype html><html><head><meta charset="utf-8"><style>
 @page {{ size: {SW}pt {SH}pt; margin: 0; }}
 * {{ margin:0; padding:0; box-sizing:border-box; -webkit-print-color-adjust:exact; print-color-adjust:exact; }}
 img {{ display:block; }}
@@ -184,32 +182,49 @@ img {{ display:block; }}
 .clip .pg {{ position:absolute; }}
 .cardfg {{ position:absolute; }}
 .cm {{ position:absolute; background:#000000; }}
-</style></head><body>{sheet(FRONT_PNG)}{sheet(BACK_PNG)}</body></html>"""
+</style></head><body>{sheet(front_png)}{sheet(back_png)}</body></html>"""
 
-with open(os.path.join(WORK, "cropcard5.html"), "w") as fh:
-    fh.write(HTML)
 
-moo.run(["chromium", "--headless=new", "--no-sandbox", "--disable-gpu",
-         "--force-color-profile=srgb", "--no-pdf-header-footer",
-         "--print-to-pdf=" + os.path.join(WORK, "cropcard5.pdf"), "cropcard5.html"])
+def build(card, cmyk, work):
+    moo.prepare_work(work)
+    front_png = rasterize(moo.FRONT, "cardfront", work)
+    back_png = rasterize(moo.BACK, "cardback", work)
+    with open(os.path.join(work, "cropcard5.html"), "w") as fh:
+        fh.write(build_html(front_png, back_png))
 
-info = subprocess.run(["pdfinfo", os.path.join(WORK, "cropcard5.pdf")],
-                      capture_output=True, text=True).stdout
-print([l for l in info.splitlines() if l.startswith(("Pages", "Page size"))])
-assert "Pages:           2" in info, "wrong page count"
-assert "318 x 666" in info, "wrong page size (expected 318 x 666 pts / 4.42 x 9.25in)"
+    moo.run(["chromium", "--headless=new", "--no-sandbox", "--disable-gpu",
+             "--force-color-profile=srgb", "--no-pdf-header-footer",
+             "--print-to-pdf=" + str(card), "cropcard5.html"], work)
+    info = moo.run(["pdfinfo", str(card)], work).stdout
+    print([l for l in info.splitlines() if l.startswith(("Pages", "Page size"))])
+    if "Pages:           2" not in info:
+        raise RuntimeError("wrong page count")
+    if "318 x 666" not in info:
+        raise RuntimeError("wrong page size (expected 318 x 666 pts / 4.42 x 9.25in)")
+    moo.run(["gs", "-dBATCH", "-dNOPAUSE", "-sDEVICE=pdfwrite",
+             "-sColorConversionStrategy=CMYK", "-dProcessColorModel=/DeviceCMYK",
+             "-dPDFSETTINGS=/prepress",
+             "-dDownsampleColorImages=false", "-dDownsampleGrayImages=false",
+             "-dDownsampleMonoImages=false",
+             "-dAutoFilterColorImages=false", "-dAutoFilterGrayImages=false",
+             "-dColorImageFilter=/FlateEncode", "-dGrayImageFilter=/FlateEncode",
+             "-sOutputFile=" + str(cmyk), str(card)], work)
+    rgb = subprocess.run(["bash", "-c",
+        f"gs -o /dev/null -sDEVICE=inkcov '{cmyk}' 2>/dev/null | grep -c DeviceRGB || true"],
+        capture_output=True, text=True).stdout.strip()
+    if rgb != "0":
+        raise RuntimeError(f"CMYK output still has DeviceRGB references: {rgb}")
+    print("OK | CMYK done | DeviceRGB refs:", rgb)
 
-shutil.copy(os.path.join(WORK, "cropcard5.pdf"), OUT)
-moo.run(["gs", "-dBATCH", "-dNOPAUSE", "-sDEVICE=pdfwrite",
-         "-sColorConversionStrategy=CMYK", "-dProcessColorModel=/DeviceCMYK",
-         "-dPDFSETTINGS=/prepress",
-         "-dDownsampleColorImages=false", "-dDownsampleGrayImages=false",
-         "-dDownsampleMonoImages=false",
-         "-dAutoFilterColorImages=false", "-dAutoFilterGrayImages=false",
-         "-dColorImageFilter=/FlateEncode", "-dGrayImageFilter=/FlateEncode",
-         "-sOutputFile=" + CMYK, OUT])
-rgb = subprocess.run(["bash", "-c",
-    f"gs -o /dev/null -sDEVICE=inkcov '{CMYK}' 2>/dev/null | grep -c DeviceRGB || true"],
-    capture_output=True, text=True).stdout.strip()
-assert rgb == "0", f"CMYK output still has DeviceRGB references: {rgb}"
-print("OK", OUT, "| CMYK done | DeviceRGB refs:", rgb)
+
+def main(argv=None):
+    plan = output_plan(__doc__, [
+        (os.path.basename(OUT), os.path.relpath(OUT, ROOT)),
+        (os.path.basename(CMYK), os.path.relpath(CMYK, ROOT)),
+    ], argv)
+    with plan.stage() as (card, cmyk), tempfile.TemporaryDirectory(prefix="c5press-") as work:
+        build(card, cmyk, work)
+
+
+if __name__ == "__main__":
+    main()

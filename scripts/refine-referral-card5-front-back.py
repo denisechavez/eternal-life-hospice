@@ -2,25 +2,27 @@
 """Card 5 refinements: logo plaque on the front + rebuilt, aligned contact
 panel on the back (keeps existing QR tile, cropped from the master)."""
 import os, shutil, subprocess, sys, tempfile
+from pathlib import Path
+from collateral_output import output_plan
 
-ROOT = "/home/runner/workspace"
+ROOT = str(Path(__file__).resolve().parents[1])
 PRINT = os.path.join(ROOT, "exports", "print")
 CMYK = os.path.join(PRINT, "print-ready-cmyk")
 LOGOS = os.path.join(ROOT, "brand-assets", "credential-logos")
 FDIR = os.path.join(ROOT, "website", "elh-preview", "assets", "fonts")
 CARD = os.path.join(PRINT, "eternal-life-referral-card-5-quick-referral-action.pdf")
 
-WORK = tempfile.mkdtemp(prefix="c5fix-")
-for f in ["cms-centers-for-medicare-medicaid-services.png",
-          "cdph-california-department-of-public-health.png",
-          "achc-accredited-gold-seal.png", "epic-systems.png",
-          "cms-centers-for-medicare-medicaid-services-white.png",
-          "cdph-california-department-of-public-health-white.png",
-          "epic-systems-white.png"]:
-    shutil.copy(os.path.join(LOGOS, f), WORK)
-shutil.copy(os.path.join(FDIR, "JostELH-Medium.woff2"), WORK)
-shutil.copy(os.path.join(FDIR, "JostELH-SemiBold.woff2"), WORK)
-shutil.copy("/tmp/qr-tile.png", WORK)
+def prepare_work(work, qr_tile):
+    for f in ["cms-centers-for-medicare-medicaid-services.png",
+              "cdph-california-department-of-public-health.png",
+              "achc-accredited-gold-seal.png", "epic-systems.png",
+              "cms-centers-for-medicare-medicaid-services-white.png",
+              "cdph-california-department-of-public-health-white.png",
+              "epic-systems-white.png"]:
+        shutil.copy(os.path.join(LOGOS, f), work)
+    shutil.copy(os.path.join(FDIR, "JostELH-Medium.woff2"), work)
+    shutil.copy(os.path.join(FDIR, "JostELH-SemiBold.woff2"), work)
+    shutil.copy(qr_tile, os.path.join(work, "qr-tile.png"))
 
 CSS = """
 @page { size: 4in 8.25in; margin: 0; }
@@ -99,25 +101,56 @@ def run(cmd):
     r = subprocess.run(cmd, capture_output=True, text=True)
     if r.returncode != 0:
         print("FAILED:", " ".join(cmd), "\n", r.stdout, r.stderr); sys.exit(1)
+    return r
 
-pdfs = {}
-for name, body in (("front", front), ("back", back)):
-    html = os.path.join(WORK, name + ".html")
-    open(html, "w").write(f"<!doctype html><html><head><meta charset='utf-8'>"
-                          f"<style>{CSS}</style></head><body>{body}</body></html>")
-    pdf = os.path.join(WORK, name + ".pdf")
-    run(["chromium", "--headless=new", "--no-sandbox", "--disable-gpu",
-         "--no-pdf-header-footer", f"--print-to-pdf={pdf}", "file://" + html])
-    pdfs[name] = pdf
 
-s1 = os.path.join(WORK, "s1.pdf"); s2 = os.path.join(WORK, "s2.pdf")
-run(["qpdf", CARD, "--overlay", pdfs["front"], "--to=1", "--", s1])
-run(["qpdf", s1, "--overlay", pdfs["back"], "--to=2", "--", s2])
-shutil.move(s2, CARD)
-run(["gs", "-q", "-dBATCH", "-dNOPAUSE", "-dSAFER", "-sDEVICE=pdfwrite",
-     "-dProcessColorModel=/DeviceCMYK", "-sColorConversionStrategy=CMYK",
-     "-dOverrideICC=true", "-dPDFSETTINGS=/prepress", "-dAutoRotatePages=/None",
-     "-o", os.path.join(CMYK, "eternal-life-referral-card-5-quick-referral-action-CMYK.pdf"), CARD])
-info = subprocess.run(["pdfinfo", CARD], capture_output=True, text=True).stdout
-print([l for l in info.splitlines() if "Pages" in l or "Page size" in l])
-print("OK", WORK)
+def build(card, cmyk, work, source_card, qr_tile):
+    prepare_work(work, qr_tile)
+    # Snapshot the input before overlaying; never overlay the approved file in place.
+    source = os.path.join(work, "source.pdf")
+    shutil.copy(source_card, source)
+    pdfs = {}
+    for name, body in (("front", front), ("back", back)):
+        html = os.path.join(work, name + ".html")
+        with open(html, "w") as fh:
+            fh.write(f"<!doctype html><html><head><meta charset='utf-8'>"
+                     f"<style>{CSS}</style></head><body>{body}</body></html>")
+        pdf = os.path.join(work, name + ".pdf")
+        run(["chromium", "--headless=new", "--no-sandbox", "--disable-gpu",
+             "--no-pdf-header-footer", f"--print-to-pdf={pdf}", "file://" + html])
+        pdfs[name] = pdf
+
+    s1 = os.path.join(work, "s1.pdf")
+    run(["qpdf", source, "--overlay", pdfs["front"], "--to=1", "--", s1])
+    run(["qpdf", s1, "--overlay", pdfs["back"], "--to=2", "--", str(card)])
+    run(["gs", "-q", "-dBATCH", "-dNOPAUSE", "-dSAFER", "-sDEVICE=pdfwrite",
+         "-dProcessColorModel=/DeviceCMYK", "-sColorConversionStrategy=CMYK",
+         "-dOverrideICC=true", "-dPDFSETTINGS=/prepress", "-dAutoRotatePages=/None",
+         "-o", str(cmyk), str(card)])
+    info = run(["pdfinfo", str(card)]).stdout
+    print([l for l in info.splitlines() if "Pages" in l or "Page size" in l])
+    print("OK")
+
+
+def configure_parser(parser):
+    parser.add_argument("--source-card", type=Path, default=Path(CARD),
+                        help="Master PDF to overlay (read-only; defaults to approved card).")
+    parser.add_argument("--qr-tile", type=Path, default=Path("/tmp/qr-tile.png"),
+                        help="Original cropped QR tile (required input; no artwork substitution).")
+
+
+def main(argv=None):
+    cmyk_name = "eternal-life-referral-card-5-quick-referral-action-CMYK.pdf"
+    plan = output_plan(__doc__, [
+        (os.path.basename(CARD), os.path.relpath(CARD, ROOT)),
+        (cmyk_name, os.path.relpath(os.path.join(CMYK, cmyk_name), ROOT)),
+    ], argv, configure_parser=configure_parser)
+    for source in (plan.args.source_card, plan.args.qr_tile):
+        if not source.is_file():
+            plan.parser.error(f"Required input not found: {source}")
+    with plan.stage() as (card, cmyk), tempfile.TemporaryDirectory(prefix="c5fix-") as work:
+        build(card, cmyk, work, plan.args.source_card, plan.args.qr_tile)
+
+
+if __name__ == "__main__":
+    main()
