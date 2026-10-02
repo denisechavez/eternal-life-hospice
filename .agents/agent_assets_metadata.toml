@@ -1820,3 +1820,17 @@ mtime_ms = 1790903770677
 storage_uri = "gcs://replit-rams-assets-kirk/rams/assets/repl:e1b2f643-7869-4565-af0e-10c34575ee8d/969ca3a8-1fe0-4781-a132-7f6b4c2ff38b/1a2d8ea6-77eb-4aad-be94-9cd67b532c2c"
 storage_version_token = "1790903818206340"
 content_type = "text/html"
+
+[[outputs]]
+id = "3R66vi-Avh9KuYvqfoBVv"
+uri = "file://exports/seo/city-content-pilot-review.pdf"
+type = "pdf"
+title = "Download PDF — City Audit & Five-Page Pilot"
+description = "Printable report with the before-edit audit and complete revised copy for all five pilot cities."
+logical_id = "3dac08a9-1adc-4651-b367-92771bc018fe"
+content_hash = "sha256:93822d058a3e63f1bb503a70fb13ae18e8b5ba2ea8aecc96d851d4cdf980dcf6"
+size = 341086
+mtime_ms = 1790906198769
+storage_uri = "gcs://replit-rams-assets-kirk/rams/assets/repl:e1b2f643-7869-4565-af0e-10c34575ee8d/3dac08a9-1adc-4651-b367-92771bc018fe/11e12b62-bd6b-4b38-a335-f883cf8cee14"
+storage_version_token = "1790906221034103"
+content_type = "application/pdf"
