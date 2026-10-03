@@ -124,14 +124,20 @@ function inferCat(url) {
 
 // ── HTML mini-parser helpers ──────────────────────────────────────────────────
 function extractMeta(html, name) {
-  // Handles both name= and property= forms; value in content=
-  const re = new RegExp(
-    `<meta[^>]+(?:name|property)=["']${name}["'][^>]+content=["']([^"']*?)["']` +
-    `|<meta[^>]+content=["']([^"']*?)["'][^>]+(?:name|property)=["']${name}["']`,
-    'i'
-  );
-  const m = html.match(re);
-  return m ? decodeHtmlEntities((m[1] || m[2] || '').trim()) : null;
+  // Match the opening quote's counterpart, not either kind of quote.
+  // Apostrophes in double-quoted descriptions must not truncate search copy.
+  const tags = html.match(/<meta\b(?:[^"'<>]|"[^"]*"|'[^']*')*>/gi) || [];
+  for (const tag of tags) {
+    const attrs = {};
+    for (const match of tag.matchAll(/([\w:-]+)\s*=\s*(["'])([\s\S]*?)\2/g)) {
+      attrs[match[1].toLowerCase()] = match[3];
+    }
+    if ((attrs.name || '').toLowerCase() === name.toLowerCase() ||
+        (attrs.property || '').toLowerCase() === name.toLowerCase()) {
+      return decodeHtmlEntities((attrs.content || '').trim());
+    }
+  }
+  return null;
 }
 
 function extractTitle(html) {
@@ -337,4 +343,5 @@ function main() {
   );
 }
 
-main();
+module.exports = { extractMeta, extractTitle };
+if (require.main === module) main();

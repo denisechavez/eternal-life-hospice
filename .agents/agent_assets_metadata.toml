@@ -1834,3 +1834,17 @@ mtime_ms = 1790906198769
 storage_uri = "gcs://replit-rams-assets-kirk/rams/assets/repl:e1b2f643-7869-4565-af0e-10c34575ee8d/3dac08a9-1adc-4651-b367-92771bc018fe/11e12b62-bd6b-4b38-a335-f883cf8cee14"
 storage_version_token = "1790906221034103"
 content_type = "application/pdf"
+
+[[outputs]]
+id = "Pu3l5czyneT6AcDQ4jAAE"
+uri = "file://exports/seo/city-redundancy-comparison.csv"
+type = "table"
+title = "City-page redundancy: before and after"
+description = "Comparison for the same 145 local pages: main-content overlap, overlap including navigation/footer, word counts and each rewritten page’s practical focus. The five preserved pilots are labeled separately."
+logical_id = "66273a95-d72f-4485-895d-dca95000e9bf"
+content_hash = "sha256:f376913d41c3f4e856da9c379440353d2c4d4201c57441a3856478a4d0b5627d"
+size = 17151
+mtime_ms = 1790991391501
+storage_uri = "gcs://replit-rams-assets-kirk/rams/assets/repl:e1b2f643-7869-4565-af0e-10c34575ee8d/66273a95-d72f-4485-895d-dca95000e9bf/b74974dc-6100-4138-9a09-ab9a8d113349"
+storage_version_token = "1790991456802596"
+content_type = "text/csv"
