@@ -122,11 +122,11 @@ FOOTER_HTML = FOOTER_HTML.replace(
 ).replace(
     '<span>805.953.7273</span></a><span class="fc-line fc-direct">',
     '<span>805.953.7273 · Main</span></a>'
-    '<a class="fc-line fc-direct" href="tel:18052954688">',
+    '<a class="fc-line fc-direct" href="tel:18054101151">',
     1,
 ).replace(
     '<span>805.953.7273 · Direct</span></span>',
-    '<span>805.295.4688 · Direct</span></a>',
+    '<span>805.410.1151 · Direct</span></a>',
     1,
 )
 # Google Places verifies this CID belongs to Eternal Life Hospice and carries

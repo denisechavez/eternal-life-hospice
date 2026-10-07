@@ -28,7 +28,7 @@ PRIMARY_FOOTER_PHONE = (
     '<a class="fc-line no-swap" href="tel:18059537273">'
 )
 TRACKED_FOOTER_PHONE = (
-    '<a class="fc-line fc-direct" href="tel:18052954688">'
+    '<a class="fc-line fc-direct" href="tel:18054101151">'
 )
 
 
@@ -64,7 +64,7 @@ def main() -> int:
                 findings.append(
                     f"{path.relative_to(ROOT)}: protected primary footer phone missing"
                 )
-            if TRACKED_FOOTER_PHONE not in text or "805.295.4688 · Direct" not in text:
+            if TRACKED_FOOTER_PHONE not in text or "805.410.1151 · Direct" not in text:
                 findings.append(
                     f"{path.relative_to(ROOT)}: WhatConverts footer phone missing"
                 )
