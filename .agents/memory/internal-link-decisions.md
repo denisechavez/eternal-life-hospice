@@ -24,6 +24,18 @@ preserve approved clinical and business wording, and avoid automatic keyword
 substitution or excessive repeated links. Obtain approval of the implementation
 plan before performing this rollout.
 
+Use the user-approved range of 2–7 contextual content links per informational
+page, selected by word count and relevance, with seven as the maximum.
+Existing contextual inline links count toward that limit; shared navigation,
+footer links and bottom reading groups are separate.
+
+**Why:** The user explicitly capped the proposed range at seven and specified
+that word count and content should determine the selection.
+
+**How to apply:** Treat length as a guideline, not a reason to force irrelevant
+links or pad the writing. Approval of the link-count range does not authorize
+the sitewide implementation; the example and rollout still need approval.
+
 Build-time eligibility alone is insufficient for staged Journal recommendations.
 Recommendations must be selected again at request time using the public publication
 date, including on legacy authored pages and when cached source HTML contains links.
