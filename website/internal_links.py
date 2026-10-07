@@ -118,7 +118,7 @@ def resolve(source, href):
     return posixpath.normpath(unquote(parsed.path)), unquote(parsed.fragment), parsed.query
 
 
-def recommendations(route, as_of=None, pages=None):
+def recommendations(route, as_of=None, pages=None, with_topics=False):
     rules, pages, records = config(), pages if pages is not None else inventory(as_of), journal_records()
     topics = rules["pages"].get(route)
     if route.startswith("/hospice-") and topics is None:
@@ -129,10 +129,10 @@ def recommendations(route, as_of=None, pages=None):
         key = rules["journalCategories"].get(item.get("category"), "family")
         owner = rules["journalOwners"].get(route.split("/")[-1], rules["topics"][key][0])
         topics = [key, "journal", "family"]
-    candidates = ([ [owner, "Explore " + html.unescape(re.sub("<[^>]+>", "", re.search(r"<h1[^>]*>(.*?)</h1>", pages[owner][1], re.S).group(1))) ] ]
+    candidates = ([ [owner, "Explore " + html.unescape(re.sub("<[^>]+>", "", re.search(r"<h1[^>]*>(.*?)</h1>", pages[owner][1], re.S).group(1))), key] ]
                   if owner in pages else [])
-    candidates += [rules["topics"][key] for key in (topics or [])]
-    candidates += rules["supportLinks"].get(route, [])
+    candidates += [rules["topics"][key] + [key] for key in (topics or [])]
+    candidates += [link + ["support"] for link in rules["supportLinks"].get(route, [])]
     # Topic owners may recommend one published supporting Journal story.
     if route in {v[0] for v in rules["topics"].values()}:
         for dest in sorted(records, key=lambda d: (records[d]["date"], d), reverse=True):
@@ -140,24 +140,31 @@ def recommendations(route, as_of=None, pages=None):
             key = rules["journalCategories"].get(item.get("category"), "family")
             topic_owner = rules["journalOwners"].get(item["slug"], rules["topics"][key][0])
             if dest in pages and topic_owner == route:
-                candidates.append([dest, item["title"]])
+                candidates.append([dest, item["title"], "journal"])
                 break
     result, seen = [], {route}
-    for dest, anchor in candidates:
+    for dest, anchor, topic in candidates:
         target = urlsplit(dest).path
         if target not in pages or target in seen:
             continue
         seen.add(target)
-        result.append((dest, anchor))
+        result.append((dest, anchor, topic) if with_topics else (dest, anchor))
     return result[:5]
 
 
 def render_links(text, route, as_of=None, pages=None):
-    links = recommendations(route, as_of, pages)
+    links = recommendations(route, as_of, pages, with_topics=True)
     block = ""
     if links:
         block = '<section class="elh-related" aria-labelledby="elh-related-title"><h2 id="elh-related-title">Continue exploring</h2><ul>'
-        block += "".join(f'<li><a href="{html.escape(dest, quote=True)}">{html.escape(anchor)}</a></li>' for dest, anchor in links)
+        # Fixed editorial metadata only: no labels, queries or visitor input.
+        block += "".join(
+            f'<li><a href="{html.escape(dest, quote=True)}"'
+            f' data-reading-source="{html.escape(route, quote=True)}"'
+            f' data-reading-destination="{html.escape(urlsplit(dest).path, quote=True)}"'
+            f' data-reading-topic="{html.escape(topic, quote=True)}">'
+            f'{html.escape(anchor)}</a></li>'
+            for dest, anchor, topic in links)
         block += "</ul></section>"
     replacement = START + "\n" + block + "\n" + END
     if START in text:

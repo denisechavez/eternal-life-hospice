@@ -35,6 +35,10 @@ def main():
         try:
             client = browser_tools.DevTools(browser_tools.wait_for_page_debugger(debug_port))
             client.call("Page.enable")
+            # Avoid loading third-party trackers. Install GA4 test doubles only
+            # after the real consent-aware handlers have bound.
+            client.call("Page.addScriptToEvaluateOnNewDocument", {"source":
+                        "localStorage.setItem('elh_cc','essential');"})
             for width in (390, 1280):
                 client.call("Emulation.setDeviceMetricsOverride", {"width": width, "height": 900, "deviceScaleFactor": 1, "mobile": width < 600})
                 for route in routes:
@@ -65,6 +69,21 @@ def main():
                         visible:a.matches(':focus-visible')};
                     })()""", "returnByValue": True})["result"]["value"]
                     assert focused["href"] == result["href"] and focused["visible"] and focused["outline"] == "3px", (route, focused)
+                    mode = {"/hospice-care": "essential", "/resources": "record",
+                            "/hospice-thousand-oaks-ca": "missing",
+                            "/blog/the-caregiver-who-needs-care": "throw",
+                            "/family-guide": "record", "/refer": "record"}[route]
+                    before = client.call("Runtime.evaluate", {"expression": """(() => {
+                      const mode=MODE, a=document.activeElement;
+                      sessionStorage.removeItem('reading-event');
+                      localStorage.setItem('elh_cc', mode==='essential'?'essential':'all');
+                      window.gtag=mode==='missing'?undefined:(...args)=>{
+                        if(mode==='throw') throw new Error('tracker unavailable');
+                        sessionStorage.setItem('reading-event',JSON.stringify(args));
+                      };
+                      return {source:a.dataset.readingSource,
+                        destination:a.dataset.readingDestination,topic:a.dataset.readingTopic};
+                    })()""".replace("MODE", json.dumps(mode)), "returnByValue": True})["result"]["value"]
                     client.call("Input.dispatchKeyEvent", {"type": "keyDown", "key": "Enter", "code": "Enter", "windowsVirtualKeyCode": 13})
                     client.call("Input.dispatchKeyEvent", {"type": "keyUp", "key": "Enter", "code": "Enter", "windowsVirtualKeyCode": 13})
                     for _ in range(50):
@@ -73,7 +92,13 @@ def main():
                             break
                         time.sleep(.1)
                     assert path == result["href"], (route, path, result["href"])
-                    print(f"PASS {width}px {route}: readable links, visible Tab focus, Enter navigation")
+                    recorded = client.call("Runtime.evaluate", {"expression":
+                        "JSON.parse(sessionStorage.getItem('reading-event'))", "returnByValue": True})["result"].get("value")
+                    expected = ["event", "related_reading_click", {
+                        "source_page": before["source"], "destination_page": before["destination"],
+                        "topic": before["topic"]}] if mode == "record" else None
+                    assert recorded == expected, (mode, route, recorded, expected)
+                    print(f"PASS {width}px {route}: readable links, Tab/Enter navigation, {mode} analytics")
         finally:
             if client:
                 client.close()

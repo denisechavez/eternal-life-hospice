@@ -13,10 +13,14 @@ const handlers = source.split('/* ── Analytics init')[0] + '\nbindCustomEven
 function setup(initialConsent = 'all') {
   let consent = initialConsent;
   const events = [];
+  const gaEvents = [];
   const listeners = {};
   const window = {
     location: { pathname: '/', href: 'https://example.test/', origin: 'https://example.test' },
     umami: { track(name, data) { events.push({ name, data: JSON.parse(JSON.stringify(data)) }); } }
+  };
+  window.gtag = (command, name, data) => {
+    gaEvents.push({ command, name, data: JSON.parse(JSON.stringify(data)) });
   };
   vm.runInNewContext(handlers, {
     window,
@@ -25,9 +29,12 @@ function setup(initialConsent = 'all') {
     URL
   });
   return {
-    window, events,
+    window, events, gaEvents,
     consent(value) { consent = value; },
-    fire(name, target) { listeners[name]({ target }); }
+    fire(name, target) {
+      // Any attempt to cancel/delay navigation makes this check fail.
+      listeners[name]({ target, preventDefault() { throw new Error('navigation blocked'); } });
+    }
   };
 }
 
@@ -64,6 +71,84 @@ test('care requests are distinct from team-contact clicks', () => {
     'request_care_click', 'request_care_click', 'contact_team_click', 'contact_cta_click'
   ]);
   assert.deepEqual(app.events[0].data, { page: '/', placement: 'header' });
+});
+
+function readingLink(href = '/services', overrides = {}) {
+  const anchor = link(href);
+  const attrs = {
+    'data-reading-source': '/hospice-care',
+    'data-reading-destination': '/services',
+    'data-reading-topic': 'services',
+    ...overrides
+  };
+  const get = anchor.getAttribute;
+  const closest = anchor.closest.bind(anchor);
+  anchor.getAttribute = name => name in attrs ? attrs[name] : get(name);
+  anchor.closest = selector => selector === '.elh-related' ? {} : closest(selector);
+  return anchor;
+}
+
+test('curated reading sends fixed metadata to GA4 only, including nested clicks', () => {
+  const app = setup();
+  app.window.location.pathname = '/hospice-care';
+  app.window.location.href = 'https://example.test/hospice-care?email=private@example.test#patient';
+  const anchor = readingLink('/services?email=private@example.test#patient');
+  anchor.textContent = 'Patient private@example.test';
+  app.fire('click', { closest: selector => anchor.closest(selector) });
+  assert.deepEqual(app.gaEvents, [{
+    command: 'event', name: 'related_reading_click',
+    data: { source_page: '/hospice-care', destination_page: '/services', topic: 'services' }
+  }]);
+  assert.equal(app.events.length, 0);
+});
+
+test('reading is suppressed without consent and immediately after revocation', () => {
+  for (const consent of ['essential', null]) {
+    const app = setup(consent);
+    app.fire('click', readingLink());
+    assert.equal(app.gaEvents.length, 0);
+  }
+  const app = setup();
+  app.fire('click', readingLink());
+  app.consent('essential');
+  app.fire('click', readingLink());
+  assert.equal(app.gaEvents.length, 1);
+});
+
+test('ordinary links and malformed or free-form reading metadata are excluded', () => {
+  const app = setup();
+  app.fire('click', link('/services'));
+  for (const overrides of [
+    { 'data-reading-source': null },
+    { 'data-reading-source': '/?email=private@example.test' },
+    { 'data-reading-destination': '/services#patient' },
+    { 'data-reading-destination': 'https://other.test/services' },
+    { 'data-reading-topic': 'Patient details' }
+  ]) app.fire('click', readingLink('/services', overrides));
+  assert.equal(app.gaEvents.length, 0);
+});
+
+test('missing, throwing and rejecting GA4 never interrupt reading navigation', async () => {
+  const app = setup();
+  delete app.window.gtag;
+  assert.doesNotThrow(() => app.fire('click', readingLink()));
+  app.window.gtag = () => { throw new Error('GA4 unavailable'); };
+  assert.doesNotThrow(() => app.fire('click', readingLink()));
+  app.window.gtag = () => Promise.reject(new Error('network unavailable'));
+  assert.doesNotThrow(() => app.fire('click', readingLink()));
+  await new Promise(resolve => setImmediate(resolve));
+});
+
+test('reading instrumentation preserves care and referral conversions on the same links', () => {
+  const app = setup();
+  app.fire('click', readingLink('/refer#referral-form', {
+    'data-reading-destination': '/refer', 'data-reading-topic': 'referral'
+  }));
+  app.fire('click', readingLink('/?lead=family#leadcap', {
+    'data-reading-destination': '/', 'data-reading-topic': 'care'
+  }));
+  assert.deepEqual(app.events.map(e => e.name), ['referral_cta_click', 'request_care_click']);
+  assert.deepEqual(app.gaEvents.map(e => e.name), ['related_reading_click', 'related_reading_click']);
 });
 
 test('nested category targets emit only predefined categories, never input text', () => {

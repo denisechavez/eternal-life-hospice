@@ -39,6 +39,34 @@
   // Shared, safe hook for form and chat code. Never pass visitor-entered text.
   window.elhTrackEvent = trackEvent;
 
+  function trackRelatedReading(link) {
+    if (!analyticsConsentGranted() || !link.closest('.elh-related')) { return; }
+    // These attributes are emitted by the curated-link renderer. Do not read
+    // labels, the current URL (which may contain queries), or form values.
+    var source = link.getAttribute('data-reading-source');
+    var destination = link.getAttribute('data-reading-destination');
+    var topic = link.getAttribute('data-reading-topic');
+    var route = /^\/(?:[a-z0-9-]+\/)*[a-z0-9-]*$/;
+    var topics = ['care', 'services', 'family', 'local', 'journal', 'coverage',
+      'comfort', 'choosing', 'starting', 'whole', 'referral', 'support'];
+    if (!source || !destination || source.length > 150 || destination.length > 150 ||
+        !route.test(source) || !route.test(destination) || topics.indexOf(topic) === -1) { return; }
+    try {
+      if (typeof window.gtag === 'function') {
+        var result = window.gtag('event', 'related_reading_click', {
+          source_page: source,
+          destination_page: destination,
+          topic: topic
+        });
+        if (result && typeof result.catch === 'function') {
+          result.catch(function () {});
+        }
+      }
+    } catch (e) {
+      // Never prevent, delay or replace normal anchor navigation.
+    }
+  }
+
   function pagePath() {
     return window.location.pathname || '/';
   }
@@ -91,6 +119,8 @@
       var link = target && target.closest ? target.closest('a[href]') : null;
       if (!link) { return; }
 
+      trackRelatedReading(link);
+      // Continue through the existing care/referral conversion handlers.
       var rawHref = link.getAttribute('href') || '';
       var data = { page: pagePath(), placement: placementFor(link) };
 

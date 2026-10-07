@@ -4,8 +4,7 @@ description: How GA4 + Microsoft Clarity are wired across the ELH static site
 ---
 
 Analytics is loaded site-wide from a single shared file
-`website/elh-preview/assets/analytics.js` (contains GA4 `G-JRLYCRC48G` +
-Clarity `xddyi1rk95`), referenced with
+`website/elh-preview/assets/analytics.js`, referenced with
 `<script async src="/assets/analytics.js"></script>` before `</head>` on every
 real page.
 
@@ -28,3 +27,18 @@ Website submission success means the intake endpoint accepted the request, not t
 **Why:** ELH's objective is census growth, but website interaction counts cannot establish clinical eligibility, completed referrals or admissions. Combining unrelated contact clicks or treating submission attempts as completed intake would overstate the conversion funnel.
 
 **How to apply:** Distinguish clicks, starts, attempts and confirmed website submission outcomes in reporting. Do not label any of those outcomes as an admission without a separate verified operational source. Custom event metadata must not include visitor-entered care or referral details.
+
+## Curated reading measurement
+
+Keep reading-event dimensions tied to editorial page routes and topic/group keys,
+not visitor URLs, visible labels or form content. Preserve existing conversion
+instrumentation when extending measurement to another analytics destination.
+
+**Why:** Reading journeys concern potentially sensitive end-of-life care. The
+approved measurement scope is fixed source, destination and topic only, using the
+existing consent-aware GA4 loader without another tracker or dashboard.
+
+**How to apply:** Emit only curated metadata, recheck consent on each interaction
+and never delay navigation for delivery. Before comparing reading with care/referral
+outcomes, confirm the outcomes exist in the same reporting service; do not assume
+loading GA4 means every existing custom event is sent to GA4.
