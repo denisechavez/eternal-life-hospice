@@ -13,6 +13,17 @@ while preserving differentiated local content and avoiding invented coverage.
 **How to apply:** Assign a narrower existing owner to new specialist/local articles;
 use small unique-destination groups and preserve approved copy and neighbors.
 
+Contextual internal links must be incorporated into the site's main sentences
+and paragraphs; bottom-of-page reading groups alone do not satisfy this requirement.
+
+**Why:** The user explicitly corrected the sitewide rollout and reiterated that
+links should be encountered within the content, not just at the bottom.
+
+**How to apply:** Link existing descriptive phrases to relevant topic-owner pages,
+preserve approved clinical and business wording, and avoid automatic keyword
+substitution or excessive repeated links. Obtain approval of the implementation
+plan before performing this rollout.
+
 Build-time eligibility alone is insufficient for staged Journal recommendations.
 Recommendations must be selected again at request time using the public publication
 date, including on legacy authored pages and when cached source HTML contains links.
