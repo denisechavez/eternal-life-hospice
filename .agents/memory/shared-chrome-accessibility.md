@@ -8,3 +8,11 @@ Footer changes must be propagated through both standard-page synchronization and
 **Why:** Shared footer markup follows two output paths, and a more-specific desktop link selector can unintentionally expose a hidden utility action on narrow screens.
 
 **How to apply:** After shared header or footer accessibility changes, validate both page families, scan for nested interactive elements, and run the 320px browser regression in addition to parity checks.
+
+## Public footer phone labels
+
+Do not display internal phone roles such as “Main,” “Direct” or “Tracking” beside public footer phone numbers.
+
+**Why:** The user explicitly identifies those labels as internal information, not information for website visitors.
+
+**How to apply:** Preserve the phone numbers and their click-to-call behavior without exposing internal routing labels when updating public footers.

@@ -60,11 +60,11 @@ def main() -> int:
             continue
         text = path.read_text(encoding="utf-8")
         if path.suffix.lower() == ".html" and 'id="site-footer"' in text:
-            if PRIMARY_FOOTER_PHONE not in text or "805.953.7273 · Main" not in text:
+            if PRIMARY_FOOTER_PHONE not in text or "<span>805.953.7273</span>" not in text:
                 findings.append(
                     f"{path.relative_to(ROOT)}: protected primary footer phone missing"
                 )
-            if TRACKED_FOOTER_PHONE not in text or "805.410.1151 · Direct" not in text:
+            if TRACKED_FOOTER_PHONE not in text or "<span>805.410.1151</span>" not in text:
                 findings.append(
                     f"{path.relative_to(ROOT)}: WhatConverts footer phone missing"
                 )
