@@ -49,3 +49,4 @@
 - [City content differentiation](city-content-differentiation.md) — wider rollout approved; preserve pilots and hub, compare the same corpus/method and retain valid clinical caveats.
 - [Publishing tool dependencies](publishing-tool-dependencies.md) — keep internal image-generation libraries optional; working workspace imports do not prove publishing can install them.
 - [Shell callback newlines](shell-callback-newlines.md) — shell stdout may add CRLF; preserve source newlines when copying configuration through callbacks.
+- [Managed AI request paths](managed-ai-requests.md) — use the configured provider base verbatim; managed proxies may reject an added API-version prefix.

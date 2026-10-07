@@ -18,8 +18,7 @@ theirs via `.replace("../","")`).
 The **Eternal Journal** and **The Eternal Care Brief** are separate publications
 and must never share identity, cadence, attribution, or template labels:
 
-- **Eternal Journal:** the website blog, with a daily publishing plan for the
-  next 30 days.
+- **Eternal Journal:** the website blog, with its own editorial schedule.
 - **Eternal Care Brief:** a bi-monthly publication. Only Issue One has been
   produced so far, and it comes from Aleksandra.
 
@@ -93,15 +92,33 @@ Journal look repetitive.
 article hero/share metadata and archive cards together, and reject duplicate
 images across published stories.
 
-Distinct image filenames are not enough: adjacent Journal cards must also feel
+Every new Journal image must be a photograph or convincing photoreal image
+without an AI-looking appearance. Prefer licensed real photographs. Distinct
+image filenames are not enough: adjacent Journal cards must also feel
 visually different. Review the archive as a contact sheet and vary subjects,
 settings and composition rather than filling a run of posts with similar
 bedrooms, bedside hands or consultation scenes.
 **Why:** The user identified visually repeated imagery as unacceptable even
-when every article technically had a different image file.
+when every article technically had a different image file, and explicitly asked
+for unique photographic or photoreal imagery that does not look like AI.
 **How to apply:** Review new images beside their archive neighbors before
 publishing; choose article-specific scenes and preserve the calm, credible
-healthcare tone without implying a depicted person is an actual patient.
+healthcare tone without implying a depicted person is an actual patient. Inspect
+the actual image and its license, not just search metadata: a matching result
+can be a postcard, photographed artwork or a different place mentioned in an itinerary.
+
+## Editorial positioning
+
+Mix national family questions and narrow local topics, vary article length and
+writing structure, and use contextual internal links throughout. Foreground
+sound bathing and end-of-life/death doula support where relevant while explaining
+that personalization begins with listening from the first call.
+**Why:** The user explicitly describes Eternal as personalized from the first
+call and wants these integrative offerings prominent in the Journal, reflecting
+families' questions rather than repeated city-name versions of service copy.
+**How to apply:** Keep each article focused on a distinct practical question.
+Do not turn these business priorities into unsupported claims about societal
+trends, clinical efficacy or guaranteed service availability.
 
 ## Published summary authority
 

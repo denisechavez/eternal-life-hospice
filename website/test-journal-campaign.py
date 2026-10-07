@@ -27,6 +27,16 @@ class JournalCampaignTests(unittest.TestCase):
     def setUpClass(cls):
         cls.articles = builder.load_articles()
 
+    def test_inline_editorial_links_are_safe_and_contextual(self):
+        self.assertEqual(
+            builder.render_inline('Use the [Family Guide](/family-guide) & ask <questions>.'),
+            'Use the <a href="/family-guide">Family Guide</a> &amp; ask &lt;questions&gt;.',
+        )
+        with self.assertRaises(ValueError):
+            builder.render_inline('[Unsafe](javascript:alert)')
+        with self.assertRaises(ValueError):
+            builder.render_inline('[Unsafe](//example.com)')
+
     @contextmanager
     def archive_fixture(self):
         with tempfile.TemporaryDirectory() as directory:
@@ -326,7 +336,7 @@ class JournalCampaignTests(unittest.TestCase):
     def test_generated_metadata_and_schedule(self):
         manifest = json.loads((ROOT / "content" / "30-day-journal-manifest.json").read_text())
         self.assertEqual(len(manifest["articles"]), len(self.articles) - 1)
-        self.assertEqual(manifest["end"], "2026-10-21")
+        self.assertEqual(manifest["end"], max(a["date"] for a in self.articles))
         archive = (ROOT / "elh-preview" / "blog.html").read_text()
         for article in self.articles:
             if article.get("publicationStatus") == "archived":
@@ -361,7 +371,7 @@ class JournalCampaignTests(unittest.TestCase):
                 ("2026-10-19", "2026-10-19", "grief-support-before-and-after-a-loss"),
                 ("2026-10-20", "2026-10-20", "how-physicians-and-facilities-refer-a-patient-to-hospice"),
                 ("2026-10-21", "2026-10-21", "preparing-for-a-hospice-care-plan-conversation"),
-                ("2027-01-01", "2026-10-21", "preparing-for-a-hospice-care-plan-conversation"),
+                ("2027-01-01", self.articles[-1]["date"], self.articles[-1]["slug"]),
             )
             for today, expected_date, slug in cases:
                 with self.subTest(today=today):
@@ -413,7 +423,7 @@ class JournalCampaignTests(unittest.TestCase):
                 path = Path(directory) / "blog.html"
                 path.write_text(source)
                 for today, expected_slug in (
-                    ("2027-01-01", "preparing-for-a-hospice-care-plan-conversation"),
+                    ("2027-01-01", self.articles[-1]["slug"]),
                     ("2027-01-02", "new-journal-story"),
                 ):
                     with self.subTest(today=today):
@@ -433,7 +443,7 @@ class JournalCampaignTests(unittest.TestCase):
                             r'<a class="bf-img" href="([^"]+)"',
                             archive,
                         )
-                        expected_date = "2026-10-21" if today == "2027-01-01" else today
+                        expected_date = self.articles[-1]["date"] if today == "2027-01-01" else today
                         self.assertEqual(featured, [(expected_date, f"blog/{expected_slug}")])
                         self.assertNotIn(
                             f'class="rc" data-publish-date="{expected_date}" href="blog/{expected_slug}"',
@@ -443,8 +453,8 @@ class JournalCampaignTests(unittest.TestCase):
                             self.assertNotIn('href="blog/new-journal-story"', archive)
                         else:
                             self.assertIn(
-                                'class="rc" data-publish-date="2026-10-21" '
-                                'href="blog/preparing-for-a-hospice-care-plan-conversation"',
+                                f'class="rc" data-publish-date="{self.articles[-1]["date"]}" '
+                                f'href="blog/{self.articles[-1]["slug"]}"',
                                 archive,
                             )
         finally:

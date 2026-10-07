@@ -16,6 +16,7 @@ import subprocess
 from datetime import date, timedelta
 from html.parser import HTMLParser
 from pathlib import Path
+from urllib.parse import urlsplit
 from PIL import Image
 from journal_metadata import article_metadata_issues
 
@@ -98,6 +99,27 @@ def load_articles():
 
 def esc(value):
     return html.escape(str(value), quote=True)
+
+
+INLINE_LINK = re.compile(r"\[([^\[\]]+)\]\(([^)\s]+)\)")
+
+
+def render_inline(value):
+    """Render editorial Markdown links without accepting arbitrary HTML."""
+    text = str(value)
+    parts, position = [], 0
+    for match in INLINE_LINK.finditer(text):
+        href = match.group(2)
+        parsed = urlsplit(href)
+        internal = href.startswith("/") and not href.startswith("//") and not parsed.netloc
+        external = parsed.scheme == "https" and parsed.hostname and not parsed.username
+        if not (internal or external):
+            raise ValueError(f"Unsafe editorial link: {href}")
+        parts.append(esc(text[position:match.start()]))
+        parts.append(f'<a href="{esc(href)}">{esc(match.group(1))}</a>')
+        position = match.end()
+    parts.append(esc(text[position:]))
+    return "".join(parts)
 
 
 class PublishedSummaryParser(HTMLParser):
@@ -185,14 +207,38 @@ def render_body(article):
         f'<h1>{esc(article["title"])}</h1><p>{esc(article["description"])}</p></section>',
         '<article class="article sec wrap">',
         '<a class="backlink" href="../blog">&#8592;&nbsp;All Journal Posts</a>',
-        f'<div class="blog-byline">By <b>Eternal Life Hospice</b> &middot; '
+        f'<div class="blog-byline">By <b>The Eternal Life Hospice Team</b> &middot; '
         f'<time datetime="{article["date"]}">{date.fromisoformat(article["date"]).strftime("%B %-d, %Y")}</time> '
         f'&middot; {article["readMinutes"]} min read</div>',
-        f'<p class="lede">{esc(article["lede"])}</p>',
+        f'<p class="lede">{render_inline(article["lede"])}</p>',
     ]
+    credit = article.get("photoCredit")
+    if credit:
+        bits.append(
+            '<p class="journal-photo-credit"><small>Illustrative photograph: '
+            f'{esc(credit["author"])} / '
+            f'<a href="{esc(credit["sourceUrl"])}" rel="noopener">{esc(credit.get("sourceName", "Wikimedia Commons"))}</a> &middot; '
+            f'<a href="{esc(credit["licenseUrl"])}" rel="noopener">{esc(credit["license"])}</a>. '
+            'Resized for display. The photograph does not depict an Eternal patient or service encounter.'
+            '</small></p>'
+        )
     for section in article["sections"]:
         bits.append(f'<h2>{esc(section["heading"])}</h2>')
-        bits.extend(f"<p>{esc(paragraph)}</p>" for paragraph in section["paragraphs"])
+        bits.extend(f"<p>{render_inline(paragraph)}</p>" for paragraph in section["paragraphs"])
+    if article.get("sources"):
+        bits.append('<aside class="note-panel"><h2>Sources and further reading</h2>')
+        for source in article["sources"]:
+            bits.append(f'<p>{render_inline("[" + source["title"] + "](" + source["url"] + ")")}</p>')
+        bits.append("</aside>")
+    if article.get("integrativeNote"):
+        bits.append(
+            '<aside class="note-panel"><h2>About optional integrative support</h2>'
+            '<p>Sound bathing and end-of-life doula support are optional, nonclinical '
+            'comfort offerings guided by the person’s wishes and the care plan. '
+            'They do not replace licensed care. These offerings are not covered by '
+            'Medicare or Medi-Cal. Eternal Life Hospice covers the expense '
+            'at no additional expense to families. Ask the team about availability and fit.</p></aside>'
+        )
     bits.append("</article>")
     return "\n".join(bits)
 
@@ -255,7 +301,8 @@ def render_post(article, template):
         return match.group(0)
     head = re.sub(r'<script type="application/ld\+json">([\s\S]*?)</script>',
                   replace_breadcrumb, head)
-    head = re.sub(r'(<meta property="og:image:alt" content=")[^"]*(")', rf"\g<1>{title} | Eternal Life Hospice\2", head, count=1)
+    image_alt = esc(article.get("heroImageAlt", article["title"] + " | Eternal Life Hospice"))
+    head = re.sub(r'(<meta property="og:image:alt" content=")[^"]*(")', rf"\g<1>{image_alt}\2", head, count=1)
     return head
 
 

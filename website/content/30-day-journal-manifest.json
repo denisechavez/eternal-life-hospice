@@ -1,7 +1,7 @@
 {
   "timezone": "America/Los_Angeles",
   "start": "2026-09-21",
-  "end": "2026-10-21",
+  "end": "2026-12-31",
   "articles": [
     {
       "slug": "what-happens-during-a-hospice-evaluation",
@@ -152,6 +152,361 @@
       "slug": "preparing-for-a-hospice-care-plan-conversation",
       "date": "2026-10-21",
       "url": "/blog/preparing-for-a-hospice-care-plan-conversation"
+    },
+    {
+      "slug": "before-the-first-hospice-visit-share-the-person-not-just-the-diagnosis",
+      "date": "2026-10-22",
+      "url": "/blog/before-the-first-hospice-visit-share-the-person-not-just-the-diagnosis"
+    },
+    {
+      "slug": "a-death-doula-and-a-hospice-nurse-different-roles-shared-support",
+      "date": "2026-10-23",
+      "url": "/blog/a-death-doula-and-a-hospice-nurse-different-roles-shared-support"
+    },
+    {
+      "slug": "thousand-oaks-families-coordinating-care-when-relatives-live-far-away",
+      "date": "2026-10-24",
+      "url": "/blog/thousand-oaks-families-coordinating-care-when-relatives-live-far-away"
+    },
+    {
+      "slug": "what-to-ask-before-trying-a-sound-bath-during-hospice-care",
+      "date": "2026-10-25",
+      "url": "/blog/what-to-ask-before-trying-a-sound-bath-during-hospice-care"
+    },
+    {
+      "slug": "hospice-and-home-health-which-questions-clarify-the-difference",
+      "date": "2026-10-26",
+      "url": "/blog/hospice-and-home-health-which-questions-clarify-the-difference"
+    },
+    {
+      "slug": "westlake-village-who-will-be-home-between-hospice-visits",
+      "date": "2026-10-27",
+      "url": "/blog/westlake-village-who-will-be-home-between-hospice-visits"
+    },
+    {
+      "slug": "the-hospice-election-statement-read-it-as-a-conversation",
+      "date": "2026-10-28",
+      "url": "/blog/the-hospice-election-statement-read-it-as-a-conversation"
+    },
+    {
+      "slug": "personalized-comfort-starts-with-permission",
+      "date": "2026-10-29",
+      "url": "/blog/personalized-comfort-starts-with-permission"
+    },
+    {
+      "slug": "calabasas-plan-a-calm-handoff-between-home-and-assisted-living",
+      "date": "2026-10-30",
+      "url": "/blog/calabasas-plan-a-calm-handoff-between-home-and-assisted-living"
+    },
+    {
+      "slug": "keeping-ordinary-traditions-during-hospice-care",
+      "date": "2026-10-31",
+      "url": "/blog/keeping-ordinary-traditions-during-hospice-care"
+    },
+    {
+      "slug": "november-conversations-about-hospice-ask-better-questions",
+      "date": "2026-11-01",
+      "url": "/blog/november-conversations-about-hospice-ask-better-questions"
+    },
+    {
+      "slug": "camarillo-build-a-caregiving-plan-around-work-schedules",
+      "date": "2026-11-02",
+      "url": "/blog/camarillo-build-a-caregiving-plan-around-work-schedules"
+    },
+    {
+      "slug": "family-group-chats-and-hospice-keep-updates-useful-and-private",
+      "date": "2026-11-03",
+      "url": "/blog/family-group-chats-and-hospice-keep-updates-useful-and-private"
+    },
+    {
+      "slug": "death-doulas-and-legacy-work-let-the-person-set-the-pace",
+      "date": "2026-11-04",
+      "url": "/blog/death-doulas-and-legacy-work-let-the-person-set-the-pace"
+    },
+    {
+      "slug": "conejo-valley-organize-one-contact-list-across-two-counties",
+      "date": "2026-11-05",
+      "url": "/blog/conejo-valley-organize-one-contact-list-across-two-counties"
+    },
+    {
+      "slug": "when-quiet-is-the-preferred-comfort-modality",
+      "date": "2026-11-06",
+      "url": "/blog/when-quiet-is-the-preferred-comfort-modality"
+    },
+    {
+      "slug": "a-hospice-care-plan-can-change-what-families-can-ask-for",
+      "date": "2026-11-07",
+      "url": "/blog/a-hospice-care-plan-can-change-what-families-can-ask-for"
+    },
+    {
+      "slug": "ventura-prepare-a-home-hospice-plan-for-power-interruptions",
+      "date": "2026-11-08",
+      "url": "/blog/ventura-prepare-a-home-hospice-plan-for-power-interruptions"
+    },
+    {
+      "slug": "sound-baths-music-and-silence-three-different-choices",
+      "date": "2026-11-09",
+      "url": "/blog/sound-baths-music-and-silence-three-different-choices"
+    },
+    {
+      "slug": "help-for-the-caregiver-who-cannot-be-at-every-visit",
+      "date": "2026-11-10",
+      "url": "/blog/help-for-the-caregiver-who-cannot-be-at-every-visit"
+    },
+    {
+      "slug": "veterans-and-hospice-bring-service-history-into-care-conversations",
+      "date": "2026-11-11",
+      "url": "/blog/veterans-and-hospice-bring-service-history-into-care-conversations"
+    },
+    {
+      "slug": "oxnard-ask-about-language-and-communication-preferences-early",
+      "date": "2026-11-12",
+      "url": "/blog/oxnard-ask-about-language-and-communication-preferences-early"
+    },
+    {
+      "slug": "advance-directives-and-hospice-enrollment-are-different-decisions",
+      "date": "2026-11-13",
+      "url": "/blog/advance-directives-and-hospice-enrollment-are-different-decisions"
+    },
+    {
+      "slug": "how-to-talk-with-a-death-doula-about-boundaries",
+      "date": "2026-11-14",
+      "url": "/blog/how-to-talk-with-a-death-doula-about-boundaries"
+    },
+    {
+      "slug": "thousand-oaks-prepare-for-holiday-visitors-without-changing-care-goals",
+      "date": "2026-11-15",
+      "url": "/blog/thousand-oaks-prepare-for-holiday-visitors-without-changing-care-goals"
+    },
+    {
+      "slug": "what-online-hospice-reviews-can-tell-youand-what-they-cannot",
+      "date": "2026-11-16",
+      "url": "/blog/what-online-hospice-reviews-can-tell-youand-what-they-cannot"
+    },
+    {
+      "slug": "supporting-a-person-who-finds-touch-uncomfortable",
+      "date": "2026-11-17",
+      "url": "/blog/supporting-a-person-who-finds-touch-uncomfortable"
+    },
+    {
+      "slug": "westlake-village-when-siblings-disagree-about-hospice",
+      "date": "2026-11-18",
+      "url": "/blog/westlake-village-when-siblings-disagree-about-hospice"
+    },
+    {
+      "slug": "planning-a-small-gathering-around-energy-not-expectations",
+      "date": "2026-11-19",
+      "url": "/blog/planning-a-small-gathering-around-energy-not-expectations"
+    },
+    {
+      "slug": "before-adding-a-complementary-practice-ask-these-safety-questions",
+      "date": "2026-11-20",
+      "url": "/blog/before-adding-a-complementary-practice-ask-these-safety-questions"
+    },
+    {
+      "slug": "calabasas-questions-for-a-facility-and-hospice-team-to-answer-together",
+      "date": "2026-11-21",
+      "url": "/blog/calabasas-questions-for-a-facility-and-hospice-team-to-answer-together"
+    },
+    {
+      "slug": "the-visiting-relative-s-guide-to-helping-a-hospice-family",
+      "date": "2026-11-22",
+      "url": "/blog/the-visiting-relative-s-guide-to-helping-a-hospice-family"
+    },
+    {
+      "slug": "camarillo-a-holiday-backup-plan-for-the-family-caregiver",
+      "date": "2026-11-23",
+      "url": "/blog/camarillo-a-holiday-backup-plan-for-the-family-caregiver"
+    },
+    {
+      "slug": "sound-bathing-for-family-caregivers-comfort-without-a-performance-goal",
+      "date": "2026-11-24",
+      "url": "/blog/sound-bathing-for-family-caregivers-comfort-without-a-performance-goal"
+    },
+    {
+      "slug": "what-a-hospice-family-can-decide-before-thanksgiving",
+      "date": "2026-11-25",
+      "url": "/blog/what-a-hospice-family-can-decide-before-thanksgiving"
+    },
+    {
+      "slug": "thanksgiving-during-hospice-make-room-for-mixed-feelings",
+      "date": "2026-11-26",
+      "url": "/blog/thanksgiving-during-hospice-make-room-for-mixed-feelings"
+    },
+    {
+      "slug": "conejo-valley-share-the-care-without-making-every-home-a-care-site",
+      "date": "2026-11-27",
+      "url": "/blog/conejo-valley-share-the-care-without-making-every-home-a-care-site"
+    },
+    {
+      "slug": "the-difference-between-being-present-and-knowing-what-to-say",
+      "date": "2026-11-28",
+      "url": "/blog/the-difference-between-being-present-and-knowing-what-to-say"
+    },
+    {
+      "slug": "who-pays-for-integrative-comfort-services-in-hospice",
+      "date": "2026-11-29",
+      "url": "/blog/who-pays-for-integrative-comfort-services-in-hospice"
+    },
+    {
+      "slug": "ventura-keep-care-instructions-clear-when-weather-changes-plans",
+      "date": "2026-11-30",
+      "url": "/blog/ventura-keep-care-instructions-clear-when-weather-changes-plans"
+    },
+    {
+      "slug": "oxnard-make-the-first-hospice-call-useful-with-five-practical-details",
+      "date": "2026-12-01",
+      "url": "/blog/oxnard-make-the-first-hospice-call-useful-with-five-practical-details"
+    },
+    {
+      "slug": "a-hospice-checklist-for-families-who-travel-in-december",
+      "date": "2026-12-02",
+      "url": "/blog/a-hospice-checklist-for-families-who-travel-in-december"
+    },
+    {
+      "slug": "comfort-for-a-person-with-hearing-changes-sound-is-a-choice",
+      "date": "2026-12-03",
+      "url": "/blog/comfort-for-a-person-with-hearing-changes-sound-is-a-choice"
+    },
+    {
+      "slug": "thousand-oaks-protect-rest-during-a-busy-visiting-season",
+      "date": "2026-12-04",
+      "url": "/blog/thousand-oaks-protect-rest-during-a-busy-visiting-season"
+    },
+    {
+      "slug": "the-death-doula-s-nonclinical-role-in-family-conversations",
+      "date": "2026-12-05",
+      "url": "/blog/the-death-doula-s-nonclinical-role-in-family-conversations"
+    },
+    {
+      "slug": "when-a-caregiver-needs-someone-else-to-take-the-next-shift",
+      "date": "2026-12-06",
+      "url": "/blog/when-a-caregiver-needs-someone-else-to-take-the-next-shift"
+    },
+    {
+      "slug": "westlake-village-coordinate-hospice-questions-across-family-households",
+      "date": "2026-12-07",
+      "url": "/blog/westlake-village-coordinate-hospice-questions-across-family-households"
+    },
+    {
+      "slug": "what-to-keep-in-a-simple-hospice-care-notebook",
+      "date": "2026-12-08",
+      "url": "/blog/what-to-keep-in-a-simple-hospice-care-notebook"
+    },
+    {
+      "slug": "choosing-familiar-music-instead-of-a-structured-sound-bath",
+      "date": "2026-12-09",
+      "url": "/blog/choosing-familiar-music-instead-of-a-structured-sound-bath"
+    },
+    {
+      "slug": "calabasas-clarify-hospice-responsibilities-before-a-move",
+      "date": "2026-12-10",
+      "url": "/blog/calabasas-clarify-hospice-responsibilities-before-a-move"
+    },
+    {
+      "slug": "dignity-in-daily-care-ask-about-privacy-before-routines",
+      "date": "2026-12-11",
+      "url": "/blog/dignity-in-daily-care-ask-about-privacy-before-routines"
+    },
+    {
+      "slug": "grief-and-holiday-invitations-a-short-guide-to-choosing",
+      "date": "2026-12-12",
+      "url": "/blog/grief-and-holiday-invitations-a-short-guide-to-choosing"
+    },
+    {
+      "slug": "camarillo-ask-about-equipment-before-rearranging-the-home",
+      "date": "2026-12-13",
+      "url": "/blog/camarillo-ask-about-equipment-before-rearranging-the-home"
+    },
+    {
+      "slug": "hospice-visits-and-telephones-use-each-for-the-right-question",
+      "date": "2026-12-14",
+      "url": "/blog/hospice-visits-and-telephones-use-each-for-the-right-question"
+    },
+    {
+      "slug": "integrative-wellness-is-an-offer-not-an-obligation",
+      "date": "2026-12-15",
+      "url": "/blog/integrative-wellness-is-an-offer-not-an-obligation"
+    },
+    {
+      "slug": "conejo-valley-plan-a-family-meeting-with-the-patient-s-voice-first",
+      "date": "2026-12-16",
+      "url": "/blog/conejo-valley-plan-a-family-meeting-with-the-patient-s-voice-first"
+    },
+    {
+      "slug": "photographs-recordings-and-legacy-projects-ask-for-consent",
+      "date": "2026-12-17",
+      "url": "/blog/photographs-recordings-and-legacy-projects-ask-for-consent"
+    },
+    {
+      "slug": "can-hospice-continue-longer-than-six-months",
+      "date": "2026-12-18",
+      "url": "/blog/can-hospice-continue-longer-than-six-months"
+    },
+    {
+      "slug": "ventura-a-rainy-season-communication-plan-for-hospice-at-home",
+      "date": "2026-12-19",
+      "url": "/blog/ventura-a-rainy-season-communication-plan-for-hospice-at-home"
+    },
+    {
+      "slug": "how-an-end-of-life-doula-can-support-a-family-s-own-traditions",
+      "date": "2026-12-20",
+      "url": "/blog/how-an-end-of-life-doula-can-support-a-family-s-own-traditions"
+    },
+    {
+      "slug": "the-winter-solstice-a-quiet-reflection-without-health-promises",
+      "date": "2026-12-21",
+      "url": "/blog/the-winter-solstice-a-quiet-reflection-without-health-promises"
+    },
+    {
+      "slug": "oxnard-plan-holiday-care-around-the-household-you-have",
+      "date": "2026-12-22",
+      "url": "/blog/oxnard-plan-holiday-care-around-the-household-you-have"
+    },
+    {
+      "slug": "when-a-loved-one-wants-fewer-holiday-visitors",
+      "date": "2026-12-23",
+      "url": "/blog/when-a-loved-one-wants-fewer-holiday-visitors"
+    },
+    {
+      "slug": "a-gentle-christmas-eve-during-hospice-care",
+      "date": "2026-12-24",
+      "url": "/blog/a-gentle-christmas-eve-during-hospice-care"
+    },
+    {
+      "slug": "presence-over-a-perfect-holiday",
+      "date": "2026-12-25",
+      "url": "/blog/presence-over-a-perfect-holiday"
+    },
+    {
+      "slug": "what-to-do-when-family-caregiving-plans-need-to-change",
+      "date": "2026-12-26",
+      "url": "/blog/what-to-do-when-family-caregiving-plans-need-to-change"
+    },
+    {
+      "slug": "thousand-oaks-questions-to-carry-into-a-new-year-of-care",
+      "date": "2026-12-27",
+      "url": "/blog/thousand-oaks-questions-to-carry-into-a-new-year-of-care"
+    },
+    {
+      "slug": "preparing-a-hospice-family-s-year-end-contact-and-document-check",
+      "date": "2026-12-28",
+      "url": "/blog/preparing-a-hospice-family-s-year-end-contact-and-document-check"
+    },
+    {
+      "slug": "westlake-village-revisit-comfort-preferences-after-the-holidays",
+      "date": "2026-12-29",
+      "url": "/blog/westlake-village-revisit-comfort-preferences-after-the-holidays"
+    },
+    {
+      "slug": "what-families-can-ask-about-the-next-medicare-benefit-period",
+      "date": "2026-12-30",
+      "url": "/blog/what-families-can-ask-about-the-next-medicare-benefit-period"
+    },
+    {
+      "slug": "begin-the-new-year-with-one-clear-care-conversation",
+      "date": "2026-12-31",
+      "url": "/blog/begin-the-new-year-with-one-clear-care-conversation"
     }
   ]
 }

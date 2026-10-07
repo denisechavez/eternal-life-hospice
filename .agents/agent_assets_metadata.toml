@@ -1848,3 +1848,31 @@ mtime_ms = 1790991391501
 storage_uri = "gcs://replit-rams-assets-kirk/rams/assets/repl:e1b2f643-7869-4565-af0e-10c34575ee8d/66273a95-d72f-4485-895d-dca95000e9bf/b74974dc-6100-4138-9a09-ab9a8d113349"
 storage_version_token = "1790991456802596"
 content_type = "text/csv"
+
+[[outputs]]
+id = "Zd9rjXMmfYKbor1DDE6KN"
+uri = "file://exports/journal/q4-2026-editorial-review.html"
+type = "html"
+title = "Eternal Journal — 71 Articles & Photographs for Review"
+description = "Complete October 22–December 31, 2026 drafts, with every photograph embedded, contextual links and source credits. Open individual articles or expand a month for review."
+logical_id = "ae1b462c-825d-4c84-84ed-c25e98ac16b7"
+content_hash = "sha256:f4095a568779edb8fb3212c132d8d66de0e14b6fc48a8f3a14da80b05ad52518"
+size = 6276700
+mtime_ms = 1791410657801
+storage_uri = "gcs://replit-rams-assets-kirk/rams/assets/repl:e1b2f643-7869-4565-af0e-10c34575ee8d/ae1b462c-825d-4c84-84ed-c25e98ac16b7/5fda45e0-4dc9-4fee-b9c2-89944387a8ab"
+storage_version_token = "1791411063813883"
+content_type = "text/html"
+
+[[outputs]]
+id = "OupVeBhBZ2LW65kLbMqp7"
+uri = "file://exports/journal/q4-2026-editorial-calendar.csv"
+type = "table"
+title = "Daily Publishing Calendar — October 22–December 31"
+description = "71 dates with article titles, local or national focus, categories, reading times and photograph licenses."
+logical_id = "ca7aac8a-bc12-4676-9650-2b4fc4b60900"
+content_hash = "sha256:d946b53a407ee17ec707f8aa742abd8079487f591dfdab2a4642d63f68fb0e2a"
+size = 12726
+mtime_ms = 1791410657807
+storage_uri = "gcs://replit-rams-assets-kirk/rams/assets/repl:e1b2f643-7869-4565-af0e-10c34575ee8d/ca7aac8a-bc12-4676-9650-2b4fc4b60900/93298959-ad8b-4f8e-bf98-77e7140ecc1e"
+storage_version_token = "1791411065016066"
+content_type = "text/csv"

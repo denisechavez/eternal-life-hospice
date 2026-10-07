@@ -45,9 +45,9 @@ class ResourcesJournalTests(unittest.TestCase):
             "2026-10-21": ["preparing-for-a-hospice-care-plan-conversation",
                            "how-physicians-and-facilities-refer-a-patient-to-hospice",
                            "grief-support-before-and-after-a-loss"],
-            "2027-01-01": ["preparing-for-a-hospice-care-plan-conversation",
-                           "how-physicians-and-facilities-refer-a-patient-to-hospice",
-                           "grief-support-before-and-after-a-loss"],
+            "2027-01-01": ["begin-the-new-year-with-one-clear-care-conversation",
+                           "what-families-can-ask-about-the-next-medicare-benefit-period",
+                           "westlake-village-revisit-comfort-preferences-after-the-holidays"],
         }
         source = (ROOT / "resources.html").read_text()
         before, rest = source.split("<!-- JOURNAL_PICKS_START -->")
