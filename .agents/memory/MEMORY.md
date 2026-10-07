@@ -50,3 +50,4 @@
 - [Publishing tool dependencies](publishing-tool-dependencies.md) — keep internal image-generation libraries optional; working workspace imports do not prove publishing can install them.
 - [Shell callback newlines](shell-callback-newlines.md) — shell stdout may add CRLF; preserve source newlines when copying configuration through callbacks.
 - [Managed AI request paths](managed-ai-requests.md) — use the configured provider base verbatim; managed proxies may reject an added API-version prefix.
+- [Completion checkpoint safety](completion-checkpoint-safety.md) — completion can capture unrelated dirty files even for no-change verification; disclose this risk before completing.
