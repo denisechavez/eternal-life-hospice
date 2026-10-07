@@ -1876,3 +1876,17 @@ mtime_ms = 1791410657807
 storage_uri = "gcs://replit-rams-assets-kirk/rams/assets/repl:e1b2f643-7869-4565-af0e-10c34575ee8d/ca7aac8a-bc12-4676-9650-2b4fc4b60900/93298959-ad8b-4f8e-bf98-77e7140ecc1e"
 storage_version_token = "1791411065016066"
 content_type = "text/csv"
+
+[[outputs]]
+id = "4ZaHFfAj8bFGwJpuJKXKO"
+uri = "file://exports/site-audits/internal-link-page-list-2026-10-07.csv"
+type = "table"
+title = "Complete List of Pages With Generated Internal Links"
+description = "Every page with the generated Continue exploring section: 192 current-date eligible pages and 85 scheduled Journal articles. Includes direct section URLs and each page’s generated link destinations."
+logical_id = "c24940cb-a99a-4ef7-b56b-dd1f4a8b3c01"
+content_hash = "sha256:c233f262592e9102b8649f4d3c090a023525dd058d6ccaf8a5dde42760239f17"
+size = 112315
+mtime_ms = 1791412189711
+storage_uri = "gcs://replit-rams-assets-kirk/rams/assets/repl:e1b2f643-7869-4565-af0e-10c34575ee8d/c24940cb-a99a-4ef7-b56b-dd1f4a8b3c01/183c255e-0dc7-42c1-86a4-d52c424b8b7f"
+storage_version_token = "1791412265733136"
+content_type = "text/csv"
