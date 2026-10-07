@@ -8,7 +8,7 @@ Static marketing website for Eternal Life Hospice, Inc., a Medicare-certified ho
 - Core public pages: `/refer`, `/careers`, `/family-guide`, `/resources`, `/volunteer`, `/sound-bath`, `/blog`, `/care-brief`
 - Resource articles under `/resources/`
 - Blog index and blog detail pages under `/blog/`
-- 146 city/location pages (`/hospice-*-ca.html`) — programmatic local SEO
+- 145 data-backed city/location pages plus the county hub (146 `/hospice-*-ca.html` URLs total) — programmatic local SEO
 - County hub and regional hub pages
 - Media Kit, referral eCard, and Care Brief pages for audit coverage, with exception status considered in prioritization
 
@@ -35,7 +35,9 @@ Static marketing website for Eternal Life Hospice, Inc., a Medicare-certified ho
 Generate qualified hospice referrals that convert into admissions. Every page should answer: Why Eternal? Why now? What happens next? How do I refer?
 
 ## Crawler and AI assumptions
-- Site is fully static HTML — all content visible to Googlebot and AI crawlers without JavaScript rendering
+- Site serves complete HTML through `website/devserver.py` — public primary content does not require JavaScript rendering. Journal archives, resources, sitemap and search index are publication-date filtered on the server; scheduled articles are intentionally unavailable until publication.
+- Current public language is English; no separate Spanish-language HTML alternate exists.
+- City-page content is authored in `website/city-data.json` and generated with `website/build-cities.py`; local factual claims and any consolidation/noindex decisions require human/compliance approval.
 - HTTPS and the custom domain are managed by Replit Publishing
 - www → non-www canonical is enforced at the domain/publishing layer
 - `llms.txt` is present and the current source scan found links for all 146 city/location pages plus the principal public content routes; recheck when new pages are added
@@ -45,3 +47,7 @@ Generate qualified hospice referrals that convert into admissions. Every page sh
 - HTTPS / SSL issues — handled by Replit Publishing
 - JavaScript rendering issues — site is fully static HTML, not a SPA
 - Missing favicon — confirmed custom branded favicon at `assets/favicon.png`
+
+## Compliance and factual consistency
+- Integrative therapies must use comfort-focused, non-treatment language without medical-efficacy claims, including AI-facing summaries in `llms.txt`.
+- Replit server blocks internal Markdown/Python artifacts, work hubs and temporary galleries. Agent-facing documentation excluded from normal UI SEO remains subject to factual consistency checks where relevant.
