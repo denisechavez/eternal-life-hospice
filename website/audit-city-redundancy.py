@@ -8,6 +8,7 @@ import itertools
 import json
 from pathlib import Path
 import re
+from statistics import mean, median
 
 ROOT = Path(__file__).resolve().parent
 PUBLIC = ROOT / "elh-preview"
@@ -92,6 +93,71 @@ def summarize(pages):
     }
 
 
+class MainParagraphs(VisibleText):
+    """Collect paragraph text only, excluding navigation and shared chrome."""
+    def __init__(self):
+        super().__init__(main_only=True)
+        self.paragraphs = []
+        self.paragraph_start = None
+
+    def handle_starttag(self, tag, attrs):
+        super().handle_starttag(tag, attrs)
+        if tag == "p":
+            self.paragraph_start = len(self.parts)
+
+    def handle_endtag(self, tag):
+        if tag == "p" and self.paragraph_start is not None:
+            text = "".join(self.parts[self.paragraph_start:])
+            if text.strip():
+                self.paragraphs.append(text)
+            self.paragraph_start = None
+        super().handle_endtag(tag)
+
+
+def paragraph_repetition(corpus, name_pattern, minimum_pages=20):
+    """Exact normalized paragraphs recurring on at least 20 distinct pages.
+
+    This is deliberately separate from the existing eight-word phrase measure.
+    Normalize every known city and both county labels before comparison.
+    """
+    county_pattern = re.compile(r"\b(?:Ventura|Los Angeles) County\b", re.I)
+    pages = {}
+    for slug, markup in corpus.items():
+        parser = MainParagraphs()
+        parser.feed(markup)
+        pages[slug] = [
+            " ".join(name_pattern.sub("city", county_pattern.sub("county", p)).lower().split())
+            for p in parser.paragraphs
+        ]
+    counts = Counter(p for paragraphs in pages.values() for p in set(paragraphs))
+    per_page = {}
+    for slug, paragraphs in pages.items():
+        words = sum(len(p.split()) for p in paragraphs)
+        repeated = sum(len(p.split()) for p in paragraphs if counts[p] >= minimum_pages)
+        per_page[slug] = {
+            "paragraph_words": words,
+            "repeated_paragraph_words": repeated,
+            "repeated_percent": round(100 * repeated / max(1, words), 2),
+        }
+    percentages = [p["repeated_percent"] for p in per_page.values()]
+    return {
+        "minimum_pages": minimum_pages,
+        "method": "Paragraphs within main only; excludes navigation, header, footer, "
+                  "scripts and styles. HTML entities decoded, whitespace collapsed "
+                  "and text lowercased; all source city names and Ventura/Los Angeles "
+                  "County labels normalized. Counts paragraph words recurring on "
+                  "at least the minimum number of distinct pages, not similar prose.",
+        "page_count": len(corpus),
+        "pages_at_least_half_repeated": sum(p >= 50 for p in percentages),
+        "median_repeated_percent": round(median(percentages), 2) if percentages else 0,
+        "mean_repeated_percent": round(mean(percentages), 2) if percentages else 0,
+        "per_page": per_page,
+        "caveat": "A source-text comparison, not a Google quality or ranking score. "
+                  "Low repetition alone does not establish local usefulness or "
+                  "verify clinical claims.",
+    }
+
+
 def audit():
     cities = json.loads((ROOT / "city-data.json").read_text())
     cities = [c for c in cities if c.get("publishStatus") == "published"]
@@ -119,7 +185,8 @@ def audit():
                       "or a Google ranking/quality measurement."
         },
         "main_content": summarize({s: tokens(p, True, pattern) for s, p in corpus.items()}),
-        "full_visible_page": summarize({s: tokens(p, False, pattern) for s, p in corpus.items()})
+        "full_visible_page": summarize({s: tokens(p, False, pattern) for s, p in corpus.items()}),
+        "exact_paragraphs": paragraph_repetition(corpus, pattern),
     }
 
 
@@ -135,6 +202,11 @@ def main():
         print(scope, result[scope]["word_weighted_redundancy_percent"],
               "% repeated-word coverage;",
               result[scope]["average_pairwise_jaccard_percent"], "% average Jaccard")
+    paragraphs = result["exact_paragraphs"]
+    print("exact_paragraphs:", paragraphs["pages_at_least_half_repeated"],
+          "pages at least half repeated;",
+          paragraphs["median_repeated_percent"], "% median;",
+          paragraphs["mean_repeated_percent"], "% mean")
 
 
 if __name__ == "__main__":

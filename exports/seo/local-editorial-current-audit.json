@@ -1,0 +1,2319 @@
+{
+  "measured_at_utc": "2026-10-07T21:52:12.021465+00:00",
+  "page_count": 145,
+  "scope": "All published local landing pages in city-data.json; county hub excluded",
+  "method": {
+    "phrase_length_words": 8,
+    "city_names_normalized": true,
+    "primary": "Percent of main-content word positions belonging to an exact eight-word phrase also present on at least one OTHER local page. Word-weighted across the fixed corpus; overlapping matches count each word once. Excludes navigation, footer, scripts, styles, shared credential labels and CTA button text.",
+    "secondary": "Same repeated-word measure on all visible page text, including navigation and footer.",
+    "pairwise": "Eight-word set Jaccard intersection/union across every pair",
+    "caveat": "Local text-overlap audit, not a Siteliner score, plagiarism score or a Google ranking/quality measurement."
+  },
+  "main_content": {
+    "word_weighted_redundancy_percent": 21.74,
+    "average_pairwise_jaccard_percent": 1.53,
+    "worst_pairs": [
+      {
+        "jaccard_percent": 6.47,
+        "left": "rowland-heights",
+        "right": "san-fernando"
+      },
+      {
+        "jaccard_percent": 5.87,
+        "left": "rowland-heights",
+        "right": "san-dimas"
+      },
+      {
+        "jaccard_percent": 5.55,
+        "left": "sun-valley",
+        "right": "sylmar"
+      },
+      {
+        "jaccard_percent": 5.5,
+        "left": "san-dimas",
+        "right": "san-fernando"
+      },
+      {
+        "jaccard_percent": 5.03,
+        "left": "south-el-monte",
+        "right": "south-gate"
+      },
+      {
+        "jaccard_percent": 4.93,
+        "left": "sunland",
+        "right": "sylmar"
+      },
+      {
+        "jaccard_percent": 4.34,
+        "left": "sun-valley",
+        "right": "sunland"
+      },
+      {
+        "jaccard_percent": 4.32,
+        "left": "somis",
+        "right": "south-gate"
+      },
+      {
+        "jaccard_percent": 3.93,
+        "left": "somis",
+        "right": "south-el-monte"
+      },
+      {
+        "jaccard_percent": 3.92,
+        "left": "panorama-city",
+        "right": "pasadena"
+      }
+    ],
+    "total_words": 156270,
+    "total_repeated_words": 33979,
+    "per_page": {
+      "acton": {
+        "words": 1045,
+        "repeated_words": 302,
+        "redundancy_percent": 28.9
+      },
+      "agoura-hills": {
+        "words": 1034,
+        "repeated_words": 254,
+        "redundancy_percent": 24.56
+      },
+      "alhambra": {
+        "words": 1059,
+        "repeated_words": 183,
+        "redundancy_percent": 17.28
+      },
+      "altadena": {
+        "words": 981,
+        "repeated_words": 258,
+        "redundancy_percent": 26.3
+      },
+      "arcadia": {
+        "words": 1037,
+        "repeated_words": 218,
+        "redundancy_percent": 21.02
+      },
+      "arleta": {
+        "words": 1041,
+        "repeated_words": 175,
+        "redundancy_percent": 16.81
+      },
+      "artesia": {
+        "words": 1026,
+        "repeated_words": 281,
+        "redundancy_percent": 27.39
+      },
+      "avalon": {
+        "words": 1144,
+        "repeated_words": 177,
+        "redundancy_percent": 15.47
+      },
+      "azusa": {
+        "words": 1102,
+        "repeated_words": 210,
+        "redundancy_percent": 19.06
+      },
+      "baldwin-park": {
+        "words": 897,
+        "repeated_words": 231,
+        "redundancy_percent": 25.75
+      },
+      "bell": {
+        "words": 909,
+        "repeated_words": 193,
+        "redundancy_percent": 21.23
+      },
+      "bell-gardens": {
+        "words": 927,
+        "repeated_words": 185,
+        "redundancy_percent": 19.96
+      },
+      "bellflower": {
+        "words": 1037,
+        "repeated_words": 246,
+        "redundancy_percent": 23.72
+      },
+      "beverly-hills": {
+        "words": 1031,
+        "repeated_words": 162,
+        "redundancy_percent": 15.71
+      },
+      "brandeis": {
+        "words": 1064,
+        "repeated_words": 197,
+        "redundancy_percent": 18.52
+      },
+      "burbank": {
+        "words": 992,
+        "repeated_words": 233,
+        "redundancy_percent": 23.49
+      },
+      "calabasas": {
+        "words": 1186,
+        "repeated_words": 234,
+        "redundancy_percent": 19.73
+      },
+      "camarillo": {
+        "words": 996,
+        "repeated_words": 136,
+        "redundancy_percent": 13.65
+      },
+      "canoga-park": {
+        "words": 1006,
+        "repeated_words": 217,
+        "redundancy_percent": 21.57
+      },
+      "canyon-country": {
+        "words": 1096,
+        "repeated_words": 320,
+        "redundancy_percent": 29.2
+      },
+      "carson": {
+        "words": 1064,
+        "repeated_words": 204,
+        "redundancy_percent": 19.17
+      },
+      "casitas-springs": {
+        "words": 1038,
+        "repeated_words": 169,
+        "redundancy_percent": 16.28
+      },
+      "castaic": {
+        "words": 1087,
+        "repeated_words": 271,
+        "redundancy_percent": 24.93
+      },
+      "cerritos": {
+        "words": 1099,
+        "repeated_words": 214,
+        "redundancy_percent": 19.47
+      },
+      "chatsworth": {
+        "words": 1148,
+        "repeated_words": 223,
+        "redundancy_percent": 19.43
+      },
+      "city-of-industry": {
+        "words": 1171,
+        "repeated_words": 251,
+        "redundancy_percent": 21.43
+      },
+      "claremont": {
+        "words": 1190,
+        "repeated_words": 247,
+        "redundancy_percent": 20.76
+      },
+      "compton": {
+        "words": 1162,
+        "repeated_words": 211,
+        "redundancy_percent": 18.16
+      },
+      "conejo-valley": {
+        "words": 1256,
+        "repeated_words": 294,
+        "redundancy_percent": 23.41
+      },
+      "covina": {
+        "words": 1296,
+        "repeated_words": 257,
+        "redundancy_percent": 19.83
+      },
+      "culver-city": {
+        "words": 1287,
+        "repeated_words": 285,
+        "redundancy_percent": 22.14
+      },
+      "diamond-bar": {
+        "words": 948,
+        "repeated_words": 286,
+        "redundancy_percent": 30.17
+      },
+      "downey": {
+        "words": 996,
+        "repeated_words": 211,
+        "redundancy_percent": 21.18
+      },
+      "duarte": {
+        "words": 1012,
+        "repeated_words": 212,
+        "redundancy_percent": 20.95
+      },
+      "eagle-rock": {
+        "words": 1139,
+        "repeated_words": 309,
+        "redundancy_percent": 27.13
+      },
+      "el-monte": {
+        "words": 1159,
+        "repeated_words": 248,
+        "redundancy_percent": 21.4
+      },
+      "el-rio": {
+        "words": 1177,
+        "repeated_words": 291,
+        "redundancy_percent": 24.72
+      },
+      "el-segundo": {
+        "words": 1154,
+        "repeated_words": 241,
+        "redundancy_percent": 20.88
+      },
+      "encino": {
+        "words": 1203,
+        "repeated_words": 235,
+        "redundancy_percent": 19.53
+      },
+      "fillmore": {
+        "words": 1239,
+        "repeated_words": 267,
+        "redundancy_percent": 21.55
+      },
+      "gardena": {
+        "words": 1001,
+        "repeated_words": 254,
+        "redundancy_percent": 25.37
+      },
+      "glendale": {
+        "words": 1011,
+        "repeated_words": 208,
+        "redundancy_percent": 20.57
+      },
+      "glendora": {
+        "words": 1009,
+        "repeated_words": 206,
+        "redundancy_percent": 20.42
+      },
+      "granada-hills": {
+        "words": 989,
+        "repeated_words": 306,
+        "redundancy_percent": 30.94
+      },
+      "hacienda-heights": {
+        "words": 1004,
+        "repeated_words": 209,
+        "redundancy_percent": 20.82
+      },
+      "harbor-city": {
+        "words": 1017,
+        "repeated_words": 240,
+        "redundancy_percent": 23.6
+      },
+      "hawaiian-gardens": {
+        "words": 1004,
+        "repeated_words": 259,
+        "redundancy_percent": 25.8
+      },
+      "hawthorne": {
+        "words": 1019,
+        "repeated_words": 162,
+        "redundancy_percent": 15.9
+      },
+      "hermosa-beach": {
+        "words": 995,
+        "repeated_words": 173,
+        "redundancy_percent": 17.39
+      },
+      "highland-park": {
+        "words": 1182,
+        "repeated_words": 286,
+        "redundancy_percent": 24.2
+      },
+      "hollywood": {
+        "words": 1206,
+        "repeated_words": 293,
+        "redundancy_percent": 24.3
+      },
+      "huntington-park": {
+        "words": 1196,
+        "repeated_words": 271,
+        "redundancy_percent": 22.66
+      },
+      "inglewood": {
+        "words": 915,
+        "repeated_words": 220,
+        "redundancy_percent": 24.04
+      },
+      "la-canada-flintridge": {
+        "words": 901,
+        "repeated_words": 178,
+        "redundancy_percent": 19.76
+      },
+      "la-crescenta": {
+        "words": 937,
+        "repeated_words": 113,
+        "redundancy_percent": 12.06
+      },
+      "la-mirada": {
+        "words": 1107,
+        "repeated_words": 289,
+        "redundancy_percent": 26.11
+      },
+      "la-puente": {
+        "words": 1057,
+        "repeated_words": 260,
+        "redundancy_percent": 24.6
+      },
+      "la-verne": {
+        "words": 1059,
+        "repeated_words": 227,
+        "redundancy_percent": 21.44
+      },
+      "lake-hughes": {
+        "words": 921,
+        "repeated_words": 250,
+        "redundancy_percent": 27.14
+      },
+      "lakewood": {
+        "words": 937,
+        "repeated_words": 142,
+        "redundancy_percent": 15.15
+      },
+      "lancaster": {
+        "words": 932,
+        "repeated_words": 173,
+        "redundancy_percent": 18.56
+      },
+      "lawndale": {
+        "words": 1173,
+        "repeated_words": 256,
+        "redundancy_percent": 21.82
+      },
+      "littlerock": {
+        "words": 1219,
+        "repeated_words": 248,
+        "redundancy_percent": 20.34
+      },
+      "llano": {
+        "words": 1244,
+        "repeated_words": 263,
+        "redundancy_percent": 21.14
+      },
+      "lomita": {
+        "words": 1161,
+        "repeated_words": 297,
+        "redundancy_percent": 25.58
+      },
+      "long-beach": {
+        "words": 1159,
+        "repeated_words": 200,
+        "redundancy_percent": 17.26
+      },
+      "lynwood": {
+        "words": 1185,
+        "repeated_words": 173,
+        "redundancy_percent": 14.6
+      },
+      "malibu": {
+        "words": 1047,
+        "repeated_words": 332,
+        "redundancy_percent": 31.71
+      },
+      "manhattan-beach": {
+        "words": 1096,
+        "repeated_words": 181,
+        "redundancy_percent": 16.51
+      },
+      "maywood": {
+        "words": 1069,
+        "repeated_words": 203,
+        "redundancy_percent": 18.99
+      },
+      "meiners-oaks": {
+        "words": 1047,
+        "repeated_words": 268,
+        "redundancy_percent": 25.6
+      },
+      "mission-hills": {
+        "words": 1093,
+        "repeated_words": 269,
+        "redundancy_percent": 24.61
+      },
+      "monrovia": {
+        "words": 1078,
+        "repeated_words": 316,
+        "redundancy_percent": 29.31
+      },
+      "montebello": {
+        "words": 974,
+        "repeated_words": 198,
+        "redundancy_percent": 20.33
+      },
+      "monterey-park": {
+        "words": 994,
+        "repeated_words": 244,
+        "redundancy_percent": 24.55
+      },
+      "montrose": {
+        "words": 1034,
+        "repeated_words": 238,
+        "redundancy_percent": 23.02
+      },
+      "moorpark": {
+        "words": 1113,
+        "repeated_words": 156,
+        "redundancy_percent": 14.02
+      },
+      "newbury-park": {
+        "words": 1113,
+        "repeated_words": 182,
+        "redundancy_percent": 16.35
+      },
+      "newhall": {
+        "words": 1133,
+        "repeated_words": 208,
+        "redundancy_percent": 18.36
+      },
+      "north-hills": {
+        "words": 1115,
+        "repeated_words": 286,
+        "redundancy_percent": 25.65
+      },
+      "north-hollywood": {
+        "words": 1106,
+        "repeated_words": 260,
+        "redundancy_percent": 23.51
+      },
+      "northridge": {
+        "words": 1128,
+        "repeated_words": 231,
+        "redundancy_percent": 20.48
+      },
+      "norwalk": {
+        "words": 1098,
+        "repeated_words": 308,
+        "redundancy_percent": 28.05
+      },
+      "oak-park": {
+        "words": 1138,
+        "repeated_words": 230,
+        "redundancy_percent": 20.21
+      },
+      "oak-view": {
+        "words": 1154,
+        "repeated_words": 211,
+        "redundancy_percent": 18.28
+      },
+      "ojai": {
+        "words": 1068,
+        "repeated_words": 219,
+        "redundancy_percent": 20.51
+      },
+      "oxnard": {
+        "words": 1109,
+        "repeated_words": 211,
+        "redundancy_percent": 19.03
+      },
+      "pacific-palisades": {
+        "words": 1112,
+        "repeated_words": 198,
+        "redundancy_percent": 17.81
+      },
+      "pacoima": {
+        "words": 1127,
+        "repeated_words": 189,
+        "redundancy_percent": 16.77
+      },
+      "palmdale": {
+        "words": 1124,
+        "repeated_words": 210,
+        "redundancy_percent": 18.68
+      },
+      "palos-verdes-peninsula": {
+        "words": 1107,
+        "repeated_words": 167,
+        "redundancy_percent": 15.09
+      },
+      "panorama-city": {
+        "words": 996,
+        "repeated_words": 263,
+        "redundancy_percent": 26.41
+      },
+      "paramount": {
+        "words": 993,
+        "repeated_words": 232,
+        "redundancy_percent": 23.36
+      },
+      "pasadena": {
+        "words": 1005,
+        "repeated_words": 233,
+        "redundancy_percent": 23.18
+      },
+      "pico-rivera": {
+        "words": 1058,
+        "repeated_words": 265,
+        "redundancy_percent": 25.05
+      },
+      "piru": {
+        "words": 1127,
+        "repeated_words": 222,
+        "redundancy_percent": 19.7
+      },
+      "point-mugu": {
+        "words": 1134,
+        "repeated_words": 228,
+        "redundancy_percent": 20.11
+      },
+      "pomona": {
+        "words": 951,
+        "repeated_words": 225,
+        "redundancy_percent": 23.66
+      },
+      "port-hueneme": {
+        "words": 953,
+        "repeated_words": 175,
+        "redundancy_percent": 18.36
+      },
+      "rancho-palos-verdes": {
+        "words": 997,
+        "repeated_words": 197,
+        "redundancy_percent": 19.76
+      },
+      "redondo-beach": {
+        "words": 1057,
+        "repeated_words": 314,
+        "redundancy_percent": 29.71
+      },
+      "reseda": {
+        "words": 1075,
+        "repeated_words": 200,
+        "redundancy_percent": 18.6
+      },
+      "rosemead": {
+        "words": 1068,
+        "repeated_words": 187,
+        "redundancy_percent": 17.51
+      },
+      "rowland-heights": {
+        "words": 964,
+        "repeated_words": 251,
+        "redundancy_percent": 26.04
+      },
+      "san-dimas": {
+        "words": 981,
+        "repeated_words": 235,
+        "redundancy_percent": 23.96
+      },
+      "san-fernando": {
+        "words": 991,
+        "repeated_words": 225,
+        "redundancy_percent": 22.7
+      },
+      "san-gabriel": {
+        "words": 1016,
+        "repeated_words": 348,
+        "redundancy_percent": 34.25
+      },
+      "san-marino": {
+        "words": 1030,
+        "repeated_words": 246,
+        "redundancy_percent": 23.88
+      },
+      "san-pedro": {
+        "words": 1005,
+        "repeated_words": 262,
+        "redundancy_percent": 26.07
+      },
+      "santa-clarita": {
+        "words": 1008,
+        "repeated_words": 273,
+        "redundancy_percent": 27.08
+      },
+      "santa-monica": {
+        "words": 1018,
+        "repeated_words": 187,
+        "redundancy_percent": 18.37
+      },
+      "santa-paula": {
+        "words": 1064,
+        "repeated_words": 212,
+        "redundancy_percent": 19.92
+      },
+      "santa-rosa-valley": {
+        "words": 1091,
+        "repeated_words": 274,
+        "redundancy_percent": 25.11
+      },
+      "saticoy": {
+        "words": 1089,
+        "repeated_words": 250,
+        "redundancy_percent": 22.96
+      },
+      "sherman-oaks": {
+        "words": 1110,
+        "repeated_words": 215,
+        "redundancy_percent": 19.37
+      },
+      "sierra-madre": {
+        "words": 1091,
+        "repeated_words": 314,
+        "redundancy_percent": 28.78
+      },
+      "signal-hill": {
+        "words": 1072,
+        "repeated_words": 265,
+        "redundancy_percent": 24.72
+      },
+      "silver-lake": {
+        "words": 1135,
+        "repeated_words": 267,
+        "redundancy_percent": 23.52
+      },
+      "simi-valley": {
+        "words": 1190,
+        "repeated_words": 172,
+        "redundancy_percent": 14.45
+      },
+      "somis": {
+        "words": 1203,
+        "repeated_words": 316,
+        "redundancy_percent": 26.27
+      },
+      "south-el-monte": {
+        "words": 1190,
+        "repeated_words": 353,
+        "redundancy_percent": 29.66
+      },
+      "south-gate": {
+        "words": 1227,
+        "repeated_words": 369,
+        "redundancy_percent": 30.07
+      },
+      "south-pasadena": {
+        "words": 1074,
+        "repeated_words": 236,
+        "redundancy_percent": 21.97
+      },
+      "stevenson-ranch": {
+        "words": 1108,
+        "repeated_words": 257,
+        "redundancy_percent": 23.19
+      },
+      "studio-city": {
+        "words": 1143,
+        "repeated_words": 254,
+        "redundancy_percent": 22.22
+      },
+      "sun-valley": {
+        "words": 1043,
+        "repeated_words": 285,
+        "redundancy_percent": 27.33
+      },
+      "sunland": {
+        "words": 1037,
+        "repeated_words": 260,
+        "redundancy_percent": 25.07
+      },
+      "sylmar": {
+        "words": 1066,
+        "repeated_words": 282,
+        "redundancy_percent": 26.45
+      },
+      "tarzana": {
+        "words": 1010,
+        "repeated_words": 238,
+        "redundancy_percent": 23.56
+      },
+      "temple-city": {
+        "words": 1027,
+        "repeated_words": 175,
+        "redundancy_percent": 17.04
+      },
+      "thousand-oaks": {
+        "words": 1227,
+        "repeated_words": 209,
+        "redundancy_percent": 17.03
+      },
+      "toluca-lake": {
+        "words": 1051,
+        "repeated_words": 233,
+        "redundancy_percent": 22.17
+      },
+      "torrance": {
+        "words": 1049,
+        "repeated_words": 249,
+        "redundancy_percent": 23.74
+      },
+      "tujunga": {
+        "words": 1113,
+        "repeated_words": 184,
+        "redundancy_percent": 16.53
+      },
+      "valencia": {
+        "words": 1074,
+        "repeated_words": 153,
+        "redundancy_percent": 14.25
+      },
+      "valley-village": {
+        "words": 1157,
+        "repeated_words": 197,
+        "redundancy_percent": 17.03
+      },
+      "van-nuys": {
+        "words": 1110,
+        "repeated_words": 208,
+        "redundancy_percent": 18.74
+      },
+      "ventura": {
+        "words": 1220,
+        "repeated_words": 215,
+        "redundancy_percent": 17.62
+      },
+      "walnut": {
+        "words": 1169,
+        "repeated_words": 247,
+        "redundancy_percent": 21.13
+      },
+      "west-covina": {
+        "words": 1106,
+        "repeated_words": 247,
+        "redundancy_percent": 22.33
+      },
+      "west-hills": {
+        "words": 1175,
+        "repeated_words": 253,
+        "redundancy_percent": 21.53
+      },
+      "west-hollywood": {
+        "words": 1144,
+        "repeated_words": 203,
+        "redundancy_percent": 17.74
+      },
+      "westlake-village": {
+        "words": 1180,
+        "repeated_words": 177,
+        "redundancy_percent": 15.0
+      },
+      "whittier": {
+        "words": 955,
+        "repeated_words": 194,
+        "redundancy_percent": 20.31
+      },
+      "woodland-hills": {
+        "words": 991,
+        "repeated_words": 239,
+        "redundancy_percent": 24.12
+      }
+    }
+  },
+  "full_visible_page": {
+    "word_weighted_redundancy_percent": 42.68,
+    "average_pairwise_jaccard_percent": 14.21,
+    "worst_pairs": [
+      {
+        "jaccard_percent": 20.25,
+        "left": "rowland-heights",
+        "right": "san-fernando"
+      },
+      {
+        "jaccard_percent": 19.62,
+        "left": "rowland-heights",
+        "right": "san-dimas"
+      },
+      {
+        "jaccard_percent": 19.05,
+        "left": "san-dimas",
+        "right": "san-fernando"
+      },
+      {
+        "jaccard_percent": 18.52,
+        "left": "sun-valley",
+        "right": "sylmar"
+      },
+      {
+        "jaccard_percent": 17.75,
+        "left": "sunland",
+        "right": "sylmar"
+      },
+      {
+        "jaccard_percent": 17.72,
+        "left": "baldwin-park",
+        "right": "la-canada-flintridge"
+      },
+      {
+        "jaccard_percent": 17.5,
+        "left": "la-canada-flintridge",
+        "right": "la-crescenta"
+      },
+      {
+        "jaccard_percent": 17.43,
+        "left": "baldwin-park",
+        "right": "bell"
+      },
+      {
+        "jaccard_percent": 17.33,
+        "left": "panorama-city",
+        "right": "pasadena"
+      },
+      {
+        "jaccard_percent": 17.28,
+        "left": "baldwin-park",
+        "right": "montebello"
+      }
+    ],
+    "total_words": 212240,
+    "total_repeated_words": 90594,
+    "per_page": {
+      "acton": {
+        "words": 1431,
+        "repeated_words": 688,
+        "redundancy_percent": 48.08
+      },
+      "agoura-hills": {
+        "words": 1420,
+        "repeated_words": 640,
+        "redundancy_percent": 45.07
+      },
+      "alhambra": {
+        "words": 1445,
+        "repeated_words": 569,
+        "redundancy_percent": 39.38
+      },
+      "altadena": {
+        "words": 1367,
+        "repeated_words": 644,
+        "redundancy_percent": 47.11
+      },
+      "arcadia": {
+        "words": 1423,
+        "repeated_words": 611,
+        "redundancy_percent": 42.94
+      },
+      "arleta": {
+        "words": 1427,
+        "repeated_words": 571,
+        "redundancy_percent": 40.01
+      },
+      "artesia": {
+        "words": 1412,
+        "repeated_words": 668,
+        "redundancy_percent": 47.31
+      },
+      "avalon": {
+        "words": 1530,
+        "repeated_words": 572,
+        "redundancy_percent": 37.39
+      },
+      "azusa": {
+        "words": 1488,
+        "repeated_words": 596,
+        "redundancy_percent": 40.05
+      },
+      "baldwin-park": {
+        "words": 1283,
+        "repeated_words": 621,
+        "redundancy_percent": 48.4
+      },
+      "bell": {
+        "words": 1295,
+        "repeated_words": 586,
+        "redundancy_percent": 45.25
+      },
+      "bell-gardens": {
+        "words": 1313,
+        "repeated_words": 571,
+        "redundancy_percent": 43.49
+      },
+      "bellflower": {
+        "words": 1423,
+        "repeated_words": 633,
+        "redundancy_percent": 44.48
+      },
+      "beverly-hills": {
+        "words": 1417,
+        "repeated_words": 555,
+        "redundancy_percent": 39.17
+      },
+      "brandeis": {
+        "words": 1450,
+        "repeated_words": 590,
+        "redundancy_percent": 40.69
+      },
+      "burbank": {
+        "words": 1378,
+        "repeated_words": 625,
+        "redundancy_percent": 45.36
+      },
+      "calabasas": {
+        "words": 1572,
+        "repeated_words": 620,
+        "redundancy_percent": 39.44
+      },
+      "camarillo": {
+        "words": 1382,
+        "repeated_words": 528,
+        "redundancy_percent": 38.21
+      },
+      "canoga-park": {
+        "words": 1392,
+        "repeated_words": 604,
+        "redundancy_percent": 43.39
+      },
+      "canyon-country": {
+        "words": 1482,
+        "repeated_words": 715,
+        "redundancy_percent": 48.25
+      },
+      "carson": {
+        "words": 1450,
+        "repeated_words": 601,
+        "redundancy_percent": 41.45
+      },
+      "casitas-springs": {
+        "words": 1424,
+        "repeated_words": 569,
+        "redundancy_percent": 39.96
+      },
+      "castaic": {
+        "words": 1473,
+        "repeated_words": 657,
+        "redundancy_percent": 44.6
+      },
+      "cerritos": {
+        "words": 1485,
+        "repeated_words": 614,
+        "redundancy_percent": 41.35
+      },
+      "chatsworth": {
+        "words": 1534,
+        "repeated_words": 617,
+        "redundancy_percent": 40.22
+      },
+      "city-of-industry": {
+        "words": 1557,
+        "repeated_words": 638,
+        "redundancy_percent": 40.98
+      },
+      "claremont": {
+        "words": 1576,
+        "repeated_words": 642,
+        "redundancy_percent": 40.74
+      },
+      "compton": {
+        "words": 1548,
+        "repeated_words": 600,
+        "redundancy_percent": 38.76
+      },
+      "conejo-valley": {
+        "words": 1642,
+        "repeated_words": 685,
+        "redundancy_percent": 41.72
+      },
+      "covina": {
+        "words": 1682,
+        "repeated_words": 649,
+        "redundancy_percent": 38.59
+      },
+      "culver-city": {
+        "words": 1673,
+        "repeated_words": 679,
+        "redundancy_percent": 40.59
+      },
+      "diamond-bar": {
+        "words": 1334,
+        "repeated_words": 681,
+        "redundancy_percent": 51.05
+      },
+      "downey": {
+        "words": 1382,
+        "repeated_words": 604,
+        "redundancy_percent": 43.7
+      },
+      "duarte": {
+        "words": 1398,
+        "repeated_words": 600,
+        "redundancy_percent": 42.92
+      },
+      "eagle-rock": {
+        "words": 1525,
+        "repeated_words": 696,
+        "redundancy_percent": 45.64
+      },
+      "el-monte": {
+        "words": 1545,
+        "repeated_words": 634,
+        "redundancy_percent": 41.04
+      },
+      "el-rio": {
+        "words": 1563,
+        "repeated_words": 684,
+        "redundancy_percent": 43.76
+      },
+      "el-segundo": {
+        "words": 1540,
+        "repeated_words": 628,
+        "redundancy_percent": 40.78
+      },
+      "encino": {
+        "words": 1589,
+        "repeated_words": 622,
+        "redundancy_percent": 39.14
+      },
+      "fillmore": {
+        "words": 1625,
+        "repeated_words": 656,
+        "redundancy_percent": 40.37
+      },
+      "gardena": {
+        "words": 1387,
+        "repeated_words": 642,
+        "redundancy_percent": 46.29
+      },
+      "glendale": {
+        "words": 1397,
+        "repeated_words": 603,
+        "redundancy_percent": 43.16
+      },
+      "glendora": {
+        "words": 1395,
+        "repeated_words": 601,
+        "redundancy_percent": 43.08
+      },
+      "granada-hills": {
+        "words": 1375,
+        "repeated_words": 693,
+        "redundancy_percent": 50.4
+      },
+      "hacienda-heights": {
+        "words": 1390,
+        "repeated_words": 602,
+        "redundancy_percent": 43.31
+      },
+      "harbor-city": {
+        "words": 1403,
+        "repeated_words": 627,
+        "redundancy_percent": 44.69
+      },
+      "hawaiian-gardens": {
+        "words": 1390,
+        "repeated_words": 645,
+        "redundancy_percent": 46.4
+      },
+      "hawthorne": {
+        "words": 1405,
+        "repeated_words": 556,
+        "redundancy_percent": 39.57
+      },
+      "hermosa-beach": {
+        "words": 1381,
+        "repeated_words": 560,
+        "redundancy_percent": 40.55
+      },
+      "highland-park": {
+        "words": 1568,
+        "repeated_words": 672,
+        "redundancy_percent": 42.86
+      },
+      "hollywood": {
+        "words": 1592,
+        "repeated_words": 681,
+        "redundancy_percent": 42.78
+      },
+      "huntington-park": {
+        "words": 1582,
+        "repeated_words": 657,
+        "redundancy_percent": 41.53
+      },
+      "inglewood": {
+        "words": 1301,
+        "repeated_words": 613,
+        "redundancy_percent": 47.12
+      },
+      "la-canada-flintridge": {
+        "words": 1287,
+        "repeated_words": 575,
+        "redundancy_percent": 44.68
+      },
+      "la-crescenta": {
+        "words": 1323,
+        "repeated_words": 507,
+        "redundancy_percent": 38.32
+      },
+      "la-mirada": {
+        "words": 1493,
+        "repeated_words": 676,
+        "redundancy_percent": 45.28
+      },
+      "la-puente": {
+        "words": 1443,
+        "repeated_words": 653,
+        "redundancy_percent": 45.25
+      },
+      "la-verne": {
+        "words": 1445,
+        "repeated_words": 614,
+        "redundancy_percent": 42.49
+      },
+      "lake-hughes": {
+        "words": 1307,
+        "repeated_words": 640,
+        "redundancy_percent": 48.97
+      },
+      "lakewood": {
+        "words": 1323,
+        "repeated_words": 531,
+        "redundancy_percent": 40.14
+      },
+      "lancaster": {
+        "words": 1318,
+        "repeated_words": 566,
+        "redundancy_percent": 42.94
+      },
+      "lawndale": {
+        "words": 1559,
+        "repeated_words": 642,
+        "redundancy_percent": 41.18
+      },
+      "littlerock": {
+        "words": 1605,
+        "repeated_words": 635,
+        "redundancy_percent": 39.56
+      },
+      "llano": {
+        "words": 1630,
+        "repeated_words": 650,
+        "redundancy_percent": 39.88
+      },
+      "lomita": {
+        "words": 1547,
+        "repeated_words": 693,
+        "redundancy_percent": 44.8
+      },
+      "long-beach": {
+        "words": 1545,
+        "repeated_words": 600,
+        "redundancy_percent": 38.83
+      },
+      "lynwood": {
+        "words": 1571,
+        "repeated_words": 571,
+        "redundancy_percent": 36.35
+      },
+      "malibu": {
+        "words": 1433,
+        "repeated_words": 722,
+        "redundancy_percent": 50.38
+      },
+      "manhattan-beach": {
+        "words": 1482,
+        "repeated_words": 567,
+        "redundancy_percent": 38.26
+      },
+      "maywood": {
+        "words": 1455,
+        "repeated_words": 591,
+        "redundancy_percent": 40.62
+      },
+      "meiners-oaks": {
+        "words": 1433,
+        "repeated_words": 655,
+        "redundancy_percent": 45.71
+      },
+      "mission-hills": {
+        "words": 1479,
+        "repeated_words": 655,
+        "redundancy_percent": 44.29
+      },
+      "monrovia": {
+        "words": 1464,
+        "repeated_words": 704,
+        "redundancy_percent": 48.09
+      },
+      "montebello": {
+        "words": 1360,
+        "repeated_words": 588,
+        "redundancy_percent": 43.24
+      },
+      "monterey-park": {
+        "words": 1380,
+        "repeated_words": 631,
+        "redundancy_percent": 45.72
+      },
+      "montrose": {
+        "words": 1420,
+        "repeated_words": 627,
+        "redundancy_percent": 44.15
+      },
+      "moorpark": {
+        "words": 1499,
+        "repeated_words": 556,
+        "redundancy_percent": 37.09
+      },
+      "newbury-park": {
+        "words": 1499,
+        "repeated_words": 576,
+        "redundancy_percent": 38.43
+      },
+      "newhall": {
+        "words": 1519,
+        "repeated_words": 595,
+        "redundancy_percent": 39.17
+      },
+      "north-hills": {
+        "words": 1501,
+        "repeated_words": 675,
+        "redundancy_percent": 44.97
+      },
+      "north-hollywood": {
+        "words": 1492,
+        "repeated_words": 655,
+        "redundancy_percent": 43.9
+      },
+      "northridge": {
+        "words": 1514,
+        "repeated_words": 617,
+        "redundancy_percent": 40.75
+      },
+      "norwalk": {
+        "words": 1484,
+        "repeated_words": 694,
+        "redundancy_percent": 46.77
+      },
+      "oak-park": {
+        "words": 1524,
+        "repeated_words": 622,
+        "redundancy_percent": 40.81
+      },
+      "oak-view": {
+        "words": 1540,
+        "repeated_words": 606,
+        "redundancy_percent": 39.35
+      },
+      "ojai": {
+        "words": 1454,
+        "repeated_words": 606,
+        "redundancy_percent": 41.68
+      },
+      "oxnard": {
+        "words": 1495,
+        "repeated_words": 597,
+        "redundancy_percent": 39.93
+      },
+      "pacific-palisades": {
+        "words": 1498,
+        "repeated_words": 585,
+        "redundancy_percent": 39.05
+      },
+      "pacoima": {
+        "words": 1513,
+        "repeated_words": 577,
+        "redundancy_percent": 38.14
+      },
+      "palmdale": {
+        "words": 1510,
+        "repeated_words": 608,
+        "redundancy_percent": 40.26
+      },
+      "palos-verdes-peninsula": {
+        "words": 1493,
+        "repeated_words": 567,
+        "redundancy_percent": 37.98
+      },
+      "panorama-city": {
+        "words": 1382,
+        "repeated_words": 649,
+        "redundancy_percent": 46.96
+      },
+      "paramount": {
+        "words": 1379,
+        "repeated_words": 630,
+        "redundancy_percent": 45.69
+      },
+      "pasadena": {
+        "words": 1391,
+        "repeated_words": 627,
+        "redundancy_percent": 45.08
+      },
+      "pico-rivera": {
+        "words": 1444,
+        "repeated_words": 651,
+        "redundancy_percent": 45.08
+      },
+      "piru": {
+        "words": 1513,
+        "repeated_words": 616,
+        "redundancy_percent": 40.71
+      },
+      "point-mugu": {
+        "words": 1520,
+        "repeated_words": 620,
+        "redundancy_percent": 40.79
+      },
+      "pomona": {
+        "words": 1337,
+        "repeated_words": 613,
+        "redundancy_percent": 45.85
+      },
+      "port-hueneme": {
+        "words": 1339,
+        "repeated_words": 564,
+        "redundancy_percent": 42.12
+      },
+      "rancho-palos-verdes": {
+        "words": 1383,
+        "repeated_words": 584,
+        "redundancy_percent": 42.23
+      },
+      "redondo-beach": {
+        "words": 1443,
+        "repeated_words": 700,
+        "redundancy_percent": 48.51
+      },
+      "reseda": {
+        "words": 1461,
+        "repeated_words": 586,
+        "redundancy_percent": 40.11
+      },
+      "rosemead": {
+        "words": 1454,
+        "repeated_words": 574,
+        "redundancy_percent": 39.48
+      },
+      "rowland-heights": {
+        "words": 1350,
+        "repeated_words": 637,
+        "redundancy_percent": 47.19
+      },
+      "san-dimas": {
+        "words": 1367,
+        "repeated_words": 625,
+        "redundancy_percent": 45.72
+      },
+      "san-fernando": {
+        "words": 1377,
+        "repeated_words": 618,
+        "redundancy_percent": 44.88
+      },
+      "san-gabriel": {
+        "words": 1402,
+        "repeated_words": 737,
+        "redundancy_percent": 52.57
+      },
+      "san-marino": {
+        "words": 1416,
+        "repeated_words": 641,
+        "redundancy_percent": 45.27
+      },
+      "san-pedro": {
+        "words": 1391,
+        "repeated_words": 656,
+        "redundancy_percent": 47.16
+      },
+      "santa-clarita": {
+        "words": 1394,
+        "repeated_words": 661,
+        "redundancy_percent": 47.42
+      },
+      "santa-monica": {
+        "words": 1404,
+        "repeated_words": 580,
+        "redundancy_percent": 41.31
+      },
+      "santa-paula": {
+        "words": 1450,
+        "repeated_words": 598,
+        "redundancy_percent": 41.24
+      },
+      "santa-rosa-valley": {
+        "words": 1477,
+        "repeated_words": 661,
+        "redundancy_percent": 44.75
+      },
+      "saticoy": {
+        "words": 1475,
+        "repeated_words": 643,
+        "redundancy_percent": 43.59
+      },
+      "sherman-oaks": {
+        "words": 1496,
+        "repeated_words": 601,
+        "redundancy_percent": 40.17
+      },
+      "sierra-madre": {
+        "words": 1477,
+        "repeated_words": 706,
+        "redundancy_percent": 47.8
+      },
+      "signal-hill": {
+        "words": 1458,
+        "repeated_words": 663,
+        "redundancy_percent": 45.47
+      },
+      "silver-lake": {
+        "words": 1521,
+        "repeated_words": 661,
+        "redundancy_percent": 43.46
+      },
+      "simi-valley": {
+        "words": 1576,
+        "repeated_words": 569,
+        "redundancy_percent": 36.1
+      },
+      "somis": {
+        "words": 1589,
+        "repeated_words": 702,
+        "redundancy_percent": 44.18
+      },
+      "south-el-monte": {
+        "words": 1576,
+        "repeated_words": 740,
+        "redundancy_percent": 46.95
+      },
+      "south-gate": {
+        "words": 1613,
+        "repeated_words": 755,
+        "redundancy_percent": 46.81
+      },
+      "south-pasadena": {
+        "words": 1460,
+        "repeated_words": 630,
+        "redundancy_percent": 43.15
+      },
+      "stevenson-ranch": {
+        "words": 1494,
+        "repeated_words": 644,
+        "redundancy_percent": 43.11
+      },
+      "studio-city": {
+        "words": 1529,
+        "repeated_words": 644,
+        "redundancy_percent": 42.12
+      },
+      "sun-valley": {
+        "words": 1429,
+        "repeated_words": 671,
+        "redundancy_percent": 46.96
+      },
+      "sunland": {
+        "words": 1423,
+        "repeated_words": 654,
+        "redundancy_percent": 45.96
+      },
+      "sylmar": {
+        "words": 1452,
+        "repeated_words": 669,
+        "redundancy_percent": 46.07
+      },
+      "tarzana": {
+        "words": 1396,
+        "repeated_words": 625,
+        "redundancy_percent": 44.77
+      },
+      "temple-city": {
+        "words": 1413,
+        "repeated_words": 568,
+        "redundancy_percent": 40.2
+      },
+      "thousand-oaks": {
+        "words": 1613,
+        "repeated_words": 595,
+        "redundancy_percent": 36.89
+      },
+      "toluca-lake": {
+        "words": 1437,
+        "repeated_words": 619,
+        "redundancy_percent": 43.08
+      },
+      "torrance": {
+        "words": 1435,
+        "repeated_words": 635,
+        "redundancy_percent": 44.25
+      },
+      "tujunga": {
+        "words": 1499,
+        "repeated_words": 576,
+        "redundancy_percent": 38.43
+      },
+      "valencia": {
+        "words": 1460,
+        "repeated_words": 546,
+        "redundancy_percent": 37.4
+      },
+      "valley-village": {
+        "words": 1543,
+        "repeated_words": 589,
+        "redundancy_percent": 38.17
+      },
+      "van-nuys": {
+        "words": 1496,
+        "repeated_words": 603,
+        "redundancy_percent": 40.31
+      },
+      "ventura": {
+        "words": 1606,
+        "repeated_words": 611,
+        "redundancy_percent": 38.04
+      },
+      "walnut": {
+        "words": 1555,
+        "repeated_words": 642,
+        "redundancy_percent": 41.29
+      },
+      "west-covina": {
+        "words": 1492,
+        "repeated_words": 634,
+        "redundancy_percent": 42.49
+      },
+      "west-hills": {
+        "words": 1561,
+        "repeated_words": 642,
+        "redundancy_percent": 41.13
+      },
+      "west-hollywood": {
+        "words": 1530,
+        "repeated_words": 603,
+        "redundancy_percent": 39.41
+      },
+      "westlake-village": {
+        "words": 1566,
+        "repeated_words": 572,
+        "redundancy_percent": 36.53
+      },
+      "whittier": {
+        "words": 1341,
+        "repeated_words": 583,
+        "redundancy_percent": 43.48
+      },
+      "woodland-hills": {
+        "words": 1377,
+        "repeated_words": 627,
+        "redundancy_percent": 45.53
+      }
+    }
+  },
+  "exact_paragraphs": {
+    "minimum_pages": 20,
+    "method": "Paragraphs within main only; excludes navigation, header, footer, scripts and styles. HTML entities decoded, whitespace collapsed and text lowercased; all source city names and Ventura/Los Angeles County labels normalized. Counts paragraph words recurring on at least the minimum number of distinct pages, not similar prose.",
+    "page_count": 145,
+    "pages_at_least_half_repeated": 0,
+    "median_repeated_percent": 1.92,
+    "mean_repeated_percent": 1.93,
+    "per_page": {
+      "acton": {
+        "paragraph_words": 901,
+        "repeated_paragraph_words": 18,
+        "repeated_percent": 2.0
+      },
+      "agoura-hills": {
+        "paragraph_words": 912,
+        "repeated_paragraph_words": 18,
+        "repeated_percent": 1.97
+      },
+      "alhambra": {
+        "paragraph_words": 933,
+        "repeated_paragraph_words": 18,
+        "repeated_percent": 1.93
+      },
+      "altadena": {
+        "paragraph_words": 845,
+        "repeated_paragraph_words": 18,
+        "repeated_percent": 2.13
+      },
+      "arcadia": {
+        "paragraph_words": 899,
+        "repeated_paragraph_words": 18,
+        "repeated_percent": 2.0
+      },
+      "arleta": {
+        "paragraph_words": 906,
+        "repeated_paragraph_words": 18,
+        "repeated_percent": 1.99
+      },
+      "artesia": {
+        "paragraph_words": 893,
+        "repeated_paragraph_words": 18,
+        "repeated_percent": 2.02
+      },
+      "avalon": {
+        "paragraph_words": 977,
+        "repeated_paragraph_words": 18,
+        "repeated_percent": 1.84
+      },
+      "azusa": {
+        "paragraph_words": 987,
+        "repeated_paragraph_words": 18,
+        "repeated_percent": 1.82
+      },
+      "baldwin-park": {
+        "paragraph_words": 761,
+        "repeated_paragraph_words": 18,
+        "repeated_percent": 2.37
+      },
+      "bell": {
+        "paragraph_words": 781,
+        "repeated_paragraph_words": 18,
+        "repeated_percent": 2.3
+      },
+      "bell-gardens": {
+        "paragraph_words": 790,
+        "repeated_paragraph_words": 18,
+        "repeated_percent": 2.28
+      },
+      "bellflower": {
+        "paragraph_words": 902,
+        "repeated_paragraph_words": 18,
+        "repeated_percent": 2.0
+      },
+      "beverly-hills": {
+        "paragraph_words": 909,
+        "repeated_paragraph_words": 18,
+        "repeated_percent": 1.98
+      },
+      "brandeis": {
+        "paragraph_words": 926,
+        "repeated_paragraph_words": 18,
+        "repeated_percent": 1.94
+      },
+      "burbank": {
+        "paragraph_words": 869,
+        "repeated_paragraph_words": 18,
+        "repeated_percent": 2.07
+      },
+      "calabasas": {
+        "paragraph_words": 989,
+        "repeated_paragraph_words": 18,
+        "repeated_percent": 1.82
+      },
+      "camarillo": {
+        "paragraph_words": 863,
+        "repeated_paragraph_words": 18,
+        "repeated_percent": 2.09
+      },
+      "canoga-park": {
+        "paragraph_words": 881,
+        "repeated_paragraph_words": 18,
+        "repeated_percent": 2.04
+      },
+      "canyon-country": {
+        "paragraph_words": 975,
+        "repeated_paragraph_words": 18,
+        "repeated_percent": 1.85
+      },
+      "carson": {
+        "paragraph_words": 941,
+        "repeated_paragraph_words": 18,
+        "repeated_percent": 1.91
+      },
+      "casitas-springs": {
+        "paragraph_words": 920,
+        "repeated_paragraph_words": 18,
+        "repeated_percent": 1.96
+      },
+      "castaic": {
+        "paragraph_words": 941,
+        "repeated_paragraph_words": 18,
+        "repeated_percent": 1.91
+      },
+      "cerritos": {
+        "paragraph_words": 959,
+        "repeated_paragraph_words": 18,
+        "repeated_percent": 1.88
+      },
+      "chatsworth": {
+        "paragraph_words": 1019,
+        "repeated_paragraph_words": 18,
+        "repeated_percent": 1.77
+      },
+      "city-of-industry": {
+        "paragraph_words": 1033,
+        "repeated_paragraph_words": 18,
+        "repeated_percent": 1.74
+      },
+      "claremont": {
+        "paragraph_words": 1061,
+        "repeated_paragraph_words": 18,
+        "repeated_percent": 1.7
+      },
+      "compton": {
+        "paragraph_words": 1038,
+        "repeated_paragraph_words": 18,
+        "repeated_percent": 1.73
+      },
+      "conejo-valley": {
+        "paragraph_words": 1112,
+        "repeated_paragraph_words": 18,
+        "repeated_percent": 1.62
+      },
+      "covina": {
+        "paragraph_words": 1169,
+        "repeated_paragraph_words": 18,
+        "repeated_percent": 1.54
+      },
+      "culver-city": {
+        "paragraph_words": 1155,
+        "repeated_paragraph_words": 18,
+        "repeated_percent": 1.56
+      },
+      "diamond-bar": {
+        "paragraph_words": 813,
+        "repeated_paragraph_words": 18,
+        "repeated_percent": 2.21
+      },
+      "downey": {
+        "paragraph_words": 865,
+        "repeated_paragraph_words": 18,
+        "repeated_percent": 2.08
+      },
+      "duarte": {
+        "paragraph_words": 882,
+        "repeated_paragraph_words": 18,
+        "repeated_percent": 2.04
+      },
+      "eagle-rock": {
+        "paragraph_words": 988,
+        "repeated_paragraph_words": 18,
+        "repeated_percent": 1.82
+      },
+      "el-monte": {
+        "paragraph_words": 1010,
+        "repeated_paragraph_words": 18,
+        "repeated_percent": 1.78
+      },
+      "el-rio": {
+        "paragraph_words": 1042,
+        "repeated_paragraph_words": 18,
+        "repeated_percent": 1.73
+      },
+      "el-segundo": {
+        "paragraph_words": 1015,
+        "repeated_paragraph_words": 18,
+        "repeated_percent": 1.77
+      },
+      "encino": {
+        "paragraph_words": 1066,
+        "repeated_paragraph_words": 18,
+        "repeated_percent": 1.69
+      },
+      "fillmore": {
+        "paragraph_words": 1105,
+        "repeated_paragraph_words": 18,
+        "repeated_percent": 1.63
+      },
+      "gardena": {
+        "paragraph_words": 888,
+        "repeated_paragraph_words": 18,
+        "repeated_percent": 2.03
+      },
+      "glendale": {
+        "paragraph_words": 883,
+        "repeated_paragraph_words": 18,
+        "repeated_percent": 2.04
+      },
+      "glendora": {
+        "paragraph_words": 889,
+        "repeated_paragraph_words": 18,
+        "repeated_percent": 2.02
+      },
+      "granada-hills": {
+        "paragraph_words": 831,
+        "repeated_paragraph_words": 18,
+        "repeated_percent": 2.17
+      },
+      "hacienda-heights": {
+        "paragraph_words": 855,
+        "repeated_paragraph_words": 18,
+        "repeated_percent": 2.11
+      },
+      "harbor-city": {
+        "paragraph_words": 874,
+        "repeated_paragraph_words": 18,
+        "repeated_percent": 2.06
+      },
+      "hawaiian-gardens": {
+        "paragraph_words": 856,
+        "repeated_paragraph_words": 18,
+        "repeated_percent": 2.1
+      },
+      "hawthorne": {
+        "paragraph_words": 870,
+        "repeated_paragraph_words": 18,
+        "repeated_percent": 2.07
+      },
+      "hermosa-beach": {
+        "paragraph_words": 865,
+        "repeated_paragraph_words": 18,
+        "repeated_percent": 2.08
+      },
+      "highland-park": {
+        "paragraph_words": 1030,
+        "repeated_paragraph_words": 18,
+        "repeated_percent": 1.75
+      },
+      "hollywood": {
+        "paragraph_words": 1066,
+        "repeated_paragraph_words": 18,
+        "repeated_percent": 1.69
+      },
+      "huntington-park": {
+        "paragraph_words": 1053,
+        "repeated_paragraph_words": 18,
+        "repeated_percent": 1.71
+      },
+      "inglewood": {
+        "paragraph_words": 796,
+        "repeated_paragraph_words": 18,
+        "repeated_percent": 2.26
+      },
+      "la-canada-flintridge": {
+        "paragraph_words": 784,
+        "repeated_paragraph_words": 18,
+        "repeated_percent": 2.3
+      },
+      "la-crescenta": {
+        "paragraph_words": 817,
+        "repeated_paragraph_words": 18,
+        "repeated_percent": 2.2
+      },
+      "la-mirada": {
+        "paragraph_words": 978,
+        "repeated_paragraph_words": 18,
+        "repeated_percent": 1.84
+      },
+      "la-puente": {
+        "paragraph_words": 927,
+        "repeated_paragraph_words": 18,
+        "repeated_percent": 1.94
+      },
+      "la-verne": {
+        "paragraph_words": 917,
+        "repeated_paragraph_words": 18,
+        "repeated_percent": 1.96
+      },
+      "lake-hughes": {
+        "paragraph_words": 785,
+        "repeated_paragraph_words": 18,
+        "repeated_percent": 2.29
+      },
+      "lakewood": {
+        "paragraph_words": 808,
+        "repeated_paragraph_words": 18,
+        "repeated_percent": 2.23
+      },
+      "lancaster": {
+        "paragraph_words": 807,
+        "repeated_paragraph_words": 18,
+        "repeated_percent": 2.23
+      },
+      "lawndale": {
+        "paragraph_words": 1040,
+        "repeated_paragraph_words": 18,
+        "repeated_percent": 1.73
+      },
+      "littlerock": {
+        "paragraph_words": 1079,
+        "repeated_paragraph_words": 18,
+        "repeated_percent": 1.67
+      },
+      "llano": {
+        "paragraph_words": 1111,
+        "repeated_paragraph_words": 18,
+        "repeated_percent": 1.62
+      },
+      "lomita": {
+        "paragraph_words": 1021,
+        "repeated_paragraph_words": 18,
+        "repeated_percent": 1.76
+      },
+      "long-beach": {
+        "paragraph_words": 1034,
+        "repeated_paragraph_words": 18,
+        "repeated_percent": 1.74
+      },
+      "lynwood": {
+        "paragraph_words": 1047,
+        "repeated_paragraph_words": 18,
+        "repeated_percent": 1.72
+      },
+      "malibu": {
+        "paragraph_words": 899,
+        "repeated_paragraph_words": 18,
+        "repeated_percent": 2.0
+      },
+      "manhattan-beach": {
+        "paragraph_words": 968,
+        "repeated_paragraph_words": 18,
+        "repeated_percent": 1.86
+      },
+      "maywood": {
+        "paragraph_words": 925,
+        "repeated_paragraph_words": 18,
+        "repeated_percent": 1.95
+      },
+      "meiners-oaks": {
+        "paragraph_words": 909,
+        "repeated_paragraph_words": 18,
+        "repeated_percent": 1.98
+      },
+      "mission-hills": {
+        "paragraph_words": 956,
+        "repeated_paragraph_words": 18,
+        "repeated_percent": 1.88
+      },
+      "monrovia": {
+        "paragraph_words": 945,
+        "repeated_paragraph_words": 18,
+        "repeated_percent": 1.9
+      },
+      "montebello": {
+        "paragraph_words": 850,
+        "repeated_paragraph_words": 18,
+        "repeated_percent": 2.12
+      },
+      "monterey-park": {
+        "paragraph_words": 869,
+        "repeated_paragraph_words": 18,
+        "repeated_percent": 2.07
+      },
+      "montrose": {
+        "paragraph_words": 914,
+        "repeated_paragraph_words": 18,
+        "repeated_percent": 1.97
+      },
+      "moorpark": {
+        "paragraph_words": 972,
+        "repeated_paragraph_words": 18,
+        "repeated_percent": 1.85
+      },
+      "newbury-park": {
+        "paragraph_words": 978,
+        "repeated_paragraph_words": 18,
+        "repeated_percent": 1.84
+      },
+      "newhall": {
+        "paragraph_words": 999,
+        "repeated_paragraph_words": 18,
+        "repeated_percent": 1.8
+      },
+      "north-hills": {
+        "paragraph_words": 983,
+        "repeated_paragraph_words": 18,
+        "repeated_percent": 1.83
+      },
+      "north-hollywood": {
+        "paragraph_words": 967,
+        "repeated_paragraph_words": 18,
+        "repeated_percent": 1.86
+      },
+      "northridge": {
+        "paragraph_words": 983,
+        "repeated_paragraph_words": 18,
+        "repeated_percent": 1.83
+      },
+      "norwalk": {
+        "paragraph_words": 975,
+        "repeated_paragraph_words": 18,
+        "repeated_percent": 1.85
+      },
+      "oak-park": {
+        "paragraph_words": 1012,
+        "repeated_paragraph_words": 18,
+        "repeated_percent": 1.78
+      },
+      "oak-view": {
+        "paragraph_words": 1042,
+        "repeated_paragraph_words": 18,
+        "repeated_percent": 1.73
+      },
+      "ojai": {
+        "paragraph_words": 928,
+        "repeated_paragraph_words": 18,
+        "repeated_percent": 1.94
+      },
+      "oxnard": {
+        "paragraph_words": 982,
+        "repeated_paragraph_words": 18,
+        "repeated_percent": 1.83
+      },
+      "pacific-palisades": {
+        "paragraph_words": 975,
+        "repeated_paragraph_words": 18,
+        "repeated_percent": 1.85
+      },
+      "pacoima": {
+        "paragraph_words": 990,
+        "repeated_paragraph_words": 18,
+        "repeated_percent": 1.82
+      },
+      "palmdale": {
+        "paragraph_words": 995,
+        "repeated_paragraph_words": 18,
+        "repeated_percent": 1.81
+      },
+      "palos-verdes-peninsula": {
+        "paragraph_words": 975,
+        "repeated_paragraph_words": 18,
+        "repeated_percent": 1.85
+      },
+      "panorama-city": {
+        "paragraph_words": 849,
+        "repeated_paragraph_words": 18,
+        "repeated_percent": 2.12
+      },
+      "paramount": {
+        "paragraph_words": 849,
+        "repeated_paragraph_words": 18,
+        "repeated_percent": 2.12
+      },
+      "pasadena": {
+        "paragraph_words": 877,
+        "repeated_paragraph_words": 18,
+        "repeated_percent": 2.05
+      },
+      "pico-rivera": {
+        "paragraph_words": 927,
+        "repeated_paragraph_words": 18,
+        "repeated_percent": 1.94
+      },
+      "piru": {
+        "paragraph_words": 1007,
+        "repeated_paragraph_words": 18,
+        "repeated_percent": 1.79
+      },
+      "point-mugu": {
+        "paragraph_words": 996,
+        "repeated_paragraph_words": 18,
+        "repeated_percent": 1.81
+      },
+      "pomona": {
+        "paragraph_words": 824,
+        "repeated_paragraph_words": 18,
+        "repeated_percent": 2.18
+      },
+      "port-hueneme": {
+        "paragraph_words": 831,
+        "repeated_paragraph_words": 18,
+        "repeated_percent": 2.17
+      },
+      "rancho-palos-verdes": {
+        "paragraph_words": 863,
+        "repeated_paragraph_words": 18,
+        "repeated_percent": 2.09
+      },
+      "redondo-beach": {
+        "paragraph_words": 928,
+        "repeated_paragraph_words": 18,
+        "repeated_percent": 1.94
+      },
+      "reseda": {
+        "paragraph_words": 953,
+        "repeated_paragraph_words": 18,
+        "repeated_percent": 1.89
+      },
+      "rosemead": {
+        "paragraph_words": 939,
+        "repeated_paragraph_words": 18,
+        "repeated_percent": 1.92
+      },
+      "rowland-heights": {
+        "paragraph_words": 831,
+        "repeated_paragraph_words": 18,
+        "repeated_percent": 2.17
+      },
+      "san-dimas": {
+        "paragraph_words": 853,
+        "repeated_paragraph_words": 18,
+        "repeated_percent": 2.11
+      },
+      "san-fernando": {
+        "paragraph_words": 862,
+        "repeated_paragraph_words": 18,
+        "repeated_percent": 2.09
+      },
+      "san-gabriel": {
+        "paragraph_words": 893,
+        "repeated_paragraph_words": 18,
+        "repeated_percent": 2.02
+      },
+      "san-marino": {
+        "paragraph_words": 900,
+        "repeated_paragraph_words": 18,
+        "repeated_percent": 2.0
+      },
+      "san-pedro": {
+        "paragraph_words": 874,
+        "repeated_paragraph_words": 18,
+        "repeated_percent": 2.06
+      },
+      "santa-clarita": {
+        "paragraph_words": 867,
+        "repeated_paragraph_words": 18,
+        "repeated_percent": 2.08
+      },
+      "santa-monica": {
+        "paragraph_words": 895,
+        "repeated_paragraph_words": 18,
+        "repeated_percent": 2.01
+      },
+      "santa-paula": {
+        "paragraph_words": 930,
+        "repeated_paragraph_words": 18,
+        "repeated_percent": 1.94
+      },
+      "santa-rosa-valley": {
+        "paragraph_words": 953,
+        "repeated_paragraph_words": 18,
+        "repeated_percent": 1.89
+      },
+      "saticoy": {
+        "paragraph_words": 950,
+        "repeated_paragraph_words": 18,
+        "repeated_percent": 1.89
+      },
+      "sherman-oaks": {
+        "paragraph_words": 975,
+        "repeated_paragraph_words": 18,
+        "repeated_percent": 1.85
+      },
+      "sierra-madre": {
+        "paragraph_words": 941,
+        "repeated_paragraph_words": 18,
+        "repeated_percent": 1.91
+      },
+      "signal-hill": {
+        "paragraph_words": 930,
+        "repeated_paragraph_words": 18,
+        "repeated_percent": 1.94
+      },
+      "silver-lake": {
+        "paragraph_words": 989,
+        "repeated_paragraph_words": 18,
+        "repeated_percent": 1.82
+      },
+      "simi-valley": {
+        "paragraph_words": 997,
+        "repeated_paragraph_words": 18,
+        "repeated_percent": 1.81
+      },
+      "somis": {
+        "paragraph_words": 1049,
+        "repeated_paragraph_words": 18,
+        "repeated_percent": 1.72
+      },
+      "south-el-monte": {
+        "paragraph_words": 1049,
+        "repeated_paragraph_words": 18,
+        "repeated_percent": 1.72
+      },
+      "south-gate": {
+        "paragraph_words": 1092,
+        "repeated_paragraph_words": 18,
+        "repeated_percent": 1.65
+      },
+      "south-pasadena": {
+        "paragraph_words": 933,
+        "repeated_paragraph_words": 18,
+        "repeated_percent": 1.93
+      },
+      "stevenson-ranch": {
+        "paragraph_words": 969,
+        "repeated_paragraph_words": 18,
+        "repeated_percent": 1.86
+      },
+      "studio-city": {
+        "paragraph_words": 1010,
+        "repeated_paragraph_words": 18,
+        "repeated_percent": 1.78
+      },
+      "sun-valley": {
+        "paragraph_words": 887,
+        "repeated_paragraph_words": 18,
+        "repeated_percent": 2.03
+      },
+      "sunland": {
+        "paragraph_words": 886,
+        "repeated_paragraph_words": 18,
+        "repeated_percent": 2.03
+      },
+      "sylmar": {
+        "paragraph_words": 911,
+        "repeated_paragraph_words": 18,
+        "repeated_percent": 1.98
+      },
+      "tarzana": {
+        "paragraph_words": 874,
+        "repeated_paragraph_words": 18,
+        "repeated_percent": 2.06
+      },
+      "temple-city": {
+        "paragraph_words": 900,
+        "repeated_paragraph_words": 18,
+        "repeated_percent": 2.0
+      },
+      "thousand-oaks": {
+        "paragraph_words": 1021,
+        "repeated_paragraph_words": 18,
+        "repeated_percent": 1.76
+      },
+      "toluca-lake": {
+        "paragraph_words": 927,
+        "repeated_paragraph_words": 18,
+        "repeated_percent": 1.94
+      },
+      "torrance": {
+        "paragraph_words": 909,
+        "repeated_paragraph_words": 18,
+        "repeated_percent": 1.98
+      },
+      "tujunga": {
+        "paragraph_words": 966,
+        "repeated_paragraph_words": 18,
+        "repeated_percent": 1.86
+      },
+      "valencia": {
+        "paragraph_words": 943,
+        "repeated_paragraph_words": 18,
+        "repeated_percent": 1.91
+      },
+      "valley-village": {
+        "paragraph_words": 1016,
+        "repeated_paragraph_words": 18,
+        "repeated_percent": 1.77
+      },
+      "van-nuys": {
+        "paragraph_words": 977,
+        "repeated_paragraph_words": 18,
+        "repeated_percent": 1.84
+      },
+      "ventura": {
+        "paragraph_words": 1021,
+        "repeated_paragraph_words": 18,
+        "repeated_percent": 1.76
+      },
+      "walnut": {
+        "paragraph_words": 1040,
+        "repeated_paragraph_words": 18,
+        "repeated_percent": 1.73
+      },
+      "west-covina": {
+        "paragraph_words": 975,
+        "repeated_paragraph_words": 18,
+        "repeated_percent": 1.85
+      },
+      "west-hills": {
+        "paragraph_words": 1032,
+        "repeated_paragraph_words": 18,
+        "repeated_percent": 1.74
+      },
+      "west-hollywood": {
+        "paragraph_words": 1018,
+        "repeated_paragraph_words": 18,
+        "repeated_percent": 1.77
+      },
+      "westlake-village": {
+        "paragraph_words": 977,
+        "repeated_paragraph_words": 18,
+        "repeated_percent": 1.84
+      },
+      "whittier": {
+        "paragraph_words": 810,
+        "repeated_paragraph_words": 18,
+        "repeated_percent": 2.22
+      },
+      "woodland-hills": {
+        "paragraph_words": 863,
+        "repeated_paragraph_words": 18,
+        "repeated_percent": 2.09
+      }
+    },
+    "caveat": "A source-text comparison, not a Google quality or ranking score. Low repetition alone does not establish local usefulness or verify clinical claims."
+  }
+}
