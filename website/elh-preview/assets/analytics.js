@@ -40,7 +40,8 @@
   window.elhTrackEvent = trackEvent;
 
   function trackRelatedReading(link) {
-    if (!analyticsConsentGranted() || !link.closest('.elh-related')) { return; }
+    if (!analyticsConsentGranted() ||
+        !(link.closest('.elh-related') || link.classList.contains('elh-inline-link'))) { return; }
     // These attributes are emitted by the curated-link renderer. Do not read
     // labels, the current URL (which may contain queries), or form values.
     var source = link.getAttribute('data-reading-source');

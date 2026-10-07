@@ -14,7 +14,7 @@ BASE = Path(__file__).resolve().parent
 PUBLIC = BASE / "elh-preview"
 START = "<!-- INTERNAL_LINKS_START -->"
 END = "<!-- INTERNAL_LINKS_END -->"
-STYLE = '<link rel="stylesheet" href="/assets/internal-links.css?v=20261007">'
+STYLE = '<link rel="stylesheet" href="/assets/internal-links.css?v=20261007-inline">'
 
 
 def config():
@@ -172,9 +172,17 @@ def render_links(text, route, as_of=None, pages=None):
     elif links:
         marker = "</main>" if "</main>" in text else "</body>"
         text = text.replace(marker, replacement + "\n" + marker, 1)
-    if links and STYLE not in text:
-        text = text.replace("</head>", STYLE + "\n</head>", 1)
-    return canonical_links(text, route)
+    if links:
+        if re.search(r'<link\b[^>]*href="/assets/internal-links\.css[^"]*"[^>]*>', text):
+            text = re.sub(r'<link\b[^>]*href="/assets/internal-links\.css[^"]*"[^>]*>', STYLE, text)
+        elif STYLE not in text:
+            text = text.replace("</head>", STYLE + "\n</head>", 1)
+    from inline_links import apply_inline_links
+    text = apply_inline_links(canonical_links(text, route), route, pages)
+    # Refresh the shared consent-aware tracker along with its new inline targets.
+    text = re.sub(r'(<script\b[^>]*\bsrc=)(["\'])([^"\']*assets/analytics\.js)(?:\?[^"\']*)?\2',
+                  lambda m: m[1] + m[2] + m[3] + "?v=20261007-inline" + m[2], text)
+    return text
 
 
 def canonical_links(text, route):

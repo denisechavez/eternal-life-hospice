@@ -33,8 +33,8 @@ footer links and bottom reading groups are separate.
 that word count and content should determine the selection.
 
 **How to apply:** Treat length as a guideline, not a reason to force irrelevant
-links or pad the writing. Approval of the link-count range does not authorize
-the sitewide implementation; the example and rollout still need approval.
+links or pad the writing. Obtain rollout approval separately from discussions
+of the link-count range.
 
 Build-time eligibility alone is insufficient for staged Journal recommendations.
 Recommendations must be selected again at request time using the public publication

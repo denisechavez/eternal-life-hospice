@@ -3,6 +3,8 @@ import batch2 from "../../../../../../website/content/30-day-journal/batch-2.jso
 import batch3 from "../../../../../../website/content/30-day-journal/batch-3.json";
 import batch4 from "../../../../../../website/content/30-day-journal/batch-4.json";
 import batch5 from "../../../../../../website/content/30-day-journal/batch-5.json";
+import octoberContinuation from "../../../../../../website/content/30-day-journal/additional-2026-10.json";
+import decemberContinuation from "../../../../../../website/content/30-day-journal/additional-2026-q4.json";
 import campaign1 from "../../../../../../exports/email-campaigns/30-day-journal/campaign-1.html?raw";
 import campaign2 from "../../../../../../exports/email-campaigns/30-day-journal/campaign-2.html?raw";
 import campaign3 from "../../../../../../exports/email-campaigns/30-day-journal/campaign-3.html?raw";
@@ -10,7 +12,13 @@ import campaign4 from "../../../../../../exports/email-campaigns/30-day-journal/
 import approvedFamilyGuide from "../../../../../../exports/email/elh-family-guide-email-2.html?raw";
 import approvedCareBrief from "../../../../../../exports/email/eternal-care-brief-introduction-email.html?raw";
 
-export type JournalArticle = (typeof batch1)[number];
+export type JournalArticle = {
+  slug: string; title: string; category: string; date: string; description: string;
+  lede: string; readMinutes: number;
+  sections: {heading: string; paragraphs: string[]}[];
+  ctaHeading: string; ctaCopy: string;
+  reviewHtml?: string; previouslyPublished?: boolean;
+};
 export type EmailCampaign = {
   html: string;
   subject: string;
@@ -37,9 +45,55 @@ const approvedJournalTemplate = (html: string) => html
     <tr><td style="height:5px;line-height:5px;background-color:#C9B07E;font-size:0;">&nbsp;</td></tr>`,
   );
 
-export const journalArticles: JournalArticle[] = [
-  ...[...batch1, ...batch2, ...batch3, ...batch4, ...batch5].filter(article => !("publicationStatus" in article) || article.publicationStatus !== "archived"),
-];
+// These files are used only in the workspace design preview. Do not export
+// unapproved review documents into the public dashboard bundle.
+const reviewDocuments = import.meta.glob<string>(
+  "../../../../../../website/elh-preview/blog/*.html",
+  {query: "?raw", import: "default", eager: true},
+);
+const reviewBySlug = Object.fromEntries(Object.entries(reviewDocuments).map(
+  ([path, html]) => [path.split("/").pop()!.replace(/\.html$/, ""), html],
+));
+const campaignArticles: JournalArticle[] = [
+  ...batch1, ...batch2, ...batch3, ...batch4, ...batch5,
+  ...octoberContinuation, ...decemberContinuation,
+].filter(article => !("publicationStatus" in article) || article.publicationStatus !== "archived")
+ .map(article => ({...article, reviewHtml: reviewBySlug[article.slug]}));
+const campaignSlugs = new Set(campaignArticles.map(article => article.slug));
+const legacyArticles: JournalArticle[] = Object.entries(reviewBySlug).flatMap(([slug, html]) => {
+  if (campaignSlugs.has(slug)) return [];
+  const doc = new DOMParser().parseFromString(html, "text/html");
+  const canonical = doc.querySelector<HTMLLinkElement>('link[rel="canonical"]')?.href;
+  if (!canonical || new URL(canonical).pathname !== `/blog/${slug}` ||
+      doc.querySelector('meta[http-equiv="refresh"]') ||
+      doc.querySelector('meta[name="robots"]')?.getAttribute("content")?.includes("noindex")) return [];
+  const title = doc.querySelector("h1")?.textContent?.trim();
+  if (!title) return [];
+  const date = html.match(/"datePublished"\s*:\s*"(\d{4}-\d{2}-\d{2})/)?.[1] ||
+    doc.querySelector('meta[property="article:published_time"]')?.getAttribute("content")?.slice(0, 10) ||
+    "Previously published";
+  doc.querySelectorAll("script, .elh-related, #hdr, #site-footer, body > header, body > footer").forEach(node=>node.remove());
+  return [{slug, title, date, category: "Journal",
+    description: doc.querySelector('meta[name="description"]')?.getAttribute("content") || "",
+    lede: "", sections: [{heading:"Article",paragraphs:[doc.querySelector("main")?.textContent || ""]}], ctaHeading: "", ctaCopy: "",
+    readMinutes: Math.max(1, Math.ceil((doc.querySelector("main")?.textContent || "").split(/\s+/).length / 200)),
+    reviewHtml: html, previouslyPublished: true}];
+});
+export const journalArticles: JournalArticle[] = [...legacyArticles, ...campaignArticles]
+  .sort((a, b) => a.date.localeCompare(b.date) || a.title.localeCompare(b.title));
+
+export function journalReviewDocument(html: string): string {
+  const doc = new DOMParser().parseFromString(html, "text/html");
+  // Review the final article, including imagery and contextual links, without
+  // running analytics/chat or showing navigation/footer chrome in the drawer.
+  doc.querySelectorAll("script, .elh-related, #hdr, #site-footer, body > header, body > footer").forEach(node => node.remove());
+  const head = [...doc.head.querySelectorAll("style, link[rel='stylesheet']")]
+    .map(node => node.outerHTML).join("");
+  return `<!doctype html><html lang="en"><head><base href="${window.location.origin}/">${head}
+    <style>html,body{margin:0!important;overflow-x:clip}main{padding-top:24px!important}
+    a{pointer-events:none}body{min-width:0!important}</style></head>
+    <body>${doc.querySelector("main")?.outerHTML || ""}</body></html>`;
+}
 
 const plainText = [
   `Knowing when to call\nA conversation can begin before a crisis.\n\nWondering whether it is time to ask about hospice? You do not have to wait for a crisis or have every answer ready.\n\nA conversation can begin when a serious illness is changing daily life: more time in bed, repeated hospital visits, increasing help with eating or bathing, or symptoms that are becoming harder to manage. These signs do not make an eligibility decision—but they are meaningful reasons to ask a clinician for an evaluation.\n\nHospice is generally considered when a physician certifies a life expectancy of six months or less if an illness follows its usual course. A hospice team can explain options and next steps without pressure.\n\nRead the guide: https://eternallifehospice.com/blog/knowing-when-to-call\n\nQuestions? Call 805.953.7273\nEternal Life Hospice | Care That Honors Life.\nEducational information only; not medical advice.\nUnsubscribe: {{ unsubscribe }}`,

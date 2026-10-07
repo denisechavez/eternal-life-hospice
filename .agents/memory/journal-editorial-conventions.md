@@ -8,3 +8,13 @@ Eternal Journal copy follows the house convention of avoiding Oxford commas. Nev
 **Why:** Editorial approval established these language and visual-content boundaries to keep family-facing copy calm and to prevent unnecessary graphics. The archival rule keeps source material without accidentally publishing it.
 
 **How to apply:** Use the language conventions in future Journal writing and revisions. Give every article a narrower job than its core owner and link the article to that owner; local articles should answer a distinct local question rather than restate the city or regional service page. Recommend an infographic only when the specified information genuinely benefits from visual explanation. When archiving a planned article, preserve its editorial source while excluding it from generated pages, manifests, archive cards, structured data, sitemaps and search indexes.
+
+New Journal articles need unique imagery: photographs or convincingly photoreal
+images that do not look AI-generated.
+
+**Why:** The user explicitly required unique, credible-looking photographs for
+the continuation through December 31, 2026.
+
+**How to apply:** Prefer licensed real photographs and do not reuse an article
+hero across the new collection. Preserve image disclosures and source credits
+in the complete article presented for Studio approval.

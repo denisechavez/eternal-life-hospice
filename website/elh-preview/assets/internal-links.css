@@ -7,3 +7,6 @@
 .elh-related a:focus-visible{outline:3px solid #5B2E59;outline-offset:4px;border-radius:2px}
 @media(max-width:600px){.elh-related{margin:1.5rem auto;padding:1.5rem 1.2rem}.elh-related ul{grid-template-columns:1fr}}
 @media print{.elh-related{break-inside:avoid}}
+.elh-inline-link{color:inherit!important;text-decoration:underline!important;text-underline-offset:.18em;text-decoration-thickness:1px}
+.elh-inline-link:hover{text-decoration-thickness:2px}
+.elh-inline-link:focus-visible{outline:2px solid currentColor;outline-offset:3px;border-radius:2px}

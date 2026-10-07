@@ -1853,14 +1853,14 @@ content_type = "text/csv"
 id = "Zd9rjXMmfYKbor1DDE6KN"
 uri = "file://exports/journal/q4-2026-editorial-review.html"
 type = "html"
-title = "Eternal Journal — 71 Articles & Photographs for Review"
-description = "Complete October 22–December 31, 2026 drafts, with every photograph embedded, contextual links and source credits. Open individual articles or expand a month for review."
+title = "Review Your 71 Scheduled Journal Posts"
+description = "Full October 22–December 31, 2026 articles and photographs. Open each article or expand a month. Send approvals or requested changes here in chat; the document itself has no approval controls."
 logical_id = "ae1b462c-825d-4c84-84ed-c25e98ac16b7"
 content_hash = "sha256:f4095a568779edb8fb3212c132d8d66de0e14b6fc48a8f3a14da80b05ad52518"
 size = 6276700
 mtime_ms = 1791410657801
-storage_uri = "gcs://replit-rams-assets-kirk/rams/assets/repl:e1b2f643-7869-4565-af0e-10c34575ee8d/ae1b462c-825d-4c84-84ed-c25e98ac16b7/5fda45e0-4dc9-4fee-b9c2-89944387a8ab"
-storage_version_token = "1791411063813883"
+storage_uri = "gcs://replit-rams-assets-kirk/rams/assets/repl:e1b2f643-7869-4565-af0e-10c34575ee8d/ae1b462c-825d-4c84-84ed-c25e98ac16b7/d787651d-c61f-47c8-adac-63e1883fb7ec"
+storage_version_token = "1791414847705355"
 content_type = "text/html"
 
 [[outputs]]
