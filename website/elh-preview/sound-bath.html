@@ -128,6 +128,7 @@
 
   <!-- UserWay (accessibility) and WhatConverts (call-tracking) loaded by analytics.js -->
 <link rel="stylesheet" href="/assets/header-nav.css?v=20260920a">
+<link rel="stylesheet" href="/assets/internal-links.css?v=20261007">
 </head><body>
 <a class="skip-link" href="#main-content">Skip to main content</a>
   <header id="hdr">
@@ -252,7 +253,10 @@
     function stopAmbient(){ if(!ambOn)return; sbFadeStop(ambNodes); ambNodes=null; ambOn=false; setAmbBtn(false); }
     (function(){ var veil=document.getElementById('sbVeil'), orb=document.getElementById('sbOrb'), skip=document.getElementById('sbSkip'), stog=document.getElementById('sbSoundToggle'); function hideVeil(){ if(!veil)return; veil.classList.add('hidden'); setTimeout(function(){ veil.style.display='none'; },950); } if(orb)orb.addEventListener('click',function(){ startAmbient(); hideVeil(); }); if(skip)skip.addEventListener('click',hideVeil); if(stog)stog.addEventListener('click',function(){ ambOn?stopAmbient():startAmbient(); }); })();
     })();</script>
-  </main>
+  <!-- INTERNAL_LINKS_START -->
+<section class="elh-related" aria-labelledby="elh-related-title"><h2 id="elh-related-title">Continue exploring</h2><ul><li><a href="/resources/comfort-therapies">Whole-person comfort therapies</a></li><li><a href="/services">Explore hospice services</a></li><li><a href="/resources">Guidance for families and caregivers</a></li></ul></section>
+<!-- INTERNAL_LINKS_END -->
+</main>
 <footer id="site-footer">
   <div class="foot-grid">
     <div><div class="foot-logo"><a href="/" aria-label="Eternal Life Hospice — home"><img loading="lazy" decoding="async" src="/assets/img/elh-logo-cream-g.webp" alt="Eternal Life Hospice logo" width="331" height="74"></a></div><p class="foot-tag">Care That Honors Life.</p><p class="foot-legal">Medicare-Certified · CDPH-Licensed · ACHC-Accredited. Serving families across Ventura and Los Angeles Counties.</p><div class="foot-qr"><img src="/assets/img/qr-cream.webp" alt="Scan to visit eternallifehospice.com" width="96" height="96" loading="lazy"><span>Scan to visit<br>on your phone</span></div></div>

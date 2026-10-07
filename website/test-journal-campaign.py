@@ -396,8 +396,8 @@ class JournalCampaignTests(unittest.TestCase):
                     )
                     image = next(a["heroImage"] for a in
                                  self.articles + builder.LEGACY_POSTS if a["slug"] == slug)
-                    self.assertEqual(featured, [(expected_date, f"blog/{slug}", image)])
-                    self.assertNotIn(f'class="rc" data-publish-date="{expected_date}" href="blog/{slug}"', archive)
+                    self.assertEqual(featured, [(expected_date, f"/blog/{slug}", image)])
+                    self.assertNotIn(f'class="rc" data-publish-date="{expected_date}" href="/blog/{slug}"', archive)
                     self.assertNotIn("can-a-family-request-a-hospice-evaluation", archive)
         finally:
             if old is None:
@@ -444,17 +444,17 @@ class JournalCampaignTests(unittest.TestCase):
                             archive,
                         )
                         expected_date = self.articles[-1]["date"] if today == "2027-01-01" else today
-                        self.assertEqual(featured, [(expected_date, f"blog/{expected_slug}")])
+                        self.assertEqual(featured, [(expected_date, f"/blog/{expected_slug}")])
                         self.assertNotIn(
-                            f'class="rc" data-publish-date="{expected_date}" href="blog/{expected_slug}"',
+                            f'class="rc" data-publish-date="{expected_date}" href="/blog/{expected_slug}"',
                             archive,
                         )
                         if today == "2027-01-01":
-                            self.assertNotIn('href="blog/new-journal-story"', archive)
+                            self.assertNotIn('href="/blog/new-journal-story"', archive)
                         else:
                             self.assertIn(
                                 f'class="rc" data-publish-date="{self.articles[-1]["date"]}" '
-                                f'href="blog/{self.articles[-1]["slug"]}"',
+                                f'href="/blog/{self.articles[-1]["slug"]}"',
                                 archive,
                             )
         finally:
@@ -490,12 +490,12 @@ class JournalCampaignTests(unittest.TestCase):
                 archive = handler.wfile.getvalue().decode()
                 self.assertIn(
                     '<div class="blog-featured" data-publish-date="2026-09-29">'
-                    '<a class="bf-img" href="blog/hospice-and-advanced-heart-failure"',
+                    '<a class="bf-img" href="/blog/hospice-and-advanced-heart-failure"',
                     archive,
                 )
                 self.assertIn(
                     'class="rc" data-publish-date="2026-09-21" '
-                    'href="blog/what-happens-during-a-hospice-evaluation"',
+                    'href="/blog/what-happens-during-a-hospice-evaluation"',
                     archive,
                 )
         finally:

@@ -303,25 +303,26 @@ def render_post(article, template):
                   replace_breadcrumb, head)
     image_alt = esc(article.get("heroImageAlt", article["title"] + " | Eternal Life Hospice"))
     head = re.sub(r'(<meta property="og:image:alt" content=")[^"]*(")', rf"\g<1>{image_alt}\2", head, count=1)
-    return head
+    from internal_links import render_links
+    return render_links(head, "/blog/" + article["slug"])
 
 
 def card(article, featured=False):
     image = article["heroImage"]
     if featured:
         return (f'<div class="blog-featured" data-publish-date="{article["date"]}">'
-                f'<a class="bf-img" href="blog/{article["slug"]}" style="background-image:url(\'{image}\')" '
+                f'<a class="bf-img" href="/blog/{article["slug"]}" style="background-image:url(\'{image}\')" '
                 f'aria-label="{esc(article["title"])}"></a><div class="bf-body">'
                 f'<div class="bf-cat">Latest &middot; {esc(article["category"])}</div>'
-                f'<h2><a href="blog/{article["slug"]}">{esc(article["title"])}</a></h2>'
+                f'<h2><a href="/blog/{article["slug"]}">{esc(article["title"])}</a></h2>'
                 f'<p>{esc(article["description"])}</p><div class="rc-meta"><time datetime="{article["date"]}">'
                 f'{date.fromisoformat(article["date"]).strftime("%B %-d, %Y")}</time><span class="dot">&middot;</span>'
-                f'{article["readMinutes"]} min read</div><a class="bf-go" href="blog/{article["slug"]}">Read the post &#8594;</a>'
+                f'{article["readMinutes"]} min read</div><a class="bf-go" href="/blog/{article["slug"]}">Read the post &#8594;</a>'
                 '</div></div>')
     # The server promotes the newest *published* card as each scheduled date arrives.
     # Store its ready-to-render featured form alongside the archive card.
     featured_card = esc(card(article, True))
-    return (f'<a class="rc" data-publish-date="{article["date"]}" href="blog/{article["slug"]}" '
+    return (f'<a class="rc" data-publish-date="{article["date"]}" href="/blog/{article["slug"]}" '
             f'data-featured="{featured_card}">'
             f'<div class="rc-img" style="background-image:url({image})"></div><div class="rc-body">'
             f'<div class="rc-tag">{esc(article["category"])}</div><h3 class="rc-title">{esc(article["title"])}</h3>'
@@ -463,6 +464,13 @@ def build(articles):
         path = OUT / f'{article["slug"]}.html'
         if not path.exists():
             path.write_text(render_post(article, template), encoding="utf-8")
+    from internal_links import render_links
+    for article in active_articles:
+        path = OUT / f'{article["slug"]}.html'
+        text = path.read_text()
+        updated = render_links(text, "/blog/" + article["slug"])
+        if updated != text:
+            path.write_text(updated, encoding="utf-8")
     update_image_dimensions(active_articles)
     write_archive(active_articles, articles)
 

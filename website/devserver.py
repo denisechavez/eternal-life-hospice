@@ -318,6 +318,10 @@ class PrettyURLHandler(http.server.SimpleHTTPRequestHandler):
             body = text.encode("utf-8")
         else:
             return False
+        if path.endswith(".html"):
+            from internal_links import render_links
+            route = "/" + os.path.basename(path)[:-5]
+            body = render_links(body.decode("utf-8"), route, self._journal_today()).encode("utf-8")
         self.send_response(200)
         self.send_header("Content-Type", self.guess_type(path))
         self.send_header("Content-Length", str(len(body)))
@@ -391,6 +395,28 @@ class PrettyURLHandler(http.server.SimpleHTTPRequestHandler):
         Last-Modified and byte-range semantics remain intact.
         """
         path = self.translate_path(self.path)
+        if path.endswith(".html") and os.path.isfile(path):
+            from internal_links import inventory, render_links
+            route = urlsplit(self.path).path.rstrip("/") or "/"
+            if route.endswith(".html"):
+                route = route[:-5]
+            if route == "/index":
+                route = "/"
+            if route in inventory(self._journal_today()):
+                with open(path, encoding="utf-8") as source:
+                    body = render_links(source.read(), route, self._journal_today()).encode()
+                compressed = "gzip" in (self.headers.get("Accept-Encoding") or "").lower()
+                if compressed:
+                    body = gzip.compress(body, mtime=0)
+                self.send_response(200)
+                self.send_header("Content-Type", "text/html; charset=utf-8")
+                self.send_header("Content-Length", str(len(body)))
+                self.send_header("Cache-Control", "public, max-age=0, must-revalidate")
+                self.send_header("Vary", "Accept-Encoding")
+                if compressed:
+                    self.send_header("Content-Encoding", "gzip")
+                self.end_headers()
+                return io.BytesIO(body)
         if os.path.isdir(path):
             for index_name in ("index.html", "index.htm"):
                 index_path = os.path.join(path, index_name)

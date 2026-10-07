@@ -1,0 +1,9 @@
+.elh-related{max-width:1080px;margin:2rem auto;padding:2rem 1.6rem;background:#F5F0EB;color:#3C1C3B;border-top:1px solid #D8CDBF;text-align:left}
+.elh-related h2{font-family:var(--ff-d,Georgia,serif);font-size:clamp(1.5rem,3vw,2rem);font-weight:400;line-height:1.3;margin:0 0 1rem}
+.elh-related ul{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.5rem 2rem;list-style:none;padding:0;margin:0}
+.elh-related li{margin:0;min-width:0}
+.elh-related a{display:inline-block;padding:.65rem 0;color:#5B2E59;font-size:17px;line-height:1.5;text-decoration:underline;text-underline-offset:4px;overflow-wrap:anywhere}
+.elh-related a:hover{color:#3C1C3B}
+.elh-related a:focus-visible{outline:3px solid #5B2E59;outline-offset:4px;border-radius:2px}
+@media(max-width:600px){.elh-related{margin:1.5rem auto;padding:1.5rem 1.2rem}.elh-related ul{grid-template-columns:1fr}}
+@media print{.elh-related{break-inside:avoid}}

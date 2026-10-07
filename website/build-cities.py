@@ -552,7 +552,8 @@ def render_page(c):
 </main>
 {make_footer(county)}
 </body></html>"""
-    return page
+    from internal_links import render_links
+    return render_links(page, "/hospice-" + slug + "-ca")
 
 # ── Main ───────────────────────────────────────────────────────────────────────
 

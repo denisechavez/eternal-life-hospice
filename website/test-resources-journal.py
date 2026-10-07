@@ -58,9 +58,11 @@ class ResourcesJournalTests(unittest.TestCase):
                 self.assertEqual(statuses, [200])
                 self.assertEqual(headers["Cache-Control"], "public, max-age=0, must-revalidate")
                 self.assertTrue(page.startswith(before))
-                self.assertTrue(page.endswith(after))
+                from internal_links import render_links
+                expected_after = render_links(source, "/resources", today).split("<!-- JOURNAL_PICKS_END -->")[1]
+                self.assertTrue(page.endswith(expected_after))
                 self.assertEqual(
-                    re.findall(r'class="rc"[^>]*href="blog/([^"]+)"', page), expected
+                    re.findall(r'class="rc"[^>]*href="/blog/([^"]+)"', page), expected
                 )
                 self.assertNotIn("data-featured", page)
                 self.assertNotIn("can-a-family-request-a-hospice-evaluation", page)

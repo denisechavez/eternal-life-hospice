@@ -14,14 +14,14 @@ def recent_journal_cards(archive, manifest, today, limit=3):
     campaign_dates = {item["slug"]: item["date"] for item in manifest}
     for match in re.finditer(
         r'<a class="rc"[^>]*data-publish-date="([^"]+)"[^>]*'
-        r'href="blog/([^"]+)"[^>]*>[\s\S]*?</a>', archive
+        r'href="/?blog/([^"]+)"[^>]*>[\s\S]*?</a>', archive
     ):
         card = re.sub(r' data-featured="[^"]*"', "", match.group(0), count=1)
         candidates.append((match.group(2), match.group(1), card))
 
     featured = re.search(
         r'<div class="blog-featured" data-publish-date="([^"]+)">'
-        r'<a class="bf-img" href="blog/([^"]+)" '
+        r'<a class="bf-img" href="/?blog/([^"]+)" '
         r'style="background-image:url\(\'([^\']+)\'\)"[^>]*></a>'
         r'<div class="bf-body"><div class="bf-cat">Latest &middot; ([\s\S]*?)</div>'
         r'<h2><a[^>]*>([\s\S]*?)</a></h2><p>([\s\S]*?)</p>',

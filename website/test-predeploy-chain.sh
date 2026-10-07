@@ -86,6 +86,8 @@ SENTINELS=(
   "SENTINEL: check-footer-parity.py self-test OK"
   "SENTINEL: check-agency-separation.py OK"
   "SENTINEL: test-public-artifact-exposure.py OK"
+  "SENTINEL: check-internal-links.py self-test OK"
+  "SENTINEL: test-internal-link-journeys.py browser checks OK"
 )
 
 SENTINEL_FAIL=0
