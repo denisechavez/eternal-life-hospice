@@ -3,6 +3,19 @@ name: Eternal Studio editorial approval
 description: Required review and approval workflow for Journal, email and Care Brief content.
 ---
 
+## Current work scope
+
+Further editorial work is limited to Eternal Journal blog posts and Eternal
+emails. Care Brief material is on hold: do not create, revise, schedule or publish
+it. Do not advance social, Pinterest or video material under this limited scope.
+
+**Why:** The user explicitly narrowed work to blog posts and Eternal emails and
+directed that no Care Brief material move forward.
+
+**How to apply:** Leave existing Care Brief material intact and resume work on it
+only with explicit permission. The approval requirements below still apply;
+they do not authorize work on a paused channel.
+
 Eternal Studio is the canonical place to review and approve all Journal entries,
 emails and Eternal Care Brief material. All existing and scheduled entries should
 be available for review there. New or revised content must receive explicit Studio
