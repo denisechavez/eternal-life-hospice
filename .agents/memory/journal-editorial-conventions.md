@@ -18,3 +18,13 @@ the continuation through December 31, 2026.
 **How to apply:** Prefer licensed real photographs and do not reuse an article
 hero across the new collection. Preserve image disclosures and source credits
 in the complete article presented for Studio approval.
+
+Preserve the established Journal image presentation when adding new articles.
+
+**Why:** The user explicitly requested that new imagery retain the previous
+format and that the existing treatment not change.
+
+**How to apply:** Reuse the existing hero layout, cropping rules, overlay and
+headline placement. Do not remove the purple overlay or redesign the image
+treatment without approval. Distinguish unchanged template styling from
+different source-photo proportions when checking consistency.
