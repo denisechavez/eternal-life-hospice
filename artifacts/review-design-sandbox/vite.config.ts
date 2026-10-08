@@ -67,6 +67,13 @@ export default defineConfig({
     strictPort: true,
     host: '0.0.0.0',
     allowedHosts: true,
+    // Article srcdoc uses the site's original /assets paths. Serve those from
+    // the existing website service, including when previewing this port alone.
+    proxy: {
+      '/assets': {
+        target: 'http://127.0.0.1:5000',
+      },
+    },
     fs: {
       strict: true,
     },

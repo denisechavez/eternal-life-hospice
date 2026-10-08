@@ -1,0 +1,26 @@
+/* Keep the reader outside the preview's scrolling/transformed page wrapper. */
+.studio-review-layer {
+  --plum: #3c1c3b;
+  --plum-2: #63345f;
+  --line: #ded2c9;
+  --gold: #c9b07e;
+  --font-serif: JostELH, system-ui, sans-serif;
+  position: fixed;
+  inset: 0;
+  height: 100dvh;
+  max-height: 100dvh;
+  z-index: 100;
+  color: #382d38;
+  font: 14px ManropeELH, JostELH, system-ui, sans-serif;
+}
+.studio-review-layer,
+.studio-review-layer * { box-sizing: border-box; }
+.studio-review-layer .detail-drawer {
+  height: 100%;
+  max-height: 100%;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+.studio-review-layer button { font: inherit; cursor: pointer; }
+.studio-review-layer .article-review iframe { display: block; }

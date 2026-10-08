@@ -1,9 +1,11 @@
 import { useEffect, useMemo, useState } from "react";
+import { createPortal } from "react-dom";
 import type { FormEvent, ReactNode } from "react";
 import { Activity, AlertCircle, ArrowUpRight, BarChart3, Bell, BookOpen, CalendarDays, Check, ChevronDown, ChevronRight, CircleDot, Database, FileCheck2, FileText, Globe2, HeartHandshake, ImageIcon, LayoutDashboard, Link2, Menu, Moon, MoonStar, RefreshCw, Search, Send, Settings2, ShieldCheck, Sparkles, Sun, TrendingUp, Users, Video, X } from "lucide-react";
 import { emailCampaigns, journalArticles, journalReviewDocument, type JournalArticle } from "./contentData";
 import baseline from "./baseline-2026-09-20.json";
 import "./hub.css";
+import "./journal-review.css";
 
 type Item = { id:string; title:string; type:string; date:string; owner:string; status:"Needs review"|"Approved"|"Scheduled"|"Draft"|"Published"; excerpt:string; source?:JournalArticle; emailIndex?:number };
 type Report = { live:boolean; generatedAt?:string; errors?:string[]; period?:{startDate:string;endDate:string}; metrics?:{sessions:number;keyEvents:number;searchClicks:number;impressions:number;ctr:number;averagePosition:number}; trend?:{date:string;sessions:number}[]; landingPages?:{page:string;sessions:number}[]; queries?:{query:string;clicks:number;impressions:number;position:number}[]; visibilityMarkets?:{market:string;sessions:number;clicks:number;impressions:number}[] };
@@ -75,7 +77,11 @@ export default function Hub(){
   const [active,setActive]=useState(initialView); const [open,setOpen]=useState(studio.some(item=>item[1]===initialView)?"Eternal Studio":""); const [mobile,setMobile]=useState(false); const [query,setQuery]=useState(""); const [notice,setNotice]=useState(""); const [selected,setSelected]=useState<Item|null>(null); const [statuses,setStatuses]=useState<Record<string,Item["status"]>>(()=>{const initial=Object.fromEntries(items.map(item=>[item.id,item.status]));try{const saved=window.localStorage.getItem(approvalStorageKey);return saved?{...initial,...JSON.parse(saved)}:initial}catch{return initial}}); const [openingDirection,setOpeningDirection]=useState<"chain"|"center">("chain"); const [firstName,setFirstName]=useState(""); const [entered,setEntered]=useState(Boolean(initialView));
   useEffect(()=>{document.title="Eternal Growth Intelligence";window.localStorage.setItem(approvalStorageKey,JSON.stringify(statuses))},[statuses]);
  const currentGroup=active?(groups.find(g=>g.items.some(i=>i[1]===active))?.name || (studio.some(i=>i[1]===active)?"Eternal Studio":"Data & Settings")):"";
- const setView=(v:string,g:string)=>{setActive(v);setOpen(g);setMobile(false);const url=new URL(window.location.href);url.searchParams.set("view",v);window.history.replaceState(null,"",url)};
+ const setView=(v:string,g:string)=>{setActive(v);setOpen(g);setMobile(false);setSelected(null);setQuery("");window.scrollTo(0,0);document.querySelector(".hub-main")?.scrollTo(0,0);const url=new URL(window.location.href);url.searchParams.set("view",v);window.history.replaceState(null,"",url)};
+ useEffect(()=>{
+   window.scrollTo(0,0);
+   document.querySelector(".hub-main")?.scrollTo(0,0);
+ },[active]);
  const showCover=()=>{setEntered(false);setActive("");setOpen("");setMobile(false);const url=new URL(window.location.href);url.searchParams.delete("view");window.history.replaceState(null,"",url)};
  const flash=(s:string)=>{setNotice(s);window.setTimeout(()=>setNotice(""),2200)};
  const list=useMemo(()=>items.filter(i=>`${i.title} ${i.type} ${i.date}`.toLowerCase().includes(query.toLowerCase())),[query]);
@@ -189,15 +195,22 @@ function Detail({item,onClose,onStatus}:{item:Item;onClose:()=>void;onStatus:(s:
  const email=item.emailIndex!==undefined?emailCampaigns[item.emailIndex]:null;
  const approved=item.status==="Approved"||item.status==="Published";
  const approvedTemplate=email?.framework==="approved";
- return <div className="detail-backdrop" onClick={onClose}><aside className={`detail-drawer ${article||email?"full-review":""}`} onClick={e=>e.stopPropagation()}>
+ useEffect(()=>{
+   const previousOverflow=document.body.style.overflow;
+   document.body.style.overflow="hidden";
+   const closeOnEscape=(event:KeyboardEvent)=>{if(event.key==="Escape")onClose()};
+   window.addEventListener("keydown",closeOnEscape);
+   return ()=>{document.body.style.overflow=previousOverflow;window.removeEventListener("keydown",closeOnEscape)};
+ },[onClose]);
+ return createPortal(<div className="detail-backdrop studio-review-layer" onClick={onClose}><aside role="dialog" aria-modal="true" aria-label={article?`Review article: ${article.title}`:"Studio review"} className={`detail-drawer ${article||email?"full-review":""}`} onClick={e=>e.stopPropagation()}>
  <header><div><Kicker>{item.type}</Kicker><h2>{article?"Full article review":email?"Full email review":"Studio item review"}</h2></div><button className="icon-btn" onClick={onClose} aria-label="Close review"><X size={18}/></button></header>
  <div className="detail-body"><span className="tag">{item.status}</span><h1>{article?<Highlighted text={item.title}/>:item.title}</h1><p>{article?<Highlighted text={item.excerpt}/>:item.excerpt}</p>
  <div className="meta-grid"><span>Owner<b>{item.owner}</b></span><span>Date<b>{item.date}</b></span></div>
  {article?<article className="article-review">
  <div className="article-byline"><span>{article.category}</span><span>{article.readMinutes} minute read</span><span>Complete article, photograph and contextual links</span></div>
- {article.reviewHtml?<iframe title={`Full article: ${article.title}`} sandbox="" srcDoc={journalReviewDocument(article.reviewHtml)} style={{width:"100%",height:"75vh",border:0,background:"#fff"}}/>:
+ {article.reviewHtml?<iframe title={`Full article: ${article.title}`} sandbox="allow-same-origin" srcDoc={journalReviewDocument(article.reviewHtml)} style={{width:"100%",height:"75vh",border:0,background:"#fff"}}/>:
  <><p className="article-lede"><Highlighted text={article.lede}/></p>{article.sections.map(section=><section key={section.heading}><h3><Highlighted text={section.heading}/></h3>{section.paragraphs.map((paragraph,index)=><p key={index}><Highlighted text={paragraph}/></p>)}</section>)}<div className="article-cta"><strong><Highlighted text={article.ctaHeading}/></strong><p><Highlighted text={article.ctaCopy}/></p></div></>}
  </article>:email?<div className="email-review"><div className={`email-template-note ${approvedTemplate?"approved":""}`}><ShieldCheck size={16}/><span><strong>{approvedTemplate?"Approved Eternal email template":"Journal campaign draft"}</strong>{approvedTemplate?"Rendered from the established sent-email asset with its responsive table layout, plum masthead, gold accents and compliant branded footer.":"This is a campaign-specific draft. Compare it with an approved Eternal template before scheduling."}</span></div><div className="email-preview-label">Complete rendered email <small>Keywords calculated from current Journal and email copy</small></div><iframe title={email.subject} srcDoc={highlightPublicationHtml(email.html)}/><div className="campaign-details"><h3>Plain-text version</h3><pre>{email.plainText}</pre></div></div>:<div className="preview-paper"><Kicker>Editorial preview</Kicker><h3>{item.title}</h3><p>{item.excerpt}</p></div>}
  <div className="detail-actions review-actions"><button className="primary-btn" onClick={()=>onStatus(approved?"Needs review":"Approved")}><Check size={14}/>{approved?"Return to review":article?"Approve complete article":email?"Approve complete email":"Approve"}</button><button className="secondary-btn" onClick={()=>onStatus(item.status==="Scheduled"?"Draft":"Scheduled")}><CalendarDays size={14}/>{item.status==="Scheduled"?"Move to draft":"Schedule"}</button></div>
- </div></aside></div>
+ </div></aside></div>,document.body);
 }

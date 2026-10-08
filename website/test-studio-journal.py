@@ -26,6 +26,8 @@ def main():
         try:
             client = tools.DevTools(tools.wait_for_page_debugger(port))
             client.call("Page.enable")
+            client.call("Emulation.setDeviceMetricsOverride", {
+                "width":1728,"height":980,"deviceScaleFactor":1,"mobile":False})
             client.call("Page.navigate", {"url": "http://127.0.0.1:21921/__reviews-mockup/preview/elh-marketing-hub/Hub?view=Journal"})
             def evaluate(expression):
                 return client.call("Runtime.evaluate", {"expression": expression, "returnByValue": True})["result"].get("value")
@@ -39,9 +41,26 @@ def main():
                 s.value='2026-12';s.dispatchEvent(new Event('change',{bubbles:true}));})()""")
             time.sleep(.4)
             assert evaluate("document.querySelectorAll('.studio-row').length") == 31
+            evaluate("window.scrollTo(0,document.documentElement.scrollHeight)")
+            time.sleep(.2)
+            assert evaluate("window.scrollY") > 500
             evaluate("[...document.querySelectorAll('.studio-row')].at(-1).click()")
             time.sleep(.5)
             assert evaluate("!!document.querySelector('.article-review iframe')")
+            assert evaluate("""(()=>{const r=document.querySelector('.detail-drawer').getBoundingClientRect();
+                return Math.abs(r.top)<1 && Math.abs(r.height-window.innerHeight)<2})()"""), "Reader is outside the visible viewport"
+            assert evaluate("""(()=>{const d=document.querySelector('.article-review iframe').contentDocument;
+                return d?.querySelector('h1')?.textContent.includes('Begin the New Year') &&
+                  d.querySelector('article').innerText.split(/\\s+/).length>300 &&
+                  getComputedStyle(d.querySelector('article')).display!=='none' &&
+                  Number(getComputedStyle(d.querySelector('article')).opacity)>0})()"""), "Full article is not readable"
+            for _ in range(80):
+                if evaluate("""[...document.querySelector('.article-review iframe').contentDocument.styleSheets]
+                    .some(s=>s.href?.includes('/assets/elh.css'))"""):
+                    break
+                time.sleep(.1)
+            assert evaluate("""[...document.querySelector('.article-review iframe').contentDocument.styleSheets]
+                .some(s=>s.href?.includes('/assets/elh.css'))"""), "Original article styling failed to load"
             assert evaluate("""(()=>{const raw=document.querySelector('.article-review iframe').srcdoc;
                 return raw.includes('Begin the New Year') && raw.includes('elh-inline-link') &&
                   raw.includes('journal/q4/begin-the-new-year-with-one-clear-care-conversation.jpg') &&
@@ -53,7 +72,31 @@ def main():
                 s.value='';s.dispatchEvent(new Event('change',{bubbles:true}));})()""")
             time.sleep(.3)
             assert evaluate("document.querySelectorAll('.studio-row').length") == 107
-            print("SENTINEL: test-studio-journal.py 107 posts through December 31 OK")
+            # Returning to Journal after scrolling another view must show the list,
+            # not retain the old page's off-screen scroll position.
+            evaluate("""[...document.querySelectorAll('.nav-items button')]
+                .find(b=>b.textContent.trim()==='Content Calendar').click()""")
+            time.sleep(.2)
+            evaluate("""[...document.querySelectorAll('.nav-items button')]
+                .find(b=>b.textContent.trim()==='Eternal Journal').click()""")
+            time.sleep(.3)
+            assert evaluate("window.scrollY") == 0
+            assert evaluate("document.querySelectorAll('.studio-row').length") == 107
+            # Cover every legacy, original-campaign and continuation article.
+            for index in range(107):
+                evaluate(f"document.querySelectorAll('.studio-row')[{index}].click()")
+                for _ in range(50):
+                    readable=evaluate("""(()=>{const f=document.querySelector('.article-review iframe');
+                        const d=f?.contentDocument;const main=d?.querySelector('main');
+                        const heading=d?.querySelector('h1');
+                        return !!main && !!heading && main.innerText.split(/\\s+/).length>100 &&
+                          Number(getComputedStyle(main).opacity)>0})()""")
+                    if readable:
+                        break
+                    time.sleep(.05)
+                assert readable, f"Blank article review at row {index}"
+                evaluate("document.querySelector('[aria-label=\"Close review\"]').click()")
+            print("SENTINEL: test-studio-journal.py 107 posts, full visible reader, original styling and navigation OK")
         finally:
             if client:
                 client.close()

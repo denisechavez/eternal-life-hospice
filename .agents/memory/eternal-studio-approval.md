@@ -44,3 +44,14 @@ requested unique photography and in-content links.
 
 **How to apply:** Keep article-level headings, imagery, credits and disclosures
 in the review even when removing site navigation and analytics.
+
+Studio review verification must check visible, readable content, not just item
+counts or the presence of article markup.
+
+**Why:** A populated Journal list passed a markup check while the review reader
+extended beyond the visible canvas window. The reviewer still experienced a blank
+screen.
+
+**How to apply:** Check the reader after scrolling and switching views at the
+actual canvas viewport size, including loaded article styles and imagery. Keep
+viewport dialogs independent of the preview's page-layout constraints.
