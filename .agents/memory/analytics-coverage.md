@@ -42,3 +42,28 @@ existing consent-aware GA4 loader without another tracker or dashboard.
 and never delay navigation for delivery. Before comparing reading with care/referral
 outcomes, confirm the outcomes exist in the same reporting service; do not assume
 loading GA4 means every existing custom event is sent to GA4.
+
+Keep reading context on the reading event rather than persisting or attaching a
+visitor's reading history to accepted submissions. An outcome's source page is
+the intake page, not an inferred originating article.
+
+**Why:** Comparing existing consented event sequences is sufficient for the
+approved reporting scope; carrying inferred end-of-life interests into outcome
+records would add unnecessary sensitive context.
+
+**How to apply:** Compare reading-step routes/topics with subsequent accepted
+events in GA4 Explorations. Do not require a reading topic on the success event
+or add attribution cookies/session storage to make that column appear.
+
+Analytics releases must change every immutable script URL when the shared
+script's bytes change, including authored templates, generator output and
+request-time HTML transforms.
+Follow the existing content-derived version check rather than keeping a city-
+specific version override.
+
+**Why:** Passing handler tests does not prove returning visitors receive new
+events; a year-long cached URL can silently keep the old bridge active.
+Request-time HTML transforms can also undo a correct authored asset version.
+
+**How to apply:** Check asset-version consistency as part of publishing, not
+just event behavior. Keep the unchanged-URL mutation check in the release chain.

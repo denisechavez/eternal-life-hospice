@@ -218,7 +218,7 @@
 <!-- Clarity excluded on this page: referral intake collects provider & patient data.
      All other analytics (GA4, Brevo, Metricool, WhatConverts) load normally. -->
 <script>window.__noClarity = true;</script>
-<script async src="/assets/analytics.js?v=20261007-inline"></script>
+<script async src="/assets/analytics.js?v=8a19c4a3a193"></script>
 
   <!-- UserWay (accessibility) and WhatConverts (call-tracking) loaded by analytics.js -->
 <link rel="stylesheet" href="/assets/header-nav.css?v=20260920a">
@@ -453,6 +453,8 @@
   var btn=f.querySelector('.af-submit'); var orig=btn?btn.innerHTML:'';
   f.addEventListener('submit', function(e){
     e.preventDefault();
+    if(f.__elhSubmissionState){return;}
+    f.__elhSubmissionState='pending';
     
     if(btn){ btn.disabled=true; btn.textContent='Sending\u2026'; }
     var body=new URLSearchParams(); new FormData(f).forEach(function(v,k){ body.append(k,v); });
@@ -465,7 +467,8 @@
         });
       })
       .then(function(data){
-        if(window.elhTrackEvent){window.elhTrackEvent('form_success',{page:location.pathname||'/',form:'elh-physician'});}
+        f.__elhSubmissionState='accepted';
+        try{if(window.elhTrackEvent){window.elhTrackEvent('form_success',{page:location.pathname||'/',form:'elh-physician'});}}catch(e){}
           f.style.display='none';
           var su=document.createElement('div');
           su.className='apply-success';
@@ -477,6 +480,8 @@
           su.scrollIntoView({behavior:'smooth',block:'center'});
       })
       .catch(function(){
+        if(f.__elhSubmissionState==='accepted'){return;}
+        f.__elhSubmissionState=null;
         if(btn){ btn.disabled=false; btn.innerHTML=orig; }
         var er=document.createElement('div');
         er.className='apply-error';

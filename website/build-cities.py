@@ -33,6 +33,7 @@ Run from repo root:
 
 import json, os, re, sys, textwrap, argparse
 from fragments import HEADER_HTML
+from analytics_assets import analytics_url
 
 
 def meta_description(c: dict) -> str:
@@ -117,7 +118,7 @@ OUT_DIR   = os.path.join(BASE, "elh-preview")
 # ── Deferred script snippets (must NOT be inside an f-string — JS braces clash) ─
 
 HEAD_SCRIPTS = (
-    '<script defer src="/assets/analytics.js?v=20260903a"></script>'
+    f'<script defer src="{analytics_url()}"></script>'
     # UserWay (accessibility, essential) and WhatConverts (call-tracking, marketing)
     # are both bootstrapped by analytics.js to respect the cookie consent gate.
 )
@@ -449,12 +450,6 @@ def render_page(c):
     )
     last_update = c.get("lastMaterialUpdate", "2026-07-22")
     head_scripts = HEAD_SCRIPTS
-    if c.get("analyticsVersion"):
-        head_scripts = re.sub(
-            r"analytics\.js\?v=[^\"']+",
-            f"analytics.js?v={c['analyticsVersion']}",
-            head_scripts,
-        )
 
     schemas = [
         json.dumps(webpage_schema(c), ensure_ascii=False),

@@ -79,7 +79,8 @@ def main():
                       localStorage.setItem('elh_cc', mode==='essential'?'essential':'all');
                       window.gtag=mode==='missing'?undefined:(...args)=>{
                         if(mode==='throw') throw new Error('tracker unavailable');
-                        sessionStorage.setItem('reading-event',JSON.stringify(args));
+                         if(args[1]==='related_reading_click')
+                           sessionStorage.setItem('reading-event',JSON.stringify(args));
                       };
                       return {source:a.dataset.readingSource,
                         destination:a.dataset.readingDestination,topic:a.dataset.readingTopic};

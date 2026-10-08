@@ -8,6 +8,8 @@
 (function () {
   'use strict';
 
+  if (window.__elhAnalyticsInitialized) { return; }
+  window.__elhAnalyticsInitialized = true;
   var KEY = 'elh_cc';
   var consent = null;
   try { consent = localStorage.getItem(KEY); } catch (e) {}
@@ -20,6 +22,8 @@
 
   function trackEvent(name, data) {
     if (!analyticsConsentGranted()) { return false; }
+    // Mirror only the approved funnel events. Each destination fails independently.
+    trackGAOutcome(name, data);
     try {
       if (window.umami && typeof window.umami.track === 'function') {
         var result = window.umami.track(name, data);
@@ -39,6 +43,53 @@
   // Shared, safe hook for form and chat code. Never pass visitor-entered text.
   window.elhTrackEvent = trackEvent;
 
+  function trackGAEvent(name, data) {
+    if (!analyticsConsentGranted()) { return; }
+    try {
+      if (typeof window.gtag === 'function') {
+        var result = window.gtag('event', name, data);
+        if (result && typeof result.catch === 'function') {
+          result.catch(function () {});
+        }
+      }
+    } catch (e) {
+      // Never interrupt navigation or submission confirmation.
+    }
+  }
+  function trackGAOutcome(name, data) {
+    if (!data || ['request_care_click', 'referral_cta_click', 'form_success'].indexOf(name) === -1) { return; }
+    var source = outcomePage(data.page);
+    if (!source) { return; }
+    var params = { source_page: source };
+    if (name === 'form_success') {
+      // These are authored form names, never values from submitted fields.
+      var kinds = {
+        'elh-family': 'care',
+        'elh-physician': 'referral',
+        'elh-casemanager': 'referral',
+        'elh-coordinator': 'professional_contact',
+        'elh-voice': 'team_contact'
+      };
+      if (!Object.prototype.hasOwnProperty.call(kinds, data.form)) { return; }
+      params.form = data.form;
+      params.submission_type = kinds[data.form];
+    } else {
+      params.destination_page = name === 'request_care_click' ? '/' : '/refer';
+      if (['chat', 'header', 'footer', 'hero', 'form', 'content'].indexOf(data.placement) !== -1) {
+        params.placement = data.placement;
+      }
+    }
+    // No spread/copy of caller metadata: exclude entered text, receipts and URLs.
+    trackGAEvent(name, params);
+  }
+
+  function outcomePage(value) {
+    if (typeof value !== 'string' || value.length > 150) { return null; }
+    // Canonical editorial paths only: no query, fragment or arbitrary URL.
+    value = value.replace(/\/index\.html$/, '/').replace(/\.html$/, '');
+    return /^\/(?:[a-z0-9-]+\/)*[a-z0-9-]*$/.test(value) ? value : null;
+  }
+
   function trackRelatedReading(link) {
     if (!analyticsConsentGranted() ||
         !(link.closest('.elh-related') || link.classList.contains('elh-inline-link'))) { return; }
@@ -52,20 +103,11 @@
       'comfort', 'choosing', 'starting', 'whole', 'referral', 'support'];
     if (!source || !destination || source.length > 150 || destination.length > 150 ||
         !route.test(source) || !route.test(destination) || topics.indexOf(topic) === -1) { return; }
-    try {
-      if (typeof window.gtag === 'function') {
-        var result = window.gtag('event', 'related_reading_click', {
-          source_page: source,
-          destination_page: destination,
-          topic: topic
-        });
-        if (result && typeof result.catch === 'function') {
-          result.catch(function () {});
-        }
-      }
-    } catch (e) {
-      // Never prevent, delay or replace normal anchor navigation.
-    }
+    trackGAEvent('related_reading_click', {
+      source_page: source,
+      destination_page: destination,
+      topic: topic
+    });
   }
 
   function pagePath() {
@@ -219,6 +261,8 @@
   }
 
   function bootAnalytics() {
+    if (!analyticsConsentGranted() || window.__elhAnalyticsBooted) { return; }
+    window.__elhAnalyticsBooted = true;
     // Inject preconnect hints now that consent is confirmed
     var preconnects = [
       'https://www.googletagmanager.com',

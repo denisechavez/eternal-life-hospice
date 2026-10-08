@@ -22,14 +22,16 @@ function setup(initialConsent = 'all') {
   window.gtag = (command, name, data) => {
     gaEvents.push({ command, name, data: JSON.parse(JSON.stringify(data)) });
   };
-  vm.runInNewContext(handlers, {
+  const context = vm.createContext({
     window,
     localStorage: { getItem() { return consent; } },
     document: { addEventListener(name, callback) { listeners[name] = callback; } },
     URL
   });
+  vm.runInContext(handlers, context);
   return {
     window, events, gaEvents,
+    reload() { vm.runInContext(handlers, context); },
     consent(value) { consent = value; },
     fire(name, target) {
       // Any attempt to cancel/delay navigation makes this check fail.
@@ -71,6 +73,8 @@ test('care requests are distinct from team-contact clicks', () => {
     'request_care_click', 'request_care_click', 'contact_team_click', 'contact_cta_click'
   ]);
   assert.deepEqual(app.events[0].data, { page: '/', placement: 'header' });
+  assert.deepEqual(app.gaEvents.map(e => e.name), ['request_care_click', 'request_care_click']);
+  assert.deepEqual(app.gaEvents[0].data, { source_page: '/', destination_page: '/', placement: 'header' });
 });
 
 function readingLink(href = '/services', overrides = {}) {
@@ -148,7 +152,9 @@ test('reading instrumentation preserves care and referral conversions on the sam
     'data-reading-destination': '/', 'data-reading-topic': 'care'
   }));
   assert.deepEqual(app.events.map(e => e.name), ['referral_cta_click', 'request_care_click']);
-  assert.deepEqual(app.gaEvents.map(e => e.name), ['related_reading_click', 'related_reading_click']);
+  assert.deepEqual(app.gaEvents.map(e => e.name), [
+    'related_reading_click', 'referral_cta_click', 'related_reading_click', 'request_care_click'
+  ]);
 });
 
 test('nested category targets emit only predefined categories, never input text', () => {
@@ -171,7 +177,10 @@ test('essential-only and missing consent suppress every event', () => {
     app.fire('click', link('/?lead=family#leadcap'));
     app.fire('click', link('tel:18059537273'));
     app.fire('submit', form());
+    app.fire('click', link('/refer#referral-form'));
+    app.window.elhTrackEvent('form_success', { page: '/', form: 'elh-family' });
     assert.equal(app.events.length, 0);
+    assert.equal(app.gaEvents.length, 0);
   }
 });
 
@@ -224,4 +233,103 @@ test('existing call, referral and download events still work without sensitive q
   assert.deepEqual(app.events.map(e => e.name), ['phone_click', 'referral_cta_click', 'resource_download']);
   assert.deepEqual(app.events[2].data, { page: '/', placement: 'content', resource: 'family-guide.pdf' });
   assert.ok(!JSON.stringify(app.events).includes('private@example.test'));
+});
+
+test('GA4 mirrors only allowlisted successful forms with fixed outcome categories', () => {
+  const app = setup();
+  for (const name of ['elh-family', 'elh-physician', 'elh-casemanager', 'elh-coordinator', 'elh-voice', 'unknown']) {
+    app.window.elhTrackEvent('form_success', {
+      page: '/', form: name, email: 'private@example.test', receipt_id: 'PRIVATE',
+      message: 'Patient details', destination_page: '/?patient=PRIVATE'
+    });
+  }
+  assert.equal(app.events.length, 6); // Original Umami hook unchanged.
+  assert.deepEqual(app.gaEvents.map(e => e.data.submission_type),
+    ['care', 'referral', 'referral', 'professional_contact', 'team_contact']);
+  assert.deepEqual(app.gaEvents[0], {
+    command: 'event', name: 'form_success',
+    data: { source_page: '/', form: 'elh-family', submission_type: 'care' }
+  });
+  assert.ok(!/PRIVATE|private@example|Patient details/.test(JSON.stringify(app.gaEvents)));
+  app.window.elhTrackEvent('form_success', { page: '/?email=private@example.test', form: 'elh-family' });
+  app.window.elhTrackEvent('form_success', { page: '/refer#private', form: 'elh-physician' });
+  assert.equal(app.gaEvents.length, 5);
+  app.window.elhTrackEvent('form_success', { page: '/refer.html', form: 'elh-physician' });
+  assert.equal(app.gaEvents[5].data.source_page, '/refer');
+});
+
+test('missing or failing Umami does not stop GA4 outcomes; failing GA4 does not stop Umami', async () => {
+  const app = setup();
+  const original = app.window.umami;
+  delete app.window.umami;
+  app.fire('click', link('/?lead=family'));
+  app.window.umami = { track() { throw new Error('Umami failed'); } };
+  app.window.elhTrackEvent('form_success', { page: '/', form: 'elh-family' });
+  app.window.umami.track = () => Promise.reject(new Error('Umami rejected'));
+  app.fire('click', link('/refer'));
+  assert.equal(app.gaEvents.length, 3);
+  app.window.umami = original;
+  for (const ga of [undefined, () => { throw new Error('GA failed'); },
+    () => Promise.reject(new Error('GA rejected'))]) {
+    app.window.gtag = ga;
+    app.window.elhTrackEvent('form_success', { page: '/refer', form: 'elh-physician' });
+  }
+  assert.equal(app.events.length, 3);
+  await new Promise(resolve => setImmediate(resolve));
+});
+
+test('duplicate loader execution does not duplicate click listeners or outcomes', () => {
+  const app = setup();
+  app.reload();
+  app.fire('click', link('/refer'));
+  app.window.elhTrackEvent('form_success', { page: '/refer', form: 'elh-physician' });
+  assert.deepEqual(app.events.map(e => e.name), ['referral_cta_click', 'form_success']);
+  assert.deepEqual(app.gaEvents.map(e => e.name), ['referral_cta_click', 'form_success']);
+});
+
+test('consent revoked before accepted submission suppresses both destinations', () => {
+  const app = setup();
+  app.consent('essential');
+  app.window.elhTrackEvent('form_success', { page: '/', form: 'elh-family' });
+  assert.equal(app.events.length, 0);
+  assert.equal(app.gaEvents.length, 0);
+});
+
+test('full loader boots GA4 once and checks consent again at window load', () => {
+  for (const revoke of [false, true]) {
+    let consent = 'all';
+    const load = [], appended = [];
+    const context = {
+      __noClarity: true,
+      location: { pathname: '/', search: '', hash: '' },
+      localStorage: { getItem() { return consent; } },
+      document: {
+        readyState: 'loading', URL: 'https://example.test/', referrer: '',
+        addEventListener() {},
+        createElement() { return { setAttribute() {} }; },
+        head: { appendChild(el) { appended.push(el); } },
+        body: { appendChild(el) { appended.push(el); } }
+      },
+      addEventListener(name, callback) { if (name === 'load') load.push(callback); },
+      URL
+    };
+    context.window = context;
+    vm.createContext(context);
+    vm.runInContext(source, context);
+    vm.runInContext(source, context); // No duplicate loaders or listeners.
+    if (revoke) consent = 'essential';
+    load.forEach(callback => { callback(); callback(); });
+    assert.equal(appended.filter(el => (el.src || '').includes('googletagmanager.com')).length, revoke ? 0 : 1);
+    const config = (context.dataLayer || []).filter(args => args[0] === 'config');
+    assert.equal(config.length, revoke ? 0 : 1);
+    // Exercise the public hook in the complete loader too: textual merges can
+    // leave helpers outside its closure or accidentally remove the assignment.
+    assert.equal(typeof context.elhTrackEvent, 'function');
+    assert.doesNotThrow(() => context.elhTrackEvent('form_success', {
+      page: '/', form: 'elh-family'
+    }));
+    const outcomes = (context.dataLayer || []).filter(args =>
+      args[0] === 'event' && args[1] === 'form_success');
+    assert.equal(outcomes.length, revoke ? 0 : 1);
+  }
 });
