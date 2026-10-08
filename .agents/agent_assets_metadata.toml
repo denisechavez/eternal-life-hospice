@@ -1890,3 +1890,45 @@ mtime_ms = 1791412189711
 storage_uri = "gcs://replit-rams-assets-kirk/rams/assets/repl:e1b2f643-7869-4565-af0e-10c34575ee8d/c24940cb-a99a-4ef7-b56b-dd1f4a8b3c01/183c255e-0dc7-42c1-86a4-d52c424b8b7f"
 storage_version_token = "1791412265733136"
 content_type = "text/csv"
+
+[[outputs]]
+id = "_uKeaRL64Aqpg4el3y4h9"
+uri = "file://exports/site-audits/seo-keyword-stage-one-2026-10-08/stage-one-keyword-audit.html"
+type = "html"
+title = "Stage One — Complete SEO Content Audit"
+description = "Findings, three-cycle plan, geographic coverage, conditional guide proposals and all nine downloadable CSVs. No website changes."
+logical_id = "8b812399-9cbc-4a70-a658-bd54c1504493"
+content_hash = "sha256:119451a68da44e980feb687792aa60fab41011bb2e32f2ae3352e76240559bd1"
+size = 709138
+mtime_ms = 1791496717692
+storage_uri = "gcs://replit-rams-assets-kirk/rams/assets/repl:e1b2f643-7869-4565-af0e-10c34575ee8d/8b812399-9cbc-4a70-a658-bd54c1504493/ad1c66f0-1977-4afe-b7fc-d50b06849461"
+storage_version_token = "1791497026417264"
+content_type = "text/html"
+
+[[outputs]]
+id = "sjnzD9ytLTOoHWtmP7EmJ"
+uri = "file://exports/site-audits/seo-keyword-stage-one-2026-10-08/keyword-coverage-96.csv"
+type = "table"
+title = "96 Keywords — Three-Cycle Coverage Map"
+description = "288 keyword-cycle rows with exact matches, topic candidates, evidence dates and flagged gaps."
+logical_id = "69241b55-200f-4abe-bbbc-7c6fabbe3506"
+content_hash = "sha256:cd8d4c727ec6015af07a0d6752c9dd5bd9af6d332ab29c600eefde5ff9abbf31"
+size = 152741
+mtime_ms = 1791496720936
+storage_uri = "gcs://replit-rams-assets-kirk/rams/assets/repl:e1b2f643-7869-4565-af0e-10c34575ee8d/69241b55-200f-4abe-bbbc-7c6fabbe3506/53e4cb9e-b712-4e68-b4e7-4978cbddfeff"
+storage_version_token = "1791497027200519"
+content_type = "text/csv"
+
+[[outputs]]
+id = "_ezlbwnR77kJyZyQI78Bk"
+uri = "file://exports/site-audits/seo-keyword-stage-one-2026-10-08/article-inventory.csv"
+type = "table"
+title = "Journal Article Inventory"
+description = "107 active articles, including all 85 unchanged daily entries from October 8 through December 31."
+logical_id = "1add44cb-6c53-4d5a-88e9-ce3fb8ac1fd8"
+content_hash = "sha256:779c0622c5005f4f6b2a4f328f8826a812385b19d3b9132a6fa9ae432873ffad"
+size = 65685
+mtime_ms = 1791496718204
+storage_uri = "gcs://replit-rams-assets-kirk/rams/assets/repl:e1b2f643-7869-4565-af0e-10c34575ee8d/1add44cb-6c53-4d5a-88e9-ce3fb8ac1fd8/93d2b805-fcbe-4247-a431-037d7b7665fc"
+storage_version_token = "1791497028034205"
+content_type = "text/csv"

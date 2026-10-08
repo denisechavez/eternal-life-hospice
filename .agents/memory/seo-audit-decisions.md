@@ -5,6 +5,11 @@ description: Decisions made implementing the 36-point technical SEO brief (July 
 
 # SEO Technical Audit — Key Decisions
 
+## Q4 2026 keyword program
+- **Rule:** The user requires all 96 supplied Google Ads search intents across rolling 30-day windows from October 8–December 31, 2026, plus all 96 in the final December 7–31 partial cycle.
+- **Why:** The objective is recurring service and local-search relevance, not a one-time mention of the keyword list.
+- **How to apply:** Audit the named October 8–November 6 and November 7–December 6 cycles and rolling windows separately. Track exact wording separately from meaningful natural coverage; neither word counts nor assignments prove coverage or ranking gains. Preserve existing dates, slugs, imagery and educational purposes; obtain approval before optimization or supplemental scheduling.
+
 ## FAQPage schema rule (enforced from brief item 17)
 - **Rule:** Add FAQPage schema ONLY when the complete questions AND answers are visibly displayed as Q&A pairs on that same page.
 - **Applied:** FAQPage schema was REMOVED from `family-guide.html` — the booklet pages cover the topics but not as matching visible Q&A pairs.

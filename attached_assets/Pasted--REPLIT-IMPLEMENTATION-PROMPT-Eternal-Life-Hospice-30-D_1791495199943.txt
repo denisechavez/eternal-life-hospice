@@ -1,0 +1,461 @@
+# REPLIT IMPLEMENTATION PROMPT
+## Eternal Life Hospice — 30-Day SEO Keyword & Local Content Optimization
+
+**Website:** https://eternallifehospice.com  
+**Start Date:** October 8, 2026  
+**End Date:** December 31, 2026
+
+### PRIMARY OBJECTIVE
+
+We have already developed blog articles scheduled for daily publication through December 31, 2026.
+
+I want you to review and optimize this existing blog schedule to strengthen Eternal Life Hospice's organic visibility in Google Search and AI-powered search results.
+
+We have identified **96 search keyword phrases** from our Google Ads keyword list.
+
+**Every keyword must be represented within each rolling 30-day content cycle.**
+
+Additionally, I want a stronger emphasis on localized hospice content covering the cities and communities we serve throughout Ventura County and Los Angeles County.
+
+The objective is to build sustained visibility for both hospice services and geographic search intent.
+
+**Important: Work with the existing content first. Do not rebuild the blog system or replace the existing publishing architecture.**
+
+---
+
+## 1. AUDIT THE EXISTING BLOG SCHEDULE
+
+Before making changes:
+
+1. Identify every existing published and scheduled blog article.
+2. Review all scheduled articles from October 8 through December 31, 2026.
+3. Identify the primary subject and geographic relevance of each article.
+4. Identify which of our 96 keywords are already represented.
+5. Identify keyword gaps and cities receiving insufficient coverage.
+6. Identify opportunities to strengthen existing articles without changing their educational purpose.
+
+Preserve existing publication dates, slugs and URLs.
+
+Do not delete articles or rewrite articles unnecessarily.
+
+## 2. IMPLEMENT RECURRING 30-DAY KEYWORD COVERAGE
+
+All 96 keyword phrases must receive coverage during each 30-day cycle.
+
+**Cycle 1:** October 8 – November 6  
+**Cycle 2:** November 7 – December 6  
+**Cycle 3:** December 7 – December 31 (final partial cycle)
+
+For the December partial cycle, cover all 96 keywords before December 31.
+
+Each cycle should distribute keywords naturally throughout the scheduled articles.
+
+Some articles may incorporate several closely related keywords when they address the same topic.
+
+Do not insert unrelated keywords simply to meet frequency requirements.
+
+The objective is meaningful coverage of all 96 search phrases rather than mechanical repetition.
+
+## 3. MASTER KEYWORD LIST — ALL 96 TERMS
+
+### General Hospice Searches
+
+1. 24 hour hospice care
+2. Best hospice care Los Angeles
+3. Best hospice in Los Angeles County
+4. Best hospice in Ventura County
+5. Best hospice near me
+6. Hospice
+7. Hospice care
+8. Hospice at home
+9. Hospice near me
+10. Home hospice care near me
+11. Hospice companies near me
+12. Hospice services
+13. Hospice services near me
+14. Hospice home care services
+15. Hospice consultation
+16. Hospice evaluation
+17. Hospice admission today
+18. Hospice nurse
+19. Hospice hospital near me
+20. Hospice house
+21. Hospice house near me
+22. Home health and hospice
+
+### Location-Based Searches
+
+23. Hospice care in Thousand Oaks
+24. Hospice services Thousand Oaks
+25. Hospice Simi Valley
+26. Hospice services Simi Valley CA
+27. Hospice Calabasas
+28. Hospice Camarillo
+29. Hospice agencies in Camarillo CA
+30. Hospice Oxnard
+31. Hospice care Oxnard CA
+32. Hospice care Ventura County
+33. Hospice care Ventura and LA County
+34. Hospice Los Angeles County
+35. Hospice care Los Angeles County
+36. Hospice in Los Angeles
+37. Hospice Agoura Hills
+38. Hospice Bell Canyon
+39. Hospice Conejo Valley
+40. Hospice Moorpark
+41. Hospice Newbury Park
+42. Hospice Lake Sherwood
+43. Hospice Oak Park CA
+44. Hospice Santa Rosa Valley
+45. Hospice Santa Paula
+46. Hospice Somis
+47. Hospice Port Hueneme
+48. Hospice Beverly Hills
+49. Hospice Bel Air
+50. Hospice Brentwood
+51. Hospice Malibu
+52. Hospice Santa Monica
+53. Hospice Pacific Palisades
+54. Hospice Sherman Oaks
+55. Hospice Encino
+56. Hospice Chatsworth
+57. Hospice Canoga Park
+58. Hospice Granada Hills
+59. Hospice Hidden Hills
+60. Hospice Lake Balboa
+61. Hospice Mission Hills
+62. Hospice North Hills
+63. Hospice North Hollywood
+64. Hospice Northridge
+65. Hospice Panorama City
+66. Hospice Porter Ranch
+67. Hospice Reseda
+68. Hospice San Fernando
+69. Hospice San Fernando Valley
+70. Hospice care Glendale CA
+71. Hospice agencies Pasadena CA
+
+### Specialized Hospice Care
+
+72. Hospice for Alzheimer's
+73. Hospice for cancer patients
+74. Cancer hospice care Los Angeles
+75. Hospice for COPD
+76. Hospice for dementia
+77. Hospice for heart failure
+78. End stage dementia care at home
+79. End of life care
+80. End of life care Long Beach CA
+81. Comfort care
+82. Comfort care services
+83. Comfort home care
+84. 24/7 in home hospice care Southern California
+85. Affordable in home palliative care LA County
+86. Best hospice care facility Ventura
+
+### Medicare and Hospice Costs
+
+87. Does Medicare cover hospice at home
+88. Hospice qualifications Medicare
+89. Hospice care cost
+90. Hospice care at home cost
+91. Hospice care for elderly parent
+
+### Changing Hospice Providers
+
+92. Can you switch hospice providers
+93. Change hospice provider
+
+### Branded Searches
+
+94. Eternal Hospice
+95. Eternal Life Hospice
+96. Eternal Life Hospice Westlake Village reviews
+
+---
+
+## 4. INCREASE LOCALIZED BLOG CONTENT
+
+I want greater geographic relevance throughout the blog.
+
+Prioritize these markets:
+
+**Primary:**
+- Thousand Oaks
+- Westlake Village
+- Simi Valley
+- Calabasas
+- Camarillo
+- Moorpark
+- Newbury Park
+- Oxnard
+- Ventura County
+- Conejo Valley
+
+**Secondary:**
+- Los Angeles County
+- Agoura Hills
+- Woodland Hills
+- Sherman Oaks
+- Encino
+- Santa Monica
+- Malibu
+- Beverly Hills
+- San Fernando Valley
+- Other cities included in the master keyword list
+
+### Local Content Strategy
+
+Develop articles that naturally connect hospice services to specific communities.
+
+Examples:
+
+- Understanding Hospice Care in Thousand Oaks
+- When Is It Time to Consider Hospice in Simi Valley?
+- How Families in Calabasas Can Arrange Hospice Care at Home
+- Hospice Care Options for Families in Camarillo
+- Understanding Medicare Hospice Coverage in Ventura County
+- Supporting a Loved One With Dementia in Westlake Village
+- Hospice Care for Cancer Patients in Los Angeles County
+- What Families in Moorpark Should Know About Hospice Admissions
+- Choosing a Hospice Provider in the Conejo Valley
+- How to Change Hospice Providers in Ventura County
+
+These are examples, not mandatory titles.
+
+**Each local article must provide useful information beyond the city name.**
+
+Do not create identical articles with only the geographic location changed.
+
+Use relevant local context where accurate and avoid inventing local facilities, partnerships, statistics or patient experiences.
+
+## 5. OPTIMIZE EXISTING ARTICLES FIRST
+
+Review the content already scheduled and make targeted improvements.
+
+Where appropriate:
+
+- Incorporate primary keywords into the article title.
+- Strengthen H1 and H2 headings.
+- Incorporate relevant secondary keywords into the body.
+- Add geographic references where contextually appropriate.
+- Improve meta titles and descriptions.
+- Strengthen internal links to applicable hospice service pages.
+- Link to the appropriate county coverage hubs.
+- Add relevant family-focused questions and answers.
+- Ensure articles are clearly associated with Eternal Life Hospice.
+
+Use natural wording that families would understand.
+
+Avoid keyword stuffing.
+
+Do not change the clinical meaning of existing educational material.
+
+## 6. ESTABLISH KEYWORD FREQUENCY TRACKING
+
+Create a keyword coverage tracker for all 96 search terms.
+
+For each keyword, record:
+
+- Keyword phrase
+- Assigned article
+- Publication date
+- Primary or secondary keyword designation
+- Geographic target if applicable
+- Whether the keyword appears in the title, heading or body
+- Number of articles covering the topic during the cycle
+- Date of last meaningful coverage
+- Next planned coverage date
+
+### Required Tracking Rules
+
+- Every keyword must be accounted for within each 30-day cycle.
+- Track exact-match wording separately from natural variations.
+- Flag any keyword without meaningful coverage.
+- Identify geographic areas receiving limited attention.
+- Avoid assigning the same keyword as the primary focus of multiple articles unnecessarily.
+- Avoid creating competing articles targeting the same search intent without a distinct informational purpose.
+
+## 7. SEO TECHNICAL REQUIREMENTS
+
+For each modified or newly proposed blog article:
+
+- Maintain one clear H1.
+- Use a descriptive SEO title.
+- Provide a unique meta description.
+- Preserve canonical URLs.
+- Maintain correct publication dates.
+- Preserve valid structured data.
+- Use appropriate BlogPosting or Article schema.
+- Maintain accurate author and publisher references.
+- Use descriptive internal anchor text.
+- Avoid unnecessary external links.
+- Include relevant links to the main hospice care pages and county coverage pages.
+- Maintain existing sitemap behavior.
+- Do not accidentally index draft or scheduled articles.
+- Do not modify robots.txt or sitewide indexing rules unless separately approved.
+
+The official website and canonical domain is **eternallifehospice.com**.
+
+Do not introduce legacy domains.
+
+## 8. GOOGLE SEARCH AND AI DISCOVERY
+
+Structure the content so Google Search and AI search systems can clearly understand:
+
+1. Who Eternal Life Hospice is.
+2. Which hospice services we provide.
+3. Which communities we serve.
+4. Who may qualify for hospice care.
+5. How families can request hospice services.
+6. How Medicare and insurance coverage generally work.
+7. How Eternal Life Hospice supports patients and families.
+
+Use clear explanatory language and accurate healthcare information.
+
+Avoid unsupported claims such as being the best or highest-rated provider.
+
+For search phrases such as "best hospice near me" or "best hospice in Ventura County," create useful comparison and selection guidance rather than claiming an unverified ranking.
+
+Clearly distinguish home-based hospice services from inpatient hospice facilities.
+
+Ensure statements about availability, admissions, insurance and clinical services reflect our verified operational capabilities.
+
+## 9. PRESERVE BRAND VOICE
+
+All content must reflect Eternal Life Hospice's existing brand:
+
+**Care That Honors Life**
+
+**Here in Moments That Matter Most**
+
+**The Eternal Standard**
+
+Our four pillars are:
+
+- Clinical Confidence
+- Guided Presence
+- Whole-Person Comfort
+- Compliance-Led Care
+
+Use this framework naturally where relevant rather than repeating every brand phrase in every article.
+
+The tone should remain professional, reassuring, educational and clinically responsible.
+
+## 10. PROPOSE ADDITIONAL LOCAL ARTICLES ONLY WHERE NEEDED
+
+After optimizing the existing scheduled content, determine whether we have enough relevant articles to cover all 96 keywords every 30 days.
+
+If additional local content is necessary:
+
+1. Identify the missing city or service topic.
+2. Propose a unique article title.
+3. Identify the primary keyword.
+4. Identify relevant secondary keywords.
+5. Recommend a publication date.
+6. Explain why the article adds meaningful search value.
+
+Do not automatically publish additional articles.
+
+Present the proposed additions for approval.
+
+Maintain the existing daily publication calendar.
+
+## 11. BUILD A SIMPLE SEO CONTENT DASHBOARD
+
+I want a clear view of our scheduled content through December 31.
+
+Display:
+
+**A. Keyword Coverage**
+- Total keywords: 96
+- Keywords covered this cycle
+- Keywords requiring attention
+- Completion percentage
+
+**B. Geographic Coverage**
+- Cities represented
+- Articles assigned by city
+- Priority markets with insufficient coverage
+
+**C. Content Calendar**
+- Publication date
+- Article title
+- Primary keyword
+- Secondary keywords
+- Target city or county
+- Optimization status
+
+**D. Monthly SEO Audit**
+- Articles optimized
+- Keyword coverage by 30-day cycle
+- Geographic content distribution
+- Internal linking completed
+- Identified content gaps
+
+This dashboard is for editorial management.
+
+Do not imply that keyword coverage represents Google ranking improvements.
+
+## 12. IMPLEMENTATION SAFETY
+
+Before editing:
+
+- Create a Git checkpoint or working branch.
+- Inventory the existing publishing system.
+- Verify how scheduled articles are stored and published.
+- Make changes only within the appropriate blog content and supporting editorial tracking files.
+- Preserve all other website functionality.
+- Do not modify unrelated site architecture.
+
+Test for:
+
+- Broken internal links
+- Missing articles
+- Duplicate titles
+- Duplicate meta descriptions
+- Invalid structured data
+- Incorrect publication dates
+- Unexpected changes to article URLs
+- Scheduled articles appearing publicly before their intended dates
+
+Do not deploy changes to the live website without approval.
+
+## 13. REQUIRED DELIVERY
+
+Complete this work in two stages.
+
+### STAGE ONE — AUDIT AND MAPPING
+
+First, produce:
+
+1. Inventory of existing scheduled articles.
+2. Coverage map of all 96 keywords.
+3. Three-cycle content optimization plan.
+4. City-by-city content coverage map.
+5. List of proposed new localized articles.
+6. Summary of any technical limitations.
+
+**STOP HERE AND PRESENT FINDINGS FOR APPROVAL.**
+
+### STAGE TWO — IMPLEMENTATION
+
+After approval:
+
+1. Optimize the existing scheduled articles.
+2. Incorporate all 96 keywords across each 30-day cycle where editorially appropriate.
+3. Strengthen local hospice search relevance.
+4. Maintain existing publishing dates.
+5. Implement the keyword tracking dashboard.
+6. Validate SEO metadata and internal linking.
+7. Report all files and articles changed.
+8. Run appropriate technical validation.
+9. Present the completed changes for review before production deployment.
+
+### SUCCESS CRITERIA
+
+By December 31, 2026, Eternal Life Hospice should have a coordinated daily publishing program with recurring coverage of all 96 search phrases, more useful locally focused hospice education and a transparent process for measuring SEO content coverage.
+
+The objective is to improve our relevance for hospice service searches and the communities we serve while maintaining high-quality educational content.
+
+**Begin with Stage One only. Do not edit, publish or deploy anything until the audit and content mapping have been reviewed and approved.**

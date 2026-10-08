@@ -55,3 +55,13 @@ screen.
 **How to apply:** Check the reader after scrolling and switching views at the
 actual canvas viewport size, including loaded article styles and imagery. Keep
 viewport dialogs independent of the preview's page-layout constraints.
+
+Approval of an SEO optimization plan authorizes draft editing only; it does not
+approve revised article versions for publication or authorize deployment.
+
+**Why:** The user requires separate approval of the audit/mapping before edits,
+review of completed changes before production and full article approval in Studio.
+
+**How to apply:** Keep Stage One read-only for website content and code. After plan
+approval, return revised versions to Studio review; do not carry approval from an
+older article version or infer publication permission from approval to optimize.
