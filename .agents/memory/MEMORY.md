@@ -34,7 +34,7 @@
 - [Autoscale health monitoring](autoscale-health-monitoring.md) — startup healthcheck failures can precede a healthy instance; monitor `/healthz`, and treat Python access lines labeled ERROR as status-based evidence.
 - [Accreditations & Affiliations section](accreditations-affiliations.md) — homepage #accreditations trust block: list only HELD creds (Medicare/CDPH/ACHC), no unheld-membership badges; verify-links point to official PORTALS (Care Compare per-org deep-link errors).
 - [Aleksandra ownership & card rules](aleksandra-ownership.md) — owns ELH + Westlake Village Hospice Inc; ELH collateral references ELH only; title = two lines (Founder & CEO / Certified Hospice Administrator).
-- [SEO technical audit decisions](seo-audit-decisions.md) — FAQPage only on visible Q&A; complete OG image metadata; Replit owns canonical routing; 4 content claims need human sign-off.
+- [SEO audit and keyword rules](seo-audit-decisions.md) — schema/canonical constraints; Q4 101-term program; Thousand Oaks nursing priority; coverage is not ranking evidence.
 - [The Amethyst — brand origin](amethyst-origin.md) — core of the brand; Greek amethystos = clarity in difficulty; name+colors from the stone; founder origin = personal family caregiving experience; weave carefully, not in every post.
 - [Social content library](social-content-library.md) — exports/social/elh-master-content-drafts.md (4,100+ lines, 14 parts); acquisition-safe strategy: voice+stills not face; Aleksandra voice=brand anchor not face; team on camera is safe; GBP 8-week library in Part 11.
 - [PageSpeed mobile optimisation](pagespeed-preload-rules.md) — 72→97 formula: fetchpriority="high" on preload LINK (not img), all 3 font preloads, analytics defer, Brevo preconnect.

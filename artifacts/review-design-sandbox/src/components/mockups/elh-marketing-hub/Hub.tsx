@@ -3,6 +3,7 @@ import { createPortal } from "react-dom";
 import type { FormEvent, ReactNode } from "react";
 import { Activity, AlertCircle, ArrowUpRight, BarChart3, Bell, BookOpen, CalendarDays, Check, ChevronDown, ChevronRight, CircleDot, Database, FileCheck2, FileText, Globe2, HeartHandshake, ImageIcon, LayoutDashboard, Link2, Menu, Moon, MoonStar, RefreshCw, Search, Send, Settings2, ShieldCheck, Sparkles, Sun, TrendingUp, Users, Video, X } from "lucide-react";
 import { emailCampaigns, journalArticles, journalReviewDocument, type JournalArticle } from "./contentData";
+import KeywordCoverageTracker from "./KeywordCoverageTracker";
 import baseline from "./baseline-2026-09-20.json";
 import "./hub.css";
 import "./journal-review.css";
@@ -25,7 +26,7 @@ const initialsFor = (name:string) => name.trim().split(/\s+/).slice(0,2).map(par
 const dashboardAsset = (name:string) => `${import.meta.env.BASE_URL}${name}`;
 const approvalCutoff = "2026-09-30";
 const publicationStatusFor = (date:string):Item["status"] => date==="Approved template"||date<=approvalCutoff?"Approved":"Needs review";
-const items:Item[] = [...journalArticles.map(a=>({id:`j-${a.slug}`,title:a.title,type:"Journal",date:a.date,owner:"Eternal Life Hospice",status:a.previouslyPublished?"Published" as const:publicationStatusFor(a.date),excerpt:a.description,source:a})),...emailCampaigns.map((e,i)=>({id:`e-${i}`,title:e.subject,type:"Email",date:e.sendDate,owner:"Eternal Studio",status:(i<2?"Approved":"Needs review") as Item["status"],excerpt:e.preheader,emailIndex:i}))];
+const items:Item[] = [...journalArticles.map(a=>({id:`j-${a.slug}${a.seoRevision?`-seo-${a.seoRevision}`:""}`,title:a.title,type:"Journal",date:a.date,owner:"Eternal Life Hospice",status:a.seoRevision?"Needs review" as const:a.previouslyPublished?"Published" as const:publicationStatusFor(a.date),excerpt:a.description,source:a})),...emailCampaigns.map((e,i)=>({id:e.seoRevision?`e-thryv-${e.sendDate}-${e.seoRevision}`:`e-${i}`,title:e.subject,type:"Email",date:e.sendDate,owner:"Eternal Studio",status:(e.seoRevision?"Needs review":i<2?"Approved":"Needs review") as Item["status"],excerpt:e.preheader,emailIndex:i}))];
 const approvalStorageKey = "egi-publication-statuses-v4";
 const requestedView = new URLSearchParams(window.location.search).get("view") || "";
 const initialView = [...groups.flatMap(group=>group.items.map(item=>item[1])), ...studio.map(item=>item[1])]
@@ -150,15 +151,15 @@ function Studio({active,list,statuses,onOpen}:{active:string;list:Item[];statuse
  const months=[...new Set(journalArticles.map(a=>a.date.slice(0,7)).filter(d=>/^\d{4}-\d{2}$/.test(d)))].sort();
  const filtered=list.filter(i=>active==="Reviews"?(statuses[i.id]||i.status)==="Needs review":active==="Journal"?i.type==="Journal":active==="Emails"?i.type==="Email":true)
    .filter(i=>active!=="Journal"||!month||i.date.startsWith(month));
- return <div className="studio-workspace">{(active==="Journal"||active==="Emails")&&<KeywordInsight/>}<section className="panel studio-list">
+ return <div className="studio-workspace">{(active==="Journal"||active==="Emails")&&<><KeywordInsight/><KeywordCoverageTracker/></>}<section className="panel studio-list">
  <div className="studio-intro"><BookOpen size={20}/><div><Kicker>Eternal Studio · Create / Review / Publish</Kicker>
  <h2>{active==="Reviews"?"Review queue":"Production workspace"}</h2>
  {active==="Journal"&&<><p>{journalArticles.length} blog entries loaded · Content through December 31, 2026 · {filtered.length} shown</p>
  <label>Publication month <select aria-label="Filter Journal month" value={month} onChange={event=>setMonth(event.target.value)}>
  <option value="">All months</option>{months.map(value=><option key={value} value={value}>{new Date(`${value}-01T12:00:00`).toLocaleDateString("en-US",{month:"long",year:"numeric"})}</option>)}</select></label>
  <p>Planned daily release: 6:30 a.m. Pacific. Saved approval and automatic publishing controls are being connected; current review choices are browser-local.</p></>}
- {active==="Emails"&&<p>Every email uses the approved original Eternal template layout for consistent review and publishing.</p>}</div></div>
- {filtered.map(i=><button className="studio-row" key={i.id} onClick={()=>onOpen(i)}><FileText size={16}/><span><b>{i.title}</b><small>{i.type} · {i.date}</small></span><em>{statuses[i.id]||i.status}</em><ChevronRight size={15}/></button>)}
+ {active==="Emails"&&<p>Established campaigns retain their original templates. The 12 new Thryv weekly drafts are review proposals only, not queued sends; their dates identify proposed editorial weeks.</p>}</div></div>
+ {filtered.map(i=><button className="studio-row" key={i.id} onClick={()=>onOpen(i)}><FileText size={16}/><span><b>{i.title}</b><small>{i.type} · {i.date}{i.source?.seoRevision||i.emailIndex!==undefined&&emailCampaigns[i.emailIndex]?.seoRevision?" · Private SEO draft":""}</small></span><em>{statuses[i.id]||i.status}</em><ChevronRight size={15}/></button>)}
  {!filtered.length&&<div className="empty-state"><FileCheck2 size={25}/><b>No items in this Studio view</b><span>Try another month or clear the search.</span></div>}</section></div>
 }
 function KeywordInsight(){const ranked=[...publicationKeywords].sort((a,b)=>publicationKeywordCounts[b.toLowerCase()]-publicationKeywordCounts[a.toLowerCase()]);return <section className="keyword-insight"><div className="keyword-insight-copy"><div className="keyword-insight-icon"><Search size={18}/></div><div><Kicker>Publication keyword lens</Kicker><h2>What the review highlights—and why</h2><p>These terms recur at least eight times across the current Journal and email copy. We highlight them so reviewers can confirm the central care themes stay clear, consistent and not overused. They are an editorial review lens, not automatic SEO targets or search-ranking scores.</p></div></div><div className="keyword-counts" aria-label="Recurring publication terms">{ranked.map(keyword=><span key={keyword}><b>{keyword}</b><em>{publicationKeywordCounts[keyword.toLowerCase()]}</em></span>)}</div><small className="keyword-method">Source: {journalArticles.length} active Journal articles plus all current email subjects, preheaders and plain-text copy. Counts recalculate when publication copy changes.</small></section>}
@@ -205,6 +206,7 @@ function Detail({item,onClose,onStatus}:{item:Item;onClose:()=>void;onStatus:(s:
  return createPortal(<div className="detail-backdrop studio-review-layer" onClick={onClose}><aside role="dialog" aria-modal="true" aria-label={article?`Review article: ${article.title}`:"Studio review"} className={`detail-drawer ${article||email?"full-review":""}`} onClick={e=>e.stopPropagation()}>
  <header><div><Kicker>{item.type}</Kicker><h2>{article?"Full article review":email?"Full email review":"Studio item review"}</h2></div><button className="icon-btn" onClick={onClose} aria-label="Close review"><X size={18}/></button></header>
  <div className="detail-body"><span className="tag">{item.status}</span><h1>{article?<Highlighted text={item.title}/>:item.title}</h1><p>{article?<Highlighted text={item.excerpt}/>:item.excerpt}</p>
+ {(article?.seoRevision||email?.seoRevision)&&<p className="email-template-note"><strong>Private Thryv SEO revision — not published or sent.</strong> This version needs fresh review; previous approvals do not carry over. Workspace choices remain browser-local and do not trigger publication. For email drafts, the date is a proposed editorial week, not a send schedule.</p>}
  <div className="meta-grid"><span>Owner<b>{item.owner}</b></span><span>Date<b>{item.date}</b></span></div>
  {article?<article className="article-review">
  <div className="article-byline"><span>{article.category}</span><span>{article.readMinutes} minute read</span><span>Complete article, photograph and contextual links</span></div>

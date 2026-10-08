@@ -11,13 +11,14 @@ import campaign3 from "../../../../../../exports/email-campaigns/30-day-journal/
 import campaign4 from "../../../../../../exports/email-campaigns/30-day-journal/campaign-4.html?raw";
 import approvedFamilyGuide from "../../../../../../exports/email/elh-family-guide-email-2.html?raw";
 import approvedCareBrief from "../../../../../../exports/email/eternal-care-brief-introduction-email.html?raw";
+import privateSeoReview from "../../../../../../website/content/seo-private-review.json";
 
 export type JournalArticle = {
   slug: string; title: string; category: string; date: string; description: string;
   lede: string; readMinutes: number;
   sections: {heading: string; paragraphs: string[]}[];
   ctaHeading: string; ctaCopy: string;
-  reviewHtml?: string; previouslyPublished?: boolean;
+  reviewHtml?: string; previouslyPublished?: boolean; seoRevision?: string;
 };
 export type EmailCampaign = {
   html: string;
@@ -26,6 +27,7 @@ export type EmailCampaign = {
   plainText: string;
   sendDate: string;
   framework: "approved" | "journal-draft";
+  seoRevision?: string;
 };
 
 const approvedJournalTemplate = (html: string) => html
@@ -54,11 +56,18 @@ const reviewDocuments = import.meta.glob<string>(
 const reviewBySlug = Object.fromEntries(Object.entries(reviewDocuments).map(
   ([path, html]) => [path.split("/").pop()!.replace(/\.html$/, ""), html],
 ));
+const privateSeoArticles: Record<string, {
+  sections: JournalArticle["sections"]; reviewHtml: string; revision: string;
+}> = privateSeoReview.articles;
 const campaignArticles: JournalArticle[] = [
   ...batch1, ...batch2, ...batch3, ...batch4, ...batch5,
   ...octoberContinuation, ...decemberContinuation,
 ].filter(article => !("publicationStatus" in article) || article.publicationStatus !== "archived")
- .map(article => ({...article, reviewHtml: reviewBySlug[article.slug]}));
+ .map(article => {
+   const draft = privateSeoArticles[article.slug];
+   return {...article, sections: draft ? [...article.sections, ...draft.sections] : article.sections,
+     seoRevision: draft?.revision, reviewHtml: draft?.reviewHtml || reviewBySlug[article.slug]};
+ });
 const campaignSlugs = new Set(campaignArticles.map(article => article.slug));
 const legacyArticles: JournalArticle[] = Object.entries(reviewBySlug).flatMap(([slug, html]) => {
   if (campaignSlugs.has(slug)) return [];
@@ -123,4 +132,5 @@ export const emailCampaigns: EmailCampaign[] = [
   { html: approvedJournalTemplate(campaign2), subject: "Hospice, Palliative Care, and Medicare—Clearly", preheader: "A plain-language look at hospice, palliative care, and common Medicare coverage questions.", plainText: plainText[1], sendDate: "Oct 1, 2026", framework: "approved" },
   { html: approvedJournalTemplate(campaign3), subject: "Hospice Close to Home in the Conejo Valley", preheader: "Local, comfort-focused support for families in Thousand Oaks, Simi Valley, Camarillo, and nearby communities.", plainText: plainText[2], sendDate: "Oct 8, 2026", framework: "approved" },
   { html: approvedJournalTemplate(campaign4), subject: "What Hospice Support Really Includes", preheader: "Equipment, 24/7 nursing access, social work, and respite—see how a hospice team supports families.", plainText: plainText[3], sendDate: "Oct 15, 2026", framework: "approved" },
+  ...privateSeoReview.weeklyEmail.map(email => ({...email, framework: "journal-draft" as const})),
 ];

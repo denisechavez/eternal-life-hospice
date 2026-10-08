@@ -65,3 +65,13 @@ review of completed changes before production and full article approval in Studi
 **How to apply:** Keep Stage One read-only for website content and code. After plan
 approval, return revised versions to Studio review; do not carry approval from an
 older article version or infer publication permission from approval to optimize.
+
+Until authoritative publisher approval is connected, stage SEO revisions in
+private review documents rather than replacing public article files.
+
+**Why:** Holding deployment is not the same as withholding a revision from a
+date-based serving path. The user requires review before any version goes live.
+
+**How to apply:** Keep original public dates, URLs and photographs intact during
+review. Use revision-specific review identities so an older saved approval cannot
+approve changed content, and clearly distinguish draft placements from releases.

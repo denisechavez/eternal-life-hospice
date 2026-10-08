@@ -1,0 +1,2700 @@
+{
+  "termCount": 101,
+  "keywords": [
+    {
+      "id": 1,
+      "phrase": "24 hour hospice care",
+      "source": "Google Ads — original audit",
+      "intent": "oncall",
+      "geography": "",
+      "priority": "Existing strategy",
+      "cycles": [
+        {
+          "cycle": "C1",
+          "baselineCandidates": 4,
+          "confirmation": "Candidate—editorial confirmation required"
+        },
+        {
+          "cycle": "C2",
+          "baselineCandidates": 0,
+          "confirmation": "Gap—no topic-and-geography signal identified"
+        },
+        {
+          "cycle": "C3",
+          "baselineCandidates": 1,
+          "confirmation": "Candidate—editorial confirmation required"
+        }
+      ],
+      "draftDates": []
+    },
+    {
+      "id": 2,
+      "phrase": "Best hospice care Los Angeles",
+      "source": "Google Ads — original audit",
+      "intent": "selection",
+      "geography": "Los Angeles",
+      "priority": "Existing strategy",
+      "cycles": [
+        {
+          "cycle": "C1",
+          "baselineCandidates": 0,
+          "confirmation": "Gap—no topic-and-geography signal identified"
+        },
+        {
+          "cycle": "C2",
+          "baselineCandidates": 0,
+          "confirmation": "Gap—no topic-and-geography signal identified"
+        },
+        {
+          "cycle": "C3",
+          "baselineCandidates": 0,
+          "confirmation": "Gap—no topic-and-geography signal identified"
+        }
+      ],
+      "draftDates": []
+    },
+    {
+      "id": 3,
+      "phrase": "Best hospice in Los Angeles County",
+      "source": "Google Ads — original audit",
+      "intent": "selection",
+      "geography": "Los Angeles County",
+      "priority": "Existing strategy",
+      "cycles": [
+        {
+          "cycle": "C1",
+          "baselineCandidates": 0,
+          "confirmation": "Gap—no topic-and-geography signal identified"
+        },
+        {
+          "cycle": "C2",
+          "baselineCandidates": 0,
+          "confirmation": "Gap—no topic-and-geography signal identified"
+        },
+        {
+          "cycle": "C3",
+          "baselineCandidates": 0,
+          "confirmation": "Gap—no topic-and-geography signal identified"
+        }
+      ],
+      "draftDates": []
+    },
+    {
+      "id": 4,
+      "phrase": "Best hospice in Ventura County",
+      "source": "Google Ads — original audit",
+      "intent": "selection",
+      "geography": "Ventura County",
+      "priority": "Existing strategy",
+      "cycles": [
+        {
+          "cycle": "C1",
+          "baselineCandidates": 0,
+          "confirmation": "Gap—no topic-and-geography signal identified"
+        },
+        {
+          "cycle": "C2",
+          "baselineCandidates": 0,
+          "confirmation": "Gap—no topic-and-geography signal identified"
+        },
+        {
+          "cycle": "C3",
+          "baselineCandidates": 0,
+          "confirmation": "Gap—no topic-and-geography signal identified"
+        }
+      ],
+      "draftDates": []
+    },
+    {
+      "id": 5,
+      "phrase": "Best hospice near me",
+      "source": "Google Ads — original audit",
+      "intent": "selection",
+      "geography": "",
+      "priority": "Existing strategy",
+      "cycles": [
+        {
+          "cycle": "C1",
+          "baselineCandidates": 30,
+          "confirmation": "Candidate—editorial confirmation required"
+        },
+        {
+          "cycle": "C2",
+          "baselineCandidates": 30,
+          "confirmation": "Candidate—editorial confirmation required"
+        },
+        {
+          "cycle": "C3",
+          "baselineCandidates": 25,
+          "confirmation": "Candidate—editorial confirmation required"
+        }
+      ],
+      "draftDates": []
+    },
+    {
+      "id": 6,
+      "phrase": "Hospice",
+      "source": "Google Ads — original audit",
+      "intent": "basics",
+      "geography": "",
+      "priority": "Existing strategy",
+      "cycles": [
+        {
+          "cycle": "C1",
+          "baselineCandidates": 30,
+          "confirmation": "Candidate—editorial confirmation required"
+        },
+        {
+          "cycle": "C2",
+          "baselineCandidates": 30,
+          "confirmation": "Candidate—editorial confirmation required"
+        },
+        {
+          "cycle": "C3",
+          "baselineCandidates": 25,
+          "confirmation": "Candidate—editorial confirmation required"
+        }
+      ],
+      "draftDates": []
+    },
+    {
+      "id": 7,
+      "phrase": "Hospice care",
+      "source": "Google Ads — original audit",
+      "intent": "basics",
+      "geography": "",
+      "priority": "Existing strategy",
+      "cycles": [
+        {
+          "cycle": "C1",
+          "baselineCandidates": 30,
+          "confirmation": "Candidate—editorial confirmation required"
+        },
+        {
+          "cycle": "C2",
+          "baselineCandidates": 30,
+          "confirmation": "Candidate—editorial confirmation required"
+        },
+        {
+          "cycle": "C3",
+          "baselineCandidates": 25,
+          "confirmation": "Candidate—editorial confirmation required"
+        }
+      ],
+      "draftDates": []
+    },
+    {
+      "id": 8,
+      "phrase": "Hospice at home",
+      "source": "Google Ads — original audit",
+      "intent": "home",
+      "geography": "",
+      "priority": "Existing strategy",
+      "cycles": [
+        {
+          "cycle": "C1",
+          "baselineCandidates": 9,
+          "confirmation": "Candidate—editorial confirmation required"
+        },
+        {
+          "cycle": "C2",
+          "baselineCandidates": 5,
+          "confirmation": "Candidate—editorial confirmation required"
+        },
+        {
+          "cycle": "C3",
+          "baselineCandidates": 8,
+          "confirmation": "Candidate—editorial confirmation required"
+        }
+      ],
+      "draftDates": []
+    },
+    {
+      "id": 9,
+      "phrase": "Hospice near me",
+      "source": "Google Ads — original audit",
+      "intent": "basics",
+      "geography": "",
+      "priority": "Existing strategy",
+      "cycles": [
+        {
+          "cycle": "C1",
+          "baselineCandidates": 30,
+          "confirmation": "Candidate—editorial confirmation required"
+        },
+        {
+          "cycle": "C2",
+          "baselineCandidates": 30,
+          "confirmation": "Candidate—editorial confirmation required"
+        },
+        {
+          "cycle": "C3",
+          "baselineCandidates": 25,
+          "confirmation": "Candidate—editorial confirmation required"
+        }
+      ],
+      "draftDates": []
+    },
+    {
+      "id": 10,
+      "phrase": "Home hospice care near me",
+      "source": "Google Ads — original audit",
+      "intent": "home",
+      "geography": "",
+      "priority": "Existing strategy",
+      "cycles": [
+        {
+          "cycle": "C1",
+          "baselineCandidates": 9,
+          "confirmation": "Candidate—editorial confirmation required"
+        },
+        {
+          "cycle": "C2",
+          "baselineCandidates": 5,
+          "confirmation": "Candidate—editorial confirmation required"
+        },
+        {
+          "cycle": "C3",
+          "baselineCandidates": 8,
+          "confirmation": "Candidate—editorial confirmation required"
+        }
+      ],
+      "draftDates": []
+    },
+    {
+      "id": 11,
+      "phrase": "Hospice companies near me",
+      "source": "Google Ads — original audit",
+      "intent": "selection",
+      "geography": "",
+      "priority": "Existing strategy",
+      "cycles": [
+        {
+          "cycle": "C1",
+          "baselineCandidates": 30,
+          "confirmation": "Candidate—editorial confirmation required"
+        },
+        {
+          "cycle": "C2",
+          "baselineCandidates": 30,
+          "confirmation": "Candidate—editorial confirmation required"
+        },
+        {
+          "cycle": "C3",
+          "baselineCandidates": 25,
+          "confirmation": "Candidate—editorial confirmation required"
+        }
+      ],
+      "draftDates": []
+    },
+    {
+      "id": 12,
+      "phrase": "Hospice services",
+      "source": "Google Ads — original audit",
+      "intent": "basics",
+      "geography": "",
+      "priority": "Existing strategy",
+      "cycles": [
+        {
+          "cycle": "C1",
+          "baselineCandidates": 30,
+          "confirmation": "Candidate—editorial confirmation required"
+        },
+        {
+          "cycle": "C2",
+          "baselineCandidates": 30,
+          "confirmation": "Candidate—editorial confirmation required"
+        },
+        {
+          "cycle": "C3",
+          "baselineCandidates": 25,
+          "confirmation": "Candidate—editorial confirmation required"
+        }
+      ],
+      "draftDates": []
+    },
+    {
+      "id": 13,
+      "phrase": "Hospice services near me",
+      "source": "Google Ads — original audit",
+      "intent": "basics",
+      "geography": "",
+      "priority": "Existing strategy",
+      "cycles": [
+        {
+          "cycle": "C1",
+          "baselineCandidates": 30,
+          "confirmation": "Candidate—editorial confirmation required"
+        },
+        {
+          "cycle": "C2",
+          "baselineCandidates": 30,
+          "confirmation": "Candidate—editorial confirmation required"
+        },
+        {
+          "cycle": "C3",
+          "baselineCandidates": 25,
+          "confirmation": "Candidate—editorial confirmation required"
+        }
+      ],
+      "draftDates": []
+    },
+    {
+      "id": 14,
+      "phrase": "Hospice home care services",
+      "source": "Google Ads — original audit",
+      "intent": "home",
+      "geography": "",
+      "priority": "Existing strategy",
+      "cycles": [
+        {
+          "cycle": "C1",
+          "baselineCandidates": 9,
+          "confirmation": "Candidate—editorial confirmation required"
+        },
+        {
+          "cycle": "C2",
+          "baselineCandidates": 5,
+          "confirmation": "Candidate—editorial confirmation required"
+        },
+        {
+          "cycle": "C3",
+          "baselineCandidates": 8,
+          "confirmation": "Candidate—editorial confirmation required"
+        }
+      ],
+      "draftDates": []
+    },
+    {
+      "id": 15,
+      "phrase": "Hospice consultation",
+      "source": "Google Ads — original audit",
+      "intent": "admission",
+      "geography": "",
+      "priority": "Existing strategy",
+      "cycles": [
+        {
+          "cycle": "C1",
+          "baselineCandidates": 12,
+          "confirmation": "Candidate—editorial confirmation required"
+        },
+        {
+          "cycle": "C2",
+          "baselineCandidates": 11,
+          "confirmation": "Candidate—editorial confirmation required"
+        },
+        {
+          "cycle": "C3",
+          "baselineCandidates": 5,
+          "confirmation": "Candidate—editorial confirmation required"
+        }
+      ],
+      "draftDates": []
+    },
+    {
+      "id": 16,
+      "phrase": "Hospice evaluation",
+      "source": "Google Ads — original audit",
+      "intent": "admission",
+      "geography": "",
+      "priority": "Existing strategy",
+      "cycles": [
+        {
+          "cycle": "C1",
+          "baselineCandidates": 12,
+          "confirmation": "Candidate—editorial confirmation required"
+        },
+        {
+          "cycle": "C2",
+          "baselineCandidates": 11,
+          "confirmation": "Candidate—editorial confirmation required"
+        },
+        {
+          "cycle": "C3",
+          "baselineCandidates": 5,
+          "confirmation": "Candidate—editorial confirmation required"
+        }
+      ],
+      "draftDates": []
+    },
+    {
+      "id": 17,
+      "phrase": "Hospice admission today",
+      "source": "Google Ads — original audit",
+      "intent": "admission",
+      "geography": "",
+      "priority": "Existing strategy",
+      "cycles": [
+        {
+          "cycle": "C1",
+          "baselineCandidates": 0,
+          "confirmation": "Gap—no topic-and-geography signal identified"
+        },
+        {
+          "cycle": "C2",
+          "baselineCandidates": 0,
+          "confirmation": "Gap—no topic-and-geography signal identified"
+        },
+        {
+          "cycle": "C3",
+          "baselineCandidates": 0,
+          "confirmation": "Gap—no topic-and-geography signal identified"
+        }
+      ],
+      "draftDates": []
+    },
+    {
+      "id": 18,
+      "phrase": "Hospice nurse",
+      "source": "Google Ads — original audit",
+      "intent": "nurse",
+      "geography": "",
+      "priority": "Existing strategy",
+      "cycles": [
+        {
+          "cycle": "C1",
+          "baselineCandidates": 1,
+          "confirmation": "Candidate—editorial confirmation required"
+        },
+        {
+          "cycle": "C2",
+          "baselineCandidates": 0,
+          "confirmation": "Gap—no topic-and-geography signal identified"
+        },
+        {
+          "cycle": "C3",
+          "baselineCandidates": 0,
+          "confirmation": "Gap—no topic-and-geography signal identified"
+        }
+      ],
+      "draftDates": []
+    },
+    {
+      "id": 19,
+      "phrase": "Hospice hospital near me",
+      "source": "Google Ads — original audit",
+      "intent": "settings",
+      "geography": "",
+      "priority": "Existing strategy",
+      "cycles": [
+        {
+          "cycle": "C1",
+          "baselineCandidates": 2,
+          "confirmation": "Candidate—editorial confirmation required"
+        },
+        {
+          "cycle": "C2",
+          "baselineCandidates": 1,
+          "confirmation": "Candidate—editorial confirmation required"
+        },
+        {
+          "cycle": "C3",
+          "baselineCandidates": 0,
+          "confirmation": "Gap—no topic-and-geography signal identified"
+        }
+      ],
+      "draftDates": []
+    },
+    {
+      "id": 20,
+      "phrase": "Hospice house",
+      "source": "Google Ads — original audit",
+      "intent": "settings",
+      "geography": "",
+      "priority": "Existing strategy",
+      "cycles": [
+        {
+          "cycle": "C1",
+          "baselineCandidates": 2,
+          "confirmation": "Candidate—editorial confirmation required"
+        },
+        {
+          "cycle": "C2",
+          "baselineCandidates": 1,
+          "confirmation": "Candidate—editorial confirmation required"
+        },
+        {
+          "cycle": "C3",
+          "baselineCandidates": 0,
+          "confirmation": "Gap—no topic-and-geography signal identified"
+        }
+      ],
+      "draftDates": []
+    },
+    {
+      "id": 21,
+      "phrase": "Hospice house near me",
+      "source": "Google Ads — original audit",
+      "intent": "settings",
+      "geography": "",
+      "priority": "Existing strategy",
+      "cycles": [
+        {
+          "cycle": "C1",
+          "baselineCandidates": 2,
+          "confirmation": "Candidate—editorial confirmation required"
+        },
+        {
+          "cycle": "C2",
+          "baselineCandidates": 1,
+          "confirmation": "Candidate—editorial confirmation required"
+        },
+        {
+          "cycle": "C3",
+          "baselineCandidates": 0,
+          "confirmation": "Gap—no topic-and-geography signal identified"
+        }
+      ],
+      "draftDates": []
+    },
+    {
+      "id": 22,
+      "phrase": "Home health and hospice",
+      "source": "Google Ads — original audit",
+      "intent": "homehealth",
+      "geography": "",
+      "priority": "Existing strategy",
+      "cycles": [
+        {
+          "cycle": "C1",
+          "baselineCandidates": 1,
+          "confirmation": "Candidate—editorial confirmation required"
+        },
+        {
+          "cycle": "C2",
+          "baselineCandidates": 0,
+          "confirmation": "Gap—no topic-and-geography signal identified"
+        },
+        {
+          "cycle": "C3",
+          "baselineCandidates": 0,
+          "confirmation": "Gap—no topic-and-geography signal identified"
+        }
+      ],
+      "draftDates": []
+    },
+    {
+      "id": 23,
+      "phrase": "Hospice care in Thousand Oaks",
+      "source": "Google Ads — original audit",
+      "intent": "local",
+      "geography": "Thousand Oaks",
+      "priority": "Primary",
+      "cycles": [
+        {
+          "cycle": "C1",
+          "baselineCandidates": 1,
+          "confirmation": "Candidate—editorial confirmation required"
+        },
+        {
+          "cycle": "C2",
+          "baselineCandidates": 2,
+          "confirmation": "Candidate—editorial confirmation required"
+        },
+        {
+          "cycle": "C3",
+          "baselineCandidates": 1,
+          "confirmation": "Candidate—editorial confirmation required"
+        }
+      ],
+      "draftDates": []
+    },
+    {
+      "id": 24,
+      "phrase": "Hospice services Thousand Oaks",
+      "source": "Google Ads — original audit",
+      "intent": "local",
+      "geography": "Thousand Oaks",
+      "priority": "Primary",
+      "cycles": [
+        {
+          "cycle": "C1",
+          "baselineCandidates": 1,
+          "confirmation": "Candidate—editorial confirmation required"
+        },
+        {
+          "cycle": "C2",
+          "baselineCandidates": 2,
+          "confirmation": "Candidate—editorial confirmation required"
+        },
+        {
+          "cycle": "C3",
+          "baselineCandidates": 1,
+          "confirmation": "Candidate—editorial confirmation required"
+        }
+      ],
+      "draftDates": []
+    },
+    {
+      "id": 25,
+      "phrase": "Hospice Simi Valley",
+      "source": "Google Ads — original audit",
+      "intent": "local",
+      "geography": "Simi Valley",
+      "priority": "Existing strategy",
+      "cycles": [
+        {
+          "cycle": "C1",
+          "baselineCandidates": 0,
+          "confirmation": "Gap—no topic-and-geography signal identified"
+        },
+        {
+          "cycle": "C2",
+          "baselineCandidates": 0,
+          "confirmation": "Gap—no topic-and-geography signal identified"
+        },
+        {
+          "cycle": "C3",
+          "baselineCandidates": 0,
+          "confirmation": "Gap—no topic-and-geography signal identified"
+        }
+      ],
+      "draftDates": []
+    },
+    {
+      "id": 26,
+      "phrase": "Hospice services Simi Valley CA",
+      "source": "Google Ads — original audit",
+      "intent": "local",
+      "geography": "Simi Valley",
+      "priority": "Existing strategy",
+      "cycles": [
+        {
+          "cycle": "C1",
+          "baselineCandidates": 0,
+          "confirmation": "Gap—no topic-and-geography signal identified"
+        },
+        {
+          "cycle": "C2",
+          "baselineCandidates": 0,
+          "confirmation": "Gap—no topic-and-geography signal identified"
+        },
+        {
+          "cycle": "C3",
+          "baselineCandidates": 0,
+          "confirmation": "Gap—no topic-and-geography signal identified"
+        }
+      ],
+      "draftDates": []
+    },
+    {
+      "id": 27,
+      "phrase": "Hospice Calabasas",
+      "source": "Google Ads — original audit",
+      "intent": "local",
+      "geography": "Calabasas",
+      "priority": "Existing strategy",
+      "cycles": [
+        {
+          "cycle": "C1",
+          "baselineCandidates": 1,
+          "confirmation": "Candidate—editorial confirmation required"
+        },
+        {
+          "cycle": "C2",
+          "baselineCandidates": 1,
+          "confirmation": "Candidate—editorial confirmation required"
+        },
+        {
+          "cycle": "C3",
+          "baselineCandidates": 1,
+          "confirmation": "Candidate—editorial confirmation required"
+        }
+      ],
+      "draftDates": []
+    },
+    {
+      "id": 28,
+      "phrase": "Hospice Camarillo",
+      "source": "Google Ads — original audit",
+      "intent": "local",
+      "geography": "Camarillo",
+      "priority": "Existing strategy",
+      "cycles": [
+        {
+          "cycle": "C1",
+          "baselineCandidates": 1,
+          "confirmation": "Candidate—editorial confirmation required"
+        },
+        {
+          "cycle": "C2",
+          "baselineCandidates": 1,
+          "confirmation": "Candidate—editorial confirmation required"
+        },
+        {
+          "cycle": "C3",
+          "baselineCandidates": 1,
+          "confirmation": "Candidate—editorial confirmation required"
+        }
+      ],
+      "draftDates": []
+    },
+    {
+      "id": 29,
+      "phrase": "Hospice agencies in Camarillo CA",
+      "source": "Google Ads — original audit",
+      "intent": "local",
+      "geography": "Camarillo",
+      "priority": "Existing strategy",
+      "cycles": [
+        {
+          "cycle": "C1",
+          "baselineCandidates": 1,
+          "confirmation": "Candidate—editorial confirmation required"
+        },
+        {
+          "cycle": "C2",
+          "baselineCandidates": 1,
+          "confirmation": "Candidate—editorial confirmation required"
+        },
+        {
+          "cycle": "C3",
+          "baselineCandidates": 1,
+          "confirmation": "Candidate—editorial confirmation required"
+        }
+      ],
+      "draftDates": []
+    },
+    {
+      "id": 30,
+      "phrase": "Hospice Oxnard",
+      "source": "Google Ads — original audit",
+      "intent": "local",
+      "geography": "Oxnard",
+      "priority": "Existing strategy",
+      "cycles": [
+        {
+          "cycle": "C1",
+          "baselineCandidates": 0,
+          "confirmation": "Gap—no topic-and-geography signal identified"
+        },
+        {
+          "cycle": "C2",
+          "baselineCandidates": 2,
+          "confirmation": "Candidate—editorial confirmation required"
+        },
+        {
+          "cycle": "C3",
+          "baselineCandidates": 1,
+          "confirmation": "Candidate—editorial confirmation required"
+        }
+      ],
+      "draftDates": []
+    },
+    {
+      "id": 31,
+      "phrase": "Hospice care Oxnard CA",
+      "source": "Google Ads — original audit",
+      "intent": "local",
+      "geography": "Oxnard",
+      "priority": "Existing strategy",
+      "cycles": [
+        {
+          "cycle": "C1",
+          "baselineCandidates": 0,
+          "confirmation": "Gap—no topic-and-geography signal identified"
+        },
+        {
+          "cycle": "C2",
+          "baselineCandidates": 2,
+          "confirmation": "Candidate—editorial confirmation required"
+        },
+        {
+          "cycle": "C3",
+          "baselineCandidates": 1,
+          "confirmation": "Candidate—editorial confirmation required"
+        }
+      ],
+      "draftDates": []
+    },
+    {
+      "id": 32,
+      "phrase": "Hospice care Ventura County",
+      "source": "Google Ads — original audit",
+      "intent": "local",
+      "geography": "Ventura County",
+      "priority": "Existing strategy",
+      "cycles": [
+        {
+          "cycle": "C1",
+          "baselineCandidates": 0,
+          "confirmation": "Gap—no topic-and-geography signal identified"
+        },
+        {
+          "cycle": "C2",
+          "baselineCandidates": 0,
+          "confirmation": "Gap—no topic-and-geography signal identified"
+        },
+        {
+          "cycle": "C3",
+          "baselineCandidates": 0,
+          "confirmation": "Gap—no topic-and-geography signal identified"
+        }
+      ],
+      "draftDates": []
+    },
+    {
+      "id": 33,
+      "phrase": "Hospice care Ventura and LA County",
+      "source": "Google Ads — original audit",
+      "intent": "local",
+      "geography": "Ventura and LA County",
+      "priority": "Existing strategy",
+      "cycles": [
+        {
+          "cycle": "C1",
+          "baselineCandidates": 0,
+          "confirmation": "Gap—no topic-and-geography signal identified"
+        },
+        {
+          "cycle": "C2",
+          "baselineCandidates": 0,
+          "confirmation": "Gap—no topic-and-geography signal identified"
+        },
+        {
+          "cycle": "C3",
+          "baselineCandidates": 0,
+          "confirmation": "Gap—no topic-and-geography signal identified"
+        }
+      ],
+      "draftDates": []
+    },
+    {
+      "id": 34,
+      "phrase": "Hospice Los Angeles County",
+      "source": "Google Ads — original audit",
+      "intent": "local",
+      "geography": "Los Angeles County",
+      "priority": "Existing strategy",
+      "cycles": [
+        {
+          "cycle": "C1",
+          "baselineCandidates": 0,
+          "confirmation": "Gap—no topic-and-geography signal identified"
+        },
+        {
+          "cycle": "C2",
+          "baselineCandidates": 0,
+          "confirmation": "Gap—no topic-and-geography signal identified"
+        },
+        {
+          "cycle": "C3",
+          "baselineCandidates": 0,
+          "confirmation": "Gap—no topic-and-geography signal identified"
+        }
+      ],
+      "draftDates": []
+    },
+    {
+      "id": 35,
+      "phrase": "Hospice care Los Angeles County",
+      "source": "Google Ads — original audit",
+      "intent": "local",
+      "geography": "Los Angeles County",
+      "priority": "Existing strategy",
+      "cycles": [
+        {
+          "cycle": "C1",
+          "baselineCandidates": 0,
+          "confirmation": "Gap—no topic-and-geography signal identified"
+        },
+        {
+          "cycle": "C2",
+          "baselineCandidates": 0,
+          "confirmation": "Gap—no topic-and-geography signal identified"
+        },
+        {
+          "cycle": "C3",
+          "baselineCandidates": 0,
+          "confirmation": "Gap—no topic-and-geography signal identified"
+        }
+      ],
+      "draftDates": []
+    },
+    {
+      "id": 36,
+      "phrase": "Hospice in Los Angeles",
+      "source": "Google Ads — original audit",
+      "intent": "local",
+      "geography": "Los Angeles",
+      "priority": "Existing strategy",
+      "cycles": [
+        {
+          "cycle": "C1",
+          "baselineCandidates": 0,
+          "confirmation": "Gap—no topic-and-geography signal identified"
+        },
+        {
+          "cycle": "C2",
+          "baselineCandidates": 0,
+          "confirmation": "Gap—no topic-and-geography signal identified"
+        },
+        {
+          "cycle": "C3",
+          "baselineCandidates": 0,
+          "confirmation": "Gap—no topic-and-geography signal identified"
+        }
+      ],
+      "draftDates": []
+    },
+    {
+      "id": 37,
+      "phrase": "Hospice Agoura Hills",
+      "source": "Google Ads — original audit",
+      "intent": "local",
+      "geography": "Agoura Hills",
+      "priority": "Existing strategy",
+      "cycles": [
+        {
+          "cycle": "C1",
+          "baselineCandidates": 0,
+          "confirmation": "Gap—no topic-and-geography signal identified"
+        },
+        {
+          "cycle": "C2",
+          "baselineCandidates": 0,
+          "confirmation": "Gap—no topic-and-geography signal identified"
+        },
+        {
+          "cycle": "C3",
+          "baselineCandidates": 0,
+          "confirmation": "Gap—no topic-and-geography signal identified"
+        }
+      ],
+      "draftDates": []
+    },
+    {
+      "id": 38,
+      "phrase": "Hospice Bell Canyon",
+      "source": "Google Ads — original audit",
+      "intent": "local",
+      "geography": "Bell Canyon",
+      "priority": "Existing strategy",
+      "cycles": [
+        {
+          "cycle": "C1",
+          "baselineCandidates": 0,
+          "confirmation": "Gap—no topic-and-geography signal identified"
+        },
+        {
+          "cycle": "C2",
+          "baselineCandidates": 0,
+          "confirmation": "Gap—no topic-and-geography signal identified"
+        },
+        {
+          "cycle": "C3",
+          "baselineCandidates": 0,
+          "confirmation": "Gap—no topic-and-geography signal identified"
+        }
+      ],
+      "draftDates": []
+    },
+    {
+      "id": 39,
+      "phrase": "Hospice Conejo Valley",
+      "source": "Google Ads — original audit",
+      "intent": "local",
+      "geography": "Conejo Valley",
+      "priority": "Existing strategy",
+      "cycles": [
+        {
+          "cycle": "C1",
+          "baselineCandidates": 1,
+          "confirmation": "Candidate—editorial confirmation required"
+        },
+        {
+          "cycle": "C2",
+          "baselineCandidates": 1,
+          "confirmation": "Candidate—editorial confirmation required"
+        },
+        {
+          "cycle": "C3",
+          "baselineCandidates": 1,
+          "confirmation": "Candidate—editorial confirmation required"
+        }
+      ],
+      "draftDates": []
+    },
+    {
+      "id": 40,
+      "phrase": "Hospice Moorpark",
+      "source": "Google Ads — original audit",
+      "intent": "local",
+      "geography": "Moorpark",
+      "priority": "Existing strategy",
+      "cycles": [
+        {
+          "cycle": "C1",
+          "baselineCandidates": 0,
+          "confirmation": "Gap—no topic-and-geography signal identified"
+        },
+        {
+          "cycle": "C2",
+          "baselineCandidates": 0,
+          "confirmation": "Gap—no topic-and-geography signal identified"
+        },
+        {
+          "cycle": "C3",
+          "baselineCandidates": 0,
+          "confirmation": "Gap—no topic-and-geography signal identified"
+        }
+      ],
+      "draftDates": []
+    },
+    {
+      "id": 41,
+      "phrase": "Hospice Newbury Park",
+      "source": "Google Ads — original audit",
+      "intent": "local",
+      "geography": "Newbury Park",
+      "priority": "Existing strategy",
+      "cycles": [
+        {
+          "cycle": "C1",
+          "baselineCandidates": 0,
+          "confirmation": "Gap—no topic-and-geography signal identified"
+        },
+        {
+          "cycle": "C2",
+          "baselineCandidates": 0,
+          "confirmation": "Gap—no topic-and-geography signal identified"
+        },
+        {
+          "cycle": "C3",
+          "baselineCandidates": 0,
+          "confirmation": "Gap—no topic-and-geography signal identified"
+        }
+      ],
+      "draftDates": []
+    },
+    {
+      "id": 42,
+      "phrase": "Hospice Lake Sherwood",
+      "source": "Google Ads — original audit",
+      "intent": "local",
+      "geography": "Lake Sherwood",
+      "priority": "Existing strategy",
+      "cycles": [
+        {
+          "cycle": "C1",
+          "baselineCandidates": 0,
+          "confirmation": "Gap—no topic-and-geography signal identified"
+        },
+        {
+          "cycle": "C2",
+          "baselineCandidates": 0,
+          "confirmation": "Gap—no topic-and-geography signal identified"
+        },
+        {
+          "cycle": "C3",
+          "baselineCandidates": 0,
+          "confirmation": "Gap—no topic-and-geography signal identified"
+        }
+      ],
+      "draftDates": []
+    },
+    {
+      "id": 43,
+      "phrase": "Hospice Oak Park CA",
+      "source": "Google Ads — original audit",
+      "intent": "local",
+      "geography": "Oak Park",
+      "priority": "Existing strategy",
+      "cycles": [
+        {
+          "cycle": "C1",
+          "baselineCandidates": 0,
+          "confirmation": "Gap—no topic-and-geography signal identified"
+        },
+        {
+          "cycle": "C2",
+          "baselineCandidates": 0,
+          "confirmation": "Gap—no topic-and-geography signal identified"
+        },
+        {
+          "cycle": "C3",
+          "baselineCandidates": 0,
+          "confirmation": "Gap—no topic-and-geography signal identified"
+        }
+      ],
+      "draftDates": []
+    },
+    {
+      "id": 44,
+      "phrase": "Hospice Santa Rosa Valley",
+      "source": "Google Ads — original audit",
+      "intent": "local",
+      "geography": "Santa Rosa Valley",
+      "priority": "Existing strategy",
+      "cycles": [
+        {
+          "cycle": "C1",
+          "baselineCandidates": 0,
+          "confirmation": "Gap—no topic-and-geography signal identified"
+        },
+        {
+          "cycle": "C2",
+          "baselineCandidates": 0,
+          "confirmation": "Gap—no topic-and-geography signal identified"
+        },
+        {
+          "cycle": "C3",
+          "baselineCandidates": 0,
+          "confirmation": "Gap—no topic-and-geography signal identified"
+        }
+      ],
+      "draftDates": []
+    },
+    {
+      "id": 45,
+      "phrase": "Hospice Santa Paula",
+      "source": "Google Ads — original audit",
+      "intent": "local",
+      "geography": "Santa Paula",
+      "priority": "Existing strategy",
+      "cycles": [
+        {
+          "cycle": "C1",
+          "baselineCandidates": 0,
+          "confirmation": "Gap—no topic-and-geography signal identified"
+        },
+        {
+          "cycle": "C2",
+          "baselineCandidates": 0,
+          "confirmation": "Gap—no topic-and-geography signal identified"
+        },
+        {
+          "cycle": "C3",
+          "baselineCandidates": 0,
+          "confirmation": "Gap—no topic-and-geography signal identified"
+        }
+      ],
+      "draftDates": []
+    },
+    {
+      "id": 46,
+      "phrase": "Hospice Somis",
+      "source": "Google Ads — original audit",
+      "intent": "local",
+      "geography": "Somis",
+      "priority": "Existing strategy",
+      "cycles": [
+        {
+          "cycle": "C1",
+          "baselineCandidates": 0,
+          "confirmation": "Gap—no topic-and-geography signal identified"
+        },
+        {
+          "cycle": "C2",
+          "baselineCandidates": 0,
+          "confirmation": "Gap—no topic-and-geography signal identified"
+        },
+        {
+          "cycle": "C3",
+          "baselineCandidates": 0,
+          "confirmation": "Gap—no topic-and-geography signal identified"
+        }
+      ],
+      "draftDates": []
+    },
+    {
+      "id": 47,
+      "phrase": "Hospice Port Hueneme",
+      "source": "Google Ads — original audit",
+      "intent": "local",
+      "geography": "Port Hueneme",
+      "priority": "Existing strategy",
+      "cycles": [
+        {
+          "cycle": "C1",
+          "baselineCandidates": 0,
+          "confirmation": "Gap—no topic-and-geography signal identified"
+        },
+        {
+          "cycle": "C2",
+          "baselineCandidates": 0,
+          "confirmation": "Gap—no topic-and-geography signal identified"
+        },
+        {
+          "cycle": "C3",
+          "baselineCandidates": 0,
+          "confirmation": "Gap—no topic-and-geography signal identified"
+        }
+      ],
+      "draftDates": []
+    },
+    {
+      "id": 48,
+      "phrase": "Hospice Beverly Hills",
+      "source": "Google Ads — original audit",
+      "intent": "local",
+      "geography": "Beverly Hills",
+      "priority": "Existing strategy",
+      "cycles": [
+        {
+          "cycle": "C1",
+          "baselineCandidates": 0,
+          "confirmation": "Gap—no topic-and-geography signal identified"
+        },
+        {
+          "cycle": "C2",
+          "baselineCandidates": 0,
+          "confirmation": "Gap—no topic-and-geography signal identified"
+        },
+        {
+          "cycle": "C3",
+          "baselineCandidates": 0,
+          "confirmation": "Gap—no topic-and-geography signal identified"
+        }
+      ],
+      "draftDates": []
+    },
+    {
+      "id": 49,
+      "phrase": "Hospice Bel Air",
+      "source": "Google Ads — original audit",
+      "intent": "local",
+      "geography": "Bel Air",
+      "priority": "Existing strategy",
+      "cycles": [
+        {
+          "cycle": "C1",
+          "baselineCandidates": 0,
+          "confirmation": "Gap—no topic-and-geography signal identified"
+        },
+        {
+          "cycle": "C2",
+          "baselineCandidates": 0,
+          "confirmation": "Gap—no topic-and-geography signal identified"
+        },
+        {
+          "cycle": "C3",
+          "baselineCandidates": 0,
+          "confirmation": "Gap—no topic-and-geography signal identified"
+        }
+      ],
+      "draftDates": []
+    },
+    {
+      "id": 50,
+      "phrase": "Hospice Brentwood",
+      "source": "Google Ads — original audit",
+      "intent": "local",
+      "geography": "Brentwood",
+      "priority": "Existing strategy",
+      "cycles": [
+        {
+          "cycle": "C1",
+          "baselineCandidates": 0,
+          "confirmation": "Gap—no topic-and-geography signal identified"
+        },
+        {
+          "cycle": "C2",
+          "baselineCandidates": 0,
+          "confirmation": "Gap—no topic-and-geography signal identified"
+        },
+        {
+          "cycle": "C3",
+          "baselineCandidates": 0,
+          "confirmation": "Gap—no topic-and-geography signal identified"
+        }
+      ],
+      "draftDates": []
+    },
+    {
+      "id": 51,
+      "phrase": "Hospice Malibu",
+      "source": "Google Ads — original audit",
+      "intent": "local",
+      "geography": "Malibu",
+      "priority": "Existing strategy",
+      "cycles": [
+        {
+          "cycle": "C1",
+          "baselineCandidates": 0,
+          "confirmation": "Gap—no topic-and-geography signal identified"
+        },
+        {
+          "cycle": "C2",
+          "baselineCandidates": 0,
+          "confirmation": "Gap—no topic-and-geography signal identified"
+        },
+        {
+          "cycle": "C3",
+          "baselineCandidates": 0,
+          "confirmation": "Gap—no topic-and-geography signal identified"
+        }
+      ],
+      "draftDates": []
+    },
+    {
+      "id": 52,
+      "phrase": "Hospice Santa Monica",
+      "source": "Google Ads — original audit",
+      "intent": "local",
+      "geography": "Santa Monica",
+      "priority": "Existing strategy",
+      "cycles": [
+        {
+          "cycle": "C1",
+          "baselineCandidates": 0,
+          "confirmation": "Gap—no topic-and-geography signal identified"
+        },
+        {
+          "cycle": "C2",
+          "baselineCandidates": 0,
+          "confirmation": "Gap—no topic-and-geography signal identified"
+        },
+        {
+          "cycle": "C3",
+          "baselineCandidates": 0,
+          "confirmation": "Gap—no topic-and-geography signal identified"
+        }
+      ],
+      "draftDates": []
+    },
+    {
+      "id": 53,
+      "phrase": "Hospice Pacific Palisades",
+      "source": "Google Ads — original audit",
+      "intent": "local",
+      "geography": "Pacific Palisades",
+      "priority": "Existing strategy",
+      "cycles": [
+        {
+          "cycle": "C1",
+          "baselineCandidates": 0,
+          "confirmation": "Gap—no topic-and-geography signal identified"
+        },
+        {
+          "cycle": "C2",
+          "baselineCandidates": 0,
+          "confirmation": "Gap—no topic-and-geography signal identified"
+        },
+        {
+          "cycle": "C3",
+          "baselineCandidates": 0,
+          "confirmation": "Gap—no topic-and-geography signal identified"
+        }
+      ],
+      "draftDates": []
+    },
+    {
+      "id": 54,
+      "phrase": "Hospice Sherman Oaks",
+      "source": "Google Ads — original audit",
+      "intent": "local",
+      "geography": "Sherman Oaks",
+      "priority": "Existing strategy",
+      "cycles": [
+        {
+          "cycle": "C1",
+          "baselineCandidates": 0,
+          "confirmation": "Gap—no topic-and-geography signal identified"
+        },
+        {
+          "cycle": "C2",
+          "baselineCandidates": 0,
+          "confirmation": "Gap—no topic-and-geography signal identified"
+        },
+        {
+          "cycle": "C3",
+          "baselineCandidates": 0,
+          "confirmation": "Gap—no topic-and-geography signal identified"
+        }
+      ],
+      "draftDates": []
+    },
+    {
+      "id": 55,
+      "phrase": "Hospice Encino",
+      "source": "Google Ads — original audit",
+      "intent": "local",
+      "geography": "Encino",
+      "priority": "Existing strategy",
+      "cycles": [
+        {
+          "cycle": "C1",
+          "baselineCandidates": 0,
+          "confirmation": "Gap—no topic-and-geography signal identified"
+        },
+        {
+          "cycle": "C2",
+          "baselineCandidates": 0,
+          "confirmation": "Gap—no topic-and-geography signal identified"
+        },
+        {
+          "cycle": "C3",
+          "baselineCandidates": 0,
+          "confirmation": "Gap—no topic-and-geography signal identified"
+        }
+      ],
+      "draftDates": []
+    },
+    {
+      "id": 56,
+      "phrase": "Hospice Chatsworth",
+      "source": "Google Ads — original audit",
+      "intent": "local",
+      "geography": "Chatsworth",
+      "priority": "Existing strategy",
+      "cycles": [
+        {
+          "cycle": "C1",
+          "baselineCandidates": 0,
+          "confirmation": "Gap—no topic-and-geography signal identified"
+        },
+        {
+          "cycle": "C2",
+          "baselineCandidates": 0,
+          "confirmation": "Gap—no topic-and-geography signal identified"
+        },
+        {
+          "cycle": "C3",
+          "baselineCandidates": 0,
+          "confirmation": "Gap—no topic-and-geography signal identified"
+        }
+      ],
+      "draftDates": []
+    },
+    {
+      "id": 57,
+      "phrase": "Hospice Canoga Park",
+      "source": "Google Ads — original audit",
+      "intent": "local",
+      "geography": "Canoga Park",
+      "priority": "Existing strategy",
+      "cycles": [
+        {
+          "cycle": "C1",
+          "baselineCandidates": 0,
+          "confirmation": "Gap—no topic-and-geography signal identified"
+        },
+        {
+          "cycle": "C2",
+          "baselineCandidates": 0,
+          "confirmation": "Gap—no topic-and-geography signal identified"
+        },
+        {
+          "cycle": "C3",
+          "baselineCandidates": 0,
+          "confirmation": "Gap—no topic-and-geography signal identified"
+        }
+      ],
+      "draftDates": []
+    },
+    {
+      "id": 58,
+      "phrase": "Hospice Granada Hills",
+      "source": "Google Ads — original audit",
+      "intent": "local",
+      "geography": "Granada Hills",
+      "priority": "Existing strategy",
+      "cycles": [
+        {
+          "cycle": "C1",
+          "baselineCandidates": 0,
+          "confirmation": "Gap—no topic-and-geography signal identified"
+        },
+        {
+          "cycle": "C2",
+          "baselineCandidates": 0,
+          "confirmation": "Gap—no topic-and-geography signal identified"
+        },
+        {
+          "cycle": "C3",
+          "baselineCandidates": 0,
+          "confirmation": "Gap—no topic-and-geography signal identified"
+        }
+      ],
+      "draftDates": []
+    },
+    {
+      "id": 59,
+      "phrase": "Hospice Hidden Hills",
+      "source": "Google Ads — original audit",
+      "intent": "local",
+      "geography": "Hidden Hills",
+      "priority": "Existing strategy",
+      "cycles": [
+        {
+          "cycle": "C1",
+          "baselineCandidates": 0,
+          "confirmation": "Gap—no topic-and-geography signal identified"
+        },
+        {
+          "cycle": "C2",
+          "baselineCandidates": 0,
+          "confirmation": "Gap—no topic-and-geography signal identified"
+        },
+        {
+          "cycle": "C3",
+          "baselineCandidates": 0,
+          "confirmation": "Gap—no topic-and-geography signal identified"
+        }
+      ],
+      "draftDates": []
+    },
+    {
+      "id": 60,
+      "phrase": "Hospice Lake Balboa",
+      "source": "Google Ads — original audit",
+      "intent": "local",
+      "geography": "Lake Balboa",
+      "priority": "Existing strategy",
+      "cycles": [
+        {
+          "cycle": "C1",
+          "baselineCandidates": 0,
+          "confirmation": "Gap—no topic-and-geography signal identified"
+        },
+        {
+          "cycle": "C2",
+          "baselineCandidates": 0,
+          "confirmation": "Gap—no topic-and-geography signal identified"
+        },
+        {
+          "cycle": "C3",
+          "baselineCandidates": 0,
+          "confirmation": "Gap—no topic-and-geography signal identified"
+        }
+      ],
+      "draftDates": []
+    },
+    {
+      "id": 61,
+      "phrase": "Hospice Mission Hills",
+      "source": "Google Ads — original audit",
+      "intent": "local",
+      "geography": "Mission Hills",
+      "priority": "Existing strategy",
+      "cycles": [
+        {
+          "cycle": "C1",
+          "baselineCandidates": 0,
+          "confirmation": "Gap—no topic-and-geography signal identified"
+        },
+        {
+          "cycle": "C2",
+          "baselineCandidates": 0,
+          "confirmation": "Gap—no topic-and-geography signal identified"
+        },
+        {
+          "cycle": "C3",
+          "baselineCandidates": 0,
+          "confirmation": "Gap—no topic-and-geography signal identified"
+        }
+      ],
+      "draftDates": []
+    },
+    {
+      "id": 62,
+      "phrase": "Hospice North Hills",
+      "source": "Google Ads — original audit",
+      "intent": "local",
+      "geography": "North Hills",
+      "priority": "Existing strategy",
+      "cycles": [
+        {
+          "cycle": "C1",
+          "baselineCandidates": 0,
+          "confirmation": "Gap—no topic-and-geography signal identified"
+        },
+        {
+          "cycle": "C2",
+          "baselineCandidates": 0,
+          "confirmation": "Gap—no topic-and-geography signal identified"
+        },
+        {
+          "cycle": "C3",
+          "baselineCandidates": 0,
+          "confirmation": "Gap—no topic-and-geography signal identified"
+        }
+      ],
+      "draftDates": []
+    },
+    {
+      "id": 63,
+      "phrase": "Hospice North Hollywood",
+      "source": "Google Ads — original audit",
+      "intent": "local",
+      "geography": "North Hollywood",
+      "priority": "Existing strategy",
+      "cycles": [
+        {
+          "cycle": "C1",
+          "baselineCandidates": 0,
+          "confirmation": "Gap—no topic-and-geography signal identified"
+        },
+        {
+          "cycle": "C2",
+          "baselineCandidates": 0,
+          "confirmation": "Gap—no topic-and-geography signal identified"
+        },
+        {
+          "cycle": "C3",
+          "baselineCandidates": 0,
+          "confirmation": "Gap—no topic-and-geography signal identified"
+        }
+      ],
+      "draftDates": []
+    },
+    {
+      "id": 64,
+      "phrase": "Hospice Northridge",
+      "source": "Google Ads — original audit",
+      "intent": "local",
+      "geography": "Northridge",
+      "priority": "Existing strategy",
+      "cycles": [
+        {
+          "cycle": "C1",
+          "baselineCandidates": 0,
+          "confirmation": "Gap—no topic-and-geography signal identified"
+        },
+        {
+          "cycle": "C2",
+          "baselineCandidates": 0,
+          "confirmation": "Gap—no topic-and-geography signal identified"
+        },
+        {
+          "cycle": "C3",
+          "baselineCandidates": 0,
+          "confirmation": "Gap—no topic-and-geography signal identified"
+        }
+      ],
+      "draftDates": []
+    },
+    {
+      "id": 65,
+      "phrase": "Hospice Panorama City",
+      "source": "Google Ads — original audit",
+      "intent": "local",
+      "geography": "Panorama City",
+      "priority": "Existing strategy",
+      "cycles": [
+        {
+          "cycle": "C1",
+          "baselineCandidates": 0,
+          "confirmation": "Gap—no topic-and-geography signal identified"
+        },
+        {
+          "cycle": "C2",
+          "baselineCandidates": 0,
+          "confirmation": "Gap—no topic-and-geography signal identified"
+        },
+        {
+          "cycle": "C3",
+          "baselineCandidates": 0,
+          "confirmation": "Gap—no topic-and-geography signal identified"
+        }
+      ],
+      "draftDates": []
+    },
+    {
+      "id": 66,
+      "phrase": "Hospice Porter Ranch",
+      "source": "Google Ads — original audit",
+      "intent": "local",
+      "geography": "Porter Ranch",
+      "priority": "Existing strategy",
+      "cycles": [
+        {
+          "cycle": "C1",
+          "baselineCandidates": 0,
+          "confirmation": "Gap—no topic-and-geography signal identified"
+        },
+        {
+          "cycle": "C2",
+          "baselineCandidates": 0,
+          "confirmation": "Gap—no topic-and-geography signal identified"
+        },
+        {
+          "cycle": "C3",
+          "baselineCandidates": 0,
+          "confirmation": "Gap—no topic-and-geography signal identified"
+        }
+      ],
+      "draftDates": []
+    },
+    {
+      "id": 67,
+      "phrase": "Hospice Reseda",
+      "source": "Google Ads — original audit",
+      "intent": "local",
+      "geography": "Reseda",
+      "priority": "Existing strategy",
+      "cycles": [
+        {
+          "cycle": "C1",
+          "baselineCandidates": 0,
+          "confirmation": "Gap—no topic-and-geography signal identified"
+        },
+        {
+          "cycle": "C2",
+          "baselineCandidates": 0,
+          "confirmation": "Gap—no topic-and-geography signal identified"
+        },
+        {
+          "cycle": "C3",
+          "baselineCandidates": 0,
+          "confirmation": "Gap—no topic-and-geography signal identified"
+        }
+      ],
+      "draftDates": []
+    },
+    {
+      "id": 68,
+      "phrase": "Hospice San Fernando",
+      "source": "Google Ads — original audit",
+      "intent": "local",
+      "geography": "San Fernando",
+      "priority": "Existing strategy",
+      "cycles": [
+        {
+          "cycle": "C1",
+          "baselineCandidates": 0,
+          "confirmation": "Gap—no topic-and-geography signal identified"
+        },
+        {
+          "cycle": "C2",
+          "baselineCandidates": 0,
+          "confirmation": "Gap—no topic-and-geography signal identified"
+        },
+        {
+          "cycle": "C3",
+          "baselineCandidates": 0,
+          "confirmation": "Gap—no topic-and-geography signal identified"
+        }
+      ],
+      "draftDates": []
+    },
+    {
+      "id": 69,
+      "phrase": "Hospice San Fernando Valley",
+      "source": "Google Ads — original audit",
+      "intent": "local",
+      "geography": "San Fernando Valley",
+      "priority": "Existing strategy",
+      "cycles": [
+        {
+          "cycle": "C1",
+          "baselineCandidates": 0,
+          "confirmation": "Gap—no topic-and-geography signal identified"
+        },
+        {
+          "cycle": "C2",
+          "baselineCandidates": 0,
+          "confirmation": "Gap—no topic-and-geography signal identified"
+        },
+        {
+          "cycle": "C3",
+          "baselineCandidates": 0,
+          "confirmation": "Gap—no topic-and-geography signal identified"
+        }
+      ],
+      "draftDates": []
+    },
+    {
+      "id": 70,
+      "phrase": "Hospice care Glendale CA",
+      "source": "Google Ads — original audit",
+      "intent": "local",
+      "geography": "Glendale",
+      "priority": "Existing strategy",
+      "cycles": [
+        {
+          "cycle": "C1",
+          "baselineCandidates": 0,
+          "confirmation": "Gap—no topic-and-geography signal identified"
+        },
+        {
+          "cycle": "C2",
+          "baselineCandidates": 0,
+          "confirmation": "Gap—no topic-and-geography signal identified"
+        },
+        {
+          "cycle": "C3",
+          "baselineCandidates": 0,
+          "confirmation": "Gap—no topic-and-geography signal identified"
+        }
+      ],
+      "draftDates": []
+    },
+    {
+      "id": 71,
+      "phrase": "Hospice agencies Pasadena CA",
+      "source": "Google Ads — original audit",
+      "intent": "local",
+      "geography": "Pasadena",
+      "priority": "Existing strategy",
+      "cycles": [
+        {
+          "cycle": "C1",
+          "baselineCandidates": 0,
+          "confirmation": "Gap—no topic-and-geography signal identified"
+        },
+        {
+          "cycle": "C2",
+          "baselineCandidates": 0,
+          "confirmation": "Gap—no topic-and-geography signal identified"
+        },
+        {
+          "cycle": "C3",
+          "baselineCandidates": 0,
+          "confirmation": "Gap—no topic-and-geography signal identified"
+        }
+      ],
+      "draftDates": []
+    },
+    {
+      "id": 72,
+      "phrase": "Hospice for Alzheimer's",
+      "source": "Google Ads — original audit",
+      "intent": "dementia",
+      "geography": "",
+      "priority": "Existing strategy",
+      "cycles": [
+        {
+          "cycle": "C1",
+          "baselineCandidates": 0,
+          "confirmation": "Gap—no topic-and-geography signal identified"
+        },
+        {
+          "cycle": "C2",
+          "baselineCandidates": 0,
+          "confirmation": "Gap—no topic-and-geography signal identified"
+        },
+        {
+          "cycle": "C3",
+          "baselineCandidates": 0,
+          "confirmation": "Gap—no topic-and-geography signal identified"
+        }
+      ],
+      "draftDates": []
+    },
+    {
+      "id": 73,
+      "phrase": "Hospice for cancer patients",
+      "source": "Google Ads — original audit",
+      "intent": "cancer",
+      "geography": "",
+      "priority": "Existing strategy",
+      "cycles": [
+        {
+          "cycle": "C1",
+          "baselineCandidates": 0,
+          "confirmation": "Gap—no topic-and-geography signal identified"
+        },
+        {
+          "cycle": "C2",
+          "baselineCandidates": 0,
+          "confirmation": "Gap—no topic-and-geography signal identified"
+        },
+        {
+          "cycle": "C3",
+          "baselineCandidates": 0,
+          "confirmation": "Gap—no topic-and-geography signal identified"
+        }
+      ],
+      "draftDates": []
+    },
+    {
+      "id": 74,
+      "phrase": "Cancer hospice care Los Angeles",
+      "source": "Google Ads — original audit",
+      "intent": "cancer",
+      "geography": "Los Angeles",
+      "priority": "Existing strategy",
+      "cycles": [
+        {
+          "cycle": "C1",
+          "baselineCandidates": 0,
+          "confirmation": "Gap—no topic-and-geography signal identified"
+        },
+        {
+          "cycle": "C2",
+          "baselineCandidates": 0,
+          "confirmation": "Gap—no topic-and-geography signal identified"
+        },
+        {
+          "cycle": "C3",
+          "baselineCandidates": 0,
+          "confirmation": "Gap—no topic-and-geography signal identified"
+        }
+      ],
+      "draftDates": []
+    },
+    {
+      "id": 75,
+      "phrase": "Hospice for COPD",
+      "source": "Google Ads — original audit",
+      "intent": "copd",
+      "geography": "",
+      "priority": "Existing strategy",
+      "cycles": [
+        {
+          "cycle": "C1",
+          "baselineCandidates": 0,
+          "confirmation": "Gap—no topic-and-geography signal identified"
+        },
+        {
+          "cycle": "C2",
+          "baselineCandidates": 0,
+          "confirmation": "Gap—no topic-and-geography signal identified"
+        },
+        {
+          "cycle": "C3",
+          "baselineCandidates": 0,
+          "confirmation": "Gap—no topic-and-geography signal identified"
+        }
+      ],
+      "draftDates": []
+    },
+    {
+      "id": 76,
+      "phrase": "Hospice for dementia",
+      "source": "Google Ads — original audit",
+      "intent": "dementia",
+      "geography": "",
+      "priority": "Existing strategy",
+      "cycles": [
+        {
+          "cycle": "C1",
+          "baselineCandidates": 0,
+          "confirmation": "Gap—no topic-and-geography signal identified"
+        },
+        {
+          "cycle": "C2",
+          "baselineCandidates": 0,
+          "confirmation": "Gap—no topic-and-geography signal identified"
+        },
+        {
+          "cycle": "C3",
+          "baselineCandidates": 0,
+          "confirmation": "Gap—no topic-and-geography signal identified"
+        }
+      ],
+      "draftDates": []
+    },
+    {
+      "id": 77,
+      "phrase": "Hospice for heart failure",
+      "source": "Google Ads — original audit",
+      "intent": "heart",
+      "geography": "",
+      "priority": "Existing strategy",
+      "cycles": [
+        {
+          "cycle": "C1",
+          "baselineCandidates": 0,
+          "confirmation": "Gap—no topic-and-geography signal identified"
+        },
+        {
+          "cycle": "C2",
+          "baselineCandidates": 0,
+          "confirmation": "Gap—no topic-and-geography signal identified"
+        },
+        {
+          "cycle": "C3",
+          "baselineCandidates": 0,
+          "confirmation": "Gap—no topic-and-geography signal identified"
+        }
+      ],
+      "draftDates": []
+    },
+    {
+      "id": 78,
+      "phrase": "End stage dementia care at home",
+      "source": "Google Ads — original audit",
+      "intent": "dementia",
+      "geography": "",
+      "priority": "Existing strategy",
+      "cycles": [
+        {
+          "cycle": "C1",
+          "baselineCandidates": 0,
+          "confirmation": "Gap—no topic-and-geography signal identified"
+        },
+        {
+          "cycle": "C2",
+          "baselineCandidates": 0,
+          "confirmation": "Gap—no topic-and-geography signal identified"
+        },
+        {
+          "cycle": "C3",
+          "baselineCandidates": 0,
+          "confirmation": "Gap—no topic-and-geography signal identified"
+        }
+      ],
+      "draftDates": []
+    },
+    {
+      "id": 79,
+      "phrase": "End of life care",
+      "source": "Google Ads — original audit",
+      "intent": "comfort",
+      "geography": "",
+      "priority": "Existing strategy",
+      "cycles": [
+        {
+          "cycle": "C1",
+          "baselineCandidates": 17,
+          "confirmation": "Candidate—editorial confirmation required"
+        },
+        {
+          "cycle": "C2",
+          "baselineCandidates": 22,
+          "confirmation": "Candidate—editorial confirmation required"
+        },
+        {
+          "cycle": "C3",
+          "baselineCandidates": 17,
+          "confirmation": "Candidate—editorial confirmation required"
+        }
+      ],
+      "draftDates": []
+    },
+    {
+      "id": 80,
+      "phrase": "End of life care Long Beach CA",
+      "source": "Google Ads — original audit",
+      "intent": "comfort",
+      "geography": "Long Beach",
+      "priority": "Existing strategy",
+      "cycles": [
+        {
+          "cycle": "C1",
+          "baselineCandidates": 0,
+          "confirmation": "Gap—no topic-and-geography signal identified"
+        },
+        {
+          "cycle": "C2",
+          "baselineCandidates": 0,
+          "confirmation": "Gap—no topic-and-geography signal identified"
+        },
+        {
+          "cycle": "C3",
+          "baselineCandidates": 0,
+          "confirmation": "Gap—no topic-and-geography signal identified"
+        }
+      ],
+      "draftDates": []
+    },
+    {
+      "id": 81,
+      "phrase": "Comfort care",
+      "source": "Google Ads — original audit",
+      "intent": "comfort",
+      "geography": "",
+      "priority": "Existing strategy",
+      "cycles": [
+        {
+          "cycle": "C1",
+          "baselineCandidates": 17,
+          "confirmation": "Candidate—editorial confirmation required"
+        },
+        {
+          "cycle": "C2",
+          "baselineCandidates": 22,
+          "confirmation": "Candidate—editorial confirmation required"
+        },
+        {
+          "cycle": "C3",
+          "baselineCandidates": 17,
+          "confirmation": "Candidate—editorial confirmation required"
+        }
+      ],
+      "draftDates": []
+    },
+    {
+      "id": 82,
+      "phrase": "Comfort care services",
+      "source": "Google Ads — original audit",
+      "intent": "comfort",
+      "geography": "",
+      "priority": "Existing strategy",
+      "cycles": [
+        {
+          "cycle": "C1",
+          "baselineCandidates": 17,
+          "confirmation": "Candidate—editorial confirmation required"
+        },
+        {
+          "cycle": "C2",
+          "baselineCandidates": 22,
+          "confirmation": "Candidate—editorial confirmation required"
+        },
+        {
+          "cycle": "C3",
+          "baselineCandidates": 17,
+          "confirmation": "Candidate—editorial confirmation required"
+        }
+      ],
+      "draftDates": []
+    },
+    {
+      "id": 83,
+      "phrase": "Comfort home care",
+      "source": "Google Ads — original audit",
+      "intent": "comfort",
+      "geography": "",
+      "priority": "Existing strategy",
+      "cycles": [
+        {
+          "cycle": "C1",
+          "baselineCandidates": 17,
+          "confirmation": "Candidate—editorial confirmation required"
+        },
+        {
+          "cycle": "C2",
+          "baselineCandidates": 22,
+          "confirmation": "Candidate—editorial confirmation required"
+        },
+        {
+          "cycle": "C3",
+          "baselineCandidates": 17,
+          "confirmation": "Candidate—editorial confirmation required"
+        }
+      ],
+      "draftDates": []
+    },
+    {
+      "id": 84,
+      "phrase": "24/7 in home hospice care Southern California",
+      "source": "Google Ads — original audit",
+      "intent": "oncall",
+      "geography": "Southern California",
+      "priority": "Existing strategy",
+      "cycles": [
+        {
+          "cycle": "C1",
+          "baselineCandidates": 0,
+          "confirmation": "Gap—no topic-and-geography signal identified"
+        },
+        {
+          "cycle": "C2",
+          "baselineCandidates": 0,
+          "confirmation": "Gap—no topic-and-geography signal identified"
+        },
+        {
+          "cycle": "C3",
+          "baselineCandidates": 0,
+          "confirmation": "Gap—no topic-and-geography signal identified"
+        }
+      ],
+      "draftDates": []
+    },
+    {
+      "id": 85,
+      "phrase": "Affordable in home palliative care LA County",
+      "source": "Google Ads — original audit",
+      "intent": "palliativecost",
+      "geography": "",
+      "priority": "Existing strategy",
+      "cycles": [
+        {
+          "cycle": "C1",
+          "baselineCandidates": 0,
+          "confirmation": "Gap—no topic-and-geography signal identified"
+        },
+        {
+          "cycle": "C2",
+          "baselineCandidates": 0,
+          "confirmation": "Gap—no topic-and-geography signal identified"
+        },
+        {
+          "cycle": "C3",
+          "baselineCandidates": 0,
+          "confirmation": "Gap—no topic-and-geography signal identified"
+        }
+      ],
+      "draftDates": []
+    },
+    {
+      "id": 86,
+      "phrase": "Best hospice care facility Ventura",
+      "source": "Google Ads — original audit",
+      "intent": "selection",
+      "geography": "Ventura",
+      "priority": "Existing strategy",
+      "cycles": [
+        {
+          "cycle": "C1",
+          "baselineCandidates": 0,
+          "confirmation": "Gap—no topic-and-geography signal identified"
+        },
+        {
+          "cycle": "C2",
+          "baselineCandidates": 2,
+          "confirmation": "Candidate—editorial confirmation required"
+        },
+        {
+          "cycle": "C3",
+          "baselineCandidates": 1,
+          "confirmation": "Candidate—editorial confirmation required"
+        }
+      ],
+      "draftDates": []
+    },
+    {
+      "id": 87,
+      "phrase": "Does Medicare cover hospice at home",
+      "source": "Google Ads — original audit",
+      "intent": "medicare",
+      "geography": "",
+      "priority": "Existing strategy",
+      "cycles": [
+        {
+          "cycle": "C1",
+          "baselineCandidates": 3,
+          "confirmation": "Candidate—editorial confirmation required"
+        },
+        {
+          "cycle": "C2",
+          "baselineCandidates": 1,
+          "confirmation": "Candidate—editorial confirmation required"
+        },
+        {
+          "cycle": "C3",
+          "baselineCandidates": 4,
+          "confirmation": "Candidate—editorial confirmation required"
+        }
+      ],
+      "draftDates": []
+    },
+    {
+      "id": 88,
+      "phrase": "Hospice qualifications Medicare",
+      "source": "Google Ads — original audit",
+      "intent": "medicare",
+      "geography": "",
+      "priority": "Existing strategy",
+      "cycles": [
+        {
+          "cycle": "C1",
+          "baselineCandidates": 3,
+          "confirmation": "Candidate—editorial confirmation required"
+        },
+        {
+          "cycle": "C2",
+          "baselineCandidates": 1,
+          "confirmation": "Candidate—editorial confirmation required"
+        },
+        {
+          "cycle": "C3",
+          "baselineCandidates": 4,
+          "confirmation": "Candidate—editorial confirmation required"
+        }
+      ],
+      "draftDates": []
+    },
+    {
+      "id": 89,
+      "phrase": "Hospice care cost",
+      "source": "Google Ads — original audit",
+      "intent": "cost",
+      "geography": "",
+      "priority": "Existing strategy",
+      "cycles": [
+        {
+          "cycle": "C1",
+          "baselineCandidates": 1,
+          "confirmation": "Candidate—editorial confirmation required"
+        },
+        {
+          "cycle": "C2",
+          "baselineCandidates": 1,
+          "confirmation": "Candidate—editorial confirmation required"
+        },
+        {
+          "cycle": "C3",
+          "baselineCandidates": 1,
+          "confirmation": "Candidate—editorial confirmation required"
+        }
+      ],
+      "draftDates": []
+    },
+    {
+      "id": 90,
+      "phrase": "Hospice care at home cost",
+      "source": "Google Ads — original audit",
+      "intent": "cost",
+      "geography": "",
+      "priority": "Existing strategy",
+      "cycles": [
+        {
+          "cycle": "C1",
+          "baselineCandidates": 1,
+          "confirmation": "Candidate—editorial confirmation required"
+        },
+        {
+          "cycle": "C2",
+          "baselineCandidates": 1,
+          "confirmation": "Candidate—editorial confirmation required"
+        },
+        {
+          "cycle": "C3",
+          "baselineCandidates": 1,
+          "confirmation": "Candidate—editorial confirmation required"
+        }
+      ],
+      "draftDates": []
+    },
+    {
+      "id": 91,
+      "phrase": "Hospice care for elderly parent",
+      "source": "Google Ads — original audit",
+      "intent": "parent",
+      "geography": "",
+      "priority": "Existing strategy",
+      "cycles": [
+        {
+          "cycle": "C1",
+          "baselineCandidates": 2,
+          "confirmation": "Candidate—editorial confirmation required"
+        },
+        {
+          "cycle": "C2",
+          "baselineCandidates": 1,
+          "confirmation": "Candidate—editorial confirmation required"
+        },
+        {
+          "cycle": "C3",
+          "baselineCandidates": 0,
+          "confirmation": "Gap—no topic-and-geography signal identified"
+        }
+      ],
+      "draftDates": []
+    },
+    {
+      "id": 92,
+      "phrase": "Can you switch hospice providers",
+      "source": "Google Ads — original audit",
+      "intent": "transfer",
+      "geography": "",
+      "priority": "Existing strategy",
+      "cycles": [
+        {
+          "cycle": "C1",
+          "baselineCandidates": 0,
+          "confirmation": "Gap—no topic-and-geography signal identified"
+        },
+        {
+          "cycle": "C2",
+          "baselineCandidates": 0,
+          "confirmation": "Gap—no topic-and-geography signal identified"
+        },
+        {
+          "cycle": "C3",
+          "baselineCandidates": 0,
+          "confirmation": "Gap—no topic-and-geography signal identified"
+        }
+      ],
+      "draftDates": []
+    },
+    {
+      "id": 93,
+      "phrase": "Change hospice provider",
+      "source": "Google Ads — original audit",
+      "intent": "transfer",
+      "geography": "",
+      "priority": "Existing strategy",
+      "cycles": [
+        {
+          "cycle": "C1",
+          "baselineCandidates": 0,
+          "confirmation": "Gap—no topic-and-geography signal identified"
+        },
+        {
+          "cycle": "C2",
+          "baselineCandidates": 0,
+          "confirmation": "Gap—no topic-and-geography signal identified"
+        },
+        {
+          "cycle": "C3",
+          "baselineCandidates": 0,
+          "confirmation": "Gap—no topic-and-geography signal identified"
+        }
+      ],
+      "draftDates": []
+    },
+    {
+      "id": 94,
+      "phrase": "Eternal Hospice",
+      "source": "Google Ads — original audit",
+      "intent": "brand",
+      "geography": "",
+      "priority": "Existing strategy",
+      "cycles": [
+        {
+          "cycle": "C1",
+          "baselineCandidates": 30,
+          "confirmation": "Candidate—editorial confirmation required"
+        },
+        {
+          "cycle": "C2",
+          "baselineCandidates": 30,
+          "confirmation": "Candidate—editorial confirmation required"
+        },
+        {
+          "cycle": "C3",
+          "baselineCandidates": 25,
+          "confirmation": "Candidate—editorial confirmation required"
+        }
+      ],
+      "draftDates": []
+    },
+    {
+      "id": 95,
+      "phrase": "Eternal Life Hospice",
+      "source": "Google Ads — original audit",
+      "intent": "brand",
+      "geography": "",
+      "priority": "Existing strategy",
+      "cycles": [
+        {
+          "cycle": "C1",
+          "baselineCandidates": 30,
+          "confirmation": "Candidate—editorial confirmation required"
+        },
+        {
+          "cycle": "C2",
+          "baselineCandidates": 30,
+          "confirmation": "Candidate—editorial confirmation required"
+        },
+        {
+          "cycle": "C3",
+          "baselineCandidates": 25,
+          "confirmation": "Candidate—editorial confirmation required"
+        }
+      ],
+      "draftDates": []
+    },
+    {
+      "id": 96,
+      "phrase": "Eternal Life Hospice Westlake Village reviews",
+      "source": "Google Ads — original audit",
+      "intent": "reviews",
+      "geography": "Westlake Village",
+      "priority": "Existing strategy",
+      "cycles": [
+        {
+          "cycle": "C1",
+          "baselineCandidates": 0,
+          "confirmation": "Gap—no topic-and-geography signal identified"
+        },
+        {
+          "cycle": "C2",
+          "baselineCandidates": 0,
+          "confirmation": "Gap—no topic-and-geography signal identified"
+        },
+        {
+          "cycle": "C3",
+          "baselineCandidates": 0,
+          "confirmation": "Gap—no topic-and-geography signal identified"
+        }
+      ],
+      "draftDates": []
+    },
+    {
+      "id": 97,
+      "phrase": "Hospice Thousand Oaks CA",
+      "source": "Thryv — user-supplied keyword",
+      "intent": "Hospice selection and evaluation",
+      "geography": "Thousand Oaks, California",
+      "priority": "Primary",
+      "draftDates": [
+        "2026-10-24",
+        "2026-11-15",
+        "2026-12-04",
+        "2026-12-27"
+      ],
+      "cycles": [
+        {
+          "cycle": "C1",
+          "baselineExactArticles": 0,
+          "baselineCandidates": null,
+          "draftArticles": 1,
+          "confirmation": "Private draft; meaningful coverage not approved"
+        },
+        {
+          "cycle": "C2",
+          "baselineExactArticles": 0,
+          "baselineCandidates": null,
+          "draftArticles": 2,
+          "confirmation": "Private draft; meaningful coverage not approved"
+        },
+        {
+          "cycle": "C3",
+          "baselineExactArticles": 0,
+          "baselineCandidates": null,
+          "draftArticles": 1,
+          "confirmation": "Private draft; meaningful coverage not approved"
+        }
+      ]
+    },
+    {
+      "id": 98,
+      "phrase": "Hospice Care Services Thousand Oaks CA",
+      "source": "Thryv — user-supplied keyword",
+      "intent": "Interdisciplinary services and care-plan boundaries",
+      "geography": "Thousand Oaks, California",
+      "priority": "Primary",
+      "draftDates": [
+        "2026-10-24",
+        "2026-11-15",
+        "2026-12-04",
+        "2026-12-27"
+      ],
+      "cycles": [
+        {
+          "cycle": "C1",
+          "baselineExactArticles": 0,
+          "baselineCandidates": null,
+          "draftArticles": 1,
+          "confirmation": "Private draft; meaningful coverage not approved"
+        },
+        {
+          "cycle": "C2",
+          "baselineExactArticles": 0,
+          "baselineCandidates": null,
+          "draftArticles": 2,
+          "confirmation": "Private draft; meaningful coverage not approved"
+        },
+        {
+          "cycle": "C3",
+          "baselineExactArticles": 0,
+          "baselineCandidates": null,
+          "draftArticles": 1,
+          "confirmation": "Private draft; meaningful coverage not approved"
+        }
+      ]
+    },
+    {
+      "id": 99,
+      "phrase": "Hospice Agency Thousand Oaks CA",
+      "source": "Thryv — user-supplied keyword",
+      "intent": "Provider selection and address-level availability",
+      "geography": "Thousand Oaks, California",
+      "priority": "Primary",
+      "draftDates": [
+        "2026-10-24",
+        "2026-11-15",
+        "2026-12-04",
+        "2026-12-27"
+      ],
+      "cycles": [
+        {
+          "cycle": "C1",
+          "baselineExactArticles": 0,
+          "baselineCandidates": null,
+          "draftArticles": 1,
+          "confirmation": "Private draft; meaningful coverage not approved"
+        },
+        {
+          "cycle": "C2",
+          "baselineExactArticles": 0,
+          "baselineCandidates": null,
+          "draftArticles": 2,
+          "confirmation": "Private draft; meaningful coverage not approved"
+        },
+        {
+          "cycle": "C3",
+          "baselineExactArticles": 0,
+          "baselineCandidates": null,
+          "draftArticles": 1,
+          "confirmation": "Private draft; meaningful coverage not approved"
+        }
+      ]
+    },
+    {
+      "id": 100,
+      "phrase": "Hospice Nursing Services Thousand Oaks CA",
+      "source": "Thryv — user-supplied keyword",
+      "intent": "Nursing assessment, visit planning and 24/7 on-call support",
+      "geography": "Thousand Oaks, California",
+      "priority": "Primary",
+      "draftDates": [
+        "2026-10-24",
+        "2026-11-15",
+        "2026-12-04",
+        "2026-12-27"
+      ],
+      "cycles": [
+        {
+          "cycle": "C1",
+          "baselineExactArticles": 0,
+          "baselineCandidates": null,
+          "draftArticles": 2,
+          "confirmation": "Private draft; meaningful coverage not approved"
+        },
+        {
+          "cycle": "C2",
+          "baselineExactArticles": 0,
+          "baselineCandidates": null,
+          "draftArticles": 2,
+          "confirmation": "Private draft; meaningful coverage not approved"
+        },
+        {
+          "cycle": "C3",
+          "baselineExactArticles": 0,
+          "baselineCandidates": null,
+          "draftArticles": 1,
+          "confirmation": "Private draft; meaningful coverage not approved"
+        }
+      ]
+    },
+    {
+      "id": 101,
+      "phrase": "Home Hospice Care Thousand Oaks CA",
+      "source": "Thryv — user-supplied keyword",
+      "intent": "Care at home, caregiver responsibilities and visit boundaries",
+      "geography": "Thousand Oaks, California",
+      "priority": "Primary",
+      "draftDates": [
+        "2026-10-24",
+        "2026-11-15",
+        "2026-12-04",
+        "2026-12-27"
+      ],
+      "cycles": [
+        {
+          "cycle": "C1",
+          "baselineExactArticles": 0,
+          "baselineCandidates": null,
+          "draftArticles": 2,
+          "confirmation": "Private draft; meaningful coverage not approved"
+        },
+        {
+          "cycle": "C2",
+          "baselineExactArticles": 0,
+          "baselineCandidates": null,
+          "draftArticles": 2,
+          "confirmation": "Private draft; meaningful coverage not approved"
+        },
+        {
+          "cycle": "C3",
+          "baselineExactArticles": 0,
+          "baselineCandidates": null,
+          "draftArticles": 1,
+          "confirmation": "Private draft; meaningful coverage not approved"
+        }
+      ]
+    }
+  ],
+  "baselineAudit": "exports/site-audits/seo-keyword-stage-one-2026-10-08",
+  "baselineHashes": {
+    "stage-one-keyword-audit.html": "119451a68da44e980feb687792aa60fab41011bb2e32f2ae3352e76240559bd1",
+    "article-inventory.csv": "779c0622c5005f4f6b2a4f328f8826a812385b19d3b9132a6fa9ae432873ffad",
+    "keyword-coverage-96.csv": "cd8d4c727ec6015af07a0d6752c9dd5bd9af6d332ab29c600eefde5ff9abbf31",
+    "three-cycle-proposed-mapping.csv": "c755fe557b7a69c5db4adfbc139166dbdfd03dcaabea92a341619273eed0116c",
+    "geographic-coverage.csv": "cb3a4f94f11ef121fc4d43280b09cd2c341cc177584784b2473f2c05fcf324db",
+    "rolling-30-day-audit.csv": "d7c06f04891290164cd63d5e5eda1a14eb5519e120fed8c724752157be44913a",
+    "conditional-local-article-proposals.csv": "6ac8580d1209609ebd03177ab9baaa34fe9e70daa2b4873ff43951b4b3a4fef9",
+    "internal-link-audit.csv": "ffd95addc0393352a52bf515921514bf471b44452a82f4422e4359e933644a86",
+    "technical-source-findings.csv": "36fc28c33f0ae9fc3b362b3b6590cda93108a0e481331ba3fb61a92fb2fdc1d8",
+    "archived-exclusions.csv": "43bda09f31ff8fb7c278b1eedcf1a1d8dd224a31d6e040121f4b312843fd84e3"
+  },
+  "rankingStatus": "No dated Thryv ranking observations supplied; coverage is not ranking performance."
+}

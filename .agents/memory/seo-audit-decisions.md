@@ -1,14 +1,19 @@
 ---
 name: SEO technical audit decisions
-description: Decisions made implementing the 36-point technical SEO brief (July 2026); schema rules, redirect strategy, content claims requiring human sign-off
+description: Technical SEO rules, staged optimization and the Q4 101-term keyword program with Thousand Oaks nursing priority.
 ---
 
 # SEO Technical Audit — Key Decisions
 
 ## Q4 2026 keyword program
-- **Rule:** The user requires all 96 supplied Google Ads search intents across rolling 30-day windows from October 8–December 31, 2026, plus all 96 in the final December 7–31 partial cycle.
+- **Rule:** The user requires 101 keyword IDs across rolling 30-day windows from October 8–December 31, 2026, plus all 101 in the final December 7–31 partial cycle. Preserve Google Ads IDs 1–96 and audit history; Thryv additions use IDs 97–101.
 - **Why:** The objective is recurring service and local-search relevance, not a one-time mention of the keyword list.
 - **How to apply:** Audit the named October 8–November 6 and November 7–December 6 cycles and rolling windows separately. Track exact wording separately from meaningful natural coverage; neither word counts nor assignments prove coverage or ranking gains. Preserve existing dates, slugs, imagery and educational purposes; obtain approval before optimization or supplemental scheduling.
+
+## Thousand Oaks nursing and home-care priority
+- **Rule:** Thousand Oaks is a primary market. Emphasize what hospice nurses do, how individualized visits work, caregiver responsibilities and the difference between 24/7 on-call support and continuous bedside nursing. Keep Thryv ranking observations separate from keyword coverage.
+- **Why:** The user identified "Hospice Nursing Services Thousand Oaks CA" as the biggest Thryv opportunity and singled out home hospice care intent.
+- **How to apply:** Support these related intents naturally in existing educational articles and channel-specific drafts; do not make five competing pages or infer ranks from phrase inclusion. Plan approval does not authorize publishing, sending or deployment.
 
 ## FAQPage schema rule (enforced from brief item 17)
 - **Rule:** Add FAQPage schema ONLY when the complete questions AND answers are visibly displayed as Q&A pairs on that same page.

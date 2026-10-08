@@ -1932,3 +1932,31 @@ mtime_ms = 1791496718204
 storage_uri = "gcs://replit-rams-assets-kirk/rams/assets/repl:e1b2f643-7869-4565-af0e-10c34575ee8d/1add44cb-6c53-4d5a-88e9-ce3fb8ac1fd8/93d2b805-fcbe-4247-a431-037d7b7665fc"
 storage_version_token = "1791497028034205"
 content_type = "text/csv"
+
+[[outputs]]
+id = "9z4aWLL-_pDpjlH7N4yZw"
+uri = "file://exports/site-audits/seo-keyword-101-2026-10-08/101-term-update-and-channel-drafts.html"
+type = "html"
+title = "101-Term SEO Update & Draft Content"
+description = "Updated master list, five existing-article revisions, social captions, Pinterest copy, short-video drafts and 12 weekly email drafts. Private review only."
+logical_id = "5022a589-d809-43c5-9439-b9c343f190a1"
+content_hash = "sha256:732dc75dc4e70fec5874c2dc66e47cbd5e4e2fa7e3901edcdd99288113d9912f"
+size = 263373
+mtime_ms = 1791502715011
+storage_uri = "gcs://replit-rams-assets-kirk/rams/assets/repl:e1b2f643-7869-4565-af0e-10c34575ee8d/5022a589-d809-43c5-9439-b9c343f190a1/04e6ea52-a60b-4791-89fd-c02b68d7f4d9"
+storage_version_token = "1791502760668100"
+content_type = "text/html"
+
+[[outputs]]
+id = "70_j1eTQ_wNIr2IRV3AFC"
+uri = "file://exports/site-audits/seo-keyword-101-2026-10-08/keyword-coverage-101.csv"
+type = "table"
+title = "101-Keyword Coverage Tracker"
+description = "303 keyword-cycle rows. Original IDs and audit entries preserved; draft coverage separated from ranking performance."
+logical_id = "34131826-af2e-44ae-8055-82a05992460e"
+content_hash = "sha256:d1105a2ad302962bed3c40eee7a162256eada6477cae44fc69854fc993f5b5b4"
+size = 160480
+mtime_ms = 1791502714708
+storage_uri = "gcs://replit-rams-assets-kirk/rams/assets/repl:e1b2f643-7869-4565-af0e-10c34575ee8d/34131826-af2e-44ae-8055-82a05992460e/3e3735a1-6ae1-4bdf-9ead-20f4d7bf5975"
+storage_version_token = "1791502761419321"
+content_type = "text/csv"

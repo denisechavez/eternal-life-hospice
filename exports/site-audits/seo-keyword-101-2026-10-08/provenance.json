@@ -1,0 +1,29 @@
+{
+  "originalAuditHashes": {
+    "stage-one-keyword-audit.html": "119451a68da44e980feb687792aa60fab41011bb2e32f2ae3352e76240559bd1",
+    "article-inventory.csv": "779c0622c5005f4f6b2a4f328f8826a812385b19d3b9132a6fa9ae432873ffad",
+    "keyword-coverage-96.csv": "cd8d4c727ec6015af07a0d6752c9dd5bd9af6d332ab29c600eefde5ff9abbf31",
+    "three-cycle-proposed-mapping.csv": "c755fe557b7a69c5db4adfbc139166dbdfd03dcaabea92a341619273eed0116c",
+    "geographic-coverage.csv": "cb3a4f94f11ef121fc4d43280b09cd2c341cc177584784b2473f2c05fcf324db",
+    "rolling-30-day-audit.csv": "d7c06f04891290164cd63d5e5eda1a14eb5519e120fed8c724752157be44913a",
+    "conditional-local-article-proposals.csv": "6ac8580d1209609ebd03177ab9baaa34fe9e70daa2b4873ff43951b4b3a4fef9",
+    "internal-link-audit.csv": "ffd95addc0393352a52bf515921514bf471b44452a82f4422e4359e933644a86",
+    "technical-source-findings.csv": "36fc28c33f0ae9fc3b362b3b6590cda93108a0e481331ba3fb61a92fb2fdc1d8",
+    "archived-exclusions.csv": "43bda09f31ff8fb7c278b1eedcf1a1d8dd224a31d6e040121f4b312843fd84e3"
+  },
+  "publicArticleHashes": {
+    "what-24-7-on-call-hospice-support-means": "e0e26f2e8d2365f05581bdc5fa190f8319c2bb8625d26a7582b54fbd19b5fa3f",
+    "thousand-oaks-families-coordinating-care-when-relatives-live-far-away": "e39780c6bc638ca99d031b5df0ae8ddd575e126eb9af29f9ca41e7af9dffeef7",
+    "thousand-oaks-prepare-for-holiday-visitors-without-changing-care-goals": "d4653601c1720ee74e23edd7c1fa39addf3168467e1c8f4e3aa4fbd2930a0aaa",
+    "thousand-oaks-protect-rest-during-a-busy-visiting-season": "12476236fb87a438fbae6ffe506150a0ab61047cb2e126fae86cfe829495b045",
+    "thousand-oaks-questions-to-carry-into-a-new-year-of-care": "4aac5f0250f99254a2dbf18780ddab12786465ae3fb118cf6e54f3e3ed207bdc"
+  },
+  "status": "Private revisions only; public sources and release controls unchanged",
+  "newKeywordIds": [
+    97,
+    98,
+    99,
+    100,
+    101
+  ]
+}
