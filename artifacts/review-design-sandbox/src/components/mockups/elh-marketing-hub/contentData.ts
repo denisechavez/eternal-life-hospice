@@ -11,7 +11,7 @@ import campaign3 from "../../../../../../exports/email-campaigns/30-day-journal/
 import campaign4 from "../../../../../../exports/email-campaigns/30-day-journal/campaign-4.html?raw";
 import approvedFamilyGuide from "../../../../../../exports/email/elh-family-guide-email-2.html?raw";
 import approvedCareBrief from "../../../../../../exports/email/eternal-care-brief-introduction-email.html?raw";
-import privateSeoReview from "../../../../../../website/content/seo-private-review.json";
+import privateSeoReview from "../../../../../../website/content/seo-journal-review.json";
 
 export type JournalArticle = {
   slug: string; title: string; category: string; date: string; description: string;
@@ -28,6 +28,8 @@ export type EmailCampaign = {
   sendDate: string;
   framework: "approved" | "journal-draft";
   seoRevision?: string;
+  journalTitle?: string;
+  journalLinkStatus?: string;
 };
 
 const approvedJournalTemplate = (html: string) => html
@@ -57,7 +59,7 @@ const reviewBySlug = Object.fromEntries(Object.entries(reviewDocuments).map(
   ([path, html]) => [path.split("/").pop()!.replace(/\.html$/, ""), html],
 ));
 const privateSeoArticles: Record<string, {
-  sections: JournalArticle["sections"]; reviewHtml: string; revision: string;
+  sections: JournalArticle["sections"]; reviewHtml: string; revision: string; description?: string;
 }> = privateSeoReview.articles;
 const campaignArticles: JournalArticle[] = [
   ...batch1, ...batch2, ...batch3, ...batch4, ...batch5,
@@ -66,12 +68,15 @@ const campaignArticles: JournalArticle[] = [
  .map(article => {
    const draft = privateSeoArticles[article.slug];
    return {...article, sections: draft ? [...article.sections, ...draft.sections] : article.sections,
+     description: draft?.description || article.description,
      seoRevision: draft?.revision, reviewHtml: draft?.reviewHtml || reviewBySlug[article.slug]};
  });
 const campaignSlugs = new Set(campaignArticles.map(article => article.slug));
 const legacyArticles: JournalArticle[] = Object.entries(reviewBySlug).flatMap(([slug, html]) => {
   if (campaignSlugs.has(slug)) return [];
-  const doc = new DOMParser().parseFromString(html, "text/html");
+  const draft = privateSeoArticles[slug];
+  const reviewHtml = draft?.reviewHtml || html;
+  const doc = new DOMParser().parseFromString(reviewHtml, "text/html");
   const canonical = doc.querySelector<HTMLLinkElement>('link[rel="canonical"]')?.href;
   if (!canonical || new URL(canonical).pathname !== `/blog/${slug}` ||
       doc.querySelector('meta[http-equiv="refresh"]') ||
@@ -86,7 +91,7 @@ const legacyArticles: JournalArticle[] = Object.entries(reviewBySlug).flatMap(([
     description: doc.querySelector('meta[name="description"]')?.getAttribute("content") || "",
     lede: "", sections: [{heading:"Article",paragraphs:[doc.querySelector("main")?.textContent || ""]}], ctaHeading: "", ctaCopy: "",
     readMinutes: Math.max(1, Math.ceil((doc.querySelector("main")?.textContent || "").split(/\s+/).length / 200)),
-    reviewHtml: html, previouslyPublished: true}];
+    reviewHtml, seoRevision: draft?.revision, previouslyPublished: true}];
 });
 export const journalArticles: JournalArticle[] = [...legacyArticles, ...campaignArticles]
   .sort((a, b) => a.date.localeCompare(b.date) || a.title.localeCompare(b.title));

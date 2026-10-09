@@ -1,0 +1,167 @@
+{
+  "asOf": "2026-10-08",
+  "targets": {
+    "/blog/does-medicare-cover-hospice-care": {
+      "status": 200,
+      "final": "https://eternallifehospice.com/blog/does-medicare-cover-hospice-care",
+      "main": true,
+      "fragmentOK": true
+    },
+    "/blog/hospice-care-in-moorpark-what-to-know": {
+      "status": 200,
+      "final": "https://eternallifehospice.com/blog/hospice-care-in-moorpark-what-to-know",
+      "main": true,
+      "fragmentOK": true
+    },
+    "/blog/hospice-care-in-simi-valley-starting-the-conversation": {
+      "status": 200,
+      "final": "https://eternallifehospice.com/blog/hospice-care-in-simi-valley-starting-the-conversation",
+      "main": true,
+      "fragmentOK": true
+    },
+    "/blog/what-happens-during-a-hospice-evaluation": {
+      "status": 200,
+      "final": "https://eternallifehospice.com/blog/what-happens-during-a-hospice-evaluation",
+      "main": true,
+      "fragmentOK": true
+    },
+    "/family-guide": {
+      "status": 200,
+      "final": "https://eternallifehospice.com/family-guide",
+      "main": true,
+      "fragmentOK": true
+    },
+    "/hospice-calabasas-ca": {
+      "status": 200,
+      "final": "https://eternallifehospice.com/hospice-calabasas-ca",
+      "main": true,
+      "fragmentOK": true
+    },
+    "/hospice-camarillo-ca": {
+      "status": 200,
+      "final": "https://eternallifehospice.com/hospice-camarillo-ca",
+      "main": true,
+      "fragmentOK": true
+    },
+    "/hospice-care": {
+      "status": 200,
+      "final": "https://eternallifehospice.com/hospice-care",
+      "main": true,
+      "fragmentOK": true
+    },
+    "/hospice-conejo-valley-ca": {
+      "status": 200,
+      "final": "https://eternallifehospice.com/hospice-conejo-valley-ca",
+      "main": true,
+      "fragmentOK": true
+    },
+    "/hospice-moorpark-ca": {
+      "status": 200,
+      "final": "https://eternallifehospice.com/hospice-moorpark-ca",
+      "main": true,
+      "fragmentOK": true
+    },
+    "/hospice-oxnard-ca": {
+      "status": 200,
+      "final": "https://eternallifehospice.com/hospice-oxnard-ca",
+      "main": true,
+      "fragmentOK": true
+    },
+    "/hospice-thousand-oaks-ca": {
+      "status": 200,
+      "final": "https://eternallifehospice.com/hospice-thousand-oaks-ca",
+      "main": true,
+      "fragmentOK": true
+    },
+    "/hospice-ventura-and-los-angeles-county-ca": {
+      "status": 200,
+      "final": "https://eternallifehospice.com/hospice-ventura-and-los-angeles-county-ca",
+      "main": true,
+      "fragmentOK": true
+    },
+    "/hospice-ventura-ca": {
+      "status": 200,
+      "final": "https://eternallifehospice.com/hospice-ventura-ca",
+      "main": true,
+      "fragmentOK": true
+    },
+    "/hospice-westlake-village-ca": {
+      "status": 200,
+      "final": "https://eternallifehospice.com/hospice-westlake-village-ca",
+      "main": true,
+      "fragmentOK": true
+    },
+    "/refer#referral-form": {
+      "status": 200,
+      "final": "https://eternallifehospice.com/refer#referral-form",
+      "main": true,
+      "fragmentOK": true
+    },
+    "/resources": {
+      "status": 200,
+      "final": "https://eternallifehospice.com/resources",
+      "main": true,
+      "fragmentOK": true
+    },
+    "/resources/back-to-the-earth": {
+      "status": 200,
+      "final": "https://eternallifehospice.com/resources/back-to-the-earth",
+      "main": true,
+      "fragmentOK": true
+    },
+    "/resources/comfort-therapies": {
+      "status": 200,
+      "final": "https://eternallifehospice.com/resources/comfort-therapies",
+      "main": true,
+      "fragmentOK": true
+    },
+    "/resources/first-48-hours": {
+      "status": 200,
+      "final": "https://eternallifehospice.com/resources/first-48-hours",
+      "main": true,
+      "fragmentOK": true
+    },
+    "/resources/how-to-choose-a-hospice": {
+      "status": 200,
+      "final": "https://eternallifehospice.com/resources/how-to-choose-a-hospice",
+      "main": true,
+      "fragmentOK": true
+    },
+    "/resources/medicare-hospice-benefit": {
+      "status": 200,
+      "final": "https://eternallifehospice.com/resources/medicare-hospice-benefit",
+      "main": true,
+      "fragmentOK": true
+    },
+    "/resources/pain-symptom-management": {
+      "status": 200,
+      "final": "https://eternallifehospice.com/resources/pain-symptom-management",
+      "main": true,
+      "fragmentOK": true
+    },
+    "/resources/the-circle-around-you": {
+      "status": 200,
+      "final": "https://eternallifehospice.com/resources/the-circle-around-you",
+      "main": true,
+      "fragmentOK": true
+    },
+    "/resources/volunteer": {
+      "status": 200,
+      "final": "https://eternallifehospice.com/resources/volunteer",
+      "main": true,
+      "fragmentOK": true
+    },
+    "/services": {
+      "status": 200,
+      "final": "https://eternallifehospice.com/services",
+      "main": true,
+      "fragmentOK": true
+    },
+    "/sound-bath": {
+      "status": 200,
+      "final": "https://eternallifehospice.com/sound-bath",
+      "main": true,
+      "fragmentOK": true
+    }
+  }
+}

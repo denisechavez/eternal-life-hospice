@@ -1960,3 +1960,31 @@ mtime_ms = 1791502714708
 storage_uri = "gcs://replit-rams-assets-kirk/rams/assets/repl:e1b2f643-7869-4565-af0e-10c34575ee8d/34131826-af2e-44ae-8055-82a05992460e/3e3735a1-6ae1-4bdf-9ead-20f4d7bf5975"
 storage_version_token = "1791502761419321"
 content_type = "text/csv"
+
+[[outputs]]
+id = "JEuZfb_c3WXT6__Mlkz7i"
+uri = "file://exports/site-audits/journal-seo-optimization/journal-seo-review-summary.html"
+type = "html"
+title = "Eternal Journal — Private SEO Review"
+description = "107-article audit, private revision record, 12 email companions and remaining keyword-cycle gaps. Nothing published or sent."
+logical_id = "470fe893-a6bd-4c42-bdf9-09577c089c93"
+content_hash = "sha256:3a19d4dc9a88aefa791b6ebaae9fcc55d57df78ce4b34028fb5b241a73bca6bb"
+size = 33634
+mtime_ms = 1791508000689
+storage_uri = "gcs://replit-rams-assets-kirk/rams/assets/repl:e1b2f643-7869-4565-af0e-10c34575ee8d/470fe893-a6bd-4c42-bdf9-09577c089c93/39a75f32-3256-46da-a302-ab6d169aa795"
+storage_version_token = "1791508841869980"
+content_type = "text/html"
+
+[[outputs]]
+id = "8Tu8vgf0HygfYddTPNuZM"
+uri = "file://exports/site-audits/journal-seo-optimization/keyword-coverage-101-optimized.csv"
+type = "table"
+title = "101-Term Keyword Coverage Tracker"
+description = "303 keyword-cycle records with preserved baseline evidence, current draft candidates and unresolved coverage gaps. Coverage is separate from rankings."
+logical_id = "dabe97f5-8e4b-4729-85b2-dc2e65be10b6"
+content_hash = "sha256:fabf117b4a0a5fc74f04f432cda085554adcb7b5bc5cd90518e90b899a183451"
+size = 275531
+mtime_ms = 1791508000442
+storage_uri = "gcs://replit-rams-assets-kirk/rams/assets/repl:e1b2f643-7869-4565-af0e-10c34575ee8d/dabe97f5-8e4b-4729-85b2-dc2e65be10b6/b2e3ec73-c5c3-48e4-a6a4-e8f65332fba3"
+storage_version_token = "1791508843076840"
+content_type = "text/csv"

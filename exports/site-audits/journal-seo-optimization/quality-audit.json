@@ -1,0 +1,638 @@
+{
+  "asOf": "2026-10-08",
+  "articleCount": 107,
+  "beforeSimilarityPairs": [],
+  "afterSimilarityPairs": [],
+  "method": "Five-word shingle Jaccard screen at 0.35, with distinct existing article purposes retained; not proof of semantic uniqueness.",
+  "heroHashes": {
+    "11f7e8347f66cae15703574734568b5a7fe98b085d7eaf11b14a72a753c34098": [
+      "five-hospice-myths-that-cause-families-to-wait"
+    ],
+    "3871f95726e96fdbade762c580028ed69b93c05833cd916b31d98b9c07d64055": [
+      "music-at-the-bedside"
+    ],
+    "2942a0a8373b49fa3da3f965e626129cab8d3e2b960c161237147d7e758f350a": [
+      "talking-with-children-when-a-loved-one-is-seriously-ill"
+    ],
+    "9e759d9502a4442ab2f1eae658a6f39a8bb0ba738506a7bf2be686886eb13db1": [
+      "the-quiet-work-of-hospice-volunteers"
+    ],
+    "d959858f3c5991724fe3691a55e1165a516e6618df7856cb22bcd8b3f8cc535b": [
+      "sound-baths-ancient-comfort-for-body-and-spirit"
+    ],
+    "fec83001fee7c768d53efe988cc6724ef9b606c3e82e3ac895d02cf470ec2ba6": [
+      "the-caregiver-who-needs-care"
+    ],
+    "8e705eb32522ee311cc0e50bee68e2b5d90845a913cd77c3681288737e47fc34": [
+      "what-happens-during-a-hospice-evaluation"
+    ],
+    "391ef637e4c572fe69a6a7dfa3413ced3973053fe515b251aecfd7205a418c58": [
+      "10-signs-it-may-be-time-to-consider-hospice"
+    ],
+    "0c92309afc712a653acf7140ee32905f84dca99aae03c37637c103909ac059eb": [
+      "hospice-at-home-in-thousand-oaks-what-families-can-expect"
+    ],
+    "33e4a8e32bdc03aa093eeb917539c75af639340fc07dccabda085eb165b94c40": [
+      "can-hospice-begin-after-a-hospital-discharge"
+    ],
+    "6fd670aa8bf9eb3ead636f284db24435236ed416b144f8f1d87df92cde778dae": [
+      "does-medicare-cover-hospice-care"
+    ],
+    "1e74c314f1209c8eaa957e9c9e09243a77681ce27c39799c127cca39f58555d4": [
+      "hospice-vs-palliative-care-what-is-the-difference"
+    ],
+    "18e4878d5df41862bfabf85c4aac02bab914629cfada7457c95a703a8abd656a": [
+      "dementia-and-hospice-eligibility"
+    ],
+    "c1499d06d0c126d7bfd5b01b946be394362ab3b7fc8f9fb46a4ee039e20f3990": [
+      "hospice-care-for-advanced-cancer"
+    ],
+    "78911af78a50bd9b53d39f75fc9c8f64302d23cbfe8c54a35f02759bdc682c9b": [
+      "hospice-and-advanced-heart-failure"
+    ],
+    "1657e042017b490ce327a872d05d6f9cb6fa5253da8f939a0fa85a3072ab7f1d": [
+      "hospice-support-for-advanced-copd"
+    ],
+    "f59d54c572b46a3e5680d6bff1b0f217b205d6ec20d0230bf9d7bc0266351470": [
+      "the-first-48-hours-of-hospice-care"
+    ],
+    "e06569b136b736d402d8f05bd663402667e82619d8d9e7c84acd69e4def0b825": [
+      "hospice-care-in-simi-valley-starting-the-conversation"
+    ],
+    "1dda5ddedb49fe179672a7fae57d5a5ccb8b4a0b68e0509b43751c5170aab47b": [
+      "home-hospice-in-camarillo-a-family-guide"
+    ],
+    "1451c0362eeec47c616c5c99b345abec1f417b68b9d4ffd2cf5cdfea33c419bc": [
+      "hospice-care-across-the-conejo-valley"
+    ],
+    "86cc34b88594e588e9b1392ccdf95bffbb218206164200de11774bc7c5f8b4dd": [
+      "hospice-care-in-moorpark-what-to-know"
+    ],
+    "922efec5a52c3e054efddb2d32a2d37bc5265278faf0bee0909b2408f8e348e4": [
+      "hospice-in-assisted-living-and-skilled-nursing-facilities"
+    ],
+    "0cc0749e84d08aa3b941b4a76cb6c14a89af8c4861fcff631890d3a6eeb3db80": [
+      "what-is-the-family-caregivers-role-in-home-hospice"
+    ],
+    "e3ae9206e457dac1f4073eda3045f81360c941c32c67a840b95f66a60e562928": [
+      "how-hospice-manages-comfort-medications"
+    ],
+    "8917d39f22f31ecb49452e86991f6c995554ab245757e12d8d748969102cdfa9": [
+      "what-medical-equipment-can-hospice-provide"
+    ],
+    "3c3cab60c362ac9c1b9ce1226352a5a4766e8aa8e51660684ce990025315d712": [
+      "what-24-7-on-call-hospice-support-means"
+    ],
+    "4eeb0235ad8df9fec97e5a0a886b53fcaa6bf298d4b9cf24369f5b0ca9f0d480": [
+      "what-is-hospice-respite-care"
+    ],
+    "3af406c3096ee59b4c3b7485956c6d8124604f73d22b6ec869f259c2495afbd8": [
+      "how-a-hospice-social-worker-supports-the-family"
+    ],
+    "8624c803be9ccd33e0bcc6a197ab7850da6dd4cb56969a3c4938ebfc1658db0c": [
+      "spiritual-care-in-hospice-support-without-pressure"
+    ],
+    "b0f047cbd33950624a18ee3a585a4d7551eabb0fe26f483065d498e0ff10d834": [
+      "when-a-parent-refuses-hospice"
+    ],
+    "996a2c68d9632b342e99097ea32d5845abe428ae8d5bb9006677ae012e482473": [
+      "how-to-choose-a-hospice-provider"
+    ],
+    "34a1f4d72a43afa8e738a57f86007233d13a6f152b64dd822d7340908c7e0dee": [
+      "questions-to-ask-a-doctor-about-hospice"
+    ],
+    "f74ce6a4c6ca52cd8d75524a204043650a5e25aaf5da1325ccaff667311cbabf": [
+      "eating-and-drinking-changes-near-the-end-of-life"
+    ],
+    "6df54c57eb24b1a81a13f10118f4cfacf3d9df7a40d6db27f20323b9fded21ee": [
+      "grief-support-before-and-after-a-loss"
+    ],
+    "e69fb560bc76eb57229e406ca51af0fdd7868848a82f48b6b0d3ac6274b471f9": [
+      "how-physicians-and-facilities-refer-a-patient-to-hospice"
+    ],
+    "e51aff844d3b324f6d4de6829faebaffdc38b316e1152785e68fba47ac587d02": [
+      "preparing-for-a-hospice-care-plan-conversation"
+    ],
+    "be926205616fab249545a5976c878eac8ae87eeacf1aed7da12eaeaa7b191142": [
+      "before-the-first-hospice-visit-share-the-person-not-just-the-diagnosis"
+    ],
+    "dd0aecd1eb8fe6aa056fe7e26347868f24f5f7e96d48c30732feb3038e9fa876": [
+      "a-death-doula-and-a-hospice-nurse-different-roles-shared-support"
+    ],
+    "b05f0ff7b6c1681cc8a310f56f3595bc987c0ec2e67a1a33d9867c17d03c59d0": [
+      "thousand-oaks-families-coordinating-care-when-relatives-live-far-away"
+    ],
+    "ad538f8f6abab10467c3d18f92026de0d56d491feffcba8e438b2a920d7df0fc": [
+      "what-to-ask-before-trying-a-sound-bath-during-hospice-care"
+    ],
+    "49d8091a3927fff5590f0de4090f8ceef7d2765244832015d9c9555c58ada537": [
+      "hospice-and-home-health-which-questions-clarify-the-difference"
+    ],
+    "1555910e32eb4c113cb7924a8e93612259a93cd8e93ba0cbd5afd9e503fce854": [
+      "westlake-village-who-will-be-home-between-hospice-visits"
+    ],
+    "f32fd6e74a5e2c07d6cbeb8582b09f9e222ee5b4dd5bb9e4855bdea4ca7024a9": [
+      "the-hospice-election-statement-read-it-as-a-conversation"
+    ],
+    "c1924888d5a3b059c240499275891db56cb89a47bafcda308033b3dfafc3b0c7": [
+      "personalized-comfort-starts-with-permission"
+    ],
+    "cc50965b1d786bae65783528f73b9c13ab365833ad9c1ac5a39b303c584c0be1": [
+      "calabasas-plan-a-calm-handoff-between-home-and-assisted-living"
+    ],
+    "22779783dbdbc788f6c35b81566ca5ecd684359d31bd9a39f098e2661cfc55cc": [
+      "keeping-ordinary-traditions-during-hospice-care"
+    ],
+    "11c35292fd8a98ab19aeeeb585f0cce6ea46c7bdc77e08c267d6525f74a516bd": [
+      "november-conversations-about-hospice-ask-better-questions"
+    ],
+    "28186983462c7ed67d5411c1213154781a3aab743bbfa73223a9011236e7d840": [
+      "camarillo-build-a-caregiving-plan-around-work-schedules"
+    ],
+    "c88e4809421c6885536e1f1f665111539f2f0c7047de8b426816c1eaeee3a617": [
+      "family-group-chats-and-hospice-keep-updates-useful-and-private"
+    ],
+    "351963235a17ae207ddab1444f44bbf9ae17e639a6532facbf1ca617c950985d": [
+      "death-doulas-and-legacy-work-let-the-person-set-the-pace"
+    ],
+    "b5a5a3f85927a620a96d4752fb558475f304a10c93c035dc79a96e23e7dd520f": [
+      "conejo-valley-organize-one-contact-list-across-two-counties"
+    ],
+    "c7e00db6f043f683a5afe253551ddfa9ab5c2b41e7071cb7a3f78f531f926c6a": [
+      "when-quiet-is-the-preferred-comfort-modality"
+    ],
+    "33454915ccda8c582684274c1c6d43928047bcf69d7c4f2bac20f082fbf969f9": [
+      "a-hospice-care-plan-can-change-what-families-can-ask-for"
+    ],
+    "afdc321268c7ac9ed2ea1beceaf73b09ec36118c9e3121ac0818ec17d3fa054a": [
+      "ventura-prepare-a-home-hospice-plan-for-power-interruptions"
+    ],
+    "f90494c689c4b305a62bad99efc62d136dd904a37008d65ecd39317c14453896": [
+      "sound-baths-music-and-silence-three-different-choices"
+    ],
+    "bd40ffef4ed8dcdafd77ce0e931e66011c8dd0d52d3f376f1b1d967e3dd1f697": [
+      "help-for-the-caregiver-who-cannot-be-at-every-visit"
+    ],
+    "5a16f643922975dc096ba74a6b089f37f8f891cb7588caa09adfb18b6cbc11bb": [
+      "veterans-and-hospice-bring-service-history-into-care-conversations"
+    ],
+    "a7e67e97d640c7f8c68b34368b3961ae03827c839d8ceafbf82da68b4e4b57e8": [
+      "oxnard-ask-about-language-and-communication-preferences-early"
+    ],
+    "32d3442e4493e4443be6e84e798e8c63fae5ebf67e391be8fec3844c5fcf9a51": [
+      "advance-directives-and-hospice-enrollment-are-different-decisions"
+    ],
+    "0a8cff2608cfbf6205da4334bbc46497d9bee5531c0a6f04bad443ab09e13b53": [
+      "how-to-talk-with-a-death-doula-about-boundaries"
+    ],
+    "f9429b7769eb81dbca409dcd8d8fa796e726780c456c7fda6adea24de2b0952a": [
+      "thousand-oaks-prepare-for-holiday-visitors-without-changing-care-goals"
+    ],
+    "ca7c8e26486a0bbaca1ef5d6b797630e4fc948ccf040d884515ae83e539073fe": [
+      "what-online-hospice-reviews-can-tell-youand-what-they-cannot"
+    ],
+    "15336bfddc40e53af7657a534e35c2a5f19042c5f6963e96232667ffd90989bf": [
+      "supporting-a-person-who-finds-touch-uncomfortable"
+    ],
+    "7d5514a61abaaa61bfcf6886e03e2a0e76b6ff758cbb332474dbc58764962108": [
+      "westlake-village-when-siblings-disagree-about-hospice"
+    ],
+    "f3162ac525ae5e75895131a7352d1999426df51bec945c8d359483ee658b8c9b": [
+      "planning-a-small-gathering-around-energy-not-expectations"
+    ],
+    "cec4ca9624d1842777f3fb9effc45366b88d98536512f398d50b44a4bfb0fb23": [
+      "before-adding-a-complementary-practice-ask-these-safety-questions"
+    ],
+    "7266258533802c4f118265dd82c3639fd9c074bdd233e9ef6f6a5704663235fd": [
+      "calabasas-questions-for-a-facility-and-hospice-team-to-answer-together"
+    ],
+    "9a1083d220229bd8298a57525c0937c51c21df71a6ad28f003635d7c6890d06c": [
+      "the-visiting-relative-s-guide-to-helping-a-hospice-family"
+    ],
+    "ed1eb8cb8c0fb47123b6511b547bf9cfbf7b255253b782ad913944945f1188a0": [
+      "camarillo-a-holiday-backup-plan-for-the-family-caregiver"
+    ],
+    "a75154cded08a02acb7c04ba0c11b38d58b69c517b7a48fd00f7669ce03b7b73": [
+      "sound-bathing-for-family-caregivers-comfort-without-a-performance-goal"
+    ],
+    "09fd44599f71b3e5e6382dae11dbb8683e284e4c2326229b6cba87cfcd408a5c": [
+      "what-a-hospice-family-can-decide-before-thanksgiving"
+    ],
+    "60968011d92d822973f197b76740836e2bf46f344fb9c792f994a207652293f3": [
+      "thanksgiving-during-hospice-make-room-for-mixed-feelings"
+    ],
+    "2049aca86e677eac5e2e26823c32da4aef7b1be483b3d953a7dd3711875ddceb": [
+      "conejo-valley-share-the-care-without-making-every-home-a-care-site"
+    ],
+    "2fe21a426630a4fad18c7d30ab1294dcfda92600d468564c05e0822d7d9f682a": [
+      "the-difference-between-being-present-and-knowing-what-to-say"
+    ],
+    "222679bce3fe23893ee54de709b6ade83f9a2d20f6f5f969d2b081530e18c862": [
+      "who-pays-for-integrative-comfort-services-in-hospice"
+    ],
+    "001c869b2d0fe2ddbcd9bda6ad1ff84802bd32839e65577fcd33f17934dcc4c2": [
+      "ventura-keep-care-instructions-clear-when-weather-changes-plans"
+    ],
+    "6730505886d81c09684eca5976f79b6fe7b650f0d2d54839f979379c8c9b115b": [
+      "oxnard-make-the-first-hospice-call-useful-with-five-practical-details"
+    ],
+    "1145051208cd14d30fbb92d28418c0370cd5b436c88aa0e89f805a9239c748a5": [
+      "a-hospice-checklist-for-families-who-travel-in-december"
+    ],
+    "75de4403e1a82ca397fcc13dd6e014bac23582d0e0d10a5000f38c9040e6eaf4": [
+      "comfort-for-a-person-with-hearing-changes-sound-is-a-choice"
+    ],
+    "16bdc9d31a1fa837cc9260d06b88b6708e15887649f7f85d90f423f6f2092760": [
+      "thousand-oaks-protect-rest-during-a-busy-visiting-season"
+    ],
+    "d5d0f7af5a3153ac8e4ccd10671d4e66e9b71e3de162a0987ad2c81c974e2595": [
+      "the-death-doula-s-nonclinical-role-in-family-conversations"
+    ],
+    "47f7f8086ff1cf97aa29a3f0b2dca89ae70acc8488e672bd082a4f51605e0583": [
+      "when-a-caregiver-needs-someone-else-to-take-the-next-shift"
+    ],
+    "c0f08b1f4b66a969090aaf8997553645a0421af59120630f3d26eeb21fce4fa7": [
+      "westlake-village-coordinate-hospice-questions-across-family-households"
+    ],
+    "c6b1b21b3767b2fa0a4028ddff9b3265b609ef1e773ac6e944c0debcd711b28e": [
+      "what-to-keep-in-a-simple-hospice-care-notebook"
+    ],
+    "9d85c421df37cf61b831ea6f14bb0ad8862657338b998a4c5fe6c2c273cfab06": [
+      "choosing-familiar-music-instead-of-a-structured-sound-bath"
+    ],
+    "d02d0cacdcebc0d2bd7607c48b68da0d5a750751caaa53687837cd575e0fea5b": [
+      "calabasas-clarify-hospice-responsibilities-before-a-move"
+    ],
+    "1e4ff02a2a7a73c79803468f0c7250debc50c9b806f9a4f74705b419bf564089": [
+      "dignity-in-daily-care-ask-about-privacy-before-routines"
+    ],
+    "cd6cbc53af4ae3af4167c8cccf2a369433477aaa36215ebbe56b7cc47133b8c1": [
+      "grief-and-holiday-invitations-a-short-guide-to-choosing"
+    ],
+    "86d743c7a92233ea7d9246824ec3699f7acd8fa1b40b368e484db7de2bd3a18d": [
+      "camarillo-ask-about-equipment-before-rearranging-the-home"
+    ],
+    "df27cfcbd0f771db66c95ad5f9be1e6cb014b835de0e71a1472fe8bf46a627eb": [
+      "hospice-visits-and-telephones-use-each-for-the-right-question"
+    ],
+    "1c9fd7ba7a67158746fc3b2c1ef29a529855171cb4d3abf69c1b15dad78ce475": [
+      "integrative-wellness-is-an-offer-not-an-obligation"
+    ],
+    "28e019082a0f8ab5435df91e53ad596405d2b02c7d2ae4dda6760d6a5878a1f9": [
+      "conejo-valley-plan-a-family-meeting-with-the-patient-s-voice-first"
+    ],
+    "eb99ec990b4a50d04311dd5fc1e7dabeefcf27816c42da5629e46278690fae9a": [
+      "photographs-recordings-and-legacy-projects-ask-for-consent"
+    ],
+    "6c5f1cb722768ade0b4bdf61f387c2b33f88338f342b369f900f60ff4375e8b9": [
+      "can-hospice-continue-longer-than-six-months"
+    ],
+    "dcf71638adb2b00d72b59471bee073fc306b43be09977725b5d0feb802fbda72": [
+      "ventura-a-rainy-season-communication-plan-for-hospice-at-home"
+    ],
+    "0cd2cbb1d07291200a1d06ed84298e8db8f6158f5e49e2b0bd79e3407579c38d": [
+      "how-an-end-of-life-doula-can-support-a-family-s-own-traditions"
+    ],
+    "2ecc175fcc9baa27be10c02251eae957e0adb468b872bbb1dac117a6ae748b2a": [
+      "the-winter-solstice-a-quiet-reflection-without-health-promises"
+    ],
+    "4a4b9543b29e258c1b099588dba47a291f359d36aae4630e73acc3f8444d9043": [
+      "oxnard-plan-holiday-care-around-the-household-you-have"
+    ],
+    "60005ee1045d7afe65e1d3cdcfb877bd8b1b86ea762c8dc00d74ab5e1a5bfe7f": [
+      "when-a-loved-one-wants-fewer-holiday-visitors"
+    ],
+    "c12deeef68b33ebe95c70b8d359a7e969f65d2c1fe78fe8388480b2497815a57": [
+      "a-gentle-christmas-eve-during-hospice-care"
+    ],
+    "d956099131f78f482388c2f5f5437fc11c9c61e152e183294ad936144a1478d2": [
+      "presence-over-a-perfect-holiday"
+    ],
+    "dcce6916fe52865af8ec0f31e3c00d224db73e939b1e944bbe0fabceb5adf852": [
+      "what-to-do-when-family-caregiving-plans-need-to-change"
+    ],
+    "1c4f372f957e32a613b30d8c951cddbc97ef481d47ffd6b1527092eb2ef3052a": [
+      "thousand-oaks-questions-to-carry-into-a-new-year-of-care"
+    ],
+    "8a31b3fc4a4d0c16936a1a474ca816c012a072b949b462e2ea05bae1ccf38ea0": [
+      "preparing-a-hospice-family-s-year-end-contact-and-document-check"
+    ],
+    "753b0b16bf0fc88600412d8e670414d618f70494d713893d65a370c8b9221982": [
+      "westlake-village-revisit-comfort-preferences-after-the-holidays"
+    ],
+    "f54c4a6949b9c8ad09abcabea6aa260eb92688559a1ac3d75a03fb6c7c69aae6": [
+      "what-families-can-ask-about-the-next-medicare-benefit-period"
+    ],
+    "332de28ea4a5d61e283eab1867654ac609c767497db36fd4b53f844202425506": [
+      "begin-the-new-year-with-one-clear-care-conversation"
+    ]
+  },
+  "publicArticleHashes": {
+    "five-hospice-myths-that-cause-families-to-wait": "f850d313ed499da8cdfdc7208c5b6f122d3d43aa832927071b717d1927fc177f",
+    "music-at-the-bedside": "983cd51f48a1fa458bee46d1312e8131872c5666445abe2405186f8e42585487",
+    "talking-with-children-when-a-loved-one-is-seriously-ill": "c79bea46b65047efcac73cc29e5413820f6e7c6d73d26bc8bf47641a73ec7fdc",
+    "the-quiet-work-of-hospice-volunteers": "24ecb109fa823f5fca29595f575a8ffe02016aaaf58f767c98841eeeaadd752e",
+    "sound-baths-ancient-comfort-for-body-and-spirit": "ac3fe9192068c0acde214f4ebd170fbe5b280b9213b3df292032a295719f4165",
+    "the-caregiver-who-needs-care": "4bacfb4119f28a8e418cd5d3f2d7145aee77be33543022a176d3413c4ca24978",
+    "what-happens-during-a-hospice-evaluation": "197cf8cd030961f7ce0df190cd0452e5bdddc72c9bbe8f0b208e7b64ce405133",
+    "10-signs-it-may-be-time-to-consider-hospice": "e76808da79f27cbc0f653020cc8bb5daf41ab6dc537460c0434ed4cb6b25e64c",
+    "hospice-at-home-in-thousand-oaks-what-families-can-expect": "45e883dde213ee3c69d99d84cbd05fc4dafc262cc8421361c7068fdbe47a13a5",
+    "can-hospice-begin-after-a-hospital-discharge": "54ad828a1b6dabacd36338de9ecfb819c79e2e585c1915afd441dec277365a96",
+    "does-medicare-cover-hospice-care": "b9f03e783f7e0d6cfb51d880d8aae4311f9c65095f065caba99a1ad69fcdbd5d",
+    "hospice-vs-palliative-care-what-is-the-difference": "4e37f33ef416b4f9059ef534ab6202884394cee2f24692655399209b52ec6dbc",
+    "dementia-and-hospice-eligibility": "b904efd2d2e2d88292997a894099c58d72a10fcb0abe5ab9a69f2e71adb77a09",
+    "hospice-care-for-advanced-cancer": "d3939df3a0bebeff926d80acf5b242231cb23abdb9200e89bf96ee87f2b728bb",
+    "hospice-and-advanced-heart-failure": "d34a02a412faea6bc9d30c39382f7d6daf9ed8948d75ab94fca556298739094e",
+    "hospice-support-for-advanced-copd": "50ea33ff7738b44dbdabccb93754c3bbccd5e1fc755a9cbd38f5eed3b4e6bf04",
+    "the-first-48-hours-of-hospice-care": "10cff131c70d7902536d4d5ac4e40e839e73a740002c5e54eb96698194334556",
+    "hospice-care-in-simi-valley-starting-the-conversation": "9eefbaba5737a841eab185e2f1e593dee0857522f47d60247b8c86afab72ee42",
+    "home-hospice-in-camarillo-a-family-guide": "b5dc5787b7108d871e1d432670b16038b252c59e13ce8c87784611c3a5a395be",
+    "hospice-care-across-the-conejo-valley": "c8a8ee26d5ec5fefc8b6d530a4e2e9b5b2849e5f6655b5a1b3c5676143702b9f",
+    "hospice-care-in-moorpark-what-to-know": "d41f71fc4f61e67bdfb011747f76a165c3bd873f1bee8f81900baf9939cf342e",
+    "hospice-in-assisted-living-and-skilled-nursing-facilities": "faf449aef93efdff783fca5276e9e137cd9831dfc9cac70cc74566e4f3c7565f",
+    "what-is-the-family-caregivers-role-in-home-hospice": "f56305af5a80c066611c28d246c79b878cca4829646939666017dad1c51acc59",
+    "how-hospice-manages-comfort-medications": "3266bb60f1094ab92229fef90f684afb000d59f770a1aa7f3a9b4a40c145da87",
+    "what-medical-equipment-can-hospice-provide": "4f300475094fd28cb8c8295ab74ab38a9c4f1add07cf41b8eb647fbe4df91de7",
+    "what-24-7-on-call-hospice-support-means": "e0e26f2e8d2365f05581bdc5fa190f8319c2bb8625d26a7582b54fbd19b5fa3f",
+    "what-is-hospice-respite-care": "75f63d9725891fca32b5f693670d96cb20fe40fdf36359ccaf1b22568ff04cd0",
+    "how-a-hospice-social-worker-supports-the-family": "ecba9e9d8064482c2ef24a2b3a0f640fb9e43e5b7f23e68644d8076cb9c12ac2",
+    "spiritual-care-in-hospice-support-without-pressure": "6c4525a62a90aa7b4bf72f4162757c6ea5b5d0bf118527d77e32c3f9c5d95796",
+    "when-a-parent-refuses-hospice": "d685da0b4cb305cdce98fec85199f43cad1538bbfa46d59fda4bd085a57a6dac",
+    "how-to-choose-a-hospice-provider": "c99ff7424376ed4ac2e9f19db1164a946f4b047da45aecf11a1f2fa99cc45838",
+    "questions-to-ask-a-doctor-about-hospice": "964e5784c498e8ea2da40ebd06d24b7caa731359f5c5221d7dee69be1a885cff",
+    "eating-and-drinking-changes-near-the-end-of-life": "8d3eb02013503e6a639c1d4d06dfdd9650d9ea424a1640482484621ea88ff02c",
+    "grief-support-before-and-after-a-loss": "f0f4ab48a4f9f3461dd1e207a04083235a0584dbe42ac926aebefe751f3ef09c",
+    "how-physicians-and-facilities-refer-a-patient-to-hospice": "6fd1bab689736c6f9eae7534d61f7c049e8d703c4857d6c3817e9d4e00fd5c8c",
+    "preparing-for-a-hospice-care-plan-conversation": "5ba20c273ea14a9f4c8715a1d6e606a7948cf5b883cef7d6d1f1a706451aae15",
+    "before-the-first-hospice-visit-share-the-person-not-just-the-diagnosis": "2e254e2201608ba5089ac759061e3ee72b91b5aef9789183985f986874ee908f",
+    "a-death-doula-and-a-hospice-nurse-different-roles-shared-support": "dea58411947381f3b058053c42574dc29cc4d94b8eb54f57b002c8c94ed486f0",
+    "thousand-oaks-families-coordinating-care-when-relatives-live-far-away": "e39780c6bc638ca99d031b5df0ae8ddd575e126eb9af29f9ca41e7af9dffeef7",
+    "what-to-ask-before-trying-a-sound-bath-during-hospice-care": "f4b3c79a5d0df1fd6015245cb9f70bf543082c96a97c5c365bf308feafc9dc9f",
+    "hospice-and-home-health-which-questions-clarify-the-difference": "ac1ae6fe5179f3e310a9ca45842daca682de4d13939f8c314ad336113a2e61fd",
+    "westlake-village-who-will-be-home-between-hospice-visits": "55f63afd14179c70b4dbdfb4f00dd20bfec3417ac63a319d8e7928b4c5ded584",
+    "the-hospice-election-statement-read-it-as-a-conversation": "027dfd45eaa85d36be0984aa68501a6eaa68393c36e6f45d22800c7039da2c19",
+    "personalized-comfort-starts-with-permission": "1dd7f46eae6cb9ab8683495cdcfd9c4c2723ae522dc3c93ffed7edb4405063ac",
+    "calabasas-plan-a-calm-handoff-between-home-and-assisted-living": "2280dee13730763b428c100518897b756f31e9392384da7cd0ea1b3838aa8304",
+    "keeping-ordinary-traditions-during-hospice-care": "f6a0a58e3744d6c1e1cccc282b0b46b0e2df81b8fa1348a0ccc976bd5eeb3da0",
+    "november-conversations-about-hospice-ask-better-questions": "d946de8e2eb9d722bdfcd2adaf3386ec9d5879944762710082d257fd4526c53a",
+    "camarillo-build-a-caregiving-plan-around-work-schedules": "a1cb547bdd15a5a969c422eecf3e622acede2ef20c45a8c770802bb0bf35742f",
+    "family-group-chats-and-hospice-keep-updates-useful-and-private": "39e2b50ea3112941e950a2bc7838a438409c14418f606fcc51a27a2a7261b8f1",
+    "death-doulas-and-legacy-work-let-the-person-set-the-pace": "784566485940fab01ea7526aa8f9ad8885fb2f77bc21899e7f9b8b20d8f1f0fe",
+    "conejo-valley-organize-one-contact-list-across-two-counties": "7e7a7db1af3d02c1090368fdc39ea4de3aec6d765720854df2001e5c3cac9f27",
+    "when-quiet-is-the-preferred-comfort-modality": "9388bd54a8bd4360e7f4ae19bccb1375dd14aea83e5ced42a190c011110f670b",
+    "a-hospice-care-plan-can-change-what-families-can-ask-for": "88dff76508f47eb2d47aedcc1fc5d6ce55b0b41cb6899209510dd2e3f7f0642c",
+    "ventura-prepare-a-home-hospice-plan-for-power-interruptions": "e4eab5617f13ee028d515ad0d598d83ab19cbae32b861dba6fab5e732efbd71f",
+    "sound-baths-music-and-silence-three-different-choices": "d74c92fffb78fd56171c4f496f7cf15df39e3aa978e299dbffac8ad64c90d7b0",
+    "help-for-the-caregiver-who-cannot-be-at-every-visit": "6ac2b2e9dfa716353ed37f1dc9dff0eeb35a28f2434bc2d14c45ebf3aebe5589",
+    "veterans-and-hospice-bring-service-history-into-care-conversations": "cf88f518fb1f0933e4ab422959f32fa9d90782ee3edbf322be3cba315c883740",
+    "oxnard-ask-about-language-and-communication-preferences-early": "436ebde08f25619f9c8542c47b470a846f9221b42a87bc4cf93b96e8b017f055",
+    "advance-directives-and-hospice-enrollment-are-different-decisions": "760d614d95f9cc86384fd7e08745792c54edad53ced2c934d83999ba1e7de6d8",
+    "how-to-talk-with-a-death-doula-about-boundaries": "7994dbe4d994af7af10855981860b7cb877851fd699d1665e6f55f1e8bd262bd",
+    "thousand-oaks-prepare-for-holiday-visitors-without-changing-care-goals": "d4653601c1720ee74e23edd7c1fa39addf3168467e1c8f4e3aa4fbd2930a0aaa",
+    "what-online-hospice-reviews-can-tell-youand-what-they-cannot": "d78e1643601845004d79f6439f640de40f33ea517418b42d6b743f106be1f51b",
+    "supporting-a-person-who-finds-touch-uncomfortable": "a62d08c87d72f29d82064bdf04a9760c150ea5cb643e39975749c386efc5b2ff",
+    "westlake-village-when-siblings-disagree-about-hospice": "0847e69653a700f7b38575dcd75cbd600f71549a4af9794c32d8048ce925e4e9",
+    "planning-a-small-gathering-around-energy-not-expectations": "17c9a81d3da39539dcb37d189e7b2e9d128769917bd2de85edc4d9aa1aaaf0f9",
+    "before-adding-a-complementary-practice-ask-these-safety-questions": "a6fe5ff4e8aeb2a79c265652e4044209a884a65958d7e9fed263eb5a6a47b840",
+    "calabasas-questions-for-a-facility-and-hospice-team-to-answer-together": "3285828a8366d2a442f2caaf18b86ee8bd006d200d4be4ae60d2617acffc0814",
+    "the-visiting-relative-s-guide-to-helping-a-hospice-family": "f1f0e1ae81286699e9840c0a3e700f7052b9e3c0203aa824a3b6db7a5f66435f",
+    "camarillo-a-holiday-backup-plan-for-the-family-caregiver": "0ee340a7aed4f91fa87452b8486a736f3086996630baf99e9e33576d9795fa4d",
+    "sound-bathing-for-family-caregivers-comfort-without-a-performance-goal": "b1069166288e7036ce6739b3e000f25a1c006c26290419023ceafa08a751dcc8",
+    "what-a-hospice-family-can-decide-before-thanksgiving": "1cc11b985b7375eef19d44d668c3f8fa97e48890d7f5b3eeceff6e0ebab74cde",
+    "thanksgiving-during-hospice-make-room-for-mixed-feelings": "89e3b00043bb4c9359ea61019b7d22a55eabe324481987080e98cd4b0aa9b318",
+    "conejo-valley-share-the-care-without-making-every-home-a-care-site": "33c26e15b7d6f8c1d3f393a2553ca8a722322634476d8e5ca2cee005b62dac6e",
+    "the-difference-between-being-present-and-knowing-what-to-say": "d7bba19accf1ad04c0076023b531e12c4f29157f6fac3bfce9dfa9a0f6b62a11",
+    "who-pays-for-integrative-comfort-services-in-hospice": "8c6cccd0378d6804be2cb1a2a1d2d1289e4ec5a041a4909930b13679725e114b",
+    "ventura-keep-care-instructions-clear-when-weather-changes-plans": "77a10bd26a00ec84667c536e1f602d8ca5d95473306061548d3aa9ece2ba957f",
+    "oxnard-make-the-first-hospice-call-useful-with-five-practical-details": "527ebaf26e550b6c16653023b353567e59ea71f95eee38dee1d74cb87356b51b",
+    "a-hospice-checklist-for-families-who-travel-in-december": "e168a61042e36a94c745710a39351b149113412e3b3ac85f1f4569f54c8571d2",
+    "comfort-for-a-person-with-hearing-changes-sound-is-a-choice": "b3bcb85416b83b36387370d1ff677c41771217c3ce71ef63f6a55a1f88653682",
+    "thousand-oaks-protect-rest-during-a-busy-visiting-season": "12476236fb87a438fbae6ffe506150a0ab61047cb2e126fae86cfe829495b045",
+    "the-death-doula-s-nonclinical-role-in-family-conversations": "ecd36ced6388068a9aa57da027525b69e5807221c14b58f40c30222e6644d4a6",
+    "when-a-caregiver-needs-someone-else-to-take-the-next-shift": "9c6b6b7b16629ab17130aa765996c88e86d1b3c50209e013d43929c6ebb417fc",
+    "westlake-village-coordinate-hospice-questions-across-family-households": "a7f379a608351037424aad15325de881c29cbf8c48e733a58cceb4ff7c4572d4",
+    "what-to-keep-in-a-simple-hospice-care-notebook": "17d459c33742fa4ec8f5024e0a9d7e5e873a504496ae55b531f773007a35005e",
+    "choosing-familiar-music-instead-of-a-structured-sound-bath": "ed1b5d60aa99a3ed659cc34b77cdc667e46ad57ffd97d6a8786986a5169e2e1e",
+    "calabasas-clarify-hospice-responsibilities-before-a-move": "e67bfe126b883c5e7484513bdb830dc0ea82d1dc426f79abf24584cd19b270e3",
+    "dignity-in-daily-care-ask-about-privacy-before-routines": "32136a840b7c4594a930d789a41f01ba0e41b46523003ee8af521e3829321cea",
+    "grief-and-holiday-invitations-a-short-guide-to-choosing": "8c61954259c38ff84f81ec921b42f871833724b148bde291a3c7386e4d5bdb7b",
+    "camarillo-ask-about-equipment-before-rearranging-the-home": "8bf3d98bcf35c5a8ed176fcd549078e1ea112e0fc182d5648f0013e5d54905ca",
+    "hospice-visits-and-telephones-use-each-for-the-right-question": "2b1911978d5404fea216a3b652753d0bc61d9c0c10e907786d711794a8577aa0",
+    "integrative-wellness-is-an-offer-not-an-obligation": "05125857697a8acf8ca4c1e62501f9c8d24255225035e62e59b7fb8839e87897",
+    "conejo-valley-plan-a-family-meeting-with-the-patient-s-voice-first": "d862fe3d862ae7f1f735c8a31376c5488edd08e224d687e8aa9652f2df97662f",
+    "photographs-recordings-and-legacy-projects-ask-for-consent": "362debba92dd314ce74d4fa162c80ac213b757e4bc003ce13753113e8fc09f7f",
+    "can-hospice-continue-longer-than-six-months": "7f0aba53ae2459ef41bd37f6862ad37540379fdece765e3f663fbd8cefed77ba",
+    "ventura-a-rainy-season-communication-plan-for-hospice-at-home": "f9f78f5c2af3fae4501d83e7e10a1317c69ac7eadc8ac3d506a686685cb30d29",
+    "how-an-end-of-life-doula-can-support-a-family-s-own-traditions": "b21e45eaca092d2970164a0192e26db580971d9aed2e9025becc211bf461b8f2",
+    "the-winter-solstice-a-quiet-reflection-without-health-promises": "3d29a905e73d4a3fbeb49695a205bd2e379da102c9c5b39f3108d82632dd0768",
+    "oxnard-plan-holiday-care-around-the-household-you-have": "6e39bab2c2526bab28b77f7cca874c3e8dc4741d98bad9dc5193172c43635bf2",
+    "when-a-loved-one-wants-fewer-holiday-visitors": "cecc4f450529e43ac6b983a14e3eec94f6677843d9cbd4a274d312f8ecea7df0",
+    "a-gentle-christmas-eve-during-hospice-care": "5dcc7a6a55eea39b52a3bf98217172f194cc5613438bb2b5275666235e7c3ad5",
+    "presence-over-a-perfect-holiday": "c045417f1547ede9ed2de64df80f3547e3e1a28e3ca02bab799b9f1ff06e8d28",
+    "what-to-do-when-family-caregiving-plans-need-to-change": "752b1b5b1ebc332af183ae4a4e616b60257c58ce27d751c9fdf3bb00b8bfed63",
+    "thousand-oaks-questions-to-carry-into-a-new-year-of-care": "4aac5f0250f99254a2dbf18780ddab12786465ae3fb118cf6e54f3e3ed207bdc",
+    "preparing-a-hospice-family-s-year-end-contact-and-document-check": "583a43aa36c547958bc18b68ff073a970d0375c90d2c399d59da8032db0e723b",
+    "westlake-village-revisit-comfort-preferences-after-the-holidays": "232624f6f8a1dbf19962227d9b2e5070f314d762f0d278175285e903a70a93df",
+    "what-families-can-ask-about-the-next-medicare-benefit-period": "b9d4309c30f8f7def830c2bdefb7cbb7d686f093fd783b8eaf5f6ffb3a637758",
+    "begin-the-new-year-with-one-clear-care-conversation": "8c27461f2814cfc3523e3e5f49d466706446e56948ca674990aed19c114a096d"
+  },
+  "preservedHistoryHashes": {
+    "exports/site-audits/seo-keyword-stage-one-2026-10-08/three-cycle-proposed-mapping.csv": "c755fe557b7a69c5db4adfbc139166dbdfd03dcaabea92a341619273eed0116c",
+    "exports/site-audits/seo-keyword-stage-one-2026-10-08/geographic-coverage.csv": "cb3a4f94f11ef121fc4d43280b09cd2c341cc177584784b2473f2c05fcf324db",
+    "exports/site-audits/seo-keyword-stage-one-2026-10-08/rolling-30-day-audit.csv": "d7c06f04891290164cd63d5e5eda1a14eb5519e120fed8c724752157be44913a",
+    "exports/site-audits/seo-keyword-stage-one-2026-10-08/conditional-local-article-proposals.csv": "6ac8580d1209609ebd03177ab9baaa34fe9e70daa2b4873ff43951b4b3a4fef9",
+    "exports/site-audits/seo-keyword-stage-one-2026-10-08/internal-link-audit.csv": "ffd95addc0393352a52bf515921514bf471b44452a82f4422e4359e933644a86",
+    "exports/site-audits/seo-keyword-stage-one-2026-10-08/technical-source-findings.csv": "36fc28c33f0ae9fc3b362b3b6590cda93108a0e481331ba3fb61a92fb2fdc1d8",
+    "exports/site-audits/seo-keyword-stage-one-2026-10-08/archived-exclusions.csv": "43bda09f31ff8fb7c278b1eedcf1a1d8dd224a31d6e040121f4b312843fd84e3",
+    "exports/site-audits/seo-keyword-stage-one-2026-10-08/stage-one-keyword-audit.html": "119451a68da44e980feb687792aa60fab41011bb2e32f2ae3352e76240559bd1",
+    "exports/site-audits/seo-keyword-stage-one-2026-10-08/article-inventory.csv": "779c0622c5005f4f6b2a4f328f8826a812385b19d3b9132a6fa9ae432873ffad",
+    "exports/site-audits/seo-keyword-stage-one-2026-10-08/keyword-coverage-96.csv": "cd8d4c727ec6015af07a0d6752c9dd5bd9af6d332ab29c600eefde5ff9abbf31",
+    "exports/site-audits/seo-keyword-101-2026-10-08/rolling-new-terms.csv": "cb0144e4189286bba4d4e2ff53840206481617d1b9b441c16fa8670f36b0adba",
+    "exports/site-audits/seo-keyword-101-2026-10-08/provenance.json": "a5bf173a2b45348766d32494cb4bb7ed34d65f07ee0b9a229e2766cec42608be",
+    "exports/site-audits/seo-keyword-101-2026-10-08/thryv-ranking-observations.csv": "9d44c96168537e667c1f6b4448006482eebecf12dcfd95c106cc030493cb9729",
+    "exports/site-audits/seo-keyword-101-2026-10-08/three-cycle-proposed-mapping-101.csv": "09567122e33c4b6c8faec36b5abd5ad7a73c46d401b219bff93253fd47022ca6",
+    "exports/site-audits/seo-keyword-101-2026-10-08/101-term-update-and-channel-drafts.html": "732dc75dc4e70fec5874c2dc66e47cbd5e4e2fa7e3901edcdd99288113d9912f",
+    "exports/site-audits/seo-keyword-101-2026-10-08/keyword-coverage-101.csv": "d1105a2ad302962bed3c40eee7a162256eada6477cae44fc69854fc993f5b5b4",
+    "website/content/seo-private-review.json": "4a210b1327b65f45eeb234623b6bd65eb80a9bdcd759d80cdc1e8790eed6bf92",
+    "website/content/seo-thryv-drafts.json": "958783adde46055623c82bfaef7256495ece90a140efca2c9290d0f712d9a6b2"
+  },
+  "checkedLinks": {
+    "/blog/does-medicare-cover-hospice-care": {
+      "status": 200,
+      "final": "https://eternallifehospice.com/blog/does-medicare-cover-hospice-care",
+      "main": true,
+      "fragmentOK": true
+    },
+    "/blog/hospice-care-in-moorpark-what-to-know": {
+      "status": 200,
+      "final": "https://eternallifehospice.com/blog/hospice-care-in-moorpark-what-to-know",
+      "main": true,
+      "fragmentOK": true
+    },
+    "/blog/hospice-care-in-simi-valley-starting-the-conversation": {
+      "status": 200,
+      "final": "https://eternallifehospice.com/blog/hospice-care-in-simi-valley-starting-the-conversation",
+      "main": true,
+      "fragmentOK": true
+    },
+    "/blog/what-happens-during-a-hospice-evaluation": {
+      "status": 200,
+      "final": "https://eternallifehospice.com/blog/what-happens-during-a-hospice-evaluation",
+      "main": true,
+      "fragmentOK": true
+    },
+    "/family-guide": {
+      "status": 200,
+      "final": "https://eternallifehospice.com/family-guide",
+      "main": true,
+      "fragmentOK": true
+    },
+    "/hospice-calabasas-ca": {
+      "status": 200,
+      "final": "https://eternallifehospice.com/hospice-calabasas-ca",
+      "main": true,
+      "fragmentOK": true
+    },
+    "/hospice-camarillo-ca": {
+      "status": 200,
+      "final": "https://eternallifehospice.com/hospice-camarillo-ca",
+      "main": true,
+      "fragmentOK": true
+    },
+    "/hospice-care": {
+      "status": 200,
+      "final": "https://eternallifehospice.com/hospice-care",
+      "main": true,
+      "fragmentOK": true
+    },
+    "/hospice-conejo-valley-ca": {
+      "status": 200,
+      "final": "https://eternallifehospice.com/hospice-conejo-valley-ca",
+      "main": true,
+      "fragmentOK": true
+    },
+    "/hospice-moorpark-ca": {
+      "status": 200,
+      "final": "https://eternallifehospice.com/hospice-moorpark-ca",
+      "main": true,
+      "fragmentOK": true
+    },
+    "/hospice-oxnard-ca": {
+      "status": 200,
+      "final": "https://eternallifehospice.com/hospice-oxnard-ca",
+      "main": true,
+      "fragmentOK": true
+    },
+    "/hospice-thousand-oaks-ca": {
+      "status": 200,
+      "final": "https://eternallifehospice.com/hospice-thousand-oaks-ca",
+      "main": true,
+      "fragmentOK": true
+    },
+    "/hospice-ventura-and-los-angeles-county-ca": {
+      "status": 200,
+      "final": "https://eternallifehospice.com/hospice-ventura-and-los-angeles-county-ca",
+      "main": true,
+      "fragmentOK": true
+    },
+    "/hospice-ventura-ca": {
+      "status": 200,
+      "final": "https://eternallifehospice.com/hospice-ventura-ca",
+      "main": true,
+      "fragmentOK": true
+    },
+    "/hospice-westlake-village-ca": {
+      "status": 200,
+      "final": "https://eternallifehospice.com/hospice-westlake-village-ca",
+      "main": true,
+      "fragmentOK": true
+    },
+    "/refer#referral-form": {
+      "status": 200,
+      "final": "https://eternallifehospice.com/refer#referral-form",
+      "main": true,
+      "fragmentOK": true
+    },
+    "/resources": {
+      "status": 200,
+      "final": "https://eternallifehospice.com/resources",
+      "main": true,
+      "fragmentOK": true
+    },
+    "/resources/back-to-the-earth": {
+      "status": 200,
+      "final": "https://eternallifehospice.com/resources/back-to-the-earth",
+      "main": true,
+      "fragmentOK": true
+    },
+    "/resources/comfort-therapies": {
+      "status": 200,
+      "final": "https://eternallifehospice.com/resources/comfort-therapies",
+      "main": true,
+      "fragmentOK": true
+    },
+    "/resources/first-48-hours": {
+      "status": 200,
+      "final": "https://eternallifehospice.com/resources/first-48-hours",
+      "main": true,
+      "fragmentOK": true
+    },
+    "/resources/how-to-choose-a-hospice": {
+      "status": 200,
+      "final": "https://eternallifehospice.com/resources/how-to-choose-a-hospice",
+      "main": true,
+      "fragmentOK": true
+    },
+    "/resources/medicare-hospice-benefit": {
+      "status": 200,
+      "final": "https://eternallifehospice.com/resources/medicare-hospice-benefit",
+      "main": true,
+      "fragmentOK": true
+    },
+    "/resources/pain-symptom-management": {
+      "status": 200,
+      "final": "https://eternallifehospice.com/resources/pain-symptom-management",
+      "main": true,
+      "fragmentOK": true
+    },
+    "/resources/the-circle-around-you": {
+      "status": 200,
+      "final": "https://eternallifehospice.com/resources/the-circle-around-you",
+      "main": true,
+      "fragmentOK": true
+    },
+    "/resources/volunteer": {
+      "status": 200,
+      "final": "https://eternallifehospice.com/resources/volunteer",
+      "main": true,
+      "fragmentOK": true
+    },
+    "/services": {
+      "status": 200,
+      "final": "https://eternallifehospice.com/services",
+      "main": true,
+      "fragmentOK": true
+    },
+    "/sound-bath": {
+      "status": 200,
+      "final": "https://eternallifehospice.com/sound-bath",
+      "main": true,
+      "fragmentOK": true
+    }
+  },
+  "privateRevisionCount": 51,
+  "contentAdditionCount": 27,
+  "metadataHarmonizedCount": 16,
+  "wordRange": [
+    321,
+    1282
+  ],
+  "pausedChannels": "Care Brief, social, Pinterest and video sources untouched",
+  "clinicalSources": [
+    "https://www.medicare.gov/coverage/hospice-care",
+    "https://www.medicare.gov/care-compare/resources/hospice/levels-of-care",
+    "https://vcaaa.venturacounty.gov/for-older-adults/"
+  ],
+  "remainingGaps": 118,
+  "publication": "No release, deployment or send authorized"
+}

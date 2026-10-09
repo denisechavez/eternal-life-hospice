@@ -29,12 +29,26 @@ page, selected by word count and relevance, with seven as the maximum.
 Existing contextual inline links count toward that limit; shared navigation,
 footer links and bottom reading groups are separate.
 
+For **Eternal Journal articles**, the later editorial requirement overrides
+this range: **2–5 contextual links**, chosen by length and relevance. Other
+informational website copy retains the earlier 2–7 range.
+
 **Why:** The user explicitly capped the proposed range at seven and specified
 that word count and content should determine the selection.
 
 **How to apply:** Treat length as a guideline, not a reason to force irrelevant
 links or pad the writing. Obtain rollout approval separately from discussions
 of the link-count range.
+
+Journal and email draft links must point to destinations that are currently
+publicly available, not merely scheduled before the source's future date.
+
+**Why:** The user explicitly prohibited links to future or unpublished articles
+in the Journal optimization requirements.
+
+**How to apply:** Check actual public availability as well as publication dates.
+Keep a future companion article as review metadata without a clickable link;
+use a relevant active resource and recheck immediately before release.
 
 Build-time eligibility alone is insufficient for staged Journal recommendations.
 Recommendations must be selected again at request time using the public publication

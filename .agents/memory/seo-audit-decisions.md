@@ -15,6 +15,11 @@ description: Technical SEO rules, staged optimization and the Q4 101-term keywor
 - **Why:** The user identified "Hospice Nursing Services Thousand Oaks CA" as the biggest Thryv opportunity and singled out home hospice care intent.
 - **How to apply:** Support these related intents naturally in existing educational articles and channel-specific drafts; do not make five competing pages or infer ranks from phrase inclusion. Plan approval does not authorize publishing, sending or deployment.
 
+## Preserve the Journal's editorial work during optimization
+- **Rule:** Optimize existing Journal writing selectively, retaining its voice, dates, URLs, photography, crops and design. Length ranges guide planning, not padding. Do not manufacture locality by changing city names or create competing pages for closely related phrases.
+- **Why:** The user explicitly values the existing Journal's writing and imagery and authorized targeted optimization rather than a replacement series.
+- **How to apply:** Audit the whole corpus before revision, compare original and revised text with the same counting method and stage changes privately for fresh Studio approval. Preserve visible prose when harmonizing metadata unless a specific editorial change is intended. Report uncovered keyword-cycle combinations honestly and request separate approval for supplemental local articles.
+
 ## FAQPage schema rule (enforced from brief item 17)
 - **Rule:** Add FAQPage schema ONLY when the complete questions AND answers are visibly displayed as Q&A pairs on that same page.
 - **Applied:** FAQPage schema was REMOVED from `family-guide.html` — the booklet pages cover the topics but not as matching visible Q&A pairs.

@@ -12,20 +12,26 @@
         {
           "cycle": "C1",
           "baselineCandidates": 4,
-          "confirmation": "Candidate—editorial confirmation required"
+          "confirmation": "4 draft candidates; approval/semantic review pending"
         },
         {
           "cycle": "C2",
           "baselineCandidates": 0,
-          "confirmation": "Gap—no topic-and-geography signal identified"
+          "confirmation": "Gap; separate approval needed"
         },
         {
           "cycle": "C3",
           "baselineCandidates": 1,
-          "confirmation": "Candidate—editorial confirmation required"
+          "confirmation": "1 draft candidates; approval/semantic review pending"
         }
       ],
-      "draftDates": []
+      "draftDates": [
+        "2026-10-11",
+        "2026-10-26",
+        "2026-10-27",
+        "2026-11-02",
+        "2026-12-14"
+      ]
     },
     {
       "id": 2,
@@ -38,20 +44,23 @@
         {
           "cycle": "C1",
           "baselineCandidates": 0,
-          "confirmation": "Gap—no topic-and-geography signal identified"
+          "confirmation": "1 draft candidates; approval/semantic review pending"
         },
         {
           "cycle": "C2",
           "baselineCandidates": 0,
-          "confirmation": "Gap—no topic-and-geography signal identified"
+          "confirmation": "1 draft candidates; approval/semantic review pending"
         },
         {
           "cycle": "C3",
           "baselineCandidates": 0,
-          "confirmation": "Gap—no topic-and-geography signal identified"
+          "confirmation": "Gap; separate approval needed"
         }
       ],
-      "draftDates": []
+      "draftDates": [
+        "2026-10-16",
+        "2026-11-16"
+      ]
     },
     {
       "id": 3,
@@ -64,20 +73,23 @@
         {
           "cycle": "C1",
           "baselineCandidates": 0,
-          "confirmation": "Gap—no topic-and-geography signal identified"
+          "confirmation": "1 draft candidates; approval/semantic review pending"
         },
         {
           "cycle": "C2",
           "baselineCandidates": 0,
-          "confirmation": "Gap—no topic-and-geography signal identified"
+          "confirmation": "1 draft candidates; approval/semantic review pending"
         },
         {
           "cycle": "C3",
           "baselineCandidates": 0,
-          "confirmation": "Gap—no topic-and-geography signal identified"
+          "confirmation": "Gap; separate approval needed"
         }
       ],
-      "draftDates": []
+      "draftDates": [
+        "2026-10-16",
+        "2026-11-16"
+      ]
     },
     {
       "id": 4,
@@ -90,20 +102,23 @@
         {
           "cycle": "C1",
           "baselineCandidates": 0,
-          "confirmation": "Gap—no topic-and-geography signal identified"
+          "confirmation": "1 draft candidates; approval/semantic review pending"
         },
         {
           "cycle": "C2",
           "baselineCandidates": 0,
-          "confirmation": "Gap—no topic-and-geography signal identified"
+          "confirmation": "1 draft candidates; approval/semantic review pending"
         },
         {
           "cycle": "C3",
           "baselineCandidates": 0,
-          "confirmation": "Gap—no topic-and-geography signal identified"
+          "confirmation": "Gap; separate approval needed"
         }
       ],
-      "draftDates": []
+      "draftDates": [
+        "2026-10-16",
+        "2026-11-16"
+      ]
     },
     {
       "id": 5,
@@ -116,20 +131,106 @@
         {
           "cycle": "C1",
           "baselineCandidates": 30,
-          "confirmation": "Candidate—editorial confirmation required"
+          "confirmation": "30 draft candidates; approval/semantic review pending"
         },
         {
           "cycle": "C2",
           "baselineCandidates": 30,
-          "confirmation": "Candidate—editorial confirmation required"
+          "confirmation": "30 draft candidates; approval/semantic review pending"
         },
         {
           "cycle": "C3",
           "baselineCandidates": 25,
-          "confirmation": "Candidate—editorial confirmation required"
+          "confirmation": "25 draft candidates; approval/semantic review pending"
         }
       ],
-      "draftDates": []
+      "draftDates": [
+        "2026-10-08",
+        "2026-10-09",
+        "2026-10-10",
+        "2026-10-11",
+        "2026-10-12",
+        "2026-10-13",
+        "2026-10-14",
+        "2026-10-15",
+        "2026-10-16",
+        "2026-10-17",
+        "2026-10-18",
+        "2026-10-19",
+        "2026-10-20",
+        "2026-10-21",
+        "2026-10-22",
+        "2026-10-23",
+        "2026-10-24",
+        "2026-10-25",
+        "2026-10-26",
+        "2026-10-27",
+        "2026-10-28",
+        "2026-10-29",
+        "2026-10-30",
+        "2026-10-31",
+        "2026-11-01",
+        "2026-11-02",
+        "2026-11-03",
+        "2026-11-04",
+        "2026-11-05",
+        "2026-11-06",
+        "2026-11-07",
+        "2026-11-08",
+        "2026-11-09",
+        "2026-11-10",
+        "2026-11-11",
+        "2026-11-12",
+        "2026-11-13",
+        "2026-11-14",
+        "2026-11-15",
+        "2026-11-16",
+        "2026-11-17",
+        "2026-11-18",
+        "2026-11-19",
+        "2026-11-20",
+        "2026-11-21",
+        "2026-11-22",
+        "2026-11-23",
+        "2026-11-24",
+        "2026-11-25",
+        "2026-11-26",
+        "2026-11-27",
+        "2026-11-28",
+        "2026-11-29",
+        "2026-11-30",
+        "2026-12-01",
+        "2026-12-02",
+        "2026-12-03",
+        "2026-12-04",
+        "2026-12-05",
+        "2026-12-06",
+        "2026-12-07",
+        "2026-12-08",
+        "2026-12-09",
+        "2026-12-10",
+        "2026-12-11",
+        "2026-12-12",
+        "2026-12-13",
+        "2026-12-14",
+        "2026-12-15",
+        "2026-12-16",
+        "2026-12-17",
+        "2026-12-18",
+        "2026-12-19",
+        "2026-12-20",
+        "2026-12-21",
+        "2026-12-22",
+        "2026-12-23",
+        "2026-12-24",
+        "2026-12-25",
+        "2026-12-26",
+        "2026-12-27",
+        "2026-12-28",
+        "2026-12-29",
+        "2026-12-30",
+        "2026-12-31"
+      ]
     },
     {
       "id": 6,
@@ -142,20 +243,106 @@
         {
           "cycle": "C1",
           "baselineCandidates": 30,
-          "confirmation": "Candidate—editorial confirmation required"
+          "confirmation": "30 draft candidates; approval/semantic review pending"
         },
         {
           "cycle": "C2",
           "baselineCandidates": 30,
-          "confirmation": "Candidate—editorial confirmation required"
+          "confirmation": "30 draft candidates; approval/semantic review pending"
         },
         {
           "cycle": "C3",
           "baselineCandidates": 25,
-          "confirmation": "Candidate—editorial confirmation required"
+          "confirmation": "25 draft candidates; approval/semantic review pending"
         }
       ],
-      "draftDates": []
+      "draftDates": [
+        "2026-10-08",
+        "2026-10-09",
+        "2026-10-10",
+        "2026-10-11",
+        "2026-10-12",
+        "2026-10-13",
+        "2026-10-14",
+        "2026-10-15",
+        "2026-10-16",
+        "2026-10-17",
+        "2026-10-18",
+        "2026-10-19",
+        "2026-10-20",
+        "2026-10-21",
+        "2026-10-22",
+        "2026-10-23",
+        "2026-10-24",
+        "2026-10-25",
+        "2026-10-26",
+        "2026-10-27",
+        "2026-10-28",
+        "2026-10-29",
+        "2026-10-30",
+        "2026-10-31",
+        "2026-11-01",
+        "2026-11-02",
+        "2026-11-03",
+        "2026-11-04",
+        "2026-11-05",
+        "2026-11-06",
+        "2026-11-07",
+        "2026-11-08",
+        "2026-11-09",
+        "2026-11-10",
+        "2026-11-11",
+        "2026-11-12",
+        "2026-11-13",
+        "2026-11-14",
+        "2026-11-15",
+        "2026-11-16",
+        "2026-11-17",
+        "2026-11-18",
+        "2026-11-19",
+        "2026-11-20",
+        "2026-11-21",
+        "2026-11-22",
+        "2026-11-23",
+        "2026-11-24",
+        "2026-11-25",
+        "2026-11-26",
+        "2026-11-27",
+        "2026-11-28",
+        "2026-11-29",
+        "2026-11-30",
+        "2026-12-01",
+        "2026-12-02",
+        "2026-12-03",
+        "2026-12-04",
+        "2026-12-05",
+        "2026-12-06",
+        "2026-12-07",
+        "2026-12-08",
+        "2026-12-09",
+        "2026-12-10",
+        "2026-12-11",
+        "2026-12-12",
+        "2026-12-13",
+        "2026-12-14",
+        "2026-12-15",
+        "2026-12-16",
+        "2026-12-17",
+        "2026-12-18",
+        "2026-12-19",
+        "2026-12-20",
+        "2026-12-21",
+        "2026-12-22",
+        "2026-12-23",
+        "2026-12-24",
+        "2026-12-25",
+        "2026-12-26",
+        "2026-12-27",
+        "2026-12-28",
+        "2026-12-29",
+        "2026-12-30",
+        "2026-12-31"
+      ]
     },
     {
       "id": 7,
@@ -168,20 +355,106 @@
         {
           "cycle": "C1",
           "baselineCandidates": 30,
-          "confirmation": "Candidate—editorial confirmation required"
+          "confirmation": "30 draft candidates; approval/semantic review pending"
         },
         {
           "cycle": "C2",
           "baselineCandidates": 30,
-          "confirmation": "Candidate—editorial confirmation required"
+          "confirmation": "30 draft candidates; approval/semantic review pending"
         },
         {
           "cycle": "C3",
           "baselineCandidates": 25,
-          "confirmation": "Candidate—editorial confirmation required"
+          "confirmation": "25 draft candidates; approval/semantic review pending"
         }
       ],
-      "draftDates": []
+      "draftDates": [
+        "2026-10-08",
+        "2026-10-09",
+        "2026-10-10",
+        "2026-10-11",
+        "2026-10-12",
+        "2026-10-13",
+        "2026-10-14",
+        "2026-10-15",
+        "2026-10-16",
+        "2026-10-17",
+        "2026-10-18",
+        "2026-10-19",
+        "2026-10-20",
+        "2026-10-21",
+        "2026-10-22",
+        "2026-10-23",
+        "2026-10-24",
+        "2026-10-25",
+        "2026-10-26",
+        "2026-10-27",
+        "2026-10-28",
+        "2026-10-29",
+        "2026-10-30",
+        "2026-10-31",
+        "2026-11-01",
+        "2026-11-02",
+        "2026-11-03",
+        "2026-11-04",
+        "2026-11-05",
+        "2026-11-06",
+        "2026-11-07",
+        "2026-11-08",
+        "2026-11-09",
+        "2026-11-10",
+        "2026-11-11",
+        "2026-11-12",
+        "2026-11-13",
+        "2026-11-14",
+        "2026-11-15",
+        "2026-11-16",
+        "2026-11-17",
+        "2026-11-18",
+        "2026-11-19",
+        "2026-11-20",
+        "2026-11-21",
+        "2026-11-22",
+        "2026-11-23",
+        "2026-11-24",
+        "2026-11-25",
+        "2026-11-26",
+        "2026-11-27",
+        "2026-11-28",
+        "2026-11-29",
+        "2026-11-30",
+        "2026-12-01",
+        "2026-12-02",
+        "2026-12-03",
+        "2026-12-04",
+        "2026-12-05",
+        "2026-12-06",
+        "2026-12-07",
+        "2026-12-08",
+        "2026-12-09",
+        "2026-12-10",
+        "2026-12-11",
+        "2026-12-12",
+        "2026-12-13",
+        "2026-12-14",
+        "2026-12-15",
+        "2026-12-16",
+        "2026-12-17",
+        "2026-12-18",
+        "2026-12-19",
+        "2026-12-20",
+        "2026-12-21",
+        "2026-12-22",
+        "2026-12-23",
+        "2026-12-24",
+        "2026-12-25",
+        "2026-12-26",
+        "2026-12-27",
+        "2026-12-28",
+        "2026-12-29",
+        "2026-12-30",
+        "2026-12-31"
+      ]
     },
     {
       "id": 8,
@@ -194,20 +467,44 @@
         {
           "cycle": "C1",
           "baselineCandidates": 9,
-          "confirmation": "Candidate—editorial confirmation required"
+          "confirmation": "10 draft candidates; approval/semantic review pending"
         },
         {
           "cycle": "C2",
           "baselineCandidates": 5,
-          "confirmation": "Candidate—editorial confirmation required"
+          "confirmation": "5 draft candidates; approval/semantic review pending"
         },
         {
           "cycle": "C3",
           "baselineCandidates": 8,
-          "confirmation": "Candidate—editorial confirmation required"
+          "confirmation": "8 draft candidates; approval/semantic review pending"
         }
       ],
-      "draftDates": []
+      "draftDates": [
+        "2026-10-08",
+        "2026-10-09",
+        "2026-10-10",
+        "2026-10-12",
+        "2026-10-21",
+        "2026-10-24",
+        "2026-10-26",
+        "2026-10-27",
+        "2026-10-30",
+        "2026-11-02",
+        "2026-11-07",
+        "2026-11-08",
+        "2026-11-27",
+        "2026-12-03",
+        "2026-12-04",
+        "2026-12-07",
+        "2026-12-13",
+        "2026-12-14",
+        "2026-12-16",
+        "2026-12-17",
+        "2026-12-19",
+        "2026-12-22",
+        "2026-12-26"
+      ]
     },
     {
       "id": 9,
@@ -220,20 +517,106 @@
         {
           "cycle": "C1",
           "baselineCandidates": 30,
-          "confirmation": "Candidate—editorial confirmation required"
+          "confirmation": "30 draft candidates; approval/semantic review pending"
         },
         {
           "cycle": "C2",
           "baselineCandidates": 30,
-          "confirmation": "Candidate—editorial confirmation required"
+          "confirmation": "30 draft candidates; approval/semantic review pending"
         },
         {
           "cycle": "C3",
           "baselineCandidates": 25,
-          "confirmation": "Candidate—editorial confirmation required"
+          "confirmation": "25 draft candidates; approval/semantic review pending"
         }
       ],
-      "draftDates": []
+      "draftDates": [
+        "2026-10-08",
+        "2026-10-09",
+        "2026-10-10",
+        "2026-10-11",
+        "2026-10-12",
+        "2026-10-13",
+        "2026-10-14",
+        "2026-10-15",
+        "2026-10-16",
+        "2026-10-17",
+        "2026-10-18",
+        "2026-10-19",
+        "2026-10-20",
+        "2026-10-21",
+        "2026-10-22",
+        "2026-10-23",
+        "2026-10-24",
+        "2026-10-25",
+        "2026-10-26",
+        "2026-10-27",
+        "2026-10-28",
+        "2026-10-29",
+        "2026-10-30",
+        "2026-10-31",
+        "2026-11-01",
+        "2026-11-02",
+        "2026-11-03",
+        "2026-11-04",
+        "2026-11-05",
+        "2026-11-06",
+        "2026-11-07",
+        "2026-11-08",
+        "2026-11-09",
+        "2026-11-10",
+        "2026-11-11",
+        "2026-11-12",
+        "2026-11-13",
+        "2026-11-14",
+        "2026-11-15",
+        "2026-11-16",
+        "2026-11-17",
+        "2026-11-18",
+        "2026-11-19",
+        "2026-11-20",
+        "2026-11-21",
+        "2026-11-22",
+        "2026-11-23",
+        "2026-11-24",
+        "2026-11-25",
+        "2026-11-26",
+        "2026-11-27",
+        "2026-11-28",
+        "2026-11-29",
+        "2026-11-30",
+        "2026-12-01",
+        "2026-12-02",
+        "2026-12-03",
+        "2026-12-04",
+        "2026-12-05",
+        "2026-12-06",
+        "2026-12-07",
+        "2026-12-08",
+        "2026-12-09",
+        "2026-12-10",
+        "2026-12-11",
+        "2026-12-12",
+        "2026-12-13",
+        "2026-12-14",
+        "2026-12-15",
+        "2026-12-16",
+        "2026-12-17",
+        "2026-12-18",
+        "2026-12-19",
+        "2026-12-20",
+        "2026-12-21",
+        "2026-12-22",
+        "2026-12-23",
+        "2026-12-24",
+        "2026-12-25",
+        "2026-12-26",
+        "2026-12-27",
+        "2026-12-28",
+        "2026-12-29",
+        "2026-12-30",
+        "2026-12-31"
+      ]
     },
     {
       "id": 10,
@@ -246,20 +629,44 @@
         {
           "cycle": "C1",
           "baselineCandidates": 9,
-          "confirmation": "Candidate—editorial confirmation required"
+          "confirmation": "10 draft candidates; approval/semantic review pending"
         },
         {
           "cycle": "C2",
           "baselineCandidates": 5,
-          "confirmation": "Candidate—editorial confirmation required"
+          "confirmation": "5 draft candidates; approval/semantic review pending"
         },
         {
           "cycle": "C3",
           "baselineCandidates": 8,
-          "confirmation": "Candidate—editorial confirmation required"
+          "confirmation": "8 draft candidates; approval/semantic review pending"
         }
       ],
-      "draftDates": []
+      "draftDates": [
+        "2026-10-08",
+        "2026-10-09",
+        "2026-10-10",
+        "2026-10-12",
+        "2026-10-16",
+        "2026-10-24",
+        "2026-10-26",
+        "2026-10-27",
+        "2026-10-30",
+        "2026-11-02",
+        "2026-11-07",
+        "2026-11-08",
+        "2026-11-27",
+        "2026-12-03",
+        "2026-12-04",
+        "2026-12-07",
+        "2026-12-13",
+        "2026-12-14",
+        "2026-12-16",
+        "2026-12-17",
+        "2026-12-19",
+        "2026-12-22",
+        "2026-12-26"
+      ]
     },
     {
       "id": 11,
@@ -272,20 +679,106 @@
         {
           "cycle": "C1",
           "baselineCandidates": 30,
-          "confirmation": "Candidate—editorial confirmation required"
+          "confirmation": "30 draft candidates; approval/semantic review pending"
         },
         {
           "cycle": "C2",
           "baselineCandidates": 30,
-          "confirmation": "Candidate—editorial confirmation required"
+          "confirmation": "30 draft candidates; approval/semantic review pending"
         },
         {
           "cycle": "C3",
           "baselineCandidates": 25,
-          "confirmation": "Candidate—editorial confirmation required"
+          "confirmation": "25 draft candidates; approval/semantic review pending"
         }
       ],
-      "draftDates": []
+      "draftDates": [
+        "2026-10-08",
+        "2026-10-09",
+        "2026-10-10",
+        "2026-10-11",
+        "2026-10-12",
+        "2026-10-13",
+        "2026-10-14",
+        "2026-10-15",
+        "2026-10-16",
+        "2026-10-17",
+        "2026-10-18",
+        "2026-10-19",
+        "2026-10-20",
+        "2026-10-21",
+        "2026-10-22",
+        "2026-10-23",
+        "2026-10-24",
+        "2026-10-25",
+        "2026-10-26",
+        "2026-10-27",
+        "2026-10-28",
+        "2026-10-29",
+        "2026-10-30",
+        "2026-10-31",
+        "2026-11-01",
+        "2026-11-02",
+        "2026-11-03",
+        "2026-11-04",
+        "2026-11-05",
+        "2026-11-06",
+        "2026-11-07",
+        "2026-11-08",
+        "2026-11-09",
+        "2026-11-10",
+        "2026-11-11",
+        "2026-11-12",
+        "2026-11-13",
+        "2026-11-14",
+        "2026-11-15",
+        "2026-11-16",
+        "2026-11-17",
+        "2026-11-18",
+        "2026-11-19",
+        "2026-11-20",
+        "2026-11-21",
+        "2026-11-22",
+        "2026-11-23",
+        "2026-11-24",
+        "2026-11-25",
+        "2026-11-26",
+        "2026-11-27",
+        "2026-11-28",
+        "2026-11-29",
+        "2026-11-30",
+        "2026-12-01",
+        "2026-12-02",
+        "2026-12-03",
+        "2026-12-04",
+        "2026-12-05",
+        "2026-12-06",
+        "2026-12-07",
+        "2026-12-08",
+        "2026-12-09",
+        "2026-12-10",
+        "2026-12-11",
+        "2026-12-12",
+        "2026-12-13",
+        "2026-12-14",
+        "2026-12-15",
+        "2026-12-16",
+        "2026-12-17",
+        "2026-12-18",
+        "2026-12-19",
+        "2026-12-20",
+        "2026-12-21",
+        "2026-12-22",
+        "2026-12-23",
+        "2026-12-24",
+        "2026-12-25",
+        "2026-12-26",
+        "2026-12-27",
+        "2026-12-28",
+        "2026-12-29",
+        "2026-12-30",
+        "2026-12-31"
+      ]
     },
     {
       "id": 12,
@@ -298,20 +791,106 @@
         {
           "cycle": "C1",
           "baselineCandidates": 30,
-          "confirmation": "Candidate—editorial confirmation required"
+          "confirmation": "30 draft candidates; approval/semantic review pending"
         },
         {
           "cycle": "C2",
           "baselineCandidates": 30,
-          "confirmation": "Candidate—editorial confirmation required"
+          "confirmation": "30 draft candidates; approval/semantic review pending"
         },
         {
           "cycle": "C3",
           "baselineCandidates": 25,
-          "confirmation": "Candidate—editorial confirmation required"
+          "confirmation": "25 draft candidates; approval/semantic review pending"
         }
       ],
-      "draftDates": []
+      "draftDates": [
+        "2026-10-08",
+        "2026-10-09",
+        "2026-10-10",
+        "2026-10-11",
+        "2026-10-12",
+        "2026-10-13",
+        "2026-10-14",
+        "2026-10-15",
+        "2026-10-16",
+        "2026-10-17",
+        "2026-10-18",
+        "2026-10-19",
+        "2026-10-20",
+        "2026-10-21",
+        "2026-10-22",
+        "2026-10-23",
+        "2026-10-24",
+        "2026-10-25",
+        "2026-10-26",
+        "2026-10-27",
+        "2026-10-28",
+        "2026-10-29",
+        "2026-10-30",
+        "2026-10-31",
+        "2026-11-01",
+        "2026-11-02",
+        "2026-11-03",
+        "2026-11-04",
+        "2026-11-05",
+        "2026-11-06",
+        "2026-11-07",
+        "2026-11-08",
+        "2026-11-09",
+        "2026-11-10",
+        "2026-11-11",
+        "2026-11-12",
+        "2026-11-13",
+        "2026-11-14",
+        "2026-11-15",
+        "2026-11-16",
+        "2026-11-17",
+        "2026-11-18",
+        "2026-11-19",
+        "2026-11-20",
+        "2026-11-21",
+        "2026-11-22",
+        "2026-11-23",
+        "2026-11-24",
+        "2026-11-25",
+        "2026-11-26",
+        "2026-11-27",
+        "2026-11-28",
+        "2026-11-29",
+        "2026-11-30",
+        "2026-12-01",
+        "2026-12-02",
+        "2026-12-03",
+        "2026-12-04",
+        "2026-12-05",
+        "2026-12-06",
+        "2026-12-07",
+        "2026-12-08",
+        "2026-12-09",
+        "2026-12-10",
+        "2026-12-11",
+        "2026-12-12",
+        "2026-12-13",
+        "2026-12-14",
+        "2026-12-15",
+        "2026-12-16",
+        "2026-12-17",
+        "2026-12-18",
+        "2026-12-19",
+        "2026-12-20",
+        "2026-12-21",
+        "2026-12-22",
+        "2026-12-23",
+        "2026-12-24",
+        "2026-12-25",
+        "2026-12-26",
+        "2026-12-27",
+        "2026-12-28",
+        "2026-12-29",
+        "2026-12-30",
+        "2026-12-31"
+      ]
     },
     {
       "id": 13,
@@ -324,20 +903,106 @@
         {
           "cycle": "C1",
           "baselineCandidates": 30,
-          "confirmation": "Candidate—editorial confirmation required"
+          "confirmation": "30 draft candidates; approval/semantic review pending"
         },
         {
           "cycle": "C2",
           "baselineCandidates": 30,
-          "confirmation": "Candidate—editorial confirmation required"
+          "confirmation": "30 draft candidates; approval/semantic review pending"
         },
         {
           "cycle": "C3",
           "baselineCandidates": 25,
-          "confirmation": "Candidate—editorial confirmation required"
+          "confirmation": "25 draft candidates; approval/semantic review pending"
         }
       ],
-      "draftDates": []
+      "draftDates": [
+        "2026-10-08",
+        "2026-10-09",
+        "2026-10-10",
+        "2026-10-11",
+        "2026-10-12",
+        "2026-10-13",
+        "2026-10-14",
+        "2026-10-15",
+        "2026-10-16",
+        "2026-10-17",
+        "2026-10-18",
+        "2026-10-19",
+        "2026-10-20",
+        "2026-10-21",
+        "2026-10-22",
+        "2026-10-23",
+        "2026-10-24",
+        "2026-10-25",
+        "2026-10-26",
+        "2026-10-27",
+        "2026-10-28",
+        "2026-10-29",
+        "2026-10-30",
+        "2026-10-31",
+        "2026-11-01",
+        "2026-11-02",
+        "2026-11-03",
+        "2026-11-04",
+        "2026-11-05",
+        "2026-11-06",
+        "2026-11-07",
+        "2026-11-08",
+        "2026-11-09",
+        "2026-11-10",
+        "2026-11-11",
+        "2026-11-12",
+        "2026-11-13",
+        "2026-11-14",
+        "2026-11-15",
+        "2026-11-16",
+        "2026-11-17",
+        "2026-11-18",
+        "2026-11-19",
+        "2026-11-20",
+        "2026-11-21",
+        "2026-11-22",
+        "2026-11-23",
+        "2026-11-24",
+        "2026-11-25",
+        "2026-11-26",
+        "2026-11-27",
+        "2026-11-28",
+        "2026-11-29",
+        "2026-11-30",
+        "2026-12-01",
+        "2026-12-02",
+        "2026-12-03",
+        "2026-12-04",
+        "2026-12-05",
+        "2026-12-06",
+        "2026-12-07",
+        "2026-12-08",
+        "2026-12-09",
+        "2026-12-10",
+        "2026-12-11",
+        "2026-12-12",
+        "2026-12-13",
+        "2026-12-14",
+        "2026-12-15",
+        "2026-12-16",
+        "2026-12-17",
+        "2026-12-18",
+        "2026-12-19",
+        "2026-12-20",
+        "2026-12-21",
+        "2026-12-22",
+        "2026-12-23",
+        "2026-12-24",
+        "2026-12-25",
+        "2026-12-26",
+        "2026-12-27",
+        "2026-12-28",
+        "2026-12-29",
+        "2026-12-30",
+        "2026-12-31"
+      ]
     },
     {
       "id": 14,
@@ -350,20 +1015,46 @@
         {
           "cycle": "C1",
           "baselineCandidates": 9,
-          "confirmation": "Candidate—editorial confirmation required"
+          "confirmation": "10 draft candidates; approval/semantic review pending"
         },
         {
           "cycle": "C2",
           "baselineCandidates": 5,
-          "confirmation": "Candidate—editorial confirmation required"
+          "confirmation": "7 draft candidates; approval/semantic review pending"
         },
         {
           "cycle": "C3",
           "baselineCandidates": 8,
-          "confirmation": "Candidate—editorial confirmation required"
+          "confirmation": "8 draft candidates; approval/semantic review pending"
         }
       ],
-      "draftDates": []
+      "draftDates": [
+        "2026-10-08",
+        "2026-10-09",
+        "2026-10-10",
+        "2026-10-12",
+        "2026-10-21",
+        "2026-10-24",
+        "2026-10-26",
+        "2026-10-27",
+        "2026-10-30",
+        "2026-11-02",
+        "2026-11-07",
+        "2026-11-08",
+        "2026-11-10",
+        "2026-11-22",
+        "2026-11-27",
+        "2026-12-03",
+        "2026-12-04",
+        "2026-12-07",
+        "2026-12-13",
+        "2026-12-14",
+        "2026-12-16",
+        "2026-12-17",
+        "2026-12-19",
+        "2026-12-22",
+        "2026-12-26"
+      ]
     },
     {
       "id": 15,
@@ -376,20 +1067,50 @@
         {
           "cycle": "C1",
           "baselineCandidates": 12,
-          "confirmation": "Candidate—editorial confirmation required"
+          "confirmation": "13 draft candidates; approval/semantic review pending"
         },
         {
           "cycle": "C2",
           "baselineCandidates": 11,
-          "confirmation": "Candidate—editorial confirmation required"
+          "confirmation": "11 draft candidates; approval/semantic review pending"
         },
         {
           "cycle": "C3",
           "baselineCandidates": 5,
-          "confirmation": "Candidate—editorial confirmation required"
+          "confirmation": "5 draft candidates; approval/semantic review pending"
         }
       ],
-      "draftDates": []
+      "draftDates": [
+        "2026-10-17",
+        "2026-10-20",
+        "2026-10-22",
+        "2026-10-23",
+        "2026-10-24",
+        "2026-10-26",
+        "2026-10-27",
+        "2026-10-28",
+        "2026-10-29",
+        "2026-10-30",
+        "2026-11-01",
+        "2026-11-02",
+        "2026-11-05",
+        "2026-11-08",
+        "2026-11-10",
+        "2026-11-11",
+        "2026-11-12",
+        "2026-11-13",
+        "2026-11-21",
+        "2026-11-29",
+        "2026-11-30",
+        "2026-12-01",
+        "2026-12-04",
+        "2026-12-06",
+        "2026-12-13",
+        "2026-12-18",
+        "2026-12-19",
+        "2026-12-27",
+        "2026-12-31"
+      ]
     },
     {
       "id": 16,
@@ -402,20 +1123,50 @@
         {
           "cycle": "C1",
           "baselineCandidates": 12,
-          "confirmation": "Candidate—editorial confirmation required"
+          "confirmation": "13 draft candidates; approval/semantic review pending"
         },
         {
           "cycle": "C2",
           "baselineCandidates": 11,
-          "confirmation": "Candidate—editorial confirmation required"
+          "confirmation": "11 draft candidates; approval/semantic review pending"
         },
         {
           "cycle": "C3",
           "baselineCandidates": 5,
-          "confirmation": "Candidate—editorial confirmation required"
+          "confirmation": "5 draft candidates; approval/semantic review pending"
         }
       ],
-      "draftDates": []
+      "draftDates": [
+        "2026-10-17",
+        "2026-10-20",
+        "2026-10-22",
+        "2026-10-23",
+        "2026-10-24",
+        "2026-10-26",
+        "2026-10-27",
+        "2026-10-28",
+        "2026-10-29",
+        "2026-10-30",
+        "2026-11-01",
+        "2026-11-02",
+        "2026-11-05",
+        "2026-11-08",
+        "2026-11-10",
+        "2026-11-11",
+        "2026-11-12",
+        "2026-11-13",
+        "2026-11-21",
+        "2026-11-29",
+        "2026-11-30",
+        "2026-12-01",
+        "2026-12-04",
+        "2026-12-06",
+        "2026-12-13",
+        "2026-12-18",
+        "2026-12-19",
+        "2026-12-27",
+        "2026-12-31"
+      ]
     },
     {
       "id": 17,
@@ -428,20 +1179,22 @@
         {
           "cycle": "C1",
           "baselineCandidates": 0,
-          "confirmation": "Gap—no topic-and-geography signal identified"
+          "confirmation": "1 draft candidates; approval/semantic review pending"
         },
         {
           "cycle": "C2",
           "baselineCandidates": 0,
-          "confirmation": "Gap—no topic-and-geography signal identified"
+          "confirmation": "Gap; separate approval needed"
         },
         {
           "cycle": "C3",
           "baselineCandidates": 0,
-          "confirmation": "Gap—no topic-and-geography signal identified"
+          "confirmation": "Gap; separate approval needed"
         }
       ],
-      "draftDates": []
+      "draftDates": [
+        "2026-10-20"
+      ]
     },
     {
       "id": 18,
@@ -454,20 +1207,26 @@
         {
           "cycle": "C1",
           "baselineCandidates": 1,
-          "confirmation": "Candidate—editorial confirmation required"
+          "confirmation": "2 draft candidates; approval/semantic review pending"
         },
         {
           "cycle": "C2",
           "baselineCandidates": 0,
-          "confirmation": "Gap—no topic-and-geography signal identified"
+          "confirmation": "1 draft candidates; approval/semantic review pending"
         },
         {
           "cycle": "C3",
           "baselineCandidates": 0,
-          "confirmation": "Gap—no topic-and-geography signal identified"
+          "confirmation": "2 draft candidates; approval/semantic review pending"
         }
       ],
-      "draftDates": []
+      "draftDates": [
+        "2026-10-21",
+        "2026-10-23",
+        "2026-11-10",
+        "2026-12-08",
+        "2026-12-14"
+      ]
     },
     {
       "id": 19,
@@ -480,20 +1239,25 @@
         {
           "cycle": "C1",
           "baselineCandidates": 2,
-          "confirmation": "Candidate—editorial confirmation required"
+          "confirmation": "2 draft candidates; approval/semantic review pending"
         },
         {
           "cycle": "C2",
           "baselineCandidates": 1,
-          "confirmation": "Candidate—editorial confirmation required"
+          "confirmation": "1 draft candidates; approval/semantic review pending"
         },
         {
           "cycle": "C3",
           "baselineCandidates": 0,
-          "confirmation": "Gap—no topic-and-geography signal identified"
+          "confirmation": "1 draft candidates; approval/semantic review pending"
         }
       ],
-      "draftDates": []
+      "draftDates": [
+        "2026-10-12",
+        "2026-10-30",
+        "2026-11-21",
+        "2026-12-10"
+      ]
     },
     {
       "id": 20,
@@ -506,20 +1270,25 @@
         {
           "cycle": "C1",
           "baselineCandidates": 2,
-          "confirmation": "Candidate—editorial confirmation required"
+          "confirmation": "2 draft candidates; approval/semantic review pending"
         },
         {
           "cycle": "C2",
           "baselineCandidates": 1,
-          "confirmation": "Candidate—editorial confirmation required"
+          "confirmation": "1 draft candidates; approval/semantic review pending"
         },
         {
           "cycle": "C3",
           "baselineCandidates": 0,
-          "confirmation": "Gap—no topic-and-geography signal identified"
+          "confirmation": "1 draft candidates; approval/semantic review pending"
         }
       ],
-      "draftDates": []
+      "draftDates": [
+        "2026-10-12",
+        "2026-10-30",
+        "2026-11-21",
+        "2026-12-10"
+      ]
     },
     {
       "id": 21,
@@ -532,20 +1301,25 @@
         {
           "cycle": "C1",
           "baselineCandidates": 2,
-          "confirmation": "Candidate—editorial confirmation required"
+          "confirmation": "2 draft candidates; approval/semantic review pending"
         },
         {
           "cycle": "C2",
           "baselineCandidates": 1,
-          "confirmation": "Candidate—editorial confirmation required"
+          "confirmation": "1 draft candidates; approval/semantic review pending"
         },
         {
           "cycle": "C3",
           "baselineCandidates": 0,
-          "confirmation": "Gap—no topic-and-geography signal identified"
+          "confirmation": "1 draft candidates; approval/semantic review pending"
         }
       ],
-      "draftDates": []
+      "draftDates": [
+        "2026-10-12",
+        "2026-10-30",
+        "2026-11-21",
+        "2026-12-10"
+      ]
     },
     {
       "id": 22,
@@ -558,20 +1332,22 @@
         {
           "cycle": "C1",
           "baselineCandidates": 1,
-          "confirmation": "Candidate—editorial confirmation required"
+          "confirmation": "1 draft candidates; approval/semantic review pending"
         },
         {
           "cycle": "C2",
           "baselineCandidates": 0,
-          "confirmation": "Gap—no topic-and-geography signal identified"
+          "confirmation": "Gap; separate approval needed"
         },
         {
           "cycle": "C3",
           "baselineCandidates": 0,
-          "confirmation": "Gap—no topic-and-geography signal identified"
+          "confirmation": "Gap; separate approval needed"
         }
       ],
-      "draftDates": []
+      "draftDates": [
+        "2026-10-26"
+      ]
     },
     {
       "id": 23,
@@ -584,20 +1360,25 @@
         {
           "cycle": "C1",
           "baselineCandidates": 1,
-          "confirmation": "Candidate—editorial confirmation required"
+          "confirmation": "1 draft candidates; approval/semantic review pending"
         },
         {
           "cycle": "C2",
           "baselineCandidates": 2,
-          "confirmation": "Candidate—editorial confirmation required"
+          "confirmation": "2 draft candidates; approval/semantic review pending"
         },
         {
           "cycle": "C3",
           "baselineCandidates": 1,
-          "confirmation": "Candidate—editorial confirmation required"
+          "confirmation": "1 draft candidates; approval/semantic review pending"
         }
       ],
-      "draftDates": []
+      "draftDates": [
+        "2026-10-24",
+        "2026-11-15",
+        "2026-12-04",
+        "2026-12-27"
+      ]
     },
     {
       "id": 24,
@@ -610,20 +1391,25 @@
         {
           "cycle": "C1",
           "baselineCandidates": 1,
-          "confirmation": "Candidate—editorial confirmation required"
+          "confirmation": "1 draft candidates; approval/semantic review pending"
         },
         {
           "cycle": "C2",
           "baselineCandidates": 2,
-          "confirmation": "Candidate—editorial confirmation required"
+          "confirmation": "2 draft candidates; approval/semantic review pending"
         },
         {
           "cycle": "C3",
           "baselineCandidates": 1,
-          "confirmation": "Candidate—editorial confirmation required"
+          "confirmation": "1 draft candidates; approval/semantic review pending"
         }
       ],
-      "draftDates": []
+      "draftDates": [
+        "2026-10-24",
+        "2026-11-15",
+        "2026-12-04",
+        "2026-12-27"
+      ]
     },
     {
       "id": 25,
@@ -631,25 +1417,30 @@
       "source": "Google Ads — original audit",
       "intent": "local",
       "geography": "Simi Valley",
-      "priority": "Existing strategy",
+      "priority": "Primary",
       "cycles": [
         {
           "cycle": "C1",
           "baselineCandidates": 0,
-          "confirmation": "Gap—no topic-and-geography signal identified"
+          "confirmation": "1 draft candidates; approval/semantic review pending"
         },
         {
           "cycle": "C2",
           "baselineCandidates": 0,
-          "confirmation": "Gap—no topic-and-geography signal identified"
+          "confirmation": "2 draft candidates; approval/semantic review pending"
         },
         {
           "cycle": "C3",
           "baselineCandidates": 0,
-          "confirmation": "Gap—no topic-and-geography signal identified"
+          "confirmation": "1 draft candidates; approval/semantic review pending"
         }
       ],
-      "draftDates": []
+      "draftDates": [
+        "2026-10-20",
+        "2026-11-10",
+        "2026-11-22",
+        "2026-12-14"
+      ]
     },
     {
       "id": 26,
@@ -657,25 +1448,30 @@
       "source": "Google Ads — original audit",
       "intent": "local",
       "geography": "Simi Valley",
-      "priority": "Existing strategy",
+      "priority": "Primary",
       "cycles": [
         {
           "cycle": "C1",
           "baselineCandidates": 0,
-          "confirmation": "Gap—no topic-and-geography signal identified"
+          "confirmation": "1 draft candidates; approval/semantic review pending"
         },
         {
           "cycle": "C2",
           "baselineCandidates": 0,
-          "confirmation": "Gap—no topic-and-geography signal identified"
+          "confirmation": "2 draft candidates; approval/semantic review pending"
         },
         {
           "cycle": "C3",
           "baselineCandidates": 0,
-          "confirmation": "Gap—no topic-and-geography signal identified"
+          "confirmation": "1 draft candidates; approval/semantic review pending"
         }
       ],
-      "draftDates": []
+      "draftDates": [
+        "2026-10-20",
+        "2026-11-10",
+        "2026-11-22",
+        "2026-12-14"
+      ]
     },
     {
       "id": 27,
@@ -683,25 +1479,29 @@
       "source": "Google Ads — original audit",
       "intent": "local",
       "geography": "Calabasas",
-      "priority": "Existing strategy",
+      "priority": "Primary",
       "cycles": [
         {
           "cycle": "C1",
           "baselineCandidates": 1,
-          "confirmation": "Candidate—editorial confirmation required"
+          "confirmation": "1 draft candidates; approval/semantic review pending"
         },
         {
           "cycle": "C2",
           "baselineCandidates": 1,
-          "confirmation": "Candidate—editorial confirmation required"
+          "confirmation": "1 draft candidates; approval/semantic review pending"
         },
         {
           "cycle": "C3",
           "baselineCandidates": 1,
-          "confirmation": "Candidate—editorial confirmation required"
+          "confirmation": "1 draft candidates; approval/semantic review pending"
         }
       ],
-      "draftDates": []
+      "draftDates": [
+        "2026-10-30",
+        "2026-11-21",
+        "2026-12-10"
+      ]
     },
     {
       "id": 28,
@@ -709,25 +1509,29 @@
       "source": "Google Ads — original audit",
       "intent": "local",
       "geography": "Camarillo",
-      "priority": "Existing strategy",
+      "priority": "Primary",
       "cycles": [
         {
           "cycle": "C1",
           "baselineCandidates": 1,
-          "confirmation": "Candidate—editorial confirmation required"
+          "confirmation": "1 draft candidates; approval/semantic review pending"
         },
         {
           "cycle": "C2",
           "baselineCandidates": 1,
-          "confirmation": "Candidate—editorial confirmation required"
+          "confirmation": "1 draft candidates; approval/semantic review pending"
         },
         {
           "cycle": "C3",
           "baselineCandidates": 1,
-          "confirmation": "Candidate—editorial confirmation required"
+          "confirmation": "1 draft candidates; approval/semantic review pending"
         }
       ],
-      "draftDates": []
+      "draftDates": [
+        "2026-11-02",
+        "2026-11-23",
+        "2026-12-13"
+      ]
     },
     {
       "id": 29,
@@ -735,25 +1539,29 @@
       "source": "Google Ads — original audit",
       "intent": "local",
       "geography": "Camarillo",
-      "priority": "Existing strategy",
+      "priority": "Primary",
       "cycles": [
         {
           "cycle": "C1",
           "baselineCandidates": 1,
-          "confirmation": "Candidate—editorial confirmation required"
+          "confirmation": "1 draft candidates; approval/semantic review pending"
         },
         {
           "cycle": "C2",
           "baselineCandidates": 1,
-          "confirmation": "Candidate—editorial confirmation required"
+          "confirmation": "1 draft candidates; approval/semantic review pending"
         },
         {
           "cycle": "C3",
           "baselineCandidates": 1,
-          "confirmation": "Candidate—editorial confirmation required"
+          "confirmation": "1 draft candidates; approval/semantic review pending"
         }
       ],
-      "draftDates": []
+      "draftDates": [
+        "2026-11-02",
+        "2026-11-23",
+        "2026-12-13"
+      ]
     },
     {
       "id": 30,
@@ -761,25 +1569,30 @@
       "source": "Google Ads — original audit",
       "intent": "local",
       "geography": "Oxnard",
-      "priority": "Existing strategy",
+      "priority": "Primary",
       "cycles": [
         {
           "cycle": "C1",
           "baselineCandidates": 0,
-          "confirmation": "Gap—no topic-and-geography signal identified"
+          "confirmation": "1 draft candidates; approval/semantic review pending"
         },
         {
           "cycle": "C2",
           "baselineCandidates": 2,
-          "confirmation": "Candidate—editorial confirmation required"
+          "confirmation": "2 draft candidates; approval/semantic review pending"
         },
         {
           "cycle": "C3",
           "baselineCandidates": 1,
-          "confirmation": "Candidate—editorial confirmation required"
+          "confirmation": "1 draft candidates; approval/semantic review pending"
         }
       ],
-      "draftDates": []
+      "draftDates": [
+        "2026-10-13",
+        "2026-11-12",
+        "2026-12-01",
+        "2026-12-22"
+      ]
     },
     {
       "id": 31,
@@ -787,25 +1600,30 @@
       "source": "Google Ads — original audit",
       "intent": "local",
       "geography": "Oxnard",
-      "priority": "Existing strategy",
+      "priority": "Primary",
       "cycles": [
         {
           "cycle": "C1",
           "baselineCandidates": 0,
-          "confirmation": "Gap—no topic-and-geography signal identified"
+          "confirmation": "1 draft candidates; approval/semantic review pending"
         },
         {
           "cycle": "C2",
           "baselineCandidates": 2,
-          "confirmation": "Candidate—editorial confirmation required"
+          "confirmation": "2 draft candidates; approval/semantic review pending"
         },
         {
           "cycle": "C3",
           "baselineCandidates": 1,
-          "confirmation": "Candidate—editorial confirmation required"
+          "confirmation": "1 draft candidates; approval/semantic review pending"
         }
       ],
-      "draftDates": []
+      "draftDates": [
+        "2026-10-13",
+        "2026-11-12",
+        "2026-12-01",
+        "2026-12-22"
+      ]
     },
     {
       "id": 32,
@@ -818,20 +1636,25 @@
         {
           "cycle": "C1",
           "baselineCandidates": 0,
-          "confirmation": "Gap—no topic-and-geography signal identified"
+          "confirmation": "3 draft candidates; approval/semantic review pending"
         },
         {
           "cycle": "C2",
           "baselineCandidates": 0,
-          "confirmation": "Gap—no topic-and-geography signal identified"
+          "confirmation": "Gap; separate approval needed"
         },
         {
           "cycle": "C3",
           "baselineCandidates": 0,
-          "confirmation": "Gap—no topic-and-geography signal identified"
+          "confirmation": "1 draft candidates; approval/semantic review pending"
         }
       ],
-      "draftDates": []
+      "draftDates": [
+        "2026-10-13",
+        "2026-10-16",
+        "2026-10-28",
+        "2026-12-30"
+      ]
     },
     {
       "id": 33,
@@ -844,20 +1667,23 @@
         {
           "cycle": "C1",
           "baselineCandidates": 0,
-          "confirmation": "Gap—no topic-and-geography signal identified"
+          "confirmation": "1 draft candidates; approval/semantic review pending"
         },
         {
           "cycle": "C2",
           "baselineCandidates": 0,
-          "confirmation": "Gap—no topic-and-geography signal identified"
+          "confirmation": "Gap; separate approval needed"
         },
         {
           "cycle": "C3",
           "baselineCandidates": 0,
-          "confirmation": "Gap—no topic-and-geography signal identified"
+          "confirmation": "1 draft candidates; approval/semantic review pending"
         }
       ],
-      "draftDates": []
+      "draftDates": [
+        "2026-10-16",
+        "2026-12-30"
+      ]
     },
     {
       "id": 34,
@@ -870,20 +1696,24 @@
         {
           "cycle": "C1",
           "baselineCandidates": 0,
-          "confirmation": "Gap—no topic-and-geography signal identified"
+          "confirmation": "2 draft candidates; approval/semantic review pending"
         },
         {
           "cycle": "C2",
           "baselineCandidates": 0,
-          "confirmation": "Gap—no topic-and-geography signal identified"
+          "confirmation": "Gap; separate approval needed"
         },
         {
           "cycle": "C3",
           "baselineCandidates": 0,
-          "confirmation": "Gap—no topic-and-geography signal identified"
+          "confirmation": "1 draft candidates; approval/semantic review pending"
         }
       ],
-      "draftDates": []
+      "draftDates": [
+        "2026-10-16",
+        "2026-10-26",
+        "2026-12-30"
+      ]
     },
     {
       "id": 35,
@@ -896,20 +1726,24 @@
         {
           "cycle": "C1",
           "baselineCandidates": 0,
-          "confirmation": "Gap—no topic-and-geography signal identified"
+          "confirmation": "2 draft candidates; approval/semantic review pending"
         },
         {
           "cycle": "C2",
           "baselineCandidates": 0,
-          "confirmation": "Gap—no topic-and-geography signal identified"
+          "confirmation": "Gap; separate approval needed"
         },
         {
           "cycle": "C3",
           "baselineCandidates": 0,
-          "confirmation": "Gap—no topic-and-geography signal identified"
+          "confirmation": "1 draft candidates; approval/semantic review pending"
         }
       ],
-      "draftDates": []
+      "draftDates": [
+        "2026-10-16",
+        "2026-10-26",
+        "2026-12-30"
+      ]
     },
     {
       "id": 36,
@@ -922,20 +1756,22 @@
         {
           "cycle": "C1",
           "baselineCandidates": 0,
-          "confirmation": "Gap—no topic-and-geography signal identified"
+          "confirmation": "1 draft candidates; approval/semantic review pending"
         },
         {
           "cycle": "C2",
           "baselineCandidates": 0,
-          "confirmation": "Gap—no topic-and-geography signal identified"
+          "confirmation": "Gap; separate approval needed"
         },
         {
           "cycle": "C3",
           "baselineCandidates": 0,
-          "confirmation": "Gap—no topic-and-geography signal identified"
+          "confirmation": "Gap; separate approval needed"
         }
       ],
-      "draftDates": []
+      "draftDates": [
+        "2026-10-16"
+      ]
     },
     {
       "id": 37,
@@ -948,17 +1784,17 @@
         {
           "cycle": "C1",
           "baselineCandidates": 0,
-          "confirmation": "Gap—no topic-and-geography signal identified"
+          "confirmation": "Gap; separate approval needed"
         },
         {
           "cycle": "C2",
           "baselineCandidates": 0,
-          "confirmation": "Gap—no topic-and-geography signal identified"
+          "confirmation": "Gap; separate approval needed"
         },
         {
           "cycle": "C3",
           "baselineCandidates": 0,
-          "confirmation": "Gap—no topic-and-geography signal identified"
+          "confirmation": "Gap; separate approval needed"
         }
       ],
       "draftDates": []
@@ -974,17 +1810,17 @@
         {
           "cycle": "C1",
           "baselineCandidates": 0,
-          "confirmation": "Gap—no topic-and-geography signal identified"
+          "confirmation": "Gap; separate approval needed"
         },
         {
           "cycle": "C2",
           "baselineCandidates": 0,
-          "confirmation": "Gap—no topic-and-geography signal identified"
+          "confirmation": "Gap; separate approval needed"
         },
         {
           "cycle": "C3",
           "baselineCandidates": 0,
-          "confirmation": "Gap—no topic-and-geography signal identified"
+          "confirmation": "Gap; separate approval needed"
         }
       ],
       "draftDates": []
@@ -995,25 +1831,29 @@
       "source": "Google Ads — original audit",
       "intent": "local",
       "geography": "Conejo Valley",
-      "priority": "Existing strategy",
+      "priority": "Primary",
       "cycles": [
         {
           "cycle": "C1",
           "baselineCandidates": 1,
-          "confirmation": "Candidate—editorial confirmation required"
+          "confirmation": "1 draft candidates; approval/semantic review pending"
         },
         {
           "cycle": "C2",
           "baselineCandidates": 1,
-          "confirmation": "Candidate—editorial confirmation required"
+          "confirmation": "1 draft candidates; approval/semantic review pending"
         },
         {
           "cycle": "C3",
           "baselineCandidates": 1,
-          "confirmation": "Candidate—editorial confirmation required"
+          "confirmation": "1 draft candidates; approval/semantic review pending"
         }
       ],
-      "draftDates": []
+      "draftDates": [
+        "2026-11-05",
+        "2026-11-27",
+        "2026-12-16"
+      ]
     },
     {
       "id": 40,
@@ -1021,25 +1861,30 @@
       "source": "Google Ads — original audit",
       "intent": "local",
       "geography": "Moorpark",
-      "priority": "Existing strategy",
+      "priority": "Primary",
       "cycles": [
         {
           "cycle": "C1",
           "baselineCandidates": 0,
-          "confirmation": "Gap—no topic-and-geography signal identified"
+          "confirmation": "1 draft candidates; approval/semantic review pending"
         },
         {
           "cycle": "C2",
           "baselineCandidates": 0,
-          "confirmation": "Gap—no topic-and-geography signal identified"
+          "confirmation": "1 draft candidates; approval/semantic review pending"
         },
         {
           "cycle": "C3",
           "baselineCandidates": 0,
-          "confirmation": "Gap—no topic-and-geography signal identified"
+          "confirmation": "2 draft candidates; approval/semantic review pending"
         }
       ],
-      "draftDates": []
+      "draftDates": [
+        "2026-10-20",
+        "2026-11-13",
+        "2026-12-08",
+        "2026-12-26"
+      ]
     },
     {
       "id": 41,
@@ -1047,25 +1892,30 @@
       "source": "Google Ads — original audit",
       "intent": "local",
       "geography": "Newbury Park",
-      "priority": "Existing strategy",
+      "priority": "Primary",
       "cycles": [
         {
           "cycle": "C1",
           "baselineCandidates": 0,
-          "confirmation": "Gap—no topic-and-geography signal identified"
+          "confirmation": "1 draft candidates; approval/semantic review pending"
         },
         {
           "cycle": "C2",
           "baselineCandidates": 0,
-          "confirmation": "Gap—no topic-and-geography signal identified"
+          "confirmation": "1 draft candidates; approval/semantic review pending"
         },
         {
           "cycle": "C3",
           "baselineCandidates": 0,
-          "confirmation": "Gap—no topic-and-geography signal identified"
+          "confirmation": "2 draft candidates; approval/semantic review pending"
         }
       ],
-      "draftDates": []
+      "draftDates": [
+        "2026-10-21",
+        "2026-11-13",
+        "2026-12-08",
+        "2026-12-14"
+      ]
     },
     {
       "id": 42,
@@ -1078,17 +1928,17 @@
         {
           "cycle": "C1",
           "baselineCandidates": 0,
-          "confirmation": "Gap—no topic-and-geography signal identified"
+          "confirmation": "Gap; separate approval needed"
         },
         {
           "cycle": "C2",
           "baselineCandidates": 0,
-          "confirmation": "Gap—no topic-and-geography signal identified"
+          "confirmation": "Gap; separate approval needed"
         },
         {
           "cycle": "C3",
           "baselineCandidates": 0,
-          "confirmation": "Gap—no topic-and-geography signal identified"
+          "confirmation": "Gap; separate approval needed"
         }
       ],
       "draftDates": []
@@ -1104,17 +1954,17 @@
         {
           "cycle": "C1",
           "baselineCandidates": 0,
-          "confirmation": "Gap—no topic-and-geography signal identified"
+          "confirmation": "Gap; separate approval needed"
         },
         {
           "cycle": "C2",
           "baselineCandidates": 0,
-          "confirmation": "Gap—no topic-and-geography signal identified"
+          "confirmation": "Gap; separate approval needed"
         },
         {
           "cycle": "C3",
           "baselineCandidates": 0,
-          "confirmation": "Gap—no topic-and-geography signal identified"
+          "confirmation": "Gap; separate approval needed"
         }
       ],
       "draftDates": []
@@ -1130,17 +1980,17 @@
         {
           "cycle": "C1",
           "baselineCandidates": 0,
-          "confirmation": "Gap—no topic-and-geography signal identified"
+          "confirmation": "Gap; separate approval needed"
         },
         {
           "cycle": "C2",
           "baselineCandidates": 0,
-          "confirmation": "Gap—no topic-and-geography signal identified"
+          "confirmation": "Gap; separate approval needed"
         },
         {
           "cycle": "C3",
           "baselineCandidates": 0,
-          "confirmation": "Gap—no topic-and-geography signal identified"
+          "confirmation": "Gap; separate approval needed"
         }
       ],
       "draftDates": []
@@ -1156,17 +2006,17 @@
         {
           "cycle": "C1",
           "baselineCandidates": 0,
-          "confirmation": "Gap—no topic-and-geography signal identified"
+          "confirmation": "Gap; separate approval needed"
         },
         {
           "cycle": "C2",
           "baselineCandidates": 0,
-          "confirmation": "Gap—no topic-and-geography signal identified"
+          "confirmation": "Gap; separate approval needed"
         },
         {
           "cycle": "C3",
           "baselineCandidates": 0,
-          "confirmation": "Gap—no topic-and-geography signal identified"
+          "confirmation": "Gap; separate approval needed"
         }
       ],
       "draftDates": []
@@ -1182,17 +2032,17 @@
         {
           "cycle": "C1",
           "baselineCandidates": 0,
-          "confirmation": "Gap—no topic-and-geography signal identified"
+          "confirmation": "Gap; separate approval needed"
         },
         {
           "cycle": "C2",
           "baselineCandidates": 0,
-          "confirmation": "Gap—no topic-and-geography signal identified"
+          "confirmation": "Gap; separate approval needed"
         },
         {
           "cycle": "C3",
           "baselineCandidates": 0,
-          "confirmation": "Gap—no topic-and-geography signal identified"
+          "confirmation": "Gap; separate approval needed"
         }
       ],
       "draftDates": []
@@ -1208,17 +2058,17 @@
         {
           "cycle": "C1",
           "baselineCandidates": 0,
-          "confirmation": "Gap—no topic-and-geography signal identified"
+          "confirmation": "Gap; separate approval needed"
         },
         {
           "cycle": "C2",
           "baselineCandidates": 0,
-          "confirmation": "Gap—no topic-and-geography signal identified"
+          "confirmation": "Gap; separate approval needed"
         },
         {
           "cycle": "C3",
           "baselineCandidates": 0,
-          "confirmation": "Gap—no topic-and-geography signal identified"
+          "confirmation": "Gap; separate approval needed"
         }
       ],
       "draftDates": []
@@ -1234,17 +2084,17 @@
         {
           "cycle": "C1",
           "baselineCandidates": 0,
-          "confirmation": "Gap—no topic-and-geography signal identified"
+          "confirmation": "Gap; separate approval needed"
         },
         {
           "cycle": "C2",
           "baselineCandidates": 0,
-          "confirmation": "Gap—no topic-and-geography signal identified"
+          "confirmation": "Gap; separate approval needed"
         },
         {
           "cycle": "C3",
           "baselineCandidates": 0,
-          "confirmation": "Gap—no topic-and-geography signal identified"
+          "confirmation": "Gap; separate approval needed"
         }
       ],
       "draftDates": []
@@ -1260,17 +2110,17 @@
         {
           "cycle": "C1",
           "baselineCandidates": 0,
-          "confirmation": "Gap—no topic-and-geography signal identified"
+          "confirmation": "Gap; separate approval needed"
         },
         {
           "cycle": "C2",
           "baselineCandidates": 0,
-          "confirmation": "Gap—no topic-and-geography signal identified"
+          "confirmation": "Gap; separate approval needed"
         },
         {
           "cycle": "C3",
           "baselineCandidates": 0,
-          "confirmation": "Gap—no topic-and-geography signal identified"
+          "confirmation": "Gap; separate approval needed"
         }
       ],
       "draftDates": []
@@ -1286,17 +2136,17 @@
         {
           "cycle": "C1",
           "baselineCandidates": 0,
-          "confirmation": "Gap—no topic-and-geography signal identified"
+          "confirmation": "Gap; separate approval needed"
         },
         {
           "cycle": "C2",
           "baselineCandidates": 0,
-          "confirmation": "Gap—no topic-and-geography signal identified"
+          "confirmation": "Gap; separate approval needed"
         },
         {
           "cycle": "C3",
           "baselineCandidates": 0,
-          "confirmation": "Gap—no topic-and-geography signal identified"
+          "confirmation": "Gap; separate approval needed"
         }
       ],
       "draftDates": []
@@ -1312,17 +2162,17 @@
         {
           "cycle": "C1",
           "baselineCandidates": 0,
-          "confirmation": "Gap—no topic-and-geography signal identified"
+          "confirmation": "Gap; separate approval needed"
         },
         {
           "cycle": "C2",
           "baselineCandidates": 0,
-          "confirmation": "Gap—no topic-and-geography signal identified"
+          "confirmation": "Gap; separate approval needed"
         },
         {
           "cycle": "C3",
           "baselineCandidates": 0,
-          "confirmation": "Gap—no topic-and-geography signal identified"
+          "confirmation": "Gap; separate approval needed"
         }
       ],
       "draftDates": []
@@ -1338,17 +2188,17 @@
         {
           "cycle": "C1",
           "baselineCandidates": 0,
-          "confirmation": "Gap—no topic-and-geography signal identified"
+          "confirmation": "Gap; separate approval needed"
         },
         {
           "cycle": "C2",
           "baselineCandidates": 0,
-          "confirmation": "Gap—no topic-and-geography signal identified"
+          "confirmation": "Gap; separate approval needed"
         },
         {
           "cycle": "C3",
           "baselineCandidates": 0,
-          "confirmation": "Gap—no topic-and-geography signal identified"
+          "confirmation": "Gap; separate approval needed"
         }
       ],
       "draftDates": []
@@ -1364,17 +2214,17 @@
         {
           "cycle": "C1",
           "baselineCandidates": 0,
-          "confirmation": "Gap—no topic-and-geography signal identified"
+          "confirmation": "Gap; separate approval needed"
         },
         {
           "cycle": "C2",
           "baselineCandidates": 0,
-          "confirmation": "Gap—no topic-and-geography signal identified"
+          "confirmation": "Gap; separate approval needed"
         },
         {
           "cycle": "C3",
           "baselineCandidates": 0,
-          "confirmation": "Gap—no topic-and-geography signal identified"
+          "confirmation": "Gap; separate approval needed"
         }
       ],
       "draftDates": []
@@ -1390,17 +2240,17 @@
         {
           "cycle": "C1",
           "baselineCandidates": 0,
-          "confirmation": "Gap—no topic-and-geography signal identified"
+          "confirmation": "Gap; separate approval needed"
         },
         {
           "cycle": "C2",
           "baselineCandidates": 0,
-          "confirmation": "Gap—no topic-and-geography signal identified"
+          "confirmation": "Gap; separate approval needed"
         },
         {
           "cycle": "C3",
           "baselineCandidates": 0,
-          "confirmation": "Gap—no topic-and-geography signal identified"
+          "confirmation": "Gap; separate approval needed"
         }
       ],
       "draftDates": []
@@ -1416,17 +2266,17 @@
         {
           "cycle": "C1",
           "baselineCandidates": 0,
-          "confirmation": "Gap—no topic-and-geography signal identified"
+          "confirmation": "Gap; separate approval needed"
         },
         {
           "cycle": "C2",
           "baselineCandidates": 0,
-          "confirmation": "Gap—no topic-and-geography signal identified"
+          "confirmation": "Gap; separate approval needed"
         },
         {
           "cycle": "C3",
           "baselineCandidates": 0,
-          "confirmation": "Gap—no topic-and-geography signal identified"
+          "confirmation": "Gap; separate approval needed"
         }
       ],
       "draftDates": []
@@ -1442,17 +2292,17 @@
         {
           "cycle": "C1",
           "baselineCandidates": 0,
-          "confirmation": "Gap—no topic-and-geography signal identified"
+          "confirmation": "Gap; separate approval needed"
         },
         {
           "cycle": "C2",
           "baselineCandidates": 0,
-          "confirmation": "Gap—no topic-and-geography signal identified"
+          "confirmation": "Gap; separate approval needed"
         },
         {
           "cycle": "C3",
           "baselineCandidates": 0,
-          "confirmation": "Gap—no topic-and-geography signal identified"
+          "confirmation": "Gap; separate approval needed"
         }
       ],
       "draftDates": []
@@ -1468,17 +2318,17 @@
         {
           "cycle": "C1",
           "baselineCandidates": 0,
-          "confirmation": "Gap—no topic-and-geography signal identified"
+          "confirmation": "Gap; separate approval needed"
         },
         {
           "cycle": "C2",
           "baselineCandidates": 0,
-          "confirmation": "Gap—no topic-and-geography signal identified"
+          "confirmation": "Gap; separate approval needed"
         },
         {
           "cycle": "C3",
           "baselineCandidates": 0,
-          "confirmation": "Gap—no topic-and-geography signal identified"
+          "confirmation": "Gap; separate approval needed"
         }
       ],
       "draftDates": []
@@ -1494,17 +2344,17 @@
         {
           "cycle": "C1",
           "baselineCandidates": 0,
-          "confirmation": "Gap—no topic-and-geography signal identified"
+          "confirmation": "Gap; separate approval needed"
         },
         {
           "cycle": "C2",
           "baselineCandidates": 0,
-          "confirmation": "Gap—no topic-and-geography signal identified"
+          "confirmation": "Gap; separate approval needed"
         },
         {
           "cycle": "C3",
           "baselineCandidates": 0,
-          "confirmation": "Gap—no topic-and-geography signal identified"
+          "confirmation": "Gap; separate approval needed"
         }
       ],
       "draftDates": []
@@ -1520,17 +2370,17 @@
         {
           "cycle": "C1",
           "baselineCandidates": 0,
-          "confirmation": "Gap—no topic-and-geography signal identified"
+          "confirmation": "Gap; separate approval needed"
         },
         {
           "cycle": "C2",
           "baselineCandidates": 0,
-          "confirmation": "Gap—no topic-and-geography signal identified"
+          "confirmation": "Gap; separate approval needed"
         },
         {
           "cycle": "C3",
           "baselineCandidates": 0,
-          "confirmation": "Gap—no topic-and-geography signal identified"
+          "confirmation": "Gap; separate approval needed"
         }
       ],
       "draftDates": []
@@ -1546,17 +2396,17 @@
         {
           "cycle": "C1",
           "baselineCandidates": 0,
-          "confirmation": "Gap—no topic-and-geography signal identified"
+          "confirmation": "Gap; separate approval needed"
         },
         {
           "cycle": "C2",
           "baselineCandidates": 0,
-          "confirmation": "Gap—no topic-and-geography signal identified"
+          "confirmation": "Gap; separate approval needed"
         },
         {
           "cycle": "C3",
           "baselineCandidates": 0,
-          "confirmation": "Gap—no topic-and-geography signal identified"
+          "confirmation": "Gap; separate approval needed"
         }
       ],
       "draftDates": []
@@ -1572,17 +2422,17 @@
         {
           "cycle": "C1",
           "baselineCandidates": 0,
-          "confirmation": "Gap—no topic-and-geography signal identified"
+          "confirmation": "Gap; separate approval needed"
         },
         {
           "cycle": "C2",
           "baselineCandidates": 0,
-          "confirmation": "Gap—no topic-and-geography signal identified"
+          "confirmation": "Gap; separate approval needed"
         },
         {
           "cycle": "C3",
           "baselineCandidates": 0,
-          "confirmation": "Gap—no topic-and-geography signal identified"
+          "confirmation": "Gap; separate approval needed"
         }
       ],
       "draftDates": []
@@ -1598,17 +2448,17 @@
         {
           "cycle": "C1",
           "baselineCandidates": 0,
-          "confirmation": "Gap—no topic-and-geography signal identified"
+          "confirmation": "Gap; separate approval needed"
         },
         {
           "cycle": "C2",
           "baselineCandidates": 0,
-          "confirmation": "Gap—no topic-and-geography signal identified"
+          "confirmation": "Gap; separate approval needed"
         },
         {
           "cycle": "C3",
           "baselineCandidates": 0,
-          "confirmation": "Gap—no topic-and-geography signal identified"
+          "confirmation": "Gap; separate approval needed"
         }
       ],
       "draftDates": []
@@ -1624,17 +2474,17 @@
         {
           "cycle": "C1",
           "baselineCandidates": 0,
-          "confirmation": "Gap—no topic-and-geography signal identified"
+          "confirmation": "Gap; separate approval needed"
         },
         {
           "cycle": "C2",
           "baselineCandidates": 0,
-          "confirmation": "Gap—no topic-and-geography signal identified"
+          "confirmation": "Gap; separate approval needed"
         },
         {
           "cycle": "C3",
           "baselineCandidates": 0,
-          "confirmation": "Gap—no topic-and-geography signal identified"
+          "confirmation": "Gap; separate approval needed"
         }
       ],
       "draftDates": []
@@ -1650,17 +2500,17 @@
         {
           "cycle": "C1",
           "baselineCandidates": 0,
-          "confirmation": "Gap—no topic-and-geography signal identified"
+          "confirmation": "Gap; separate approval needed"
         },
         {
           "cycle": "C2",
           "baselineCandidates": 0,
-          "confirmation": "Gap—no topic-and-geography signal identified"
+          "confirmation": "Gap; separate approval needed"
         },
         {
           "cycle": "C3",
           "baselineCandidates": 0,
-          "confirmation": "Gap—no topic-and-geography signal identified"
+          "confirmation": "Gap; separate approval needed"
         }
       ],
       "draftDates": []
@@ -1676,17 +2526,17 @@
         {
           "cycle": "C1",
           "baselineCandidates": 0,
-          "confirmation": "Gap—no topic-and-geography signal identified"
+          "confirmation": "Gap; separate approval needed"
         },
         {
           "cycle": "C2",
           "baselineCandidates": 0,
-          "confirmation": "Gap—no topic-and-geography signal identified"
+          "confirmation": "Gap; separate approval needed"
         },
         {
           "cycle": "C3",
           "baselineCandidates": 0,
-          "confirmation": "Gap—no topic-and-geography signal identified"
+          "confirmation": "Gap; separate approval needed"
         }
       ],
       "draftDates": []
@@ -1702,17 +2552,17 @@
         {
           "cycle": "C1",
           "baselineCandidates": 0,
-          "confirmation": "Gap—no topic-and-geography signal identified"
+          "confirmation": "Gap; separate approval needed"
         },
         {
           "cycle": "C2",
           "baselineCandidates": 0,
-          "confirmation": "Gap—no topic-and-geography signal identified"
+          "confirmation": "Gap; separate approval needed"
         },
         {
           "cycle": "C3",
           "baselineCandidates": 0,
-          "confirmation": "Gap—no topic-and-geography signal identified"
+          "confirmation": "Gap; separate approval needed"
         }
       ],
       "draftDates": []
@@ -1728,17 +2578,17 @@
         {
           "cycle": "C1",
           "baselineCandidates": 0,
-          "confirmation": "Gap—no topic-and-geography signal identified"
+          "confirmation": "Gap; separate approval needed"
         },
         {
           "cycle": "C2",
           "baselineCandidates": 0,
-          "confirmation": "Gap—no topic-and-geography signal identified"
+          "confirmation": "Gap; separate approval needed"
         },
         {
           "cycle": "C3",
           "baselineCandidates": 0,
-          "confirmation": "Gap—no topic-and-geography signal identified"
+          "confirmation": "Gap; separate approval needed"
         }
       ],
       "draftDates": []
@@ -1754,17 +2604,17 @@
         {
           "cycle": "C1",
           "baselineCandidates": 0,
-          "confirmation": "Gap—no topic-and-geography signal identified"
+          "confirmation": "Gap; separate approval needed"
         },
         {
           "cycle": "C2",
           "baselineCandidates": 0,
-          "confirmation": "Gap—no topic-and-geography signal identified"
+          "confirmation": "Gap; separate approval needed"
         },
         {
           "cycle": "C3",
           "baselineCandidates": 0,
-          "confirmation": "Gap—no topic-and-geography signal identified"
+          "confirmation": "Gap; separate approval needed"
         }
       ],
       "draftDates": []
@@ -1780,17 +2630,17 @@
         {
           "cycle": "C1",
           "baselineCandidates": 0,
-          "confirmation": "Gap—no topic-and-geography signal identified"
+          "confirmation": "Gap; separate approval needed"
         },
         {
           "cycle": "C2",
           "baselineCandidates": 0,
-          "confirmation": "Gap—no topic-and-geography signal identified"
+          "confirmation": "Gap; separate approval needed"
         },
         {
           "cycle": "C3",
           "baselineCandidates": 0,
-          "confirmation": "Gap—no topic-and-geography signal identified"
+          "confirmation": "Gap; separate approval needed"
         }
       ],
       "draftDates": []
@@ -1806,17 +2656,17 @@
         {
           "cycle": "C1",
           "baselineCandidates": 0,
-          "confirmation": "Gap—no topic-and-geography signal identified"
+          "confirmation": "Gap; separate approval needed"
         },
         {
           "cycle": "C2",
           "baselineCandidates": 0,
-          "confirmation": "Gap—no topic-and-geography signal identified"
+          "confirmation": "Gap; separate approval needed"
         },
         {
           "cycle": "C3",
           "baselineCandidates": 0,
-          "confirmation": "Gap—no topic-and-geography signal identified"
+          "confirmation": "Gap; separate approval needed"
         }
       ],
       "draftDates": []
@@ -1832,17 +2682,17 @@
         {
           "cycle": "C1",
           "baselineCandidates": 0,
-          "confirmation": "Gap—no topic-and-geography signal identified"
+          "confirmation": "Gap; separate approval needed"
         },
         {
           "cycle": "C2",
           "baselineCandidates": 0,
-          "confirmation": "Gap—no topic-and-geography signal identified"
+          "confirmation": "Gap; separate approval needed"
         },
         {
           "cycle": "C3",
           "baselineCandidates": 0,
-          "confirmation": "Gap—no topic-and-geography signal identified"
+          "confirmation": "Gap; separate approval needed"
         }
       ],
       "draftDates": []
@@ -1858,20 +2708,25 @@
         {
           "cycle": "C1",
           "baselineCandidates": 0,
-          "confirmation": "Gap—no topic-and-geography signal identified"
+          "confirmation": "1 draft candidates; approval/semantic review pending"
         },
         {
           "cycle": "C2",
           "baselineCandidates": 0,
-          "confirmation": "Gap—no topic-and-geography signal identified"
+          "confirmation": "1 draft candidates; approval/semantic review pending"
         },
         {
           "cycle": "C3",
           "baselineCandidates": 0,
-          "confirmation": "Gap—no topic-and-geography signal identified"
+          "confirmation": "2 draft candidates; approval/semantic review pending"
         }
       ],
-      "draftDates": []
+      "draftDates": [
+        "2026-10-17",
+        "2026-11-07",
+        "2026-12-07",
+        "2026-12-18"
+      ]
     },
     {
       "id": 73,
@@ -1884,20 +2739,24 @@
         {
           "cycle": "C1",
           "baselineCandidates": 0,
-          "confirmation": "Gap—no topic-and-geography signal identified"
+          "confirmation": "1 draft candidates; approval/semantic review pending"
         },
         {
           "cycle": "C2",
           "baselineCandidates": 0,
-          "confirmation": "Gap—no topic-and-geography signal identified"
+          "confirmation": "1 draft candidates; approval/semantic review pending"
         },
         {
           "cycle": "C3",
           "baselineCandidates": 0,
-          "confirmation": "Gap—no topic-and-geography signal identified"
+          "confirmation": "1 draft candidates; approval/semantic review pending"
         }
       ],
-      "draftDates": []
+      "draftDates": [
+        "2026-10-17",
+        "2026-11-07",
+        "2026-12-18"
+      ]
     },
     {
       "id": 74,
@@ -1910,20 +2769,24 @@
         {
           "cycle": "C1",
           "baselineCandidates": 0,
-          "confirmation": "Gap—no topic-and-geography signal identified"
+          "confirmation": "1 draft candidates; approval/semantic review pending"
         },
         {
           "cycle": "C2",
           "baselineCandidates": 0,
-          "confirmation": "Gap—no topic-and-geography signal identified"
+          "confirmation": "1 draft candidates; approval/semantic review pending"
         },
         {
           "cycle": "C3",
           "baselineCandidates": 0,
-          "confirmation": "Gap—no topic-and-geography signal identified"
+          "confirmation": "1 draft candidates; approval/semantic review pending"
         }
       ],
-      "draftDates": []
+      "draftDates": [
+        "2026-10-17",
+        "2026-11-07",
+        "2026-12-18"
+      ]
     },
     {
       "id": 75,
@@ -1936,20 +2799,24 @@
         {
           "cycle": "C1",
           "baselineCandidates": 0,
-          "confirmation": "Gap—no topic-and-geography signal identified"
+          "confirmation": "1 draft candidates; approval/semantic review pending"
         },
         {
           "cycle": "C2",
           "baselineCandidates": 0,
-          "confirmation": "Gap—no topic-and-geography signal identified"
+          "confirmation": "1 draft candidates; approval/semantic review pending"
         },
         {
           "cycle": "C3",
           "baselineCandidates": 0,
-          "confirmation": "Gap—no topic-and-geography signal identified"
+          "confirmation": "1 draft candidates; approval/semantic review pending"
         }
       ],
-      "draftDates": []
+      "draftDates": [
+        "2026-10-17",
+        "2026-11-07",
+        "2026-12-18"
+      ]
     },
     {
       "id": 76,
@@ -1962,20 +2829,26 @@
         {
           "cycle": "C1",
           "baselineCandidates": 0,
-          "confirmation": "Gap—no topic-and-geography signal identified"
+          "confirmation": "2 draft candidates; approval/semantic review pending"
         },
         {
           "cycle": "C2",
           "baselineCandidates": 0,
-          "confirmation": "Gap—no topic-and-geography signal identified"
+          "confirmation": "1 draft candidates; approval/semantic review pending"
         },
         {
           "cycle": "C3",
           "baselineCandidates": 0,
-          "confirmation": "Gap—no topic-and-geography signal identified"
+          "confirmation": "2 draft candidates; approval/semantic review pending"
         }
       ],
-      "draftDates": []
+      "draftDates": [
+        "2026-10-17",
+        "2026-10-30",
+        "2026-11-07",
+        "2026-12-07",
+        "2026-12-18"
+      ]
     },
     {
       "id": 77,
@@ -1988,20 +2861,24 @@
         {
           "cycle": "C1",
           "baselineCandidates": 0,
-          "confirmation": "Gap—no topic-and-geography signal identified"
+          "confirmation": "1 draft candidates; approval/semantic review pending"
         },
         {
           "cycle": "C2",
           "baselineCandidates": 0,
-          "confirmation": "Gap—no topic-and-geography signal identified"
+          "confirmation": "1 draft candidates; approval/semantic review pending"
         },
         {
           "cycle": "C3",
           "baselineCandidates": 0,
-          "confirmation": "Gap—no topic-and-geography signal identified"
+          "confirmation": "1 draft candidates; approval/semantic review pending"
         }
       ],
-      "draftDates": []
+      "draftDates": [
+        "2026-10-17",
+        "2026-11-07",
+        "2026-12-18"
+      ]
     },
     {
       "id": 78,
@@ -2014,20 +2891,26 @@
         {
           "cycle": "C1",
           "baselineCandidates": 0,
-          "confirmation": "Gap—no topic-and-geography signal identified"
+          "confirmation": "2 draft candidates; approval/semantic review pending"
         },
         {
           "cycle": "C2",
           "baselineCandidates": 0,
-          "confirmation": "Gap—no topic-and-geography signal identified"
+          "confirmation": "1 draft candidates; approval/semantic review pending"
         },
         {
           "cycle": "C3",
           "baselineCandidates": 0,
-          "confirmation": "Gap—no topic-and-geography signal identified"
+          "confirmation": "2 draft candidates; approval/semantic review pending"
         }
       ],
-      "draftDates": []
+      "draftDates": [
+        "2026-10-17",
+        "2026-10-30",
+        "2026-11-07",
+        "2026-12-07",
+        "2026-12-18"
+      ]
     },
     {
       "id": 79,
@@ -2040,20 +2923,77 @@
         {
           "cycle": "C1",
           "baselineCandidates": 17,
-          "confirmation": "Candidate—editorial confirmation required"
+          "confirmation": "17 draft candidates; approval/semantic review pending"
         },
         {
           "cycle": "C2",
           "baselineCandidates": 22,
-          "confirmation": "Candidate—editorial confirmation required"
+          "confirmation": "22 draft candidates; approval/semantic review pending"
         },
         {
           "cycle": "C3",
           "baselineCandidates": 17,
-          "confirmation": "Candidate—editorial confirmation required"
+          "confirmation": "17 draft candidates; approval/semantic review pending"
         }
       ],
-      "draftDates": []
+      "draftDates": [
+        "2026-10-09",
+        "2026-10-17",
+        "2026-10-18",
+        "2026-10-21",
+        "2026-10-22",
+        "2026-10-24",
+        "2026-10-25",
+        "2026-10-26",
+        "2026-10-27",
+        "2026-10-28",
+        "2026-10-29",
+        "2026-10-30",
+        "2026-10-31",
+        "2026-11-02",
+        "2026-11-03",
+        "2026-11-05",
+        "2026-11-06",
+        "2026-11-07",
+        "2026-11-08",
+        "2026-11-09",
+        "2026-11-11",
+        "2026-11-12",
+        "2026-11-13",
+        "2026-11-17",
+        "2026-11-19",
+        "2026-11-21",
+        "2026-11-22",
+        "2026-11-23",
+        "2026-11-24",
+        "2026-11-25",
+        "2026-11-26",
+        "2026-11-27",
+        "2026-11-28",
+        "2026-11-29",
+        "2026-12-01",
+        "2026-12-02",
+        "2026-12-03",
+        "2026-12-04",
+        "2026-12-05",
+        "2026-12-08",
+        "2026-12-11",
+        "2026-12-12",
+        "2026-12-13",
+        "2026-12-15",
+        "2026-12-16",
+        "2026-12-17",
+        "2026-12-18",
+        "2026-12-19",
+        "2026-12-20",
+        "2026-12-22",
+        "2026-12-24",
+        "2026-12-25",
+        "2026-12-26",
+        "2026-12-27",
+        "2026-12-29",
+        "2026-12-31"
+      ]
     },
     {
       "id": 80,
@@ -2066,17 +3006,17 @@
         {
           "cycle": "C1",
           "baselineCandidates": 0,
-          "confirmation": "Gap—no topic-and-geography signal identified"
+          "confirmation": "Gap; separate approval needed"
         },
         {
           "cycle": "C2",
           "baselineCandidates": 0,
-          "confirmation": "Gap—no topic-and-geography signal identified"
+          "confirmation": "Gap; separate approval needed"
         },
         {
           "cycle": "C3",
           "baselineCandidates": 0,
-          "confirmation": "Gap—no topic-and-geography signal identified"
+          "confirmation": "Gap; separate approval needed"
         }
       ],
       "draftDates": []
@@ -2092,20 +3032,77 @@
         {
           "cycle": "C1",
           "baselineCandidates": 17,
-          "confirmation": "Candidate—editorial confirmation required"
+          "confirmation": "17 draft candidates; approval/semantic review pending"
         },
         {
           "cycle": "C2",
           "baselineCandidates": 22,
-          "confirmation": "Candidate—editorial confirmation required"
+          "confirmation": "22 draft candidates; approval/semantic review pending"
         },
         {
           "cycle": "C3",
           "baselineCandidates": 17,
-          "confirmation": "Candidate—editorial confirmation required"
+          "confirmation": "17 draft candidates; approval/semantic review pending"
         }
       ],
-      "draftDates": []
+      "draftDates": [
+        "2026-10-09",
+        "2026-10-17",
+        "2026-10-18",
+        "2026-10-21",
+        "2026-10-22",
+        "2026-10-24",
+        "2026-10-25",
+        "2026-10-26",
+        "2026-10-27",
+        "2026-10-28",
+        "2026-10-29",
+        "2026-10-30",
+        "2026-10-31",
+        "2026-11-02",
+        "2026-11-03",
+        "2026-11-05",
+        "2026-11-06",
+        "2026-11-07",
+        "2026-11-08",
+        "2026-11-09",
+        "2026-11-11",
+        "2026-11-12",
+        "2026-11-13",
+        "2026-11-17",
+        "2026-11-19",
+        "2026-11-21",
+        "2026-11-22",
+        "2026-11-23",
+        "2026-11-24",
+        "2026-11-25",
+        "2026-11-26",
+        "2026-11-27",
+        "2026-11-28",
+        "2026-11-29",
+        "2026-12-01",
+        "2026-12-02",
+        "2026-12-03",
+        "2026-12-04",
+        "2026-12-05",
+        "2026-12-08",
+        "2026-12-11",
+        "2026-12-12",
+        "2026-12-13",
+        "2026-12-15",
+        "2026-12-16",
+        "2026-12-17",
+        "2026-12-18",
+        "2026-12-19",
+        "2026-12-20",
+        "2026-12-22",
+        "2026-12-24",
+        "2026-12-25",
+        "2026-12-26",
+        "2026-12-27",
+        "2026-12-29",
+        "2026-12-31"
+      ]
     },
     {
       "id": 82,
@@ -2118,20 +3115,77 @@
         {
           "cycle": "C1",
           "baselineCandidates": 17,
-          "confirmation": "Candidate—editorial confirmation required"
+          "confirmation": "17 draft candidates; approval/semantic review pending"
         },
         {
           "cycle": "C2",
           "baselineCandidates": 22,
-          "confirmation": "Candidate—editorial confirmation required"
+          "confirmation": "22 draft candidates; approval/semantic review pending"
         },
         {
           "cycle": "C3",
           "baselineCandidates": 17,
-          "confirmation": "Candidate—editorial confirmation required"
+          "confirmation": "17 draft candidates; approval/semantic review pending"
         }
       ],
-      "draftDates": []
+      "draftDates": [
+        "2026-10-09",
+        "2026-10-17",
+        "2026-10-18",
+        "2026-10-21",
+        "2026-10-22",
+        "2026-10-24",
+        "2026-10-25",
+        "2026-10-26",
+        "2026-10-27",
+        "2026-10-28",
+        "2026-10-29",
+        "2026-10-30",
+        "2026-10-31",
+        "2026-11-02",
+        "2026-11-03",
+        "2026-11-05",
+        "2026-11-06",
+        "2026-11-07",
+        "2026-11-08",
+        "2026-11-09",
+        "2026-11-11",
+        "2026-11-12",
+        "2026-11-13",
+        "2026-11-17",
+        "2026-11-19",
+        "2026-11-21",
+        "2026-11-22",
+        "2026-11-23",
+        "2026-11-24",
+        "2026-11-25",
+        "2026-11-26",
+        "2026-11-27",
+        "2026-11-28",
+        "2026-11-29",
+        "2026-12-01",
+        "2026-12-02",
+        "2026-12-03",
+        "2026-12-04",
+        "2026-12-05",
+        "2026-12-08",
+        "2026-12-11",
+        "2026-12-12",
+        "2026-12-13",
+        "2026-12-15",
+        "2026-12-16",
+        "2026-12-17",
+        "2026-12-18",
+        "2026-12-19",
+        "2026-12-20",
+        "2026-12-22",
+        "2026-12-24",
+        "2026-12-25",
+        "2026-12-26",
+        "2026-12-27",
+        "2026-12-29",
+        "2026-12-31"
+      ]
     },
     {
       "id": 83,
@@ -2144,20 +3198,77 @@
         {
           "cycle": "C1",
           "baselineCandidates": 17,
-          "confirmation": "Candidate—editorial confirmation required"
+          "confirmation": "17 draft candidates; approval/semantic review pending"
         },
         {
           "cycle": "C2",
           "baselineCandidates": 22,
-          "confirmation": "Candidate—editorial confirmation required"
+          "confirmation": "22 draft candidates; approval/semantic review pending"
         },
         {
           "cycle": "C3",
           "baselineCandidates": 17,
-          "confirmation": "Candidate—editorial confirmation required"
+          "confirmation": "17 draft candidates; approval/semantic review pending"
         }
       ],
-      "draftDates": []
+      "draftDates": [
+        "2026-10-09",
+        "2026-10-17",
+        "2026-10-18",
+        "2026-10-21",
+        "2026-10-22",
+        "2026-10-24",
+        "2026-10-25",
+        "2026-10-26",
+        "2026-10-27",
+        "2026-10-28",
+        "2026-10-29",
+        "2026-10-30",
+        "2026-10-31",
+        "2026-11-02",
+        "2026-11-03",
+        "2026-11-05",
+        "2026-11-06",
+        "2026-11-07",
+        "2026-11-08",
+        "2026-11-09",
+        "2026-11-11",
+        "2026-11-12",
+        "2026-11-13",
+        "2026-11-17",
+        "2026-11-19",
+        "2026-11-21",
+        "2026-11-22",
+        "2026-11-23",
+        "2026-11-24",
+        "2026-11-25",
+        "2026-11-26",
+        "2026-11-27",
+        "2026-11-28",
+        "2026-11-29",
+        "2026-12-01",
+        "2026-12-02",
+        "2026-12-03",
+        "2026-12-04",
+        "2026-12-05",
+        "2026-12-08",
+        "2026-12-11",
+        "2026-12-12",
+        "2026-12-13",
+        "2026-12-15",
+        "2026-12-16",
+        "2026-12-17",
+        "2026-12-18",
+        "2026-12-19",
+        "2026-12-20",
+        "2026-12-22",
+        "2026-12-24",
+        "2026-12-25",
+        "2026-12-26",
+        "2026-12-27",
+        "2026-12-29",
+        "2026-12-31"
+      ]
     },
     {
       "id": 84,
@@ -2170,20 +3281,23 @@
         {
           "cycle": "C1",
           "baselineCandidates": 0,
-          "confirmation": "Gap—no topic-and-geography signal identified"
+          "confirmation": "1 draft candidates; approval/semantic review pending"
         },
         {
           "cycle": "C2",
           "baselineCandidates": 0,
-          "confirmation": "Gap—no topic-and-geography signal identified"
+          "confirmation": "Gap; separate approval needed"
         },
         {
           "cycle": "C3",
           "baselineCandidates": 0,
-          "confirmation": "Gap—no topic-and-geography signal identified"
+          "confirmation": "1 draft candidates; approval/semantic review pending"
         }
       ],
-      "draftDates": []
+      "draftDates": [
+        "2026-10-21",
+        "2026-12-14"
+      ]
     },
     {
       "id": 85,
@@ -2196,20 +3310,23 @@
         {
           "cycle": "C1",
           "baselineCandidates": 0,
-          "confirmation": "Gap—no topic-and-geography signal identified"
+          "confirmation": "1 draft candidates; approval/semantic review pending"
         },
         {
           "cycle": "C2",
           "baselineCandidates": 0,
-          "confirmation": "Gap—no topic-and-geography signal identified"
+          "confirmation": "1 draft candidates; approval/semantic review pending"
         },
         {
           "cycle": "C3",
           "baselineCandidates": 0,
-          "confirmation": "Gap—no topic-and-geography signal identified"
+          "confirmation": "Gap; separate approval needed"
         }
       ],
-      "draftDates": []
+      "draftDates": [
+        "2026-10-26",
+        "2026-11-29"
+      ]
     },
     {
       "id": 86,
@@ -2217,25 +3334,30 @@
       "source": "Google Ads — original audit",
       "intent": "selection",
       "geography": "Ventura",
-      "priority": "Existing strategy",
+      "priority": "Primary",
       "cycles": [
         {
           "cycle": "C1",
           "baselineCandidates": 0,
-          "confirmation": "Gap—no topic-and-geography signal identified"
+          "confirmation": "Gap; separate approval needed"
         },
         {
           "cycle": "C2",
           "baselineCandidates": 2,
-          "confirmation": "Candidate—editorial confirmation required"
+          "confirmation": "3 draft candidates; approval/semantic review pending"
         },
         {
           "cycle": "C3",
           "baselineCandidates": 1,
-          "confirmation": "Candidate—editorial confirmation required"
+          "confirmation": "1 draft candidates; approval/semantic review pending"
         }
       ],
-      "draftDates": []
+      "draftDates": [
+        "2026-11-08",
+        "2026-11-21",
+        "2026-11-30",
+        "2026-12-19"
+      ]
     },
     {
       "id": 87,
@@ -2248,20 +3370,30 @@
         {
           "cycle": "C1",
           "baselineCandidates": 3,
-          "confirmation": "Candidate—editorial confirmation required"
+          "confirmation": "4 draft candidates; approval/semantic review pending"
         },
         {
           "cycle": "C2",
           "baselineCandidates": 1,
-          "confirmation": "Candidate—editorial confirmation required"
+          "confirmation": "1 draft candidates; approval/semantic review pending"
         },
         {
           "cycle": "C3",
           "baselineCandidates": 4,
-          "confirmation": "Candidate—editorial confirmation required"
+          "confirmation": "4 draft candidates; approval/semantic review pending"
         }
       ],
-      "draftDates": []
+      "draftDates": [
+        "2026-10-22",
+        "2026-10-26",
+        "2026-10-28",
+        "2026-11-01",
+        "2026-11-29",
+        "2026-12-18",
+        "2026-12-27",
+        "2026-12-30",
+        "2026-12-31"
+      ]
     },
     {
       "id": 88,
@@ -2274,20 +3406,31 @@
         {
           "cycle": "C1",
           "baselineCandidates": 3,
-          "confirmation": "Candidate—editorial confirmation required"
+          "confirmation": "5 draft candidates; approval/semantic review pending"
         },
         {
           "cycle": "C2",
           "baselineCandidates": 1,
-          "confirmation": "Candidate—editorial confirmation required"
+          "confirmation": "1 draft candidates; approval/semantic review pending"
         },
         {
           "cycle": "C3",
           "baselineCandidates": 4,
-          "confirmation": "Candidate—editorial confirmation required"
+          "confirmation": "4 draft candidates; approval/semantic review pending"
         }
       ],
-      "draftDates": []
+      "draftDates": [
+        "2026-10-17",
+        "2026-10-22",
+        "2026-10-26",
+        "2026-10-28",
+        "2026-11-01",
+        "2026-11-29",
+        "2026-12-18",
+        "2026-12-27",
+        "2026-12-30",
+        "2026-12-31"
+      ]
     },
     {
       "id": 89,
@@ -2300,20 +3443,28 @@
         {
           "cycle": "C1",
           "baselineCandidates": 1,
-          "confirmation": "Candidate—editorial confirmation required"
+          "confirmation": "3 draft candidates; approval/semantic review pending"
         },
         {
           "cycle": "C2",
           "baselineCandidates": 1,
-          "confirmation": "Candidate—editorial confirmation required"
+          "confirmation": "2 draft candidates; approval/semantic review pending"
         },
         {
           "cycle": "C3",
           "baselineCandidates": 1,
-          "confirmation": "Candidate—editorial confirmation required"
+          "confirmation": "2 draft candidates; approval/semantic review pending"
         }
       ],
-      "draftDates": []
+      "draftDates": [
+        "2026-10-16",
+        "2026-10-26",
+        "2026-10-28",
+        "2026-11-24",
+        "2026-11-29",
+        "2026-12-27",
+        "2026-12-30"
+      ]
     },
     {
       "id": 90,
@@ -2326,20 +3477,28 @@
         {
           "cycle": "C1",
           "baselineCandidates": 1,
-          "confirmation": "Candidate—editorial confirmation required"
+          "confirmation": "3 draft candidates; approval/semantic review pending"
         },
         {
           "cycle": "C2",
           "baselineCandidates": 1,
-          "confirmation": "Candidate—editorial confirmation required"
+          "confirmation": "2 draft candidates; approval/semantic review pending"
         },
         {
           "cycle": "C3",
           "baselineCandidates": 1,
-          "confirmation": "Candidate—editorial confirmation required"
+          "confirmation": "2 draft candidates; approval/semantic review pending"
         }
       ],
-      "draftDates": []
+      "draftDates": [
+        "2026-10-16",
+        "2026-10-26",
+        "2026-10-28",
+        "2026-11-24",
+        "2026-11-29",
+        "2026-12-27",
+        "2026-12-30"
+      ]
     },
     {
       "id": 91,
@@ -2352,20 +3511,26 @@
         {
           "cycle": "C1",
           "baselineCandidates": 2,
-          "confirmation": "Candidate—editorial confirmation required"
+          "confirmation": "3 draft candidates; approval/semantic review pending"
         },
         {
           "cycle": "C2",
           "baselineCandidates": 1,
-          "confirmation": "Candidate—editorial confirmation required"
+          "confirmation": "1 draft candidates; approval/semantic review pending"
         },
         {
           "cycle": "C3",
           "baselineCandidates": 0,
-          "confirmation": "Gap—no topic-and-geography signal identified"
+          "confirmation": "1 draft candidates; approval/semantic review pending"
         }
       ],
-      "draftDates": []
+      "draftDates": [
+        "2026-10-08",
+        "2026-10-13",
+        "2026-10-15",
+        "2026-11-10",
+        "2026-12-07"
+      ]
     },
     {
       "id": 92,
@@ -2378,20 +3543,25 @@
         {
           "cycle": "C1",
           "baselineCandidates": 0,
-          "confirmation": "Gap—no topic-and-geography signal identified"
+          "confirmation": "1 draft candidates; approval/semantic review pending"
         },
         {
           "cycle": "C2",
           "baselineCandidates": 0,
-          "confirmation": "Gap—no topic-and-geography signal identified"
+          "confirmation": "1 draft candidates; approval/semantic review pending"
         },
         {
           "cycle": "C3",
           "baselineCandidates": 0,
-          "confirmation": "Gap—no topic-and-geography signal identified"
+          "confirmation": "2 draft candidates; approval/semantic review pending"
         }
       ],
-      "draftDates": []
+      "draftDates": [
+        "2026-10-28",
+        "2026-11-07",
+        "2026-12-26",
+        "2026-12-30"
+      ]
     },
     {
       "id": 93,
@@ -2404,20 +3574,25 @@
         {
           "cycle": "C1",
           "baselineCandidates": 0,
-          "confirmation": "Gap—no topic-and-geography signal identified"
+          "confirmation": "1 draft candidates; approval/semantic review pending"
         },
         {
           "cycle": "C2",
           "baselineCandidates": 0,
-          "confirmation": "Gap—no topic-and-geography signal identified"
+          "confirmation": "1 draft candidates; approval/semantic review pending"
         },
         {
           "cycle": "C3",
           "baselineCandidates": 0,
-          "confirmation": "Gap—no topic-and-geography signal identified"
+          "confirmation": "2 draft candidates; approval/semantic review pending"
         }
       ],
-      "draftDates": []
+      "draftDates": [
+        "2026-10-28",
+        "2026-11-07",
+        "2026-12-26",
+        "2026-12-30"
+      ]
     },
     {
       "id": 94,
@@ -2430,20 +3605,106 @@
         {
           "cycle": "C1",
           "baselineCandidates": 30,
-          "confirmation": "Candidate—editorial confirmation required"
+          "confirmation": "30 draft candidates; approval/semantic review pending"
         },
         {
           "cycle": "C2",
           "baselineCandidates": 30,
-          "confirmation": "Candidate—editorial confirmation required"
+          "confirmation": "30 draft candidates; approval/semantic review pending"
         },
         {
           "cycle": "C3",
           "baselineCandidates": 25,
-          "confirmation": "Candidate—editorial confirmation required"
+          "confirmation": "25 draft candidates; approval/semantic review pending"
         }
       ],
-      "draftDates": []
+      "draftDates": [
+        "2026-10-08",
+        "2026-10-09",
+        "2026-10-10",
+        "2026-10-11",
+        "2026-10-12",
+        "2026-10-13",
+        "2026-10-14",
+        "2026-10-15",
+        "2026-10-16",
+        "2026-10-17",
+        "2026-10-18",
+        "2026-10-19",
+        "2026-10-20",
+        "2026-10-21",
+        "2026-10-22",
+        "2026-10-23",
+        "2026-10-24",
+        "2026-10-25",
+        "2026-10-26",
+        "2026-10-27",
+        "2026-10-28",
+        "2026-10-29",
+        "2026-10-30",
+        "2026-10-31",
+        "2026-11-01",
+        "2026-11-02",
+        "2026-11-03",
+        "2026-11-04",
+        "2026-11-05",
+        "2026-11-06",
+        "2026-11-07",
+        "2026-11-08",
+        "2026-11-09",
+        "2026-11-10",
+        "2026-11-11",
+        "2026-11-12",
+        "2026-11-13",
+        "2026-11-14",
+        "2026-11-15",
+        "2026-11-16",
+        "2026-11-17",
+        "2026-11-18",
+        "2026-11-19",
+        "2026-11-20",
+        "2026-11-21",
+        "2026-11-22",
+        "2026-11-23",
+        "2026-11-24",
+        "2026-11-25",
+        "2026-11-26",
+        "2026-11-27",
+        "2026-11-28",
+        "2026-11-29",
+        "2026-11-30",
+        "2026-12-01",
+        "2026-12-02",
+        "2026-12-03",
+        "2026-12-04",
+        "2026-12-05",
+        "2026-12-06",
+        "2026-12-07",
+        "2026-12-08",
+        "2026-12-09",
+        "2026-12-10",
+        "2026-12-11",
+        "2026-12-12",
+        "2026-12-13",
+        "2026-12-14",
+        "2026-12-15",
+        "2026-12-16",
+        "2026-12-17",
+        "2026-12-18",
+        "2026-12-19",
+        "2026-12-20",
+        "2026-12-21",
+        "2026-12-22",
+        "2026-12-23",
+        "2026-12-24",
+        "2026-12-25",
+        "2026-12-26",
+        "2026-12-27",
+        "2026-12-28",
+        "2026-12-29",
+        "2026-12-30",
+        "2026-12-31"
+      ]
     },
     {
       "id": 95,
@@ -2456,20 +3717,106 @@
         {
           "cycle": "C1",
           "baselineCandidates": 30,
-          "confirmation": "Candidate—editorial confirmation required"
+          "confirmation": "30 draft candidates; approval/semantic review pending"
         },
         {
           "cycle": "C2",
           "baselineCandidates": 30,
-          "confirmation": "Candidate—editorial confirmation required"
+          "confirmation": "30 draft candidates; approval/semantic review pending"
         },
         {
           "cycle": "C3",
           "baselineCandidates": 25,
-          "confirmation": "Candidate—editorial confirmation required"
+          "confirmation": "25 draft candidates; approval/semantic review pending"
         }
       ],
-      "draftDates": []
+      "draftDates": [
+        "2026-10-08",
+        "2026-10-09",
+        "2026-10-10",
+        "2026-10-11",
+        "2026-10-12",
+        "2026-10-13",
+        "2026-10-14",
+        "2026-10-15",
+        "2026-10-16",
+        "2026-10-17",
+        "2026-10-18",
+        "2026-10-19",
+        "2026-10-20",
+        "2026-10-21",
+        "2026-10-22",
+        "2026-10-23",
+        "2026-10-24",
+        "2026-10-25",
+        "2026-10-26",
+        "2026-10-27",
+        "2026-10-28",
+        "2026-10-29",
+        "2026-10-30",
+        "2026-10-31",
+        "2026-11-01",
+        "2026-11-02",
+        "2026-11-03",
+        "2026-11-04",
+        "2026-11-05",
+        "2026-11-06",
+        "2026-11-07",
+        "2026-11-08",
+        "2026-11-09",
+        "2026-11-10",
+        "2026-11-11",
+        "2026-11-12",
+        "2026-11-13",
+        "2026-11-14",
+        "2026-11-15",
+        "2026-11-16",
+        "2026-11-17",
+        "2026-11-18",
+        "2026-11-19",
+        "2026-11-20",
+        "2026-11-21",
+        "2026-11-22",
+        "2026-11-23",
+        "2026-11-24",
+        "2026-11-25",
+        "2026-11-26",
+        "2026-11-27",
+        "2026-11-28",
+        "2026-11-29",
+        "2026-11-30",
+        "2026-12-01",
+        "2026-12-02",
+        "2026-12-03",
+        "2026-12-04",
+        "2026-12-05",
+        "2026-12-06",
+        "2026-12-07",
+        "2026-12-08",
+        "2026-12-09",
+        "2026-12-10",
+        "2026-12-11",
+        "2026-12-12",
+        "2026-12-13",
+        "2026-12-14",
+        "2026-12-15",
+        "2026-12-16",
+        "2026-12-17",
+        "2026-12-18",
+        "2026-12-19",
+        "2026-12-20",
+        "2026-12-21",
+        "2026-12-22",
+        "2026-12-23",
+        "2026-12-24",
+        "2026-12-25",
+        "2026-12-26",
+        "2026-12-27",
+        "2026-12-28",
+        "2026-12-29",
+        "2026-12-30",
+        "2026-12-31"
+      ]
     },
     {
       "id": 96,
@@ -2477,25 +3824,27 @@
       "source": "Google Ads — original audit",
       "intent": "reviews",
       "geography": "Westlake Village",
-      "priority": "Existing strategy",
+      "priority": "Primary",
       "cycles": [
         {
           "cycle": "C1",
           "baselineCandidates": 0,
-          "confirmation": "Gap—no topic-and-geography signal identified"
+          "confirmation": "Gap; separate approval needed"
         },
         {
           "cycle": "C2",
           "baselineCandidates": 0,
-          "confirmation": "Gap—no topic-and-geography signal identified"
+          "confirmation": "1 draft candidates; approval/semantic review pending"
         },
         {
           "cycle": "C3",
           "baselineCandidates": 0,
-          "confirmation": "Gap—no topic-and-geography signal identified"
+          "confirmation": "Gap; separate approval needed"
         }
       ],
-      "draftDates": []
+      "draftDates": [
+        "2026-11-16"
+      ]
     },
     {
       "id": 97,
@@ -2516,21 +3865,21 @@
           "baselineExactArticles": 0,
           "baselineCandidates": null,
           "draftArticles": 1,
-          "confirmation": "Private draft; meaningful coverage not approved"
+          "confirmation": "1 draft candidates; approval/semantic review pending"
         },
         {
           "cycle": "C2",
           "baselineExactArticles": 0,
           "baselineCandidates": null,
           "draftArticles": 2,
-          "confirmation": "Private draft; meaningful coverage not approved"
+          "confirmation": "2 draft candidates; approval/semantic review pending"
         },
         {
           "cycle": "C3",
           "baselineExactArticles": 0,
           "baselineCandidates": null,
           "draftArticles": 1,
-          "confirmation": "Private draft; meaningful coverage not approved"
+          "confirmation": "1 draft candidates; approval/semantic review pending"
         }
       ]
     },
@@ -2553,21 +3902,21 @@
           "baselineExactArticles": 0,
           "baselineCandidates": null,
           "draftArticles": 1,
-          "confirmation": "Private draft; meaningful coverage not approved"
+          "confirmation": "1 draft candidates; approval/semantic review pending"
         },
         {
           "cycle": "C2",
           "baselineExactArticles": 0,
           "baselineCandidates": null,
           "draftArticles": 2,
-          "confirmation": "Private draft; meaningful coverage not approved"
+          "confirmation": "2 draft candidates; approval/semantic review pending"
         },
         {
           "cycle": "C3",
           "baselineExactArticles": 0,
           "baselineCandidates": null,
           "draftArticles": 1,
-          "confirmation": "Private draft; meaningful coverage not approved"
+          "confirmation": "1 draft candidates; approval/semantic review pending"
         }
       ]
     },
@@ -2590,21 +3939,21 @@
           "baselineExactArticles": 0,
           "baselineCandidates": null,
           "draftArticles": 1,
-          "confirmation": "Private draft; meaningful coverage not approved"
+          "confirmation": "1 draft candidates; approval/semantic review pending"
         },
         {
           "cycle": "C2",
           "baselineExactArticles": 0,
           "baselineCandidates": null,
           "draftArticles": 2,
-          "confirmation": "Private draft; meaningful coverage not approved"
+          "confirmation": "2 draft candidates; approval/semantic review pending"
         },
         {
           "cycle": "C3",
           "baselineExactArticles": 0,
           "baselineCandidates": null,
           "draftArticles": 1,
-          "confirmation": "Private draft; meaningful coverage not approved"
+          "confirmation": "1 draft candidates; approval/semantic review pending"
         }
       ]
     },
@@ -2616,6 +3965,7 @@
       "geography": "Thousand Oaks, California",
       "priority": "Primary",
       "draftDates": [
+        "2026-10-11",
         "2026-10-24",
         "2026-11-15",
         "2026-12-04",
@@ -2627,21 +3977,21 @@
           "baselineExactArticles": 0,
           "baselineCandidates": null,
           "draftArticles": 2,
-          "confirmation": "Private draft; meaningful coverage not approved"
+          "confirmation": "2 draft candidates; approval/semantic review pending"
         },
         {
           "cycle": "C2",
           "baselineExactArticles": 0,
           "baselineCandidates": null,
           "draftArticles": 2,
-          "confirmation": "Private draft; meaningful coverage not approved"
+          "confirmation": "2 draft candidates; approval/semantic review pending"
         },
         {
           "cycle": "C3",
           "baselineExactArticles": 0,
           "baselineCandidates": null,
           "draftArticles": 1,
-          "confirmation": "Private draft; meaningful coverage not approved"
+          "confirmation": "1 draft candidates; approval/semantic review pending"
         }
       ]
     },
@@ -2653,6 +4003,7 @@
       "geography": "Thousand Oaks, California",
       "priority": "Primary",
       "draftDates": [
+        "2026-10-11",
         "2026-10-24",
         "2026-11-15",
         "2026-12-04",
@@ -2664,21 +4015,21 @@
           "baselineExactArticles": 0,
           "baselineCandidates": null,
           "draftArticles": 2,
-          "confirmation": "Private draft; meaningful coverage not approved"
+          "confirmation": "2 draft candidates; approval/semantic review pending"
         },
         {
           "cycle": "C2",
           "baselineExactArticles": 0,
           "baselineCandidates": null,
           "draftArticles": 2,
-          "confirmation": "Private draft; meaningful coverage not approved"
+          "confirmation": "2 draft candidates; approval/semantic review pending"
         },
         {
           "cycle": "C3",
           "baselineExactArticles": 0,
           "baselineCandidates": null,
           "draftArticles": 1,
-          "confirmation": "Private draft; meaningful coverage not approved"
+          "confirmation": "1 draft candidates; approval/semantic review pending"
         }
       ]
     }
