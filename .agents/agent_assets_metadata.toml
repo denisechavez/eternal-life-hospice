@@ -1988,3 +1988,17 @@ mtime_ms = 1791508000442
 storage_uri = "gcs://replit-rams-assets-kirk/rams/assets/repl:e1b2f643-7869-4565-af0e-10c34575ee8d/dabe97f5-8e4b-4729-85b2-dc2e65be10b6/b2e3ec73-c5c3-48e4-a6a4-e8f65332fba3"
 storage_version_token = "1791508843076840"
 content_type = "text/csv"
+
+[[outputs]]
+id = "QZaGPQzFeWGNsqClXcD3x"
+uri = "file://generated-artifacts/journal-oct08-dec31-2026.zip"
+type = "unspecified"
+title = "Eternal Journal — October 8–December 31, 2026"
+description = "One ZIP with all 85 articles, publication dates, titles, keyword IDs/phrases, target-city information, article URLs and 85 unchanged source photographs. Includes an offline reader, CSV indexes and full text. Private revisions and unverified approval status are clearly labeled."
+logical_id = "6a6cecd7-86a7-498a-ab4f-dfa3be447fb9"
+content_hash = "sha256:fbfdd16edb889c2176815305a37b86b6a0a63ce77165f2f81e4a52833b927146"
+size = 26950262
+mtime_ms = 1791594859103
+storage_uri = "gcs://replit-rams-assets-kirk/rams/assets/repl:e1b2f643-7869-4565-af0e-10c34575ee8d/6a6cecd7-86a7-498a-ab4f-dfa3be447fb9/2d9ee4d6-b47f-48b4-8f75-acc628caf177"
+storage_version_token = "1791594896170262"
+content_type = "application/octet-stream"

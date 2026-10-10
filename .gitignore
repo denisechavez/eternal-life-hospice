@@ -6,3 +6,6 @@ _private-data/
 .pythonlibs/
 __pycache__/
 *.py[cod]
+
+# Downloadable generated packages; keep out of Git and publishing.
+/generated-artifacts/

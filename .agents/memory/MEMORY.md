@@ -53,3 +53,4 @@
 - [Completion checkpoint safety](completion-checkpoint-safety.md) — completion can capture unrelated dirty files even for no-change verification; disclose this risk before completing.
 - [Internal-link decisions](internal-link-decisions.md) — topic-owner journeys, curated local neighbors and request-time eligibility for staged Journal recommendations.
 - [Eternal Studio approval](eternal-studio-approval.md) — Journal, emails and Care Brief must enter Studio review and receive approval before new publication or sending.
+- [Recruitment call quality](recruitment-call-quality.md) — public volunteer/career promotion is drawing unwanted PPC calls; recommend reversible removal from site and referral cards.
