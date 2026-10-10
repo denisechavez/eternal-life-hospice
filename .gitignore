@@ -9,3 +9,6 @@ __pycache__/
 
 # Downloadable generated packages; keep out of Git and publishing.
 /generated-artifacts/
+
+# Built during publishing; draft chunks require authenticated server delivery.
+/website/studio-build/
