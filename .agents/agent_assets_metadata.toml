@@ -2016,3 +2016,17 @@ mtime_ms = 1791595632703
 storage_uri = "gcs://replit-rams-assets-kirk/rams/assets/repl:e1b2f643-7869-4565-af0e-10c34575ee8d/4fa3cb3f-229d-4a85-a704-7c26bf5ba9e8/8525a46c-c171-4e1b-b437-fb59fd7eacf9"
 storage_version_token = "1791595764565377"
 content_type = "application/pdf"
+
+[[outputs]]
+id = "GFCjl8ZdCHOmkM6WzNGIi"
+uri = "file://website/elh-preview/assets/audio/aleksandra-welcome.mp3"
+type = "audio"
+title = "Aleksandra’s Welcome Audio"
+description = "The original 59-second MP3 welcome message used on the Eternal Life Hospice homepage and founder page."
+logical_id = "b84a2061-ca9f-43c2-ac1b-0776de637109"
+content_hash = "sha256:858c2ddefc217fde89491fcc98f0e2b68f4965daf292a57c46d6ebf1936c8258"
+size = 545618
+mtime_ms = 1782630612943
+storage_uri = "gcs://replit-rams-assets-kirk/rams/assets/repl:e1b2f643-7869-4565-af0e-10c34575ee8d/b84a2061-ca9f-43c2-ac1b-0776de637109/32d05a46-0728-4e79-9c77-9d0784442a12"
+storage_version_token = "1791610778527836"
+content_type = "audio/mpeg"
