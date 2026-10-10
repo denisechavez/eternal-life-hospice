@@ -5,6 +5,18 @@ description: Required review and approval workflow for Journal, email and Care B
 
 ## Current work scope
 
+Journal photo uniqueness must be checked against other Journal entries and the
+rest of the website, not just within one exported batch.
+
+**Why:** The reviewer identified reused October photographs even though the
+Journal-only file-hash check had passed. Reusing an existing site photograph
+does not meet the requested unique article imagery.
+
+**How to apply:** Check source reuse and visual similarity as well as file
+hashes. A listing thumbnail for the same article is not a separate duplicate.
+Use fresh review versions for replacements and preserve the old photographs
+where they still belong to existing pages.
+
 Further editorial work is limited to Eternal Journal blog posts and Eternal
 emails. Care Brief material is on hold: do not create, revise, schedule or publish
 it. Do not advance social, Pinterest or video material under this limited scope.

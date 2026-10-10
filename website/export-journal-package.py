@@ -14,6 +14,8 @@ from pathlib import Path
 from urllib.parse import urljoin
 
 from journal_seo_review_tools import article, heading, hero, plain
+from journal_image_revisions import apply_image_revision, image_revisions
+from journal_release import revision as journal_revision
 
 ROOT = Path(__file__).resolve().parent.parent
 PUBLIC = ROOT / "website/elh-preview"
@@ -29,8 +31,9 @@ NOTES = (
     "Private editorial export, not a publication or sending instruction. "
     "Dates and URLs are the existing publication schedule, not proof of approval "
     "or current public availability. SEO revisions remain pending Studio review. "
-    "Authoritative approval and final imagery approval could not be verified from "
-    "browser-local Studio records. Images are the unchanged existing hero files. "
+    "Authoritative production approval and final imagery approval are not verified "
+    "by this export. Four replacement photographs require fresh Studio approval; "
+    "the other source photographs are unchanged. "
     "Keyword assignments are coverage candidates, not confirmed coverage or rankings."
 )
 
@@ -127,9 +130,15 @@ def build(domain):
         slug, scheduled = row["Slug"], row["Date"]
         source = (PUBLIC / "blog" / (slug + ".html")).read_text()
         revision = private.get(slug)
-        review = revision["reviewHtml"] if revision else source
+        photo_review = image_revisions().get(slug)
+        review = apply_image_revision(slug, revision["reviewHtml"] if revision else source)
+        if photo_review:
+            assert hero(source) == row["Hero image"] == photo_review["originalImage"]
+            row = {**row, "Hero image": photo_review["heroImage"]}
         assert heading(review) == heading(source) == row["Title"]
-        assert hero(review) == hero(source) == row["Hero image"]
+        assert hero(review) == row["Hero image"]
+        if not photo_review:
+            assert hero(review) == hero(source)
         title, description = heading(review), meta(review, "description")
         body = clean_body(review)
         intro = re.search(r"<section\b[^>]*class=\"hero[^\"]*\"[^>]*>(.*?)</section>", review, re.S)
@@ -174,6 +183,16 @@ def build(domain):
             "License URL": credit.get("licenseUrl", ""),
             "Approval": "Existing source image; final Studio approval not verified",
         }
+        if photo_review:
+            assert photo["SHA256"] == photo_review["sha256"]
+            photo.update({
+                "Alt / description": photo_review["alt"],
+                "Credit": "Pexels; illustrative stock photograph, not Eternal staff or patients",
+                "Source URL": photo_review["sourcePage"],
+                "License": "Pexels License",
+                "License URL": "https://www.pexels.com/license/",
+                "Approval": "Replacement photograph; fresh Studio approval required",
+            })
         photographs.append(photo)
         url = domain.rstrip("/") + "/blog/" + slug
         document = {
@@ -184,8 +203,9 @@ def build(domain):
             "keywords": [{"id": k["id"], "phrase": k["phrase"], "intent": k["intent"]}
                          for k in mapped],
             "keyword_mapping_status": "Editorial coverage candidates; not confirmed coverage or rankings",
-            "version": "Private SEO review revision" if revision else "Existing original article",
-            "revision": revision["revision"] if revision else "",
+            "version": ("Private image review revision" if photo_review else
+                        "Private SEO review revision" if revision else "Existing original article"),
+            "revision": journal_revision(review) if photo_review else revision["revision"] if revision else "",
             "approval_status": "Authoritative Studio approval not verified",
             "image": photo, "article_markdown": text, "article_html": prose_html,
             "cta_html": (re.search(r'<section class="cta">(.*?)</section>', review, re.S)[1]
@@ -264,7 +284,7 @@ def build(domain):
     revisions = sum(bool(doc["revision"]) for doc in documents)
     (OUTPUT / "README.txt").write_text(
         "ETERNAL JOURNAL CONTENT PACKAGE\nOctober 8–December 31, 2026, inclusive\n"
-        f"85 daily articles; {revisions} private SEO revisions and {85-revisions} unchanged originals.\n\n"
+        f"85 daily articles; {revisions} private review revisions and {85-revisions} unchanged originals.\n\n"
         + NOTES + "\n\nHOW TO USE\nUnzip the entire package, then open START-HERE.html for a readable "
         "offline collection with photographs. The image folder must remain beside the HTML file.\n"
         "article-index.csv: dates, titles, master keyword IDs/phrases, cities, URLs, version labels and image references.\n"
@@ -286,7 +306,7 @@ def build(domain):
                 package.write(path, OUTPUT.name + "/" + path.relative_to(OUTPUT).as_posix())
     assert original_hashes == {p: digest(p) for p in PUBLIC.rglob("*.html")}, "Public content changed"
     validate(archive)
-    print(f"PASS: 85 articles; {revisions} private revisions; 85 unchanged hero image files. {archive.relative_to(ROOT)}")
+    print(f"PASS: 85 articles; {revisions} private revisions; 85 verified hero image files. {archive.relative_to(ROOT)}")
 
 
 def validate(archive):

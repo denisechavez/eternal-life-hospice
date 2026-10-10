@@ -36,7 +36,7 @@ def build():
             '<section class="sheet"><header><div class="brand">ETERNAL LIFE HOSPICE</div>'
             '<h1>Journal image reference</h1><p>Oct 8 - Dec 31, 2026</p></header>'
             '<div class="grid">' + "".join(tiles) + '</div><footer>'
-            '<span>Existing source photographs; final approval not verified.</span>'
+            '<span>Review photographs; replacements require Studio approval.</span>'
             '<span>Page ' + str(number) + ' of 5 | ' + str(len(group)) +
             ' images</span></footer></section>')
     markup = (

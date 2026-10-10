@@ -5,6 +5,7 @@ import batch4 from "../../../../../../website/content/30-day-journal/batch-4.jso
 import batch5 from "../../../../../../website/content/30-day-journal/batch-5.json";
 import octoberContinuation from "../../../../../../website/content/30-day-journal/additional-2026-10.json";
 import decemberContinuation from "../../../../../../website/content/30-day-journal/additional-2026-q4.json";
+import journalImageReview from "../../../../../../website/content/journal-image-revisions.json";
 import campaign1 from "../../../../../../exports/email-campaigns/30-day-journal/campaign-1.html?raw";
 import campaign2 from "../../../../../../exports/email-campaigns/30-day-journal/campaign-2.html?raw";
 import campaign3 from "../../../../../../exports/email-campaigns/30-day-journal/campaign-3.html?raw";
@@ -68,9 +69,24 @@ const campaignArticles: JournalArticle[] = [
 ].filter(article => !("publicationStatus" in article) || article.publicationStatus !== "archived")
  .map(article => {
    const draft = privateSeoArticles[article.slug];
+   const photo = (journalImageReview.images as Record<string, {
+     originalImage: string; heroImage: string; sha256: string; width: number; height: number;
+   }>)[article.slug];
+   let reviewHtml = draft?.reviewHtml || reviewBySlug[article.slug];
+   if (photo) {
+     reviewHtml = reviewHtml.replaceAll(photo.originalImage, photo.heroImage);
+     for (const dimension of ["width", "height"] as const) {
+       reviewHtml = reviewHtml.replace(
+         new RegExp(`(property="og:image:${dimension}"\\s+content=")\\d+`, "g"),
+         (_, prefix: string) => prefix + photo[dimension],
+       );
+     }
+   }
    return {...article, sections: draft ? [...article.sections, ...draft.sections] : article.sections,
      description: draft?.description || article.description,
-     seoRevision: draft?.revision, reviewHtml: draft?.reviewHtml || reviewBySlug[article.slug]};
+     heroImage: photo?.heroImage || article.heroImage,
+     seoRevision: photo ? `${draft?.revision || "original"}-photo-${photo.sha256.slice(0, 12)}` : draft?.revision,
+     reviewHtml};
  });
 const campaignSlugs = new Set(campaignArticles.map(article => article.slug));
 const legacyArticles: JournalArticle[] = Object.entries(reviewBySlug).flatMap(([slug, html]) => {

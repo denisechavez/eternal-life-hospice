@@ -1,0 +1,58 @@
+{
+  "scope": "Private Journal image revisions; Studio approval required before release.",
+  "licenseUrl": "https://www.pexels.com/license/",
+  "images": {
+    "spiritual-care-in-hospice-support-without-pressure": {
+      "date": "2026-10-14",
+      "originalImage": "/assets/img/end-of-life-doula.jpg",
+      "heroImage": "/assets/img/journal/review/spiritual-care-room-31495005.jpg",
+      "alt": "A wooden chair beside a curtain in a softly sunlit room.",
+      "source": "Pexels",
+      "sourcePage": "https://www.pexels.com/photo/31495005/",
+      "sourceImageUrl": "https://images.pexels.com/photos/31495005/pexels-photo-31495005.jpeg?w=1600&auto=compress&cs=tinysrgb",
+      "width": 1600,
+      "height": 2400,
+      "sha256": "4008ff78598e490726ec46f599928945a60b95a71710826ce46da6ca253b1fc7",
+      "reviewStatus": "Needs review"
+    },
+    "how-to-choose-a-hospice-provider": {
+      "date": "2026-10-16",
+      "originalImage": "/assets/img/inline-ce5cac9062.jpg",
+      "heroImage": "/assets/img/journal/review/provider-conversation-12599544.jpg",
+      "alt": "A woman and a doctor discussing information across a desk.",
+      "source": "Pexels",
+      "sourcePage": "https://www.pexels.com/photo/12599544/",
+      "sourceImageUrl": "https://images.pexels.com/photos/12599544/pexels-photo-12599544.jpeg?w=1600&auto=compress&cs=tinysrgb",
+      "width": 1600,
+      "height": 864,
+      "sha256": "c94d7c284f097d614581529fe0426356fa5de7a50b6179b7abb4de560411b666",
+      "reviewStatus": "Needs review"
+    },
+    "grief-support-before-and-after-a-loss": {
+      "date": "2026-10-19",
+      "originalImage": "/assets/img/the-circle-around-you.jpg",
+      "heroImage": "/assets/img/journal/review/supportive-conversation-7490944.jpg",
+      "alt": "Two women sitting on a sofa in conversation.",
+      "source": "Pexels",
+      "sourcePage": "https://www.pexels.com/photo/7490944/",
+      "sourceImageUrl": "https://images.pexels.com/photos/7490944/pexels-photo-7490944.jpeg?w=1600&auto=compress&cs=tinysrgb",
+      "width": 1600,
+      "height": 1067,
+      "sha256": "1eb4d905e536d5b1a3f33317c881cb387d10b5ab681e59c03443c92c131e770e",
+      "reviewStatus": "Needs review"
+    },
+    "preparing-for-a-hospice-care-plan-conversation": {
+      "date": "2026-10-21",
+      "originalImage": "/assets/img/inline-c8b0a690da.jpg",
+      "heroImage": "/assets/img/journal/review/care-plan-notes-8640089.jpg",
+      "alt": "Two people writing notes in notebooks at a round table.",
+      "source": "Pexels",
+      "sourcePage": "https://www.pexels.com/photo/8640089/",
+      "sourceImageUrl": "https://images.pexels.com/photos/8640089/pexels-photo-8640089.jpeg?w=1600&auto=compress&cs=tinysrgb",
+      "width": 1600,
+      "height": 1067,
+      "sha256": "caf9d88926fbe12d91616dd80d4ebd62fb17bad0805219450e403be1882a6803",
+      "reviewStatus": "Needs review"
+    }
+  }
+}

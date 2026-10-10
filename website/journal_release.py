@@ -9,6 +9,7 @@ import mimetypes
 from datetime import datetime, time, timezone
 from pathlib import Path
 from zoneinfo import ZoneInfo
+from journal_image_revisions import apply_image_revision
 
 BASE = Path(__file__).resolve().parent
 PUBLIC = BASE / "elh-preview"
@@ -88,7 +89,8 @@ def candidates():
         slug = path.stem
         if not re.fullmatch(r"[a-z0-9]+(?:-[a-z0-9]+)*", slug):
             continue
-        document = drafts.get(slug, {}).get("reviewHtml") or path.read_text()
+        document = apply_image_revision(
+            slug, drafts.get(slug, {}).get("reviewHtml") or path.read_text())
         if 'http-equiv="refresh"' in document or re.search(r'name="robots"[^>]*content="[^"]*noindex', document):
             continue
         match = re.search(r'"datePublished"\s*:\s*"(\d{4}-\d{2}-\d{2})', document)
