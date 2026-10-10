@@ -54,3 +54,4 @@
 - [Internal-link decisions](internal-link-decisions.md) — topic-owner journeys, curated local neighbors and request-time eligibility for staged Journal recommendations.
 - [Eternal Studio approval](eternal-studio-approval.md) — Journal, emails and Care Brief must enter Studio review and receive approval before new publication or sending.
 - [Recruitment call quality](recruitment-call-quality.md) — public volunteer/career promotion is drawing unwanted PPC calls; recommend reversible removal from site and referral cards.
+- [Asset download verification](asset-download-verification.md) — if Library cards fail, provide a verified file response, not a repeated card or HTML fallback.

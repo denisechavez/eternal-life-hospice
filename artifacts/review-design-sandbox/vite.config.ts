@@ -8,6 +8,7 @@ import { mockupPreviewPlugin } from './mockupPreviewPlugin';
 import { liveReportingPlugin } from './liveReportingPlugin';
 import { brevoReportingPlugin } from './brevoReportingPlugin';
 import { whatConvertsReportingPlugin } from './whatConvertsReportingPlugin';
+import { journalDownloadsPlugin } from './journalDownloadsPlugin';
 
 const rawPort = process.env.PORT;
 
@@ -34,6 +35,7 @@ if (!basePath) {
 export default defineConfig({
   base: basePath,
   plugins: [
+    journalDownloadsPlugin(),
     liveReportingPlugin(),
     brevoReportingPlugin(),
     whatConvertsReportingPlugin(),
