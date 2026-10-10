@@ -3,10 +3,14 @@ name = "repl-nix-workspace"
 version = "0.1.0"
 description = "Add your description here"
 requires-python = ">=3.11"
-dependencies = []
+dependencies = [
+    "psycopg[binary]>=3.2,<4",
+    "pyjwt[crypto]>=2.10,<3",
+]
 
-# The web server uses only the standard library. Internal publication tools
-# must not block installing the live site. Install only the extra you need:
+# The live server uses Clerk JWT verification and the existing PostgreSQL store.
+# Internal publication tools must not block installing the live site.
+# Install only the extra you need:
 # uv sync --extra newsletter / --extra print / --extra qr
 [project.optional-dependencies]
 newsletter = ["Pillow>=10.0.0"]

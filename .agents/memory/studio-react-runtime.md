@@ -1,0 +1,15 @@
+---
+name: Studio shared React runtime
+description: Parent-installed authentication packages must use the artifact's React runtime.
+---
+
+Keep shared authentication packages and the Studio artifact on one React runtime.
+
+**Why:** Replit installs shared packages at the workspace root, while this
+existing artifact also has its own package installation. Matching React APIs
+does not prevent duplicate instances; hooks can fail with a null context and
+leave the sign-in page entirely blank even when type checks and builds pass.
+
+**How to apply:** Deduplicate React in the artifact bundler when introducing
+parent-installed React packages. Verify a rendered public entry page, not just
+the package versions or successful compilation.

@@ -55,3 +55,5 @@
 - [Eternal Studio approval](eternal-studio-approval.md) — Journal, emails and Care Brief must enter Studio review and receive approval before new publication or sending.
 - [Recruitment call quality](recruitment-call-quality.md) — public volunteer/career promotion is drawing unwanted PPC calls; recommend reversible removal from site and referral cards.
 - [Asset download verification](asset-download-verification.md) — if Library cards fail, provide a verified file response, not a repeated card or HTML fallback.
+- [Studio environment boundary](studio-environment-boundary.md) — workspace approvals are not live authority; protect draft bundles as well as approval APIs.
+- [Studio shared React runtime](studio-react-runtime.md) — root-installed auth packages and the artifact must resolve to one React instance; builds alone miss hook failures.

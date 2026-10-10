@@ -20,12 +20,20 @@ spec = importlib.util.spec_from_file_location("journal_builder", ROOT / "build-j
 builder = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(builder)
 from devserver import PrettyURLHandler
+from journal_test_fixtures import approved_fixture_releases
 
 
 class JournalCampaignTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.articles = builder.load_articles()
+
+    def setUp(self):
+        # Every fixture below is explicitly approved for the layout/date tests.
+        # Real unapproved gating is exercised by test-journal-release.py.
+        fixture = patch("journal_release.released", side_effect=approved_fixture_releases)
+        fixture.start()
+        self.addCleanup(fixture.stop)
 
     def test_inline_editorial_links_are_safe_and_contextual(self):
         self.assertEqual(
@@ -210,7 +218,8 @@ class JournalCampaignTests(unittest.TestCase):
             self.assertNotIn("can-a-family-request-a-hospice-evaluation", archive)
             # Runtime promotion must use edited copy, without leaking future
             # stories through either the featured payload or Blog schema.
-            with patch.dict(os.environ, {"ELH_JOURNAL_DATE": active[0]["date"]}):
+            with patch.dict(os.environ, {"ELH_JOURNAL_DATE": active[0]["date"]}), \
+                 patch("devserver.ROOT", str(public)):
                 handler = PrettyURLHandler.__new__(PrettyURLHandler)
                 handler.command = "GET"
                 handler.wfile = io.BytesIO()
@@ -431,6 +440,11 @@ class JournalCampaignTests(unittest.TestCase):
                         handler = PrettyURLHandler.__new__(PrettyURLHandler)
                         handler.command = "GET"
                         handler.wfile = io.BytesIO()
+                        records, healthy = approved_fixture_releases()
+                        if article["date"] <= today:
+                            records[article["slug"]] = {"date":article["date"],
+                                "revision":"explicitly-approved-new-story-fixture","html":""}
+                        handler._journal_snapshot = (records, healthy)
                         statuses = []
                         handler.send_response = statuses.append
                         handler.send_header = lambda *_: None

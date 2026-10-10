@@ -19,6 +19,7 @@ export type JournalArticle = {
   sections: {heading: string; paragraphs: string[]}[];
   ctaHeading: string; ctaCopy: string;
   reviewHtml?: string; previouslyPublished?: boolean; seoRevision?: string;
+  serverRevision?: string;
 };
 export type EmailCampaign = {
   html: string;
@@ -98,15 +99,16 @@ export const journalArticles: JournalArticle[] = [...legacyArticles, ...campaign
 
 export function journalReviewDocument(html: string): string {
   const doc = new DOMParser().parseFromString(html, "text/html");
+  const disclosure = doc.querySelector(".foot-disclaimer")?.outerHTML || "";
   // Review the final article, including imagery and contextual links, without
   // running analytics/chat or showing navigation/footer chrome in the drawer.
-  doc.querySelectorAll("script, .elh-related, #hdr, #site-footer, body > header, body > footer").forEach(node => node.remove());
+  doc.querySelectorAll("script, #hdr, #site-footer, body > header, body > footer").forEach(node => node.remove());
   const head = [...doc.head.querySelectorAll("style, link[rel='stylesheet']")]
     .map(node => node.outerHTML).join("");
   return `<!doctype html><html lang="en"><head><base href="${window.location.origin}/">${head}
     <style>html,body{margin:0!important;overflow-x:clip}main{padding-top:24px!important}
     a{pointer-events:none}body{min-width:0!important}</style></head>
-    <body>${doc.querySelector("main")?.outerHTML || ""}</body></html>`;
+    <body>${doc.querySelector("main")?.outerHTML || ""}${disclosure?`<aside style="background:#381B37;color:#ede6de;padding:24px">${disclosure}</aside>`:""}</body></html>`;
 }
 
 const plainText = [

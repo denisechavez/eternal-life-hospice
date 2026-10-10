@@ -1,0 +1,30 @@
+name: Approved Journal release check
+
+on:
+  schedule:
+    # 6:45 a.m. Pacific. The checker selects the appropriate DST offset.
+    - cron: "45 13 * * *"
+    - cron: "45 14 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: journal-release-monitor
+  cancel-in-progress: false
+
+jobs:
+  verify-approved-releases:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      BREVO_API: ${{ secrets.BREVO_API }}
+      JOURNAL_SCHEDULE: ${{ github.event.schedule }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify approved versions and email the reviewer on failure
+        run: |
+          python3 website/check-journal-release.py \
+            --site https://eternallifehospice.com \
+            --scheduled-cron "$JOURNAL_SCHEDULE"

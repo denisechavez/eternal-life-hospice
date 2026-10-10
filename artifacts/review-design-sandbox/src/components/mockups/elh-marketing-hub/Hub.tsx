@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { createPortal } from "react-dom";
+import { useAuth, useClerk } from "@clerk/react";
 import type { FormEvent, ReactNode } from "react";
 import { Activity, AlertCircle, ArrowUpRight, BarChart3, Bell, BookOpen, CalendarDays, Check, ChevronDown, ChevronRight, CircleDot, Database, FileCheck2, FileText, Globe2, HeartHandshake, ImageIcon, LayoutDashboard, Link2, Menu, Moon, MoonStar, RefreshCw, Search, Send, Settings2, ShieldCheck, Sparkles, Sun, TrendingUp, Users, Video, X } from "lucide-react";
 import { emailCampaigns, journalArticles, journalReviewDocument, type JournalArticle } from "./contentData";
@@ -24,8 +25,7 @@ const markets = ["Thousand Oaks","Westlake Village","Simi Valley","Calabasas","C
 const currentUser = {name:"Aleksandra Dubina",firstName:"Aleksandra",role:"Founder & CEO"};
 const initialsFor = (name:string) => name.trim().split(/\s+/).slice(0,2).map(part=>part[0]?.toUpperCase()||"").join("");
 const dashboardAsset = (name:string) => `${import.meta.env.BASE_URL}${name}`;
-const approvalCutoff = "2026-09-30";
-const publicationStatusFor = (date:string):Item["status"] => date==="Approved template"||date<=approvalCutoff?"Approved":"Needs review";
+const publicationStatusFor = (_date:string):Item["status"] => "Needs review";
 const items:Item[] = [...journalArticles.map(a=>({id:`j-${a.slug}${a.seoRevision?`-seo-${a.seoRevision}`:""}`,title:a.title,type:"Journal",date:a.date,owner:"Eternal Life Hospice",status:a.seoRevision?"Needs review" as const:a.previouslyPublished?"Published" as const:publicationStatusFor(a.date),excerpt:a.description,source:a})),...emailCampaigns.map((e,i)=>({id:e.seoRevision?`e-thryv-${e.sendDate}-${e.seoRevision}`:`e-${i}`,title:e.subject,type:"Email",date:e.sendDate,owner:"Eternal Studio",status:(e.seoRevision?"Needs review":i<2?"Approved":"Needs review") as Item["status"],excerpt:e.preheader,emailIndex:i}))];
 const approvalStorageKey = "egi-publication-statuses-v4";
 const requestedView = new URLSearchParams(window.location.search).get("view") || "";
@@ -53,11 +53,12 @@ const supportingCalendarEntries = [
 ];
 const calendarEntries = [
   ...journalArticles.map(article=>({
+    slug:article.slug,
     date:article.date,
     time:article.previouslyPublished?"Published":"6:30 AM PT",
     channel:"Journal",
     title:article.title,
-    status:article.date<="2026-09-22"?"Posted":article.date<=approvalCutoff?"Approved":"Needs review",
+    status:"Needs review",
   })),
   ...emailCampaigns.flatMap((email,index)=>{
     const date=calendarDateFor(email.sendDate);
@@ -75,8 +76,33 @@ const publicationKeywordCounts = Object.fromEntries(publicationKeywordCandidates
 const publicationKeywords = publicationKeywordCandidates.filter(keyword=>publicationKeywordCounts[keyword.toLowerCase()]>=8).sort((a,b)=>b.length-a.length);
 
 export default function Hub(){
-  const [active,setActive]=useState(initialView); const [open,setOpen]=useState(studio.some(item=>item[1]===initialView)?"Eternal Studio":""); const [mobile,setMobile]=useState(false); const [query,setQuery]=useState(""); const [notice,setNotice]=useState(""); const [selected,setSelected]=useState<Item|null>(null); const [statuses,setStatuses]=useState<Record<string,Item["status"]>>(()=>{const initial=Object.fromEntries(items.map(item=>[item.id,item.status]));try{const saved=window.localStorage.getItem(approvalStorageKey);return saved?{...initial,...JSON.parse(saved)}:initial}catch{return initial}}); const [openingDirection,setOpeningDirection]=useState<"chain"|"center">("chain"); const [firstName,setFirstName]=useState(""); const [entered,setEntered]=useState(Boolean(initialView));
-  useEffect(()=>{document.title="Eternal Growth Intelligence";window.localStorage.setItem(approvalStorageKey,JSON.stringify(statuses))},[statuses]);
+  const {isSignedIn, isLoaded} = useAuth();
+  const {signOut} = useClerk();
+  const [journalVersions,setJournalVersions]=useState<Record<string,{slug:string;title:string;date:string;revision:string;html:string;status:Item["status"];held:boolean;hasPublishedVersion:boolean}>>({});
+  const [journalReady,setJournalReady]=useState(false);
+  const [journalError,setJournalError]=useState("");
+  const [savingJournal,setSavingJournal]=useState(false);
+  const [active,setActive]=useState(initialView); const [open,setOpen]=useState(studio.some(item=>item[1]===initialView)?"Eternal Studio":""); const [mobile,setMobile]=useState(false); const [query,setQuery]=useState(""); const [notice,setNotice]=useState(""); const [selected,setSelected]=useState<Item|null>(null); const [statuses,setStatuses]=useState<Record<string,Item["status"]>>(()=>{const initial=Object.fromEntries(items.map(item=>[item.id,item.type==="Journal"?"Needs review":item.status]));try{const saved=window.localStorage.getItem(approvalStorageKey);const local=saved?Object.fromEntries(Object.entries(JSON.parse(saved)).filter(([id])=>!id.startsWith("j-"))):{};return {...initial,...local} as Record<string,Item["status"]>}catch{return initial}}); const [openingDirection,setOpeningDirection]=useState<"chain"|"center">("chain"); const [firstName,setFirstName]=useState(""); const [entered,setEntered]=useState(Boolean(initialView));
+  useEffect(()=>{document.title="Eternal Growth Intelligence";window.localStorage.setItem(approvalStorageKey,JSON.stringify(Object.fromEntries(Object.entries(statuses).filter(([id])=>!id.startsWith("j-")))))},[statuses]);
+  const acceptJournal = (payload:{items:(typeof journalVersions)[string][]}) => {
+    setJournalVersions(Object.fromEntries(payload.items.map(row=>[row.slug,row])));
+    setJournalReady(true);setJournalError("");
+    setStatuses(previous=>({...Object.fromEntries(Object.entries(previous).filter(([id])=>!id.startsWith("j-"))),
+      ...Object.fromEntries(items.filter(item=>item.type==="Journal").map(item=>[item.id,payload.items.find(row=>row.slug===item.source?.slug)?.status||"Needs review"]))}));
+  };
+  useEffect(()=>{
+    setJournalReady(false);
+    if(!isSignedIn){setJournalVersions({});setStatuses(previous=>Object.fromEntries(Object.entries(previous).filter(([id])=>!id.startsWith("j-"))));return;}
+    let cancelled=false;
+    const load=async()=>{try{
+      const response=await fetch("/api/studio/journal",{credentials:"include",cache:"no-store"});
+      const payload=await response.json();
+      if(!response.ok)throw new Error(payload.message||"Journal approvals unavailable");
+      if(!cancelled)acceptJournal(payload);
+    }catch(error){if(!cancelled){setJournalReady(false);setJournalError(error instanceof Error?error.message:"Journal approvals unavailable");}}};
+    void load();const timer=window.setInterval(load,60000);
+    return()=>{cancelled=true;window.clearInterval(timer)};
+  },[isSignedIn]);
  const currentGroup=active?(groups.find(g=>g.items.some(i=>i[1]===active))?.name || (studio.some(i=>i[1]===active)?"Eternal Studio":"Data & Settings")):"";
  const setView=(v:string,g:string)=>{setActive(v);setOpen(g);setMobile(false);setSelected(null);setQuery("");window.scrollTo(0,0);document.querySelector(".hub-main")?.scrollTo(0,0);const url=new URL(window.location.href);url.searchParams.set("view",v);window.history.replaceState(null,"",url)};
  useEffect(()=>{
@@ -85,7 +111,26 @@ export default function Hub(){
  },[active]);
  const showCover=()=>{setEntered(false);setActive("");setOpen("");setMobile(false);const url=new URL(window.location.href);url.searchParams.delete("view");window.history.replaceState(null,"",url)};
  const flash=(s:string)=>{setNotice(s);window.setTimeout(()=>setNotice(""),2200)};
- const list=useMemo(()=>items.filter(i=>`${i.title} ${i.type} ${i.date}`.toLowerCase().includes(query.toLowerCase())),[query]);
+ const list=useMemo(()=>items.map(item=>{
+   const version=item.source&&journalVersions[item.source.slug];
+   return version?{...item,title:version.title,date:version.date,status:version.status,
+     source:{...item.source!,title:version.title,date:version.date,reviewHtml:version.html,serverRevision:version.revision}}:item;
+ }).filter(i=>`${i.title} ${i.type} ${i.date}`.toLowerCase().includes(query.toLowerCase())),[query,journalVersions]);
+ const saveStatus=async(status:Item["status"])=>{
+   if(!selected)return;
+   if(selected.type!=="Journal"){setStatuses({...statuses,[selected.id]:status});flash(`Moved to ${status}`);return;}
+   if(!journalReady||!selected.source?.serverRevision){flash("Sign in and reload the current article before approving.");return;}
+   const action=status==="Approved"?"approve":"hold";
+   if(action==="approve"&&!window.confirm(`Approve this complete article version for release on ${selected.date} at 6:30 a.m. Pacific? If that time has passed, this version becomes public immediately. Published originals are retained when another draft is held.`))return;
+   setSavingJournal(true);
+   try{
+     const response=await fetch("/api/studio/journal",{method:"POST",credentials:"include",
+       headers:{"Content-Type":"application/json"},body:JSON.stringify({slug:selected.source.slug,revision:selected.source.serverRevision,action})});
+     const payload=await response.json();if(!response.ok)throw new Error(payload.message||"Approval was not saved");
+     acceptJournal(payload);setSelected(null);flash(action==="approve"?"Approval saved for this exact version":"Version held. Published history remains available.");
+   }catch(error){setJournalReady(false);setJournalError(error instanceof Error?error.message:"Approval was not saved");flash("Nothing approved. Reload Studio and review again.");}
+   finally{setSavingJournal(false);}
+ };
    const greeting=timeGreeting(firstName||currentUser.firstName);
   if(!entered)return <Cover firstName={firstName} onFirstNameChange={setFirstName} onEnter={()=>setEntered(true)}/>;
   const GreetingIcon=greeting.icon;
@@ -97,7 +142,8 @@ export default function Hub(){
      <main className="hub-main"><header className="hub-topbar"><button className="menu-btn" onClick={()=>setMobile(true)}><Menu size={20}/></button><span className={`welcome-name welcome-${greeting.period}`}><GreetingIcon size={18}/>{greeting.text}</span>{active&&<div className="crumb">Eternal Life / <strong>{currentGroup}</strong> / {active}</div>}<div className="top-actions"><label className="search"><Search size={15}/><input value={query} onChange={e=>setQuery(e.target.value)} placeholder="Search workspace"/></label><button className="icon-btn" onClick={()=>flash("No new reporting alerts")}><Bell size={17}/><i/></button><span className="top-avatar" title={currentUser.name}>{initialsFor(currentUser.name)}</span></div></header>
      <section className={`hub-content ${active?"":"is-blank"}`}>{!active?<DashboardOpening kind={openingDirection}/>:<><div className="page-heading"><div><span className="eyebrow">{active==="Overview"?"Leadership view":["Journal","Emails","CareBrief","Calendar","Reviews","Assets"].includes(active)?"Eternal Studio":"Workspace view"} <em/></span><h1>{titleFor(active)}</h1><p>{subtitleFor(active)}</p></div>{["Journal","Emails","CareBrief","Calendar","Assets"].includes(active)&&<button className="primary-btn" onClick={()=>flash("New Studio item workflow opened")}><Send size={14}/> New item</button>}</div>
        {active==="Overview"?<Executive onNavigate={setView}/>:active==="SEO"||active==="Website"?<Performance active={active}/>:active==="Calls"?<CallsPerformance/>:active==="EmailsPerformance"?<EmailPerformance/>:active==="GBP"||active==="Social"?<ThryvPath active={active}/>:["Connections","Health","ChangeLog","Definitions","Settings"].includes(active)?<Utility active={active}/>:["Expansion","VisibilityHotZones","InquiryHotZones","GrowthHotZones","Opportunity"].includes(active)?<Expansion active={active}/>:active==="Attribution"?<Attribution/>:active==="Intelligence"?<Intelligence/>:["Census","Admissions","Movement","CensusTrends"].includes(active)||["Referral","ReferralSources","PartnerMovement"].includes(active)?<Pending title={["Census","Admissions","Movement","CensusTrends"].includes(active)?"Aggregate census reporting":"Referral performance reporting"} detail={["Census","Admissions","Movement","CensusTrends"].includes(active)?"Aggregate Census Data Source Required":"Referral Data Source Required"}/>:active==="Assets"?<AssetLibrary/>:active==="Calendar"?<ContentCalendar/>:active==="CareBrief"?<CareBriefWorkspace/>:["Journal","Emails","Reviews"].includes(active)?<Studio active={active} list={list} statuses={statuses} setStatuses={setStatuses} onOpen={setSelected}/>:<Pending title={titleFor(active)} detail="Reporting Feed Pending"/>}</>}
-   </section></main>{selected&&<Detail item={{...selected,status:statuses[selected.id]||selected.status}} onClose={()=>setSelected(null)} onStatus={(s)=>{setStatuses({...statuses,[selected.id]:s});flash(`Moved to ${s}`)}}/>}{notice&&<div className="toast"><Check size={15}/>{notice}</div>}
+   {["Journal","Reviews"].includes(active)&&<section className="panel" aria-live="polite"><p>{journalReady?"Journal approvals are saved on the server for the exact version reviewed.":"Journal approval controls are locked until the designated reviewer signs in."}</p>{journalError&&<p role="alert">{journalError}</p>}{isLoaded&&!isSignedIn?<a className="primary-btn" href={`${import.meta.env.BASE_URL}sign-in`}>Sign in to approve Journal articles</a>:isSignedIn?<button className="secondary-btn" onClick={()=>void signOut()}>Sign out</button>:<p>Loading Studio sign-in…</p>}</section>}
+   </section></main>{selected&&<Detail item={{...selected,status:statuses[selected.id]||selected.status}} onClose={()=>setSelected(null)} onStatus={(s)=>void saveStatus(s)} journalLocked={!journalReady||!selected.source?.serverRevision||savingJournal}/>}{notice&&<div className="toast"><Check size={15}/>{notice}</div>}
  </div>
 }
  function Cover({firstName,onFirstNameChange,onEnter}:{firstName:string;onFirstNameChange:(name:string)=>void;onEnter:()=>void}){
@@ -157,7 +203,7 @@ function Studio({active,list,statuses,onOpen}:{active:string;list:Item[];statuse
  {active==="Journal"&&<><p>{journalArticles.length} blog entries loaded · Content through December 31, 2026 · {filtered.length} shown</p>
  <label>Publication month <select aria-label="Filter Journal month" value={month} onChange={event=>setMonth(event.target.value)}>
  <option value="">All months</option>{months.map(value=><option key={value} value={value}>{new Date(`${value}-01T12:00:00`).toLocaleDateString("en-US",{month:"long",year:"numeric"})}</option>)}</select></label>
- <p>Planned daily release: 6:30 a.m. Pacific. Saved approval and automatic publishing controls are being connected; current review choices are browser-local.</p></>}
+ <p>Approved article versions release on their original dates at 6:30 a.m. America/Los_Angeles, including daylight-saving time. Held drafts do not publish. Published originals remain available while revised versions await approval.</p></>}
  {active==="Emails"&&<p>Established campaigns retain their original templates. The 12 new Thryv weekly drafts are review proposals only, not queued sends; their dates identify proposed editorial weeks.</p>}</div></div>
  {filtered.map(i=><button className="studio-row" key={i.id} onClick={()=>onOpen(i)}><FileText size={16}/><span><b>{i.title}</b><small>{i.type} · {i.date}{i.source?.seoRevision||i.emailIndex!==undefined&&emailCampaigns[i.emailIndex]?.seoRevision?" · Private SEO draft":""}</small></span><em>{statuses[i.id]||i.status}</em><ChevronRight size={15}/></button>)}
  {!filtered.length&&<div className="empty-state"><FileCheck2 size={25}/><b>No items in this Studio view</b><span>Try another month or clear the search.</span></div>}</section></div>
@@ -166,12 +212,23 @@ function KeywordInsight(){const ranked=[...publicationKeywords].sort((a,b)=>publ
 function AssetLibrary(){return <div className="asset-library"><section className="asset-library-intro"><div><Kicker>Media only</Kicker><h2>Images, stock references and video links</h2><p>Approved publications remain in their dedicated Journal, Email and Care Brief workspaces.</p></div><a className="primary-btn" href="https://stock.adobe.com" target="_blank" rel="noreferrer"><Link2 size={14}/> Browse Adobe Stock</a></section><div className="asset-grid">{assetLibrary.map(asset=>{const Icon=asset.kind==="Video link"?Video:asset.preview?ImageIcon:Link2;return <a className="asset-card" href={asset.href} target="_blank" rel="noreferrer" key={asset.title}>{asset.preview?<div className="asset-preview"><img src={asset.preview} alt=""/></div>:<div className="asset-preview asset-link-preview"><Icon size={30}/><span>{asset.kind}</span></div>}<div className="asset-card-copy"><span><Icon size={13}/>{asset.kind}</span><h3>{asset.title}</h3><small>{asset.source}</small></div><ArrowUpRight size={15}/></a>})}</div></div>}
 function CareBriefWorkspace(){return <div className="care-brief-workspace"><section className="care-brief-intro"><div><Kicker>The Eternal Care Brief</Kicker><h2>One published issue. One next issue scheduled.</h2><p>The Care Brief remains separate from the daily Eternal Journal.</p></div><BookOpen size={28}/></section><div className="care-brief-issues"><a className="care-brief-issue published" href="https://eternallifehospice.com/care-brief/issue-1" target="_blank" rel="noreferrer"><div className="care-brief-number">01</div><div><span>Published · July 2026</span><h3>Hospice Is Part of Life — A Continuation of Care</h3><p>Issue One · Clinical Guidance + Family Support</p><strong>Read Issue One <ArrowUpRight size={14}/></strong></div><em>Published</em></a><article className="care-brief-issue scheduled"><div className="care-brief-number">02</div><div><span>Scheduled · October 15, 2026 · 10:00 AM</span><h3>The Eternal Care Brief — Issue Two</h3><p>Editorial topic and content remain pending review.</p><strong><CalendarDays size={14}/> On the Content Calendar</strong></div><em>Scheduled</em></article></div></div>}
 function ContentCalendar(){
+ const {isSignedIn}=useAuth();
+ const [journalStatus,setJournalStatus]=useState<Record<string,string>>({});
+ useEffect(()=>{if(!isSignedIn){setJournalStatus({});return;}let cancelled=false;
+   fetch("/api/studio/journal",{credentials:"include",cache:"no-store"}).then(async response=>{
+     if(!response.ok)throw new Error("Journal calendar approval status unavailable");
+     return response.json();
+   }).then(payload=>{if(!cancelled)setJournalStatus(Object.fromEntries(payload.items.map((row:{slug:string;status:string})=>[row.slug,row.status])))})
+     .catch(()=>{if(!cancelled)setJournalStatus({})});
+   return()=>{cancelled=true};
+ },[isSignedIn]);
  const [view,setView]=useState<"day"|"week"|"month">("month");
   const [cursor,setCursor]=useState(()=>new Date());
  const [selectedEntry,setSelectedEntry]=useState<(typeof calendarEntries)[number]|null>(null);
  const key=(date:Date)=>`${date.getFullYear()}-${String(date.getMonth()+1).padStart(2,"0")}-${String(date.getDate()).padStart(2,"0")}`;
  const add=(date:Date,days:number)=>new Date(date.getFullYear(),date.getMonth(),date.getDate()+days);
- const entriesFor=(date:Date)=>calendarEntries.filter(item=>item.date===key(date));
+ const entriesFor=(date:Date)=>calendarEntries.filter(item=>item.date===key(date)).map(item=>
+   "slug" in item&&typeof item.slug==="string"?{...item,status:journalStatus[item.slug]||"Needs review"}:item);
  const move=(direction:number)=>setCursor(current=>view==="month"?new Date(current.getFullYear(),current.getMonth()+direction,1):add(current,direction*(view==="week"?7:1)));
  const weekStart=add(cursor,-((cursor.getDay()+6)%7));
  const monthStart=new Date(cursor.getFullYear(),cursor.getMonth(),1);
@@ -191,7 +248,7 @@ function highlightPublicationHtml(html:string){
  const highlighted=html.split(/(<[^>]+>)/g).map(part=>part.startsWith("<")?part:part.replace(pattern,'<mark style="background:#f0df9b;color:#3c1c3b;padding:0 2px;border-radius:2px;">$1</mark>')).join("");
  return highlighted;
 }
-function Detail({item,onClose,onStatus}:{item:Item;onClose:()=>void;onStatus:(s:Item["status"])=>void}){
+function Detail({item,onClose,onStatus,journalLocked=false}:{item:Item;onClose:()=>void;onStatus:(s:Item["status"])=>void;journalLocked?:boolean}){
  const article=item.source;
  const email=item.emailIndex!==undefined?emailCampaigns[item.emailIndex]:null;
  const approved=item.status==="Approved"||item.status==="Published";
@@ -206,7 +263,8 @@ function Detail({item,onClose,onStatus}:{item:Item;onClose:()=>void;onStatus:(s:
  return createPortal(<div className="detail-backdrop studio-review-layer" onClick={onClose}><aside role="dialog" aria-modal="true" aria-label={article?`Review article: ${article.title}`:"Studio review"} className={`detail-drawer ${article||email?"full-review":""}`} onClick={e=>e.stopPropagation()}>
  <header><div><Kicker>{item.type}</Kicker><h2>{article?"Full article review":email?"Full email review":"Studio item review"}</h2></div><button className="icon-btn" onClick={onClose} aria-label="Close review"><X size={18}/></button></header>
  <div className="detail-body"><span className="tag">{item.status}</span><h1>{article?<Highlighted text={item.title}/>:item.title}</h1><p>{article?<Highlighted text={item.excerpt}/>:item.excerpt}</p>
- {(article?.seoRevision||email?.seoRevision)&&<p className="email-template-note"><strong>Private Journal SEO revision — not published or sent.</strong> This version needs fresh review; previous approvals do not carry over. Workspace choices remain browser-local and do not trigger publication. For email drafts, the date is a proposed editorial week, not a send schedule.</p>}
+ {(article?.seoRevision||email?.seoRevision)&&<p className="email-template-note"><strong>Journal SEO revision.</strong> This exact version needs fresh approval; previous approvals do not carry over. Journal approvals are saved by the server. Email choices remain review proposals, not queued sends.</p>}
+ {article&&<p className="email-template-note">{journalLocked?"Approval locked: sign in as the designated reviewer and load the current server version.":"You are reviewing the server version, including its photograph, links and disclosures."} Holding a revision does not withdraw an already-published version.</p>}
  {email?.journalTitle&&<p className="email-template-note"><strong>Companion Journal: {email.journalTitle}.</strong> {email.journalLinkStatus}. A held article is not linked in this email; the draft uses a verified active resource instead.</p>}
  <div className="meta-grid"><span>Owner<b>{item.owner}</b></span><span>Date<b>{item.date}</b></span></div>
  {article?<article className="article-review">
@@ -214,6 +272,6 @@ function Detail({item,onClose,onStatus}:{item:Item;onClose:()=>void;onStatus:(s:
  {article.reviewHtml?<iframe title={`Full article: ${article.title}`} sandbox="allow-same-origin" srcDoc={journalReviewDocument(article.reviewHtml)} style={{width:"100%",height:"75vh",border:0,background:"#fff"}}/>:
  <><p className="article-lede"><Highlighted text={article.lede}/></p>{article.sections.map(section=><section key={section.heading}><h3><Highlighted text={section.heading}/></h3>{section.paragraphs.map((paragraph,index)=><p key={index}><Highlighted text={paragraph}/></p>)}</section>)}<div className="article-cta"><strong><Highlighted text={article.ctaHeading}/></strong><p><Highlighted text={article.ctaCopy}/></p></div></>}
  </article>:email?<div className="email-review"><div className={`email-template-note ${approvedTemplate?"approved":""}`}><ShieldCheck size={16}/><span><strong>{approvedTemplate?"Approved Eternal email template":"Journal campaign draft"}</strong>{approvedTemplate?"Rendered from the established sent-email asset with its responsive table layout, plum masthead, gold accents and compliant branded footer.":"This is a campaign-specific draft. Compare it with an approved Eternal template before scheduling."}</span></div><div className="email-preview-label">Complete rendered email <small>Keywords calculated from current Journal and email copy</small></div><iframe title={email.subject} srcDoc={highlightPublicationHtml(email.html)}/><div className="campaign-details"><h3>Plain-text version</h3><pre>{email.plainText}</pre></div></div>:<div className="preview-paper"><Kicker>Editorial preview</Kicker><h3>{item.title}</h3><p>{item.excerpt}</p></div>}
- <div className="detail-actions review-actions"><button className="primary-btn" onClick={()=>onStatus(approved?"Needs review":"Approved")}><Check size={14}/>{approved?"Return to review":article?"Approve complete article":email?"Approve complete email":"Approve"}</button><button className="secondary-btn" onClick={()=>onStatus(item.status==="Scheduled"?"Draft":"Scheduled")}><CalendarDays size={14}/>{item.status==="Scheduled"?"Move to draft":"Schedule"}</button></div>
+ <div className="detail-actions review-actions"><button className="primary-btn" disabled={!!article&&(journalLocked||item.status==="Published")} onClick={()=>onStatus(approved?"Needs review":"Approved")}><Check size={14}/>{item.status==="Published"&&article?"Published version retained":approved?"Return to review":article?"Approve complete article":email?"Approve complete email":"Approve"}</button><button className="secondary-btn" disabled={!!article&&journalLocked} onClick={()=>onStatus(article?"Needs review":item.status==="Scheduled"?"Draft":"Scheduled")}><CalendarDays size={14}/>{article?"Hold this version":item.status==="Scheduled"?"Move to draft":"Schedule"}</button></div>
  </div></aside></div>,document.body);
 }

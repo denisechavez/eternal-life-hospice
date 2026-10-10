@@ -42,6 +42,10 @@ from form_intake import (
 )
 from google_reviews import GoogleReviewsError, get_reviews
 from journal_preview import render_resources_journal
+import journal_release
+import studio_auth
+import studio_site
+import journal_discovery
 
 BASE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.join(BASE, "elh-preview")
@@ -165,7 +169,7 @@ class PrettyURLHandler(http.server.SimpleHTTPRequestHandler):
         ELH_JOURNAL_DATE is deliberately supported for deterministic previews
         and regression tests; production uses the real America/Los_Angeles date.
         """
-        override = os.environ.get("ELH_JOURNAL_DATE")
+        override = os.environ.get("ELH_JOURNAL_DATE") if not is_production_deployment() else None
         if override:
             try:
                 return datetime.strptime(override, "%Y-%m-%d").date().isoformat()
@@ -192,6 +196,33 @@ class PrettyURLHandler(http.server.SimpleHTTPRequestHandler):
         except (OSError, ValueError, TypeError, KeyError):
             return None
 
+    def _released_journal(self):
+        if not hasattr(self, "_journal_snapshot"):
+            self._journal_snapshot = journal_release.released()
+        return self._journal_snapshot[0]
+
+    def _journal_pages(self):
+        from internal_links import inventory, PageParser
+        pages = {route: entry for route, entry in inventory(self._journal_today()).items()
+                 if not route.startswith("/blog/") or route[6:] in self._released_journal()}
+        for slug, row in self._released_journal().items():
+            route = "/blog/" + slug
+            if route in pages:
+                pages[route] = (pages[route][0], row["html"], PageParser(row["html"], self._journal_today()))
+        return pages
+
+    def _hide_unreleased_links(self, text, route):
+        from internal_links import resolve
+        def anchor(match):
+            attr = re.search(r'\bhref=(["\'])(.*?)\1', match.group(1))
+            target = resolve(route, html.unescape(attr[2])) if attr else None
+            if target and target[0].startswith("/blog/"):
+                slug = target[0][6:].removesuffix(".html")
+                if slug not in self._released_journal():
+                    return match.group(2)
+            return match.group(0)
+        return re.sub(r'<a\b([^>]*)>([\s\S]*?)</a>', anchor, text, flags=re.IGNORECASE)
+
     @classmethod
     def _future_journal_path(cls, path):
         if cls._journal_today() is None:
@@ -202,6 +233,7 @@ class PrettyURLHandler(http.server.SimpleHTTPRequestHandler):
             clean = unquote(clean)
         except Exception:
             return True
+        clean = "/" + posixpath.normpath(clean).lstrip("/")
         clean = clean.rstrip("/")
         if clean.endswith(".html"):
             clean = clean[:-5]
@@ -211,8 +243,62 @@ class PrettyURLHandler(http.server.SimpleHTTPRequestHandler):
         manifest = cls._journal_manifest()
         if manifest is None:
             return True
-        return any(item.get("slug") == slug and item.get("date", "") > cls._journal_today()
-                   for item in manifest)
+        return slug not in journal_release.released()[0]
+
+    def _studio_api(self):
+        if studio_site.proxy(self) or studio_site.serve(self):
+            return True
+        path = urlsplit(self.path).path
+        if path.startswith("/api/journal-photo/"):
+            if self.command not in {"GET", "HEAD"}:
+                self._send_json(405, {"message": "Use GET"})
+                return True
+            try:
+                record = journal_release.photo(path.rsplit("/", 1)[-1])
+                if not record:
+                    self.send_error(404)
+                    return True
+                self.send_response(200)
+                self.send_header("Content-Type", record["media_type"])
+                self.send_header("Content-Length", str(len(record["body"])))
+                self.send_header("Cache-Control", "public, max-age=31536000, immutable")
+                self.end_headers()
+                if self.command != "HEAD":
+                    self.wfile.write(record["body"])
+            except Exception:
+                self._send_json(503, {"message": "Published photograph unavailable"})
+            return True
+        if path not in {"/api/studio/journal", "/api/journal-release-status"}:
+            return False
+        try:
+            if path == "/api/journal-release-status":
+                if self.command not in {"GET", "HEAD"}:
+                    self._send_json(405, {"message": "Use GET"})
+                else:
+                    self._send_json(200, journal_release.release_status())
+                return True
+            user = studio_auth.reviewer(self.headers)
+            if self.command == "POST":
+                # Cookie-authenticated writes require an exact trusted origin.
+                if self.headers.get("Origin") not in studio_auth.allowed_origins():
+                    raise PermissionError("Studio request origin is not authorized")
+                length = int(self.headers.get("Content-Length", "0"))
+                if length <= 0 or length > 4096:
+                    raise ValueError("Invalid approval request size")
+                payload = json.loads(self.rfile.read(length))
+                journal_release.decide(payload["slug"], payload["revision"], payload["action"], user)
+            elif self.command not in {"GET", "HEAD"}:
+                self._send_json(405, {"message": "Use GET or POST"})
+                return True
+            self._send_json(200, {"items": journal_release.review_items()})
+        except PermissionError as exc:
+            self._send_json(403 if "__session" in self.headers.get("Cookie", "") else 401,
+                            {"message": str(exc)})
+        except (ValueError, KeyError, TypeError):
+            self._send_json(409, {"message": "Article changed or request invalid. Reload and review again."})
+        except Exception:
+            self._send_json(503, {"message": "Journal approval storage unavailable. Nothing was approved."})
+        return True
 
     def _send_journal_artifact(self, path):
         """Filter generated campaign artifacts at request time."""
@@ -224,18 +310,32 @@ class PrettyURLHandler(http.server.SimpleHTTPRequestHandler):
                 body = source.read()
         except OSError:
             return False
+        visible = self._released_journal()
+        def eligible(markup):
+            match = re.search(r'href="/?blog/([^"#?]+)', markup)
+            return bool(match and match.group(1) in visible)
+        # One eligibility set applies to URLs, cards, structured data and search.
+        schedule = [{**item, "date": visible[item["slug"]]["date"] if item["slug"] in visible else "9999-12-31"}
+                    for item in self._journal_manifest()]
         if path.endswith("/resources.html"):
             try:
                 with open(os.path.join(ROOT, "blog.html"), encoding="utf-8") as source:
                     archive = source.read()
+                archive = journal_discovery.archive(archive, visible)
+                archive = re.sub(
+                    r'<a class="rc"[^>]*>[\s\S]*?</a>',
+                    lambda match: match.group(0) if eligible(match.group(0)) else "", archive)
+                archive = re.sub(
+                    r'<div class="blog-featured"[^>]*>[\s\S]*?</div>\s*</div>',
+                    lambda match: match.group(0) if eligible(match.group(0)) else "", archive)
                 body = render_resources_journal(
-                    body.decode("utf-8"), archive, self._journal_manifest(), self._journal_today()
+                    body.decode("utf-8"), archive, schedule, self._journal_today()
                 ).encode("utf-8")
             except (OSError, ValueError):
                 self.send_error(503, "Resources Journal stories unavailable")
                 return True
         elif path.endswith("/blog.html"):
-            text = body.decode("utf-8")
+            text = journal_discovery.archive(body.decode("utf-8"), visible)
             today = self._journal_today()
             feature_slot = "<!-- JOURNAL_FEATURED_SLOT -->"
             featured_match = re.search(
@@ -251,11 +351,11 @@ class PrettyURLHandler(http.server.SimpleHTTPRequestHandler):
             )
             visible_cards = [
                 match for match in re.finditer(card_pattern, text)
-                if match.group(1) <= today
+                if eligible(match.group(0))
             ]
             newest_card = max(visible_cards, key=lambda match: match.group(1), default=None)
             featured_date = featured_match.group(1)
-            if featured_date <= today and (
+            if eligible(featured_match.group(0)) and (
                 newest_card is None or featured_date >= newest_card.group(1)
             ):
                 featured = featured_match.group(0)
@@ -267,9 +367,11 @@ class PrettyURLHandler(http.server.SimpleHTTPRequestHandler):
                 self.send_error(503, "Journal featured story unavailable")
                 return True
             text = text[:featured_match.start()] + feature_slot + text[featured_match.end():]
+            featured_slug = re.search(r'href="/?blog/([^"#?]+)', featured).group(1)
             text = re.sub(
                 card_pattern,
-                lambda match: "" if match.group(1) > today or match.group(1) == chosen_date
+                lambda match: "" if not eligible(match.group(0)) or
+                re.search(r'href="/?blog/([^"#?]+)', match.group(0)).group(1) == featured_slug
                 else match.group(0),
                 text,
             )
@@ -285,8 +387,15 @@ class PrettyURLHandler(http.server.SimpleHTTPRequestHandler):
                     if payload.get("@type") == "Blog" and isinstance(payload.get("blogPost"), list):
                         payload["blogPost"] = [
                             post for post in payload["blogPost"]
-                            if campaign_dates.get(urlsplit(post.get("url", "")).path, "") <= today
+                            if urlsplit(post.get("url", "")).path.removeprefix("/blog/") in visible
                         ]
+                        for post in payload["blogPost"]:
+                            slug = urlsplit(post["url"]).path.removeprefix("/blog/")
+                            info = journal_discovery.summary(visible[slug])
+                            if info["title"]:
+                                post.update(headline=info["title"], description=info["desc"], datePublished=info["date"])
+                                if info["image"]:
+                                    post["image"] = info["image"]
                         return match.group(0).replace(match.group(1), json.dumps(payload, ensure_ascii=False))
                 except (ValueError, TypeError, AttributeError):
                     pass
@@ -300,8 +409,15 @@ class PrettyURLHandler(http.server.SimpleHTTPRequestHandler):
                 campaign = {"/blog/" + item["slug"]: item.get("date", "")
                             for item in self._journal_manifest()}
                 entries = [entry for entry in entries
-                           if entry.get("url") not in campaign
-                           or campaign[entry["url"]] <= self._journal_today()]
+                           if not urlsplit(entry.get("url", "")).path.startswith("/blog/")
+                           or urlsplit(entry["url"]).path.removeprefix("/blog/").removesuffix(".html") in visible]
+                for entry in entries:
+                    route = urlsplit(entry.get("url", "")).path
+                    slug = route.removeprefix("/blog/").removesuffix(".html")
+                    if route.startswith("/blog/") and slug in visible:
+                        info = journal_discovery.summary(visible[slug])
+                        if info["title"]:
+                            entry.update(title=info["title"], desc=info["desc"], kw=info["title"]+" "+info["desc"])
                 body = json.dumps(entries, ensure_ascii=False, separators=(",", ":")).encode()
             except (ValueError, TypeError, KeyError):
                 return False
@@ -310,9 +426,8 @@ class PrettyURLHandler(http.server.SimpleHTTPRequestHandler):
             today = self._journal_today()
             campaign = {item["slug"]: item["date"] for item in self._journal_manifest()}
             text = re.sub(
-                r'\s*<url>\s*<loc>https://eternallifehospice\.com/blog/([^<]+)</loc>\s*'
-                r'<lastmod>([^<]+)</lastmod>[\s\S]*?</url>',
-                lambda match: "" if campaign.get(match.group(1), "") > today else match.group(0),
+                r'\s*<url>\s*<loc>https://eternallifehospice\.com/blog/([^<]+)</loc>[\s\S]*?</url>',
+                lambda match: "" if match.group(1) not in visible else match.group(0),
                 text,
             )
             body = text.encode("utf-8")
@@ -321,7 +436,9 @@ class PrettyURLHandler(http.server.SimpleHTTPRequestHandler):
         if path.endswith(".html"):
             from internal_links import render_links
             route = "/" + os.path.basename(path)[:-5]
-            body = render_links(body.decode("utf-8"), route, self._journal_today()).encode("utf-8")
+            body = render_links(body.decode("utf-8"), route, self._journal_today(),
+                                pages=self._journal_pages()).encode("utf-8")
+            body = self._hide_unreleased_links(body.decode(), route).encode()
         self.send_response(200)
         self.send_header("Content-Type", self.guess_type(path))
         self.send_header("Content-Length", str(len(body)))
@@ -395,6 +512,24 @@ class PrettyURLHandler(http.server.SimpleHTTPRequestHandler):
         Last-Modified and byte-range semantics remain intact.
         """
         path = self.translate_path(self.path)
+        if os.path.dirname(os.path.realpath(path)) == os.path.join(ROOT, "blog") and path.endswith(".html"):
+            slug = os.path.basename(path)[:-5]
+            record = self._released_journal().get(slug)
+            if record is None:
+                self.send_error(404)
+                return None
+            from internal_links import render_links
+            # Approved snapshots include the reviewed contextual links. Never
+            # inject new article links into a version after its approval.
+            body = record["html"].encode()
+            body = self._hide_unreleased_links(body.decode(), "/blog/" + slug).encode()
+            self.send_response(200)
+            self.send_header("Content-Type", "text/html; charset=utf-8")
+            self.send_header("Content-Length", str(len(body)))
+            self.send_header("Cache-Control", "public, max-age=0, must-revalidate")
+            self.send_header("X-Journal-Revision", record["revision"])
+            self.end_headers()
+            return io.BytesIO(body)
         if path.endswith(".html") and os.path.isfile(path):
             from internal_links import inventory, render_links
             route = urlsplit(self.path).path.rstrip("/") or "/"
@@ -404,7 +539,9 @@ class PrettyURLHandler(http.server.SimpleHTTPRequestHandler):
                 route = "/"
             if route in inventory(self._journal_today()):
                 with open(path, encoding="utf-8") as source:
-                    body = render_links(source.read(), route, self._journal_today()).encode()
+                    body = render_links(source.read(), route, self._journal_today(),
+                                        pages=self._journal_pages()).encode()
+                    body = self._hide_unreleased_links(body.decode(), route).encode()
                 compressed = "gzip" in (self.headers.get("Accept-Encoding") or "").lower()
                 if compressed:
                     body = gzip.compress(body, mtime=0)
@@ -508,6 +645,15 @@ class PrettyURLHandler(http.server.SimpleHTTPRequestHandler):
                 "frame-ancestors 'self'; form-action 'self';"
             ),
         }
+        if urlsplit(self.path).path.startswith("/studio"):
+            # Clerk's development FAPI and CAPTCHA; production JS/API uses
+            # the same-origin managed proxy. No change to intake-page policy.
+            policy = security_headers.get("Content-Security-Policy", "")
+            policy = policy.replace("script-src 'self'", "script-src 'self' https://*.clerk.accounts.dev https://challenges.cloudflare.com")
+            policy = policy.replace("connect-src 'self'", "connect-src 'self' https://*.clerk.accounts.dev https://clerk-telemetry.com")
+            policy = policy.replace("frame-src 'self'", "frame-src 'self' https://challenges.cloudflare.com")
+            policy += "; worker-src 'self' blob:"
+            security_headers["Content-Security-Policy"] = policy
         for name, value in security_headers.items():
             if not self._has_header(name):
                 self.send_header(name, value)
@@ -534,6 +680,8 @@ class PrettyURLHandler(http.server.SimpleHTTPRequestHandler):
         return True
 
     def do_HEAD(self):
+        if self._studio_api():
+            return
         parsed = urlsplit(self.path)
         if self._is_internal_artifact():
             self.send_error(404)
@@ -558,6 +706,8 @@ class PrettyURLHandler(http.server.SimpleHTTPRequestHandler):
         super().do_HEAD()
 
     def do_GET(self):
+        if self._studio_api():
+            return
         parsed = urlsplit(self.path)
         if self._is_internal_artifact():
             self.send_error(404)
@@ -674,6 +824,8 @@ class PrettyURLHandler(http.server.SimpleHTTPRequestHandler):
         self.end_headers()
 
     def do_POST(self):
+        if self._studio_api():
+            return
         path = self.path.split("?", 1)[0]
         if path == "/api/coverage":
             self._send_json(
@@ -811,6 +963,8 @@ class PrettyURLHandler(http.server.SimpleHTTPRequestHandler):
             )
 
     def do_OPTIONS(self):
+        if studio_site.proxy(self):
+            return
         if self.path.split("?", 1)[0] == "/api/coverage":
             self.send_response(204)
             self.send_header("Access-Control-Allow-Origin", "*")
@@ -943,7 +1097,16 @@ class PrettyURLHandler(http.server.SimpleHTTPRequestHandler):
         for name, value in (extra_headers or {}).items():
             self.send_header(name, value)
         self.end_headers()
-        self.wfile.write(body)
+        if self.command != "HEAD":
+            self.wfile.write(body)
+
+    def do_PATCH(self):
+        if not studio_site.proxy(self):
+            self._send_json(405, {"message": "Method not allowed"})
+
+    def do_DELETE(self):
+        if not studio_site.proxy(self):
+            self._send_json(405, {"message": "Method not allowed"})
 
 
 class QuietHTTPServer(http.server.ThreadingHTTPServer):

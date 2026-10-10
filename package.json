@@ -10,11 +10,14 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "@clerk/react": "^6.17.8",
+    "@clerk/shared": "^4.40.0",
     "@replit/connectors-sdk": "^0.4.3",
     "drizzle-zod": "^0.8.3",
     "openai": "^6.46.0",
     "p-limit": "^7.3.0",
     "p-retry": "^7.1.1",
+    "wouter": "^3.13.0",
     "zod": "^4.4.3",
     "zod-validation-error": "^5.0.0"
   }

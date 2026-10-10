@@ -55,6 +55,9 @@ export default defineConfig({
       : []),
   ],
   resolve: {
+    // The shared Clerk package lives above this artifact. Resolve its React
+    // peers to this app's runtime, not a second parent-level React instance.
+    dedupe: ['react', 'react-dom'],
     alias: {
       '@': path.resolve(import.meta.dirname, 'src'),
     },
@@ -72,6 +75,15 @@ export default defineConfig({
     // Article srcdoc uses the site's original /assets paths. Serve those from
     // the existing website service, including when previewing this port alone.
     proxy: {
+      '/api/studio': {
+        target: 'http://127.0.0.1:5000',
+      },
+      '/api/journal-release-status': {
+        target: 'http://127.0.0.1:5000',
+      },
+      '/api/journal-photo': {
+        target: 'http://127.0.0.1:5000',
+      },
       '/assets': {
         target: 'http://127.0.0.1:5000',
       },

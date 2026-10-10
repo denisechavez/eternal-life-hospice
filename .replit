@@ -2,7 +2,7 @@ modules = ["nodejs-20", "python-3.11", "postgresql-16"]
 onBoot = "python3 scripts/setup-python-environment.py"
 [nix]
 channel = "stable-25_05"
-packages = ["freetype", "glibcLocales", "gumbo", "harfbuzz", "jbig2dec", "libjpeg_turbo", "mupdf", "openjpeg", "qpdf", "swig", "xcbuild"]
+packages = ["freetype", "glibcLocales", "gumbo", "harfbuzz", "jbig2dec", "libjpeg_turbo", "mupdf", "openjpeg", "postgresql", "qpdf", "swig", "xcbuild"]
 
 [agent]
 expertMode = true
@@ -133,7 +133,8 @@ timeoutMs = 30000
 
 [deployment]
 deploymentTarget = "autoscale"
-run = ["bash", "-c", "python3 website/devserver.py"]
+run = ["bash", "website/start-published-site.sh"]
+build = ["bash", "website/build-published-site.sh"]
 
 [userenv]
 

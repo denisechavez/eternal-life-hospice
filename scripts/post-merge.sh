@@ -2,10 +2,11 @@
 set -e
 
 # Eternal Life Hospice is a static HTML site (website/elh-preview/) served by
-# Replit Autoscale. There is no build step and no dependencies to install, so post-merge
-# setup is a fast, idempotent check that the published site directory is intact.
-# This keeps task merges reconciling cleanly without doing unnecessary work.
+# Replit Autoscale. Preserve installed internal tools while ensuring the live
+# Journal's JWT/database dependencies are present in Replit's managed environment.
 
 test -d website/elh-preview
+python3 scripts/setup-python-environment.py
+uv sync --locked --inexact
 
 echo "post-merge OK: website/elh-preview present ($(ls website/elh-preview/*.html 2>/dev/null | wc -l) HTML pages)"

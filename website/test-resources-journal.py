@@ -6,6 +6,8 @@ import json
 import re
 import threading
 import unittest
+from unittest.mock import patch
+from journal_test_fixtures import approved_fixture_releases
 from http.server import ThreadingHTTPServer
 from pathlib import Path
 from unittest.mock import patch
@@ -18,6 +20,10 @@ MANIFEST = json.loads(Path(devserver.JOURNAL_MANIFEST).read_text())["articles"]
 
 
 class ResourcesJournalTests(unittest.TestCase):
+    def setUp(self):
+        fixture = patch("journal_release.released", side_effect=approved_fixture_releases)
+        fixture.start()
+        self.addCleanup(fixture.stop)
     def render(self, today, command="GET"):
         handler = devserver.PrettyURLHandler.__new__(devserver.PrettyURLHandler)
         handler.command = command
