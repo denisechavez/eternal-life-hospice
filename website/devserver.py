@@ -46,6 +46,7 @@ import journal_release
 import studio_auth
 import studio_site
 import journal_discovery
+import recruitment_policy
 
 BASE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.join(BASE, "elh-preview")
@@ -439,6 +440,11 @@ class PrettyURLHandler(http.server.SimpleHTTPRequestHandler):
             body = render_links(body.decode("utf-8"), route, self._journal_today(),
                                 pages=self._journal_pages()).encode("utf-8")
             body = self._hide_unreleased_links(body.decode(), route).encode()
+            body = recruitment_policy.public_html(body.decode()).encode()
+        elif path.endswith("search-index.json"):
+            body = recruitment_policy.public_discovery(body.decode(), "search").encode()
+        elif path.endswith("sitemap.xml"):
+            body = recruitment_policy.public_discovery(body.decode(), "sitemap").encode()
         self.send_response(200)
         self.send_header("Content-Type", self.guess_type(path))
         self.send_header("Content-Length", str(len(body)))
@@ -512,6 +518,12 @@ class PrettyURLHandler(http.server.SimpleHTTPRequestHandler):
         Last-Modified and byte-range semantics remain intact.
         """
         path = self.translate_path(self.path)
+        if os.path.isdir(path):
+            for index_name in ("index.html", "index.htm"):
+                index_path = os.path.join(path, index_name)
+                if os.path.isfile(index_path):
+                    path = index_path
+                    break
         if os.path.dirname(os.path.realpath(path)) == os.path.join(ROOT, "blog") and path.endswith(".html"):
             slug = os.path.basename(path)[:-5]
             record = self._released_journal().get(slug)
@@ -523,6 +535,7 @@ class PrettyURLHandler(http.server.SimpleHTTPRequestHandler):
             # inject new article links into a version after its approval.
             body = record["html"].encode()
             body = self._hide_unreleased_links(body.decode(), "/blog/" + slug).encode()
+            body = recruitment_policy.public_html(body.decode()).encode()
             self.send_response(200)
             self.send_header("Content-Type", "text/html; charset=utf-8")
             self.send_header("Content-Length", str(len(body)))
@@ -542,6 +555,7 @@ class PrettyURLHandler(http.server.SimpleHTTPRequestHandler):
                     body = render_links(source.read(), route, self._journal_today(),
                                         pages=self._journal_pages()).encode()
                     body = self._hide_unreleased_links(body.decode(), route).encode()
+                    body = recruitment_policy.public_html(body.decode()).encode()
                 compressed = "gzip" in (self.headers.get("Accept-Encoding") or "").lower()
                 if compressed:
                     body = gzip.compress(body, mtime=0)
@@ -554,12 +568,19 @@ class PrettyURLHandler(http.server.SimpleHTTPRequestHandler):
                     self.send_header("Content-Encoding", "gzip")
                 self.end_headers()
                 return io.BytesIO(body)
-        if os.path.isdir(path):
-            for index_name in ("index.html", "index.htm"):
-                index_path = os.path.join(path, index_name)
-                if os.path.isfile(index_path):
-                    path = index_path
-                    break
+        # Include pages without contextual-link inventory (such as referral tools).
+        if os.path.isfile(path) and (path.endswith(".html") or path.endswith("llms.txt")):
+            with open(path, encoding="utf-8") as source:
+                text = source.read()
+            text = (recruitment_policy.public_html(text) if path.endswith(".html")
+                    else recruitment_policy.public_discovery(text, "llms"))
+            body = text.encode()
+            self.send_response(200)
+            self.send_header("Content-Type", self.guess_type(path))
+            self.send_header("Content-Length", str(len(body)))
+            self.send_header("Cache-Control", "public, max-age=0, must-revalidate")
+            self.end_headers()
+            return io.BytesIO(body)
         suffix = os.path.splitext(path)[1].lower()
         compressible = {
             ".css",
@@ -679,7 +700,28 @@ class PrettyURLHandler(http.server.SimpleHTTPRequestHandler):
         self._send_redirect(destination, parsed.query)
         return True
 
+    def _withdrawn_recruitment(self):
+        if not recruitment_policy.withdrawn(self.path):
+            return False
+        # Let crawlers see 404 rather than blocking robots and hiding the status.
+        # The original files are retained for a future, explicitly approved restore.
+        body = (b'<!doctype html><html lang="en"><head><meta charset="utf-8">'
+                b'<meta name="robots" content="noindex, nofollow"><title>Page unavailable</title>'
+                b'</head><body><h1>This page is unavailable</h1>'
+                b'<p><a href="/">Return to Eternal Life Hospice</a></p></body></html>')
+        self.send_response(404)
+        self.send_header("Content-Type", "text/html; charset=utf-8")
+        self.send_header("Content-Length", str(len(body)))
+        self.send_header("X-Robots-Tag", "noindex, nofollow")
+        self.send_header("Cache-Control", "no-store")
+        self.end_headers()
+        if self.command != "HEAD":
+            self.wfile.write(body)
+        return True
+
     def do_HEAD(self):
+        if self._withdrawn_recruitment():
+            return
         if self._studio_api():
             return
         parsed = urlsplit(self.path)
@@ -706,6 +748,8 @@ class PrettyURLHandler(http.server.SimpleHTTPRequestHandler):
         super().do_HEAD()
 
     def do_GET(self):
+        if self._withdrawn_recruitment():
+            return
         if self._studio_api():
             return
         parsed = urlsplit(self.path)
@@ -824,6 +868,8 @@ class PrettyURLHandler(http.server.SimpleHTTPRequestHandler):
         self.end_headers()
 
     def do_POST(self):
+        if self._withdrawn_recruitment():
+            return
         if self._studio_api():
             return
         path = self.path.split("?", 1)[0]
@@ -912,6 +958,12 @@ class PrettyURLHandler(http.server.SimpleHTTPRequestHandler):
             fields, files = parse_form_body(
                 self.headers.get("Content-Type", ""), body
             )
+            if recruitment_policy.RECRUITMENT_PAUSED and fields.get("form-name") == "elh-careers":
+                self._send_json(410, json_response_payload(
+                    False, error="recruitment_paused",
+                    message="Recruitment submissions are not available on this website."
+                ))
+                return
             result = process_submission(fields, files)
             form_name = fields.get("form-name", "unknown")
             receipt = result.get("receipt_id", "honeypot")
