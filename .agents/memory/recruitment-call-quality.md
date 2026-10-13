@@ -27,3 +27,13 @@ card links and QR destinations. Publication still requires separate approval.
 Keep accurate clinical descriptions
 distinct from recruitment promotion. Do not use broad nursing-related PPC
 exclusions that would suppress the approved hospice-nursing family-care strategy.
+
+The user confirmed on 2026-10-12 that recruitment-related PPC exclusions are
+already in place.
+
+**Why:** The website takedown complements an existing advertising measure; it is
+not a substitute for PPC controls.
+
+**How to apply:** Do not recommend adding these exclusions as unfinished work.
+If unwanted recruitment calls persist, inspect current campaign settings and
+call sources before proposing further changes.
