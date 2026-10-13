@@ -161,7 +161,18 @@ def apply_inline_links(text, route, eligible=None):
     eligible = eligible if eligible is not None else inventory()
     parser = ProseParser(text, route)
     edits, retained, seen = [], [], set()
-    existing = [a for b in parser.blocks for a in b["links"]]
+    all_existing = [a for b in parser.blocks for a in b["links"]]
+    # The user specifically requested all nine therapy labels as homepage jumps.
+    # Keep this curated list intact without raising other pages' SEO-link budgets.
+    modality_jumps = [a for a in all_existing
+                      if route == "/resources/comfort-therapies" and re.search(
+                          r'\bhref="/#therapy-(?:music|massage|aroma|reiki|pet|soundbath|audiology|doula|holistic)"',
+                          a["open"])]
+    for anchor in modality_jumps:
+        edits.append((anchor["start"], anchor["start"] + len(anchor["open"]),
+                      mark_anchor(anchor["open"], route, anchor["target"])))
+        seen.add(anchor["target"])
+    existing = [a for a in all_existing if a not in modality_jumps]
     limit = link_budget(route, sum(len(b["text"].split()) for b in parser.blocks))
     # Retain up to seven useful existing links, preferring distinct destinations.
     ordered = sorted(enumerate(existing), key=lambda pair: (

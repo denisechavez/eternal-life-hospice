@@ -29,6 +29,21 @@ page, selected by word count and relevance, with seven as the maximum.
 Existing contextual inline links count toward that limit; shared navigation,
 footer links and bottom reading groups are separate.
 
+The comfort-therapies resource has an explicitly requested nine-item modality
+directory linking each therapy label to its expanded homepage description.
+These curated modality jumps are exempt from the ordinary content-link cap;
+the exception does not apply to other website copy or Journal articles.
+
+**Why:** The user requested a link for every modality in this particular list,
+not a site-wide increase in SEO links.
+
+**How to apply:** Preserve all nine distinct destinations and open the matching
+description on arrival. Do not let automatic link budgeting strip these jumps.
+For deep-link verification, require the modality heading and descriptive text to
+be visible below the sticky header on desktop and mobile, not merely a matching
+fragment or an expanded state. The requested destination is the description,
+not the photograph's upper edge; browser fragment alignment can differ.
+
 For **Eternal Journal articles**, the later editorial requirement overrides
 this range: **2–5 contextual links**, chosen by length and relevance. Other
 informational website copy retains the earlier 2–7 range.

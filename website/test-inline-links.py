@@ -70,7 +70,14 @@ class InlineLinksTests(unittest.TestCase):
             parser = ProseParser(text, route)
             links = [a for b in parser.blocks for a in b["links"]]
             self.assertGreaterEqual(len(links), 2, route)
-            self.assertLessEqual(len(links), 7, route)
+            # The approved nine-item modality directory is an explicit exception,
+            # not a higher content-link budget for other informational pages.
+            jumps = [a for a in links if route == "/resources/comfort-therapies"
+                     and a["href"].startswith("/#therapy-")]
+            if route == "/resources/comfort-therapies":
+                self.assertEqual(len(jumps), 9)
+                self.assertEqual(len({a["href"] for a in jumps}), 9)
+            self.assertLessEqual(len(links) - len(jumps), 7, route)
             for anchor in links:
                 self.assertIn(anchor["target"], current, (route, anchor["href"]))
                 self.assertIn("elh-inline-link", anchor["open"], (route, anchor["text"]))

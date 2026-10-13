@@ -154,6 +154,14 @@ def recommendations(route, as_of=None, pages=None, with_topics=False):
 
 
 def render_links(text, route, as_of=None, pages=None):
+    if route == "/":
+        # Render targets before the browser resolves an incoming fragment.
+        # Late JavaScript-created IDs can trigger another native anchor jump.
+        text = re.sub(
+            r'(<div class="mod-card[^"]*"\s+)(data-mod="([a-z]+)")',
+            lambda match: match[1] + 'id="therapy-' + match[3] + '" ' + match[2],
+            text,
+        )
     links = recommendations(route, as_of, pages, with_topics=True)
     block = ""
     if links:
