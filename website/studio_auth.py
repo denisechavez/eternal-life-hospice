@@ -1,6 +1,7 @@
 """Validate existing Clerk browser sessions and explicit reviewer authority."""
 import base64
 import json
+import logging
 import os
 from functools import lru_cache
 from http.cookies import SimpleCookie
@@ -37,6 +38,7 @@ def reviewer(headers):
     token = cookies.get("__session")
     if not token:
         raise PermissionError("Sign in to Studio to review Journal releases.")
+    stage = "verify_token"
     try:
         issuer, client = verifier(os.environ["CLERK_PUBLISHABLE_KEY"])
         claims = jwt.decode(token.value, client.get_signing_key_from_jwt(token.value).key,
@@ -49,12 +51,16 @@ def reviewer(headers):
         # Check revocation and reviewer email against Clerk, never UI claims.
         def clerk(path):
             request = Request("https://api.clerk.com/v1/" + path,
-                              headers={"Authorization": "Bearer " + secret})
+                              headers={"Authorization": "Bearer " + secret,
+                                       "Accept": "application/json",
+                                       "User-Agent": "Eternal-Studio/1.0"})
             with urlopen(request, timeout=5) as response:
                 return json.load(response)
+        stage = "lookup_session"
         session = clerk("sessions/" + claims["sid"])
         if session.get("status") != "active" or session.get("user_id") != claims["sub"]:
             raise PermissionError("Studio session is no longer active")
+        stage = "lookup_user"
         user = clerk("users/" + claims["sub"])
         if not any(e.get("email_address", "").lower() in REVIEWER_EMAILS
                    and e.get("verification", {}).get("status") == "verified"
@@ -63,5 +69,9 @@ def reviewer(headers):
         return claims["sub"]
     except PermissionError:
         raise
-    except Exception:
+    except Exception as error:
+        # No tokens, addresses, keys or raw exception messages in diagnostics.
+        logging.getLogger(__name__).warning(
+            "Studio verification failed stage=%s kind=%s status=%s",
+            stage, type(error).__name__, getattr(error, "code", "-"))
         raise PermissionError("Studio session could not be verified.") from None

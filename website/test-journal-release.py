@@ -286,6 +286,10 @@ class AuthTests(unittest.TestCase):
                     user["email_addresses"] = [{"email_address":address,"verification":{"status":"verified"}}]
                     remote.side_effect = [response(session),response(user)]
                     self.assertEqual(studio_auth.reviewer(headers), "user_1")
+                    for request_call in remote.call_args_list[-2:]:
+                        request = request_call.args[0]
+                        self.assertEqual(request.get_header("User-agent"), "Eternal-Studio/1.0")
+                        self.assertEqual(request.get_header("Accept"), "application/json")
                     user["email_addresses"][0]["verification"]["status"] = "unverified"
                     remote.side_effect = [response(session),response(user)]
                     with self.assertRaises(PermissionError):

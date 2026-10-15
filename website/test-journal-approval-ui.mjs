@@ -23,7 +23,8 @@ try {
       import {createRoot} from "react-dom/client";
       import Hub from ${JSON.stringify(join(component, "Hub.tsx"))};
       import {journalArticles} from ${JSON.stringify(join(component, "contentData.ts"))};
-      const fixture = window.approvalFixture = {posts:[],revision:1,failNext:0};
+      const fixture = window.approvalFixture = {posts:[],revision:1,failNext:0,
+        identity:new URLSearchParams(location.search).get("identity")||"Denise"};
       let release;
       const firstLoad = new Promise(resolve=>release=resolve);
       fixture.release=()=>release();
@@ -67,7 +68,7 @@ try {
         });
         plugin.onResolve({filter: /^@clerk\/react$/}, () => ({path:"auth",namespace:"fixture"}));
         plugin.onLoad({filter: /.*/,namespace:"fixture"}, () => ({
-          contents: "export const useAuth=()=>({isSignedIn:true,isLoaded:true});export const useClerk=()=>({signOut(){}});",
+          contents: "export const useAuth=()=>({isSignedIn:window.approvalFixture.identity!=='Guest',isLoaded:true});export const useUser=()=>({user:window.approvalFixture.identity==='Guest'?null:{firstName:window.approvalFixture.identity,fullName:window.approvalFixture.identity,primaryEmailAddress:{emailAddress:'fixture@example.org'}}});export const useClerk=()=>({signOut(){}});",
         }));
       },
     }],
@@ -125,6 +126,9 @@ try {
   await call("Emulation.setDeviceMetricsOverride",{width:1280,height:900,deviceScaleFactor:1,mobile:false});
   await call("Page.navigate",{url:file+"?view=Journal"});
   await until("document.querySelectorAll('.studio-row').length>100");
+  assert.ok(await evaluate(`document.querySelector('.welcome-name').textContent.includes('Denise')`));
+  assert.equal(await evaluate(`document.querySelector('.top-avatar').title`),"Denise");
+  console.log("PASS greeting and avatar use the signed-in reviewer rather than a fixed identity");
   await evaluate("document.querySelector('.studio-row').click()");
   await until("document.querySelector('[role=\"dialog\"]')");
   await checkButtonContrast();
@@ -180,6 +184,13 @@ try {
   await call("Emulation.setDeviceMetricsOverride",{width:390,height:844,deviceScaleFactor:1,mobile:true});
   assert.ok(await evaluate(`(()=>{const r=document.querySelector('.review-actions').getBoundingClientRect();return r.top>=0&&r.bottom<=innerHeight&&r.width<=innerWidth})()`));
   console.log("PASS mobile approval controls fit the viewport");
+  for(const identity of ["Aleksandra","Guest"]){
+    await call("Page.navigate",{url:file+"?view=Journal&identity="+identity});
+    await until(`document.querySelector('.welcome-name')?.textContent.includes(${JSON.stringify(identity)})`);
+    assert.equal(await evaluate(`document.querySelector('.top-avatar').title`),identity==="Guest"?"Not signed in":identity);
+    assert.equal(await evaluate(`document.querySelector('.profile small').textContent`),identity==="Guest"?"No approval identity verified":"Signed-in account");
+  }
+  console.log("PASS switching accounts and signing out never retain another reviewer's identity");
   if(process.argv.includes("--capture-preview")){
     assert.ok(process.env.REPLIT_DEV_DOMAIN,"Preview domain is required");
     await call("Emulation.setDeviceMetricsOverride",{width:1728,height:980,deviceScaleFactor:1,mobile:false});
@@ -193,6 +204,17 @@ try {
     await mkdir("generated-artifacts",{recursive:true});
     await writeFile("generated-artifacts/approval-reader-fixed.png",Buffer.from(screenshot.data,"base64"));
     console.log("PASS actual workspace reader has readable controls; captured generated-artifacts/approval-reader-fixed.png");
+    await call("Page.navigate",{url:`https://${process.env.REPLIT_DEV_DOMAIN}/studio/`});
+    await until(`document.querySelector('a.studio-auth-button')?.textContent==="Sign in to Eternal Studio"`);
+    assert.ok(await evaluate(`getComputedStyle(document.querySelector('a.studio-auth-button')).backgroundColor!=="rgba(0, 0, 0, 0)"`));
+    const welcomeShot=await call("Page.captureScreenshot",{format:"png"});
+    await writeFile("generated-artifacts/studio-welcome-fixed.png",Buffer.from(welcomeShot.data,"base64"));
+    await evaluate("document.querySelector('a.studio-auth-button').click()");
+    await until(`location.pathname==="/studio/sign-in"&&document.querySelector('input[name="identifier"],input[type="email"]')`);
+    assert.ok(await evaluate(`document.querySelector('h1')?.textContent.includes("Sign in to Eternal Studio")`));
+    const signInShot=await call("Page.captureScreenshot",{format:"png"});
+    await writeFile("generated-artifacts/studio-signin-fixed.png",Buffer.from(signInShot.data,"base64"));
+    console.log("PASS actual Studio welcome button opens the real secure sign-in form, without submitting credentials");
   }
 } finally {
   if(ws)ws.close();

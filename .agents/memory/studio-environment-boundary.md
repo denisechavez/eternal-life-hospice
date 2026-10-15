@@ -60,3 +60,27 @@ labels, even while DOM-label and click-flow tests passed.
 **How to apply:** Check actual computed foreground/background contrast in enabled,
 disabled and confirmation states. Keep disabled labels readable and explain the
 lock beside the action, not only above a long article.
+
+Identify outbound Python requests to the authentication API with an application
+User-Agent and JSON Accept header.
+
+**Why:** An anonymous probe using urllib's default request identity was blocked
+with HTTP 403 before authentication; the same endpoint accepted the identified
+request and returned the expected unauthenticated HTTP 401. Real session
+verification had failed at the backend lookup despite a valid signed token.
+
+**How to apply:** Preserve signed-token, active-session and verified-reviewer
+checks. Do not interpret this transport rejection as proof that a user's
+credentials are wrong or work around it by trusting browser identity.
+
+Use a development Studio build for workspace browser checks, even when checking
+the same public entry route that production serves.
+
+**Why:** A published-mode build embeds the production-only Clerk proxy. Serving
+that output in development caused sign-in scripts to receive 404 responses and
+left the form loading indefinitely; this was not evidence of a production
+proxy failure.
+
+**How to apply:** Validate the published build separately, then restore the
+development build before preview testing. Keep environment separation and the
+provider's standard proxy configuration intact.

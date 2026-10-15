@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
-import { useAuth, useClerk } from "@clerk/react";
+import { useAuth, useClerk, useUser } from "@clerk/react";
 import type { FormEvent, ReactNode } from "react";
 import { Activity, AlertCircle, ArrowUpRight, BarChart3, Bell, BookOpen, CalendarDays, Check, ChevronDown, ChevronRight, CircleDot, Database, FileCheck2, FileText, Globe2, HeartHandshake, ImageIcon, LayoutDashboard, Link2, Menu, Moon, MoonStar, RefreshCw, Search, Send, Settings2, ShieldCheck, Sparkles, Sun, TrendingUp, Users, Video, X } from "lucide-react";
 import { emailCampaigns, journalArticles, journalReviewDocument, type JournalArticle } from "./contentData";
@@ -27,7 +27,6 @@ const groups = [
 const utility = [["Data Connections","Connections"],["Reporting Health","Health"],["Change Log","ChangeLog"],["KPI Dictionary","Definitions"],["Workspace Settings","Settings"]];
 const studio = [["Eternal Journal","Journal"],["Email","Emails"],["Eternal Care Brief","CareBrief"],["Content Calendar","Calendar"],["Review & Approvals","Reviews"],["Asset Library","Assets"]];
 const markets = ["Thousand Oaks","Westlake Village","Simi Valley","Calabasas","Camarillo","Moorpark","Ventura County","Los Angeles County"];
-const currentUser = {name:"Aleksandra Dubina",firstName:"Aleksandra",role:"Founder & CEO"};
 const initialsFor = (name:string) => name.trim().split(/\s+/).slice(0,2).map(part=>part[0]?.toUpperCase()||"").join("");
 const dashboardAsset = (name:string) => `${import.meta.env.BASE_URL}${name}`;
 const publicationStatusFor = (_date:string):Item["status"] => "Needs review";
@@ -82,6 +81,12 @@ const publicationKeywords = publicationKeywordCandidates.filter(keyword=>publica
 
 export default function Hub(){
   const {isSignedIn, isLoaded} = useAuth();
+  const {user}=useUser();
+  const currentUser=user?{
+    name:user.fullName||user.firstName||user.primaryEmailAddress?.emailAddress||"Signed-in account",
+    firstName:user.firstName||user.fullName?.split(/\s+/)[0]||"Reviewer",
+    role:"Signed-in account",
+  }:{name:isLoaded?"Not signed in":"Loading account",firstName:"Guest",role:"No approval identity verified"};
   const {signOut} = useClerk();
   const [journalVersions,setJournalVersions]=useState<Record<string,{slug:string;title:string;date:string;revision:string;html:string;status:Item["status"];held:boolean;hasPublishedVersion:boolean}>>({});
   const [journalReady,setJournalReady]=useState(false);
@@ -155,7 +160,7 @@ export default function Hub(){
     }catch(error){setJournalReady(false);setJournalError(error instanceof Error?error.message:"Approval was not saved");flash("Approval not confirmed. Use Retry to check the current saved status.");}
     finally{savingJournalRef.current=false;setSavingJournal(false);}
  };
-   const greeting=timeGreeting(firstName||currentUser.firstName);
+   const greeting=timeGreeting(currentUser.firstName);
   if(!entered)return <Cover firstName={firstName} onFirstNameChange={setFirstName} onEnter={()=>setEntered(true)}/>;
   const GreetingIcon=greeting.icon;
   return <div className="hub-shell hub-shell-entered">
@@ -177,7 +182,7 @@ export default function Hub(){
      <div className="cover-grain"/>
      <section className="cover-panel">
        <div className="cover-topline"><img className="cover-mark" src={dashboardAsset("elh-logo-stacked-cream-gold.png")} alt="Eternal Life Hospice"/><span>Private leadership measurement environment</span><span className="cover-rule"/></div>
-       <div className="cover-copy"><p className="cover-kicker"><i/>A working session for Aleksandra</p><h1><span className="cover-title-line">Eternal Growth</span><span className="cover-title-line cover-title-accent">Intelligence</span></h1><p className="cover-intro">A view of the signals shaping what comes next.</p></div>
+       <div className="cover-copy"><p className="cover-kicker"><i/>Your private marketing workspace</p><h1><span className="cover-title-line">Eternal Growth</span><span className="cover-title-line cover-title-accent">Intelligence</span></h1><p className="cover-intro">A view of the signals shaping what comes next.</p></div>
        <div className="domain-row" aria-label="Intelligence domains"><strong>Performance</strong><i>•</i><strong>Marketing</strong><i>•</i><strong>Census</strong><i>•</i><strong>Expansion</strong></div>
        <form className="cover-entry" onSubmit={submit}><div className="entry-line"><input id="growth-first-name" aria-label="First name" autoComplete="given-name" maxLength={24} required value={firstName} onChange={event=>onFirstNameChange(event.target.value)} placeholder="Your first name"/><button type="submit" disabled={!firstName.trim()}><span>Continue</span><ArrowUpRight size={16}/></button></div><small>Private workspace · enter your first name to continue</small></form>
      </section>
