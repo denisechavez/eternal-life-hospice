@@ -3,6 +3,7 @@
 import argparse
 import json
 import os
+import re
 import sys
 from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime, timedelta, timezone
@@ -17,6 +18,7 @@ from pathlib import Path
 spec = spec_from_file_location("identity_email", Path(__file__).with_name("notify-google-place-identity.py"))
 email = module_from_spec(spec)
 spec.loader.exec_module(email)
+JOURNAL_ALERT_EMAIL = "denise@eternallifehospice.com"
 
 
 def fetch(url):
@@ -44,6 +46,11 @@ def check(site, getter=fetch):
     payload = json.loads(body)
     if payload.get("timezone") != "America/Los_Angeles" or payload.get("releaseTime") != "06:30":
         raise ValueError("Release monitoring contract is invalid")
+    # Review availability is independent of approved-release counts. A missing
+    # Studio must not look healthy just because nothing has been approved yet.
+    studio, _ = getter(site + "/studio/")
+    if not re.search(r'<script\b[^>]*\bsrc=["\']/studio/assets/[^"\']+', studio):
+        raise ValueError("Live Studio login build is unavailable")
     expected = payload["expected"]
     if not expected:
         return "healthy", []  # All drafts held: no false publication failure.
@@ -82,7 +89,7 @@ def notify(failures, monitoring_unavailable=False):
         raise RuntimeError("BREVO_API is not configured")
     message = {
         "sender": {"name": "Eternal Life Hospice Operations", "email": "no-reply@eternallifehospice.com"},
-        "to": [{"name": "Aleksandra Dubina", "email": email.ALERT_EMAIL}],
+        "to": [{"name": "Denise", "email": JOURNAL_ALERT_EMAIL}],
         "subject": ("ACTION REQUIRED: Journal release monitoring unavailable" if monitoring_unavailable
                     else "ACTION REQUIRED: Approved Journal release missed"),
         "textContent": (

@@ -45,7 +45,9 @@ explicit permission.
 
 Approved Journal posts must become available automatically on their assigned dates
 at a consistent daily publication time. Monitor those approved releases and send an
-email alert to the designated reviewer if a scheduled post fails to go live.
+email alert to the designated Journal notification recipient if a scheduled post
+fails to go live. This recipient may differ from the authorized Studio reviewer;
+do not inherit the reviewer or Google identity-alert address automatically.
 
 **Why:** The user explicitly required scheduled daily delivery after approval and
 email notification of missed blog publications.

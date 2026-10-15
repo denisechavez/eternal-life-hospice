@@ -311,9 +311,36 @@ class MonitorTests(unittest.TestCase):
             self.assertFalse(monitor.scheduled_today(f"45 {27-hour} * * *", delayed))
 
     def test_held_drafts_do_not_trigger_discovery_checks_or_alerts(self):
-        getter = Mock(return_value=(json.dumps({"timezone":"America/Los_Angeles","releaseTime":"06:30","expected":[]}),{}))
+        getter = Mock(side_effect=[
+            (json.dumps({"timezone":"America/Los_Angeles","releaseTime":"06:30","expected":[]}), {}),
+            ('<script type="module" src="/studio/assets/login.js"></script>', {}),
+        ])
         self.assertEqual(monitor.check("https://test", getter), ("healthy",[]))
-        self.assertEqual(getter.call_count, 1)
+        self.assertEqual(getter.call_count, 2)
+
+    def test_missing_studio_is_detected_even_without_approved_posts(self):
+        getter = Mock(side_effect=[
+            (json.dumps({"timezone":"America/Los_Angeles","releaseTime":"06:30","expected":[]}), {}),
+            HTTPError("https://test/studio/", 503, "Studio build unavailable", {}, None),
+        ])
+        with self.assertRaises(HTTPError):
+            monitor.check("https://test", getter)
+
+    def test_missing_studio_sends_monitoring_failure_email_not_publication_failure(self):
+        with patch.object(monitor, "check", side_effect=HTTPError(
+                "https://test/studio/", 503, "Studio build unavailable", {}, None)), \
+             patch.object(monitor, "notify") as notify, \
+             patch.object(monitor.sys, "argv", ["monitor", "--site", "https://test"]):
+            self.assertEqual(monitor.main(), 1)
+            self.assertTrue(notify.call_args.kwargs["monitoring_unavailable"])
+
+    def test_studio_error_document_is_not_a_healthy_review_app(self):
+        getter = Mock(side_effect=[
+            (json.dumps({"timezone":"America/Los_Angeles","releaseTime":"06:30","expected":[]}), {}),
+            ('{"message":"Studio build unavailable"}', {}),
+        ])
+        with self.assertRaisesRegex(ValueError, "Studio"):
+            monitor.check("https://test", getter)
 
     def test_missed_version_email_and_rejected_email_are_explicit(self):
         payload = {"timezone":"America/Los_Angeles","releaseTime":"06:30",
@@ -321,6 +348,8 @@ class MonitorTests(unittest.TestCase):
         def getter(url):
             if url.endswith("release-status"):
                 return json.dumps(payload), {}
+            if url.endswith("/studio/"):
+                return '<script type="module" src="/studio/assets/login.js"></script>', {}
             if url.endswith("search-index.json"):
                 return "[]", {}
             return "<h1>Wrong version</h1>", {"X-Journal-Revision":"wrong"}
@@ -330,7 +359,7 @@ class MonitorTests(unittest.TestCase):
         with patch.dict(os.environ, {"BREVO_API":"test-only"}), patch.object(monitor.email, "send_alert") as send:
             monitor.notify(failures)
             message = send.call_args.args[1]
-            self.assertEqual(message["to"][0]["email"], studio_auth.REVIEWER_EMAIL)
+            self.assertEqual(message["to"][0]["email"], "denise@eternallifehospice.com")
             self.assertIn("held or unapproved", message["textContent"].lower())
             send.side_effect = OSError("test rejection")
             with self.assertRaises(OSError):
