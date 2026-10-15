@@ -24,3 +24,16 @@
 }
 .studio-review-layer button { font: inherit; cursor: pointer; }
 .studio-review-layer .article-review iframe { display: block; }
+.studio-review-layer .full-review { display: flex; flex-direction: column; overflow: hidden; }
+.studio-review-layer .full-review > header { flex-shrink: 0; }
+.studio-review-layer .full-review > .detail-body { flex: 1; min-height: 0; overflow-y: auto; padding-bottom: 24px; }
+.studio-review-layer .review-actions { position: static; flex-shrink: 0; margin: 0; max-height: 40dvh; overflow-y: auto; }
+.journal-connection { padding: 16px; margin: 16px 0; border: 1px solid #d7c5b6; border-radius: 8px; background: #fffaf2; color: #382d38; line-height: 1.5; }
+.journal-connection p { margin: 0 0 10px; }
+.journal-connection-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+.journal-connection [role="alert"], .approval-inline-error { color: #842b32; }
+.approval-inline-error { flex-basis: 100%; margin: 0; }
+.journal-confirmation { width: 100%; }
+.journal-confirmation p { margin: 0 0 12px; line-height: 1.5; }
+.journal-confirmation button { margin: 0 8px 4px 0; }
+.studio-review-layer button:disabled, .journal-connection button:disabled { cursor: not-allowed; opacity: .55; }

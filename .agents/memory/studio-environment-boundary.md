@@ -37,3 +37,16 @@ editorial workflow as healthy.
 **How to apply:** Preserve authentication on draft chunks when delivering the
 build. Treat missing Studio delivery as a monitoring failure, never permission
 to bypass approval or automatically publish past-dated drafts.
+
+Use an in-app confirmation for approval rather than a native browser popup.
+Keep errors and recovery actions inside the article reader, and make the
+workspace/live distinction visible before a reviewer begins.
+
+**Why:** Studio is frequently used inside a canvas iframe, where browser
+confirmation dialogs may be blocked. Workspace approval and live publication
+must not be confused, and a lost save response is not proof that no approval
+was committed.
+
+**How to apply:** Keep live approval explicit and version-specific. On retry,
+read the saved server status before enabling another approval; never recover by
+silently approving a new version or trusting a browser-local status.

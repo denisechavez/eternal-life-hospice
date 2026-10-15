@@ -4,5 +4,6 @@ export const modules: ModuleMap = {
   "./components/mockups/elh-google-reviews/Current.tsx": () => import("../components/mockups/elh-google-reviews/Current.tsx"),
   "./components/mockups/elh-google-reviews/PremiumEditorial.tsx": () => import("../components/mockups/elh-google-reviews/PremiumEditorial.tsx"),
   "./components/mockups/elh-marketing-hub/Hub.tsx": () => import("../components/mockups/elh-marketing-hub/Hub.tsx"),
+  "./components/mockups/elh-marketing-hub/JournalConnection.tsx": () => import("../components/mockups/elh-marketing-hub/JournalConnection.tsx"),
   "./components/mockups/elh-marketing-hub/KeywordCoverageTracker.tsx": () => import("../components/mockups/elh-marketing-hub/KeywordCoverageTracker.tsx")
 };
