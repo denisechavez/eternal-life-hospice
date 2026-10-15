@@ -8,6 +8,7 @@ import {spawn} from "node:child_process";
 import {tmpdir} from "node:os";
 import {join, resolve} from "node:path";
 import {pathToFileURL} from "node:url";
+import {checkStudioEntry} from "./studio-entry-ui-cases.mjs";
 
 const artifact = resolve("artifacts/review-design-sandbox");
 const require = createRequire(join(artifact, "package.json"));
@@ -191,6 +192,7 @@ try {
     assert.equal(await evaluate(`document.querySelector('.profile small').textContent`),identity==="Guest"?"No approval identity verified":"Signed-in account");
   }
   console.log("PASS switching accounts and signing out never retain another reviewer's identity");
+  await checkStudioEntry({build,artifact,directory,call,evaluate,until});
   if(process.argv.includes("--capture-preview")){
     assert.ok(process.env.REPLIT_DEV_DOMAIN,"Preview domain is required");
     await call("Emulation.setDeviceMetricsOverride",{width:1728,height:980,deviceScaleFactor:1,mobile:false});

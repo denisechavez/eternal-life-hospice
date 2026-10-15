@@ -1,6 +1,6 @@
-import { ClerkProvider, SignIn, SignUp, Show, ClerkLoading } from "@clerk/react";
+import { ClerkProvider, SignIn, SignUp, Show, ClerkLoading, useAuth, useClerk } from "@clerk/react";
 import { publishableKeyFromHost } from "@clerk/react/internal";
-import { Route, Switch, Router as WouterRouter, Redirect } from "wouter";
+import { Route, Switch, Router as WouterRouter, Redirect, useLocation } from "wouter";
 import { useEffect, useState, type ReactNode } from "react";
 import "./studio-session.css";
 
@@ -31,14 +31,55 @@ function SignInLoading() {
 
 export default function StudioSession({children}: {children: ReactNode}) {
   if (!clerkPubKey) return <StudioFrame><h1>Studio sign-in unavailable</h1><p>The secure sign-in service is not configured. No approvals can be saved.</p></StudioFrame>;
+  return <WouterRouter base={basePath}><StudioRoutes>{children}</StudioRoutes></WouterRouter>;
+}
+
+function stripBase(path:string) {
+  return basePath&&path.startsWith(basePath)?path.slice(basePath.length)||"/":path;
+}
+
+function AuthenticationPage({signUp=false}: {signUp?:boolean}) {
+  const {isSignedIn,isLoaded}=useAuth();
+  const {signOut}=useClerk();
+  const [location]=useLocation();
+  const [restarting,setRestarting]=useState(false);
+  const [error,setError]=useState("");
+  const callback=location.includes("/sso-callback");
+  if(isLoaded&&isSignedIn)return <Redirect to="/preview/elh-marketing-hub/Hub?view=Journal"/>;
+  const restart=async()=>{
+    setRestarting(true);setError("");
+    try {await signOut({redirectUrl:`${basePath}/sign-in`});}
+    catch {setError("Sign-in could not be restarted. Reload this page to try again.");}
+    finally {setRestarting(false);}
+  };
+  return <StudioFrame><h1>{signUp?"Create your Studio sign-in":"Sign in to Eternal Studio"}</h1>
+    <p>{signUp?"Creating an account does not grant approval access. Only authorized, verified reviewers can access articles."
+      :"Use your authorized Eternal Life Hospice account to review and approve Journal articles."}</p>
+    {callback&&<p role="status" className="studio-auth-note">Completing secure sign-in. If this does not finish, use Restart sign-in below.</p>}
+    <ClerkLoading><SignInLoading/></ClerkLoading>
+    {signUp?<SignUp routing="path" path={`${basePath}/sign-up`} forceRedirectUrl={journalPath} signInUrl={`${basePath}/sign-in`}/>
+      :<SignIn routing="path" path={`${basePath}/sign-in`} forceRedirectUrl={journalPath} signUpUrl={`${basePath}/sign-up`}/>}
+    <div className="studio-auth-recovery">
+      <p className="studio-auth-note">Stuck loading or using the wrong account? Restarting sign-in will not change articles or saved approvals.</p>
+      <button className="studio-auth-restart" disabled={!isLoaded||restarting} onClick={restart}>{restarting?"Restarting sign-in…":"Restart sign-in"}</button>
+      {error&&<p role="alert">{error}</p>}
+      <a className="studio-auth-back" href={`${basePath}/`}>Back to Studio welcome</a>
+    </div>
+  </StudioFrame>;
+}
+
+function StudioRoutes({children}: {children:ReactNode}) {
+  const [,setLocation]=useLocation();
   return <ClerkProvider publishableKey={clerkPubKey} proxyUrl={clerkProxyUrl}
+    signInUrl={`${basePath}/sign-in`} signUpUrl={`${basePath}/sign-up`}
+    routerPush={to=>setLocation(stripBase(to))}
+    routerReplace={to=>setLocation(stripBase(to),{replace:true})}
     appearance={{
       options: {logoImageUrl: `${window.location.origin}/assets/logo-eternal-trans.png`},
       variables: {colorPrimary: "#381B37", fontFamily: "Arial, sans-serif"},
       elements: {rootBox: {width: "100%"}, cardBox: {width: "100%", maxWidth: "100%"}},
     }}
     localization={{signIn: {start: {title: "Sign in to Eternal Studio", subtitle: "Denise and Aleksandra can approve Journal posts using their verified accounts."}}}}>
-    <WouterRouter base={basePath}>
       <Switch>
         <Route path="/"><Show when="signed-in"><Redirect to="/preview/elh-marketing-hub/Hub?view=Journal"/></Show><StudioFrame>
           <p className="studio-auth-eyebrow">Private editorial workspace</p><h1>Eternal Studio</h1>
@@ -47,18 +88,9 @@ export default function StudioSession({children}: {children: ReactNode}) {
           <p className="studio-auth-note">Denise and Aleksandra can approve articles using their verified accounts. Your displayed name will come from the account you sign in with.</p>
           <a className="studio-auth-back" href="/">Return to the Eternal Life Hospice website</a>
         </StudioFrame></Route>
-        <Route path="/sign-in/*?"><StudioFrame><h1>Sign in to Eternal Studio</h1>
-          <p>Use your authorized Eternal Life Hospice account to review and approve Journal articles.</p>
-          <ClerkLoading><SignInLoading/></ClerkLoading><SignIn routing="path" path={`${basePath}/sign-in`} forceRedirectUrl={journalPath} signUpUrl={`${basePath}/sign-up`}/>
-          <a className="studio-auth-back" href={`${basePath}/`}>Back to Studio welcome</a>
-        </StudioFrame></Route>
-        <Route path="/sign-up/*?"><StudioFrame><h1>Create your Studio sign-in</h1>
-          <p>Creating an account does not grant approval access. Only authorized, verified reviewers can access articles.</p>
-          <ClerkLoading><SignInLoading/></ClerkLoading><SignUp routing="path" path={`${basePath}/sign-up`} forceRedirectUrl={journalPath} signInUrl={`${basePath}/sign-in`}/>
-          <a className="studio-auth-back" href={`${basePath}/sign-in`}>Already have an account? Sign in</a>
-        </StudioFrame></Route>
+        <Route path="/sign-in/*?"><AuthenticationPage/></Route>
+        <Route path="/sign-up/*?"><AuthenticationPage signUp/></Route>
         <Route>{children}</Route>
       </Switch>
-    </WouterRouter>
   </ClerkProvider>;
 }

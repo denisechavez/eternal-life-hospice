@@ -13,3 +13,7 @@ leave the sign-in page entirely blank even when type checks and builds pass.
 **How to apply:** Deduplicate React in the artifact bundler when introducing
 parent-installed React packages. Verify a rendered public entry page, not just
 the package versions or successful compilation.
+
+Apply the same single-runtime constraint to isolated browser-test bundles,
+including the parent-installed router. Otherwise a fixture can fail with null
+React context even when the application's deduplicated Vite build is healthy.

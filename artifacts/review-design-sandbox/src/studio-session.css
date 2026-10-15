@@ -38,6 +38,10 @@
 .studio-auth-card .studio-auth-note { margin: 22px 0; font-size: 14px; color: #62545f; }
 .studio-auth-back { display: block; width: fit-content; margin-top: 24px; color: #381b37; text-decoration: underline; text-underline-offset: 4px; }
 .studio-auth-loading { border-left: 3px solid #c9b07e; padding-left: 16px; }
+.studio-auth-recovery { margin-top: 24px; padding-top: 20px; border-top: 1px solid #dfd3cb; }
+.studio-auth-restart { padding: 10px 16px; min-height: 44px; border: 1px solid #381b37; border-radius: 6px; color: #381b37; background: #f5f0eb; font: 700 14px/1.4 Arial,sans-serif; cursor: pointer; }
+.studio-auth-restart:disabled { color: #62545f; cursor: wait; }
+.studio-auth-restart:focus-visible { outline: 3px solid #28617d; outline-offset: 4px; }
 @media (max-width: 480px) {
   .studio-auth-page { padding: 20px 12px; }
   .studio-auth-card { padding: 26px 20px; }
