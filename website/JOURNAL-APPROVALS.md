@@ -82,6 +82,53 @@ public discovery and email-monitor cases. It must not be run against production.
 Studio's signed-in review requires an actual authorized Clerk account; automated
 tests do not bypass application authentication.
 
+### Opt-in large history benchmark
+
+Run `python3 website/benchmark-journal-history.py --run` separately from the
+normal correctness suite. It requires `psycopg`, `initdb` and `pg_ctl` on PATH
+and a non-root user. It starts a disposable local PostgreSQL cluster with a
+private Unix socket and no TCP listener, never reads `DATABASE_URL`, never
+uses production data and removes its cluster on exit.
+
+The default synthetic workload has 500 articles, 20,860 saved revisions and
+419,700 repeated audit actions, including tied timestamps, old revisions,
+unmatched legacy decisions and a hot article with ten times the revision depth.
+Article HTML is synthetic too. Candidates, publication originals, clock and
+reviewer names are supplied locally; real identity-provider calls and filesystem
+article discovery are excluded. The actual `review_items()` and
+`article_history()` paths, including their publication-maintenance queries, run
+unchanged. This measures application responses plus JSON encoding, not HTTP,
+authentication or network transfer.
+
+The benchmark compares queue bytes before/after adding old history, verifies
+that the queue does not query the audit log and checks bounded early/deep pages
+at a 90%-depth cursor. It records `EXPLAIN (ANALYZE, BUFFERS, FORMAT JSON)` for
+the actual captured queries after collecting statistics with `VACUUM ANALYZE`.
+Both pages must use `journal_audit_article_page` and
+`journal_audit_saved_decision`; audit pagination must use ordered index access
+and the deep cursor must be an index condition, not OFFSET or a residual filter.
+No planner settings force index use. Fixture-only OFFSET locates the deep cursor
+outside measured work.
+
+The report includes row counts, PostgreSQL version, individual warm samples,
+median/p95 latency, UTF-8 response bytes and full plans/buffer counters. By default
+it is written to ignored `generated-artifacts/journal-history-benchmark.json`.
+Use `--output` to keep runs separately and compare them on the same machine,
+PostgreSQL version and workload. Five warm samples give a useful quick signal,
+not a statistically rigorous service-level estimate.
+
+There are **no default timing assertions**. To enforce latency budgets on a
+controlled runner, use e.g.
+`python3 website/benchmark-journal-history.py --run --samples 20 --max-history-ms 500 --max-queue-ms 500`.
+These example budgets are not production promises. Index/payload regressions or
+explicitly configured budget failures exit nonzero after writing the report.
+`--articles`, `--revisions`, `--actions` and `--page-size` can scale the fixture;
+keep enough events past the deep cursor to fill a page.
+
+`python3 website/test-journal-history-benchmark.py` tests the harness with small
+disposable clusters, including deliberately removed indexes and explicit budget
+failures. It adds no performance threshold to the normal release suite.
+
 ## Reviewer-only history
 
 The authenticated `/api/studio/journal` response includes each article's
