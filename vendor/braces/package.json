@@ -1,0 +1,11 @@
+{
+  "name": "@elh/braces-security-patch",
+  "version": "3.0.3-elh.1",
+  "private": true,
+  "description": "Local braces 3.0.3 backport for GHSA-vfj7-8cjw-p6xm; not an upstream release.",
+  "main": "index.js",
+  "license": "MIT",
+  "engines": { "node": ">=8" },
+  "files": ["index.js", "lib", "README.md", "LICENSE"],
+  "dependencies": { "fill-range": "^7.1.1" }
+}

@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
+    "test:dependency-security": "node --test scripts/test-dependency-security.cjs",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
