@@ -21,6 +21,10 @@ def now():
     return datetime.now(timezone.utc)
 
 
+def environment():
+    return "production" if os.environ.get("REPLIT_DEPLOYMENT") == "1" else "workspace"
+
+
 def release_at(day):
     return datetime.combine(datetime.fromisoformat(day).date(), time(6, 30), PACIFIC)
 
@@ -132,6 +136,7 @@ def initialize():
                 id bigserial PRIMARY KEY, slug text NOT NULL, revision text NOT NULL,
                 action text NOT NULL, reviewer text NOT NULL, occurred_at timestamptz NOT NULL
             );
+            ALTER TABLE journal_review_audit ADD COLUMN IF NOT EXISTS environment text;
             CREATE TABLE IF NOT EXISTS journal_photos (
                 digest text PRIMARY KEY, body bytea NOT NULL, media_type text NOT NULL
             );
@@ -191,9 +196,51 @@ def decide(slug, expected_revision, action, reviewer):
                 reviewer=EXCLUDED.reviewer, decided_at=EXCLUDED.decided_at
         """, (slug, record["revision"], record["date"], frozen,
               "approved" if action == "approve" else "held", reviewer, instant))
-        db.execute("INSERT INTO journal_review_audit (slug,revision,action,reviewer,occurred_at) VALUES (%s,%s,%s,%s,%s)",
-                   (slug, record["revision"], action, reviewer, instant))
+        db.execute("INSERT INTO journal_review_audit (slug,revision,action,reviewer,occurred_at,environment) VALUES (%s,%s,%s,%s,%s,%s)",
+                   (slug, record["revision"], action, reviewer, instant, environment()))
         materialize(db, instant)
+
+
+def approval_histories(decisions, audits, published):
+    """Private metadata only. Never infer an event from a publication date."""
+    from studio_auth import reviewer_label
+    grouped = {}
+    identities = {row["reviewer"] for row in audits} | {row["reviewer"] for row in decisions.values()}
+    labels = {identity: reviewer_label(identity) for identity in identities}
+    # The append-only audit preserves repeated actions on the same revision.
+    for row in audits:
+        grouped.setdefault(row["slug"], []).append({
+            "revision": row["revision"], "action": row["action"],
+            "reviewerId": row["reviewer"], "reviewerLabel": labels[row["reviewer"]],
+            "occurredAt": row["occurred_at"].isoformat(),
+            "environment": row.get("environment"), "source": "audit",
+        })
+    # Older decision rows may predate auditing. Show their saved state, not a
+    # fabricated audit event, and do not duplicate an existing audit entry.
+    for row in decisions.values():
+        events = grouped.setdefault(row["slug"], [])
+        if not any(e["revision"] == row["revision"] and e["reviewerId"] == row["reviewer"]
+                   and e["occurredAt"] == row["decided_at"].isoformat() for e in events):
+            events.append({
+                "revision": row["revision"], "action": "approve" if row["state"] == "approved" else "hold",
+                "reviewerId": row["reviewer"], "reviewerLabel": labels[row["reviewer"]],
+                "occurredAt": row["decided_at"].isoformat(),
+                "environment": None, "source": "saved-decision",
+            })
+    originals = history()
+    result = {}
+    for slug in set(grouped) | set(published) | set(originals):
+        events = sorted(grouped.get(slug, []), key=lambda e: e["occurredAt"], reverse=True)
+        original = originals.get(slug)
+        pre_studio = original and not any(e["revision"] == original["revision"] for e in events)
+        live = published.get(slug)
+        result[slug] = {
+            "recordEnvironment": environment(),
+            "publishedVersion": {"revision": live["revision"], "date": live["date"]} if live else None,
+            "preStudioVersion": {"revision": original["revision"], "date": original["date"]} if pre_studio else None,
+            "events": events,
+        }
+    return result
 
 
 def review_items():
@@ -202,6 +249,8 @@ def review_items():
         raise RuntimeError("Journal approval storage unavailable")
     with connect() as db:
         decisions = {(r["slug"], r["revision"]): r for r in db.execute("SELECT * FROM journal_decisions").fetchall()}
+        audits = db.execute("SELECT * FROM journal_review_audit ORDER BY occurred_at DESC,id DESC").fetchall()
+    histories = approval_histories(decisions, audits, published)
     results = []
     for slug, record in candidates().items():
         decision = decisions.get((slug, record["revision"]))
@@ -210,7 +259,10 @@ def review_items():
             "Approved" if decision and decision["state"] == "approved" else "Needs review")
         results.append({**record, "status": status, "held": bool(decision and decision["state"] == "held"),
                         "releaseAt": release_at(record["date"]).isoformat(),
-                        "hasPublishedVersion": bool(live)})
+                        "hasPublishedVersion": bool(live),
+                        "approvalHistory": histories.get(slug, {
+                            "recordEnvironment": environment(), "publishedVersion": None,
+                            "preStudioVersion": None, "events": []})})
     return results
 
 

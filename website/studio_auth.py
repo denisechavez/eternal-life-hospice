@@ -75,3 +75,27 @@ def reviewer(headers):
             "Studio verification failed stage=%s kind=%s status=%s",
             stage, type(error).__name__, getattr(error, "code", "-"))
         raise PermissionError("Studio session could not be verified.") from None
+
+@lru_cache(maxsize=128)
+def _reviewer_label(user_id, window):
+    """Resolve a recorded identity, never guess a signer from the allowlist."""
+    request = Request("https://api.clerk.com/v1/users/" + user_id,
+                      headers={"Authorization": "Bearer " + os.environ["CLERK_SECRET_KEY"],
+                               "Accept": "application/json", "User-Agent": "Eternal-Studio/1.0"})
+    with urlopen(request, timeout=5) as response:
+        user = json.load(response)
+    if user.get("id") != user_id:
+        raise ValueError("Account identity mismatch")
+    name = " ".join(part for part in (user.get("first_name"), user.get("last_name")) if part)
+    return name or user_id
+
+def reviewer_label(user_id):
+    """A current directory label is optional; the stored ID is authoritative."""
+    import re
+    import time
+    if not re.fullmatch(r"user_[A-Za-z0-9]+", user_id):
+        return user_id
+    try:
+        return _reviewer_label(user_id, int(time.monotonic() // 300))
+    except Exception:
+        return user_id

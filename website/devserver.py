@@ -279,6 +279,8 @@ class PrettyURLHandler(http.server.SimpleHTTPRequestHandler):
                 else:
                     self._send_json(200, journal_release.release_status())
                 return True
+            # Includes private approval history: authenticate reads and writes
+            # alike before querying any editorial identities or decisions.
             user = studio_auth.reviewer(self.headers)
             if self.command == "POST":
                 # Cookie-authenticated writes require an exact trusted origin.

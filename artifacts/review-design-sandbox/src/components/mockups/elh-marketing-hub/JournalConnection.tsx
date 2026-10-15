@@ -19,6 +19,7 @@ export default function JournalConnection({state}: {state: JournalConnectionStat
       : state.loading ? "Loading current article versions and saved approvals…"
       : state.ready ? (state.live ? "Connected to live Journal approvals." : "Workspace review versions loaded.")
       : "Approval is locked until the current article version can be verified."}</p>
+    {state.ready && <p>Open an article to see its reviewer-only approval history, exact versions and recorded decision times.</p>}
     {state.error && <p role="alert"><strong>Approval unavailable:</strong> {state.error}
       {" "}No new approval has been confirmed. Retry to check the saved status.</p>}
     <div className="journal-connection-actions">

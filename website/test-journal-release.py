@@ -218,6 +218,98 @@ class ReleaseTests(unittest.TestCase):
             self.assertEqual(self.request("/api/studio/journal", "POST", data,
                                          {"Origin":"https://eternallifehospice.com"})[0], 409)
 
+    def test_private_history_records_both_reviewers_and_repeated_actions(self):
+        data = {"slug": self.record["slug"], "revision": self.record["revision"], "action": "approve"}
+        for reviewer, action in (("user_Aleksandra", "approve"), ("user_Denise", "hold"),
+                                 ("user_Denise", "approve")):
+            data["action"] = action
+            self.now_mock.return_value += timedelta(seconds=1)
+            with patch.object(studio_auth, "reviewer", return_value=reviewer), \
+                 patch.object(studio_auth, "reviewer_label", side_effect=lambda identity: identity), \
+                 patch.dict(os.environ, {"REPLIT_DEPLOYMENT": "0"}):
+                status, body, headers = self.request("/api/studio/journal", "POST", data,
+                                                     {"Origin": "https://eternallifehospice.com"})
+            self.assertEqual(status, 200, body)
+            self.assertIn("no-store", headers["Cache-Control"])
+        item = json.loads(body)["items"][0]
+        events = item["approvalHistory"]["events"]
+        self.assertEqual([event["reviewerId"] for event in events],
+                         ["user_Denise", "user_Denise", "user_Aleksandra"])
+        self.assertEqual([event["action"] for event in events], ["approve", "hold", "approve"])
+        self.assertEqual({event["revision"] for event in events}, {self.record["revision"]})
+        self.assertEqual({event["environment"] for event in events}, {"workspace"})
+        self.assertEqual(events[0]["occurredAt"], self.now_mock.return_value.isoformat())
+        self.assertEqual(item["approvalHistory"]["recordEnvironment"], "workspace")
+        self.assertEqual(item["status"], "Approved")
+        self.assertIsNone(item["approvalHistory"]["publishedVersion"])
+        self.assertIsNone(item["approvalHistory"]["preStudioVersion"])
+        with patch.object(studio_auth, "reviewer", side_effect=PermissionError("Not authorized")):
+            for method in ("GET", "HEAD", "POST"):
+                status, body, _ = self.request("/api/studio/journal", method,
+                                               data if method == "POST" else None,
+                                               {"Cookie": "__session=unauthorized"})
+                self.assertEqual(status, 403)
+                self.assertNotIn("user_Denise", body)
+                self.assertNotIn("approvalHistory", body)
+        for method in ("GET", "HEAD"):
+            self.assertEqual(self.request("/api/studio/journal", method)[0], 401)
+        self.assertNotIn("reviewer", self.request("/api/journal-release-status")[1].lower())
+
+    def test_history_keeps_pre_studio_original_separate_from_pending_revision(self):
+        slug = next(iter(self.originals))
+        original = self.originals[slug]
+        self.record.update(slug=slug, revision="changed-draft")
+        item = jr.review_items()[0]
+        saved = item["approvalHistory"]
+        self.assertEqual(item["status"], "Needs review")
+        self.assertTrue(item["hasPublishedVersion"])
+        self.assertEqual(saved["publishedVersion"]["revision"], original["revision"])
+        self.assertEqual(saved["preStudioVersion"], {"revision": original["revision"], "date": original["date"]})
+        self.assertEqual(saved["events"], [])
+        jr.decide(slug, "changed-draft", "hold", "reviewer-2")
+        item = jr.review_items()[0]
+        self.assertTrue(item["held"])
+        self.assertEqual(item["approvalHistory"]["publishedVersion"]["revision"], original["revision"])
+        self.assertEqual(item["approvalHistory"]["events"][0]["revision"], "changed-draft")
+        self.assertEqual(jr.released()[0][slug]["html"], jr.unpack(original))
+
+    def test_history_retains_released_studio_version_while_revision_waits(self):
+        self.approve()
+        self.now_mock.return_value = self.due
+        original_revision = self.record["revision"]
+        self.record["revision"] = "pending-new-version"
+        item = jr.review_items()[0]
+        self.assertEqual(item["status"], "Needs review")
+        self.assertEqual(item["approvalHistory"]["publishedVersion"]["revision"], original_revision)
+        self.assertEqual(item["approvalHistory"]["events"][0]["revision"], original_revision)
+        self.assertIsNone(item["approvalHistory"]["preStudioVersion"])
+        jr.decide(self.record["slug"], "pending-new-version", "hold", "reviewer-2")
+        item = jr.review_items()[0]
+        self.assertEqual(item["approvalHistory"]["publishedVersion"]["revision"], original_revision)
+        self.assertEqual([e["action"] for e in item["approvalHistory"]["events"]], ["hold", "approve"])
+
+    def test_legacy_saved_decision_is_not_invented_audit_or_environment(self):
+        self.approve()
+        with jr.connect() as db:
+            db.execute("TRUNCATE journal_review_audit")
+        item = jr.review_items()[0]
+        event = item["approvalHistory"]["events"][0]
+        self.assertEqual(event["source"], "saved-decision")
+        self.assertEqual(event["reviewerId"], "reviewer-1")
+        self.assertEqual(event["occurredAt"], self.now_mock.return_value.isoformat())
+        self.assertIsNone(event["environment"])
+        with jr.connect() as db:
+            self.assertEqual(db.execute("SELECT count(*) AS n FROM journal_review_audit").fetchone()["n"], 0)
+        self.now_mock.return_value += timedelta(seconds=1)
+        with patch.dict(os.environ, {"REPLIT_DEPLOYMENT": "1"}):
+            jr.decide(self.record["slug"], self.record["revision"], "hold", "reviewer-2")
+            item = jr.review_items()[0]
+        self.assertEqual(item["approvalHistory"]["events"][0]["environment"], "production")
+        self.assertEqual(item["approvalHistory"]["recordEnvironment"], "production")
+        with jr.connect() as db:
+            db.execute("UPDATE journal_review_audit SET environment=NULL")
+        self.assertIsNone(jr.review_items()[0]["approvalHistory"]["events"][0]["environment"])
+
     def test_production_studio_login_public_but_draft_bundles_protected(self):
         from pathlib import Path
         with tempfile.TemporaryDirectory() as directory:
@@ -256,6 +348,22 @@ class ReleaseTests(unittest.TestCase):
 
 
 class AuthTests(unittest.TestCase):
+    def test_directory_labels_never_guess_signers_or_break_history(self):
+        studio_auth._reviewer_label.cache_clear()
+        with patch.object(studio_auth, "urlopen") as remote:
+            result = Mock()
+            result.read.return_value = json.dumps({"id": "user_actual", "first_name": "Actual",
+                                                    "last_name": "Reviewer"}).encode()
+            result.__enter__ = Mock(return_value=result)
+            result.__exit__ = Mock(return_value=False)
+            remote.return_value = result
+            with patch.dict(os.environ, {"CLERK_SECRET_KEY": "test"}):
+                self.assertEqual(studio_auth.reviewer_label("user_actual"), "Actual Reviewer")
+                self.assertEqual(studio_auth.reviewer_label("unknown-id"), "unknown-id")
+                remote.side_effect = OSError("Directory unavailable")
+                self.assertEqual(studio_auth.reviewer_label("user_deleted"), "user_deleted")
+        studio_auth._reviewer_label.cache_clear()
+
     def test_reviewer_requires_signed_active_verified_clerk_session(self):
         import jwt
         from cryptography.hazmat.primitives.asymmetric import rsa

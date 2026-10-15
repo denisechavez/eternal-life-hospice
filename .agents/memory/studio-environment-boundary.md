@@ -84,3 +84,15 @@ proxy failure.
 **How to apply:** Validate the published build separately, then restore the
 development build before preview testing. Keep environment separation and the
 provider's standard proxy configuration intact.
+
+Do not treat the environment serving a history record as proof of where its
+original decision occurred. Likewise, current account-directory names are labels,
+not historical signer-name snapshots.
+
+**Why:** Legacy Journal decisions persisted account IDs and timestamps but not
+event environments or signer names. Backfilling those from the current runtime
+or current reviewer allowlist would manufacture editorial provenance.
+
+**How to apply:** Preserve the recorded account ID and time, label missing event
+provenance explicitly and distinguish frozen pre-Studio publication from Studio
+approval. Capture environment for new events without rewriting old records.

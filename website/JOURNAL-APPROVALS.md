@@ -81,3 +81,23 @@ in an isolated temporary schema, plus deterministic release/DST, authorization,
 public discovery and email-monitor cases. It must not be run against production.
 Studio's signed-in review requires an actual authorized Clerk account; automated
 tests do not bypass application authentication.
+
+## Reviewer-only history
+
+The authenticated `/api/studio/journal` response includes each article's
+append-only audit history, its current review revision, the retained published
+revision and any frozen pre-Studio original. Both verified reviewers can read it.
+No history or reviewer details are added to public release monitoring or analytics.
+
+Studio displays the persisted reviewer account ID and decision timestamp.
+Optional names are current Clerk directory labels, not historical name
+snapshots; unavailable or deleted accounts retain their recorded IDs.
+Decision rows without audit entries are explicitly labeled saved decisions.
+Publication dates are never represented as approval timestamps.
+
+New audit entries record `production` or `workspace`. Older events without this
+field remain “Event environment not recorded”; the environment of the database
+being read is labeled separately and is not proof of a historical event's origin.
+Frozen originals without reviewer records are labeled “Pre-Studio history.”
+Neither these labels nor a decision on an older revision approve a changed draft.
+The additive schema setup runs for development after merge.

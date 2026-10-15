@@ -8,5 +8,6 @@ set -e
 test -d website/elh-preview
 python3 scripts/setup-python-environment.py
 uv sync --locked --inexact
+python3 website/migrate-journal.py
 
 echo "post-merge OK: website/elh-preview present ($(ls website/elh-preview/*.html 2>/dev/null | wc -l) HTML pages)"

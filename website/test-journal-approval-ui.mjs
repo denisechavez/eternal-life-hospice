@@ -31,10 +31,18 @@ try {
       fixture.release=()=>release();
       const records=()=>journalArticles.map(a=>({slug:a.slug,title:"Reviewed: "+a.title,
         date:a.date,revision:"r"+fixture.revision,html:"<main><h1>Reviewed version "+fixture.revision+"</h1><p>Complete fixture article.</p></main>",
-        status:fixture.published===a.slug?"Published":"Needs review",held:false,hasPublishedVersion:fixture.published===a.slug||a.previouslyPublished}));
+        status:fixture.published===a.slug?"Published":"Needs review",held:false,hasPublishedVersion:fixture.published===a.slug||a.previouslyPublished,
+        approvalHistory:{recordEnvironment:location.search.includes("workspace=1")?"workspace":"production",
+          publishedVersion:a.previouslyPublished?{revision:"published-original",date:a.date}:null,
+          preStudioVersion:a.previouslyPublished?{revision:"published-original",date:a.date}:null,
+          events:[{revision:"earlier-version",action:"approve",reviewerId:"user_earlier",reviewerLabel:"Earlier reviewer",
+            occurredAt:"2026-10-13T13:30:00+00:00",environment:null,source:"audit"},
+            ...fixture.posts.filter(p=>p.slug===a.slug).map(p=>({revision:p.revision,action:p.action,reviewerId:"user_"+fixture.identity,
+              reviewerLabel:fixture.identity,occurredAt:"2026-10-15T13:30:00+00:00",environment:"production",source:"audit"}))]}}));
       window.confirm=()=>{throw new Error("Native browser confirmation must not be used");};
       window.fetch=async(url,options={})=>{
         if(url!=="/api/studio/journal")throw new Error("Unexpected fixture request: "+url);
+        if(fixture.identity==="Unapproved")return {ok:false,json:async()=>({message:"Only authorized Journal reviewers can access history."})};
         if(options.method==="POST"){
           const request=JSON.parse(options.body);fixture.posts.push(request);
           if(fixture.failNext){const status=fixture.failNext;fixture.failNext=0;
@@ -69,7 +77,12 @@ try {
         });
         plugin.onResolve({filter: /^@clerk\/react$/}, () => ({path:"auth",namespace:"fixture"}));
         plugin.onLoad({filter: /.*/,namespace:"fixture"}, () => ({
-          contents: "export const useAuth=()=>({isSignedIn:window.approvalFixture.identity!=='Guest',isLoaded:true});export const useUser=()=>({user:window.approvalFixture.identity==='Guest'?null:{firstName:window.approvalFixture.identity,fullName:window.approvalFixture.identity,primaryEmailAddress:{emailAddress:'fixture@example.org'}}});export const useClerk=()=>({signOut(){}});",
+          contents: `import {useSyncExternalStore} from "react";
+            const subscribe=callback=>{window.addEventListener("fixture-identity",callback);return()=>window.removeEventListener("fixture-identity",callback)};
+            const identity=()=>useSyncExternalStore(subscribe,()=>window.approvalFixture.identity);
+            export const useAuth=()=>({isSignedIn:identity()!=='Guest',isLoaded:true});
+            export const useUser=()=>{const name=identity();return {user:name==='Guest'?null:{id:'user_'+name,firstName:name,fullName:name,primaryEmailAddress:{emailAddress:'fixture@example.org'}}}};
+            export const useClerk=()=>({signOut(){}});`,
         }));
       },
     }],
@@ -138,6 +151,11 @@ try {
   await until(`[...document.querySelectorAll('[role="dialog"] button')].some(b=>b.textContent==="Approve complete article"&&!b.disabled)`);
   await checkButtonContrast();
   assert.match(await evaluate(`document.querySelector('[role="dialog"] h1').textContent`),/^Reviewed:/);
+  assert.ok(await evaluate(`document.querySelector('[aria-label="Journal approval history"]')?.textContent.includes("Earlier reviewer")`));
+  assert.ok(await evaluate(`document.querySelector('.journal-history')?.textContent.includes("Event environment not recorded")`));
+  assert.ok(await evaluate(`document.querySelector('.journal-history')?.textContent.includes("Pre-Studio history")`));
+  assert.ok(await evaluate(`document.querySelector('.journal-history')?.textContent.includes("separate from the revised draft")`));
+  console.log("PASS private history shows actual account IDs, full versions and unknown historical environments without inventing approvals");
   assert.equal(await evaluate(`document.querySelector('[role="dialog"] .tag').textContent`),"Published original · revision needs review");
   assert.ok(await evaluate(`[...document.querySelectorAll('.studio-row')].filter(row=>/Journal · 2026-(?:0[5-9]-|10-0)/.test(row.textContent)).every(row=>row.querySelector('em').textContent.startsWith('Published'))`));
   console.log("PASS published originals keep their publication label while changed drafts require review");
@@ -164,6 +182,8 @@ try {
   await until(`document.querySelector('[role="dialog"]')?.textContent.includes("Published version retained")`);
   assert.ok(await evaluate(`[...document.querySelectorAll('[role="dialog"] button')].find(b=>b.textContent.includes("Published version retained")).disabled`));
   console.log("PASS confirmed published status remains after reopening");
+  assert.ok(await evaluate(`document.querySelector('.journal-history')?.textContent.includes("user_Denise")`));
+  assert.ok(await evaluate(`document.querySelector('.journal-history')?.textContent.includes("Live production")`));
   await evaluate(`document.querySelector('[aria-label="Close review"]').click();document.querySelectorAll('.studio-row')[1].click();approvalFixture.failAfterCommit=true`);
   await until(`[...document.querySelectorAll('[role="dialog"] button')].some(b=>b.textContent==="Approve complete article"&&!b.disabled)`);
   await click("Approve complete article");await click("Confirm approval");
@@ -182,9 +202,15 @@ try {
   assert.ok(await evaluate(`[...document.querySelectorAll('[role="dialog"] button')].find(b=>b.textContent.includes("Approve complete article")).disabled`));
   assert.equal(await evaluate(`document.querySelector('[role="dialog"] a').href`),"https://eternallifehospice.com/studio/");
   console.log("PASS workspace cannot misrepresent preview decisions as live approvals");
+  assert.ok(await evaluate(`document.querySelector('.journal-history')?.textContent.includes("Workspace records only")`));
   await call("Emulation.setDeviceMetricsOverride",{width:390,height:844,deviceScaleFactor:1,mobile:true});
   assert.ok(await evaluate(`(()=>{const r=document.querySelector('.review-actions').getBoundingClientRect();return r.top>=0&&r.bottom<=innerHeight&&r.width<=innerWidth})()`));
   console.log("PASS mobile approval controls fit the viewport");
+  await evaluate(`approvalFixture.identity="Unapproved";window.dispatchEvent(new Event("fixture-identity"))`);
+  await until(`document.querySelector('[role="dialog"] [role="alert"]')?.textContent.includes("Only authorized")`);
+  assert.equal(await evaluate(`document.querySelector('.journal-history')`),null);
+  assert.ok(await evaluate(`[...document.querySelectorAll('[role="dialog"] button')].find(b=>b.textContent.includes("Approve complete article")).disabled`));
+  console.log("PASS changing to an unauthorized signed-in account removes the previous reviewer's private history");
   for(const identity of ["Aleksandra","Guest"]){
     await call("Page.navigate",{url:file+"?view=Journal&identity="+identity});
     await until(`document.querySelector('.welcome-name')?.textContent.includes(${JSON.stringify(identity)})`);
