@@ -23,3 +23,14 @@ retired static-host configuration is not a protective layer.
 **How to apply:** When adding work or QA artifacts, keep them outside the public
 tree when possible; if tooling requires them there, enforce a 404 for both GET
 and HEAD in development and production and exercise that in publish checks.
+
+Keep Growth Intelligence workspace-only rather than adding a separate public
+dashboard sign-in flow as part of security maintenance.
+
+**Why:** The dashboard's aggregate marketing, lead and email metrics are
+business-confidential even without patient details. Production exclusion closes
+the disclosure without introducing a new access workflow.
+
+**How to apply:** Any future proposal to make Growth Intelligence available on
+the public deployment needs explicit scope and server-side reviewer protection
+for both its static files and reporting APIs.
