@@ -35,12 +35,12 @@ try {
         approvalHistory:{recordEnvironment:location.search.includes("workspace=1")?"workspace":"production",
           publishedVersion:a.previouslyPublished?{revision:"published-original",date:a.date}:null,
           preStudioVersion:a.previouslyPublished?{revision:"published-original",date:a.date}:null,
-          events:[{id:"earlier",revision:"earlier-version",action:"approve",reviewerId:"user_earlier",reviewerLabel:"Earlier reviewer",
+          events:[{id:"earlier",revision:"earlier-version",action:"approve",reviewerId:"user_earlier",reviewerLabel:"Earlier reviewer",reviewerNameSnapshot:null,
             occurredAt:"2026-10-13T13:30:00+00:00",environment:null,source:"audit"},
             ...fixture.posts.filter(p=>p.slug===a.slug).map((p,i)=>({id:"post-"+i,revision:p.revision,action:p.action,reviewerId:"user_"+fixture.identity,
-              reviewerLabel:fixture.identity,occurredAt:"2026-10-15T13:30:00+00:00",environment:"production",source:"audit"})),
+              reviewerLabel:fixture.identity+" renamed",reviewerNameSnapshot:fixture.identity+" at decision",occurredAt:"2026-10-15T13:30:00+00:00",environment:"production",source:"audit"})),
             ...Array.from({length:60},(_,i)=>({id:"old-"+i,revision:"old-version-"+i,action:i%2?"approve":"hold",
-              reviewerId:"old-actor-"+i,reviewerLabel:"Older reviewer "+i,occurredAt:"2026-10-10T13:30:00+00:00",
+              reviewerId:"old-actor-"+i,reviewerLabel:"Older reviewer "+i,reviewerNameSnapshot:null,occurredAt:"2026-10-10T13:30:00+00:00",
               environment:null,source:"audit"}))]}}));
       window.confirm=()=>{throw new Error("Native browser confirmation must not be used");};
       window.fetch=async(url,options={})=>{
@@ -218,6 +218,9 @@ try {
   assert.ok(await evaluate(`[...document.querySelectorAll('[role="dialog"] button')].find(b=>b.textContent.includes("Published version retained")).disabled`));
   console.log("PASS confirmed published status remains after reopening");
   assert.ok(await evaluate(`document.querySelector('.journal-history')?.textContent.includes("user_Denise")`));
+  assert.ok(await evaluate(`document.querySelector('.journal-history')?.textContent.includes("Denise at decision · Name saved at decision")`));
+  assert.ok(await evaluate(`document.querySelector('.journal-history')?.textContent.includes("Current directory label: Denise renamed")`));
+  assert.ok(await evaluate(`document.querySelector('.journal-history')?.textContent.includes("Name at decision not recorded")`));
   assert.ok(await evaluate(`document.querySelector('.journal-history')?.textContent.includes("Live production")`));
   await evaluate(`document.querySelector('[aria-label="Close review"]').click();document.querySelectorAll('.studio-row')[1].click();approvalFixture.failAfterCommit=true`);
   await until(`[...document.querySelectorAll('[role="dialog"] button')].some(b=>b.textContent==="Approve complete article"&&!b.disabled)`);

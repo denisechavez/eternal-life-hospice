@@ -10,6 +10,7 @@ export type ApprovalHistory = {
     action: string;
     reviewerId: string;
     reviewerLabel: string;
+    reviewerNameSnapshot: string | null;
     occurredAt: string;
     environment: "production" | "workspace" | null;
     source: "audit" | "saved-decision";
@@ -51,7 +52,7 @@ export default function JournalHistory({slug, revision, loadPage}: {slug: string
     {error && <p role="alert">{error} <button type="button" disabled={loading} onClick={() => void load(history?.nextCursor ?? null)}>Retry history</button></p>}
     {history && <>
     <p><strong>{history.recordEnvironment === "production" ? "Live production" : "Workspace"} records only.</strong>
-      {" "}Workspace decisions do not approve live publication. Account names below are current directory labels; recorded account IDs identify the actors.</p>
+      {" "}Workspace decisions do not approve live publication. Saved names reflect the verified account at the time of the decision; current directory labels may change. Recorded account IDs identify the actors.</p>
     <p>Current review version <code>{revision}</code></p>
     {history.publishedVersion ? <p><strong>Published version retained</strong> · Publication date {history.publishedVersion.date}
       <code>{history.publishedVersion.revision}</code>
@@ -63,7 +64,11 @@ export default function JournalHistory({slug, revision, loadPage}: {slug: string
     {!history.events.length ? <p>No saved Studio decisions for this article.</p> :
       <ol>{history.events.map(event => <li key={event.id}>
         <strong>{event.action === "approve" ? "Approved" : "Held"}{event.source === "saved-decision" ? " · saved decision (no audit event)" : ""}</strong>
-        <p>{event.reviewerLabel} · Recorded account <code>{event.reviewerId}</code></p>
+        <p>{event.reviewerNameSnapshot
+          ? <>{event.reviewerNameSnapshot} · Name saved at decision</>
+          : <>Name at decision not recorded</>}
+          {event.reviewerLabel !== event.reviewerId && <> · Current directory label: {event.reviewerLabel}</>}
+          {" · "}Recorded account <code>{event.reviewerId}</code></p>
         <p><time dateTime={event.occurredAt}>{new Date(event.occurredAt).toLocaleString("en-US", {timeZone: "America/Los_Angeles", timeZoneName: "short"})}</time>
           {" · "}{event.environment === "production" ? "Live production" : event.environment === "workspace" ? "Workspace" : "Event environment not recorded"}</p>
         <code>{event.revision}</code>

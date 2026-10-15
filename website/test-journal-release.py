@@ -284,7 +284,8 @@ class ReleaseTests(unittest.TestCase):
         self.assertEqual(self.request("/api/studio/journal")[0], 401)
         data = {"slug":self.record["slug"],"revision":self.record["revision"],"action":"approve"}
         self.assertEqual(self.request("/api/studio/journal", "POST", data)[0], 401)
-        with patch.object(studio_auth, "reviewer", return_value="reviewer-1"):
+        with patch.object(studio_auth, "reviewer_identity",
+                          return_value=studio_auth.ReviewerIdentity("reviewer-1", "Verified Reviewer")):
             self.assertEqual(self.request("/api/studio/journal", "POST", data,
                                           {"Origin":"https://untrusted.example","Cookie":"__session=test"})[0], 403)
             status, body, _ = self.request("/api/studio/journal", "POST", data,
@@ -301,7 +302,8 @@ class ReleaseTests(unittest.TestCase):
                                  ("user_Denise", "approve")):
             data["action"] = action
             self.now_mock.return_value += timedelta(seconds=1)
-            with patch.object(studio_auth, "reviewer", return_value=reviewer), \
+            with patch.object(studio_auth, "reviewer_identity",
+                              return_value=studio_auth.ReviewerIdentity(reviewer, reviewer + " saved name")), \
                  patch.object(studio_auth, "reviewer_label", side_effect=lambda identity: identity), \
                  patch.dict(os.environ, {"REPLIT_DEPLOYMENT": "0"}):
                 status, body, headers = self.request("/api/studio/journal", "POST", data,
@@ -318,11 +320,13 @@ class ReleaseTests(unittest.TestCase):
         self.assertEqual({event["revision"] for event in events}, {self.record["revision"]})
         self.assertEqual({event["environment"] for event in events}, {"workspace"})
         self.assertEqual(events[0]["occurredAt"], self.now_mock.return_value.isoformat())
+        self.assertEqual([event["reviewerNameSnapshot"] for event in events],
+                         ["user_Denise saved name", "user_Denise saved name", "user_Aleksandra saved name"])
         self.assertEqual(saved["recordEnvironment"], "workspace")
         self.assertEqual(item["status"], "Approved")
         self.assertIsNone(saved["publishedVersion"])
         self.assertIsNone(saved["preStudioVersion"])
-        with patch.object(studio_auth, "reviewer", side_effect=PermissionError("Not authorized")):
+        with patch.object(studio_auth, "reviewer_identity", side_effect=PermissionError("Not authorized")):
             for method in ("GET", "HEAD", "POST"):
                 status, body, _ = self.request("/api/studio/journal", method,
                                                data if method == "POST" else None,
@@ -333,6 +337,67 @@ class ReleaseTests(unittest.TestCase):
         for method in ("GET", "HEAD"):
             self.assertEqual(self.request("/api/studio/journal", method)[0], 401)
         self.assertNotIn("reviewer", self.request("/api/journal-release-status")[1].lower())
+
+    def test_saved_names_survive_rename_deletion_and_repeated_decisions(self):
+        slug, revision = self.record["slug"], self.record["revision"]
+        jr.decide(slug, revision, "approve", "user_actor", reviewer_name="Original Name")
+        self.now_mock.return_value += timedelta(seconds=1)
+        jr.decide(slug, revision, "hold", "user_actor", reviewer_name="Renamed Reviewer")
+        for current_label in ("Renamed Reviewer", "user_actor"):
+            with self.subTest(directory=current_label), \
+                 patch.object(studio_auth, "reviewer_label", return_value=current_label):
+                events = jr.article_history(slug)["events"]
+            self.assertEqual([e["reviewerNameSnapshot"] for e in events],
+                             ["Renamed Reviewer", "Original Name"])
+            self.assertEqual({e["reviewerId"] for e in events}, {"user_actor"})
+            self.assertEqual({e["reviewerLabel"] for e in events}, {current_label})
+        with jr.connect() as db:
+            row = db.execute("SELECT reviewer_name FROM journal_decisions").fetchone()
+            self.assertEqual(row["reviewer_name"], "Renamed Reviewer")
+            db.execute("TRUNCATE journal_review_audit")
+        with patch.object(studio_auth, "reviewer_label", return_value="user_actor"):
+            event = jr.article_history(slug)["events"][0]
+        self.assertEqual(event["source"], "saved-decision")
+        self.assertEqual(event["reviewerNameSnapshot"], "Renamed Reviewer")
+
+    def test_api_does_not_accept_browser_supplied_actor_or_name(self):
+        payload = {"slug": self.record["slug"], "revision": self.record["revision"],
+                   "action": "hold", "reviewer": "user_forged", "reviewer_name": "Forged Name",
+                   "reviewerNameSnapshot": "Forged Name", "environment": "production"}
+        with patch.object(studio_auth, "reviewer_identity",
+                          return_value=studio_auth.ReviewerIdentity("user_verified", "Verified Name")), \
+             patch.object(studio_auth, "reviewer_label", return_value="Current Name"), \
+             patch.dict(os.environ, {"REPLIT_DEPLOYMENT": "0"}):
+            status, body, _ = self.request("/api/studio/journal", "POST", payload,
+                                          {"Origin": "https://eternallifehospice.com"})
+            self.assertEqual(status, 200, body)
+            self.assertNotIn("approvalHistory", json.loads(body)["items"][0])
+            status, body, _ = self.request("/api/studio/journal/history?slug=" + self.record["slug"])
+        self.assertEqual(status, 200, body)
+        event = json.loads(body)["events"][0]
+        self.assertEqual(event["reviewerId"], "user_verified")
+        self.assertEqual(event["reviewerNameSnapshot"], "Verified Name")
+        self.assertEqual(event["environment"], "workspace")
+
+    def test_additive_name_migration_does_not_backfill_legacy_names(self):
+        self.approve()
+        with jr.connect() as db:
+            db.execute("ALTER TABLE journal_decisions DROP COLUMN reviewer_name")
+            db.execute("ALTER TABLE journal_review_audit DROP COLUMN reviewer_name")
+        jr.initialize()
+        jr.initialize()
+        with patch.object(studio_auth, "reviewer_label", return_value="Today's Name"):
+            event = jr.article_history(self.record["slug"])["events"][0]
+        self.assertIsNone(event["reviewerNameSnapshot"])
+        self.assertEqual(event["reviewerLabel"], "Today's Name")
+        self.assertEqual(event["reviewerId"], "reviewer-1")
+        with jr.connect() as db:
+            self.assertIsNone(db.execute("SELECT reviewer_name FROM journal_decisions").fetchone()["reviewer_name"])
+
+    def test_missing_name_is_not_replaced_with_email_or_id(self):
+        self.assertIsNone(studio_auth.display_name({"email_addresses": [{"email_address": "private@example.org"}]}))
+        self.assertIsNone(studio_auth.display_name({"first_name": " ", "last_name": None}))
+        self.assertEqual(studio_auth.display_name({"first_name": " Single "}), "Single")
 
     def test_history_keeps_pre_studio_original_separate_from_pending_revision(self):
         slug = next(iter(self.originals))
@@ -438,11 +503,12 @@ class ReleaseTests(unittest.TestCase):
         route = "/api/studio/journal/history?slug=" + self.record["slug"]
         with patch.object(jr, "article_history") as query:
             for headers, expected in (({}, 401), ({"Cookie": "__session=other"}, 403)):
-                with patch.object(studio_auth, "reviewer", side_effect=PermissionError("Not authorized")):
+                with patch.object(studio_auth, "reviewer_identity", side_effect=PermissionError("Not authorized")):
                     for method in ("GET", "HEAD", "POST"):
                         self.assertEqual(self.request(route, method, headers=headers)[0], expected)
             query.assert_not_called()
-        with patch.object(studio_auth, "reviewer", return_value="reviewer-1"):
+        with patch.object(studio_auth, "reviewer_identity",
+                          return_value=studio_auth.ReviewerIdentity("reviewer-1")):
             for method in ("GET", "HEAD"):
                 status, body, headers = self.request(route, method)
                 self.assertEqual(status, 200)
@@ -580,7 +646,8 @@ class AuthTests(unittest.TestCase):
             result.__exit__ = Mock(return_value=False)
             return result
         session = {"status":"active","user_id":"user_1"}
-        user = {"email_addresses":[]}
+        user = {"id": "user_1", "first_name": " Verified ", "last_name": "Reviewer",
+                "email_addresses":[]}
         with patch.object(studio_auth, "verifier", return_value=(claims["iss"],client)), \
              patch.dict(os.environ, {"CLERK_PUBLISHABLE_KEY":"test","CLERK_SECRET_KEY":"test"}), \
              patch.object(studio_auth, "urlopen") as remote:
@@ -592,6 +659,9 @@ class AuthTests(unittest.TestCase):
                     user["email_addresses"] = [{"email_address":address,"verification":{"status":"verified"}}]
                     remote.side_effect = [response(session),response(user)]
                     self.assertEqual(studio_auth.reviewer(headers), "user_1")
+                    remote.side_effect = [response(session), response(user)]
+                    self.assertEqual(studio_auth.reviewer_identity(headers),
+                                     studio_auth.ReviewerIdentity("user_1", "Verified Reviewer"))
                     for request_call in remote.call_args_list[-2:]:
                         request = request_call.args[0]
                         self.assertEqual(request.get_header("User-agent"), "Eternal-Studio/1.0")
@@ -600,6 +670,11 @@ class AuthTests(unittest.TestCase):
                     remote.side_effect = [response(session),response(user)]
                     with self.assertRaises(PermissionError):
                         studio_auth.reviewer(headers)
+            user["id"] = "user_mismatch"
+            remote.side_effect = [response(session), response(user)]
+            with self.assertRaises(PermissionError):
+                studio_auth.reviewer_identity(headers)
+            user["id"] = "user_1"
             user["email_addresses"] = [{"email_address":"other@example.org","verification":{"status":"verified"}},
                                        {"email_address":"denise@eternallifehospice.com","verification":{"status":"unverified"}}]
             remote.side_effect = [response(session),response(user)]

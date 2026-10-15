@@ -137,6 +137,8 @@ def initialize():
                 action text NOT NULL, reviewer text NOT NULL, occurred_at timestamptz NOT NULL
             );
             ALTER TABLE journal_review_audit ADD COLUMN IF NOT EXISTS environment text;
+            ALTER TABLE journal_review_audit ADD COLUMN IF NOT EXISTS reviewer_name text;
+            ALTER TABLE journal_decisions ADD COLUMN IF NOT EXISTS reviewer_name text;
             CREATE INDEX IF NOT EXISTS journal_audit_article_page
                 ON journal_review_audit (slug, occurred_at DESC, id DESC);
             CREATE INDEX IF NOT EXISTS journal_audit_saved_decision
@@ -184,7 +186,7 @@ def released(instant=None):
         return records, False
 
 
-def decide(slug, expected_revision, action, reviewer, *, only_if_undecided=False, expected_date=None, release_immediately=False):
+def decide(slug, expected_revision, action, reviewer, *, reviewer_name=None, only_if_undecided=False, expected_date=None, release_immediately=False):
     if action not in {"approve", "hold"}:
         raise ValueError("Choose approve or hold")
     if release_immediately and (action != "approve" or not only_if_undecided):
@@ -204,14 +206,15 @@ def decide(slug, expected_revision, action, reviewer, *, only_if_undecided=False
             raise ValueError("Article changed. Reload and review the complete current version.")
         frozen = freeze_photos(db, record["html"]) if action == "approve" else record["html"]
         db.execute("""
-            INSERT INTO journal_decisions (slug,revision,release_date,document,state,reviewer,decided_at)
-            VALUES (%s,%s,%s,%s,%s,%s,%s)
+            INSERT INTO journal_decisions (slug,revision,release_date,document,state,reviewer,decided_at,reviewer_name)
+            VALUES (%s,%s,%s,%s,%s,%s,%s,%s)
             ON CONFLICT (slug,revision) DO UPDATE SET state=EXCLUDED.state,
-                reviewer=EXCLUDED.reviewer, decided_at=EXCLUDED.decided_at
+                reviewer=EXCLUDED.reviewer, decided_at=EXCLUDED.decided_at,
+                reviewer_name=EXCLUDED.reviewer_name
         """, (slug, record["revision"], record["date"], frozen,
-              "approved" if action == "approve" else "held", reviewer, instant))
-        db.execute("INSERT INTO journal_review_audit (slug,revision,action,reviewer,occurred_at,environment) VALUES (%s,%s,%s,%s,%s,%s)",
-                   (slug, record["revision"], action, reviewer, instant, environment()))
+              "approved" if action == "approve" else "held", reviewer, instant, reviewer_name))
+        db.execute("INSERT INTO journal_review_audit (slug,revision,action,reviewer,occurred_at,environment,reviewer_name) VALUES (%s,%s,%s,%s,%s,%s,%s)",
+                   (slug, record["revision"], action, reviewer, instant, environment(), reviewer_name))
         if release_immediately:
             db.execute("""
                 INSERT INTO journal_releases (slug,revision,document,release_date,released_at)
@@ -252,7 +255,7 @@ def article_history(slug, limit=25, cursor=None):
         # Bound both branches before merging: no full audit history in Python.
         audit_where = "AND (occurred_at,id) < (%s,%s)" if boundary else ""
         audits = db.execute(f"""
-            SELECT id,revision,action,reviewer,occurred_at,environment,'audit' AS source
+            SELECT id,revision,action,reviewer,reviewer_name,occurred_at,environment,'audit' AS source
             FROM journal_review_audit WHERE slug=%s {audit_where}
             ORDER BY occurred_at DESC,id DESC LIMIT %s
         """, (slug, *(boundary[:2] if boundary else ()), limit + 1)).fetchall()
@@ -260,7 +263,7 @@ def article_history(slug, limit=25, cursor=None):
         legacy = db.execute(f"""
             SELECT 0::bigint AS id,d.revision,
                 CASE WHEN d.state='approved' THEN 'approve' ELSE 'hold' END AS action,
-                d.reviewer,d.decided_at AS occurred_at,NULL::text AS environment,
+                d.reviewer,d.reviewer_name,d.decided_at AS occurred_at,NULL::text AS environment,
                 'saved-decision' AS source
             FROM journal_decisions d WHERE d.slug=%s {decision_where}
                 AND NOT EXISTS (
@@ -285,6 +288,7 @@ def article_history(slug, limit=25, cursor=None):
             "id": str(row["id"]) if row["source"] == "audit" else "saved:" + row["revision"],
             "revision": row["revision"], "action": row["action"],
             "reviewerId": row["reviewer"], "reviewerLabel": labels[row["reviewer"]],
+            "reviewerNameSnapshot": row["reviewer_name"],
             "occurredAt": row["occurred_at"].isoformat(),
             "environment": row["environment"], "source": row["source"],
         })

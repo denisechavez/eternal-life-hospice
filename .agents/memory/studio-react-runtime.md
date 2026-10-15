@@ -17,3 +17,12 @@ the package versions or successful compilation.
 Apply the same single-runtime constraint to isolated browser-test bundles,
 including the parent-installed router. Otherwise a fixture can fail with null
 React context even when the application's deduplicated Vite build is healthy.
+
+The workspace's Node 20 requires `--experimental-websocket` for browser-test
+scripts that rely on the global WebSocket client.
+
+**Why:** Plain Node 20 invocation fails before browser assertions; temporary
+Chromium-profile cleanup can sometimes hide that original failure.
+
+**How to apply:** Use the flag for existing browser checks until their runtime
+compatibility is made explicit. Do not mistake a cleanup error for an app failure.

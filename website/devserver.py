@@ -281,7 +281,7 @@ class PrettyURLHandler(http.server.SimpleHTTPRequestHandler):
                 return True
             # Includes private approval history: authenticate reads and writes
             # alike before querying any editorial identities or decisions.
-            user = studio_auth.reviewer(self.headers)
+            user = studio_auth.reviewer_identity(self.headers)
             if path == "/api/studio/journal/history":
                 if self.command not in {"GET", "HEAD"}:
                     self._send_json(405, {"message": "Use GET"})
@@ -310,7 +310,8 @@ class PrettyURLHandler(http.server.SimpleHTTPRequestHandler):
                 if length <= 0 or length > 4096:
                     raise ValueError("Invalid approval request size")
                 payload = json.loads(self.rfile.read(length))
-                journal_release.decide(payload["slug"], payload["revision"], payload["action"], user)
+                journal_release.decide(payload["slug"], payload["revision"], payload["action"],
+                                       user.user_id, reviewer_name=user.display_name)
             elif self.command not in {"GET", "HEAD"}:
                 self._send_json(405, {"message": "Use GET or POST"})
                 return True

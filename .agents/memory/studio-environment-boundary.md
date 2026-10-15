@@ -96,3 +96,14 @@ or current reviewer allowlist would manufacture editorial provenance.
 **How to apply:** Preserve the recorded account ID and time, label missing event
 provenance explicitly and distinguish frozen pre-Studio publication from Studio
 approval. Capture environment for new events without rewriting old records.
+
+Capture future reviewer-name snapshots from the same server-side account response
+that verifies authorization, not a cached directory lookup or browser claim.
+Missing historical names must remain unknown even when today's name is available.
+
+**Why:** A current label cannot establish a signer's name at an earlier decision,
+and a second cached lookup may capture a stale or different account profile.
+
+**How to apply:** Keep IDs authoritative, distinguish saved names from current
+labels and never use display names to grant authority or move decisions between
+workspace and production.

@@ -3,6 +3,7 @@ import base64
 import json
 import logging
 import os
+from dataclasses import dataclass
 from functools import lru_cache
 from http.cookies import SimpleCookie
 from urllib.request import Request, urlopen
@@ -31,7 +32,18 @@ def verifier(key):
     return issuer, jwt.PyJWKClient(issuer + "/.well-known/jwks.json", timeout=5)
 
 
+@dataclass(frozen=True)
+class ReviewerIdentity:
+    user_id: str
+    display_name: str | None = None
+
+
 def reviewer(headers):
+    return reviewer_identity(headers).user_id
+
+
+def reviewer_identity(headers):
+    """Authorize and snapshot identity from the same verified Clerk response."""
     import jwt
     cookies = SimpleCookie()
     cookies.load(headers.get("Cookie", ""))
@@ -62,11 +74,13 @@ def reviewer(headers):
             raise PermissionError("Studio session is no longer active")
         stage = "lookup_user"
         user = clerk("users/" + claims["sub"])
+        if user.get("id") != claims["sub"]:
+            raise PermissionError("Studio account identity does not match the session")
         if not any(e.get("email_address", "").lower() in REVIEWER_EMAILS
                    and e.get("verification", {}).get("status") == "verified"
                    for e in user.get("email_addresses", [])):
             raise PermissionError("Only authorized Journal reviewers can approve releases. Sign in with Denise's or Aleksandra's verified account.")
-        return claims["sub"]
+        return ReviewerIdentity(claims["sub"], display_name(user))
     except PermissionError:
         raise
     except Exception as error:
@@ -75,6 +89,13 @@ def reviewer(headers):
             "Studio verification failed stage=%s kind=%s status=%s",
             stage, type(error).__name__, getattr(error, "code", "-"))
         raise PermissionError("Studio session could not be verified.") from None
+
+
+def display_name(user):
+    """Names only, never substitute an email address or account ID."""
+    name = " ".join(part.strip() for part in (user.get("first_name"), user.get("last_name"))
+                    if isinstance(part, str) and part.strip())
+    return name or None
 
 @lru_cache(maxsize=128)
 def _reviewer_label(user_id, window):
@@ -86,8 +107,7 @@ def _reviewer_label(user_id, window):
         user = json.load(response)
     if user.get("id") != user_id:
         raise ValueError("Account identity mismatch")
-    name = " ".join(part for part in (user.get("first_name"), user.get("last_name")) if part)
-    return name or user_id
+    return display_name(user) or user_id
 
 def reviewer_label(user_id):
     """A current directory label is optional; the stored ID is authoritative."""
