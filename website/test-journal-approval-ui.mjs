@@ -24,7 +24,7 @@ try {
       import {createRoot} from "react-dom/client";
       import Hub from ${JSON.stringify(join(component, "Hub.tsx"))};
       import {journalArticles} from ${JSON.stringify(join(component, "contentData.ts"))};
-      const fixture = window.approvalFixture = {posts:[],revision:1,failNext:0,
+      const fixture = window.approvalFixture = {posts:[],revision:1,failNext:0,historyRequests:[],
         identity:new URLSearchParams(location.search).get("identity")||"Denise"};
       let release;
       const firstLoad = new Promise(resolve=>release=resolve);
@@ -35,12 +35,25 @@ try {
         approvalHistory:{recordEnvironment:location.search.includes("workspace=1")?"workspace":"production",
           publishedVersion:a.previouslyPublished?{revision:"published-original",date:a.date}:null,
           preStudioVersion:a.previouslyPublished?{revision:"published-original",date:a.date}:null,
-          events:[{revision:"earlier-version",action:"approve",reviewerId:"user_earlier",reviewerLabel:"Earlier reviewer",
+          events:[{id:"earlier",revision:"earlier-version",action:"approve",reviewerId:"user_earlier",reviewerLabel:"Earlier reviewer",
             occurredAt:"2026-10-13T13:30:00+00:00",environment:null,source:"audit"},
-            ...fixture.posts.filter(p=>p.slug===a.slug).map(p=>({revision:p.revision,action:p.action,reviewerId:"user_"+fixture.identity,
-              reviewerLabel:fixture.identity,occurredAt:"2026-10-15T13:30:00+00:00",environment:"production",source:"audit"}))]}}));
+            ...fixture.posts.filter(p=>p.slug===a.slug).map((p,i)=>({id:"post-"+i,revision:p.revision,action:p.action,reviewerId:"user_"+fixture.identity,
+              reviewerLabel:fixture.identity,occurredAt:"2026-10-15T13:30:00+00:00",environment:"production",source:"audit"})),
+            ...Array.from({length:60},(_,i)=>({id:"old-"+i,revision:"old-version-"+i,action:i%2?"approve":"hold",
+              reviewerId:"old-actor-"+i,reviewerLabel:"Older reviewer "+i,occurredAt:"2026-10-10T13:30:00+00:00",
+              environment:null,source:"audit"}))]}}));
       window.confirm=()=>{throw new Error("Native browser confirmation must not be used");};
       window.fetch=async(url,options={})=>{
+        if(url.startsWith("/api/studio/journal/history?")){
+          const params=new URLSearchParams(url.split("?")[1]),slug=params.get("slug"),offset=Number(params.get("cursor")||0);
+          fixture.historyRequests.push({slug,cursor:params.get("cursor")});
+          const history=records().find(record=>record.slug===slug).approvalHistory;
+          const events=history.events.slice(offset,offset+25);
+          const nextCursor=history.events.length>offset+25?String(offset+25):null;
+          if(fixture.deferHistory){fixture.deferHistory=false;await new Promise(resolve=>fixture.releaseHistory=resolve);}
+          if(fixture.failHistory){fixture.failHistory=false;throw new Error("History temporarily unavailable");}
+          return {ok:true,json:async()=>({...history,events,nextCursor})};
+        }
         if(url!=="/api/studio/journal")throw new Error("Unexpected fixture request: "+url);
         if(fixture.identity==="Unapproved")return {ok:false,json:async()=>({message:"Only authorized Journal reviewers can access history."})};
         if(options.method==="POST"){
@@ -50,7 +63,7 @@ try {
           fixture.published=request.action==="approve"?request.slug:null;
           if(fixture.failAfterCommit){fixture.failAfterCommit=false;throw new Error("Connection lost after save");}
         }else{await firstLoad;}
-        return {ok:true,json:async()=>({items:records()})};
+        return {ok:true,json:async()=>({items:records().map(({approvalHistory,...record})=>record)})};
       };
       createRoot(document.getElementById("root")).render(<Hub/>);
     `, resolveDir: artifact, loader: "tsx"},
@@ -140,6 +153,7 @@ try {
   await call("Emulation.setDeviceMetricsOverride",{width:1280,height:900,deviceScaleFactor:1,mobile:false});
   await call("Page.navigate",{url:file+"?view=Journal"});
   await until("document.querySelectorAll('.studio-row').length>100");
+  assert.equal(await evaluate("approvalFixture.historyRequests.length"),0);
   assert.ok(await evaluate(`document.querySelector('.welcome-name').textContent.includes('Denise')`));
   assert.equal(await evaluate(`document.querySelector('.top-avatar').title`),"Denise");
   console.log("PASS greeting and avatar use the signed-in reviewer rather than a fixed identity");
@@ -147,15 +161,36 @@ try {
   await until("document.querySelector('[role=\"dialog\"]')");
   await checkButtonContrast();
   assert.ok(await evaluate(`document.querySelector('[role="dialog"] .review-actions .primary-btn').disabled`));
-  await evaluate("approvalFixture.release()");
+  await evaluate("approvalFixture.failHistory=true;approvalFixture.release()");
   await until(`[...document.querySelectorAll('[role="dialog"] button')].some(b=>b.textContent==="Approve complete article"&&!b.disabled)`);
   await checkButtonContrast();
   assert.match(await evaluate(`document.querySelector('[role="dialog"] h1').textContent`),/^Reviewed:/);
+  await until(`document.querySelector('.journal-history [role="alert"]')?.textContent.includes("History temporarily unavailable")`);
+  assert.equal(await evaluate("document.querySelectorAll('.journal-history li').length"),0);
+  await click("Retry history");
+  await until("document.querySelectorAll('.journal-history li').length===25");
   assert.ok(await evaluate(`document.querySelector('[aria-label="Journal approval history"]')?.textContent.includes("Earlier reviewer")`));
   assert.ok(await evaluate(`document.querySelector('.journal-history')?.textContent.includes("Event environment not recorded")`));
   assert.ok(await evaluate(`document.querySelector('.journal-history')?.textContent.includes("Pre-Studio history")`));
   assert.ok(await evaluate(`document.querySelector('.journal-history')?.textContent.includes("separate from the revised draft")`));
   console.log("PASS private history shows actual account IDs, full versions and unknown historical environments without inventing approvals");
+  assert.equal(await evaluate("approvalFixture.historyRequests.length"),2);
+  assert.equal(await evaluate("new Set(approvalFixture.historyRequests.map(request=>request.slug)).size"),1);
+  await evaluate("approvalFixture.failHistory=true");
+  await click("Load older events");
+  await until(`document.querySelector('.journal-history [role="alert"]')?.textContent.includes("History temporarily unavailable")`);
+  assert.equal(await evaluate("document.querySelectorAll('.journal-history li').length"),25);
+  await click("Retry history");
+  await until("document.querySelectorAll('.journal-history li').length===50");
+  assert.deepEqual(await evaluate("approvalFixture.historyRequests.slice(-2).map(request=>request.cursor)"),["25","25"]);
+  await evaluate("approvalFixture.deferHistory=true");
+  await click("Load older events");
+  await until(`[...document.querySelectorAll('.journal-history button')].some(button=>button.textContent==="Load older events"&&button.disabled)`);
+  await evaluate("approvalFixture.releaseHistory()");
+  await until("document.querySelectorAll('.journal-history li').length===61");
+  assert.equal(await evaluate(`[...document.querySelectorAll('.journal-history button')].some(button=>button.textContent==="Load older events")`),false);
+  assert.equal(await evaluate("approvalFixture.historyRequests.length"),5);
+  console.log("PASS history loads only for the open article, pages on demand, retries without dropping earlier events and stops at the end");
   assert.equal(await evaluate(`document.querySelector('[role="dialog"] .tag').textContent`),"Published original · revision needs review");
   assert.ok(await evaluate(`[...document.querySelectorAll('.studio-row')].filter(row=>/Journal · 2026-(?:0[5-9]-|10-0)/.test(row.textContent)).every(row=>row.querySelector('em').textContent.startsWith('Published'))`));
   console.log("PASS published originals keep their publication label while changed drafts require review");
@@ -206,11 +241,26 @@ try {
   await call("Emulation.setDeviceMetricsOverride",{width:390,height:844,deviceScaleFactor:1,mobile:true});
   assert.ok(await evaluate(`(()=>{const r=document.querySelector('.review-actions').getBoundingClientRect();return r.top>=0&&r.bottom<=innerHeight&&r.width<=innerWidth})()`));
   console.log("PASS mobile approval controls fit the viewport");
+  await evaluate("approvalFixture.deferHistory=true");
+  await click("Load older events");
+  await until("typeof approvalFixture.releaseHistory==='function'");
+  await evaluate(`window.previousHistoryRelease=approvalFixture.releaseHistory;document.querySelector('[aria-label="Close review"]').click();document.querySelectorAll('.studio-row')[1].click()`);
+  await until("document.querySelectorAll('.journal-history li').length===25");
+  await evaluate("window.previousHistoryRelease()");
+  await sleep(150);
+  assert.equal(await evaluate("document.querySelectorAll('.journal-history li').length"),25);
+  await evaluate("approvalFixture.deferHistory=true");
+  await click("Load older events");
+  await until("document.querySelector('.journal-history [role=\"status\"]')");
   await evaluate(`approvalFixture.identity="Unapproved";window.dispatchEvent(new Event("fixture-identity"))`);
   await until(`document.querySelector('[role="dialog"] [role="alert"]')?.textContent.includes("Only authorized")`);
   assert.equal(await evaluate(`document.querySelector('.journal-history')`),null);
+  await evaluate("approvalFixture.releaseHistory()");
+  await sleep(150);
+  assert.equal(await evaluate(`document.querySelector('.journal-history')`),null);
   assert.ok(await evaluate(`[...document.querySelectorAll('[role="dialog"] button')].find(b=>b.textContent.includes("Approve complete article")).disabled`));
   console.log("PASS changing to an unauthorized signed-in account removes the previous reviewer's private history");
+  console.log("PASS late history responses cannot populate another article or restore private history after an account change");
   for(const identity of ["Aleksandra","Guest"]){
     await call("Page.navigate",{url:file+"?view=Journal&identity="+identity});
     await until(`document.querySelector('.welcome-name')?.textContent.includes(${JSON.stringify(identity)})`);

@@ -309,17 +309,19 @@ class ReleaseTests(unittest.TestCase):
             self.assertEqual(status, 200, body)
             self.assertIn("no-store", headers["Cache-Control"])
         item = json.loads(body)["items"][0]
-        events = item["approvalHistory"]["events"]
+        self.assertNotIn("approvalHistory", item)
+        saved = jr.article_history(self.record["slug"])
+        events = saved["events"]
         self.assertEqual([event["reviewerId"] for event in events],
                          ["user_Denise", "user_Denise", "user_Aleksandra"])
         self.assertEqual([event["action"] for event in events], ["approve", "hold", "approve"])
         self.assertEqual({event["revision"] for event in events}, {self.record["revision"]})
         self.assertEqual({event["environment"] for event in events}, {"workspace"})
         self.assertEqual(events[0]["occurredAt"], self.now_mock.return_value.isoformat())
-        self.assertEqual(item["approvalHistory"]["recordEnvironment"], "workspace")
+        self.assertEqual(saved["recordEnvironment"], "workspace")
         self.assertEqual(item["status"], "Approved")
-        self.assertIsNone(item["approvalHistory"]["publishedVersion"])
-        self.assertIsNone(item["approvalHistory"]["preStudioVersion"])
+        self.assertIsNone(saved["publishedVersion"])
+        self.assertIsNone(saved["preStudioVersion"])
         with patch.object(studio_auth, "reviewer", side_effect=PermissionError("Not authorized")):
             for method in ("GET", "HEAD", "POST"):
                 status, body, _ = self.request("/api/studio/journal", method,
@@ -337,7 +339,7 @@ class ReleaseTests(unittest.TestCase):
         original = self.originals[slug]
         self.record.update(slug=slug, revision="changed-draft")
         item = jr.review_items()[0]
-        saved = item["approvalHistory"]
+        saved = jr.article_history(slug)
         self.assertEqual(item["status"], "Needs review")
         self.assertTrue(item["hasPublishedVersion"])
         self.assertEqual(saved["publishedVersion"]["revision"], original["revision"])
@@ -346,9 +348,128 @@ class ReleaseTests(unittest.TestCase):
         jr.decide(slug, "changed-draft", "hold", "reviewer-2")
         item = jr.review_items()[0]
         self.assertTrue(item["held"])
-        self.assertEqual(item["approvalHistory"]["publishedVersion"]["revision"], original["revision"])
-        self.assertEqual(item["approvalHistory"]["events"][0]["revision"], "changed-draft")
+        saved = jr.article_history(slug)
+        self.assertEqual(saved["publishedVersion"]["revision"], original["revision"])
+        self.assertEqual(saved["events"][0]["revision"], "changed-draft")
         self.assertEqual(jr.released()[0][slug]["html"], jr.unpack(original))
+
+    def test_history_pages_repeated_decisions_without_loading_audit_in_queue(self):
+        self.approve()
+        slug = self.record["slug"]
+        with jr.connect() as db:
+            # Repeated actions at the exact same instant must not collapse.
+            db.execute("""
+                INSERT INTO journal_review_audit (slug,revision,action,reviewer,occurred_at,environment)
+                SELECT %s,%s,CASE WHEN n%%2=0 THEN 'approve' ELSE 'hold' END,
+                    'actor-' || n,%s,CASE WHEN n%%3=0 THEN NULL ELSE 'workspace' END
+                FROM generate_series(1,350) n
+            """, (slug, self.record["revision"], self.now_mock.return_value))
+            db.execute("""
+                INSERT INTO journal_review_audit (id,slug,revision,action,reviewer,occurred_at)
+                VALUES (9007199254740993,%s,%s,'hold','large-id-actor',%s)
+            """, (slug, self.record["revision"], self.now_mock.return_value))
+            db.execute("""
+                INSERT INTO journal_review_audit (slug,revision,action,reviewer,occurred_at)
+                VALUES ('another-article','other-version','hold','private-other-actor',%s)
+            """, (self.now_mock.return_value,))
+            expected = db.execute("""
+                SELECT id,reviewer,action,occurred_at,environment FROM journal_review_audit
+                WHERE slug=%s ORDER BY occurred_at DESC,id DESC
+            """, (slug,)).fetchall()
+        with patch.object(studio_auth, "reviewer_label", side_effect=AssertionError("Queue resolved private actors")):
+            queue = jr.review_items()
+        self.assertNotIn("approvalHistory", queue[0])
+        self.assertNotIn("large-id-actor", json.dumps(queue))
+        self.assertNotIn("private-other-actor", json.dumps(queue))
+        cursor = None
+        events = []
+        while True:
+            with patch.object(studio_auth, "reviewer_label", side_effect=lambda actor: actor) as label:
+                page = jr.article_history(slug, 17, cursor)
+            self.assertLessEqual(len(page["events"]), 17)
+            self.assertLessEqual(label.call_count, 17)
+            events.extend(page["events"])
+            if cursor is None:
+                self.assertEqual(page["events"][0]["id"], "9007199254740993")
+                # A new event after page one must not shift subsequent pages.
+                with jr.connect() as db:
+                    db.execute("""
+                        INSERT INTO journal_review_audit (slug,revision,action,reviewer,occurred_at)
+                        VALUES (%s,'new-version','hold','newer-actor',%s)
+                    """, (slug, self.now_mock.return_value + timedelta(seconds=1)))
+            cursor = page["nextCursor"]
+            if not cursor:
+                break
+        self.assertEqual([e["id"] for e in events], [str(r["id"]) for r in expected])
+        self.assertEqual([e["reviewerId"] for e in events], [r["reviewer"] for r in expected])
+        self.assertEqual([e["action"] for e in events], [r["action"] for r in expected])
+        self.assertEqual([e["occurredAt"] for e in events], [r["occurred_at"].isoformat() for r in expected])
+        self.assertEqual([e["environment"] for e in events], [r["environment"] for r in expected])
+        self.assertEqual({e["revision"] for e in events}, {self.record["revision"]})
+        self.assertEqual(len(events), 352)
+
+    def test_history_paginates_legacy_states_and_checks_original_beyond_page(self):
+        slug = next(iter(self.originals))
+        original = self.originals[slug]
+        self.record.update(slug=slug, revision=original["revision"])
+        self.approve()
+        with jr.connect() as db:
+            # Legacy rows are saved states, not fabricated audit events.
+            db.execute("""
+                INSERT INTO journal_decisions (slug,revision,release_date,document,state,reviewer,decided_at)
+                SELECT %s,'legacy-' || n,%s,'','held','legacy-actor',%s FROM generate_series(1,55) n
+            """, (slug, self.record["date"], self.now_mock.return_value + timedelta(seconds=1)))
+        events = []
+        cursor = None
+        while True:
+            page = jr.article_history(slug, 5, cursor)
+            self.assertIsNone(page["preStudioVersion"])
+            self.assertEqual(page["publishedVersion"]["revision"], original["revision"])
+            events.extend(page["events"])
+            cursor = page["nextCursor"]
+            if not cursor:
+                break
+        self.assertEqual(len(events), 56)
+        self.assertEqual(len({e["id"] for e in events}), 56)
+        self.assertEqual(len([e for e in events if e["source"] == "audit"]), 1)
+        self.assertTrue(all(e["environment"] is None for e in events if e["source"] == "saved-decision"))
+
+    def test_history_endpoint_authorization_validation_and_private_headers(self):
+        route = "/api/studio/journal/history?slug=" + self.record["slug"]
+        with patch.object(jr, "article_history") as query:
+            for headers, expected in (({}, 401), ({"Cookie": "__session=other"}, 403)):
+                with patch.object(studio_auth, "reviewer", side_effect=PermissionError("Not authorized")):
+                    for method in ("GET", "HEAD", "POST"):
+                        self.assertEqual(self.request(route, method, headers=headers)[0], expected)
+            query.assert_not_called()
+        with patch.object(studio_auth, "reviewer", return_value="reviewer-1"):
+            for method in ("GET", "HEAD"):
+                status, body, headers = self.request(route, method)
+                self.assertEqual(status, 200)
+                self.assertIn("no-store", headers["Cache-Control"])
+                if method == "GET":
+                    self.assertEqual(json.loads(body)["events"], [])
+                    self.assertIsNone(json.loads(body)["nextCursor"])
+                else:
+                    self.assertEqual(body, "")
+            self.assertEqual(self.request(route, "POST")[0], 405)
+            for suffix in ("&limit=0", "&limit=101", "&limit=bad", "&limit=",
+                           "&cursor=not-a-cursor", "&cursor=W10", "&limit=1&limit=2"):
+                self.assertEqual(self.request(route + suffix)[0], 400, suffix)
+            self.assertEqual(self.request("/api/studio/journal/history?slug=absent-article")[0], 404)
+            self.assertEqual(self.request("/api/studio/journal/history")[0], 400)
+            self.approve()
+            jr.decide(self.record["slug"], self.record["revision"], "hold", "reviewer-2")
+            page = jr.article_history(self.record["slug"], 1)
+            self.assertIsNotNone(page["nextCursor"])
+            other = next(iter(self.originals))
+            self.assertEqual(self.request("/api/studio/journal/history?slug=" + other
+                                          + "&cursor=" + page["nextCursor"])[0], 400)
+        for route in ("/api/journal-release-status", "/assets/search-index.json", "/blog/"):
+            status, body, _ = self.request(route)
+            self.assertEqual(status, 200)
+            for private in ("reviewerId", "occurredAt", "nextCursor", "approvalHistory", "reviewer-2"):
+                self.assertNotIn(private, body)
 
     def test_history_retains_released_studio_version_while_revision_waits(self):
         self.approve()
@@ -357,20 +478,20 @@ class ReleaseTests(unittest.TestCase):
         self.record["revision"] = "pending-new-version"
         item = jr.review_items()[0]
         self.assertEqual(item["status"], "Needs review")
-        self.assertEqual(item["approvalHistory"]["publishedVersion"]["revision"], original_revision)
-        self.assertEqual(item["approvalHistory"]["events"][0]["revision"], original_revision)
-        self.assertIsNone(item["approvalHistory"]["preStudioVersion"])
+        saved = jr.article_history(self.record["slug"])
+        self.assertEqual(saved["publishedVersion"]["revision"], original_revision)
+        self.assertEqual(saved["events"][0]["revision"], original_revision)
+        self.assertIsNone(saved["preStudioVersion"])
         jr.decide(self.record["slug"], "pending-new-version", "hold", "reviewer-2")
-        item = jr.review_items()[0]
-        self.assertEqual(item["approvalHistory"]["publishedVersion"]["revision"], original_revision)
-        self.assertEqual([e["action"] for e in item["approvalHistory"]["events"]], ["hold", "approve"])
+        saved = jr.article_history(self.record["slug"])
+        self.assertEqual(saved["publishedVersion"]["revision"], original_revision)
+        self.assertEqual([e["action"] for e in saved["events"]], ["hold", "approve"])
 
     def test_legacy_saved_decision_is_not_invented_audit_or_environment(self):
         self.approve()
         with jr.connect() as db:
             db.execute("TRUNCATE journal_review_audit")
-        item = jr.review_items()[0]
-        event = item["approvalHistory"]["events"][0]
+        event = jr.article_history(self.record["slug"])["events"][0]
         self.assertEqual(event["source"], "saved-decision")
         self.assertEqual(event["reviewerId"], "reviewer-1")
         self.assertEqual(event["occurredAt"], self.now_mock.return_value.isoformat())
@@ -380,12 +501,12 @@ class ReleaseTests(unittest.TestCase):
         self.now_mock.return_value += timedelta(seconds=1)
         with patch.dict(os.environ, {"REPLIT_DEPLOYMENT": "1"}):
             jr.decide(self.record["slug"], self.record["revision"], "hold", "reviewer-2")
-            item = jr.review_items()[0]
-        self.assertEqual(item["approvalHistory"]["events"][0]["environment"], "production")
-        self.assertEqual(item["approvalHistory"]["recordEnvironment"], "production")
+            saved = jr.article_history(self.record["slug"])
+        self.assertEqual(saved["events"][0]["environment"], "production")
+        self.assertEqual(saved["recordEnvironment"], "production")
         with jr.connect() as db:
             db.execute("UPDATE journal_review_audit SET environment=NULL")
-        self.assertIsNone(jr.review_items()[0]["approvalHistory"]["events"][0]["environment"])
+        self.assertIsNone(jr.article_history(self.record["slug"])["events"][0]["environment"])
 
     def test_production_studio_login_public_but_draft_bundles_protected(self):
         from pathlib import Path

@@ -137,6 +137,10 @@ def initialize():
                 action text NOT NULL, reviewer text NOT NULL, occurred_at timestamptz NOT NULL
             );
             ALTER TABLE journal_review_audit ADD COLUMN IF NOT EXISTS environment text;
+            CREATE INDEX IF NOT EXISTS journal_audit_article_page
+                ON journal_review_audit (slug, occurred_at DESC, id DESC);
+            CREATE INDEX IF NOT EXISTS journal_audit_saved_decision
+                ON journal_review_audit (slug, revision, reviewer, occurred_at);
             CREATE TABLE IF NOT EXISTS journal_photos (
                 digest text PRIMARY KEY, body bytea NOT NULL, media_type text NOT NULL
             );
@@ -217,46 +221,88 @@ def decide(slug, expected_revision, action, reviewer, *, only_if_undecided=False
     return True
 
 
-def approval_histories(decisions, audits, published):
-    """Private metadata only. Never infer an event from a publication date."""
+def article_history(slug, limit=25, cursor=None):
+    """Private, bounded keyset pages. Saved legacy states are not audit events."""
     from studio_auth import reviewer_label
-    grouped = {}
-    identities = {row["reviewer"] for row in audits} | {row["reviewer"] for row in decisions.values()}
-    labels = {identity: reviewer_label(identity) for identity in identities}
-    # The append-only audit preserves repeated actions on the same revision.
-    for row in audits:
-        grouped.setdefault(row["slug"], []).append({
+    if not isinstance(slug, str) or not re.fullmatch(r"[a-z0-9]+(?:-[a-z0-9]+)*", slug):
+        raise ValueError("Invalid article")
+    try:
+        limit = int(limit)
+        if not 1 <= limit <= 100:
+            raise ValueError()
+        boundary = None
+        if cursor:
+            if len(cursor) > 2048:
+                raise ValueError()
+            saved = json.loads(base64.urlsafe_b64decode(cursor + "=" * (-len(cursor) % 4)))
+            if saved["slug"] != slug or not re.fullmatch(r"\d+", saved["id"]):
+                raise ValueError()
+            stamp = datetime.fromisoformat(saved["at"])
+            if stamp.tzinfo is None or not isinstance(saved["revision"], str):
+                raise ValueError()
+            boundary = (stamp, int(saved["id"]), saved["revision"])
+    except (ValueError, KeyError, TypeError, UnicodeError, OverflowError) as exc:
+        raise ValueError("Invalid history page") from exc
+    if slug not in candidates() and slug not in history():
+        raise LookupError("Article not found")
+    published, healthy = released()
+    if not healthy:
+        raise RuntimeError("Journal approval storage unavailable")
+    with connect() as db:
+        # Bound both branches before merging: no full audit history in Python.
+        audit_where = "AND (occurred_at,id) < (%s,%s)" if boundary else ""
+        audits = db.execute(f"""
+            SELECT id,revision,action,reviewer,occurred_at,environment,'audit' AS source
+            FROM journal_review_audit WHERE slug=%s {audit_where}
+            ORDER BY occurred_at DESC,id DESC LIMIT %s
+        """, (slug, *(boundary[:2] if boundary else ()), limit + 1)).fetchall()
+        decision_where = 'AND (d.decided_at,0::bigint,d.revision COLLATE "C") < (%s,%s,%s)' if boundary else ""
+        legacy = db.execute(f"""
+            SELECT 0::bigint AS id,d.revision,
+                CASE WHEN d.state='approved' THEN 'approve' ELSE 'hold' END AS action,
+                d.reviewer,d.decided_at AS occurred_at,NULL::text AS environment,
+                'saved-decision' AS source
+            FROM journal_decisions d WHERE d.slug=%s {decision_where}
+                AND NOT EXISTS (
+                    SELECT 1 FROM journal_review_audit a WHERE a.slug=d.slug
+                    AND a.revision=d.revision AND a.reviewer=d.reviewer
+                    AND a.occurred_at=d.decided_at)
+            ORDER BY d.decided_at DESC,d.revision COLLATE "C" DESC LIMIT %s
+        """, (slug, *(boundary if boundary else ()), limit + 1)).fetchall()
+        original = history().get(slug)
+        original_recorded = original and db.execute("""
+            SELECT EXISTS(SELECT 1 FROM journal_review_audit WHERE slug=%s AND revision=%s)
+                OR EXISTS(SELECT 1 FROM journal_decisions WHERE slug=%s AND revision=%s) AS recorded
+        """, (slug, original["revision"], slug, original["revision"])).fetchone()["recorded"]
+    rows = sorted(audits + legacy,
+                  key=lambda row: (row["occurred_at"], row["id"], row["revision"]), reverse=True)
+    more = len(rows) > limit
+    rows = rows[:limit]
+    labels = {identity: reviewer_label(identity) for identity in {row["reviewer"] for row in rows}}
+    events = []
+    for row in rows:
+        events.append({
+            "id": str(row["id"]) if row["source"] == "audit" else "saved:" + row["revision"],
             "revision": row["revision"], "action": row["action"],
             "reviewerId": row["reviewer"], "reviewerLabel": labels[row["reviewer"]],
             "occurredAt": row["occurred_at"].isoformat(),
-            "environment": row.get("environment"), "source": "audit",
+            "environment": row["environment"], "source": row["source"],
         })
-    # Older decision rows may predate auditing. Show their saved state, not a
-    # fabricated audit event, and do not duplicate an existing audit entry.
-    for row in decisions.values():
-        events = grouped.setdefault(row["slug"], [])
-        if not any(e["revision"] == row["revision"] and e["reviewerId"] == row["reviewer"]
-                   and e["occurredAt"] == row["decided_at"].isoformat() for e in events):
-            events.append({
-                "revision": row["revision"], "action": "approve" if row["state"] == "approved" else "hold",
-                "reviewerId": row["reviewer"], "reviewerLabel": labels[row["reviewer"]],
-                "occurredAt": row["decided_at"].isoformat(),
-                "environment": None, "source": "saved-decision",
-            })
-    originals = history()
-    result = {}
-    for slug in set(grouped) | set(published) | set(originals):
-        events = sorted(grouped.get(slug, []), key=lambda e: e["occurredAt"], reverse=True)
-        original = originals.get(slug)
-        pre_studio = original and not any(e["revision"] == original["revision"] for e in events)
-        live = published.get(slug)
-        result[slug] = {
-            "recordEnvironment": environment(),
-            "publishedVersion": {"revision": live["revision"], "date": live["date"]} if live else None,
-            "preStudioVersion": {"revision": original["revision"], "date": original["date"]} if pre_studio else None,
-            "events": events,
-        }
-    return result
+    next_cursor = None
+    if more:
+        last = rows[-1]
+        next_cursor = base64.urlsafe_b64encode(json.dumps({
+            "slug": slug, "at": last["occurred_at"].isoformat(),
+            "id": str(last["id"]), "revision": last["revision"],
+        }).encode()).decode().rstrip("=")
+    live = published.get(slug)
+    return {
+        "recordEnvironment": environment(),
+        "publishedVersion": {"revision": live["revision"], "date": live["date"]} if live else None,
+        "preStudioVersion": {"revision": original["revision"], "date": original["date"]}
+            if original and not original_recorded else None,
+        "events": events, "nextCursor": next_cursor,
+    }
 
 
 def review_items():
@@ -264,9 +310,8 @@ def review_items():
     if not healthy:
         raise RuntimeError("Journal approval storage unavailable")
     with connect() as db:
-        decisions = {(r["slug"], r["revision"]): r for r in db.execute("SELECT * FROM journal_decisions").fetchall()}
-        audits = db.execute("SELECT * FROM journal_review_audit ORDER BY occurred_at DESC,id DESC").fetchall()
-    histories = approval_histories(decisions, audits, published)
+        decisions = {(r["slug"], r["revision"]): r for r in db.execute(
+            "SELECT slug,revision,state FROM journal_decisions").fetchall()}
     results = []
     for slug, record in candidates().items():
         decision = decisions.get((slug, record["revision"]))
@@ -275,10 +320,7 @@ def review_items():
             "Approved" if decision and decision["state"] == "approved" else "Needs review")
         results.append({**record, "status": status, "held": bool(decision and decision["state"] == "held"),
                         "releaseAt": release_at(record["date"]).isoformat(),
-                        "hasPublishedVersion": bool(live),
-                        "approvalHistory": histories.get(slug, {
-                            "recordEnvironment": environment(), "publishedVersion": None,
-                            "preStudioVersion": None, "events": []})})
+                        "hasPublishedVersion": bool(live)})
     return results
 
 

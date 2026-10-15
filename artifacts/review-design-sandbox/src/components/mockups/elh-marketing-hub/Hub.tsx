@@ -9,9 +9,9 @@ import baseline from "./baseline-2026-09-20.json";
 import "./hub.css";
 import "./journal-review.css";
 import JournalConnection, {type JournalConnectionState} from "./JournalConnection";
-import JournalHistory, {type ApprovalHistory} from "./JournalHistory";
+import JournalHistory, {type ApprovalHistory, type LoadHistoryPage} from "./JournalHistory";
 
-type Item = { id:string; title:string; type:string; date:string; owner:string; status:"Needs review"|"Approved"|"Scheduled"|"Draft"|"Published"; excerpt:string; source?:JournalArticle; emailIndex?:number; hasPublishedVersion?:boolean; held?:boolean; approvalHistory?:ApprovalHistory };
+type Item = { id:string; title:string; type:string; date:string; owner:string; status:"Needs review"|"Approved"|"Scheduled"|"Draft"|"Published"; excerpt:string; source?:JournalArticle; emailIndex?:number; hasPublishedVersion?:boolean; held?:boolean };
 function itemStatusLabel(item:Pick<Item,"type">&Partial<Pick<Item,"source"|"hasPublishedVersion"|"held">>,status:Item["status"]){
   if(item.type!=="Journal"||!(item.hasPublishedVersion??item.source?.previouslyPublished)||status==="Published")return status;
   return item.held?"Published original · revision held":status==="Approved"?"Published original · revision approved":"Published original · revision needs review";
@@ -89,7 +89,7 @@ export default function Hub(){
     role:"Signed-in account",
   }:{name:isLoaded?"Not signed in":"Loading account",firstName:"Guest",role:"No approval identity verified"};
   const {signOut} = useClerk();
-  const [journalVersions,setJournalVersions]=useState<Record<string,{slug:string;title:string;date:string;revision:string;html:string;status:Item["status"];held:boolean;hasPublishedVersion:boolean;approvalHistory?:ApprovalHistory}>>({});
+  const [journalVersions,setJournalVersions]=useState<Record<string,{slug:string;title:string;date:string;revision:string;html:string;status:Item["status"];held:boolean;hasPublishedVersion:boolean}>>({});
   const [journalReady,setJournalReady]=useState(false);
   const [journalAccount,setJournalAccount]=useState<string|undefined>();
   const [journalError,setJournalError]=useState("");
@@ -120,6 +120,20 @@ export default function Hub(){
     }catch(error){if(request===journalRequest.current){setJournalReady(false);setJournalError(error instanceof Error?error.message:"Journal approvals unavailable");}}
     finally{if(request===journalRequest.current)setJournalLoading(false);}
   },[isSignedIn,user?.id]);
+  const loadHistoryPage=useCallback<LoadHistoryPage>(async(slug,cursor,signal)=>{
+    if(!isSignedIn||!journalReady||journalAccount!==user?.id)throw new Error("Reload Journal approvals before viewing history.");
+    const params=new URLSearchParams({slug,limit:"25"});
+    if(cursor)params.set("cursor",cursor);
+    const response=await fetch(`/api/studio/journal/history?${params}`,{credentials:"include",cache:"no-store",signal});
+    const payload=await response.json();
+    if(signal.aborted)throw new DOMException("History request cancelled","AbortError");
+    if(!response.ok){
+      if(response.status===401||response.status===403){setJournalReady(false);setJournalError(payload.message||"Journal access is no longer authorized.");}
+      throw new Error(payload.message||"Approval history unavailable");
+    }
+    if(!Array.isArray(payload.events)||!("nextCursor" in payload))throw new Error("Invalid approval history response. Please retry.");
+    return payload as ApprovalHistory;
+  },[isSignedIn,journalReady,journalAccount,user?.id]);
   useEffect(()=>{
     setJournalReady(false);setJournalError("");
     setJournalVersions({});setJournalAccount(undefined);
@@ -137,7 +151,7 @@ export default function Hub(){
  const flash=(s:string)=>{setNotice(s);window.setTimeout(()=>setNotice(""),2200)};
  const list=useMemo(()=>items.map(item=>{
    const version=journalAccount===user?.id&&item.source&&journalVersions[item.source.slug];
-    return version?{...item,title:version.title,date:version.date,status:version.status,hasPublishedVersion:version.hasPublishedVersion,held:version.held,approvalHistory:version.approvalHistory,
+    return version?{...item,title:version.title,date:version.date,status:version.status,hasPublishedVersion:version.hasPublishedVersion,held:version.held,
      source:{...item.source!,title:version.title,date:version.date,reviewHtml:version.html,serverRevision:version.revision}}:item;
  }).filter(i=>`${i.title} ${i.type} ${i.date}`.toLowerCase().includes(query.toLowerCase())),[query,journalVersions,journalAccount,user?.id]);
   const selectedCurrent=selected?list.find(item=>item.id===selected.id)||selected:null;
@@ -176,7 +190,7 @@ export default function Hub(){
       <section className={`hub-content ${active?"":"is-blank"}`}>{!active?<DashboardOpening kind={openingDirection}/>:<><div className="page-heading"><div><span className="eyebrow">{active==="Overview"?"Leadership view":["Journal","Emails","CareBrief","Calendar","Reviews","Assets"].includes(active)?"Eternal Studio":"Workspace view"} <em/></span><h1>{titleFor(active)}</h1><p>{subtitleFor(active)}</p></div>{["Journal","Emails","CareBrief","Calendar","Assets"].includes(active)&&<button className="primary-btn" onClick={()=>flash("New Studio item workflow opened")}><Send size={14}/> New item</button>}</div>
    {["Journal","Reviews"].includes(active)&&<JournalConnection state={journalConnection}/>}
        {active==="Overview"?<Executive onNavigate={setView}/>:active==="SEO"||active==="Website"?<Performance active={active}/>:active==="Calls"?<CallsPerformance/>:active==="EmailsPerformance"?<EmailPerformance/>:active==="GBP"||active==="Social"?<ThryvPath active={active}/>:["Connections","Health","ChangeLog","Definitions","Settings"].includes(active)?<Utility active={active}/>:["Expansion","VisibilityHotZones","InquiryHotZones","GrowthHotZones","Opportunity"].includes(active)?<Expansion active={active}/>:active==="Attribution"?<Attribution/>:active==="Intelligence"?<Intelligence/>:["Census","Admissions","Movement","CensusTrends"].includes(active)||["Referral","ReferralSources","PartnerMovement"].includes(active)?<Pending title={["Census","Admissions","Movement","CensusTrends"].includes(active)?"Aggregate census reporting":"Referral performance reporting"} detail={["Census","Admissions","Movement","CensusTrends"].includes(active)?"Aggregate Census Data Source Required":"Referral Data Source Required"}/>:active==="Assets"?<AssetLibrary/>:active==="Calendar"?<ContentCalendar/>:active==="CareBrief"?<CareBriefWorkspace/>:["Journal","Emails","Reviews"].includes(active)?<Studio active={active} list={list} statuses={statuses} setStatuses={setStatuses} onOpen={setSelected}/>:<Pending title={titleFor(active)} detail="Reporting Feed Pending"/>}</>}
-    </section></main>{selectedCurrent&&<Detail key={`${selectedCurrent.id}-${selectedCurrent.source?.serverRevision||"loading"}`} item={{...selectedCurrent,status:statuses[selectedCurrent.id]||selectedCurrent.status}} onClose={()=>{if(!savingJournal)setSelected(null)}} onStatus={(s)=>void saveStatus(s)} journalConnection={journalConnection} journalLocked={!liveStudio||!journalConnection.ready||journalLoading||!selectedCurrent.source?.serverRevision||savingJournal}/>}{notice&&<div className="toast"><Check size={15}/>{notice}</div>}
+    </section></main>{selectedCurrent&&<Detail key={`${user?.id}-${selectedCurrent.id}-${selectedCurrent.source?.serverRevision||"loading"}`} item={{...selectedCurrent,status:statuses[selectedCurrent.id]||selectedCurrent.status}} onClose={()=>{if(!savingJournal)setSelected(null)}} onStatus={(s)=>void saveStatus(s)} journalConnection={journalConnection} loadHistoryPage={loadHistoryPage} journalLocked={!liveStudio||!journalConnection.ready||journalLoading||!selectedCurrent.source?.serverRevision||savingJournal}/>}{notice&&<div className="toast"><Check size={15}/>{notice}</div>}
  </div>
 }
  function Cover({firstName,onFirstNameChange,onEnter}:{firstName:string;onFirstNameChange:(name:string)=>void;onEnter:()=>void}){
@@ -282,7 +296,7 @@ function highlightPublicationHtml(html:string){
  const highlighted=html.split(/(<[^>]+>)/g).map(part=>part.startsWith("<")?part:part.replace(pattern,'<mark style="background:#f0df9b;color:#3c1c3b;padding:0 2px;border-radius:2px;">$1</mark>')).join("");
  return highlighted;
 }
-function Detail({item,onClose,onStatus,journalLocked=false,journalConnection}:{item:Item;onClose:()=>void;onStatus:(s:Item["status"])=>void;journalLocked?:boolean;journalConnection?:JournalConnectionState}){
+function Detail({item,onClose,onStatus,journalLocked=false,journalConnection,loadHistoryPage}:{item:Item;onClose:()=>void;onStatus:(s:Item["status"])=>void;journalLocked?:boolean;journalConnection?:JournalConnectionState;loadHistoryPage:LoadHistoryPage}){
  const [confirmApproval,setConfirmApproval]=useState(false);
  const article=item.source;
  const email=item.emailIndex!==undefined?emailCampaigns[item.emailIndex]:null;
@@ -300,7 +314,7 @@ function Detail({item,onClose,onStatus,journalLocked=false,journalConnection}:{i
   <div className="detail-body"><span className="tag">{itemStatusLabel(item,item.status)}</span><h1>{article?<Highlighted text={item.title}/>:item.title}</h1><p>{article?<Highlighted text={item.excerpt}/>:item.excerpt}</p>
  {(article?.seoRevision||email?.seoRevision)&&<p className="email-template-note"><strong>Journal SEO revision.</strong> This exact version needs fresh approval; previous approvals do not carry over. Journal approvals are saved by the server. Email choices remain review proposals, not queued sends.</p>}
   {article&&journalConnection&&<JournalConnection state={journalConnection}/>}
-  {article&&journalConnection?.ready&&item.approvalHistory&&article.serverRevision&&<JournalHistory history={item.approvalHistory} revision={article.serverRevision}/>}
+  {article&&journalConnection?.ready&&article.serverRevision&&<JournalHistory slug={article.slug} revision={article.serverRevision} loadPage={loadHistoryPage}/>}
   {article&&<p className="email-template-note">Review the complete article, including its photograph, links and disclosures. Holding a revision does not withdraw an already-published version.</p>}
  {email?.journalTitle&&<p className="email-template-note"><strong>Companion Journal: {email.journalTitle}.</strong> {email.journalLinkStatus}. A held article is not linked in this email; the draft uses a verified active resource instead.</p>}
  <div className="meta-grid"><span>Owner<b>{item.owner}</b></span><span>Date<b>{item.date}</b></span></div>

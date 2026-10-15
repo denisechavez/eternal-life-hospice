@@ -270,7 +270,7 @@ class PrettyURLHandler(http.server.SimpleHTTPRequestHandler):
             except Exception:
                 self._send_json(503, {"message": "Published photograph unavailable"})
             return True
-        if path not in {"/api/studio/journal", "/api/journal-release-status"}:
+        if path not in {"/api/studio/journal", "/api/studio/journal/history", "/api/journal-release-status"}:
             return False
         try:
             if path == "/api/journal-release-status":
@@ -282,6 +282,26 @@ class PrettyURLHandler(http.server.SimpleHTTPRequestHandler):
             # Includes private approval history: authenticate reads and writes
             # alike before querying any editorial identities or decisions.
             user = studio_auth.reviewer(self.headers)
+            if path == "/api/studio/journal/history":
+                if self.command not in {"GET", "HEAD"}:
+                    self._send_json(405, {"message": "Use GET"})
+                    return True
+                params = parse_qs(urlsplit(self.path).query, keep_blank_values=True)
+                if any(len(values) != 1 for values in params.values()):
+                    self._send_json(400, {"message": "Duplicate history parameters"})
+                    return True
+                try:
+                    result = journal_release.article_history(
+                        params.get("slug", [""])[0], params.get("limit", ["25"])[0],
+                        params.get("cursor", [None])[0])
+                except ValueError:
+                    self._send_json(400, {"message": "Invalid history page request"})
+                    return True
+                except LookupError:
+                    self._send_json(404, {"message": "Article not found"})
+                    return True
+                self._send_json(200, result)
+                return True
             if self.command == "POST":
                 # Cookie-authenticated writes require an exact trusted origin.
                 if self.headers.get("Origin") not in studio_auth.allowed_origins():
