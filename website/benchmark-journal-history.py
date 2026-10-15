@@ -44,7 +44,7 @@ def disposable_postgres():
 
 
 class TracedConnection:
-    """Record the production SQL unchanged, without EXPLAIN in timed samples."""
+    """Record query SQL unchanged; execute but do not explain transaction settings."""
     def __init__(self, connection, statements):
         self.connection = connection
         self.statements = statements
@@ -57,7 +57,8 @@ class TracedConnection:
         return self.connection.__exit__(*args)
 
     def execute(self, query, params=None):
-        self.statements.append((query, params))
+        if not query.lstrip().upper().startswith("SET TRANSACTION "):
+            self.statements.append((query, params))
         return self.connection.execute(query, params)
 
 

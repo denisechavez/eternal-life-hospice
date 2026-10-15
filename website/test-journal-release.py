@@ -553,6 +553,115 @@ class ReleaseTests(unittest.TestCase):
         self.assertEqual(saved["publishedVersion"]["revision"], original_revision)
         self.assertEqual([e["action"] for e in saved["events"]], ["hold", "approve"])
 
+    def test_history_projects_due_metadata_without_materializing_or_unpacking(self):
+        self.approve()
+        slug = self.record["slug"]
+        with patch.object(jr, "materialize", side_effect=AssertionError("History acquired publication lock")), \
+             patch.object(jr, "unpack", side_effect=AssertionError("History unpacked article HTML")):
+            self.assertIsNone(jr.article_history(slug)["publishedVersion"])
+            self.now_mock.return_value = self.due
+            self.assertEqual(jr.article_history(slug)["publishedVersion"],
+                             {"revision": self.record["revision"], "date": self.record["date"]})
+            original_slug, original = next(iter(self.originals.items()))
+            self.assertEqual(jr.article_history(original_slug)["publishedVersion"],
+                             {"revision": original["revision"], "date": original["date"]})
+        with jr.connect() as db:
+            self.assertEqual(db.execute("SELECT count(*) AS n FROM journal_releases").fetchone()["n"], 0)
+        # Public serving still persists the same approved, frozen release.
+        self.assertEqual(jr.released()[0][slug]["revision"], self.record["revision"])
+
+    def test_history_metadata_matches_materialization_across_versions(self):
+        slug = self.record["slug"]
+        self.assertTrue(self.owner_approval())
+        self.assertEqual(jr.article_history(slug)["publishedVersion"]["revision"], self.record["revision"])
+        # Re-approving the same version must not move its persisted release time.
+        self.now_mock.return_value = self.due
+        self.approve()
+        self.record["revision"] = "replacement"
+        self.record["html"] += "<p>Replacement snapshot</p>"
+        self.now_mock.return_value += timedelta(seconds=1)
+        self.approve()
+        self.record["revision"] = "unapproved-edit"
+        self.record["html"] += "<p>Not yet reviewed</p>"
+        projected = jr.article_history(slug)["publishedVersion"]
+        published = jr.released()[0][slug]
+        self.assertEqual(projected, {key: published[key] for key in ("revision", "date")})
+        self.assertEqual(projected["revision"], "replacement")
+        jr.decide(slug, "unapproved-edit", "hold", "reviewer-2")
+        self.assertEqual(jr.article_history(slug)["publishedVersion"], projected)
+        self.assertNotIn("Not yet reviewed", jr.released()[0][slug]["html"])
+
+    def test_history_readers_do_not_wait_for_decisions_or_scheduled_releases(self):
+        from concurrent.futures import ThreadPoolExecutor
+        slug = self.record["slug"]
+        real_materialize = jr.materialize
+        # Pause the actual writer after it holds the global transaction lock
+        # and has made uncommitted release writes, not a stand-in Python lock.
+        for work in ("decision", "scheduled"):
+            with self.subTest(work=work):
+                with jr.connect() as db:
+                    db.execute("TRUNCATE journal_decisions,journal_releases,journal_review_audit")
+                self.now_mock.return_value = self.due - timedelta(minutes=1)
+                self.approve()
+                self.now_mock.return_value = self.due
+                entered, resume = threading.Event(), threading.Event()
+
+                def paused_materialize(db, instant):
+                    real_materialize(db, instant)
+                    entered.set()
+                    if not resume.wait(10):
+                        raise TimeoutError("Publication test was not resumed")
+
+                with ThreadPoolExecutor(max_workers=3) as pool, \
+                     patch.object(jr, "materialize", side_effect=paused_materialize), \
+                     patch.object(studio_auth, "reviewer", return_value="reviewer-1"), \
+                     patch.object(studio_auth, "reviewer_label", side_effect=lambda actor: actor):
+                    writer = pool.submit(jr.decide, slug, self.record["revision"], "hold", "reviewer-2") \
+                        if work == "decision" else pool.submit(jr.released)
+                    try:
+                        self.assertTrue(entered.wait(5), "Writer did not acquire publication lock")
+                        # Both the first page and a subsequent page must finish
+                        # before the writer commits or releases its advisory lock.
+                        first = pool.submit(self.request,
+                                            f"/api/studio/journal/history?slug={slug}&limit=1").result(timeout=3)
+                        self.assertEqual(first[0], 200, first[1])
+                        page = json.loads(first[1])
+                        self.assertEqual(page["publishedVersion"]["revision"], self.record["revision"])
+                        self.assertIn("no-store", first[2]["Cache-Control"])
+                        # Add committed audit events on an independent connection
+                        # to exercise an actual older-page cursor.
+                        with jr.connect() as db:
+                            db.execute("""
+                                INSERT INTO journal_review_audit (slug,revision,action,reviewer,occurred_at)
+                                VALUES (%s,%s,'approve','earlier-reviewer',%s)
+                            """, (slug, self.record["revision"], self.due - timedelta(days=1)))
+                        first = pool.submit(jr.article_history, slug, 1).result(timeout=3)
+                        self.assertIsNotNone(first["nextCursor"])
+                        older = pool.submit(jr.article_history, slug, 1, first["nextCursor"]).result(timeout=3)
+                        self.assertEqual(older["events"][0]["reviewerId"], "earlier-reviewer")
+                    finally:
+                        resume.set()
+                    writer.result(timeout=5)
+                self.assertEqual(jr.article_history(slug)["publishedVersion"]["revision"], self.record["revision"])
+
+    def test_history_snapshot_does_not_mix_uncommitted_or_later_decisions(self):
+        self.approve()
+        self.now_mock.return_value = self.due
+        slug = self.record["slug"]
+        real_metadata = jr.publication_metadata
+
+        def metadata_then_hold(db, *args):
+            metadata = real_metadata(db, *args)
+            # A separate transaction commits after the history snapshot began.
+            jr.decide(slug, self.record["revision"], "hold", "reviewer-2")
+            return metadata
+
+        with patch.object(jr, "publication_metadata", side_effect=metadata_then_hold):
+            page = jr.article_history(slug)
+        self.assertEqual([e["action"] for e in page["events"]], ["approve"])
+        self.assertEqual(page["publishedVersion"]["revision"], self.record["revision"])
+        self.assertEqual([e["action"] for e in jr.article_history(slug)["events"]], ["hold", "approve"])
+
     def test_legacy_saved_decision_is_not_invented_audit_or_environment(self):
         self.approve()
         with jr.connect() as db:

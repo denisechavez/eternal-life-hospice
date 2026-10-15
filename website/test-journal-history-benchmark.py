@@ -4,7 +4,7 @@ import argparse
 import importlib.util
 from pathlib import Path
 import unittest
-from unittest.mock import patch
+from unittest.mock import MagicMock, Mock, patch
 
 spec = importlib.util.spec_from_file_location(
     "journal_history_benchmark", Path(__file__).with_name("benchmark-journal-history.py"))
@@ -13,6 +13,22 @@ spec.loader.exec_module(benchmark)
 
 
 class BenchmarkTests(unittest.TestCase):
+    def test_transaction_settings_execute_but_are_not_explained(self):
+        connection = Mock()
+        statements = []
+        traced = benchmark.TracedConnection(connection, statements)
+        setting = "SET TRANSACTION ISOLATION LEVEL REPEATABLE READ, READ ONLY"
+        traced.execute(setting)
+        traced.execute("SELECT revision FROM journal_releases WHERE slug=%s", ("example",))
+        self.assertEqual(connection.execute.call_args_list[0].args, (setting, None))
+        self.assertEqual(connection.execute.call_count, 2)
+        self.assertEqual(statements, [
+            ("SELECT revision FROM journal_releases WHERE slug=%s", ("example",))])
+        # Filtering transaction settings must not hide accidental writes.
+        traced.execute("UPDATE journal_releases SET revision='unexpected'")
+        with self.assertRaisesRegex(AssertionError, "only explains read queries"):
+            benchmark.explain(Mock(return_value=MagicMock()), [statements[-1]])
+
     def args(self):
         return argparse.Namespace(
             run=True, articles=30, revisions=10, actions=10, samples=1, page_size=2,

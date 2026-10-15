@@ -223,7 +223,30 @@ def decide(slug, expected_revision, action, reviewer, *, reviewer_name=None, onl
         materialize(db, instant)
     return True
 
+def publication_metadata(db, slug, instant, original=None):
+    """Project materialize's version choice without writes, locks or document IO.
 
+    Due approvals count even before the next public request persists them.
+    Existing releases win equal timestamps (including early owner releases).
+    The caller supplies a consistent snapshot of releases and decisions.
+    """
+    saved = db.execute("""
+        SELECT revision,release_date,released_at FROM journal_releases WHERE slug=%s
+    """, (slug,)).fetchone()
+    rows = db.execute("""
+        SELECT revision,release_date,decided_at FROM journal_decisions
+        WHERE slug=%s AND state='approved' ORDER BY decided_at
+    """, (slug,)).fetchall()
+    for row in rows:
+        due = release_at(row["release_date"].isoformat())
+        if due > instant:
+            continue
+        effective = max(row["decided_at"], due)
+        if saved is None or (saved["revision"] != row["revision"] and saved["released_at"] < effective):
+            saved = {**row, "released_at": effective}
+    if saved:
+        return {"revision": saved["revision"], "date": saved["release_date"].isoformat()}
+    return {"revision": original["revision"], "date": original["date"]} if original else None
 def article_history(slug, limit=25, cursor=None):
     """Private, bounded keyset pages. Saved legacy states are not audit events."""
     from studio_auth import reviewer_label
@@ -246,12 +269,13 @@ def article_history(slug, limit=25, cursor=None):
             boundary = (stamp, int(saved["id"]), saved["revision"])
     except (ValueError, KeyError, TypeError, UnicodeError, OverflowError) as exc:
         raise ValueError("Invalid history page") from exc
-    if slug not in candidates() and slug not in history():
+    original = history().get(slug)
+    if slug not in candidates() and original is None:
         raise LookupError("Article not found")
-    published, healthy = released()
-    if not healthy:
-        raise RuntimeError("Journal approval storage unavailable")
     with connect() as db:
+        # One committed view while publication/decisions continue independently.
+        db.execute("SET TRANSACTION ISOLATION LEVEL REPEATABLE READ, READ ONLY")
+        live = publication_metadata(db, slug, now(), original)
         # Bound both branches before merging: no full audit history in Python.
         audit_where = "AND (occurred_at,id) < (%s,%s)" if boundary else ""
         audits = db.execute(f"""
@@ -272,7 +296,6 @@ def article_history(slug, limit=25, cursor=None):
                     AND a.occurred_at=d.decided_at)
             ORDER BY d.decided_at DESC,d.revision COLLATE "C" DESC LIMIT %s
         """, (slug, *(boundary if boundary else ()), limit + 1)).fetchall()
-        original = history().get(slug)
         original_recorded = original and db.execute("""
             SELECT EXISTS(SELECT 1 FROM journal_review_audit WHERE slug=%s AND revision=%s)
                 OR EXISTS(SELECT 1 FROM journal_decisions WHERE slug=%s AND revision=%s) AS recorded
@@ -299,10 +322,9 @@ def article_history(slug, limit=25, cursor=None):
             "slug": slug, "at": last["occurred_at"].isoformat(),
             "id": str(last["id"]), "revision": last["revision"],
         }).encode()).decode().rstrip("=")
-    live = published.get(slug)
     return {
         "recordEnvironment": environment(),
-        "publishedVersion": {"revision": live["revision"], "date": live["date"]} if live else None,
+        "publishedVersion": live,
         "preStudioVersion": {"revision": original["revision"], "date": original["date"]}
             if original and not original_recorded else None,
         "events": events, "nextCursor": next_cursor,
