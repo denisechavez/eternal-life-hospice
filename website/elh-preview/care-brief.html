@@ -195,7 +195,7 @@ a.cbl-topic:focus-visible{outline:2px solid #B08D3E;outline-offset:2px}
     e.preventDefault();
     var data=new URLSearchParams(new FormData(f)).toString();
     var er=document.querySelector('.cbl-signup-error');if(er)er.hidden=true;
-    fetch('/api/form-submit',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded','Accept':'application/json'},body:data})
+    import('/assets/intake-security.js').then(function(security){return security.submit({method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded','Accept':'application/json'},body:data},f);})
       .then(function(r){return r.json().catch(function(){return null;}).then(function(body){if(!r.ok||!body||body.ok!==true||body.accepted!==true)throw new Error('submit failed');return body;});})
       .then(function(){if(window.elhTrackEvent){window.elhTrackEvent('form_success',{page:location.pathname||'/',form:'elh-care-brief-signup'});}f.hidden=true;var t=document.querySelector('.cbl-signup-thanks');if(t)t.hidden=false;})
       .catch(function(){if(er)er.hidden=false;});

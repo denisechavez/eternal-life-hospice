@@ -46,6 +46,7 @@ import journal_release
 import studio_auth
 import studio_site
 import journal_discovery
+import form_antispam
 import recruitment_policy
 
 BASE = os.path.dirname(os.path.abspath(__file__))
@@ -464,7 +465,7 @@ class PrettyURLHandler(http.server.SimpleHTTPRequestHandler):
             body = render_links(body.decode("utf-8"), route, self._journal_today(),
                                 pages=self._journal_pages()).encode("utf-8")
             body = self._hide_unreleased_links(body.decode(), route).encode()
-            body = recruitment_policy.public_html(body.decode()).encode()
+            body = form_antispam.refresh_assets(recruitment_policy.public_html(body.decode())).encode()
         elif path.endswith("search-index.json"):
             body = recruitment_policy.public_discovery(body.decode(), "search").encode()
         elif path.endswith("sitemap.xml"):
@@ -492,7 +493,7 @@ class PrettyURLHandler(http.server.SimpleHTTPRequestHandler):
             return None
         if path in ("/robots.txt", "/sitemap.xml", "/llms.txt"):
             return "public, max-age=300, must-revalidate"
-        if path == "/assets/search-index.json":
+        if path in {"/assets/search-index.json", "/assets/intake-security.js"}:
             return "public, max-age=0, must-revalidate"
         if path.startswith("/assets/"):
             # Immutable URLs must change when their bytes change. Shared CSS/JS
@@ -559,7 +560,7 @@ class PrettyURLHandler(http.server.SimpleHTTPRequestHandler):
             # inject new article links into a version after its approval.
             body = record["html"].encode()
             body = self._hide_unreleased_links(body.decode(), "/blog/" + slug).encode()
-            body = recruitment_policy.public_html(body.decode()).encode()
+            body = form_antispam.refresh_assets(recruitment_policy.public_html(body.decode())).encode()
             self.send_response(200)
             self.send_header("Content-Type", "text/html; charset=utf-8")
             self.send_header("Content-Length", str(len(body)))
@@ -579,7 +580,7 @@ class PrettyURLHandler(http.server.SimpleHTTPRequestHandler):
                     body = render_links(source.read(), route, self._journal_today(),
                                         pages=self._journal_pages()).encode()
                     body = self._hide_unreleased_links(body.decode(), route).encode()
-                    body = recruitment_policy.public_html(body.decode()).encode()
+                    body = form_antispam.refresh_assets(recruitment_policy.public_html(body.decode())).encode()
                 compressed = "gzip" in (self.headers.get("Accept-Encoding") or "").lower()
                 if compressed:
                     body = gzip.compress(body, mtime=0)
@@ -596,7 +597,7 @@ class PrettyURLHandler(http.server.SimpleHTTPRequestHandler):
         if os.path.isfile(path) and (path.endswith(".html") or path.endswith("llms.txt")):
             with open(path, encoding="utf-8") as source:
                 text = source.read()
-            text = (recruitment_policy.public_html(text) if path.endswith(".html")
+            text = (form_antispam.refresh_assets(recruitment_policy.public_html(text)) if path.endswith(".html")
                     else recruitment_policy.public_discovery(text, "llms"))
             body = text.encode()
             self.send_response(200)
@@ -686,7 +687,7 @@ class PrettyURLHandler(http.server.SimpleHTTPRequestHandler):
                 "https://process.iconnode.com https://cdn.userway.org "
                 "https://widget.userway.org https://api.userway.org "
                 "https://tracker.metricool.com https://tags.tiqcdn.com; "
-                "media-src 'self'; frame-src https://cdn.userway.org; "
+                "media-src 'self'; frame-src https://cdn.userway.org https://challenges.cloudflare.com; "
                 "frame-ancestors 'self'; form-action 'self';"
             ),
         }
@@ -699,6 +700,10 @@ class PrettyURLHandler(http.server.SimpleHTTPRequestHandler):
             policy = policy.replace("frame-src 'self'", "frame-src 'self' https://challenges.cloudflare.com")
             policy += "; worker-src 'self' blob:"
             security_headers["Content-Security-Policy"] = policy
+        policy = security_headers["Content-Security-Policy"]
+        for directive in ("script-src 'self'", "connect-src 'self'"):
+            policy = policy.replace(directive, directive + " https://challenges.cloudflare.com")
+        security_headers["Content-Security-Policy"] = policy
         for name, value in security_headers.items():
             if not self._has_header(name):
                 self.send_header(name, value)
@@ -812,6 +817,17 @@ class PrettyURLHandler(http.server.SimpleHTTPRequestHandler):
                 },
                 extra_headers={"Allow": "POST"},
             )
+            return
+        if parsed.path == "/api/form-security":
+            try:
+                if not self._is_same_origin():
+                    raise IntakeError("invalid_origin", "Open this form from the Eternal website.", 403)
+                if not FORM_CLIENT_RATE_LIMITER.allow("challenge:" + self._client_key()):
+                    raise IntakeError("rate_limited", "Please wait or call 805.953.7273.", 429)
+                form_name = parse_qs(parsed.query).get("form", [""])[0]
+                self._send_json(200, form_antispam.issue(form_name, self._client_key()))
+            except IntakeError as exc:
+                self._send_json(exc.status, json_response_payload(False, error=exc.code, message=exc.message))
             return
         if parsed.path == "/api/coverage":
             status, payload, cache_seconds = lookup_coverage(
@@ -983,6 +999,7 @@ class PrettyURLHandler(http.server.SimpleHTTPRequestHandler):
             return
 
         body = self.rfile.read(length)
+        reservation = None
         try:
             fields, files = parse_form_body(
                 self.headers.get("Content-Type", ""), body
@@ -993,6 +1010,19 @@ class PrettyURLHandler(http.server.SimpleHTTPRequestHandler):
                     message="Recruitment submissions are not available on this website."
                 ))
                 return
+            if not fields.get("bot-field", "").strip():
+                # Validation precedes reservations so invalid fields cannot
+                # consume a legitimate family's duplicate-submission slot.
+                from form_intake import validate_submission
+                validate_submission(fields, files)
+                hostname = urlsplit("https://" + self.headers.get("Host", "")).hostname or ""
+                try:
+                    reservation = form_antispam.reserve(fields, self._client_key(), hostname)
+                except IntakeError:
+                    raise
+                except Exception:
+                    print("FORM_SECURITY_UNAVAILABLE", file=sys.stderr)
+                    raise IntakeError("security_unavailable", form_antispam.SAFE_MESSAGE, 503) from None
             result = process_submission(fields, files)
             form_name = fields.get("form-name", "unknown")
             receipt = result.get("receipt_id", "honeypot")
@@ -1005,6 +1035,7 @@ class PrettyURLHandler(http.server.SimpleHTTPRequestHandler):
             response_data.pop("ok", None)
             self._send_json(200, json_response_payload(True, **response_data))
         except IntakeError as exc:
+            print(f"FORM_BLOCKED reason={exc.code}", file=sys.stderr)
             self._send_json(
                 exc.status,
                 json_response_payload(
@@ -1012,6 +1043,10 @@ class PrettyURLHandler(http.server.SimpleHTTPRequestHandler):
                 ),
             )
         except DeliveryError:
+            try:
+                form_antispam.release_failed(reservation)
+            except Exception:
+                print("FORM_GUARD_RETRY_CLEANUP_FAILED", file=sys.stderr)
             print("FORM_DELIVERY_FAILED provider=brevo", file=sys.stderr)
             notify_delivery_failure()
             self._send_json(

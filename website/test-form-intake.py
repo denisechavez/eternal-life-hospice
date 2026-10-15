@@ -19,6 +19,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 import devserver
 import form_intake
+import form_antispam
 
 
 class CaptureHandler(BaseHTTPRequestHandler):
@@ -186,8 +187,9 @@ class FormIntakeTests(unittest.TestCase):
         careers = (root / "careers.html").read_text(encoding="utf-8")
         brief = (root / "care-brief.html").read_text(encoding="utf-8")
 
-        for content in (index, refer, chat, careers, brief):
+        for content in (index, refer, careers, brief):
             self.assertIn("/api/form-submit", content)
+        self.assertIn('import("/assets/intake-security.js")', chat)
         self.assertNotIn(
             "fetch('/',{method:'POST'", index + refer + careers + brief
         )
@@ -198,6 +200,13 @@ class FormIntakeTests(unittest.TestCase):
 
 
 class SyntheticEndToEndTest(unittest.TestCase):
+    def setUp(self):
+        # These tests isolate delivery/outage behavior. The guard's real HTTP,
+        # PostgreSQL, replay and provider checks live in test-form-antispam.py.
+        guard = mock.patch.object(form_antispam, "reserve", return_value=None)
+        guard.start()
+        self.addCleanup(guard.stop)
+
     def test_http_to_internal_and_acknowledgement_then_cleanup(self):
         """POST through the app, capture both Brevo messages, then erase them."""
         CaptureHandler.payloads = []

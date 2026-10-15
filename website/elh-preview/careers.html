@@ -222,7 +222,7 @@
     e.preventDefault();
     var err=document.getElementById('applyError'); if(err) err.hidden=true;
     if(btn){ btn.disabled=true; btn.textContent='Sending\u2026'; }
-    fetch('/api/form-submit',{method:'POST',headers:{'Accept':'application/json'},body:new FormData(f)})
+    import('/assets/intake-security.js').then(function(security){return security.submit({method:'POST',headers:{'Accept':'application/json'},body:new FormData(f)},f);})
       .then(function(r){
         return r.json().catch(function(){return null;}).then(function(data){
           if(!r.ok||!data||data.ok!==true||data.accepted!==true) throw new Error('submit failed');

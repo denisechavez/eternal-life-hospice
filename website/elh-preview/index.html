@@ -1931,7 +1931,7 @@ p,li,blockquote{text-wrap:pretty}
       var btn=f.querySelector('button[type="submit"],button:not([type])'),label=btn?btn.textContent:'';
       if(btn){btn.disabled=true;btn.textContent='Sending\u2026';}
       var body=new URLSearchParams();new FormData(f).forEach(function(v,k){body.append(k,v);});
-      fetch('/api/form-submit',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded','Accept':'application/json'},body:body.toString()})
+      import('/assets/intake-security.js').then(function(security){return security.submit({method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded','Accept':'application/json'},body:body.toString()},f);})
         .then(function(r){return r.json().catch(function(){return null;}).then(function(data){
           if(!r.ok||!data||data.ok!==true||data.accepted!==true)throw new Error('submit failed');
           return data;

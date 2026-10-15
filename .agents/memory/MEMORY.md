@@ -59,3 +59,4 @@
 - [Studio shared React runtime](studio-react-runtime.md) — root-installed auth packages and the artifact must resolve to one React instance; builds alone miss hook failures.
 - [Local dependency overrides](local-dependency-overrides.md) — npm success can hide a stale registry tarball; verify resolved source and patched behavior after a clean install.
 - [History publication reads](history-publication-reads.md) — private history projects due versions without publication locks; metadata and events share a committed snapshot.
+- [Intake spam protection](form-spam-protection.md) — protect all submission paths without area-code bans; share limits across instances and refresh cached chat assets.

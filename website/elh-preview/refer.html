@@ -459,7 +459,7 @@
     if(btn){ btn.disabled=true; btn.textContent='Sending\u2026'; }
     var body=new URLSearchParams(); new FormData(f).forEach(function(v,k){ body.append(k,v); });
     var oldError=f.parentNode.querySelector('.apply-error'); if(oldError) oldError.remove();
-    fetch('/api/form-submit',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded','Accept':'application/json'},body:body.toString()})
+    import('/assets/intake-security.js').then(function(security){return security.submit({method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded','Accept':'application/json'},body:body.toString()},f);})
       .then(function(r){
         return r.json().catch(function(){return null;}).then(function(data){
           if(!r.ok||!data||data.ok!==true||data.accepted!==true) throw new Error('submit failed');

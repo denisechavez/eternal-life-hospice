@@ -619,14 +619,14 @@
       preferred_time: data.preferred_time,
       message: data.message
     });
-    fetch("/api/form-submit", {
+    import("/assets/intake-security.js").then(function(security){return security.submit({
       method: "POST",
       headers: {
         "Content-Type": "application/x-www-form-urlencoded",
         "Accept": "application/json"
       },
       body: body
-    })
+    },form);})
       .then(function (r) {
         return r.json().catch(function () { return null; }).then(function (data) {
           if (!r.ok || !data || data.ok !== true || data.accepted !== true) {
