@@ -50,3 +50,13 @@ was committed.
 **How to apply:** Keep live approval explicit and version-specific. On retry,
 read the saved server status before enabling another approval; never recover by
 silently approving a new version or trusting a browser-local status.
+
+Reader portals need their own complete button/theme styles.
+
+**Why:** The article reader renders outside the main dashboard wrapper. Missing
+inherited theme variables made approval buttons transparent with near-white
+labels, even while DOM-label and click-flow tests passed.
+
+**How to apply:** Check actual computed foreground/background contrast in enabled,
+disabled and confirmation states. Keep disabled labels readable and explain the
+lock beside the action, not only above a long article.

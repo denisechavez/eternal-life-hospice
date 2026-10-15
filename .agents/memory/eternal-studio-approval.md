@@ -43,6 +43,27 @@ released, not merely a title or browser-local status. Keep Journal and Care Brie
 editorial identities separate. Do not remove already-published history without
 explicit permission.
 
+Original Journal posts dated before 2026-10-10 were already approved and posted.
+Do not present their originals as awaiting first approval. A later changed
+draft may still require review, separately from its original publication.
+
+**Why:** The user explicitly confirmed this publication history after the review
+queue misleadingly labeled old posts "Needs review."
+
+**How to apply:** Use the preserved publication history for the original's label.
+Do not manufacture fresh approvals, carry approval to changed drafts or restore
+recruitment material that was subsequently withdrawn.
+
+Either authorized Journal reviewer may approve an article independently; two
+signatures are not required.
+
+**Why:** The user explicitly approved extending shared approval authority to the
+second designated reviewer, rather than restricting approval to the founder.
+
+**How to apply:** Retain verified-account authorization, record the actual acting
+reviewer and require version-specific consent. Do not grant approval access to
+every signed-in account.
+
 Approved Journal posts must become available automatically on their assigned dates
 at a consistent daily publication time. Monitor those approved releases and send an
 email alert to the designated Journal notification recipient if a scheduled post

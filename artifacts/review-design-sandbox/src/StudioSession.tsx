@@ -18,7 +18,7 @@ export default function StudioSession({children}: {children: ReactNode}) {
       options: {logoImageUrl: `${window.location.origin}/assets/logo-eternal-trans.png`},
       variables: {colorPrimary: "#381B37", fontFamily: "Arial, sans-serif"},
     }}
-    localization={{signIn: {start: {title: "Sign in to Eternal Studio", subtitle: "Journal approval is restricted to the designated reviewer."}}}}>
+    localization={{signIn: {start: {title: "Sign in to Eternal Studio", subtitle: "Denise and Aleksandra can approve Journal posts using their verified accounts."}}}}>
     <WouterRouter base={basePath}>
       <Switch>
         <Route path="/"><Show when="signed-in"><Redirect to="/preview/elh-marketing-hub/Hub?view=Journal"/></Show><section style={{padding:"4rem",background:"#f5f0eb",minHeight:"100vh",color:"#381B37"}}><img width="176" src="/assets/logo-eternal-trans.png" alt="Eternal Life Hospice"/><h1>Eternal Studio</h1><p>Review and approve complete Journal versions before publication.</p><a href={`${basePath}/sign-in`}>Sign in as the designated reviewer</a></section></Route>

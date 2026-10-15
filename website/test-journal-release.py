@@ -274,18 +274,28 @@ class AuthTests(unittest.TestCase):
             result.__exit__ = Mock(return_value=False)
             return result
         session = {"status":"active","user_id":"user_1"}
-        user = {"email_addresses":[{"email_address":studio_auth.REVIEWER_EMAIL,"verification":{"status":"verified"}}]}
+        user = {"email_addresses":[]}
         with patch.object(studio_auth, "verifier", return_value=(claims["iss"],client)), \
              patch.dict(os.environ, {"CLERK_PUBLISHABLE_KEY":"test","CLERK_SECRET_KEY":"test"}), \
              patch.object(studio_auth, "urlopen") as remote:
             headers = {"Cookie":"__session="+token}
-            remote.side_effect = [response(session),response(user)]
-            self.assertEqual(studio_auth.reviewer(headers), "user_1")
-            user["email_addresses"][0]["verification"]["status"] = "unverified"
+            self.assertEqual(studio_auth.REVIEWER_EMAILS, {
+                "aleksandra@eternallifehospice.com", "denise@eternallifehospice.com"})
+            for address in ("ALEKSANDRA@eternallifehospice.com", "denise@eternallifehospice.com"):
+                with self.subTest(reviewer=address):
+                    user["email_addresses"] = [{"email_address":address,"verification":{"status":"verified"}}]
+                    remote.side_effect = [response(session),response(user)]
+                    self.assertEqual(studio_auth.reviewer(headers), "user_1")
+                    user["email_addresses"][0]["verification"]["status"] = "unverified"
+                    remote.side_effect = [response(session),response(user)]
+                    with self.assertRaises(PermissionError):
+                        studio_auth.reviewer(headers)
+            user["email_addresses"] = [{"email_address":"other@example.org","verification":{"status":"verified"}},
+                                       {"email_address":"denise@eternallifehospice.com","verification":{"status":"unverified"}}]
             remote.side_effect = [response(session),response(user)]
             with self.assertRaises(PermissionError):
                 studio_auth.reviewer(headers)
-            user["email_addresses"][0] = {"email_address":"other@example.org","verification":{"status":"verified"}}
+            user["email_addresses"] = [{"email_address":"other@example.org","verification":{"status":"verified"}}]
             remote.side_effect = [response(session),response(user)]
             with self.assertRaises(PermissionError):
                 studio_auth.reviewer(headers)

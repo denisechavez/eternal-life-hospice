@@ -10,7 +10,11 @@ import "./hub.css";
 import "./journal-review.css";
 import JournalConnection, {type JournalConnectionState} from "./JournalConnection";
 
-type Item = { id:string; title:string; type:string; date:string; owner:string; status:"Needs review"|"Approved"|"Scheduled"|"Draft"|"Published"; excerpt:string; source?:JournalArticle; emailIndex?:number };
+type Item = { id:string; title:string; type:string; date:string; owner:string; status:"Needs review"|"Approved"|"Scheduled"|"Draft"|"Published"; excerpt:string; source?:JournalArticle; emailIndex?:number; hasPublishedVersion?:boolean; held?:boolean };
+function itemStatusLabel(item:Pick<Item,"type">&Partial<Pick<Item,"source"|"hasPublishedVersion"|"held">>,status:Item["status"]){
+  if(item.type!=="Journal"||!(item.hasPublishedVersion??item.source?.previouslyPublished)||status==="Published")return status;
+  return item.held?"Published original · revision held":status==="Approved"?"Published original · revision approved":"Published original · revision needs review";
+}
 type Report = { live:boolean; generatedAt?:string; errors?:string[]; period?:{startDate:string;endDate:string}; metrics?:{sessions:number;keyEvents:number;searchClicks:number;impressions:number;ctr:number;averagePosition:number}; trend?:{date:string;sessions:number}[]; landingPages?:{page:string;sessions:number}[]; queries?:{query:string;clicks:number;impressions:number;position:number}[]; visibilityMarkets?:{market:string;sessions:number;clicks:number;impressions:number}[] };
 type WhatConvertsReport = { live:boolean; generatedAt?:string; errors?:string[]; period?:{startDate:string;endDate:string;label:string}; metrics?:{totalLeads:number;calls:number;averageCallDurationSeconds:number;attributedMarkets:number}; bySource?:{name:string;count:number}[]; byMedium?:{name:string;count:number}[]; inquiryMarkets?:{market:string;inquiries:number}[]; fieldsAvailable?:string[]; fieldsUnavailable?:string[]; diagnostic?:{result:string;accountId:number|null;accountName:string|null;profileId:number|null;profileName:string|null;websiteUrl:string|null;timezone:string;queryWindow:{startDate:string;endDate:string;maximumDays:number};totalLeads:number;leadTypes:{name:string;count:number}[];earliestLeadDate:string|null;latestLeadDate:string|null;explanation:string}; note?:string };
 type BrevoReport = { live:boolean; generatedAt?:string; errors?:string[]; period?:{startDate:string;endDate:string;label:string}; metrics?:{campaigns:number;sentCampaigns:number;activeLists:number;subscribers:number;sent:number;delivered:number;opens:number;uniqueViews:number;clicks:number;uniqueClicks:number;bounces:number;unsubscriptions:number}; periodMetrics?:{campaigns:number;sent:number;delivered:number;opens:number;uniqueViews:number;clicks:number;uniqueClicks:number;bounces:number;unsubscriptions:number}; diagnostic?:{result:string;explanation:string;historicalCampaignsValidated:number}; campaigns?:unknown[]; lists?:unknown[] };
@@ -59,7 +63,7 @@ const calendarEntries = [
     time:article.previouslyPublished?"Published":"6:30 AM PT",
     channel:"Journal",
     title:article.title,
-    status:"Needs review",
+    status:article.previouslyPublished?(article.seoRevision?"Published original · revision needs review":"Published"):"Needs review",
   })),
   ...emailCampaigns.flatMap((email,index)=>{
     const date=calendarDateFor(email.sendDate);
@@ -87,13 +91,13 @@ export default function Hub(){
   const liveStudio=import.meta.env.BASE_URL.replace(/\/$/,"")==="/studio";
   const [savingJournal,setSavingJournal]=useState(false);
   const savingJournalRef=useRef(false);
-  const [active,setActive]=useState(initialView); const [open,setOpen]=useState(studio.some(item=>item[1]===initialView)?"Eternal Studio":""); const [mobile,setMobile]=useState(false); const [query,setQuery]=useState(""); const [notice,setNotice]=useState(""); const [selected,setSelected]=useState<Item|null>(null); const [statuses,setStatuses]=useState<Record<string,Item["status"]>>(()=>{const initial=Object.fromEntries(items.map(item=>[item.id,item.type==="Journal"?"Needs review":item.status]));try{const saved=window.localStorage.getItem(approvalStorageKey);const local=saved?Object.fromEntries(Object.entries(JSON.parse(saved)).filter(([id])=>!id.startsWith("j-"))):{};return {...initial,...local} as Record<string,Item["status"]>}catch{return initial}}); const [openingDirection,setOpeningDirection]=useState<"chain"|"center">("chain"); const [firstName,setFirstName]=useState(""); const [entered,setEntered]=useState(Boolean(initialView));
+   const [active,setActive]=useState(initialView); const [open,setOpen]=useState(studio.some(item=>item[1]===initialView)?"Eternal Studio":""); const [mobile,setMobile]=useState(false); const [query,setQuery]=useState(""); const [notice,setNotice]=useState(""); const [selected,setSelected]=useState<Item|null>(null); const [statuses,setStatuses]=useState<Record<string,Item["status"]>>(()=>{const initial=Object.fromEntries(items.map(item=>[item.id,item.status]));try{const saved=window.localStorage.getItem(approvalStorageKey);const local=saved?Object.fromEntries(Object.entries(JSON.parse(saved)).filter(([id])=>!id.startsWith("j-"))):{};return {...initial,...local} as Record<string,Item["status"]>}catch{return initial}}); const [openingDirection,setOpeningDirection]=useState<"chain"|"center">("chain"); const [firstName,setFirstName]=useState(""); const [entered,setEntered]=useState(Boolean(initialView));
   useEffect(()=>{document.title="Eternal Growth Intelligence";window.localStorage.setItem(approvalStorageKey,JSON.stringify(Object.fromEntries(Object.entries(statuses).filter(([id])=>!id.startsWith("j-")))))},[statuses]);
   const acceptJournal = (payload:{items:(typeof journalVersions)[string][]}) => {
     setJournalVersions(Object.fromEntries(payload.items.map(row=>[row.slug,row])));
     setJournalReady(true);setJournalError("");
     setStatuses(previous=>({...Object.fromEntries(Object.entries(previous).filter(([id])=>!id.startsWith("j-"))),
-      ...Object.fromEntries(items.filter(item=>item.type==="Journal").map(item=>[item.id,payload.items.find(row=>row.slug===item.source?.slug)?.status||"Needs review"]))}));
+      ...Object.fromEntries(items.filter(item=>item.type==="Journal").map(item=>[item.id,payload.items.find(row=>row.slug===item.source?.slug)?.status||item.status]))}));
   };
   const loadJournal=useCallback(async()=>{
     if(!isSignedIn||savingJournalRef.current)return;
@@ -124,7 +128,7 @@ export default function Hub(){
  const flash=(s:string)=>{setNotice(s);window.setTimeout(()=>setNotice(""),2200)};
  const list=useMemo(()=>items.map(item=>{
    const version=item.source&&journalVersions[item.source.slug];
-   return version?{...item,title:version.title,date:version.date,status:version.status,
+    return version?{...item,title:version.title,date:version.date,status:version.status,hasPublishedVersion:version.hasPublishedVersion,held:version.held,
      source:{...item.source!,title:version.title,date:version.date,reviewHtml:version.html,serverRevision:version.revision}}:item;
  }).filter(i=>`${i.title} ${i.type} ${i.date}`.toLowerCase().includes(query.toLowerCase())),[query,journalVersions]);
   const selectedCurrent=selected?list.find(item=>item.id===selected.id)||selected:null;
@@ -220,12 +224,13 @@ function Studio({active,list,statuses,onOpen}:{active:string;list:Item[];statuse
  return <div className="studio-workspace">{(active==="Journal"||active==="Emails")&&<><KeywordInsight/><KeywordCoverageTracker/></>}<section className="panel studio-list">
  <div className="studio-intro"><BookOpen size={20}/><div><Kicker>Eternal Studio · Create / Review / Publish</Kicker>
  <h2>{active==="Reviews"?"Review queue":"Production workspace"}</h2>
+  {active==="Reviews"&&<p>Published originals do not need approval again. “Revision needs review” refers only to a changed draft; its original publication is retained.</p>}
  {active==="Journal"&&<><p>{journalArticles.length} blog entries loaded · Content through December 31, 2026 · {filtered.length} shown</p>
  <label>Publication month <select aria-label="Filter Journal month" value={month} onChange={event=>setMonth(event.target.value)}>
  <option value="">All months</option>{months.map(value=><option key={value} value={value}>{new Date(`${value}-01T12:00:00`).toLocaleDateString("en-US",{month:"long",year:"numeric"})}</option>)}</select></label>
  <p>Approved article versions release on their original dates at 6:30 a.m. America/Los_Angeles, including daylight-saving time. Held drafts do not publish. Published originals remain available while revised versions await approval.</p></>}
  {active==="Emails"&&<p>Established campaigns retain their original templates. The 12 new Thryv weekly drafts are review proposals only, not queued sends; their dates identify proposed editorial weeks.</p>}</div></div>
- {filtered.map(i=><button className="studio-row" key={i.id} onClick={()=>onOpen(i)}><FileText size={16}/><span><b>{i.title}</b><small>{i.type} · {i.date}{i.source?.seoRevision||i.emailIndex!==undefined&&emailCampaigns[i.emailIndex]?.seoRevision?" · Private SEO draft":""}</small></span><em>{statuses[i.id]||i.status}</em><ChevronRight size={15}/></button>)}
+  {filtered.map(i=><button className="studio-row" key={i.id} onClick={()=>onOpen(i)}><FileText size={16}/><span><b>{i.title}</b><small>{i.type} · {i.date}{i.source?.seoRevision||i.emailIndex!==undefined&&emailCampaigns[i.emailIndex]?.seoRevision?" · Private SEO draft":""}</small></span><em>{itemStatusLabel(i,statuses[i.id]||i.status)}</em><ChevronRight size={15}/></button>)}
  {!filtered.length&&<div className="empty-state"><FileCheck2 size={25}/><b>No items in this Studio view</b><span>Try another month or clear the search.</span></div>}</section></div>
 }
 function KeywordInsight(){const ranked=[...publicationKeywords].sort((a,b)=>publicationKeywordCounts[b.toLowerCase()]-publicationKeywordCounts[a.toLowerCase()]);return <section className="keyword-insight"><div className="keyword-insight-copy"><div className="keyword-insight-icon"><Search size={18}/></div><div><Kicker>Publication keyword lens</Kicker><h2>What the review highlights—and why</h2><p>These terms recur at least eight times across the current Journal and email copy. We highlight them so reviewers can confirm the central care themes stay clear, consistent and not overused. They are an editorial review lens, not automatic SEO targets or search-ranking scores.</p></div></div><div className="keyword-counts" aria-label="Recurring publication terms">{ranked.map(keyword=><span key={keyword}><b>{keyword}</b><em>{publicationKeywordCounts[keyword.toLowerCase()]}</em></span>)}</div><small className="keyword-method">Source: {journalArticles.length} active Journal articles plus all current email subjects, preheaders and plain-text copy. Counts recalculate when publication copy changes.</small></section>}
@@ -238,7 +243,7 @@ function ContentCalendar(){
    fetch("/api/studio/journal",{credentials:"include",cache:"no-store"}).then(async response=>{
      if(!response.ok)throw new Error("Journal calendar approval status unavailable");
      return response.json();
-   }).then(payload=>{if(!cancelled)setJournalStatus(Object.fromEntries(payload.items.map((row:{slug:string;status:string})=>[row.slug,row.status])))})
+    }).then(payload=>{if(!cancelled)setJournalStatus(Object.fromEntries(payload.items.map((row:{slug:string;status:Item["status"];hasPublishedVersion:boolean;held:boolean})=>[row.slug,itemStatusLabel({type:"Journal",hasPublishedVersion:row.hasPublishedVersion,held:row.held},row.status)])))})
      .catch(()=>{if(!cancelled)setJournalStatus({})});
    return()=>{cancelled=true};
  },[isSignedIn]);
@@ -248,7 +253,7 @@ function ContentCalendar(){
  const key=(date:Date)=>`${date.getFullYear()}-${String(date.getMonth()+1).padStart(2,"0")}-${String(date.getDate()).padStart(2,"0")}`;
  const add=(date:Date,days:number)=>new Date(date.getFullYear(),date.getMonth(),date.getDate()+days);
  const entriesFor=(date:Date)=>calendarEntries.filter(item=>item.date===key(date)).map(item=>
-   "slug" in item&&typeof item.slug==="string"?{...item,status:journalStatus[item.slug]||"Needs review"}:item);
+   "slug" in item&&typeof item.slug==="string"?{...item,status:journalStatus[item.slug]||item.status}:item);
  const move=(direction:number)=>setCursor(current=>view==="month"?new Date(current.getFullYear(),current.getMonth()+direction,1):add(current,direction*(view==="week"?7:1)));
  const weekStart=add(cursor,-((cursor.getDay()+6)%7));
  const monthStart=new Date(cursor.getFullYear(),cursor.getMonth(),1);
@@ -283,7 +288,7 @@ function Detail({item,onClose,onStatus,journalLocked=false,journalConnection}:{i
  },[onClose]);
  return createPortal(<div className="detail-backdrop studio-review-layer" onClick={onClose}><aside role="dialog" aria-modal="true" aria-label={article?`Review article: ${article.title}`:"Studio review"} className={`detail-drawer ${article||email?"full-review":""}`} onClick={e=>e.stopPropagation()}>
  <header><div><Kicker>{item.type}</Kicker><h2>{article?"Full article review":email?"Full email review":"Studio item review"}</h2></div><button className="icon-btn" onClick={onClose} aria-label="Close review"><X size={18}/></button></header>
- <div className="detail-body"><span className="tag">{item.status}</span><h1>{article?<Highlighted text={item.title}/>:item.title}</h1><p>{article?<Highlighted text={item.excerpt}/>:item.excerpt}</p>
+  <div className="detail-body"><span className="tag">{itemStatusLabel(item,item.status)}</span><h1>{article?<Highlighted text={item.title}/>:item.title}</h1><p>{article?<Highlighted text={item.excerpt}/>:item.excerpt}</p>
  {(article?.seoRevision||email?.seoRevision)&&<p className="email-template-note"><strong>Journal SEO revision.</strong> This exact version needs fresh approval; previous approvals do not carry over. Journal approvals are saved by the server. Email choices remain review proposals, not queued sends.</p>}
   {article&&journalConnection&&<JournalConnection state={journalConnection}/>}
   {article&&<p className="email-template-note">Review the complete article, including its photograph, links and disclosures. Holding a revision does not withdraw an already-published version.</p>}
@@ -295,6 +300,17 @@ function Detail({item,onClose,onStatus,journalLocked=false,journalConnection}:{i
  <><p className="article-lede"><Highlighted text={article.lede}/></p>{article.sections.map(section=><section key={section.heading}><h3><Highlighted text={section.heading}/></h3>{section.paragraphs.map((paragraph,index)=><p key={index}><Highlighted text={paragraph}/></p>)}</section>)}<div className="article-cta"><strong><Highlighted text={article.ctaHeading}/></strong><p><Highlighted text={article.ctaCopy}/></p></div></>}
  </article>:email?<div className="email-review"><div className={`email-template-note ${approvedTemplate?"approved":""}`}><ShieldCheck size={16}/><span><strong>{approvedTemplate?"Approved Eternal email template":"Journal campaign draft"}</strong>{approvedTemplate?"Rendered from the established sent-email asset with its responsive table layout, plum masthead, gold accents and compliant branded footer.":"This is a campaign-specific draft. Compare it with an approved Eternal template before scheduling."}</span></div><div className="email-preview-label">Complete rendered email <small>Keywords calculated from current Journal and email copy</small></div><iframe title={email.subject} srcDoc={highlightPublicationHtml(email.html)}/><div className="campaign-details"><h3>Plain-text version</h3><pre>{email.plainText}</pre></div></div>:<div className="preview-paper"><Kicker>Editorial preview</Kicker><h3>{item.title}</h3><p>{item.excerpt}</p></div>}
   </div><div className="detail-actions review-actions">
+    {article&&journalLocked&&item.status!=="Published"&&journalConnection&&<div className="approval-action-help">
+      <p role="status">{!journalConnection.live?"This is the workspace preview. Website approvals must be saved in live Studio."
+        :journalConnection.saving?"Saving your decision… Please wait for confirmation."
+        :!journalConnection.authLoaded?"Loading secure sign-in…"
+        :!journalConnection.signedIn?"Sign in with Denise's or Aleksandra's verified account to approve."
+        :journalConnection.loading?"Loading the current article version…"
+        :"Approval is unavailable until the current version is verified. Use Retry / refresh approvals."}</p>
+      {!journalConnection.live?<a className="primary-btn" href="https://eternallifehospice.com/studio/" target="_blank" rel="noopener noreferrer">Open live Studio to approve</a>
+        :journalConnection.authLoaded&&!journalConnection.signedIn?<a className="primary-btn" href={journalConnection.signInHref}>Sign in to approve</a>
+        :journalConnection.error&&journalConnection.signedIn?<button className="secondary-btn" disabled={journalConnection.loading||journalConnection.saving} onClick={journalConnection.retry}>Retry / refresh approvals</button>:null}
+    </div>}
     {article&&journalConnection?.error&&<p className="approval-inline-error" role="alert">{journalConnection.error} Use Retry / refresh approvals above before trying again.</p>}
     {article&&confirmApproval&&!approved?<div className="journal-confirmation" role="group" aria-label="Confirm article approval">
       <p><strong>Approve this exact article version?</strong> Scheduled for {item.date} at 6:30 a.m. Pacific.

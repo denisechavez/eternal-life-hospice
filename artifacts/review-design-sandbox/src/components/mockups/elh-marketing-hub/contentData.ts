@@ -13,6 +13,7 @@ import campaign4 from "../../../../../../exports/email-campaigns/30-day-journal/
 import approvedFamilyGuide from "../../../../../../exports/email/elh-family-guide-email-2.html?raw";
 import approvedCareBrief from "../../../../../../exports/email/eternal-care-brief-introduction-email.html?raw";
 import privateSeoReview from "../../../../../../website/content/seo-journal-review.json";
+import publishedHistory from "../../../../../../website/content/journal-published-history.json";
 
 export type JournalArticle = {
   slug: string; title: string; category: string; date: string; description: string;
@@ -111,6 +112,7 @@ const legacyArticles: JournalArticle[] = Object.entries(reviewBySlug).flatMap(([
     reviewHtml, seoRevision: draft?.revision, previouslyPublished: true}];
 });
 export const journalArticles: JournalArticle[] = [...legacyArticles, ...campaignArticles]
+  .map(article => ({...article, previouslyPublished: Object.hasOwn(publishedHistory.articles, article.slug)}))
   .sort((a, b) => a.date.localeCompare(b.date) || a.title.localeCompare(b.title));
 
 export function journalReviewDocument(html: string): string {

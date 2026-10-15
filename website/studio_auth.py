@@ -6,7 +6,10 @@ from functools import lru_cache
 from http.cookies import SimpleCookie
 from urllib.request import Request, urlopen
 
-REVIEWER_EMAIL = "aleksandra@eternallifehospice.com"
+REVIEWER_EMAILS = frozenset({
+    "aleksandra@eternallifehospice.com",
+    "denise@eternallifehospice.com",
+})
 
 
 def allowed_origins():
@@ -53,10 +56,10 @@ def reviewer(headers):
         if session.get("status") != "active" or session.get("user_id") != claims["sub"]:
             raise PermissionError("Studio session is no longer active")
         user = clerk("users/" + claims["sub"])
-        if not any(e.get("email_address", "").lower() == REVIEWER_EMAIL
+        if not any(e.get("email_address", "").lower() in REVIEWER_EMAILS
                    and e.get("verification", {}).get("status") == "verified"
                    for e in user.get("email_addresses", [])):
-            raise PermissionError("Only the designated Journal reviewer can approve releases.")
+            raise PermissionError("Only authorized Journal reviewers can approve releases. Sign in with Denise's or Aleksandra's verified account.")
         return claims["sub"]
     except PermissionError:
         raise

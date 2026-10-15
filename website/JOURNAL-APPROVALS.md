@@ -6,8 +6,9 @@ are unchanged.
 ## Authority
 
 Studio uses the existing Clerk session cookie. The server verifies the signature,
-issuer, expiry, session status, trusted origin and the designated reviewer's
-verified email address. A signed-in account alone is not approval authority.
+issuer, expiry, session status, trusted origin and an explicitly authorized
+reviewer's verified email address. Denise and Aleksandra are authorized; either
+may approve a version independently. A signed-in account alone is not approval authority.
 Journal browser-local statuses are ignored. Email review choices remain local.
 
 The server supplies the complete review HTML and an SHA-256 revision covering
