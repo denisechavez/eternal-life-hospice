@@ -156,7 +156,8 @@ def materialize(db, instant):
             ON CONFLICT (slug) DO UPDATE SET revision=EXCLUDED.revision,
                 document=EXCLUDED.document, release_date=EXCLUDED.release_date,
                 released_at=EXCLUDED.released_at
-            WHERE journal_releases.released_at < EXCLUDED.released_at
+            WHERE journal_releases.revision <> EXCLUDED.revision
+                AND journal_releases.released_at < EXCLUDED.released_at
         """, (row["slug"], row["revision"], row["document"], row["release_date"],
               max(row["decided_at"], release_at(row["release_date"].isoformat()))))
 
@@ -179,15 +180,24 @@ def released(instant=None):
         return records, False
 
 
-def decide(slug, expected_revision, action, reviewer):
+def decide(slug, expected_revision, action, reviewer, *, only_if_undecided=False, expected_date=None, release_immediately=False):
     if action not in {"approve", "hold"}:
         raise ValueError("Choose approve or hold")
-    record = candidates().get(slug)
-    if not record or record["revision"] != expected_revision:
-        raise ValueError("Article changed. Reload and review the complete current version.")
+    if release_immediately and (action != "approve" or not only_if_undecided):
+        raise ValueError("Immediate publication requires a single-use owner instruction")
     instant = now()
     with connect() as db:
         materialize(db, instant)
+        # Startup owner instructions must never replay over a later Studio
+        # approval or hold. Share the decision lock, including across instances.
+        if only_if_undecided and db.execute("""
+            SELECT 1 FROM journal_decisions WHERE slug=%s
+            UNION ALL SELECT 1 FROM journal_review_audit WHERE slug=%s LIMIT 1
+        """, (slug, slug)).fetchone():
+            return False
+        record = candidates().get(slug)
+        if not record or record["revision"] != expected_revision or (expected_date and record["date"] != expected_date):
+            raise ValueError("Article changed. Reload and review the complete current version.")
         frozen = freeze_photos(db, record["html"]) if action == "approve" else record["html"]
         db.execute("""
             INSERT INTO journal_decisions (slug,revision,release_date,document,state,reviewer,decided_at)
@@ -198,7 +208,13 @@ def decide(slug, expected_revision, action, reviewer):
               "approved" if action == "approve" else "held", reviewer, instant))
         db.execute("INSERT INTO journal_review_audit (slug,revision,action,reviewer,occurred_at,environment) VALUES (%s,%s,%s,%s,%s,%s)",
                    (slug, record["revision"], action, reviewer, instant, environment()))
+        if release_immediately:
+            db.execute("""
+                INSERT INTO journal_releases (slug,revision,document,release_date,released_at)
+                VALUES (%s,%s,%s,%s,%s) ON CONFLICT DO NOTHING
+            """, (slug, record["revision"], frozen, record["date"], instant))
         materialize(db, instant)
+    return True
 
 
 def approval_histories(decisions, audits, published):

@@ -18,6 +18,7 @@ from urllib.request import Request, urlopen
 import psycopg
 from psycopg.rows import dict_row
 import journal_release as jr
+import journal_owner_approval as owner_approval
 import studio_auth
 import studio_site
 import journal_discovery
@@ -73,6 +74,82 @@ class ReleaseTests(unittest.TestCase):
 
     def approve(self):
         jr.decide(self.record["slug"], self.record["revision"], "approve", "reviewer-1")
+
+    def owner_approval(self):
+        request = {"slug": self.record["slug"], "date": self.record["date"], "revision": self.record["revision"],
+                   "reviewer": "Owner request — October 15, 2026 (outside Studio)"}
+        with patch.object(owner_approval, "REQUEST", request), patch.object(jr, "environment", return_value="production"):
+            return owner_approval.apply()
+
+    def test_owner_request_releases_now_and_records_its_real_source(self):
+        self.assertTrue(self.owner_approval())
+        self.assertEqual(jr.released()[0][self.record["slug"]]["revision"], self.record["revision"])
+        status, body, _ = self.request("/blog/" + self.record["slug"])
+        self.assertEqual(status, 200)
+        self.assertIn(self.record["title"], html.unescape(body))
+        self.assertIn("/api/journal-photo/", body)
+        with jr.connect() as db:
+            first_release = db.execute("SELECT released_at FROM journal_releases WHERE slug=%s", (self.record["slug"],)).fetchone()
+        self.assertEqual(first_release["released_at"], self.due - timedelta(minutes=1))
+        self.now_mock.return_value = self.due
+        self.assertEqual(jr.released()[0][self.record["slug"]]["revision"], self.record["revision"])
+        with jr.connect() as db:
+            events = db.execute("SELECT * FROM journal_review_audit").fetchall()
+            self.assertEqual(db.execute("SELECT released_at FROM journal_releases WHERE slug=%s", (self.record["slug"],)).fetchone(),
+                             first_release)
+        self.assertEqual(len(events), 1)
+        self.assertEqual(events[0]["environment"], "production")
+        self.assertIn("outside Studio", events[0]["reviewer"])
+
+    def test_ordinary_approvals_remain_scheduled(self):
+        self.approve()
+        self.assertNotIn(self.record["slug"], jr.released()[0])
+        with self.assertRaisesRegex(ValueError, "single-use owner"):
+            jr.decide(self.record["slug"], self.record["revision"], "approve", "reviewer-1",
+                      release_immediately=True)
+
+    def test_owner_request_is_idempotent_even_after_content_changes(self):
+        self.assertTrue(self.owner_approval())
+        self.record["revision"] = "changed-after-approval"
+        self.assertFalse(self.owner_approval())
+        with jr.connect() as db:
+            self.assertEqual(db.execute("SELECT count(*) AS total FROM journal_review_audit").fetchone()["total"], 1)
+
+    def test_owner_request_never_overrides_a_studio_hold(self):
+        jr.decide(self.record["slug"], self.record["revision"], "hold", "reviewer-1")
+        self.assertFalse(self.owner_approval())
+        with jr.connect() as db:
+            self.assertEqual(db.execute("SELECT state FROM journal_decisions").fetchone()["state"], "held")
+
+    def test_owner_request_rejects_changed_version_and_is_production_only(self):
+        with patch.object(jr, "environment", return_value="workspace"), patch.object(jr, "decide") as decide:
+            self.assertFalse(owner_approval.apply())
+            decide.assert_not_called()
+        with patch.object(jr, "environment", return_value="production"), patch.object(owner_approval, "REQUEST", {
+            "slug": self.record["slug"], "date": self.record["date"], "revision": "not-the-requested-version", "reviewer": "Owner request"
+        }):
+            self.assertFalse(owner_approval.apply())
+        with jr.connect() as db:
+            self.assertEqual(db.execute("SELECT count(*) AS total FROM journal_decisions").fetchone()["total"], 0)
+
+    def test_owner_request_rejects_rescheduling(self):
+        request = {"slug": self.record["slug"], "date": "2099-01-01",
+                   "revision": self.record["revision"], "reviewer": "Owner request"}
+        with patch.object(jr, "environment", return_value="production"), patch.object(owner_approval, "REQUEST", request):
+            self.assertFalse(owner_approval.apply())
+        with jr.connect() as db:
+            self.assertEqual(db.execute("SELECT count(*) AS total FROM journal_review_audit").fetchone()["total"], 0)
+
+    def test_concurrent_owner_request_startups_save_only_one_event(self):
+        from concurrent.futures import ThreadPoolExecutor
+        request = {"slug": self.record["slug"], "date": self.record["date"],
+                   "revision": self.record["revision"], "reviewer": "Owner request"}
+        with patch.object(jr, "environment", return_value="production"), patch.object(owner_approval, "REQUEST", request):
+            with ThreadPoolExecutor(max_workers=2) as pool:
+                results = list(pool.map(lambda _: owner_approval.apply(), range(2)))
+        self.assertEqual(sorted(results), [False, True])
+        with jr.connect() as db:
+            self.assertEqual(db.execute("SELECT count(*) AS total FROM journal_review_audit").fetchone()["total"], 1)
 
     def request(self, path, method="GET", data=None, headers=None):
         request = Request(self.site + path, method=method,

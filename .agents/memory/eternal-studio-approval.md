@@ -5,6 +5,19 @@ description: Required review and approval workflow for Journal, email and Care B
 
 ## Current work scope
 
+A direct owner instruction may authorize a specific, version-locked article
+outside Studio when explicitly requested; this is not a general waiver of review.
+Record the real source as an owner request, never a fabricated Clerk session or
+approval under a reviewer's account. Preserve later Studio holds and approvals,
+and require new consent for changed text or imagery.
+
+**Why:** The owner explicitly requested a one-article release while sign-in was
+unavailable, then explicitly changed that article's release to immediate.
+
+**How to apply:** Keep such an exception single-use and audited. Do not extend it
+to other posts, change their schedules or call a staged release live before
+production confirms publication.
+
 Journal photo uniqueness must be checked against other Journal entries and the
 rest of the website, not just within one exported batch.
 
