@@ -34,3 +34,15 @@ notifications would suppress alerts precisely when they are needed.
 failure categories and aggregate counts. Keep cooldowns independent of the
 guard database; any future fleet-wide coordination needs a separate healthy
 service. Never include submitted information or provider exception details.
+
+Browser intake regression tests must isolate all external transports and use
+synthetic contacts; never send real leads or weaken deployed CAPTCHA guards.
+
+**Why:** These journeys reach a real clinical intake team and outbound email.
+The requested regression coverage is not permission to create clinical leads,
+install CAPTCHA test keys or introduce a production bypass.
+
+**How to apply:** Exercise the actual rendered UI and shared security module
+against test-only provider/submission boundaries. Keep real server guard coverage
+separate, and state clearly that a simulated challenge cannot validate the
+provider's own cross-origin widget.
