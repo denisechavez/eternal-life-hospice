@@ -27,6 +27,7 @@ from html.parser import HTMLParser
 # -- Import canonical footer ---------------------------------------------------
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from fragments import FOOTER_HTML
+from footer_contact import public_html as update_footer_contact
 
 CANONICAL = FOOTER_HTML.strip()
 
@@ -179,6 +180,9 @@ for dirpath, dirs, files in os.walk(ROOT):
         rel = os.path.relpath(os.path.join(dirpath, fn), ROOT).replace("\\", "/")
         html = open(os.path.join(dirpath, fn), encoding="utf-8",
                     errors="replace").read()
+        if rel.startswith("blog/"):
+            # Frozen source bytes stay signed; verify the served chrome.
+            html = update_footer_contact(html)
         footer_match = FOOTER_RE.search(html)
         if footer_match and "<h4" in footer_match.group(0).lower():
             semantic_failures.append(

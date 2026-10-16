@@ -24,11 +24,12 @@ import os, re, sys, argparse
 # ── Import canonical footer ───────────────────────────────────────────────────
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from fragments import FOOTER_HTML
+from footer_contact import public_html as update_footer_contact
 
 # ── Configuration ─────────────────────────────────────────────────────────────
 OUT_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "elh-preview")
 
-# City pages are managed by build-cities.py → make_footer(); never patch here.
+# City navigation is managed by build-cities.py; only contact order is shared.
 CITY_PAGE_RE = re.compile(r'^hospice-.+-ca\.html$')
 COUNTY_HUB = "hospice-ventura-and-los-angeles-county-ca.html"
 
@@ -47,7 +48,9 @@ EXCEPTIONS = {
 INSERT_IF_MISSING = {"family-guide.html"}
 
 # Sub-directories whose files are never standard pages
-SKIP_DIRS = {"assets"}
+# Journal document bytes are signed for approval. Contact chrome is refreshed
+# at response time, including frozen published snapshots.
+SKIP_DIRS = {"assets", "blog"}
 
 # ── Regex ─────────────────────────────────────────────────────────────────────
 FOOTER_RE = re.compile(r'<footer id="site-footer">.*?</footer>', re.DOTALL)
@@ -73,10 +76,8 @@ def main():
             abs_path = os.path.join(dirpath, fn)
             rel = os.path.relpath(abs_path, OUT_DIR).replace("\\", "/")
 
-            # Skip city pages — managed by build-cities.py → make_footer()
-            if CITY_PAGE_RE.match(fn) and fn != COUNTY_HUB:
-                skipped.append(rel)
-                continue
+            # Keep city-specific navigation; synchronize only contact ordering.
+            is_city = CITY_PAGE_RE.match(fn) and fn != COUNTY_HUB
 
             if rel in EXCEPTIONS:
                 skipped.append(rel)
@@ -88,7 +89,9 @@ def main():
                 errors.append((rel, str(e)))
                 continue
 
-            if not FOOTER_RE.search(html):
+            if is_city:
+                new_html = update_footer_contact(html)
+            elif not FOOTER_RE.search(html):
                 if rel in INSERT_IF_MISSING and "</body>" in html:
                     new_html = html.replace("</body>", FOOTER_HTML + "\n</body>", 1)
                 else:

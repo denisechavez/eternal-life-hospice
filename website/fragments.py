@@ -129,6 +129,7 @@ FOOTER_HTML = FOOTER_HTML.replace(
     '<span>805.410.1151</span></a>',
     1,
 )
+from footer_contact import public_html as update_footer_contact
 # Google Places verifies this CID belongs to Eternal Life Hospice and carries
 # Eternal's approved phone, domain, address, and Suite 325B.
 
@@ -164,6 +165,8 @@ _FOOTER_MATCHED_NAV = (
 if _FOOTER_LEGACY_NAV not in FOOTER_HTML:
     raise RuntimeError("Expected legacy footer navigation was not found")
 FOOTER_HTML = FOOTER_HTML.replace(_FOOTER_LEGACY_NAV, _FOOTER_MATCHED_NAV, 1)
+
+FOOTER_HTML = update_footer_contact(FOOTER_HTML)
 
 # ── POST-FOOTER BLOCK ─────────────────────────────────────────────────────────
 # Scripts and search overlay that follow </footer> on every standard page.

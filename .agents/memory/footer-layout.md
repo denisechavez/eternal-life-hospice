@@ -11,8 +11,8 @@ At approximately 1024px wide, preserve the complete footer as one compact seven-
 
 ## Phone-number rule
 
-The footer must always display Eternal's primary landline, **805.953.7273**, as the first phone number and the WhatConverts line, **805.295.4688**, separately beneath it. Protect the primary element with WhatConverts' `no-swap` class.
+The footer displays the WhatConverts number **805.410.1151** first, labeled **Main**, followed by the landline **805.953.7273** without a role label. Protect the landline with WhatConverts' `no-swap` class.
 
-**Why:** Dynamic number insertion previously replaced both footer lines with the tracking number, making Eternal's main landline disappear.
+**Why:** On October 16, 2026, the owner explicitly requested the WhatConverts number on top and labeled Main, superseding the previous ordering and blanket no-role-label instruction. Dynamic number insertion previously replaced both lines; the landline must remain separately visible.
 
-**How to apply:** Treat 805.953.7273 as the constant primary number and 805.295.4688 as the separate tracked/direct line on every public page. Any footer generator or synchronization change must preserve both.
+**How to apply:** Apply this contact order consistently to standard pages, city pages and frozen public article chrome. Preserve both click-to-call destinations; do not change non-footer phone CTAs.

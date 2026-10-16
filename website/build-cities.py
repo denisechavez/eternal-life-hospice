@@ -162,8 +162,9 @@ _FOOT_LOC_LA = (
 
 def make_footer(county: str) -> str:
     """Return the full city-page footer with the shared Service Areas links."""
+    from footer_contact import public_html
     loc_links = _FOOT_LOC_LA if county == "Los Angeles County" else _FOOT_LOC_VENTURA
-    return (
+    return public_html(
         '<footer id="site-footer">\n'
         '  <div class="foot-grid">\n'
         '    <div><div class="foot-logo"><a href="/" aria-label="Eternal Life Hospice &mdash; home">'

@@ -1,0 +1,26 @@
+"""Shared contact ordering for generated pages and frozen public HTML."""
+import re
+
+FOOTER = re.compile(r'<footer\b[^>]*\bid="site-footer"[^>]*>.*?</footer>', re.S)
+PHONE = re.compile(
+    r'<a class="fc-line(?: no-swap| fc-direct)" href="tel:1805(?:9537273|4101151)">.*?</a>',
+    re.S,
+)
+
+
+def public_html(document):
+    """Update footer chrome only; leave article content and other CTAs intact."""
+    def update(match):
+        footer = match.group()
+        phones = list(PHONE.finditer(footer))
+        if len(phones) != 2:
+            return footer
+        tracking = next((p.group() for p in phones if 'tel:18054101151' in p.group()), None)
+        landline = next((p.group() for p in phones if 'tel:18059537273' in p.group()), None)
+        if not tracking or not landline:
+            return footer
+        tracking = re.sub(r'<span>805\.410\.1151(?: · Main)?</span>',
+                          '<span>805.410.1151 · Main</span>', tracking)
+        replacements = iter((tracking, landline))
+        return PHONE.sub(lambda _: next(replacements), footer)
+    return FOOTER.sub(update, document)

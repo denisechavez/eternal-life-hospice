@@ -3,6 +3,7 @@
 
 from pathlib import Path
 import sys
+from footer_contact import public_html as update_footer_contact
 
 
 ROOT = Path(__file__).resolve().parent
@@ -59,15 +60,20 @@ def main() -> int:
         if not path.is_file() or path.suffix.lower() not in TEXT_SUFFIXES:
             continue
         text = path.read_text(encoding="utf-8")
+        if path.suffix.lower() == ".html" and path.parent == PUBLIC / "blog":
+            text = update_footer_contact(text)
         if path.suffix.lower() == ".html" and 'id="site-footer"' in text:
             if PRIMARY_FOOTER_PHONE not in text or "<span>805.953.7273</span>" not in text:
                 findings.append(
                     f"{path.relative_to(ROOT)}: protected primary footer phone missing"
                 )
-            if TRACKED_FOOTER_PHONE not in text or "<span>805.410.1151</span>" not in text:
+            if TRACKED_FOOTER_PHONE not in text or "<span>805.410.1151 · Main</span>" not in text:
                 findings.append(
                     f"{path.relative_to(ROOT)}: WhatConverts footer phone missing"
                 )
+            if PRIMARY_FOOTER_PHONE in text and TRACKED_FOOTER_PHONE in text:
+                if text.index(TRACKED_FOOTER_PHONE) > text.index(PRIMARY_FOOTER_PHONE):
+                    findings.append(f"{path.relative_to(ROOT)}: Main tracking number must be first")
         for token, label in FORBIDDEN.items():
             if token.lower() in text.lower():
                 findings.append(f"{path.relative_to(ROOT)}: {label} ({token})")

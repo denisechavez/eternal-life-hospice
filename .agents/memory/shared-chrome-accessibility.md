@@ -11,8 +11,18 @@ Footer changes must be propagated through both standard-page synchronization and
 
 ## Public footer phone labels
 
-Do not display internal phone roles such as “Main,” “Direct” or “Tracking” beside public footer phone numbers.
+The owner now explicitly allows **Main** beside the top WhatConverts footer number. Do not label the second number Direct or expose a Tracking label.
 
-**Why:** The user explicitly identifies those labels as internal information, not information for website visitors.
+**Why:** The October 16, 2026 request to put the WhatConverts number first and label it Main supersedes the earlier blanket ban on role labels; other internal routing labels remain unnecessary.
 
-**How to apply:** Preserve the phone numbers and their click-to-call behavior without exposing internal routing labels when updating public footers.
+**How to apply:** Follow the current order in footer-layout.md and preserve click-to-call behavior.
+
+Journal approvals hash the entire document, including shared footer markup.
+Update phone-only chrome at response time for existing Journal source files
+and frozen snapshots rather than rewriting those files during footer sync.
+
+**Why:** A harmless footer change must not turn an approved article into a new
+unapproved editorial version or interrupt its scheduled release.
+
+**How to apply:** Keep signed Journal sources out of bulk footer synchronization
+and check the publicly rendered contact order without changing approval hashes.

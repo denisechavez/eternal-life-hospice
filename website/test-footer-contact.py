@@ -1,0 +1,41 @@
+#!/usr/bin/env python3
+"""Contact changes must not rewrite editorial copy or telephone CTAs."""
+import importlib.util
+from pathlib import Path
+import unittest
+
+import footer_contact
+from fragments import FOOTER_HTML
+
+
+class FooterContactTests(unittest.TestCase):
+    def assert_contact(self, document):
+        footer = footer_contact.FOOTER.search(document).group()
+        self.assertLess(footer.index('tel:18054101151'), footer.index('tel:18059537273'))
+        self.assertIn('<span>805.410.1151 · Main</span>', footer)
+        self.assertIn('class="fc-line no-swap" href="tel:18059537273"', footer)
+        self.assertEqual(document, footer_contact.public_html(document))
+
+    def test_canonical_and_city_generators(self):
+        self.assert_contact(FOOTER_HTML)
+        spec = importlib.util.spec_from_file_location(
+            "city_builder", Path(__file__).with_name("build-cities.py"))
+        builder = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(builder)
+        for county in ("Ventura County", "Los Angeles County"):
+            self.assert_contact(builder.make_footer(county))
+
+    def test_frozen_chrome_changes_without_rewriting_article_or_cta(self):
+        old = (
+            '<footer id="site-footer"><a class="fc-line no-swap" href="tel:18059537273">'
+            '<span>805.953.7273</span></a><a class="fc-line fc-direct" href="tel:18054101151">'
+            '<span>805.410.1151</span></a></footer>')
+        content = '<article>Unchanged article text</article><a href="tel:18059537273">Call now</a>'
+        updated = footer_contact.public_html(content + old)
+        self.assertTrue(updated.startswith(content))
+        self.assert_contact(updated)
+        self.assertEqual(updated.count('· Main'), 1)
+
+
+if __name__ == "__main__":
+    unittest.main()
