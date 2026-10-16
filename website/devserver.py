@@ -828,6 +828,8 @@ class PrettyURLHandler(http.server.SimpleHTTPRequestHandler):
                 form_name = parse_qs(parsed.query).get("form", [""])[0]
                 self._send_json(200, form_antispam.issue(form_name, self._client_key()))
             except IntakeError as exc:
+                if exc.code == "security_unavailable":
+                    print("FORM_SECURITY_UNAVAILABLE", file=sys.stderr)
                 self._send_json(exc.status, json_response_payload(False, error=exc.code, message=exc.message))
             return
         if parsed.path == "/api/coverage":
@@ -1036,7 +1038,10 @@ class PrettyURLHandler(http.server.SimpleHTTPRequestHandler):
             response_data.pop("ok", None)
             self._send_json(200, json_response_payload(True, **response_data))
         except IntakeError as exc:
-            print(f"FORM_BLOCKED reason={exc.code}", file=sys.stderr)
+            if exc.code == "security_unavailable":
+                print("FORM_SECURITY_UNAVAILABLE", file=sys.stderr)
+            else:
+                print(f"FORM_BLOCKED reason={exc.code}", file=sys.stderr)
             self._send_json(
                 exc.status,
                 json_response_payload(

@@ -98,7 +98,7 @@ class DeliveryError(Exception):
 
 
 class DeliveryFailureAlerter:
-    """Rate-limited, privacy-safe notification for internal delivery outages.
+    """Rate-limited, privacy-safe notification for intake dependency outages.
 
     The alert endpoint is intentionally generic so it can be hosted by a
     provider that is independent of Brevo (for example, an operations
@@ -112,7 +112,14 @@ class DeliveryFailureAlerter:
         failure_threshold: int = FORM_ALERT_FAILURE_THRESHOLD,
         window_seconds: int = FORM_ALERT_WINDOW_SECONDS,
         cooldown_seconds: int = FORM_ALERT_COOLDOWN_SECONDS,
+        processor_status: str = "delivery_unavailable",
     ):
+        if processor_status not in {
+            "delivery_unavailable", "guard_storage_unavailable",
+            "turnstile_unavailable", "guard_configuration_unavailable",
+        }:
+            raise ValueError("Unknown intake alert status")
+        self.processor_status = processor_status
         self.webhook_url = (
             webhook_url
             if webhook_url is not None
@@ -126,12 +133,13 @@ class DeliveryFailureAlerter:
         self.failure_threshold = max(1, int(failure_threshold))
         self.window_seconds = max(1, int(window_seconds))
         self.cooldown_seconds = max(1, int(cooldown_seconds))
-        self._failures = deque()
+        # Counts are capped during floods; threshold and cooldown remain exact.
+        self._failures = deque(maxlen=max(1000, self.failure_threshold))
         self._last_alert_at = None
         self._lock = threading.Lock()
 
     def record_failure(self) -> bool:
-        """Record one failed internal delivery and send at most one alert.
+        """Record one dependency failure and send at most one alert.
 
         Returns True only when an alert request was attempted. The request is
         deliberately best-effort: an alert outage must not turn a clear public
@@ -165,7 +173,7 @@ class DeliveryFailureAlerter:
             .isoformat(timespec="seconds")
             .replace("+00:00", "Z"),
             "environment": self.environment,
-            "processor_status": "delivery_unavailable",
+            "processor_status": self.processor_status,
             "failure_count": failure_count,
         }
         try:
@@ -237,6 +245,22 @@ FORM_GLOBAL_RATE_LIMITER = SlidingWindowRateLimiter(
     GLOBAL_RATE_LIMIT_ATTEMPTS, RATE_LIMIT_WINDOW_SECONDS
 )
 FORM_DELIVERY_ALERTER = DeliveryFailureAlerter()
+FORM_SECURITY_ALERTERS = {
+    status: DeliveryFailureAlerter(processor_status=status)
+    for status in (
+        "guard_storage_unavailable", "turnstile_unavailable",
+        "guard_configuration_unavailable",
+    )
+}
+
+
+def notify_security_failure(status: str) -> bool:
+    """Accept only a fixed operational category, never request data or errors.
+
+    Counters/cooldowns are per process and dependency, independent of the
+    failing guard database. A database outage must not disable its own alert.
+    """
+    return FORM_SECURITY_ALERTERS[status].record_failure()
 
 
 def notify_delivery_failure() -> bool:

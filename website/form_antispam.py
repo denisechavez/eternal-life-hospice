@@ -7,10 +7,11 @@ import os
 import re
 import secrets
 import time
+from contextlib import contextmanager
 from pathlib import Path
 from urllib.request import Request, urlopen
 
-from form_intake import FORM_RULES, IntakeError
+from form_intake import FORM_RULES, IntakeError, notify_security_failure
 from journal_release import connect
 
 MIN_AGE_SECONDS = 1.8
@@ -18,6 +19,23 @@ TOKEN_TTL_SECONDS = 1800
 VERIFY_URL = "https://challenges.cloudflare.com/turnstile/v0/siteverify"
 SAFE_MESSAGE = "We could not verify this submission. Please retry or call 805.953.7273."
 CHAT_VERSION = hashlib.sha256((Path(__file__).parent / "elh-preview/assets/chat.js").read_bytes()).hexdigest()[:12]
+
+
+def unavailable(status):
+    notify_security_failure(status)
+    return IntakeError("security_unavailable", SAFE_MESSAGE, 503)
+
+
+@contextmanager
+def guard_database():
+    """Report connection, query and commit failures, but never rejected spam."""
+    try:
+        with connect() as db:
+            yield db
+    except IntakeError:
+        raise
+    except Exception:
+        raise unavailable("guard_storage_unavailable") from None
 
 
 def refresh_assets(document):
@@ -40,7 +58,7 @@ def initialize():
 def digest(value):
     key = os.environ.get("SESSION_SECRET", "")
     if len(key) < 32:
-        raise IntakeError("security_unavailable", SAFE_MESSAGE, 503)
+        raise unavailable("guard_configuration_unavailable")
     return hmac.new(key.encode(), ("elh-intake-v1:" + value).encode(), hashlib.sha256).hexdigest()
 
 
@@ -48,7 +66,7 @@ def turnstile_configuration():
     site = os.environ.get("TURNSTILE_SITE_KEY", "").strip()
     secret = os.environ.get("TURNSTILE_SECRET_KEY", "").strip()
     if bool(site) != bool(secret):
-        raise IntakeError("security_unavailable", SAFE_MESSAGE, 503)
+        raise unavailable("turnstile_unavailable")
     return site, secret
 
 
@@ -75,8 +93,23 @@ def verify_turnstile(token, hostname):
     try:
         with urlopen(request, timeout=8) as response:
             result = json.loads(response.read(16384))
+        # Malformed provider responses are service failures, not evidence of spam.
+        if not isinstance(result, dict) or type(result.get("success")) is not bool:
+            raise ValueError()
+        if result["success"] and (
+            not isinstance(result.get("hostname"), str)
+            or not isinstance(result.get("action"), str)
+        ):
+            raise ValueError()
+        errors = result.get("error-codes", [])
+        if not isinstance(errors, list) or any(not isinstance(code, str) for code in errors):
+            raise ValueError()
     except Exception:
-        raise IntakeError("security_unavailable", SAFE_MESSAGE, 503) from None
+        raise unavailable("turnstile_unavailable") from None
+    if not result["success"] and set(errors) & {
+        "internal-error", "missing-input-secret", "invalid-input-secret", "bad-request",
+    }:
+        raise unavailable("turnstile_unavailable")
     if result.get("success") is not True or result.get("hostname", "").lower() != hostname.lower() or result.get("action") != "intake":
         raise IntakeError("bot_verification_failed", SAFE_MESSAGE, 403)
 
@@ -119,7 +152,7 @@ def reserve(fields, client, hostname):
     limits = [(digest(f"ip:{client}:{window}"), 10)]
     for contact in sorted(contacts):
         limits.append((digest(f"contact:{contact}:{window}"), 10 if professional else 3))
-    with connect() as db:
+    with guard_database() as db:
         # Serialize a client's reservations across every Autoscale instance.
         db.execute("SELECT pg_advisory_xact_lock(%s)", (int(digest("lock:" + client)[:15], 16),))
         db.execute("""DELETE FROM intake_abuse_guard WHERE key IN
@@ -151,5 +184,5 @@ def reserve(fields, client, hostname):
 def release_failed(reservation):
     """Allow a fresh-token retry after a confirmed delivery failure."""
     if reservation:
-        with connect() as db:
+        with guard_database() as db:
             db.execute("DELETE FROM intake_abuse_guard WHERE key=%s", (reservation,))

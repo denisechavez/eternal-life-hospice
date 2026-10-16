@@ -22,3 +22,15 @@ causing legitimate visitors to keep using the unprotected submission protocol.
 
 **How to apply:** Refresh application-chrome asset URLs when serving those
 pages, without editing their frozen editorial content or inventing new approvals.
+
+Intake outage notifications must remain independent of the failed dependency
+and must distinguish service failures from ordinary rejected spam.
+
+**Why:** Rejected bots are expected; paging on them hides real interruptions to
+families and referral partners. Using the guard database to gate its own outage
+notifications would suppress alerts precisely when they are needed.
+
+**How to apply:** Reuse the independent operations channel with only fixed
+failure categories and aggregate counts. Keep cooldowns independent of the
+guard database; any future fleet-wide coordination needs a separate healthy
+service. Never include submitted information or provider exception details.

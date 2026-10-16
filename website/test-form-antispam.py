@@ -1,5 +1,6 @@
 """Real guard/HTTP/PostgreSQL tests; synthetic mailer, no real submissions."""
 import concurrent.futures
+import io
 import json
 import os
 import threading
@@ -16,6 +17,67 @@ from psycopg.rows import dict_row
 import devserver
 import form_antispam as guard
 import form_intake
+
+
+class SecurityAlertTests(unittest.TestCase):
+    def test_threshold_window_cooldown_and_bounded_memory(self):
+        alerter = form_intake.DeliveryFailureAlerter(
+            webhook_url="https://synthetic.invalid/alert", environment="test",
+            failure_threshold=3, window_seconds=300, cooldown_seconds=900,
+            processor_status="guard_storage_unavailable")
+        with patch.object(alerter, "_send") as send, patch.object(form_intake.time, "monotonic") as clock:
+            # Old isolated failures must not combine with a later incident.
+            for timestamp in [0, 301, 302]:
+                clock.return_value = timestamp
+                self.assertFalse(alerter.record_failure())
+            clock.return_value = 303
+            self.assertTrue(alerter.record_failure())
+            for timestamp in range(304, 1500):
+                clock.return_value = timestamp
+                alerter.record_failure()
+            self.assertEqual(send.call_count, 2)
+            self.assertLessEqual(len(alerter._failures), 1000)
+            payload = send.call_args.args[0]
+            self.assertEqual(set(payload), {
+                "timestamp", "environment", "processor_status", "failure_count"})
+            self.assertEqual(payload["processor_status"], "guard_storage_unavailable")
+
+    def test_no_channel_and_alert_failure_are_safe(self):
+        self.assertFalse(form_intake.DeliveryFailureAlerter(
+            webhook_url="", failure_threshold=1).record_failure())
+        alerter = form_intake.DeliveryFailureAlerter(
+            webhook_url="https://synthetic.invalid/private", failure_threshold=1)
+        with patch.object(alerter, "_send", side_effect=OSError("secret response")), patch(
+            "sys.stderr", new_callable=io.StringIO
+        ) as log:
+            self.assertTrue(alerter.record_failure())
+            self.assertFalse(alerter.record_failure())
+            self.assertNotIn("secret response", log.getvalue())
+            self.assertNotIn("private", log.getvalue())
+
+    def test_concurrent_failures_only_send_one_alert(self):
+        alerter = form_intake.DeliveryFailureAlerter(
+            webhook_url="https://synthetic.invalid/alert")
+        with patch.object(alerter, "_send") as send:
+            with concurrent.futures.ThreadPoolExecutor(max_workers=8) as pool:
+                list(pool.map(lambda _: alerter.record_failure(), range(100)))
+            self.assertEqual(send.call_count, 1)
+
+    def test_webhook_receives_only_operational_payload(self):
+        alerter = form_intake.DeliveryFailureAlerter(
+            webhook_url="https://synthetic.invalid/alert", environment="test",
+            failure_threshold=1, processor_status="turnstile_unavailable")
+        response = Mock(status=204)
+        response.__enter__ = Mock(return_value=response)
+        response.__exit__ = Mock(return_value=False)
+        with patch.object(form_intake.urllib.request, "urlopen", return_value=response) as send:
+            self.assertTrue(alerter.record_failure())
+        request = send.call_args.args[0]
+        payload = json.loads(request.data)
+        self.assertEqual(set(payload), {
+            "timestamp", "environment", "processor_status", "failure_count"})
+        self.assertEqual(payload["processor_status"], "turnstile_unavailable")
+        self.assertEqual(send.call_args.kwargs["timeout"], 5)
 
 
 class GuardTests(unittest.TestCase):
@@ -62,6 +124,20 @@ class GuardTests(unittest.TestCase):
             "acknowledgement_sent": False})
         self.mail = mail_patch.start()
         self.addCleanup(mail_patch.stop)
+        # Never use the real operations channel during synthetic outages.
+        self.alerters = {
+            status: form_intake.DeliveryFailureAlerter(
+                webhook_url="https://synthetic.invalid/alert", environment="test",
+                processor_status=status)
+            for status in form_intake.FORM_SECURITY_ALERTERS
+        }
+        alerts = patch.object(form_intake, "FORM_SECURITY_ALERTERS", self.alerters)
+        alerts.start()
+        self.addCleanup(alerts.stop)
+        for alerter in self.alerters.values():
+            send = patch.object(alerter, "_send")
+            send.start()
+            self.addCleanup(send.stop)
         self.fields = {"form-name": "elh-family", "first_name": "Synthetic",
                        "last_name": "Family", "phone": "2025550190", "message": "Please call."}
 
@@ -185,6 +261,137 @@ class GuardTests(unittest.TestCase):
         self.assertEqual(status, 503)
         self.assertIn("805.953.7273", response["message"])
         self.mail.assert_not_called()
+
+    def test_sustained_storage_outage_alerts_without_request_data(self):
+        fields = self.protected()
+        with patch.object(guard, "connect", side_effect=OSError(
+            "private database error 2025550190 synthetic@example.com"
+        )):
+            for _ in range(4):
+                status, response = self.request("/api/form-submit", fields)
+                self.assertEqual(status, 503)
+                self.assertIn("805.953.7273", response["message"])
+        send = self.alerters["guard_storage_unavailable"]._send
+        send.assert_called_once()
+        payload = send.call_args.args[0]
+        self.assertEqual(payload["failure_count"], 3)
+        self.assertEqual(payload["processor_status"], "guard_storage_unavailable")
+        for value in list(fields.values()) + ["127.0.0.1", "private database error"]:
+            self.assertNotIn(value, json.dumps(payload))
+        self.alerters["turnstile_unavailable"]._send.assert_not_called()
+        self.mail.assert_not_called()
+
+    def test_turnstile_outages_are_distinct_from_rejections(self):
+        with patch.dict(os.environ, {
+            "TURNSTILE_SITE_KEY": "synthetic-public",
+            "TURNSTILE_SECRET_KEY": "synthetic-private",
+        }):
+            fields = {**self.protected(), "cf-turnstile-response": "synthetic-token"}
+            response = Mock()
+            response.__enter__ = Mock(return_value=response)
+            response.__exit__ = Mock(return_value=False)
+            for result in [
+                {"success": False, "error-codes": ["invalid-input-response"]},
+                {"success": False, "error-codes": ["timeout-or-duplicate"]},
+                {"success": True, "hostname": "wrong.invalid", "action": "intake"},
+                {"success": True, "hostname": "127.0.0.1", "action": "other"},
+            ]:
+                response.read.return_value = json.dumps(result).encode()
+                with patch.object(guard, "urlopen", return_value=response):
+                    self.assertEqual(self.request("/api/form-submit", fields)[0], 403)
+            self.assertEqual(len(self.alerters["turnstile_unavailable"]._failures), 0)
+            for result in [
+                {"success": False, "error-codes": ["internal-error"]},
+                {"success": False, "error-codes": ["invalid-input-secret"]},
+                [], {"unexpected": "response"},
+                {"success": True, "hostname": None, "action": "intake"},
+            ]:
+                form_intake.FORM_CLIENT_RATE_LIMITER.reset()
+                response.read.return_value = json.dumps(result).encode()
+                with patch.object(guard, "urlopen", return_value=response):
+                    status, public = self.request("/api/form-submit", fields)
+                    self.assertEqual(status, 503)
+                    self.assertIn("805.953.7273", public["message"])
+            for error in [TimeoutError("private token"), OSError("private URL")]:
+                form_intake.FORM_CLIENT_RATE_LIMITER.reset()
+                with patch.object(guard, "urlopen", side_effect=error):
+                    self.assertEqual(self.request("/api/form-submit", fields)[0], 503)
+            response.read.return_value = b"not JSON"
+            form_intake.FORM_CLIENT_RATE_LIMITER.reset()
+            with patch.object(guard, "urlopen", return_value=response):
+                self.assertEqual(self.request("/api/form-submit", fields)[0], 503)
+            self.alerters["turnstile_unavailable"]._send.assert_called_once()
+            self.alerters["guard_storage_unavailable"]._send.assert_not_called()
+            self.mail.assert_not_called()
+
+    def test_configuration_outage_alerts_on_token_endpoint(self):
+        with patch.dict(os.environ, {"TURNSTILE_SITE_KEY": "synthetic-public",
+                                     "TURNSTILE_SECRET_KEY": ""}):
+            for _ in range(4):
+                status, public = self.request("/api/form-security?form=elh-family")
+                self.assertEqual(status, 503)
+                self.assertIn("805.953.7273", public["message"])
+        self.alerters["turnstile_unavailable"]._send.assert_called_once()
+
+    def test_ordinary_rejections_do_not_alert(self):
+        self.assertEqual(self.request("/api/form-submit", self.fields)[0], 403)
+        fields = self.protected()
+        self.assertEqual(self.request("/api/form-submit", fields)[0], 200)
+        self.assertEqual(self.request("/api/form-submit", fields)[0], 403)
+        self.assertEqual(self.request("/api/form-submit", self.protected())[0], 429)
+        for alerter in self.alerters.values():
+            self.assertEqual(len(alerter._failures), 0)
+            alerter._send.assert_not_called()
+
+    def test_query_and_commit_outages_are_storage_failures(self):
+        for commit in [False, True]:
+            with self.subTest(commit=commit):
+                db = Mock()
+                db.__enter__ = Mock(return_value=db)
+                db.__exit__ = Mock(return_value=False, side_effect=OSError("private database error") if commit else None)
+                db.execute.side_effect = None if commit else OSError("private query")
+                with patch.object(guard, "connect", return_value=db):
+                    status, public = self.request("/api/form-submit", self.protected())
+                    self.assertEqual(status, 503)
+                    self.assertIn("805.953.7273", public["message"])
+        self.assertEqual(len(self.alerters["guard_storage_unavailable"]._failures), 2)
+        self.mail.assert_not_called()
+
+    def test_alert_channel_outage_does_not_change_public_fallback(self):
+        fields = self.protected()
+        alerter = self.alerters["guard_storage_unavailable"]
+        alerter._send.side_effect = OSError("private webhook response")
+        with patch.object(guard, "connect", side_effect=OSError("private database")):
+            for _ in range(4):
+                status, public = self.request("/api/form-submit", fields)
+                self.assertEqual(status, 503)
+                self.assertEqual(public["error"], "security_unavailable")
+                self.assertIn("805.953.7273", public["message"])
+        alerter._send.assert_called_once()
+        self.mail.assert_not_called()
+
+    def test_retry_cleanup_storage_outage_keeps_delivery_fallback(self):
+        self.mail.side_effect = form_intake.DeliveryError("synthetic delivery failure")
+        real_connect = guard.connect
+        fields = self.protected()
+        # Reservations succeed; only releasing the failed-delivery slot fails.
+        calls = [real_connect(), OSError("private cleanup error")]
+        with patch.object(guard, "connect", side_effect=calls), patch.object(
+            devserver, "notify_delivery_failure"
+        ):
+            status, public = self.request("/api/form-submit", fields)
+        self.assertEqual(status, 502)
+        self.assertIn("805.953.7273", public["message"])
+        self.assertEqual(len(self.alerters["guard_storage_unavailable"]._failures), 1)
+
+    def test_missing_signing_configuration_alerts_without_logging_secret(self):
+        with patch.dict(os.environ, {"SESSION_SECRET": ""}):
+            for _ in range(3):
+                status, public = self.request("/api/form-security?form=elh-family")
+                self.assertEqual(status, 503)
+                self.assertIn("805.953.7273", public["message"])
+        self.alerters["guard_configuration_unavailable"]._send.assert_called_once()
+        self.alerters["turnstile_unavailable"]._send.assert_not_called()
 
     def test_no_contact_details_are_persisted(self):
         self.assertEqual(self.request("/api/form-submit", self.protected())[0], 200)
