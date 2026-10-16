@@ -6,10 +6,13 @@ PHONE = re.compile(
     r'<a class="fc-line(?: no-swap| fc-direct)" href="tel:1805(?:9537273|4101151)">.*?</a>',
     re.S,
 )
+STYLESHEET = '<link rel="stylesheet" href="/assets/footer-contact.css?v=20261016-main">'
 
 
 def public_html(document):
     """Update footer chrome only; leave article content and other CTAs intact."""
+    if not FOOTER.search(document):
+        return document
     def update(match):
         footer = match.group()
         phones = list(PHONE.finditer(footer))
@@ -23,4 +26,7 @@ def public_html(document):
                           '<span>805.410.1151 · Main</span>', tracking)
         replacements = iter((tracking, landline))
         return PHONE.sub(lambda _: next(replacements), footer)
-    return FOOTER.sub(update, document)
+    document = FOOTER.sub(update, document)
+    if "</head>" in document and STYLESHEET not in document:
+        document = document.replace("</head>", STYLESHEET + "\n</head>", 1)
+    return document

@@ -1,0 +1,25 @@
+/* The WhatConverts line is the public main contact, not secondary fine print. */
+#site-footer .foot-col a.fc-line.fc-direct {
+  color: #f0d48a;
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1.5;
+  padding-block: 6px;
+  cursor: pointer;
+}
+
+#site-footer .foot-col a.fc-line.fc-direct .fci {
+  width: 18px;
+  height: 18px;
+  opacity: 1;
+}
+
+#site-footer .foot-col a.fc-line.fc-direct:hover {
+  color: #fff;
+}
+
+#site-footer .foot-col a.fc-line.fc-direct:focus-visible {
+  outline: 2px solid #f0d48a;
+  outline-offset: 3px;
+  border-radius: 2px;
+}

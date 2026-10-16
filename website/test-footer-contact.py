@@ -36,6 +36,15 @@ class FooterContactTests(unittest.TestCase):
         self.assert_contact(updated)
         self.assertEqual(updated.count('· Main'), 1)
 
+    def test_main_phone_emphasis_is_loaded_once_on_full_documents(self):
+        source = "<html><head><title>Journal</title></head><body>" + FOOTER_HTML + "</body></html>"
+        updated = footer_contact.public_html(source)
+        self.assertEqual(updated.count(footer_contact.STYLESHEET), 1)
+        self.assertIn(footer_contact.STYLESHEET + "\n</head>", updated)
+        self.assert_contact(updated)
+        self.assertEqual(footer_contact.public_html("<html><head></head><body>No footer</body></html>"),
+                         "<html><head></head><body>No footer</body></html>")
+
 
 if __name__ == "__main__":
     unittest.main()
