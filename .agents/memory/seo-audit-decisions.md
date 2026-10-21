@@ -6,6 +6,9 @@ description: Technical SEO rules, staged optimization and the Q4 101-term keywor
 # SEO Technical Audit — Key Decisions
 
 ## Q4 2026 keyword program
+- **Rule:** Public-facing posts that accompany Journal articles must reflect the matching article's relevant master-list keywords across Facebook, GBP, Pinterest and LinkedIn.
+- **Why:** The user explicitly requires keyword alignment between the blogs and all matching front-facing posts.
+- **How to apply:** Carry the article's primary intent and applicable geographic phrases into natural platform-specific copy; do not force unrelated keywords, identical captions or all 101 terms into each post. Approval is still required before posting.
 - **Rule:** The user requires 101 keyword IDs across rolling 30-day windows from October 8–December 31, 2026, plus all 101 in the final December 7–31 partial cycle. Preserve Google Ads IDs 1–96 and audit history; Thryv additions use IDs 97–101.
 - **Why:** The objective is recurring service and local-search relevance, not a one-time mention of the keyword list.
 - **How to apply:** Audit the named October 8–November 6 and November 7–December 6 cycles and rolling windows separately. Track exact wording separately from meaningful natural coverage; neither word counts nor assignments prove coverage or ranking gains. Preserve existing dates, slugs, imagery and educational purposes; obtain approval before optimization or supplemental scheduling.
