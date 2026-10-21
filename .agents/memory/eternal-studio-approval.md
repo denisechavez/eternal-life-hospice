@@ -18,16 +18,18 @@ unavailable, then explicitly changed that article's release to immediate.
 to other posts, change their schedules or call a staged release live before
 production confirms publication.
 
-The owner explicitly authorized an October 10–31 reconciliation on 2026-10-21
-after missing saved approvals blocked daily publication. This is a bounded
-exception, not ongoing permission to approve later articles or revisions.
+The owner explicitly authorized reconciliation through December 31, 2026,
+including catch-up for missed Journal posts. This extends the earlier October
+instruction but is not ongoing permission for later articles or changed revisions.
 
-**Why:** The owner accepted reconciliation of the earlier through-October-31
-instruction after its absence from production was explained.
+**Why:** The owner explicitly requested approval of all existing posts through
+December 31 and backdating of missed posts.
 
 **How to apply:** Preserve exact-version consent, existing Studio decisions and
-the ordinary 6:30 a.m. release clock. Never present a prepared reconciliation as
-saved production approvals before the published environment applies it.
+the ordinary 6:30 a.m. release clock. Keep original scheduled article dates on
+catch-up posts while recording approval and actual release time truthfully.
+Never present a prepared reconciliation as saved production approvals before
+the published environment applies it.
 
 Journal photo uniqueness must be checked against other Journal entries and the
 rest of the website, not just within one exported batch.
@@ -43,7 +45,20 @@ where they still belong to existing pages.
 
 Further editorial work is limited to Eternal Journal blog posts and Eternal
 emails. Care Brief material is on hold: do not create, revise, schedule or publish
-it. Do not advance social, Pinterest or video material under this limited scope.
+it. The user subsequently authorized a draft organic social package for
+October 26, 28 and 30 on Facebook, GBP, Pinterest and LinkedIn, based on the
+matching Journal articles. This does not authorize automatic social publishing.
+
+**Social editorial direction:** Keep matching public posts on brand, real-life
+and relatable. Frame hospice as part of life and encourage earlier questions
+without pressuring families or implying enrollment is inevitable.
+
+**Why:** The user explicitly wants people to connect with the posts and change
+the narrative about hospice and timing.
+
+**How to apply:** Use concrete family concerns and person-led choices, avoid
+invented testimonials and fear-based urgency, retain relevant blog keywords
+naturally and obtain separate approval before social publication.
 
 **Why:** The user explicitly narrowed work to blog posts and Eternal emails and
 directed that no Care Brief material move forward.

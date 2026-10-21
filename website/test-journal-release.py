@@ -147,6 +147,49 @@ class ReleaseTests(unittest.TestCase):
             self.assertEqual(owner_approval.apply_october(), 0)
             decide.assert_not_called()
 
+    def test_year_end_consent_retains_dates_and_real_audit_time(self):
+        self.record["date"] = "2026-12-31"
+        due = jr.release_at(self.record["date"]).astimezone(timezone.utc)
+        self.now_mock.return_value = due - timedelta(days=10)
+        consent_time = jr.now()
+        with patch.object(owner_approval, "YEAR_END_REVISIONS", {
+                self.record["date"]: self.record["revision"]}), \
+                patch.object(jr, "environment", return_value="production"):
+            self.assertEqual(owner_approval.apply_year_end(), 1)
+            self.assertEqual(owner_approval.apply_year_end(), 0)
+        self.assertNotIn(self.record["slug"], jr.released()[0])
+        self.now_mock.return_value = due
+        self.assertIn(self.record["slug"], jr.released()[0])
+        with jr.connect() as db:
+            audit = db.execute("SELECT * FROM journal_review_audit").fetchone()
+        self.assertEqual(audit["occurred_at"], consent_time)
+        self.assertIn("outside Studio", audit["reviewer"])
+
+    def test_year_end_consent_preserves_hold_and_rejects_changed_versions(self):
+        self.record["date"] = "2026-11-01"
+        with patch.object(owner_approval, "YEAR_END_REVISIONS", {
+                self.record["date"]: "stale"}), \
+                patch.object(jr, "environment", return_value="production"):
+            self.assertEqual(owner_approval.apply_year_end(), 0)
+        jr.decide(self.record["slug"], self.record["revision"], "hold", "reviewer-1")
+        with patch.object(owner_approval, "YEAR_END_REVISIONS", {
+                self.record["date"]: self.record["revision"]}), \
+                patch.object(jr, "environment", return_value="production"):
+            self.assertEqual(owner_approval.apply_year_end(), 0)
+
+    def test_year_end_consent_denies_workspace_and_out_of_scope_dates(self):
+        with patch.object(jr, "environment", return_value="workspace"), \
+                patch.object(jr, "decide") as decide:
+            self.assertEqual(owner_approval.apply_year_end(), 0)
+            decide.assert_not_called()
+        self.record["date"] = "2027-01-01"
+        with patch.object(owner_approval, "YEAR_END_REVISIONS", {
+                self.record["date"]: self.record["revision"]}), \
+                patch.object(jr, "environment", return_value="production"), \
+                patch.object(jr, "decide") as decide:
+            self.assertEqual(owner_approval.apply_year_end(), 0)
+            decide.assert_not_called()
+
     def test_schedule_gap_alerts_without_approval_and_respects_hold(self):
         self.now_mock.return_value = self.due
         state, failures = monitor.check(self.site)

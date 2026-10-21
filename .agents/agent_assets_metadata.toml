@@ -2030,3 +2030,31 @@ mtime_ms = 1782630612943
 storage_uri = "gcs://replit-rams-assets-kirk/rams/assets/repl:e1b2f643-7869-4565-af0e-10c34575ee8d/b84a2061-ca9f-43c2-ac1b-0776de637109/32d05a46-0728-4e79-9c77-9d0784442a12"
 storage_version_token = "1791610778527836"
 content_type = "audio/mpeg"
+
+[[outputs]]
+id = "jzOSCmiolh6_4DOjuJs_V"
+uri = "file://generated-artifacts/social-2026-10-26/review.pdf"
+type = "pdf"
+title = "Review: October 26–30 social posts"
+description = "13-page review PDF: 12 platform-specific drafts, images, captions, keywords and article links. Not posted or scheduled."
+logical_id = "a83c3012-dfaf-495b-9762-0df3bfbe114c"
+content_hash = "sha256:1f50f70c22eb41a8fe2f344782946628d6808d8ef5355d99b0b7b4cbc2ed351f"
+size = 3467775
+mtime_ms = 1792620546321
+storage_uri = "gcs://replit-rams-assets-kirk/rams/assets/repl:e1b2f643-7869-4565-af0e-10c34575ee8d/a83c3012-dfaf-495b-9762-0df3bfbe114c/a77788b8-19bf-42e8-8c65-f82b7a07fe4c"
+storage_version_token = "1792620602143004"
+content_type = "application/pdf"
+
+[[outputs]]
+id = "yKKoskIvg89v6t8cBpEmV"
+uri = "file://generated-artifacts/eternal-social-october-26-2026.zip"
+type = "unspecified"
+title = "Download the complete social media package"
+description = "12 correctly sized JPGs plus captions, CSV, JSON, photo credits and the review PDF for Facebook, GBP, Pinterest and LinkedIn."
+logical_id = "79af75ad-4d11-491b-a9db-d6400a58ecd1"
+content_hash = "sha256:7b471718bfdb85c1770a345716a71e31c07568e49b9cf071228c1516fb4505df"
+size = 12796099
+mtime_ms = 1792620547701
+storage_uri = "gcs://replit-rams-assets-kirk/rams/assets/repl:e1b2f643-7869-4565-af0e-10c34575ee8d/79af75ad-4d11-491b-a9db-d6400a58ecd1/1d409861-ba79-4f4c-96ee-f24d9520e220"
+storage_version_token = "1792620603162370"
+content_type = "application/octet-stream"
