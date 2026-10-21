@@ -21,7 +21,7 @@ class NoRedirect(HTTPRedirectHandler):
 
 
 def public_assets():
-    """Only the login entry's static dependencies; never draft dynamic chunks."""
+    """Login dependencies and presentation CSS; never private dynamic JavaScript."""
     manifest = json.loads((BUILD / ".vite/manifest.json").read_text())
     allowed = set()
     def visit(key):
@@ -33,6 +33,10 @@ def public_assets():
         for dependency in row.get("imports", []):
             visit(dependency)
     visit("index.html")
+    # Browser module-preload CSS requests cannot carry custom auth headers.
+    # CSS contains presentation rules, not editorial draft JavaScript/data.
+    for row in manifest.values():
+        allowed.update(asset for asset in row.get("css", []) if asset.endswith(".css"))
     return allowed
 
 

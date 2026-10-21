@@ -18,6 +18,17 @@ unavailable, then explicitly changed that article's release to immediate.
 to other posts, change their schedules or call a staged release live before
 production confirms publication.
 
+The owner explicitly authorized an October 10–31 reconciliation on 2026-10-21
+after missing saved approvals blocked daily publication. This is a bounded
+exception, not ongoing permission to approve later articles or revisions.
+
+**Why:** The owner accepted reconciliation of the earlier through-October-31
+instruction after its absence from production was explained.
+
+**How to apply:** Preserve exact-version consent, existing Studio decisions and
+the ordinary 6:30 a.m. release clock. Never present a prepared reconciliation as
+saved production approvals before the published environment applies it.
+
 Journal photo uniqueness must be checked against other Journal entries and the
 rest of the website, not just within one exported batch.
 
@@ -86,9 +97,11 @@ do not inherit the reviewer or Google identity-alert address automatically.
 **Why:** The user explicitly required scheduled daily delivery after approval and
 email notification of missed blog publications.
 
-**How to apply:** Monitor approved posts that are actually due; deliberately held,
-unapproved drafts are not failed publications. Configure the agreed daily time in
-the site's local timezone and keep alert delivery separate from newsletter sending.
+**How to apply:** Monitor approved posts that are actually due, and separately
+flag scheduled days with no published article, even when approval is missing or
+held. Such a gap is a delivery warning, never permission to publish a draft.
+Configure the agreed daily time in the site's local timezone and keep alert
+delivery separate from newsletter sending.
 
 The user chose 6:30 a.m. Pacific Time for the daily Journal release.
 

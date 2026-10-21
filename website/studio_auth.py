@@ -22,14 +22,26 @@ def allowed_origins():
     return origins
 
 
-@lru_cache(maxsize=2)
-def verifier(key):
+@lru_cache(maxsize=4)
+def verifier(key, origin=None):
     import jwt
-    # The configured key, not untrusted token claims, supplies the issuer.
-    encoded = key.split("_", 2)[2]
-    host = base64.b64decode(encoded + "=" * (-len(encoded) % 4)).decode().rstrip("$")
-    issuer = "https://" + host
-    return issuer, jwt.PyJWKClient(issuer + "/.well-known/jwks.json", timeout=5)
+    if origin is not None:
+        # Match publishableKeyFromHost() on the browser, but only for an
+        # allowlisted application origin, never a JWT claim or arbitrary host.
+        if origin not in allowed_origins():
+            raise PermissionError("Studio session host is not authorized")
+        issuer = "https://clerk." + origin.removeprefix("https://")
+        # Managed production Clerk hosts are proxy identities, not directly
+        # reachable JWKS servers. The existing public proxy serves public keys.
+        jwks = origin + "/api/__clerk/.well-known/jwks.json"
+    else:
+        encoded = key.split("_", 2)[2]
+        host = base64.b64decode(encoded + "=" * (-len(encoded) % 4)).decode().rstrip("$")
+        issuer = "https://" + host
+        jwks = issuer + "/.well-known/jwks.json"
+    return issuer, jwt.PyJWKClient(
+        jwks, timeout=5,
+        headers={"Accept": "application/json", "User-Agent": "Eternal-Studio/1.0"})
 
 
 @dataclass(frozen=True)
@@ -52,7 +64,13 @@ def reviewer_identity(headers):
         raise PermissionError("Sign in to Studio to review Journal releases.")
     stage = "verify_token"
     try:
-        issuer, client = verifier(os.environ["CLERK_PUBLISHABLE_KEY"])
+        origin = None
+        if os.environ.get("REPLIT_DEPLOYMENT") == "1":
+            host = (headers.get("X-Forwarded-Host") or headers.get("Host", "")).split(",")[0].strip().lower()
+            origin = "https://" + host
+            if origin not in allowed_origins():
+                raise PermissionError("Studio session host is not authorized")
+        issuer, client = verifier(os.environ["CLERK_PUBLISHABLE_KEY"], origin)
         claims = jwt.decode(token.value, client.get_signing_key_from_jwt(token.value).key,
                             algorithms=["RS256"], issuer=issuer,
                             options={"require": ["exp", "iat", "nbf", "sub", "sid", "azp"],

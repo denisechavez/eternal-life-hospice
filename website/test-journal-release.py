@@ -69,6 +69,11 @@ class ReleaseTests(unittest.TestCase):
         self.now_mock = self.clock.start()
         self.candidate_patch = patch.object(jr, "candidates", side_effect=lambda: {self.record["slug"]: self.record})
         self.candidate_patch.start()
+        self.schedule_patch = patch.object(
+            jr, "scheduled_dates",
+            side_effect=lambda instant: {self.record["date"]} if instant >= self.due else set())
+        self.schedule_patch.start()
+        self.addCleanup(self.schedule_patch.stop)
         self.addCleanup(self.clock.stop)
         self.addCleanup(self.candidate_patch.stop)
 
@@ -107,6 +112,62 @@ class ReleaseTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "single-use owner"):
             jr.decide(self.record["slug"], self.record["revision"], "approve", "reviewer-1",
                       release_immediately=True)
+
+    def reconcile_october(self):
+        requests = ((self.record["date"], self.record["slug"], self.record["revision"]),)
+        with patch.object(owner_approval, "OCTOBER_REQUESTS", requests), \
+                patch.object(jr, "environment", return_value="production"):
+            return owner_approval.apply_october()
+
+    def test_october_reconciliation_keeps_clock_and_is_idempotent(self):
+        self.assertEqual(self.reconcile_october(), 1)
+        self.assertNotIn(self.record["slug"], jr.released()[0])
+        self.assertEqual(self.reconcile_october(), 0)
+        self.now_mock.return_value = self.due
+        self.assertIn(self.record["slug"], jr.released()[0])
+        with jr.connect() as db:
+            events = db.execute("SELECT * FROM journal_review_audit").fetchall()
+        self.assertEqual(len(events), 1)
+        self.assertIn("outside Studio", events[0]["reviewer"])
+        self.assertEqual(events[0]["environment"], "production")
+
+    def test_october_reconciliation_preserves_hold(self):
+        jr.decide(self.record["slug"], self.record["revision"], "hold", "reviewer-1")
+        self.assertEqual(self.reconcile_october(), 0)
+        self.now_mock.return_value = self.due
+        self.assertNotIn(self.record["slug"], jr.released()[0])
+
+    def test_october_reconciliation_rejects_changes_and_workspace(self):
+        requests = ((self.record["date"], self.record["slug"], "stale"),)
+        with patch.object(owner_approval, "OCTOBER_REQUESTS", requests), \
+                patch.object(jr, "environment", return_value="production"):
+            self.assertEqual(owner_approval.apply_october(), 0)
+        with patch.object(jr, "environment", return_value="workspace"), \
+                patch.object(jr, "decide") as decide:
+            self.assertEqual(owner_approval.apply_october(), 0)
+            decide.assert_not_called()
+
+    def test_schedule_gap_alerts_without_approval_and_respects_hold(self):
+        self.now_mock.return_value = self.due
+        state, failures = monitor.check(self.site)
+        self.assertEqual(state, "missed")
+        self.assertTrue(any(self.record["date"] in f for f in failures))
+        jr.decide(self.record["slug"], self.record["revision"], "hold", "reviewer-1")
+        state, failures = monitor.check(self.site)
+        self.assertEqual(state, "missed")
+        self.assertNotIn(self.record["slug"], jr.released()[0])
+        with jr.connect() as db:
+            self.assertEqual(db.execute("SELECT state FROM journal_decisions").fetchone()["state"], "held")
+
+    def test_future_schedule_has_no_false_gap(self):
+        self.assertEqual(jr.release_status()["scheduleGaps"], [])
+
+    def test_schedule_gap_does_not_leak_private_draft_details(self):
+        self.now_mock.return_value = self.due
+        payload = jr.release_status()
+        self.assertEqual(payload["scheduleGaps"], [self.record["date"]])
+        self.assertNotIn(self.record["title"], json.dumps(payload))
+        self.assertNotIn(self.record["slug"], json.dumps(payload))
 
     def test_owner_request_is_idempotent_even_after_content_changes(self):
         self.assertTrue(self.owner_approval())
@@ -614,7 +675,7 @@ class ReleaseTests(unittest.TestCase):
 
                 with ThreadPoolExecutor(max_workers=3) as pool, \
                      patch.object(jr, "materialize", side_effect=paused_materialize), \
-                     patch.object(studio_auth, "reviewer", return_value="reviewer-1"), \
+                     patch.object(studio_auth, "reviewer_identity", return_value={"id":"reviewer-1","name":"Reviewer"}), \
                      patch.object(studio_auth, "reviewer_label", side_effect=lambda actor: actor):
                     writer = pool.submit(jr.decide, slug, self.record["revision"], "hold", "reviewer-2") \
                         if work == "decision" else pool.submit(jr.released)
@@ -692,13 +753,17 @@ class ReleaseTests(unittest.TestCase):
             (build / "index.html").write_text("<h1>Eternal Studio sign-in</h1>")
             (build / "assets/login.js").write_text("public sign-in only")
             (build / "assets/drafts.js").write_text("UNAPPROVED_PRIVATE_ARTICLE")
+            (build / "assets/drafts.css").write_text(".studio{color:plum}")
             (build / ".vite/manifest.json").write_text(json.dumps({
                 "index.html":{"file":"assets/login.js","isEntry":True,"dynamicImports":["drafts"]},
-                "drafts":{"file":"assets/drafts.js","isDynamicEntry":True}}))
+                "drafts":{"file":"assets/drafts.js","css":["assets/drafts.css"],"isDynamicEntry":True}}))
             with patch.object(studio_site, "BUILD", build):
                 self.assertEqual(self.request("/studio/")[0], 200)
                 self.assertEqual(self.request("/studio/sign-in")[0], 200)
                 self.assertEqual(self.request("/studio/assets/login.js")[0], 200)
+                status, body, headers = self.request("/studio/assets/drafts.css")
+                self.assertEqual(status, 200)
+                self.assertIn("text/css", headers["Content-Type"])
                 for route in ("/studio/assets/drafts.js", "/studio/assets/%64rafts.js",
                               "/studio/assets/../assets/drafts.js"):
                     status, body, _ = self.request(route)
@@ -706,6 +771,16 @@ class ReleaseTests(unittest.TestCase):
                     self.assertNotIn("UNAPPROVED_PRIVATE_ARTICLE", body)
                 with patch.object(studio_auth, "reviewer", return_value="reviewer-1"):
                     self.assertIn("UNAPPROVED_PRIVATE_ARTICLE", self.request("/studio/assets/drafts.js")[1])
+
+    def test_studio_session_requires_verified_reviewer(self):
+        self.assertEqual(self.request("/api/studio/session")[0], 401)
+        with patch.object(studio_auth, "reviewer_identity", side_effect=PermissionError("Not authorized")):
+            self.assertEqual(self.request("/api/studio/session", headers={"Cookie":"__session=unauthorized"})[0], 403)
+        with patch.object(studio_auth, "reviewer_identity", return_value={"id":"reviewer-1","name":"Reviewer"}):
+            status, body, _ = self.request("/api/studio/session")
+            self.assertEqual(status, 200)
+            self.assertEqual(json.loads(body), {"verified": True})
+            self.assertEqual(self.request("/api/studio/session", "POST", {})[0], 405)
 
     def test_discovery_uses_released_copy_not_pending_same_url_revision(self):
         document = """<html><section class="hero"><h1>Approved headline</h1>
@@ -721,6 +796,22 @@ class ReleaseTests(unittest.TestCase):
 
 
 class AuthTests(unittest.TestCase):
+    def test_managed_production_keys_use_allowlisted_proxy_and_matching_issuer(self):
+        import jwt
+        studio_auth.verifier.cache_clear()
+        try:
+            with patch.object(jwt, "PyJWKClient") as client:
+                issuer, _ = studio_auth.verifier("unused-production-key", "https://eternallifehospice.com")
+                self.assertEqual(issuer, "https://clerk.eternallifehospice.com")
+                self.assertEqual(client.call_args.args[0],
+                                 "https://eternallifehospice.com/api/__clerk/.well-known/jwks.json")
+                self.assertIn("User-Agent", client.call_args.kwargs["headers"])
+                with self.assertRaises(PermissionError):
+                    studio_auth.verifier("unused-production-key", "https://evil.example")
+                self.assertEqual(client.call_count, 1)
+        finally:
+            studio_auth.verifier.cache_clear()
+
     def test_directory_labels_never_guess_signers_or_break_history(self):
         studio_auth._reviewer_label.cache_clear()
         with patch.object(studio_auth, "urlopen") as remote:

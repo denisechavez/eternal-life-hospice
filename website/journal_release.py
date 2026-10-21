@@ -350,6 +350,11 @@ def review_items():
     return results
 
 
+def scheduled_dates(instant):
+    schedule = json.loads((BASE / "content/30-day-journal-manifest.json").read_text())["articles"]
+    return {a["date"] for a in schedule if release_at(a["date"]) <= instant}
+
+
 def release_status():
     instant = now()
     published, healthy = released(instant)
@@ -362,8 +367,14 @@ def release_status():
     for row in sorted(rows, key=lambda r: r["decided_at"]):
         if release_at(row["release_date"].isoformat()) <= instant:
             latest[row["slug"]] = row
+    # Dates only: do not leak private draft titles, versions or decisions.
+    # An editorial hold still means the daily delivery target was not met;
+    # report that gap without treating it as permission to release the draft.
+    due_dates = scheduled_dates(instant)
+    published_dates = {a["date"] for a in published.values()}
     return {"checkedAt": instant.isoformat(), "timezone": "America/Los_Angeles",
             "releaseTime": "06:30",
+            "scheduleGaps": sorted(due_dates - published_dates),
             "expected": [{"slug": slug, "revision": row["revision"],
                           "date": row["release_date"].isoformat(),
                           "available": published.get(slug, {}).get("revision") == row["revision"]}

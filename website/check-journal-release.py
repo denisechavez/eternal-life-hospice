@@ -52,8 +52,12 @@ def check(site, getter=fetch):
     if not re.search(r'<script\b[^>]*\bsrc=["\']/studio/assets/[^"\']+', studio):
         raise ValueError("Live Studio login build is unavailable")
     expected = payload["expected"]
+    gaps = [
+        f"{day}: no Journal article published for this scheduled date; review approval or hold in Studio"
+        for day in payload.get("scheduleGaps", [])
+    ]
     if not expected:
-        return "healthy", []  # All drafts held: no false publication failure.
+        return ("missed", gaps) if gaps else ("healthy", [])
     archive, _ = getter(site + "/blog")
     sitemap, _ = getter(site + "/sitemap.xml")
     search, _ = getter(site + "/assets/search-index.json")
@@ -79,7 +83,7 @@ def check(site, getter=fetch):
         return f"{slug} ({row['date']}): " + "; ".join(failures) if failures else None
 
     with ThreadPoolExecutor(max_workers=4) as pool:
-        failures = [value for value in pool.map(verify, expected) if value]
+        failures = gaps + [value for value in pool.map(verify, expected) if value]
     return ("missed" if failures else "healthy"), failures
 
 
@@ -91,12 +95,14 @@ def notify(failures, monitoring_unavailable=False):
         "sender": {"name": "Eternal Life Hospice Operations", "email": "no-reply@eternallifehospice.com"},
         "to": [{"name": "Denise", "email": JOURNAL_ALERT_EMAIL}],
         "subject": ("ACTION REQUIRED: Journal release monitoring unavailable" if monitoring_unavailable
-                    else "ACTION REQUIRED: Approved Journal release missed"),
+                    else "ACTION REQUIRED: Journal daily publication gap"),
         "textContent": (
             "Journal release time: 6:30 a.m. America/Los_Angeles.\n\n"
             + ("The release check could not run. This is a monitoring failure, not evidence that a held draft should publish.\n"
                if monitoring_unavailable else
-               "The following approved, due versions failed verification. Held or unapproved drafts are excluded.\n")
+               "Scheduled days without a published article or failed approved releases are listed below. "
+               "Missing approvals require review. Held or unapproved drafts remain private; "
+               "this alert never authorizes publication.\n")
             + "\n".join(failures)
             + "\n\nReview the Journal release workflow and Eternal Studio. No content was approved or sent by this check.\n"
         ),

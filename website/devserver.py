@@ -272,7 +272,7 @@ class PrettyURLHandler(http.server.SimpleHTTPRequestHandler):
             except Exception:
                 self._send_json(503, {"message": "Published photograph unavailable"})
             return True
-        if path not in {"/api/studio/journal", "/api/studio/journal/history", "/api/journal-release-status"}:
+        if path not in {"/api/studio/session", "/api/studio/journal", "/api/studio/journal/history", "/api/journal-release-status"}:
             return False
         try:
             if path == "/api/journal-release-status":
@@ -284,6 +284,12 @@ class PrettyURLHandler(http.server.SimpleHTTPRequestHandler):
             # Includes private approval history: authenticate reads and writes
             # alike before querying any editorial identities or decisions.
             user = studio_auth.reviewer_identity(self.headers)
+            if path == "/api/studio/session":
+                if self.command not in {"GET", "HEAD"}:
+                    self._send_json(405, {"message": "Use GET"})
+                else:
+                    self._send_json(200, {"verified": True})
+                return True
             if path == "/api/studio/journal/history":
                 if self.command not in {"GET", "HEAD"}:
                     self._send_json(405, {"message": "Use GET"})

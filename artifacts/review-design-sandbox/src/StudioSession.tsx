@@ -29,6 +29,44 @@ function SignInLoading() {
   </div>;
 }
 
+function VerifiedStudio({children}: {children:ReactNode}) {
+  const {isLoaded,isSignedIn}=useAuth();
+  const {signOut}=useClerk();
+  const [verified,setVerified]=useState(false);
+  const [error,setError]=useState("");
+  const [attempt,setAttempt]=useState(0);
+  useEffect(()=>{
+    let cancelled=false;
+    setVerified(false);setError("");
+    if(!isLoaded||!isSignedIn)return;
+    const controller=new AbortController();
+    const timeout=window.setTimeout(()=>controller.abort(),15000);
+    fetch("/api/studio/session",{credentials:"same-origin",cache:"no-store",signal:controller.signal})
+      .then(async response=>{
+        if(!response.ok)throw new Error(response.status===403
+          ?"This account is not authorized to review Journal articles."
+          :response.status===401?"Your Studio session could not be verified. Sign in again."
+          :"Studio verification is temporarily unavailable.");
+        const result=await response.json();
+        if(result.verified!==true)throw new Error("Studio verification returned an unexpected response.");
+        if(!cancelled)setVerified(true);
+      })
+      .catch(reason=>{if(!cancelled)setError(reason?.name==="AbortError"
+        ?"Studio verification timed out. Please retry.":reason.message||"Studio verification failed.");})
+      .finally(()=>window.clearTimeout(timeout));
+    return()=>{cancelled=true;controller.abort();window.clearTimeout(timeout);};
+  },[isLoaded,isSignedIn,attempt]);
+  if(!isLoaded)return <StudioFrame><SignInLoading/></StudioFrame>;
+  if(!isSignedIn)return <Redirect to="/sign-in"/>;
+  if(error)return <StudioFrame><h1>Studio access needs attention</h1><p role="alert">{error}</p>
+    <p>Your articles and saved approvals have not changed.</p>
+    <button className="studio-auth-button" onClick={()=>setAttempt(value=>value+1)}>Retry verification</button>
+    <button className="studio-auth-restart" onClick={()=>void signOut({redirectUrl:`${basePath}/sign-in`}).catch(()=>setError("Sign-out failed. Please reload and try again."))}>Sign out / change account</button>
+  </StudioFrame>;
+  if(!verified)return <StudioFrame><p role="status">Verifying secure Studio access…</p></StudioFrame>;
+  return <>{children}</>;
+}
+
 export default function StudioSession({children}: {children: ReactNode}) {
   if (!clerkPubKey) return <StudioFrame><h1>Studio sign-in unavailable</h1><p>The secure sign-in service is not configured. No approvals can be saved.</p></StudioFrame>;
   return <WouterRouter base={basePath}><StudioRoutes>{children}</StudioRoutes></WouterRouter>;
@@ -90,7 +128,7 @@ function StudioRoutes({children}: {children:ReactNode}) {
         </StudioFrame></Route>
         <Route path="/sign-in/*?"><AuthenticationPage/></Route>
         <Route path="/sign-up/*?"><AuthenticationPage signUp/></Route>
-        <Route>{children}</Route>
+        <Route>{basePath==="/studio"?<VerifiedStudio>{children}</VerifiedStudio>:children}</Route>
       </Switch>
   </ClerkProvider>;
 }

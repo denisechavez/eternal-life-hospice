@@ -107,3 +107,16 @@ and a second cached lookup may capture a stale or different account profile.
 **How to apply:** Keep IDs authoritative, distinguish saved names from current
 labels and never use display names to grant authority or move decisions between
 workspace and production.
+
+Managed production Clerk frontend hostnames are issuer identities, not
+necessarily directly reachable verification-key servers. Browser and server
+verification must agree on the allowlisted request-host identity.
+
+**Why:** Production sign-in succeeded through the managed proxy while direct
+issuer-host key retrieval failed, causing valid users' private bundles to be
+rejected. The visible symptom misleadingly named a CSS preload failure.
+
+**How to apply:** Use the supported proxy for production public keys, preserve
+signature/session/verified-reviewer checks and authorize before mounting private
+dynamic content. Do not fix asset errors by exposing draft JavaScript or disabling
+authentication. Verify signed-in access separately from a working login screen.
