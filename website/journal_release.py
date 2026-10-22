@@ -204,24 +204,65 @@ def decide(slug, expected_revision, action, reviewer, *, reviewer_name=None, onl
         record = candidates().get(slug)
         if not record or record["revision"] != expected_revision or (expected_date and record["date"] != expected_date):
             raise ValueError("Article changed. Reload and review the complete current version.")
-        frozen = freeze_photos(db, record["html"]) if action == "approve" else record["html"]
-        db.execute("""
+        _write_decision(db, record, action, reviewer, instant, reviewer_name, release_immediately)
+        materialize(db, instant)
+    return True
+
+
+def _write_decision(db, record, action, reviewer, instant, reviewer_name=None, release_immediately=False):
+    """Persist a validated decision inside the caller's locked transaction."""
+    slug = record["slug"]
+    frozen = freeze_photos(db, record["html"]) if action == "approve" else record["html"]
+    db.execute("""
             INSERT INTO journal_decisions (slug,revision,release_date,document,state,reviewer,decided_at,reviewer_name)
             VALUES (%s,%s,%s,%s,%s,%s,%s,%s)
             ON CONFLICT (slug,revision) DO UPDATE SET state=EXCLUDED.state,
                 reviewer=EXCLUDED.reviewer, decided_at=EXCLUDED.decided_at,
                 reviewer_name=EXCLUDED.reviewer_name
-        """, (slug, record["revision"], record["date"], frozen,
-              "approved" if action == "approve" else "held", reviewer, instant, reviewer_name))
-        db.execute("INSERT INTO journal_review_audit (slug,revision,action,reviewer,occurred_at,environment,reviewer_name) VALUES (%s,%s,%s,%s,%s,%s,%s)",
-                   (slug, record["revision"], action, reviewer, instant, environment(), reviewer_name))
-        if release_immediately:
-            db.execute("""
+    """, (slug, record["revision"], record["date"], frozen,
+          "approved" if action == "approve" else "held", reviewer, instant, reviewer_name))
+    db.execute("INSERT INTO journal_review_audit (slug,revision,action,reviewer,occurred_at,environment,reviewer_name) VALUES (%s,%s,%s,%s,%s,%s,%s)",
+               (slug, record["revision"], action, reviewer, instant, environment(), reviewer_name))
+    if release_immediately:
+        db.execute("""
                 INSERT INTO journal_releases (slug,revision,document,release_date,released_at)
                 VALUES (%s,%s,%s,%s,%s) ON CONFLICT DO NOTHING
-            """, (slug, record["revision"], frozen, record["date"], instant))
+        """, (slug, record["revision"], frozen, record["date"], instant))
+
+
+def apply_owner_batch(requests):
+    """Apply exact, owner-authorized versions with one snapshot and transaction.
+
+    Not exposed by any HTTP endpoint. Existing decisions/audit always win.
+    Requests contain (date, slug, revision, real_source, immediate) tuples.
+    """
+    if environment() != "production":
+        return 0
+    instant = now()
+    with connect() as db:
+        materialize(db, instant)  # Includes the same cross-instance decision lock.
+        decided = {r["slug"] for r in db.execute("""
+            SELECT slug FROM journal_decisions UNION SELECT slug FROM journal_review_audit
+        """).fetchall()}
+        pending = [r for r in requests if r[1] not in decided]
+        if not pending:
+            return 0  # Cold starts after reconciliation do not rescan images.
+        records = candidates()
+        applied = 0
+        for day, slug, revision_hash, source, immediate in pending:
+            if slug in decided:
+                continue
+            record = records.get(slug)
+            if (not record or record["revision"] != revision_hash
+                    or record["date"] != day):
+                print(f"Owner reconciliation skipped changed/missing article: {day}", flush=True)
+                continue
+            _write_decision(db, record, "approve", source, instant,
+                            release_immediately=immediate)
+            decided.add(slug)
+            applied += 1
         materialize(db, instant)
-    return True
+    return applied
 
 def publication_metadata(db, slug, instant, original=None):
     """Project materialize's version choice without writes, locks or document IO.

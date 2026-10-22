@@ -161,6 +161,30 @@ def apply_october():
     return applied
 
 
+def apply_all():
+    """Production startup: one scan/transaction, not 83 serial full scans."""
+    if journal.environment() != "production":
+        return 0
+    requests = [(REQUEST["date"], REQUEST["slug"], REQUEST["revision"],
+                 REQUEST["reviewer"], True)]
+    requests.extend(
+        (day, slug, revision,
+         "Owner-directed October reconciliation — 2026-10-21 (outside Studio)", False)
+        for day, slug, revision in OCTOBER_REQUESTS)
+    # Resolve the fixed dates to fixed URLs without scanning article/image bytes.
+    import json
+    manifest = json.loads(
+        (journal.BASE / "content/30-day-journal-manifest.json").read_text())["articles"]
+    for day, revision in sorted(YEAR_END_REVISIONS.items()):
+        matches = [r for r in manifest if r["date"] == day]
+        if "2026-11-01" <= day <= "2026-12-31" and len(matches) == 1:
+            requests.append((day, matches[0]["slug"], revision,
+                             "Owner-directed through-December-31 approval (outside Studio)", False))
+    applied = journal.apply_owner_batch(requests)
+    print(f"Owner reconciliation ready: {applied} newly saved approvals.", flush=True)
+    return applied
+
+
 def apply():
     if journal.environment() != "production":
         return False

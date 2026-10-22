@@ -147,6 +147,58 @@ class ReleaseTests(unittest.TestCase):
             self.assertEqual(owner_approval.apply_october(), 0)
             decide.assert_not_called()
 
+    def test_owner_batch_uses_one_snapshot_and_replays_without_scanning(self):
+        requests = [(self.record["date"], self.record["slug"],
+                     self.record["revision"], "Owner consent (outside Studio)", False)]
+        with patch.object(jr, "environment", return_value="production"):
+            with patch.object(jr, "candidates", return_value={self.record["slug"]: self.record}) as scan:
+                self.assertEqual(jr.apply_owner_batch(requests + requests), 1)
+                scan.assert_called_once()
+            with patch.object(jr, "candidates", side_effect=AssertionError("Unnecessary cold-start scan")):
+                self.assertEqual(jr.apply_owner_batch(requests), 0)
+        self.assertNotIn(self.record["slug"], jr.released()[0])
+        self.now_mock.return_value = self.due
+        self.assertIn(self.record["slug"], jr.released()[0])
+        with jr.connect() as db:
+            self.assertEqual(db.execute("SELECT count(*) AS n FROM journal_review_audit").fetchone()["n"], 1)
+
+    def test_owner_batch_preserves_holds_and_rejects_wrong_date_or_revision(self):
+        r = self.record
+        with patch.object(jr, "environment", return_value="production"):
+            self.assertEqual(jr.apply_owner_batch([
+                (r["date"], r["slug"], "stale", "owner", False),
+                ("2027-01-01", r["slug"], r["revision"], "owner", False)]), 0)
+            jr.decide(r["slug"], r["revision"], "hold", "reviewer")
+            self.assertEqual(jr.apply_owner_batch([
+                (r["date"], r["slug"], r["revision"], "owner", True)]), 0)
+
+    def test_owner_batch_is_production_only_and_rolls_back_on_failure(self):
+        r = self.record
+        request = [(r["date"], r["slug"], r["revision"], "Owner request", False)]
+        with patch.object(jr, "environment", return_value="workspace"), \
+                patch.object(jr, "connect") as connection:
+            self.assertEqual(jr.apply_owner_batch(request), 0)
+            connection.assert_not_called()
+        original_write = jr._write_decision
+        def fail_after_write(*args, **kwargs):
+            original_write(*args, **kwargs)
+            raise RuntimeError("Storage failure")
+        with patch.object(jr, "environment", return_value="production"), \
+                patch.object(jr, "_write_decision", side_effect=fail_after_write):
+            with self.assertRaisesRegex(RuntimeError, "Storage failure"):
+                jr.apply_owner_batch(request)
+        with jr.connect() as db:
+            self.assertEqual(db.execute("SELECT count(*) AS n FROM journal_review_audit").fetchone()["n"], 0)
+
+    def test_owner_batch_concurrent_startups_save_one_event(self):
+        from concurrent.futures import ThreadPoolExecutor
+        r = self.record
+        request = [(r["date"], r["slug"], r["revision"], "Owner request", False)]
+        with patch.object(jr, "environment", return_value="production"):
+            with ThreadPoolExecutor(max_workers=2) as pool:
+                results = list(pool.map(lambda _: jr.apply_owner_batch(request), range(2)))
+        self.assertEqual(sorted(results), [0, 1])
+
     def test_year_end_consent_retains_dates_and_real_audit_time(self):
         self.record["date"] = "2026-12-31"
         due = jr.release_at(self.record["date"]).astimezone(timezone.utc)

@@ -25,16 +25,24 @@ let browser,ws;
 try {
   assert.equal(typeof WebSocket,"function","Run with --experimental-websocket on Node 20");
   browser=spawn("chromium",["--headless","--no-sandbox","--disable-dev-shm-usage",
-    "--remote-debugging-port=0",`--user-data-dir=${join(directory,"profile")}`,"about:blank"],{stdio:"ignore"});
+    "--remote-debugging-port=0",`--user-data-dir=${join(directory,"profile")}`,"about:blank"],
+    {stdio:["ignore","ignore","pipe"]});
+  let browserDiagnostics="";
+  browser.stderr.on("data",chunk=>{
+    browserDiagnostics=(browserDiagnostics+chunk.toString()).slice(-12000);
+  });
   let launchError;
   browser.on("error",error=>{launchError=error});
   let port;
-  for(let i=0;i<100;i++){
+  for(let i=0;i<300;i++){
     if(launchError)throw launchError;
+    if(browser.exitCode!==null||browser.signalCode!==null){
+      throw new Error(`Chromium exited before opening its debugging port (code=${browser.exitCode}, signal=${browser.signalCode}).\n${browserDiagnostics}`);
+    }
     try{port=Number((await readFile(join(directory,"profile/DevToolsActivePort"),"utf8")).split("\n")[0]);break;}
     catch{await sleep(100);}
   }
-  assert.ok(port,"Chromium did not open its debugging port");
+  assert.ok(port,`Chromium did not open its debugging port within 30 seconds.\n${browserDiagnostics}`);
   const tabs=await(await fetch(`http://127.0.0.1:${port}/json/list`)).json();
   ws=new WebSocket(tabs.find(tab=>tab.type==="page").webSocketDebuggerUrl);
   await new Promise((resolve,reject)=>{
