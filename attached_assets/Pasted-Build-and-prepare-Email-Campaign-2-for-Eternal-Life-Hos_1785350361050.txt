@@ -1,0 +1,353 @@
+Build and prepare Email Campaign #2 for Eternal Life Hospice as a production-ready responsive HTML email that can be sent through our existing Replit/Brevo email system today.
+
+This is only the second email being sent to this professional referral list. The email must build trust and provide immediate value without feeling like a sales email. The Family Guide is the primary focus. The email should also support immediate referrals and future educational outreach through three clearly prioritized calls to action.
+
+BUSINESS OBJECTIVE
+
+Eternal Life Hospice currently needs qualified referrals and admissions. Every element of this email should support measurable engagement while preserving a credible educational tone.
+
+The CTA priority must be:
+
+1. View the Family Guide
+2. Refer a Patient
+3. Request a Complimentary Education Session
+
+Do not lead with the referral request. Lead with the Family Guide as a useful resource for healthcare professionals and families.
+
+BRAND SYSTEM
+
+Use the existing Eternal Life Hospice brand assets and styles already in the project.
+
+Brand colors:
+- Quiet Plum: #5B2E59
+- Deep Plum: #381B37
+- Warm Gold: #C9B07E
+- Cream: #F5F0EB
+- Stone Taupe: #B7A89D
+- Slate Blue: #6793AC
+
+Typography:
+- Fraunces for display headings when supported
+- Jost for body copy when supported
+- Email-safe fallback: Georgia for headings and Arial or Helvetica for body copy
+
+Brand language:
+- Here in Moments That Matter Most
+- The Eternal Standard
+- Care That Honors Life
+- Clinical Confidence
+- Guided Presence
+- Whole-Person Comfort
+- Compliance-Led Care
+
+Use “Guided Presence” consistently. Do not use “Guided Care.”
+
+EMAIL SETTINGS
+
+Subject:
+A Complimentary Family Guide for Patients and Caregivers
+
+Preview text:
+A practical hospice resource created to support families and healthcare professionals.
+
+Sender name:
+Aleksandra Dubina | Eternal Life Hospice
+
+Reply-to:
+info@eternalhospice.com
+
+Maximum email width:
+600px
+
+Overall background:
+Cream #F5F0EB
+
+Main email container:
+White or very light cream
+
+Design direction:
+Premium healthcare publication
+Calm
+Credible
+Warm
+Editorial
+Professional
+Not overly promotional
+Not cluttered
+
+Use generous spacing and clear hierarchy. Avoid excessive icons and decorative effects. Do not use emojis inside the email.
+
+HEADER
+
+Place the approved Eternal Life Hospice logo centered at the top.
+
+Below the logo display:
+
+HERE IN MOMENTS THAT MATTER MOST
+
+Use Quiet Plum or Deep Plum.
+
+Below that add a thin Warm Gold divider.
+
+MAIN EMAIL COPY
+
+Use the following copy exactly unless minor edits are required for responsive HTML formatting:
+
+Dear Healthcare Professional,
+
+Conversations about hospice are often accompanied by uncertainty. Families may not know what hospice is, when it may be appropriate or what to expect in the days ahead.
+
+To support those conversations, Eternal Life Hospice created a complimentary Family Guide for patients, caregivers and healthcare professionals.
+
+The guide provides clear and practical information that can be shared during a discharge conversation, in a physician’s office, at a care community or with a family seeking answers.
+
+Our hope is that it brings greater clarity, confidence and comfort during an important time.
+
+SECTION HEADING
+
+Inside the Family Guide
+
+Display the following as a clean checklist:
+
+- Understanding hospice care
+- When hospice may be appropriate
+- What families can expect
+- Medicare hospice coverage
+- The role of the hospice care team
+- Preparing for the first days of care
+- Practical guidance for patients and caregivers
+
+Add this sentence below the checklist:
+
+Please feel free to share this guide with patients, families and caregivers who may benefit from clear hospice information.
+
+PRIMARY CTA
+
+Create a prominent centered Quiet Plum button.
+
+Button text:
+View the Family Guide
+
+Button URL:
+https://eternallifehospice.com/family-guide
+
+Track this button with:
+utm_source=brevo
+utm_medium=email
+utm_campaign=family_guide_email_2
+utm_content=family_guide_primary
+
+Use the final tracked URL:
+https://eternallifehospice.com/family-guide?utm_source=brevo&utm_medium=email&utm_campaign=family_guide_email_2&utm_content=family_guide_primary
+
+WHY WE CREATED IT SECTION
+
+Use a light cream or taupe content block.
+
+Heading:
+Why We Created It
+
+Copy:
+
+At Eternal Life Hospice, we believe informed families are better prepared to make thoughtful decisions.
+
+Education can reduce uncertainty, strengthen communication and allow patients and families to receive appropriate support earlier.
+
+Our goal is to create practical resources that support healthcare professionals and the families they serve.
+
+THE ETERNAL STANDARD SECTION
+
+Heading:
+The Eternal Standard
+
+Subheading:
+Dignity, defined by four pillars of care.
+
+Display the four pillars in a clean 2-by-2 layout on desktop and stacked on mobile.
+
+Clinical Confidence
+Physician-supported hospice care focused on comfort, symptom management and clinical coordination.
+
+Guided Presence
+Families understand what is happening, what comes next and who to call.
+
+Whole-Person Comfort
+Care that considers physical, emotional, social, spiritual and family needs.
+
+Compliance-Led Care
+Care delivered with integrity, privacy, accountability and responsible clinical practice.
+
+CTA SECTION
+
+Heading:
+How Can We Support You Today?
+
+Add one short line:
+
+Choose the resource or next step that is most useful for you, your team or a family in your care.
+
+Display three CTA buttons vertically with clear visual priority.
+
+BUTTON 1
+
+Text:
+View the Family Guide
+
+Style:
+Primary solid Quiet Plum button
+
+URL:
+https://eternallifehospice.com/family-guide?utm_source=brevo&utm_medium=email&utm_campaign=family_guide_email_2&utm_content=family_guide_footer
+
+BUTTON 2
+
+Text:
+Refer a Patient
+
+Style:
+Secondary solid Warm Gold button with dark text
+
+Use the existing referral page if one already exists in the project.
+
+Preferred URL:
+https://eternallifehospice.com/refer
+
+Tracked URL:
+https://eternallifehospice.com/refer?utm_source=brevo&utm_medium=email&utm_campaign=family_guide_email_2&utm_content=refer_patient
+
+If /refer does not exist, link to the most appropriate existing referral or contact form and clearly report which URL was used.
+
+BUTTON 3
+
+Text:
+Request a Complimentary Education Session
+
+Style:
+Outlined Quiet Plum button on white background
+
+Use the existing contact or scheduling page.
+
+Preferred URL:
+https://eternallifehospice.com/contact
+
+Tracked URL:
+https://eternallifehospice.com/contact?utm_source=brevo&utm_medium=email&utm_campaign=family_guide_email_2&utm_content=education_session
+
+Below the buttons include:
+
+805.953.7273
+info@eternallifehospice.com
+eternallifehospice.com
+
+Make the phone number clickable with:
+tel:8059537273
+
+Make the email clickable with:
+mailto:info@eternallifehospice.com
+
+CLOSING COPY
+
+Thank you for the important work you do each day for patients and families.
+
+We appreciate the opportunity to serve as an educational and clinical resource whenever hospice questions arise.
+
+Warm regards,
+
+Aleksandra Dubina
+Founder and Chief Executive Officer
+Certified Hospice Administrator
+
+Eternal Life Hospice
+
+Care That Honors Life
+
+FOOTER
+
+Include:
+
+HERE IN MOMENTS THAT MATTER MOST
+
+The Eternal Standard
+
+Clinical Confidence • Guided Presence • Whole-Person Comfort • Compliance-Led Care
+
+Medicare-Certified • CDPH-Licensed • ACHC-Accredited
+
+Eternal Life Hospice
+4165 E Thousand Oaks Blvd., Suite 325B
+Westlake Village, CA 91362
+
+805.953.7273
+info@eternallifehospice.com
+eternallifehospice.com
+
+Include the required Brevo unsubscribe and preference-management placeholders already used by the current email system.
+
+Use the existing compliant footer language:
+
+This educational communication is sent to subscribers of Eternal Life Hospice updates. Manage your preferences or unsubscribe at any time.
+
+TECHNICAL REQUIREMENTS
+
+- Generate a complete production-ready HTML email.
+- Create a plain-text version.
+- Inline all CSS.
+- Use table-based email layout where required for Outlook compatibility.
+- Do not use JavaScript.
+- Do not use forms inside the email.
+- Use responsive styles for mobile.
+- Minimum body font size: 16px on mobile.
+- Minimum button height: 44px.
+- Use accessible contrast.
+- Include descriptive ALT text for every image.
+- Use role="presentation" on layout tables.
+- Ensure links are clearly visible.
+- Keep the HTML under 100 KB.
+- Test for Gmail, Outlook, Apple Mail and major mobile clients.
+- Preserve existing Brevo unsubscribe functionality.
+- Do not modify any unrelated website or application code.
+
+TRACKING REQUIREMENTS
+
+Track these conversions separately:
+
+- Family Guide click
+- Referral click
+- Education session click
+- Phone click
+- Email click
+
+Use the campaign identifier:
+family_guide_email_2
+
+Add compatible tracking attributes or event labels already supported by the existing Replit email system.
+
+Before finalizing, verify:
+
+1. All three CTA links work.
+2. The Family Guide opens correctly.
+3. The referral destination exists.
+4. The education-session destination exists.
+5. The phone and email links work.
+6. The unsubscribe link remains functional.
+7. The email renders correctly on desktop and mobile.
+8. No text is cut off.
+9. No unsupported fonts break the layout.
+10. The email does not look overly promotional.
+
+OUTPUT
+
+Provide:
+
+1. The completed HTML file
+2. The plain-text version
+3. A browser preview
+4. A mobile preview
+5. The final subject line
+6. The final preview text
+7. A list of every CTA and its destination URL
+8. Confirmation that tracking parameters were added
+9. Confirmation that the Brevo unsubscribe footer is intact
+10. A clear send-ready status
+
+Do not send the campaign automatically. Prepare it for review and require final approval before sending.

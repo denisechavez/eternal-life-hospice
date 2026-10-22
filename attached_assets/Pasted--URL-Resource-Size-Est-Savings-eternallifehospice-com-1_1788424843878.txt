@@ -1,0 +1,41 @@
+
+URL
+Resource Size
+Est Savings
+eternallifehospice.com 1st party
+116.0 KiB	64.9 KiB
+A hospice nurse with a stethoscope attending a patient at home
+<img loading="lazy" decoding="async" src="https://eternallifehospice.com/assets/img/inline-5eebc45ba1.webp" srcset="assets/img/inline-5eebc45ba1-480.jpg 480w, assets/img/inline-5eebc45ba1-72…" sizes="(max-width: 780px) 100vw, 50vw" alt="A hospice nurse with a stethoscope attending a patient at home" width="800" height="1000">
+…img/inline-5eebc45ba1.webp(eternallifehospice.com)
+55.4 KiB
+29.8 KiB
+This image file is larger than it needs to be (800x575) for its displayed dimensions (412x515). Use responsive images to reduce the image download size.
+29.8 KiB
+A caregiver and a family member sitting together holding hands
+<img loading="lazy" decoding="async" src="https://eternallifehospice.com/assets/img/inline-ce5cac9062.webp" srcset="assets/img/inline-ce5cac9062-480.jpg 480w, assets/img/inline-ce5cac9062.jp…" sizes="(max-width: 780px) 100vw, 50vw" alt="A caregiver and a family member sitting together holding hands" width="800" height="1000">
+…img/inline-ce5cac9062.webp(eternallifehospice.com)
+34.0 KiB
+18.3 KiB
+This image file is larger than it needs to be (800x575) for its displayed dimensions (412x515). Use responsive images to reduce the image download size.
+18.3 KiB
+CMS Medicare Certified
+<img loading="lazy" decoding="async" src="https://eternallifehospice.com/assets/img/cred-cms-2x.webp" srcset="assets/img/cred-cms-1x.webp 1x, assets/img/cred-cms-2x.webp 2x" alt="CMS Medicare Certified" width="120" height="41">
+…img/cred-cms-2x.webp(eternallifehospice.com)
+10.5 KiB
+7.3 KiB
+Increasing the image compression factor could improve this image's download size.
+7.3 KiB
+CDPH Licensed
+<img loading="lazy" decoding="async" src="https://eternallifehospice.com/assets/img/cred-cdph-2x.webp" srcset="assets/img/cred-cdph-1x.webp 1x, assets/img/cred-cdph-2x.webp 2x" alt="CDPH Licensed" width="95" height="42">
+…img/cred-cdph-2x.webp(eternallifehospice.com)
+7.5 KiB
+4.9 KiB
+Increasing the image compression factor could improve this image's download size.
+4.9 KiB
+Eternal Life Hospice logo
+<img class="s sym-cream" src="/assets/img/elh-logo-h2-cream.webp" srcset="/assets/img/elh-logo-h2-cream-140.webp 140w, /assets/img/elh-logo-h2-cream…" sizes="(max-width:600px) 139px, 206px" alt="Eternal Life Hospice logo" width="331" height="74">
+…img/elh-logo-h2-cream.webp(eternallifehospice.com)
+8.6 KiB
+4.6 KiB
+Increasing the image compression factor could improve this image's download size.
+4.6 KiB

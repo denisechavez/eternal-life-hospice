@@ -1,0 +1,241 @@
+Complete the next Eternal Life Hospice website stabilization pass as a small, isolated set of production-safe tweaks.
+
+Work only inside:
+
+`website/elh-preview`
+
+Do not modify:
+
+- site architecture
+- navigation
+- page URLs
+- page copy beyond the specific coverage statement below
+- structured data
+- sitemap entries
+- redirects
+- forms
+- tracking events
+- city-page content
+- homepage section order
+- any files outside `website/elh-preview`
+
+Create a new branch before making changes.
+
+Suggested branch name:
+
+`stabilization-day-1-tweaks`
+
+## Task 1 — Optimize the ACHC accreditation image
+
+Locate the image currently used for the ACHC accreditation credential, expected to be:
+
+`cred-achc.png`
+
+Before changing it, report:
+
+- exact file path
+- current file size
+- rendered dimensions
+- intrinsic dimensions
+- every HTML file that references it
+
+Create an optimized WebP version using the same visible dimensions and preserving legibility of the accreditation seal.
+
+Requirements:
+
+- Do not crop, stretch, recolor or redesign the image.
+- Preserve transparency if the original uses transparency.
+- Keep the PNG file temporarily until all references are verified.
+- Replace production references with the WebP file.
+- Add explicit `width` and `height` attributes where missing to reduce layout shift.
+- Use `loading="lazy"` if the image is below the initial viewport.
+- Use `decoding="async"`.
+- Confirm the seal remains sharp on desktop and mobile.
+- Report the final WebP file size and percentage reduction.
+
+Do not target an arbitrary 3 KB size. Prioritize visual clarity and material file-size reduction.
+
+## Task 2 — Prevent founder audio from loading during initial page render
+
+Locate the founder audio element and its audio file.
+
+Report:
+
+- HTML file containing the player
+- audio file path
+- current audio file size
+- current preload behavior
+
+Set the audio element to:
+
+`preload="none"`
+
+Requirements:
+
+- Preserve the existing audio controls.
+- Preserve the existing audio file.
+- Do not autoplay.
+- Do not change the audio recording.
+- Confirm playback still begins normally after the user presses play.
+- Confirm the audio file is not downloaded during the initial page load.
+
+## Task 3 — Review WhatConverts against the Content Security Policy
+
+Locate:
+
+- the WhatConverts tracking code
+- the existing Content Security Policy
+- all domains currently used by the WhatConverts implementation
+
+Do not guess or broadly weaken the CSP.
+
+Before changing anything, report:
+
+- exact WhatConverts script URL or URLs
+- network domains required by the current implementation
+- current CSP directives that block or permit them
+- whether the tracking script currently generates browser-console CSP errors
+
+Only add the minimum required domains to the relevant directives.
+
+Possible directives may include:
+
+- `script-src`
+- `connect-src`
+- `img-src`
+- `frame-src`
+
+Requirements:
+
+- Do not add wildcards unless the current vendor implementation demonstrably requires one.
+- Do not add `*`.
+- Do not add `unsafe-eval`.
+- Do not weaken unrelated CSP directives.
+- Preserve all current security headers.
+- Confirm the WhatConverts script loads without CSP errors.
+- Confirm the website still has no new CSP violations.
+- Do not enable call recording or change WhatConverts account settings.
+
+If WhatConverts is already fully permitted and functioning, make no CSP change and report that no change was necessary.
+
+## Task 4 — Correct the coverage statement
+
+Search the deployed site for all occurrences of:
+
+- `No Deductibles`
+- `No Copays`
+- `No Deductibles · No Copays`
+- any equivalent absolute claim stating that hospice care always has no patient cost
+
+Report every file and location where the statement appears.
+
+Replace the absolute claim with this approved wording:
+
+`Medicare hospice care is generally covered with little or no out-of-pocket cost for eligible patients.`
+
+Where a shorter badge or label is required, use:
+
+`Medicare Hospice Benefit`
+
+Do not make claims that:
+
+- all services are free
+- every patient has no deductible
+- every patient has no copay
+- every insurance plan provides identical coverage
+
+Preserve the existing design and spacing as closely as possible.
+
+## Task 5 — Microsoft Clarity privacy review
+
+Locate the Microsoft Clarity script and implementation.
+
+Report:
+
+- every page or shared template where Clarity loads
+- whether Clarity masking settings can be determined from the repository
+- whether any forms collect patient, family, diagnosis, medical, insurance or referral information
+- whether Clarity currently loads on those form pages
+
+Do not claim repository code confirms account-level masking unless it actually does.
+
+Do not change account settings.
+
+If Clarity is loaded on sensitive intake or referral pages, identify those pages and recommend the safest code-level exclusion approach, but do not implement exclusions during this task unless an existing project requirement already specifies them.
+
+Do not send form values, patient data or health information into logs or test reports.
+
+## Task 6 — QA and performance comparison
+
+Before making changes, record a baseline for the homepage using the same testing environment.
+
+After changes, test:
+
+- homepage
+- `/refer`
+- `/resources`
+- one resource article
+- one city page
+- mobile viewport
+- desktop viewport
+
+Verify:
+
+- all routes return correctly
+- no missing images
+- no broken audio controls
+- no new console errors
+- no new CSP errors
+- no layout shift introduced by the credential image
+- phone links still work
+- forms remain present and unchanged
+- sitemap.xml still loads
+- robots.txt still loads
+- all canonical tags remain unchanged
+
+Run Lighthouse before and after for the homepage in mobile and desktop modes.
+
+Report:
+
+- Performance
+- Accessibility
+- Best Practices
+- SEO
+- First Contentful Paint
+- Largest Contentful Paint
+- Total Blocking Time
+- Cumulative Layout Shift
+- Speed Index
+- transferred page weight, if available
+- number of network requests, if available
+
+Do not promise improvements if the measured results do not show them.
+
+## Change-control requirements
+
+Keep these changes together in one focused branch, but use separate commits for clear rollback:
+
+1. `Optimize ACHC credential image`
+2. `Defer founder audio loading`
+3. `Correct hospice coverage language`
+4. `Allow required WhatConverts CSP domains`
+
+Skip the fourth commit if no CSP change is required.
+
+Do not merge or deploy automatically.
+
+At completion, provide a concise report with:
+
+1. Files changed
+2. Files added
+3. Image size before and after
+4. Audio loading behavior before and after
+5. Coverage wording locations corrected
+6. WhatConverts CSP findings
+7. Clarity privacy findings
+8. Lighthouse before-and-after results
+9. Route and browser test results
+10. Console or CSP warnings
+11. Commit hashes
+12. Any item requiring account-level verification
+13. Confirmation that architecture, navigation, schema, redirects, forms and sitemap entries were not changed

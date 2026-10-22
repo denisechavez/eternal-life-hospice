@@ -1,0 +1,43 @@
+Eternal Life Hospice — City Page Content Differentiation
+Review all existing city/location pages for Eternal Life Hospice.
+The objective is to substantially reduce repetitive main-page content while making every city page genuinely useful to someone seeking hospice care in that specific community.
+Do not redesign the pages. Do not change site architecture. Do not change navigation. Do not change Eternal's established brand language or verified company facts.
+Preserve these brand elements where appropriate:
+- Eternal Life Hospice
+- Care That Honors Life
+- Here in Moments That Matter Most
+- The Eternal Standard
+- Clinical Confidence
+- Guided Presence
+- Whole-Person Comfort
+- Compliance-Led Care
+- 805.953.7273
+- eternallifehospice.com
+Do not attempt to make pages unique merely by changing adjectives or rearranging sentences.
+Each city page must contain meaningful city-specific main content.
+For each city:
+1. Write a unique H1 and opening section based on hospice care in that community.
+2. Create a unique title tag and meta description.
+3. Add meaningful local context about the community and the types of families and care settings Eternal may serve there.
+4. Write a unique section explaining what beginning hospice care may look like for a family in that city.
+5. Include relevant Eternal services and care capabilities without inventing services or guarantees.
+6. Add a locally relevant FAQ section with questions written specifically for families in that community.
+7. Create natural internal links to relevant Eternal service pages resources and the appropriate county coverage hub.
+8. Preserve medically accurate hospice information and Eternal's established brand architecture.
+9. Do not invent statistics hospitals partnerships facilities referral relationships response times testimonials addresses or claims about the community.
+10. Do not create artificial local statements simply for SEO.
+Shared legal compliance navigation footer contact and core brand language may remain consistent. The main informational content should provide substantial unique value.
+Before editing anything generate a report showing:
+- total city pages
+- current shared/repeated content patterns
+- proposed page template
+- which sections will remain standardized
+- which sections will become city-specific
+Then rewrite only 5 representative city pages first:
+- Thousand Oaks
+- Westlake Village
+- Simi Valley
+- Calabasas
+- Ventura
+Stop after those five pages and present the results for review.
+Do not proceed through all city pages until the five-page pilot is approved.

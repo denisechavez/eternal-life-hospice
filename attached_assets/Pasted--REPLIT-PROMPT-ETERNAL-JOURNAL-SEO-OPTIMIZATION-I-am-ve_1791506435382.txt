@@ -1,0 +1,174 @@
+# REPLIT PROMPT — ETERNAL JOURNAL SEO OPTIMIZATION
+
+I am very happy with the quality, tone, depth and variety of the articles we have already developed for Eternal Life Hospice. I want to preserve that work while strengthening our organic SEO strategy through December 31, 2026.
+
+**Our primary objectives are stronger localization, meaningful integration of all 101 search keywords and continued variety in article length and subject matter.**
+
+Please proceed with the following instructions:
+
+### 1. Preserve the Existing Editorial Quality
+
+- Maintain the existing writing style, thoughtful storytelling, clinical accuracy and educational value.
+- Preserve the original purpose of each article.
+- Do not rewrite articles unnecessarily or make them sound repetitive.
+- Keep existing publication dates, URLs, photography and design.
+- Maintain our brand voice: *Care That Honors Life.*
+- Work only within Eternal Journal blog articles and Eternal emails.
+- Do not modify Care Brief materials. Social media, Pinterest and video production remain on hold.
+
+### 2. Maintain Natural Variety in Article Length
+
+I want the Journal to feature articles of different lengths based on the complexity and value of each subject.
+
+Use these editorial guidelines:
+
+- **Short educational articles:** Approximately 500–750 words.
+- **Standard articles:** Approximately 750–1,100 words.
+- **In-depth educational articles:** Approximately 1,100–1,600 words.
+- **Comprehensive guides:** Approximately 1,600–2,200 words when the subject genuinely warrants that depth.
+
+These are flexible guidelines rather than fixed requirements.
+
+Google does not prescribe an ideal article length or reward word count alone. The objective is to thoroughly answer the reader's question with original, helpful and reliable information.
+
+Avoid making every article the same length. Do not expand content simply to reach a word count.
+
+Preserve the variety already present in our Journal.
+
+### 3. Prioritize Geographic Localization
+
+**Localization is one of our highest SEO priorities.**
+
+We serve communities throughout Ventura County and Los Angeles County. I want Google to clearly associate Eternal Life Hospice with the hospice services we provide in these geographic markets.
+
+Prioritize:
+
+**Primary markets:** Thousand Oaks, Westlake Village, Simi Valley, Calabasas, Camarillo, Moorpark, Newbury Park, Oxnard, Ventura and Conejo Valley.
+
+**Secondary markets:** Los Angeles County, Santa Monica, Sherman Oaks, Encino, Agoura Hills, Woodland Hills, Malibu, Beverly Hills and the remaining cities identified in our 101-keyword master list.
+
+When appropriate, strengthen existing articles with:
+
+- Relevant city and county references.
+- Local hospice service terminology.
+- Geographic search phrases.
+- Helpful information for families living in specific communities.
+- Clear explanations of hospice care at home.
+- Links to appropriate county coverage pages and service pages.
+- Localized meta titles and descriptions where relevant.
+
+**Important:** Local content must be genuinely useful. Avoid simply substituting city names into otherwise identical articles.
+
+Do not suggest we operate a physical office in every city. Geographic references should accurately describe our service coverage.
+
+### 4. Integrate All 101 Search Keywords
+
+Use the existing 101-keyword master list, including the five Thryv keywords for Thousand Oaks.
+
+Continue the rolling 30-day keyword strategy beginning October 8, 2026.
+
+Every keyword should receive meaningful topical coverage during each reporting cycle where editorially appropriate.
+
+Prioritize combinations of geographic and service search intent, particularly:
+
+- Hospice Thousand Oaks CA
+- Hospice Care Services Thousand Oaks CA
+- Hospice Agency Thousand Oaks CA
+- Hospice Nursing Services Thousand Oaks CA
+- Home Hospice Care Thousand Oaks CA
+- Hospice care Ventura County
+- Hospice Simi Valley
+- Hospice Calabasas
+- Hospice Camarillo
+- Hospice near me
+- Hospice at home
+- Hospice home care services
+- Hospice evaluation
+- Hospice for dementia
+- Hospice for cancer patients
+- Medicare hospice coverage
+- Hospice care cost
+- Change hospice provider
+
+Preserve all 101 existing keyword IDs and the historical audit data.
+
+Use exact-match phrases naturally when they fit. Otherwise, use grammatical variations and related search language.
+
+Do not force keywords into articles where they have little relevance.
+
+Do not treat repetition itself as evidence of improved Google rankings.
+
+### 5. Strengthen Local Search Authority
+
+I want Eternal Life Hospice to develop a recognizable body of educational content associated with our service areas.
+
+Where appropriate, create meaningful relationships between:
+
+**Service + Geographic Location + Family Search Intent**
+
+For example:
+
+- Hospice nursing services in Thousand Oaks
+- Understanding home hospice care in Simi Valley
+- Medicare hospice coverage for Ventura County families
+- Hospice care for dementia patients in Westlake Village
+- Choosing a hospice provider in Calabasas
+
+Use these combinations to improve existing content first.
+
+If important keywords or locations cannot be adequately covered within existing articles, recommend additional localized articles for separate approval.
+
+Avoid duplicate content and competing articles with substantially identical search intent.
+
+### 6. Maintain Technical SEO Quality
+
+Preserve and validate:
+
+- SEO titles and meta descriptions
+- H1 and H2 hierarchy
+- Canonical URLs
+- Article and BlogPosting structured data
+- Internal links
+- Relevant county coverage links
+- Author and publisher information
+- Article publication dates
+- Existing image quality and presentation
+
+Use eternallifehospice.com as the official domain.
+
+Do not make changes to sitewide architecture, robots.txt, indexing controls or deployment settings.
+
+### 7. Coordinate Eternal Emails
+
+Maintain the 12 weekly Eternal email drafts and align each with the most relevant Journal content for that week.
+
+Use the same educational themes and geographic priorities while adapting the messaging to the email audience.
+
+Keep all emails in draft status pending approval.
+
+### 8. Continue Optimization with Editorial Judgment
+
+I trust the direction of the Journal and want to improve its search relevance rather than change its character.
+
+Proceed with targeted optimization of existing scheduled articles while preserving their individuality.
+
+Maintain a record of:
+
+- Articles optimized
+- Keyword phrases incorporated
+- Geographic locations strengthened
+- Article lengths
+- Relevant internal links
+- Remaining keyword and geographic gaps
+
+Keep revised articles available for Studio review.
+
+**Do not publish, deploy or send anything without approval.**
+
+### FINAL OBJECTIVE
+
+By December 31, 2026, Eternal Life Hospice should have a strong and diverse educational Journal with natural variations in article length, meaningful coverage of our 101 search keywords and a significantly stronger geographic association with the communities we serve.
+
+Our goal is to build lasting organic search visibility, local authority, family trust and qualified hospice inquiries.
+
+**Preserve what is already working. Improve what needs strengthening. Prioritize local relevance, clinical accuracy and educational value over keyword repetition.**

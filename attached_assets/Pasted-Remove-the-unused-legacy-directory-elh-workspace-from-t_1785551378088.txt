@@ -1,0 +1,79 @@
+Remove the unused legacy directory `elh-workspace` from this repository as a clean, isolated repository-maintenance task.
+
+Before deleting anything, perform a dependency and deployment verification.
+
+1. Confirm the live production site publishes only from `elh-preview`.
+2. Check all relevant configuration and documentation, including:
+   - `replit.md`
+   - Netlify configuration
+   - `netlify.toml`
+   - Replit configuration files
+   - package.json scripts
+   - build scripts
+   - deployment workflows
+   - GitHub Actions
+   - imports and file references
+   - sitemap-generation scripts
+   - asset paths
+   - documentation references
+3. Search the entire repository for:
+   - `elh-workspace`
+   - paths pointing into `elh-workspace`
+   - scripts that copy, import, build, serve or deploy files from that directory
+4. Report the results before deletion.
+
+Proceed with deletion only if all of the following are confirmed:
+
+- `elh-workspace` is not part of the Netlify publish directory.
+- No production page imports files from it.
+- No build or deployment script depends on it.
+- No required assets exist only inside it.
+- Removing it will not affect `elh-preview` or the production deployment.
+
+Before deleting the directory:
+
+- Create a Git tag or clearly identified rollback point using the current commit.
+- Suggested tag: `before-remove-elh-workspace`
+- Confirm the rollback point was created successfully.
+
+Then:
+
+1. Delete the complete `elh-workspace` directory.
+2. Do not modify files inside `elh-preview`.
+3. Do not change content, navigation, schema, styling, tracking, redirects, sitemap entries or application behavior.
+4. Update `replit.md` only if needed to state clearly that:
+   - `elh-preview` is the sole production source directory.
+   - `elh-workspace` was a legacy prototype and has been removed.
+5. Keep this deletion in its own isolated commit.
+
+Use this commit message:
+
+`Remove unused legacy elh-workspace prototype`
+
+After deletion, run all available verification checks:
+
+- Confirm the project builds successfully.
+- Confirm Netlify still publishes from `elh-preview`.
+- Confirm no broken imports or missing-file errors.
+- Confirm the homepage loads.
+- Confirm `/refer` loads.
+- Confirm `/resources` loads.
+- Confirm one city page loads.
+- Confirm images and fonts load.
+- Confirm phone links and forms remain present.
+- Confirm `sitemap.xml` and `robots.txt` still load.
+- Confirm there are no new console errors.
+- Confirm the production-output file count and publish directory are unchanged except for removal of the unused directory from the repository.
+
+Do not deploy or merge automatically if any dependency on `elh-workspace` is found.
+
+At completion, provide a concise report containing:
+
+1. Production publish directory confirmed
+2. Repository references found
+3. Rollback tag or commit created
+4. Files and directory removed
+5. Documentation changed
+6. Build and route test results
+7. Any warnings or unresolved dependencies
+8. Exact Git commit hash for the isolated deletion

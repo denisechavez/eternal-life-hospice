@@ -1,0 +1,347 @@
+Audit the current information architecture, page hierarchy, navigation, internal linking, URL structure, and homepage user experience for the Eternal Life Hospice website.
+
+IMPORTANT:
+This is an analysis and recommendation task only.
+
+Do not edit files.
+Do not change routes.
+Do not redesign pages.
+Do not remove content.
+Do not deploy anything.
+Do not alter the live website.
+
+The purpose of this audit is to determine how the existing website should be reorganized to:
+
+1. Improve user experience
+2. Reduce homepage length and cognitive overload
+3. Create clearer pathways for families and healthcare professionals
+4. Strengthen Google’s understanding of the website hierarchy
+5. Improve internal-link authority distribution
+6. Reduce topic overlap and keyword cannibalization
+7. Support qualified hospice referrals and admissions
+8. Improve the effectiveness of future Google Ads landing pages
+9. Preserve all valuable existing content rather than deleting it unnecessarily
+
+BUSINESS PRIORITY:
+
+Eternal Life Hospice needs qualified referrals and admissions. Recommendations should prioritize conversion and referral pathways—not merely rankings or traffic.
+
+PRIMARY AUDIENCES:
+
+1. Families urgently considering hospice
+2. Healthcare professionals referring a patient
+3. Families researching hospice before an immediate need
+4. Community and professional visitors learning about Eternal’s integrative care model
+
+PRIMARY CONVERSION ACTIONS:
+
+- Call for hospice guidance
+- Request hospice care
+- Refer a patient
+- Read or download the Family Guide
+- Contact Eternal Life Hospice
+
+PART 1 — INVENTORY THE CURRENT WEBSITE
+
+Inspect the complete project and produce a current page inventory showing:
+
+- Page name
+- URL
+- Route file or component
+- Current navigation location
+- Primary audience
+- Current apparent purpose
+- Primary CTA
+- Approximate content depth
+- Whether the page is indexable
+- Whether it is included in the sitemap
+- Number or approximate volume of internal links pointing to it
+- Pages it links to
+- Whether it appears duplicated, overlapping, isolated, thin, or strategically important
+
+Include all:
+
+- Main pages
+- Resource pages
+- Provider pages
+- Referral pages
+- Service-area pages
+- City pages
+- Integrative modality pages
+- Family Guide pages
+- Careers and volunteer pages
+- Legal and utility pages
+- Any orphaned or legacy routes
+
+PART 2 — AUDIT THE HOMEPAGE
+
+Analyze every homepage section in its current order.
+
+For each section, state whether it should:
+
+- Remain on the homepage
+- Be shortened
+- Be converted into a navigation card or teaser
+- Move to a dedicated page
+- Be combined with another section
+- Be removed because it is redundant
+- Remain unchanged
+
+Identify:
+
+- Repeated messages
+- Competing calls to action
+- Sections that appear too early or too late
+- Information families need immediately
+- Information referral professionals need immediately
+- Content that belongs on a supporting page
+- Any trust information that should remain above the fold
+- Mobile scrolling or usability concerns
+
+Recommend a revised homepage structure that is approximately 30–40% shorter while retaining the strongest trust and conversion content.
+
+The recommended homepage must answer these questions quickly:
+
+1. What does Eternal Life Hospice provide?
+2. Where does Eternal provide care?
+3. Why should a family or provider trust Eternal?
+4. What makes Eternal different?
+5. What should the visitor do next?
+
+PART 3 — PROPOSE THE IDEAL SITE ARCHITECTURE
+
+Create a proposed sitemap using a clear parent-and-child hierarchy.
+
+Evaluate whether the primary navigation should use categories such as:
+
+- Hospice Care
+- For Families
+- Healthcare Professionals
+- Integrative Care
+- Service Areas
+- About
+- Resources
+- Contact
+
+Do not assume these labels are correct. Recommend the strongest labels based on the actual content and user journeys.
+
+For every recommended page, provide:
+
+- Navigation label
+- Page title
+- Suggested URL
+- Parent section
+- Primary audience
+- Primary search intent
+- Main conversion goal
+- Existing content that should move there
+- Whether the page already exists
+- Whether it needs revision, consolidation, or creation
+- Whether it belongs in the main navigation, dropdown, footer, or contextual links only
+
+PART 4 — CREATE USER JOURNEYS
+
+Map the shortest logical pathway for each visitor type.
+
+Journey A:
+A family needs hospice urgently.
+
+Journey B:
+A physician, case manager, discharge planner, social worker, skilled nursing facility, or assisted living professional wants to refer a patient.
+
+Journey C:
+A family is unsure whether it is time for hospice.
+
+Journey D:
+A visitor wants to understand Medicare hospice coverage.
+
+Journey E:
+A visitor wants to understand Eternal’s integrative hospice care and comfort modalities.
+
+Journey F:
+A visitor wants to confirm whether Eternal serves their city.
+
+Each journey should reach its primary conversion action in no more than three meaningful clicks from the homepage.
+
+PART 5 — TOPIC AND KEYWORD OWNERSHIP
+
+Identify which existing page should be the primary authority page for each topic:
+
+- Hospice care in Ventura and Los Angeles Counties
+- Hospice eligibility
+- When it is time for hospice
+- Medicare hospice coverage
+- What happens during the first 48 hours
+- Family hospice guidance
+- Healthcare professional referrals
+- Integrative hospice care
+- Comfort therapies
+- Sound bath
+- Service areas
+- Individual cities
+- Careers
+- Volunteer opportunities
+
+Identify pages that currently compete for the same topic.
+
+For every overlap, recommend whether to:
+
+- Keep both pages with separate search intent
+- Consolidate them
+- Shorten one and link to the authoritative page
+- Redirect one page
+- Reposition one as supporting content
+
+Do not recommend redirects until the current URL value, backlinks, traffic risk, and content purpose have been considered.
+
+PART 6 — INTERNAL LINKING ARCHITECTURE
+
+Recommend a hub-and-spoke internal-link structure.
+
+At minimum, evaluate these possible hubs:
+
+- Hospice Care
+- Family Resources
+- Healthcare Professionals
+- Integrative Hospice Care
+- Service Areas
+
+For each hub, list:
+
+- Supporting pages
+- Required links from the hub
+- Required links back to the hub
+- Contextual cross-links
+- Recommended descriptive anchor text
+- Pages currently receiving too few internal links
+- Pages receiving excessive or unfocused links
+- Orphaned or near-orphaned pages
+
+Ensure that important pages are reachable using standard crawlable HTML links and are generally no more than three clicks from the homepage.
+
+PART 7 — SERVICE-AREA ARCHITECTURE
+
+Evaluate the current city and regional page structure.
+
+Recommend whether the strongest organization is:
+
+Option A:
+Service Areas → Ventura County / Los Angeles County → Individual cities
+
+Option B:
+Service Areas → Regional hubs such as Conejo Valley, San Fernando Valley, South Bay, and individual cities
+
+Option C:
+A hybrid regional and county structure
+
+Consider:
+
+- User clarity
+- Duplicate content risk
+- Google local relevance
+- Internal linking
+- Breadcrumb structure
+- Navigation complexity
+- Whether city pages are genuinely unique
+- Whether any city or regional pages compete with one another
+
+Do not recommend creating additional city pages unless they can contain meaningful unique local content and serve a real business objective.
+
+PART 8 — TECHNICAL ARCHITECTURE
+
+Audit and report on:
+
+- Route consistency
+- URL naming
+- Duplicate or conflicting routes
+- Canonicals
+- Redirect chains
+- Sitemap organization
+- Breadcrumbs
+- Navigation links
+- Footer links
+- Mobile menu structure
+- Crawl depth
+- Orphan pages
+- Broken internal links
+- Duplicate title tags
+- Duplicate meta descriptions
+- Multiple H1 tags
+- Pages with unclear headings
+- Pages with weak or conflicting CTAs
+- Important content rendered in ways that may not be crawlable
+- Structured-data opportunities associated with the proposed hierarchy
+
+PART 9 — AUTHORITY AND CONVERSION PRIORITY
+
+Rank every major recommendation as:
+
+P1 — Critical for referral conversion, usability, or indexing
+P2 — Important structural improvement
+P3 — Helpful optimization
+P4 — Optional future enhancement
+
+For every P1 recommendation, explain:
+
+- The current problem
+- The recommended change
+- User-experience benefit
+- Google/SEO benefit
+- Referral or conversion benefit
+- Development effort
+- Risk
+- How to verify success
+
+PART 10 — IMPLEMENTATION PLAN
+
+Create a one-day implementation plan divided into safe stages:
+
+Stage 1:
+Create backups or a restore point and document current routes.
+
+Stage 2:
+Update navigation and page hierarchy.
+
+Stage 3:
+Shorten the homepage by moving detailed content to existing supporting pages.
+
+Stage 4:
+Create or refine any essential hub pages.
+
+Stage 5:
+Improve internal links and breadcrumbs.
+
+Stage 6:
+Update metadata, canonicals, sitemap, and structured data only where required.
+
+Stage 7:
+Test desktop, tablet, mobile, forms, phone links, referral pathways, redirects, and build integrity.
+
+Clearly separate:
+
+- Architecture changes
+- Content moves
+- Copy changes
+- Technical SEO changes
+- Visual design changes
+- New page creation
+- Redirects
+
+FINAL DELIVERABLE FORMAT:
+
+1. Executive summary
+2. Current sitemap
+3. Current architecture problems
+4. Recommended sitemap
+5. Homepage section-by-section recommendation
+6. Audience journey maps
+7. Topic ownership map
+8. Internal-linking map
+9. Service-area architecture recommendation
+10. Page consolidation and redirect recommendations
+11. P1–P4 priority table
+12. One-day implementation sequence
+13. Risks and safeguards
+14. Exact files and components that would need to change
+
+End by asking for approval before making any edits.

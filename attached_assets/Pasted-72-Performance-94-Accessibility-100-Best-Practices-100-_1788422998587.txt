@@ -1,0 +1,227 @@
+72
+Performance
+94
+Accessibility
+100
+Best Practices
+100
+SEO
+3/3
+Agentic Browsing
+72
+FCP
++6
+LCP
++4
+TBT
++30
+CLS
++25
+SI
++7
+Performance
+Values are estimated and may vary. The performance score is calculated directly from these metrics.See calculator.
+0–49
+50–89
+90–100
+Final Screenshot
+
+Metrics
+Expand view
+First Contentful Paint
+2.7 s
+Largest Contentful Paint
+5.9 s
+Total Blocking Time
+0 ms
+Cumulative Layout Shift
+0
+Speed Index
+4.7 s
+Captured at Sep 3, 2026, 1:06 AM PDT
+Emulated Moto G Power with Lighthouse 13.4.1
+Single page session
+Initial page load
+Slow 4G throttling
+Using HeadlessChromium 151.0.7922.71 with lr
+View Treemap
+Screenshot
+Screenshot
+Screenshot
+Screenshot
+Screenshot
+Screenshot
+Screenshot
+Screenshot
+Show audits relevant to:
+
+All
+
+FCP
+
+LCP
+
+TBT
+
+CLS
+Insights
+Render-blocking requests Est savings of 310 ms
+Requests are blocking the page's initial render, which may delay LCP. Deferring or inlining can move these network requests out of the critical path.LCPFCPUnscored
+URL
+Transfer Size
+Duration
+eternallifehospice.com 1st party
+4.5 KiB	160 ms
+/assets/header-nav.css?v=20260901ab(eternallifehospice.com)
+4.5 KiB
+160 ms
+Forced reflow
+A forced reflow occurs when JavaScript queries geometric properties (such as offsetWidth) after styles have been invalidated by a change to the DOM state. This can result in poor performance. Learn more about forced reflows and possible mitigations.Unscored
+Source
+Total reflow time
+https://eternallifehospice.com:1768:63
+199 ms
+/assets/header.js?v=20260901d:10:40(eternallifehospice.com)
+42 ms
+Network dependency tree
+Avoid chaining critical requests by reducing the length of chains, reducing the download size of resources, or deferring the download of unnecessary resources to improve page load.LCPUnscored
+Maximum critical path latency: 748 ms
+Initial Navigation
+https://eternallifehospice.com - 168 ms, 243.76 KiB
+/api/google-reviews(eternallifehospice.com) - 748 ms, 3.11 KiB
+/assets/header-nav.css?v=20260901ab(eternallifehospice.com) - 218 ms, 4.46 KiB
+Preconnected origins
+preconnect hints help the browser establish a connection earlier in the page load, saving time when the first request for that origin is made. The following are the origins that the page preconnected to.
+no origins were preconnected
+Preconnect candidates
+Add preconnect hints to your most important origins, but try to use no more than 4.
+No additional origins are good candidates for preconnecting
+Use efficient cache lifetimes Est savings of 2 KiB
+A long cache lifetime can speed up repeat visits to your page. Learn more about caching.LCPFCPUnscored
+Request
+Cache TTL
+Transfer Size
+userway.org
+7 KiB
+/widget.js(cdn.userway.org)
+1h
+2 KiB
+…2026-09-01-10-22-26/widget_base.css?v=178…(cdn.userway.org)
+10d
+5 KiB
+Document request latency Est savings of 162 KiB
+Your first network request is the most important. Reduce its latency by avoiding redirects, ensuring a fast server response, and enabling text compression.LCPFCPUnscored
+Avoids redirects
+Server responds quickly (observed 14 ms)
+No compression applied
+Improve image delivery Est savings of 20 KiB
+Reducing the download time of images can improve the perceived load time of the page and LCP. Learn more about optimizing image sizeLCPFCPUnscored
+URL
+Resource Size
+Est Savings
+eternallifehospice.com 1st party
+27.8 KiB	19.8 KiB
+CMS
+<img loading="lazy" decoding="async" src="assets/img/cred-cms.webp" srcset="assets/img/cred-cms-1x.webp 1x, assets/img/cred-cms.webp 2x" alt="CMS" width="691" height="239">
+…img/cred-cms.webp(eternallifehospice.com)
+11.3 KiB
+8.0 KiB
+Increasing the image compression factor could improve this image's download size.
+8.0 KiB
+Eternal Life Hospice logo
+<img class="s sym-cream" src="/assets/img/elh-logo-h2-cream.webp" alt="Eternal Life Hospice logo" width="331" height="74">
+…img/elh-logo-h2-cream.webp(eternallifehospice.com)
+8.6 KiB
+6.4 KiB
+Increasing the image compression factor could improve this image's download size.
+4.6 KiB
+CDPH
+<img loading="lazy" decoding="async" src="assets/img/cred-cdph.webp" srcset="assets/img/cred-cdph-1x.webp 1x, assets/img/cred-cdph.webp 2x" alt="CDPH" width="607" height="269">
+…img/cred-cdph.webp(eternallifehospice.com)
+7.9 KiB
+5.3 KiB
+Increasing the image compression factor could improve this image's download size.
+5.3 KiB
+Legacy JavaScript Est savings of 11 KiB
+Polyfills and transforms enable older browsers to use new JavaScript features. However, many aren't necessary for modern browsers. Consider modifying your JavaScript build process to not transpile Baseline features, unless you know you must support older browsers. Learn why most sites can deploy ES6+ code without transpilingLCPFCPUnscored
+URL
+Wasted bytes
+userway.org
+10.5 KiB
+…2026-09-01-10-22-26/widget_app_base_178….js(cdn.userway.org)
+10.5 KiB
+…2026-09-01-10-22-26/widget_app_base_178….js:1:3736(cdn.userway.org)
+Array.prototype.find
+…2026-09-01-10-22-26/widget_app_base_178….js:1:3625(cdn.userway.org)
+Math.imul
+Optimize DOM size
+LCP breakdown
+3rd parties
+These insights are also available in the Chrome DevTools Performance Panel - record a trace to view more detailed information.
+Diagnostics
+Reduce unused JavaScript Est savings of 27 KiB
+Reduce unused JavaScript and defer loading scripts until they are required to decrease bytes consumed by network activity. Learn how to reduce unused JavaScript.LCPFCPUnscored
+URL
+Transfer Size
+Est Savings
+userway.org
+46.8 KiB	27.3 KiB
+…2026-09-01-10-22-26/widget_app_base_178….js(cdn.userway.org)
+46.8 KiB
+27.3 KiB
+Minify JavaScript Est savings of 6 KiB
+Minifying JavaScript files can reduce payload sizes and script parse time. Learn how to minify JavaScript.LCPFCPUnscored
+URL
+Transfer Size
+Est Savings
+eternallifehospice.com 1st party
+11.9 KiB	3.0 KiB
+/assets/chat.js?v=20260805(eternallifehospice.com)
+11.9 KiB
+3.0 KiB
+Unattributable
+22.6 KiB	2.7 KiB
+inline: (function(){ 'use strict'; //…
+22.6 KiB
+2.7 KiB
+Reduce unused CSS Est savings of 37 KiB
+Reduce unused rules from stylesheets and defer CSS not used for above-the-fold content to decrease bytes consumed by network activity. Learn how to reduce unused CSS.LCPFCPUnscored
+URL
+Transfer Size
+Est Savings
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0} …
+86.8 KiB
+36.8 KiB
+Avoid non-composited animations 1 animated element found
+Avoid long main-thread tasks 1 long task found
+More information about the performance of your application. These numbers don't directly affect the Performance score.
+Passed audits (12)
+Show
+94
+Accessibility
+These checks highlight opportunities to improve the accessibility of your web app. Automatic detection can only detect a subset of issues and does not guarantee the accessibility of your web app, so manual testing is also encouraged.
+Contrast
+Background and foreground colors do not have a sufficient contrast ratio.
+Low-contrast text is difficult or impossible for many users to read. Learn how to provide sufficient color contrast.
+Failing Elements
+cookies
+<a href="/privacy-policy#cookies">
+We use cookies Accept Manage
+<div id="elh-cc" role="region" aria-label="Cookie consent" class="elh-cc-in">
+Call 805.953.7273 — Here 24/7
+<a class="mob-call-bar" href="tel:18059537273" aria-label="Call Eternal Life Hospice — available 24/7">
+Manage
+<button class="elh-ccb elh-cc-mg" id="elh-cc-mgbtn" aria-haspopup="dialog">
+We use cookies Accept Manage
+<div id="elh-cc" role="region" aria-label="Cookie consent" class="elh-cc-in">
+Call 805.953.7273 — Here 24/7
+<a class="mob-call-bar" href="tel:18059537273" aria-label="Call Eternal Life Hospice — available 24/7">
+These are opportunities to improve the legibility of your content.
+Best practices
+Touch targets do not have sufficient size or spacing.
+Touch targets with sufficient size and spacing help users who may have difficulty targeting small controls to activate the targets. Learn more about touch targets.
+Failing Elements
+Manage
+<button class="elh-ccb elh-cc-mg" id="elh-cc-mgbtn" aria-haspopup="dialog">
+Call 805.953.7273 — Here 24/7
+<a class="mob-call-bar" href="tel:18059537273" aria-label="Call Eternal Life Hospice — available 24/7">

@@ -1,0 +1,336 @@
+ETERNAL LIFE HOSPICE
+JOURNAL BATCH 2 — FINAL CORRECTION, VALIDATION AND APPROVAL
+
+Batch 1 is approved and frozen.
+
+Batch 2 Articles #6–#10 have completed editorial review. Their architecture, primary search intent and topic ownership are approved.
+
+Do NOT restructure these articles.
+Do NOT modify Batch 1.
+Do NOT modify legacy articles.
+Do NOT publish.
+Do NOT begin Batch 3.
+
+Make only the corrections and validation steps below.
+
+==================================================
+ARTICLE #6
+HOSPICE AND PALLIATIVE CARE
+==================================================
+
+Current approved title:
+
+Hospice and Palliative Care: How the Goals and Timing Differ
+
+Preserve the current article body and comparison structure.
+
+No substantive rewrite is authorized.
+
+INFOGRAPHIC:
+
+Mark Article #6 as the ONLY infographic recommendation for Batch 2.
+
+Do NOT generate the infographic yet.
+
+Proposed infographic title:
+
+Hospice Care and Palliative Care:
+Understanding the Difference
+
+The future visual should compare only:
+
+- Primary goal
+- When care may begin
+- Disease-directed treatment
+- Eligibility
+- Where care may occur
+
+Closing statement:
+
+“Both center care around comfort, communication and quality of life.”
+
+The infographic should eventually be adaptable for:
+
+- the article
+- social media
+- family education
+- print
+
+Do not recommend infographics for Articles #7–#10.
+
+This establishes the standing Journal rule:
+
+Infographics are selective supplemental assets, not a requirement for every article.
+
+Recommend one only when a process, comparison, timeline, checklist or decision path is genuinely easier to understand visually.
+
+==================================================
+ARTICLE #7
+DEMENTIA AND HOSPICE
+==================================================
+
+Current approved title:
+
+Dementia and Hospice:
+Questions for an Individualized Evaluation
+
+Preserve the current body structure and search intent.
+
+Do not create an eligibility checklist.
+
+Supplement the authoritative source support with current National Institute on Aging material addressing later-stage Alzheimer’s/dementia care where applicable, particularly:
+
+- increasing dependence
+- eating or swallowing changes
+- communication changes
+- recurrent health complications
+- increasing care needs
+
+The article must continue to state clearly that:
+
+- no single symptom determines hospice eligibility
+- observations should be discussed with the treating clinician
+- hospice eligibility is individualized and physician-certified
+
+Do not convert clinical observations into deterministic criteria.
+
+==================================================
+ARTICLE #8
+ADVANCED CANCER AND HOSPICE
+==================================================
+
+Current approved title:
+
+Advanced Cancer and Hospice:
+Comfort-Focused Questions for Families
+
+Preserve the existing article structure, oncology coordination and patient-choice language.
+
+Replace the current sentence describing the National Cancer Institute’s definition of advanced cancer with:
+
+“The National Cancer Institute notes that advanced cancer is a broad term that may describe cancer that has spread or is unlikely to be cured.”
+
+Preserve the article’s boundaries:
+
+- do not recommend stopping cancer treatment
+- do not predict prognosis
+- do not provide independent treatment advice
+- keep the oncology team central to individualized medical decisions
+- keep hospice framed as one possible comfort-focused approach when appropriate
+
+==================================================
+ARTICLE #9
+ADVANCED HEART FAILURE AND HOSPICE
+==================================================
+
+Current approved title:
+
+Advanced Heart Failure and Hospice:
+Planning Around Changing Needs
+
+No substantive editorial correction is currently required.
+
+Preserve:
+
+- fluctuating illness-course language
+- cardiology and primary-care coordination
+- patient-goal framing
+- symptom-reporting guidance
+- individualized eligibility language
+- prohibition against medication changes based on general information
+
+Do not add an infographic.
+
+==================================================
+ARTICLE #10
+ADVANCED COPD AND HOSPICE
+==================================================
+
+Current approved title:
+
+Advanced COPD and Hospice:
+Questions About Comfort and Breathing Changes
+
+Replace the final CTA heading:
+
+“Prepare before breathing changes feel overwhelming”
+
+with:
+
+“Prepare for changes in breathing”
+
+Do not use the word “overwhelm” or any variation of it anywhere in Eternal Life Hospice content.
+
+Replace broad emergency-services language with the approved hospice-first standard:
+
+“For urgent symptom changes related to the terminal illness, call the hospice team first unless the patient’s care plan directs otherwise. Follow the patient’s emergency plan when emergency services are needed.”
+
+Preserve the distinction that:
+
+24/7 on-call hospice support does not mean continuous bedside nursing.
+
+Preserve all safety boundaries regarding:
+
+- oxygen settings
+- inhaled medications
+- medication changes
+- breathing treatments
+- emergency determination
+- prognosis
+- hospice eligibility
+
+No independent respiratory treatment instructions may be introduced.
+
+Do not add an infographic.
+
+==================================================
+AUTHORITATIVE SOURCING
+==================================================
+
+Verify all factual medical statements against authoritative sources.
+
+Preferred sources include:
+
+- Medicare.gov
+- CMS
+- National Institute on Aging
+- National Cancer Institute
+- National Heart, Lung, and Blood Institute
+- American Heart Association
+- other appropriate federal or major professional medical organizations
+
+Do not use commercial hospice competitors as sources for clinical assertions when authoritative sources are available.
+
+Do not add citations merely to increase citation count.
+
+Use authoritative sourcing where the statement materially benefits from verification.
+
+==================================================
+EDITORIAL STANDARD
+==================================================
+
+Maintain the Batch 1 editorial standard:
+
+- human-first writing
+- calm and clear
+- clinically responsible
+- useful rather than promotional
+- one article = one primary job
+- no keyword stuffing
+- no generic SEO filler
+- no repetitive hospice definitions
+- no unsupported superiority claims
+- no “best hospice” claims
+- no unsupported timing guarantees
+- no admission-speed guarantees
+- no deterministic eligibility language
+- no unsupported coverage claims
+- no treatment instructions
+- no prognosis predictions
+
+Preserve Eternal Life Hospice brand language only where it naturally fits.
+
+Do not force:
+
+The Eternal Standard
+Clinical Confidence
+Guided Presence
+Whole-Person Comfort
+Compliance-Led Care
+
+into articles merely for repetition.
+
+Follow Eternal’s established editorial convention regarding commas.
+
+==================================================
+CANNIBALIZATION BOUNDARIES
+==================================================
+
+Confirm after correction:
+
+Article #6 owns:
+Hospice vs palliative care comparison.
+
+Article #7 owns:
+Dementia-specific questions for individualized evaluation.
+
+Article #8 owns:
+Advanced cancer comfort-planning questions.
+
+Article #9 owns:
+Advanced heart-failure changing-needs planning.
+
+Article #10 owns:
+Advanced COPD breathing and comfort questions.
+
+Article #2 remains the general:
+“Changes that can prompt a hospice conversation” article.
+
+Article #1 remains the:
+Hospice evaluation process article.
+
+None of Articles #7–#10 should become another general hospice eligibility guide.
+
+==================================================
+SYNCHRONIZATION
+==================================================
+
+After corrections:
+
+1. Synchronize JSON and staged HTML.
+2. Confirm visible article body text matches exactly across both sources.
+3. Confirm CTAs match.
+4. Confirm titles match.
+5. Confirm internal-link destinations remain valid.
+6. Regenerate only derived assets required by the existing publication system.
+7. Do not make unrelated site changes.
+
+==================================================
+ARTICLE #12 PROTECTION
+==================================================
+
+Verify Article #12 remains:
+
+publicationStatus: archived
+
+and remains absent from:
+
+- public HTML
+- publication manifest
+- blog hub
+- Blog JSON-LD
+- sitemap
+- search index
+
+Do not restore it to any future publication schedule.
+
+==================================================
+FINAL VALIDATION
+==================================================
+
+Run the existing Journal/content validation suite.
+
+Return:
+
+1. Exact corrections made
+2. JSON/HTML synchronization result for Articles #6–#10
+3. Authoritative sources used or updated
+4. Cannibalization check
+5. Infographic recommendation status
+6. Exact files changed
+7. Test/typecheck/build results
+8. Confirmation that Batch 1 was untouched
+9. Confirmation that Article #12 remains archived
+10. Confirmation that nothing was published
+
+If all checks pass:
+
+Mark Articles #6–#10 as:
+
+EDITORIALLY APPROVED
+
+Do NOT publish them.
+
+Do NOT begin Batch 3.
+
+STOP.

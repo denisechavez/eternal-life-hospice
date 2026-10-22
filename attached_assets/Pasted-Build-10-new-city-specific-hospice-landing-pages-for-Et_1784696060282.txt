@@ -1,0 +1,486 @@
+Build 10 new city-specific hospice landing pages for Eternal Life Hospice.
+
+Primary domain:
+https://eternallifehospice.com
+
+Service area:
+Ventura County and Los Angeles County only.
+
+Create pages for:
+
+Ventura County:
+1. Ojai
+2. Santa Paula
+3. Fillmore
+4. Port Hueneme
+
+Los Angeles County:
+5. Chatsworth
+6. Northridge
+7. Van Nuys
+8. Reseda
+9. Studio City
+10. Santa Clarita
+
+Do not redesign the website.
+
+Use the existing Eternal Life Hospice design system. navigation. footer. page components. typography. color palette. calls to action and responsive behavior.
+
+BRAND REQUIREMENTS
+
+Use:
+- Quiet Plum #5B2E59
+- Deep Plum #381B37
+- Slate Blue #6793AC
+- Warm Gold #C9B07E
+- Stone Taupe #B7A89D
+- Cream #F5F0EB
+- Fraunces for display headings
+- Jost for body copy
+
+Use the approved brand language:
+- Care That Honors Life
+- Here in Moments That Matter Most
+- The Eternal Standard
+- Clinical Confidence
+- Guided Presence
+- Whole-Person Comfort
+- Compliance-Led Care
+
+Use:
+“Physician-supported hospice care”
+
+Do not use:
+- physician-led
+- best hospice
+- guaranteed admission
+- guaranteed same-day admission
+- no copay
+- $0 hospice
+- no deductible
+- free hospice
+- every service at no additional expense
+- cure language
+- unsupported medical claims
+
+URL STRUCTURE
+
+Create these canonical routes:
+
+/hospice-ojai-ca
+/hospice-santa-paula-ca
+/hospice-fillmore-ca
+/hospice-port-hueneme-ca
+/hospice-chatsworth-ca
+/hospice-northridge-ca
+/hospice-van-nuys-ca
+/hospice-reseda-ca
+/hospice-studio-city-ca
+/hospice-santa-clarita-ca
+
+Every URL must:
+- Return HTTP 200
+- Use HTTPS
+- Use the non-www canonical domain
+- Be included in sitemap.xml
+- Be indexable
+- Have a self-referencing canonical
+- Not redirect
+- Not contain a noindex directive
+
+TITLE AND H1 FORMAT
+
+Use this title pattern:
+
+Hospice Care in [City] CA | Eternal Life Hospice
+
+Use this H1 pattern:
+
+Hospice Care in [City] California
+
+Every page must have:
+- One unique title
+- One unique meta description
+- Exactly one H1
+- Unique H2 and H3 structure
+- Unique introductory copy
+- Unique local FAQ content
+- Unique image alt text
+- Unique Open Graph title and description
+
+Do not create duplicate pages by replacing only the city name.
+
+PAGE PURPOSE
+
+Each page should serve families and referral sources searching for hospice care in that specific city.
+
+The page must explain:
+- Who Eternal Life Hospice serves
+- Care settings supported
+- How hospice begins
+- What happens after the first call
+- Medicare hospice coverage in restrained language
+- The First 48 Hours of Hospice Care
+- The Eternal Standard
+- Family guidance
+- Provider referral options
+- 24/7 on-call nursing availability for enrolled patients and families
+- How to request an evaluation
+- How to refer a patient
+
+PAGE STRUCTURE
+
+Use the following structure on every city page.
+
+1. HERO
+
+Eyebrow:
+Hospice Care in [City] California
+
+H1:
+Hospice Care in [City] California
+
+Supporting copy:
+Eternal Life Hospice provides physician-supported hospice care for eligible patients and families in [City] and surrounding communities. Care may be provided in private homes. assisted-living communities. residential-care settings and skilled-nursing facilities.
+
+Primary CTA:
+Call for Hospice Guidance
+
+Secondary CTA:
+Request an Evaluation
+
+Provider CTA:
+Refer a Patient
+
+Do not place a telephone number inside the H1.
+
+2. LOCAL INTRODUCTION
+
+Write 120 to 180 words of genuinely unique content describing how Eternal supports families in the city.
+
+The introduction must:
+- Mention the city naturally
+- Mention the correct county
+- Describe common care settings
+- Explain that hospice is delivered wherever the patient calls home
+- Avoid exaggerated response-time claims
+- Avoid fabricated community relationships
+- Avoid copied paragraphs from other city pages
+
+3. AT A GLANCE
+
+Include:
+- Physician-supported hospice care
+- Medicare-certified
+- CDPH-licensed
+- ACHC-accredited
+- 24/7 on-call nursing support
+- Ventura County or Los Angeles County service area
+- Same-day evaluation may be available when clinically appropriate and operationally available
+
+4. WHEN TO CONSIDER HOSPICE
+
+Include a concise educational section covering:
+- Increased hospitalizations
+- Progressive functional decline
+- Increased need for daily assistance
+- Uncontrolled symptoms
+- Reduced appetite or weight loss
+- Increasing caregiver strain
+- A shift toward comfort-focused goals
+
+State clearly that hospice eligibility requires clinical evaluation and physician certification.
+
+5. THE FIRST 48 HOURS
+
+Use the approved Eternal pathway:
+
+- First call and eligibility conversation
+- Evaluation and admission
+- Medication review
+- Equipment and supply coordination
+- Family education
+- Ongoing communication
+
+Use this exact approved sentence:
+
+“Medications. equipment and supplies are coordinated and delivered based on the patient’s clinical needs.”
+
+6. THE ETERNAL STANDARD
+
+Include the four pillars:
+
+Clinical Confidence
+Physician support. skilled nursing. symptom management and coordinated care.
+
+Guided Presence
+Families understand what is happening. what comes next and who to reach.
+
+Whole-Person Comfort
+Medical. emotional. social and spiritual support centered on the patient and family.
+
+Compliance-Led Care
+Accurate information. privacy. ethical operations and responsible documentation.
+
+7. CARE SETTINGS
+
+Include:
+- Private residences
+- Assisted-living communities
+- Residential care facilities
+- Board-and-care homes
+- Skilled-nursing facilities
+
+Do not state or imply that Eternal owns or operates these facilities.
+
+8. MEDICARE HOSPICE COVERAGE
+
+Use restrained language:
+
+“Most Medicare-covered hospice services have little to no out-of-pocket cost. Limited copayments may apply in specific circumstances. Coverage depends on eligibility. the terminal diagnosis and the individualized plan of care.”
+
+Link to:
+/resources/medicare-hospice-benefit
+
+Do not use:
+- $0
+- free
+- no copay
+- no deductible
+- 100% covered
+
+9. FAMILY GUIDE CTA
+
+Headline:
+Not Sure Whether It Is Time for Hospice?
+
+Copy:
+Read Eternal Life Hospice’s Family Guide for clear information about hospice eligibility. what families may expect and questions to ask when choosing a hospice provider.
+
+CTA:
+Read the Family Guide
+
+Link:
+/family-guide
+
+10. PROVIDER REFERRAL CTA
+
+Headline:
+For Physicians and Care Professionals
+
+Copy:
+Refer an eligible patient for hospice evaluation through Eternal Life Hospice’s professional referral pathway.
+
+CTA:
+Refer a Hospice Patient
+
+Link:
+/refer
+
+11. CITY-SPECIFIC FAQ
+
+Create five unique FAQs for every page.
+
+Required FAQ themes:
+- Does Eternal Life Hospice serve [City]?
+- Where can hospice care be provided in [City]?
+- How does a family request a hospice evaluation?
+- What does Medicare generally cover?
+- Can a physician or facility refer a patient?
+
+At least one FAQ on every page must contain genuinely city-specific wording rather than a global answer copied across all pages.
+
+12. FINAL CTA
+
+Headline:
+Hospice Guidance for Families in [City]
+
+Buttons:
+- Call Eternal Life Hospice
+- Request an Evaluation
+- Read the Family Guide
+- Refer a Patient
+
+LOCAL CONTENT REQUIREMENTS
+
+For every page include:
+- Correct county
+- Two to four nearby communities or neighborhoods
+- City-specific care-setting context
+- One unique local paragraph
+- One unique local FAQ
+- Unique meta description
+- Unique image alt text
+
+Do not fabricate:
+- Hospital affiliations
+- Facility affiliations
+- Response-time guarantees
+- Testimonials
+- Local offices
+- Local staff
+- Partnerships
+- City statistics
+- Awards
+- Patient volume
+- Travel times
+
+Only mention hospitals. senior communities or public resources if the information has been independently verified and Eternal does not imply an affiliation.
+
+INTERNAL LINKING
+
+Every new city page must link contextually to:
+
+- /
+- /hospice-ventura-and-los-angeles-county-ca
+- /family-guide
+- /refer
+- /resources/medicare-hospice-benefit
+- /resources/first-48-hours
+- /resources/how-to-choose-a-hospice
+- /resources/what-hospice-covers
+- One relevant existing city page
+- One nearby new city page
+
+Use descriptive anchor text.
+
+Do not use generic anchors such as:
+- Click here
+- Learn more
+- Read more
+
+Use:
+- Read the Family Guide
+- Review the First 48 Hours of Hospice Care
+- Learn about Medicare hospice coverage
+- Refer a hospice patient
+- Explore hospice care across Ventura and Los Angeles County
+
+Update the main regional coverage page to link to all 10 new city pages.
+
+Add each new city to the appropriate county grouping.
+
+BREADCRUMBS
+
+Add visible breadcrumbs:
+
+Home → Service Area → [City] Hospice Care
+
+Add valid BreadcrumbList schema.
+
+STRUCTURED DATA
+
+Each city page should include:
+
+- MedicalOrganization
+- WebPage
+- BreadcrumbList
+- FAQPage
+
+Use the existing Eternal Life Hospice entity ID rather than creating a separate organization entity for each city.
+
+MedicalOrganization data must use the actual Eternal Life Hospice organization information.
+
+Use areaServed for the relevant city and county.
+
+Do not create a fake physical office address in each city.
+
+Do not use LocalBusiness schema as though Eternal maintains an office in every city.
+
+IMAGE REQUIREMENTS
+
+Use one city-relevant or care-relevant hero image for each page.
+
+Images must:
+- Be licensed or owned
+- Contain no flowers
+- Avoid repetitive stock imagery
+- Use accurate alt text
+- Be WebP or AVIF where supported
+- Include width and height attributes
+- Be responsive
+- Be lazy-loaded below the fold
+- Keep the hero image optimized for Largest Contentful Paint
+
+Do not generate fake city landmarks.
+
+PERFORMANCE REQUIREMENTS
+
+- Maintain current security headers
+- Maintain current Content Security Policy
+- Avoid new third-party scripts
+- Avoid autoplay video
+- Compress images
+- Prevent layout shift
+- Preload only the required hero asset
+- Keep initial JavaScript minimal
+- Maintain mobile accessibility
+
+ACCESSIBILITY
+
+- Exactly one H1
+- Logical heading hierarchy
+- Descriptive button labels
+- Keyboard-accessible navigation
+- Visible focus states
+- Minimum WCAG AA color contrast
+- Descriptive image alt text
+- No important text embedded only inside images
+
+SITEMAP AND INDEXING
+
+Update sitemap.xml with all 10 pages.
+
+Use:
+- Canonical HTTPS non-www URLs
+- HTTP 200 URLs only
+- No redirected URLs
+- No duplicate URLs
+
+Update the regional service-area page so none of the new pages are orphaned.
+
+QA REQUIREMENTS
+
+After building the pages produce a report with:
+
+- URL
+- HTTP status
+- canonical URL
+- title
+- title length
+- meta description
+- meta-description length
+- H1
+- H1 count
+- county
+- nearby communities used
+- internal inbound-link count
+- internal outbound-link count
+- FAQ count
+- schema types
+- sitemap inclusion
+- robots directive
+- image alt text
+- duplicate-content percentage
+- links to redirected URLs
+- broken links
+- mobile rendering status
+
+Do not report completion until:
+
+- All 10 routes return HTTP 200
+- All 10 pages are indexable
+- All 10 pages have self-referencing canonicals
+- All titles are unique
+- All meta descriptions are unique
+- Every page has exactly one H1
+- Every page contains unique local copy
+- Every page has five FAQs
+- Every page is linked from the regional coverage page
+- No page is orphaned
+- No internal link points to a redirected URL
+- Sitemap.xml includes all 10 canonical URLs
+- No prohibited cost or medical claims appear
+- No fake local offices. affiliations or partnerships are implied
+
+Build the pages as production-ready pages. Do not create placeholder cards or thin city-name substitutions.

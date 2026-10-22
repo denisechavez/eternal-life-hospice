@@ -1,0 +1,289 @@
+PageSpeed Insights logo
+PageSpeed Insights
+Report from Jul 22, 2026, 12:18:22 AM
+https://eternallifehospice.com/
+Enter a valid URL
+
+
+smartphone
+Mobile
+
+computer
+Desktop
+
+Discover what your real users are experiencing
+No Data
+
+Diagnose performance issues
+86
+Performance
+91
+Accessibility
+92
+Best Practices
+100
+SEO
+2/3
+Agentic Browsing
+86
+FCP
++7
+LCP
++15
+TBT
++30
+CLS
++25
+SI
++10
+Performance
+Values are estimated and may vary. The performance score is calculated directly from these metrics.See calculator.
+0–49
+50–89
+90–100
+Final Screenshot
+
+Metrics
+Collapse view
+First Contentful Paint
+2.6 s
+First Contentful Paint marks the time at which the first text or image is painted. Learn more about the First Contentful Paint metric.
+Largest Contentful Paint
+3.6 s
+Largest Contentful Paint marks the time at which the largest text or image is painted. Learn more about the Largest Contentful Paint metric
+Total Blocking Time
+50 ms
+Sum of all time periods between FCP and Time to Interactive, when task length exceeded 50ms, expressed in milliseconds. Learn more about the Total Blocking Time metric.
+Cumulative Layout Shift
+0.034
+Cumulative Layout Shift measures the movement of visible elements within the viewport. Learn more about the Cumulative Layout Shift metric.
+Speed Index
+2.6 s
+Speed Index shows how quickly the contents of a page are visibly populated. Learn more about the Speed Index metric.
+Captured at Jul 22, 2026, 12:18 AM PDT
+Emulated Moto G Power with Lighthouse 13.4.0
+Single page session
+Initial page load
+Slow 4G throttling
+Using HeadlessChromium 149.0.7827.155 with lr
+View Treemap
+Screenshot
+Screenshot
+Screenshot
+Screenshot
+Screenshot
+Screenshot
+Screenshot
+Screenshot
+Show audits relevant to:
+
+All
+
+FCP
+
+LCP
+
+TBT
+
+CLS
+Insights
+Improve image delivery Est savings of 352 KiB
+Use efficient cache lifetimes Est savings of 468 KiB
+Forced reflow
+LCP request discovery
+Network dependency tree
+Layout shift culprits
+Optimize DOM size
+LCP breakdown
+3rd parties
+These insights are also available in the Chrome DevTools Performance Panel - record a trace to view more detailed information.
+Diagnostics
+Image elements do not have explicit width and height
+Reduce unused JavaScript Est savings of 72 KiB
+Avoid long main-thread tasks 3 long tasks found
+Avoid non-composited animations 1 animated element found
+More information about the performance of your application. These numbers don't directly affect the Performance score.
+Passed audits (14)
+Show
+91
+Accessibility
+These checks highlight opportunities to improve the accessibility of your web app. Automatic detection can only detect a subset of issues and does not guarantee the accessibility of your web app, so manual testing is also encouraged.
+Contrast
+Background and foreground colors do not have a sufficient contrast ratio.
+Low-contrast text is difficult or impossible for many users to read. Learn how to provide sufficient color contrast.
+Failing Elements
+START WHERE YOU ARE
+<div class="guide-eyebrow">
+START WHERE YOU ARE Let us guide your next step. Three short questions, answere…
+<div class="guide-card">
+CLINICAL CONFIDENCE
+<div class="eyebrow">
+01 CLINICAL CONFIDENCE Clinical Confidence Behind every patient is a team of h…
+<div class="pcard-copy">
+02
+<div class="pcard-num">
+02 GUIDED PRESENCE Guided Presence Families navigating end-of-life care face a…
+<div class="pcard-copy">
+GUIDED PRESENCE
+<div class="eyebrow">
+02 GUIDED PRESENCE Guided Presence Families navigating end-of-life care face a…
+<div class="pcard-copy">
+03
+<div class="pcard-num">
+03 WHOLE-PERSON COMFORT Whole-Person Comfort The body and the spirit arrive to…
+<div class="pcard-copy">
+WHOLE-PERSON COMFORT
+<div class="eyebrow">
+03 WHOLE-PERSON COMFORT Whole-Person Comfort The body and the spirit arrive to…
+<div class="pcard-copy">
+04
+<div class="pcard-num">
+04 COMPLIANCE-LED CARE Compliance-Led Care Hospice families place deep trust i…
+<div class="pcard-copy">
+COMPLIANCE-LED CARE
+<div class="eyebrow">
+04 COMPLIANCE-LED CARE Compliance-Led Care Hospice families place deep trust i…
+<div class="pcard-copy">
+The Essentials
+<em style="color:var(--slate)">
+body
+<body>
+Disclaimer: Eternal Life Hospice Inc. is a licensed and Medicare-certified hosp…
+<div class="foot-disclaimer">
+Care That Honors Life. Medicare-Certified · CDPH-Licensed · ACHC-Accredited. S…
+<footer id="site-footer">
+Disclaimer:
+<strong style="color:rgba(245,240,235,.5)">
+Care That Honors Life. Medicare-Certified · CDPH-Licensed · ACHC-Accredited. S…
+<footer id="site-footer">
+1.800.MEDICARE
+<a href="tel:18006334227" style="color:inherit;text-decoration:none">
+Care That Honors Life. Medicare-Certified · CDPH-Licensed · ACHC-Accredited. S…
+<footer id="site-footer">
+© 2026 Eternal Life Hospice Inc. All rights reserved. · A Conduit International…
+<span>
+Care That Honors Life. Medicare-Certified · CDPH-Licensed · ACHC-Accredited. S…
+<footer id="site-footer">
+Conduit International
+<a href="https://conduitint.com" target="_blank" rel="noopener" style="color:inherit;text-decoration:none">
+Care That Honors Life. Medicare-Certified · CDPH-Licensed · ACHC-Accredited. S…
+<footer id="site-footer">
+eternallifehospice.com
+<a role="button" tabindex="0" style="cursor:pointer;color:inherit" onclick="document.getElementById('top').scrollIntoView({behavior:'smooth'});return …">
+Care That Honors Life. Medicare-Certified · CDPH-Licensed · ACHC-Accredited. S…
+<footer id="site-footer">
+These are opportunities to improve the legibility of your content.
+Best practices
+Touch targets do not have sufficient size or spacing.
+Touch targets with sufficient size and spacing help users who may have difficulty targeting small controls to activate the targets. Learn more about touch targets.
+Failing Elements
+Dismiss
+<button class="elhc-teaser-close" type="button" aria-label="Dismiss">
+Hello Thank you for reaching out. I’m here to guide you through any hospice que…
+<div class="elhc-teaser" role="button" tabindex="0" aria-label="Open the support guide" style="display: block;">
+Document does not have a main landmark.
+These items highlight common accessibility best practices.
+Navigation
+Heading elements are not in a sequentially-descending order
+Properly ordered headings that do not skip levels convey the semantic structure of the page, making it easier to navigate and understand when using assistive technologies. Learn more about heading order.
+Failing Elements
+Your call is answered
+<h4>
+In-Home Care
+<h4>
+First 90-Day Benefit Period
+<h4>
+These are opportunities to improve keyboard navigation in your application.
+Additional items to manually check (10)
+Show
+These items address areas which an automated testing tool cannot cover. Learn more in our guide on conducting an accessibility review.
+Passed audits (25)
+Show
+Not applicable (34)
+Show
+92
+Best Practices
+General
+Browser errors were logged to the console
+Errors logged to the console indicate unresolved problems. They can come from network request failures and other browser concerns. Learn more about this errors in console diagnostic audit
+Source
+Description
+Google Tag Manager tag-manager 
+/gtag/js?id=G-JRLYCRC48G:294:390(www.googletagmanager.com)
+Connecting to 'https://analytics.google.com/g/collect?v=2&tid=G-JRLYCRC48G&gtm=45je67k1v9256715477za200zd9256715477&_p=1784704706915&_gaz=1&gcd=13l3l3l3l1l1&npa=0&dma=0&_eu=AAAAAGAC&are=1&cid=1126843437.1784704707&frm=0&pscdl=noapi&rcb=19&sr=412x823&uaa=&uab=64&uafvl=HeadlessChrome%3B149.0.7827.155%7CChromium%3B149.0.7827.155%7CNot)A%253BBrand%3B24.0.0.0&uam=moto%20g%20power%20(2022)&uamb=1&uap=Android&uapv=11.0&uaw=0&ul=en-us&gaf=2&_s=1&tag_exp=115616985~115938466~115938469~118395334~118897920~118897930~119527019~119773332~119896802&sid=1784704707&sct=1&seg=0&dl=https%3A%2F%2Feternallifehospice.com%2F&dt=Hospice%20Care%20in%20Ventura%20%26%20Los%20Angeles%20County%20%7C%20Eternal%20Life%20Hospice&en=page_view&_fv=1&_nsi=1&_ss=1&_ee=1&tfd=970' violates the following Content Security Policy directive: "connect-src 'self' https://www.google-analytics.com https://region1.google-analytics.com https://www.clarity.ms https://in.clarity.ms https://cdn.brevo.com https://api.brevo.com". The action has been blocked.
+/gtag/js?id=G-JRLYCRC48G:292:226(www.googletagmanager.com)
+Connecting to 'https://stats.g.doubleclick.net/g/collect?v=2&tid=G-JRLYCRC48G&cid=1126843437.1784704707&gtm=45je67k1v9256715477za200zd9256715477&rcb=19&aip=1&dma=0&gcd=13l3l3l3l1l1&npa=0&frm=0&tag_exp=115616985~115938466~115938469~118395334~118897920~118897930~119527019~119773332~119896802' violates the following Content Security Policy directive: "connect-src 'self' https://www.google-analytics.com https://region1.google-analytics.com https://www.clarity.ms https://in.clarity.ms https://cdn.brevo.com https://api.brevo.com". The action has been blocked.
+/gtag/js?id=G-JRLYCRC48G:294:390(www.googletagmanager.com)
+Connecting to 'https://www.google.com/g/collect?v=2&tid=G-JRLYCRC48G&gtm=45je67k1v9256715477za200zd9256715477&_p=1784704706915&_gaz=1&gcd=13l3l3l3l1l1&npa=0&dma=0&_eu=AAAAAGAC&are=1&cid=1126843437.1784704707&frm=0&pscdl=noapi&rcb=19&sr=412x823&uaa=&uab=64&uafvl=HeadlessChrome%3B149.0.7827.155%7CChromium%3B149.0.7827.155%7CNot)A%253BBrand%3B24.0.0.0&uam=moto%20g%20power%20(2022)&uamb=1&uap=Android&uapv=11.0&uaw=0&ul=en-us&gaf=3&_s=1&tag_exp=115616985~115938466~115938469~118395334~118897920~118897930~119527019~119773332~119896802&sid=1784704707&sct=1&seg=0&dl=https%3A%2F%2Feternallifehospice.com%2F&dt=Hospice%20Care%20in%20Ventura%20%26%20Los%20Angeles%20County%20%7C%20Eternal%20Life%20Hospice&en=page_view&_fv=1&_nsi=1&_ss=1&_ee=1&tfd=970' violates the following Content Security Policy directive: "connect-src 'self' https://www.google-analytics.com https://region1.google-analytics.com https://www.clarity.ms https://in.clarity.ms https://cdn.brevo.com https://api.brevo.com". The action has been blocked.
+/gtag/js?id=G-JRLYCRC48G:294:390(www.googletagmanager.com)
+Fetch API cannot load https://analytics.google.com/g/collect?v=2&tid=G-JRLYCRC48G&gtm=45je67k1v9256715477za200zd9256715477&_p=1784704706915&_gaz=1&gcd=13l3l3l3l1l1&npa=0&dma=0&_eu=AAAAAGAC&are=1&cid=1126843437.1784704707&frm=0&pscdl=noapi&rcb=19&sr=412x823&uaa=&uab=64&uafvl=HeadlessChrome%3B149.0.7827.155%7CChromium%3B149.0.7827.155%7CNot)A%253BBrand%3B24.0.0.0&uam=moto%20g%20power%20(2022)&uamb=1&uap=Android&uapv=11.0&uaw=0&ul=en-us&gaf=2&_s=1&tag_exp=115616985~115938466~115938469~118395334~118897920~118897930~119527019~119773332~119896802&sid=1784704707&sct=1&seg=0&dl=https%3A%2F%2Feternallifehospice.com%2F&dt=Hospice%20Care%20in%20Ventura%20%26%20Los%20Angeles%20County%20%7C%20Eternal%20Life%20Hospice&en=page_view&_fv=1&_nsi=1&_ss=1&_ee=1&tfd=970. Refused to connect because it violates the document's Content Security Policy.
+/gtag/js?id=G-JRLYCRC48G:294:390(www.googletagmanager.com)
+Fetch API cannot load https://www.google.com/g/collect?v=2&tid=G-JRLYCRC48G&gtm=45je67k1v9256715477za200zd9256715477&_p=1784704706915&_gaz=1&gcd=13l3l3l3l1l1&npa=0&dma=0&_eu=AAAAAGAC&are=1&cid=1126843437.1784704707&frm=0&pscdl=noapi&rcb=19&sr=412x823&uaa=&uab=64&uafvl=HeadlessChrome%3B149.0.7827.155%7CChromium%3B149.0.7827.155%7CNot)A%253BBrand%3B24.0.0.0&uam=moto%20g%20power%20(2022)&uamb=1&uap=Android&uapv=11.0&uaw=0&ul=en-us&gaf=3&_s=1&tag_exp=115616985~115938466~115938469~118395334~118897920~118897930~119527019~119773332~119896802&sid=1784704707&sct=1&seg=0&dl=https%3A%2F%2Feternallifehospice.com%2F&dt=Hospice%20Care%20in%20Ventura%20%26%20Los%20Angeles%20County%20%7C%20Eternal%20Life%20Hospice&en=page_view&_fv=1&_nsi=1&_ss=1&_ee=1&tfd=970. Refused to connect because it violates the document's Content Security Policy.
+Clarity utility 
+/tag/xddyi1rk95:1:421(www.clarity.ms)
+Loading the script 'https://scripts.clarity.ms/0.8.67/clarity.js' violates the following Content Security Policy directive: "script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.clarity.ms https://cdn.brevo.com https://www.google-analytics.com". Note that 'script-src-elem' was not explicitly set, so 'script-src' is used as a fallback. The action has been blocked.
+brevo.com
+/js/sdk-loader.js:36:31(cdn.brevo.com)
+Loading the script 'https://sibautomation.com/sa.js?key=kejxjl4hntbbl2jnfp84s6bs' violates the following Content Security Policy directive: "script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.clarity.ms https://cdn.brevo.com https://www.google-analytics.com". Note that 'script-src-elem' was not explicitly set, so 'script-src' is used as a fallback. The action has been blocked.
+Issues were logged in the Issues panel in Chrome Devtools
+Issues logged to the Issues panel in Chrome Devtools indicate unresolved problems. They can come from network request failures, insufficient security controls, and other browser concerns. Open up the Issues panel in Chrome DevTools for more details on each issue.
+Issue type
+Content security policy
+/g/collect?v=…(analytics.google.com)
+/g/collect?v=…(stats.g.doubleclick.net)
+/g/collect?v=…(www.google.com)
+/0.8.67/clarity.js(scripts.clarity.ms)
+/sa.js?key=kejxjl4hntbbl2jnfp84s6bs(sibautomation.com)
+Trust and Safety
+Ensure CSP is effective against XSS attacks
+Use a strong HSTS policy
+Ensure proper origin isolation with COOP
+Mitigate DOM-based XSS with Trusted Types
+Browser Compatibility
+Baseline Features
+Passed audits (11)
+Show
+Not applicable (3)
+Show
+100
+SEO
+These checks ensure that your page is following basic search engine optimization advice. There are many additional factors Lighthouse does not score here that may affect your search ranking, including performance on Core Web Vitals. Learn more about Google Search Essentials.
+Additional items to manually check (1)
+Hide
+Structured data is valid
+Run these additional validators on your site to check additional SEO best practices.
+Passed audits (10)
+Show
+2/3
+Agentic Browsing
+These checks ensure high-quality, browsable websites for AI agents and validate the correctness of WebMCP integrations. This category is still under development and subject to change.
+Agent Accessibility
+llms.txt does not follow recommendations
+If your llms.txt file does not follow recommendations, large language models may not be able to understand how you want your website to be crawled or used for training. The llms.txt file should be a Markdown file containing at least one H1 header.
+Error
+File does not appear to contain any links.
+These audits highlight best practices for improving the accessibility of the website for AI agents.
+Passed audits (2)
+Show
+Not applicable (3)
+Show
+More on PageSpeed Insights
+What's new
+Documentation
+Learn about Web Performance
+Ask questions on Stack Overflow
+Mailing list
+Related Content
+Updates
+Web Fundamentals
+Case Studies
+Podcasts
+Connect
+Twitter
+Youtube
+Google Developers Logo
+Chrome
+Firebase
+All products
+Terms and Privacy Policy
+For details, see the Google Developers Site Policies.

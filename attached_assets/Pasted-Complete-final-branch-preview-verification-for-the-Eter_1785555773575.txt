@@ -1,0 +1,185 @@
+Complete final branch-preview verification for the Eternal Life Hospice stabilization pass before merge.
+
+Work from the existing branch:
+
+`stabilization-day-1-tweaks`
+
+Do not make any new architectural, navigation, schema, copy, form, sitemap, redirect or city-page changes.
+
+## 1. Deploy or open the Netlify branch preview
+
+Use the Netlify deploy preview generated from this branch.
+
+Do not merge to main yet.
+
+Report the exact preview URL.
+
+## 2. Verify Content Security Policy in the live branch preview
+
+Using the actual Netlify preview rather than the local development server:
+
+- Open the homepage.
+- Open `/refer`.
+- Open `/resources`.
+- Open one resource article.
+- Open one city page.
+
+For each tested page:
+
+- inspect the browser console for CSP violations
+- inspect the browser network panel
+- confirm the WhatConverts script loads successfully
+- identify every domain contacted by WhatConverts
+- confirm there are no blocked `script-src` requests
+- confirm there are no blocked `connect-src` requests
+- confirm no unrelated scripts, fonts, images or analytics requests are blocked
+
+Do not add any additional WhatConverts domain unless an actual browser error or blocked network request proves it is required.
+
+If another domain is required, report:
+
+- exact blocked URL
+- CSP directive involved
+- minimum domain that must be added
+- why the current domain is insufficient
+
+Do not use wildcards.
+Do not add `*`.
+Do not add `unsafe-eval`.
+Do not weaken other CSP directives.
+
+## 3. Verify WhatConverts operation
+
+On the branch preview:
+
+- confirm the tracking script initializes
+- confirm phone-number replacement, if configured, behaves correctly
+- confirm telephone links remain clickable
+- confirm no page text or layout is disrupted
+- confirm the tracking script does not expose form-field values in browser logs
+
+Do not submit real patient information.
+Use only clearly fictional test data where testing is required.
+
+## 4. Verify Microsoft Clarity masking
+
+First determine whether account-level Clarity settings can be inspected from the connected environment.
+
+If accessible, confirm the exact masking setting currently enabled.
+
+Then perform a controlled test on:
+
+- the homepage contact/referral form
+- `/refer`
+
+Use fictional test values only.
+
+Confirm whether session playback exposes or masks:
+
+- name
+- phone
+- email
+- patient name
+- diagnosis or clinical notes
+- insurance information
+- free-text messages
+- dropdown selections
+- textarea content
+
+Do not include the fictional test values in the completion report.
+
+If masking cannot be verified, or if any form value is visible in playback, do not treat the privacy review as passed.
+
+In that case, implement the safest limited code-level exclusion:
+
+- prevent Microsoft Clarity from loading on `/refer`
+- prevent Clarity from recording the homepage form section if it may capture form interaction
+- preserve all other analytics
+- do not change forms or WhatConverts
+- document the exclusion clearly
+
+Keep any Clarity exclusion in its own commit:
+
+`Exclude Clarity from sensitive referral intake`
+
+If account-level Strict masking is verified and all sensitive values are masked, make no code change.
+
+## 5. Verify optimized media on branch preview
+
+Confirm:
+
+- `cred-achc.webp` loads successfully on representative page types
+- the image remains sharp at mobile and desktop sizes
+- there is no distortion
+- no layout shift occurs
+- the PNG is no longer requested by production pages
+- the founder audio is not requested during initial homepage load
+- the founder audio begins downloading only after the user presses play
+- playback still works correctly
+
+## 6. Run production-preview Lighthouse tests
+
+Run Lighthouse against the Netlify branch preview using the same URL and consistent settings.
+
+Test mobile and desktop.
+
+Report:
+
+- Performance
+- Accessibility
+- Best Practices
+- SEO
+- FCP
+- LCP
+- TBT
+- CLS
+- Speed Index
+- network request count
+- transferred page weight
+
+Compare these results with the local baseline:
+
+Mobile:
+- Performance 63
+- Accessibility 97
+- Best Practices 82
+- SEO 100
+- FCP 3.0 s
+- LCP 6.7 s
+- TBT 350 ms
+- CLS 0
+- Speed Index 3.4 s
+
+Desktop:
+- Performance 64
+- Accessibility 97
+- Best Practices 81
+- SEO 100
+- FCP 2.1 s
+- LCP 5.6 s
+- TBT 50 ms
+- CLS 0.001
+- Speed Index 2.1 s
+
+Do not assume or state that Netlify improves performance unless the measurements show it.
+
+## 7. Merge readiness report
+
+At completion, provide:
+
+1. Netlify branch-preview URL
+2. CSP console findings
+3. WhatConverts network domains observed
+4. WhatConverts operational test result
+5. Clarity masking setting
+6. Clarity referral-form playback result
+7. Whether a Clarity exclusion was required
+8. WebP display and request verification
+9. Audio request and playback verification
+10. Lighthouse branch-preview results
+11. Comparison with the local baseline
+12. New commit hash, if a Clarity exclusion was made
+13. Any remaining warnings
+14. A clear recommendation: READY TO MERGE or NOT READY TO MERGE
+
+Do not merge automatically.

@@ -26,3 +26,15 @@ Chromium-profile cleanup can sometimes hide that original failure.
 
 **How to apply:** Use the flag for existing browser checks until their runtime
 compatibility is made explicit. Do not mistake a cleanup error for an app failure.
+
+Keep offline authentication tests fail-closed against unexpected provider traffic
+and require a successful cryptographic fixture alongside rejection cases.
+
+**Why:** A provider-library upgrade changed its HTTP transport from direct
+`urlopen` to an opener. An obsolete transport mock let key requests escape the
+fixture; rejection-only assertions could pass because every request failed,
+not because issuer or reviewer checks worked.
+
+**How to apply:** Intercept the installed library's actual transport, deny
+unexpected outbound connections and prove a freshly signed synthetic token
+passes before trusting negative identity tests. Never substitute real sessions.

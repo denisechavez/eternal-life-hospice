@@ -131,6 +131,28 @@ failures. It adds no performance threshold to the normal release suite.
 
 ## Reviewer-only history
 
+### Authenticated loading regression gate
+
+The publish build runs `bash website/check-studio-regressions.sh` after compiling
+Studio. Run the same command from any directory for the focused security/browser
+checks. It requires the installed Python/Node dependencies and Chromium, but no
+database, real reviewer session or external provider access.
+
+The browser fixture bundles the real `StudioSession` and `App` with synthetic
+reviewer identities and a synthetic dynamically imported review component.
+It checks deep links, backend verification before private import requests and
+execution, public sign-in/error styles, rejected accounts, sign-out failure,
+account change and retry recovery. No unpublished articles are bundled in it.
+Provider responses are isolated and non-loopback browser requests are rejected.
+
+The server checks exercise the real asset and API handlers, including encoded
+private-chunk paths, anonymous/unauthorized reads and writes and public CSS.
+Fresh synthetic RSA tokens verify both production domains' matching issuers and
+proxy JWKS URLs, signatures, expiry, active sessions and verified reviewer
+authority. Provider network I/O is intercepted; these are not live sign-in tests.
+Both checks must exit successfully and print their completion sentinels for
+publishing to proceed. Authentication and private-bundle protection are unchanged.
+
 The authenticated `/api/studio/journal` response includes each article's
 append-only audit history, its current review revision, the retained published
 revision and any frozen pre-Studio original. Both verified reviewers can read it.

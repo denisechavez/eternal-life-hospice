@@ -1,0 +1,605 @@
+Act as a senior technical SEO engineer and healthcare-content compliance reviewer working directly in the Eternal Life Hospice production repository.
+
+OBJECTIVE
+
+Implement the remaining corrections from the latest technical audit without redesigning the website. Preserve the approved Eternal Life Hospice brand system. page layouts. navigation. forms. imagery and conversion paths unless a change is specifically requested below.
+
+Do not invent credentials. statistics. guarantees. insurance affiliations. medical coverage claims or clinical capabilities.
+
+Before changing any claim that may depend on agency operations. create a flagged review list. Apply the approved safer wording provided in this prompt unless the existing copy is already more precise.
+
+PRIMARY DOMAIN
+
+Keep this as the only canonical production domain:
+
+https://eternallifehospice.com
+
+Confirm:
+
+- http://eternallifehospice.com redirects in one 301 hop
+- http://www.eternallifehospice.com redirects in one 301 hop
+- https://www.eternallifehospice.com redirects in one 301 hop
+- every redirected internal path resolves to the matching non-www path
+- no alternate domain redirects every page to the homepage
+- no Netlify. Replit or preview deployment URL is indexable
+- all internal links use the canonical non-www domain
+
+1. HOMEPAGE TITLE AND META
+
+Update the homepage metadata to:
+
+Title:
+Hospice Care in Ventura & Los Angeles County | Eternal Life Hospice
+
+Meta description:
+Physician-supported hospice care at home across Ventura and Los Angeles County. Same-day admission when clinically appropriate. Medicare-certified. Call 805.953.7273.
+
+Canonical:
+https://eternallifehospice.com/
+
+Open Graph title:
+Hospice Care in Ventura & Los Angeles County | Eternal Life Hospice
+
+Open Graph description:
+Physician-supported hospice care at home with 24/7 nurse access. serving Ventura and Los Angeles Counties.
+
+Open Graph URL:
+https://eternallifehospice.com/
+
+Ensure Twitter metadata matches the Open Graph content.
+
+2. HOMEPAGE HERO INTRODUCTION
+
+Keep the approved H1:
+
+Hospice Care That Honors Life
+
+Directly below the H1 add this visible crawlable paragraph:
+
+Eternal Life Hospice provides physician-supported hospice care at home throughout Ventura County and Los Angeles County including Thousand Oaks. Westlake Village. Camarillo. Oxnard. Ventura and Simi Valley. Our interdisciplinary team supports patients in private homes. assisted living communities. residential care settings and skilled nursing facilities.
+
+Do not place this text inside an image. JavaScript-only component. carousel or inaccessible animation.
+
+Keep the paragraph concise on mobile and preserve the current visual hierarchy.
+
+3. ADD “ETERNAL LIFE HOSPICE AT A GLANCE”
+
+Add one visible homepage section titled:
+
+Eternal Life Hospice at a Glance
+
+Use a clean card or compact grid consistent with the existing brand.
+
+Include only these verified facts:
+
+- Independent hospice agency
+- Medicare-certified
+- CDPH-licensed
+- ACHC-accredited
+- Serving Ventura and Los Angeles Counties
+- Hospice care at home and in care communities
+- 24/7 on-call nurse access
+- Same-day admission when clinically appropriate and operationally available
+- Admissions: 805.953.7273
+
+Add MedicalOrganization structured data for these facts but do not duplicate the visible section elsewhere on the homepage.
+
+4. STANDARDIZE PHYSICIAN LANGUAGE
+
+Search the entire repository for:
+
+hospice-certified physician
+hospice-certified physicians
+hospital-grade expertise
+physician-led
+physician-directed
+physician supported
+physician-supported
+
+Replace unsupported or ambiguous uses according to this hierarchy:
+
+Primary public-facing phrase:
+Physician-supported hospice care
+
+Clinical explanatory phrase:
+Hospice medical director oversight with nurse-coordinated interdisciplinary care
+
+Referral-facing phrase:
+Physician-directed clinical oversight with nurse-coordinated care
+
+Replace:
+
+hospice-certified physicians
+
+with:
+
+hospice-experienced physicians
+
+unless a specific physician’s recognized board certification is documented and displayed.
+
+Replace:
+
+hospital-grade expertise directly to your door
+
+with:
+
+Specialized clinical experience brought directly to the patient’s home.
+
+Do not remove accurate references to physician orders. attending physicians. medical directors or certification requirements.
+
+5. STANDARDIZE INTEGRATIVE COMFORT LANGUAGE
+
+Search all pages for claims including:
+
+included in every care plan
+included in each care plan
+part of every care plan
+at no expense
+free integrative therapy
+provided to every patient
+all patients receive
+
+Replace the general promise with:
+
+Optional integrative comfort services may be incorporated into the individualized plan of care when requested. clinically appropriate and available. Eternal Life Hospice provides these offerings at no additional expense to the family.
+
+Use shorter versions where layout requires:
+
+Optional integrative comfort services may be included when requested. appropriate and available at no additional expense to the family.
+
+Do not describe optional therapies as guaranteed.
+
+Do not imply that integrative therapies replace medical. nursing. psychosocial or spiritual hospice care.
+
+6. CLARIFY CLINICAL AND MOBILE SERVICES
+
+Locate every section that lists:
+
+Physical therapy
+Occupational therapy
+Speech therapy
+Mobile podiatry
+Mobile optometry
+Mobile dialysis
+Lab testing
+Gerontologist
+Audiology
+Dietitian
+Other specialty or mobile services
+
+Add this qualification near the list:
+
+Clinical and mobile services may be coordinated when medically necessary and included in the individualized hospice plan of care
+.
+For mobile dialysis use more specific language:
+
+Mobile dialysis may be coordinated only in limited circumstances based on the patient’s goals. clinical eligibility and  physician direction
+
+Do not state or imply that mobile dialysis is routinely included in the Medicare Hospice Benefit.
+
+7. REMOVE OR FULLY SOURCE THE 92% STATISTIC
+
+Search for:
+
+92%
+92 percent
+NHPCO
+quality of life
+
+If a direct authoritative source with the exact statistic. report title. publication year and URL is already stored in the repository then add the complete citation visibly.
+
+Otherwise remove the statistic and its source reference entirely.
+
+Do not replace it with another statistic unless the source is authoritative and verified.
+
+8. CORRECT MEDICARE COST LANGUAGE
+
+Search for absolute language including:
+
+NO COPAY
+No copays
+No deductibles
+$0
+costs nothing
+fully covered
+delivered free
+all medications covered
+all equipment covered
+
+Replace broad statements with:
+
+Most Medicare-covered hospice services have little to no out-of-pocket cost.
+
+Supporting copy:
+
+Covered hospice nursing. equipment. supplies and medications related to the terminal illness are generally paid through the Medicare Hospice Benefit. Limited copayments may apply in specific circumstances including certain outpatient medications and respite care.
+
+Use this shorter version where necessary:
+
+Medicare generally covers hospice services related to the terminal illness. Limited copayments may apply in certain circumstances.
+
+Do not use “free” to describe Medicare-covered healthcare services.
+
+9. STANDARDIZE SAME-DAY ADMISSION LANGUAGE
+
+Search all pages for:
+
+same-day admission
+same day admission
+admission today
+care begins today
+start hospice today
+immediate admission
+
+Use this exact approved phrase wherever appropriate:
+
+Same-day admission when clinically appropriate and operationally available.
+
+For CTAs use:
+
+Call now to discuss eligibility and admission availability.
+
+Do not promise a same-day admission without the qualifier.
+
+10. CLEAN SERVICE-AREA PLACE NAMES
+
+Review the service-area page and city data.
+
+Replace awkward public-facing labels including:
+
+Point Mugu Nawc
+Port Hueneme Cbc Base
+City Of Industry
+La Canada Flintridge
+
+with:
+
+Point Mugu
+Port Hueneme
+City of Industry
+La Cañada Flintridge
+
+Investigate and flag:
+
+Santee
+
+Do not display Santee as a Los Angeles County service area unless the source data confirms the exact locality and Eternal Life Hospice actually serves it.
+
+Remove military. postal. census or facility designations that are not useful to families.
+
+Do not remove a legitimate service area without including it in the final review report.
+
+11. ADD UNIQUE MODULES TO PRIORITY CITY PAGES
+
+Do not create fictional hospital affiliations or imply formal relationships.
+
+Add one original local module to each priority page.
+
+THOUSAND OAKS
+
+Heading:
+Hospice Support Across the Conejo Valley
+
+Discuss:
+
+- Thousand Oaks
+- Newbury Park
+- Westlake Village
+- North Ranch
+- Lang Ranch
+- Wildwood
+- Private homes
+- Assisted living
+- Memory care
+- Skilled nursing settings
+- Discharge coordination from local hospitals without implying affiliation
+
+CAMARILLO
+
+Heading:
+Hospice Care for Camarillo Families and Care Communities
+
+Discuss:
+
+- Camarillo
+- Mission Oaks
+- Leisure Village
+- Las Posas
+- Somis
+- Home care
+- Assisted living
+- Senior communities
+- Hospital-to-home hospice coordination
+- Spanish-language support only if operationally available
+
+SIMI VALLEY
+
+Heading:
+Hospice Care Across Simi Valley and Moorpark
+
+Discuss:
+
+- Simi Valley
+- Wood Ranch
+- Big Sky
+- Santa Susana
+- Moorpark
+- Eastern Ventura County
+- Hospice after hospital discharge
+- Care at home and in residential care settings
+
+VENTURA
+
+Heading:
+Hospice Care at Home in Ventura and Nearby Communities
+
+Discuss:
+
+- Ventura
+- Oxnard
+- Ojai
+- Santa Paula
+- Port Hueneme
+- Home hospice
+- Assisted living
+- Skilled nursing
+- Hospital discharge coordination without implying affiliation
+
+OXNARD
+
+Heading:
+Hospice Care for Oxnard and Coastal Ventura County
+
+Discuss:
+
+- Oxnard
+- Port Hueneme
+- El Rio
+- Channel Islands area
+- Ventura
+- Home hospice
+- Family caregiver guidance
+- Medicare coverage
+- Spanish-language intake only if confirmed operationally available
+
+Each module must contain original copy. not a city-name substitution of the same paragraph.
+
+12. INTERNAL LINKING
+
+Add natural contextual links between:
+
+Homepage
+Family Guide
+Providers
+Refer
+Resources
+Medicare Hospice Benefit content
+First 48 Hours content
+Service-area page
+Hospice-at-home content
+Priority city pages
+
+Use descriptive anchor text including:
+
+hospice care at home
+how to choose a hospice
+Medicare Hospice Benefit
+what happens during the first 48 hours
+refer a hospice patient
+hospice care in Thousand Oaks
+hospice care in Camarillo
+hospice care in Simi Valley
+hospice care in Ventura
+hospice care in Oxnard
+Ventura and Los Angeles County service area
+
+Avoid excessive exact-match anchors and avoid repeating the same anchor multiple times on one page.
+
+13. JSON-LD VALIDATION
+
+Review all structured data.
+
+Homepage should use one connected graph containing:
+
+Organization
+MedicalOrganization
+WebSite
+WebPage
+PostalAddress
+ContactPoint
+areaServed
+founder
+sameAs
+logo
+image
+url
+
+Interior pages should add where appropriate:
+
+WebPage
+Service
+BreadcrumbList
+FAQPage
+Person
+Article
+
+Rules:
+
+- FAQPage schema may only reflect questions and answers visibly displayed on that page
+- Do not add ratings or review schema unless the qualifying reviews are visibly displayed and policy-compliant
+- Do not add hospital affiliations
+- Do not add medical specialties that Eternal has not verified
+- Do not add insurance plans that are not approved
+- Do not add unsupported awards
+- Do not add the old or legacy domain anywhere in schema
+- Canonical URL. og:url and schema URL must match exactly
+
+14. CANONICALS. ROBOTS AND SITEMAP
+
+Confirm every indexable page has a self-referencing canonical.
+
+Validate:
+
+https://eternallifehospice.com/robots.txt
+
+Required minimum:
+
+User-agent: *
+Allow: /
+
+Sitemap: https://eternallifehospice.com/sitemap.xml
+
+Do not block CSS. JavaScript. image assets or legitimate public pages.
+
+Validate:
+
+https://eternallifehospice.com/sitemap.xml
+
+The sitemap must contain only:
+
+- canonical URLs
+- HTTP 200 pages
+- indexable pages
+- substantive public pages
+- current production hostname
+
+Exclude:
+
+- redirects
+- 404s
+- noindex pages
+- preview URLs
+- Replit URLs
+- Netlify URLs
+- form success states
+- query strings
+- homepage hash links
+- duplicate URLs
+- unfinished pages
+
+Use real lastmod dates based on substantive changes.
+
+15. 404 AND REDIRECT TESTING
+
+Create or verify a custom 404 page.
+
+Test a fake URL such as:
+
+https://eternallifehospice.com/this-page-should-not-exist-404-test
+
+It must return HTTP 404 rather than HTTP 200.
+
+Generate a redirect table showing:
+
+- source URL
+- status code
+- destination
+- number of hops
+- final canonical
+
+16. PERFORMANCE REVIEW
+
+Do not redesign the site.
+
+Improve:
+
+- responsive image sizing
+- AVIF or WebP delivery
+- image width and height attributes
+- hero image priority
+- below-the-fold lazy loading
+- audio lazy loading
+- font-display: swap
+- unused JavaScript
+- layout shift
+- mobile CTA performance
+- accessible alt text
+- form labels
+- keyboard access
+- heading hierarchy
+
+Do not lazy-load the primary hero image.
+
+Preserve Fraunces and Jost.
+
+17. FINAL QA REPORT
+
+After implementation produce a file named:
+
+SEO-COMPLIANCE-REMEDIATION-REPORT.md
+
+Include:
+
+A. Files changed
+
+B. Routes changed
+
+C. Exact copy replacements
+
+D. Claims flagged for human review
+
+E. Redirect test results
+
+F. Canonical audit
+
+G. Metadata table with:
+- URL
+- title
+- title length
+- meta description
+- description length
+- H1
+- canonical
+- Open Graph URL
+
+H. Sitemap audit
+
+I. Robots audit
+
+J. Schema types by page
+
+K. Structured-data validation errors and warnings
+
+L. Broken-link report
+
+M. Orphan-page report
+
+N. Duplicate-title and duplicate-description report
+
+O. Pages still requiring operational or compliance confirmation
+
+P. Before-and-after screenshots of:
+- homepage hero
+- At a Glance section
+- Medicare section
+- integrative comfort section
+- priority city modules
+
+18. COMPLETION RULES
+
+Do not mark this complete until:
+
+- the homepage title is updated
+- the homepage geographic introduction is visible
+- the At a Glance section is live
+- unsupported physician terminology is removed
+- integrative-service language is qualified
+- mobile and specialty services are qualified
+- the 92% statistic is sourced or removed
+- Medicare cost language is qualified
+- every same-day admission statement uses the approved qualifier
+- service-area place names are cleaned
+- priority city pages have unique local modules
+- all important pages have self-referencing canonicals
+- robots.txt returns HTTP 200
+- sitemap.xml returns HTTP 200
+- no sitemap URL redirects or returns 404
+- schema validates without critical errors
+- fake missing URLs return true 404 status
+- no legacy domain remains visible in public-facing source
+- no preview domain is indexable
+- the final remediation report is generated
+
+Do not deploy partial changes silently.
+
+Implement the changes. run the full validation. then provide the final report and list any item that requires Eternal Life Hospice approval before deployment.

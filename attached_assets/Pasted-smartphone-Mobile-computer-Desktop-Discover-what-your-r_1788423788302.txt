@@ -1,0 +1,224 @@
+smartphone
+Mobile
+
+computer
+Desktop
+
+Discover what your real users are experiencing
+No Data
+
+Diagnose performance issues
+82
+Performance
+100
+Accessibility
+100
+Best Practices
+100
+SEO
+3/3
+Agentic Browsing
+82
+FCP
++8
+LCP
++13
+TBT
++30
+CLS
++25
+SI
++7
+Performance
+Values are estimated and may vary. The performance score is calculated directly from these metrics.See calculator.
+0–49
+50–89
+90–100
+Final Screenshot
+
+Metrics
+Expand view
+First Contentful Paint
+2.1 s
+Largest Contentful Paint
+3.9 s
+Total Blocking Time
+0 ms
+Cumulative Layout Shift
+0
+Speed Index
+4.8 s
+Captured at Sep 3, 2026, 1:18 AM PDT
+Emulated Moto G Power with Lighthouse 13.4.1
+Single page session
+Initial page load
+Slow 4G throttling
+Using HeadlessChromium 151.0.7922.71 with lr
+View Treemap
+Screenshot
+Screenshot
+Screenshot
+Screenshot
+Screenshot
+Screenshot
+Screenshot
+Screenshot
+Show audits relevant to:
+
+All
+
+FCP
+
+LCP
+
+TBT
+
+CLS
+Insights
+Render-blocking requests Est savings of 310 ms
+Requests are blocking the page's initial render, which may delay LCP. Deferring or inlining can move these network requests out of the critical path.LCPFCPUnscored
+URL
+Transfer Size
+Duration
+eternallifehospice.com 1st party
+4.5 KiB	160 ms
+/assets/header-nav.css?v=20260901ab(eternallifehospice.com)
+4.5 KiB
+160 ms
+Forced reflow
+A forced reflow occurs when JavaScript queries geometric properties (such as offsetWidth) after styles have been invalidated by a change to the DOM state. This can result in poor performance. Learn more about forced reflows and possible mitigations.Unscored
+Source
+Total reflow time
+https://eternallifehospice.com:1768:63
+139 ms
+/assets/header.js?v=20260901d:10:40(eternallifehospice.com)
+30 ms
+Network dependency tree
+Avoid chaining critical requests by reducing the length of chains, reducing the download size of resources, or deferring the download of unnecessary resources to improve page load.LCPUnscored
+Maximum critical path latency: 3,146 ms
+Initial Navigation
+https://eternallifehospice.com - 296 ms, 243.99 KiB
+/assets/header-nav.css?v=20260901ab(eternallifehospice.com) - 377 ms, 4.46 KiB
+/api/config.json?key=…(c.go-mpulse.net) - 3,146 ms, 0.00 KiB
+Preconnected origins
+preconnect hints help the browser establish a connection earlier in the page load, saving time when the first request for that origin is made. The following are the origins that the page preconnected to.
+no origins were preconnected
+Preconnect candidates
+Add preconnect hints to your most important origins, but try to use no more than 4.
+Origin
+Est LCP savings
+https://i.replit.com
+310 ms
+Use efficient cache lifetimes Est savings of 2 KiB
+A long cache lifetime can speed up repeat visits to your page. Learn more about caching.LCPFCPUnscored
+Request
+Cache TTL
+Transfer Size
+userway.org
+7 KiB
+/widget.js(cdn.userway.org)
+1h
+2 KiB
+…2026-09-01-10-22-26/widget_base.css?v=178…(cdn.userway.org)
+10d
+5 KiB
+Document request latency Est savings of 162 KiB
+Your first network request is the most important. Reduce its latency by avoiding redirects, ensuring a fast server response, and enabling text compression.LCPFCPUnscored
+Avoids redirects
+Server responds quickly (observed 8 ms)
+No compression applied
+Improve image delivery Est savings of 69 KiB
+Reducing the download time of images can improve the perceived load time of the page and LCP. Learn more about optimizing image sizeLCPFCPUnscored
+URL
+Resource Size
+Est Savings
+eternallifehospice.com 1st party
+117.2 KiB	69.4 KiB
+A hospice nurse with a stethoscope attending a patient at home
+<img loading="lazy" decoding="async" src="https://eternallifehospice.com/assets/img/inline-5eebc45ba1.webp" srcset="assets/img/inline-5eebc45ba1-720.jpg 720w, assets/img/inline-5eebc45ba1.jp…" sizes="(max-width: 780px) 100vw, 50vw" alt="A hospice nurse with a stethoscope attending a patient at home" width="800" height="1000">
+…img/inline-5eebc45ba1.webp(eternallifehospice.com)
+55.4 KiB
+29.8 KiB
+This image file is larger than it needs to be (800x575) for its displayed dimensions (412x515). Use responsive images to reduce the image download size.
+29.8 KiB
+A caregiver and a family member sitting together holding hands
+<img loading="lazy" decoding="async" src="https://eternallifehospice.com/assets/img/inline-ce5cac9062.webp" alt="A caregiver and a family member sitting together holding hands">
+…img/inline-ce5cac9062.webp(eternallifehospice.com)
+34.0 KiB
+18.3 KiB
+This image file is larger than it needs to be (800x575) for its displayed dimensions (412x515). Use responsive images to reduce the image download size.
+18.3 KiB
+CMS
+<img loading="lazy" decoding="async" src="assets/img/cred-cms.webp" srcset="assets/img/cred-cms-1x.webp 1x, assets/img/cred-cms.webp 2x" alt="CMS" width="691" height="239">
+…img/cred-cms.webp(eternallifehospice.com)
+11.3 KiB
+8.0 KiB
+Increasing the image compression factor could improve this image's download size.
+8.0 KiB
+Eternal Life Hospice logo
+<img class="s sym-cream" src="/assets/img/elh-logo-h2-cream.webp" alt="Eternal Life Hospice logo" width="331" height="74">
+…img/elh-logo-h2-cream.webp(eternallifehospice.com)
+8.6 KiB
+7.9 KiB
+Increasing the image compression factor could improve this image's download size.
+4.6 KiB
+This image file is larger than it needs to be (332x74) for its displayed dimensions (139x31). Use responsive images to reduce the image download size.
+7.1 KiB
+CDPH
+<img loading="lazy" decoding="async" src="assets/img/cred-cdph.webp" srcset="assets/img/cred-cdph-1x.webp 1x, assets/img/cred-cdph.webp 2x" alt="CDPH" width="607" height="269">
+…img/cred-cdph.webp(eternallifehospice.com)
+7.9 KiB
+5.3 KiB
+Increasing the image compression factor could improve this image's download size.
+5.3 KiB
+Legacy JavaScript Est savings of 11 KiB
+Polyfills and transforms enable older browsers to use new JavaScript features. However, many aren't necessary for modern browsers. Consider modifying your JavaScript build process to not transpile Baseline features, unless you know you must support older browsers. Learn why most sites can deploy ES6+ code without transpilingLCPFCPUnscored
+URL
+Wasted bytes
+userway.org
+10.5 KiB
+…2026-09-01-10-22-26/widget_app_base_178….js(cdn.userway.org)
+10.5 KiB
+…2026-09-01-10-22-26/widget_app_base_178….js:1:3736(cdn.userway.org)
+Array.prototype.find
+…2026-09-01-10-22-26/widget_app_base_178….js:1:3625(cdn.userway.org)
+Math.imul
+Optimize DOM size
+LCP breakdown
+3rd parties
+These insights are also available in the Chrome DevTools Performance Panel - record a trace to view more detailed information.
+Diagnostics
+Minify JavaScript Est savings of 6 KiB
+Minifying JavaScript files can reduce payload sizes and script parse time. Learn how to minify JavaScript.LCPFCPUnscored
+URL
+Transfer Size
+Est Savings
+eternallifehospice.com 1st party
+11.9 KiB	3.0 KiB
+/assets/chat.js?v=20260805(eternallifehospice.com)
+11.9 KiB
+3.0 KiB
+Unattributable
+22.6 KiB	2.7 KiB
+inline: (function(){ 'use strict'; //…
+22.6 KiB
+2.7 KiB
+Reduce unused CSS Est savings of 37 KiB
+Reduce unused rules from stylesheets and defer CSS not used for above-the-fold content to decrease bytes consumed by network activity. Learn how to reduce unused CSS.LCPFCPUnscored
+URL
+Transfer Size
+Est Savings
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0} …
+86.9 KiB
+36.8 KiB
+Reduce unused JavaScript Est savings of 27 KiB
+Reduce unused JavaScript and defer loading scripts until they are required to decrease bytes consumed by network activity. Learn how to reduce unused JavaScript.LCPFCPUnscored
+URL
+Transfer Size
+Est Savings
+userway.org
+46.8 KiB	27.3 KiB
+…2026-09-01-10-22-26/widget_app_base_178….js(cdn.userway.org)
+46.8 KiB
+27.3 KiB
+Avoid non-composited animations 1 animated element found

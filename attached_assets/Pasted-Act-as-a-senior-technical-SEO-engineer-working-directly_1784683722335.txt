@@ -1,0 +1,453 @@
+Act as a senior technical SEO engineer working directly in the Eternal Life Hospice production repository.
+
+Do not redesign the website. Do not remove existing content or functionality. Preserve the current brand styling. conversion forms. navigation and approved copy unless a change is explicitly listed below.
+
+PRIMARY DOMAIN
+
+1. Keep https://eternallifehospice.com as the single primary canonical domain.
+
+2. Confirm that all alternate versions redirect directly to the corresponding canonical URL in one 301 hop:
+
+http://eternallifehospice.com/*
+http://www.eternallifehospice.com/*
+https://www.eternallifehospice.com/*
+
+Example:
+
+https://www.eternallifehospice.com/family-guide
+must 301 directly to
+https://eternallifehospice.com/family-guide
+
+Do not redirect every internal page to the homepage.
+
+3. Ensure all legacy Eternal Life Hospice domains use redirect-only behavior and contain no crawlable duplicate pages.
+
+4. Search the entire repository for:
+
+eternallifehospiceinc.com
+eternalhospice.com
+Netlify preview URLs
+Replit deployment URLs
+temporary or staging domains
+
+Replace public-facing legacy URLs with:
+
+https://eternallifehospice.com
+
+Do not replace unrelated email addresses or external source citations without reviewing their purpose.
+
+CANONICAL AND INDEXABILITY CONTROLS
+
+5. Add a unique self-referencing canonical tag to every indexable page.
+
+Example:
+
+<link rel="canonical" href="https://eternallifehospice.com/family-guide">
+
+6. Confirm every indexable page:
+
+returns HTTP 200
+has no meta noindex
+has no X-Robots-Tag noindex header
+is not blocked by robots.txt
+uses the canonical production hostname
+has one unique H1
+has a unique title tag
+has a unique meta description
+has an indexable text body
+is included in sitemap.xml
+
+7. Prevent indexing of:
+
+Netlify deployment URLs
+Netlify deploy previews
+Replit development or staging URLs
+form success states
+administrative routes
+API routes
+duplicate query-parameter pages
+temporary test pages
+
+8. Create a real custom 404 page that returns HTTP status 404. Do not return status 200 for missing pages.
+
+CORE PAGE METADATA
+
+9. Audit and optimize these pages:
+
+/
+ /family-guide
+ /providers
+ /refer
+ /resources
+ /hospice-ventura-and-los-angeles-county-ca
+
+Also identify every other indexable route and report any duplicate or missing metadata.
+
+Use these recommended metadata targets unless the existing page has a stronger accurate version:
+
+HOME
+
+Title:
+Hospice Care in Ventura & Los Angeles County | Eternal Life Hospice
+
+Meta description:
+Physician-directed hospice care at home across Ventura and Los Angeles County. Same-day admissions when clinically appropriate. Medicare-certified. Call 805.953.7273.
+
+H1:
+Hospice Care That Honors Life
+
+FAMILY GUIDE
+
+Title:
+How to Choose a Hospice: Family Guide | Eternal Life Hospice
+
+Meta description:
+Learn how to compare hospice agencies. verify credentials and ask about clinical care. Medicare coverage. after-hours nursing and family support.
+
+H1:
+Finding the Right Hospice
+
+PROVIDERS
+
+Title:
+Hospice Resources for Healthcare Providers | Eternal Life Hospice
+
+Meta description:
+Hospice referral resources for physicians. hospitals. case managers. discharge planners. assisted living communities and skilled nursing facilities.
+
+H1:
+Hospice Resources for Referring Providers
+
+REFER
+
+Title:
+Refer a Hospice Patient | Ventura & Los Angeles County
+
+Meta description:
+Refer a patient to Eternal Life Hospice by secure form. phone or fax. Same-day admissions when clinically appropriate with 24/7 on-call nursing.
+
+H1:
+Refer With Confidence
+
+RESOURCES
+
+Title:
+Hospice Resources for Families | Eternal Life Hospice
+
+Meta description:
+Clear guidance about hospice eligibility. Medicare coverage. choosing a hospice. the first 48 hours. caregiver support and whole-person comfort.
+
+H1:
+Hospice Resources for Families
+
+SERVICE AREA
+
+Title:
+Hospice Care in Ventura & Los Angeles County | Eternal Life Hospice
+
+Meta description:
+Hospice care at home throughout Ventura County and Los Angeles County including Thousand Oaks. Oxnard. Ventura. Camarillo. Simi Valley and surrounding communities.
+
+H1:
+Hospice Care Across Ventura and Los Angeles Counties
+
+OPEN GRAPH AND SOCIAL METADATA
+
+10. Add complete Open Graph and Twitter metadata to every important page:
+
+og:type
+og:title
+og:description
+og:url
+og:image
+og:image:width
+og:image:height
+og:image:alt
+twitter:card
+twitter:title
+twitter:description
+twitter:image
+
+11. Every og:url must exactly match the canonical URL.
+
+12. Use an absolute production URL for every social-sharing image.
+
+13. Confirm social images return HTTP 200 and are not blocked from crawlers.
+
+STRUCTURED DATA
+
+14. Create one connected JSON-LD graph rather than multiple conflicting standalone schema blocks.
+
+Homepage schema should include:
+
+Organization
+MedicalOrganization
+WebSite
+WebPage
+PostalAddress
+ContactPoint
+areaServed
+founder
+sameAs
+logo
+image
+url
+
+Use the verified legal business name:
+
+Eternal Life Hospice, Inc.
+
+Use only the current verified address. phone. license. certification and accreditation data already approved by Eternal Life Hospice.
+
+Do not invent:
+ratings
+reviews
+medical specialties
+awards
+insurance affiliations
+hospital affiliations
+service guarantees
+pricing
+credentials
+
+15. Add Service schema to appropriate care and location pages.
+
+16. Add BreadcrumbList schema to all interior pages.
+
+17. Add FAQPage schema only where the complete questions and answers are visibly displayed on the same page.
+
+Do not add FAQPage schema to hidden. collapsed-but-unrendered. generated or duplicated content.
+
+18. On the founder section or future founder page add Person schema for Aleksandra Dubina using only verified credentials and biography details.
+
+LOCAL SEARCH TARGETING
+
+19. Strengthen the homepage opening copy without keyword stuffing.
+
+Within the first 150 words of visible homepage copy naturally include:
+
+hospice care at home
+Ventura County
+Los Angeles County
+Thousand Oaks
+Oxnard
+
+Suggested language:
+
+Eternal Life Hospice provides physician-directed hospice care at home throughout Ventura County and Los Angeles County including Thousand Oaks. Oxnard. Ventura. Camarillo. Simi Valley and surrounding communities. Our interdisciplinary team supports patients in private homes. assisted living communities. residential care settings and skilled nursing facilities.
+
+20. Do not force Oxnard or Thousand Oaks into every heading. Use geographic terms where they accurately describe the page.
+
+21. Strengthen the existing service-area page with:
+
+a clear county introduction
+linked city sections
+care settings served
+admission information
+Medicare coverage explanation
+frequently asked local questions
+links to nearby city pages
+a clear call-to-action
+
+22. Audit each city page for uniqueness.
+
+Flag any city page that only changes the city name while repeating substantially identical copy.
+
+Each retained city page should contain:
+
+a unique title
+a unique meta description
+a unique H1
+original local introduction
+specific nearby communities
+care settings served
+admission process
+Medicare information
+contextual internal links
+accurate service-area language
+a useful family or provider FAQ
+
+Do not generate thin doorway pages.
+
+HOMEPAGE AT-A-GLANCE SECTION
+
+23. Add a concise crawlable “Eternal Life Hospice at a Glance” section on the homepage.
+
+Use visible HTML text rather than an image.
+
+Include only verified facts:
+
+Independent hospice agency
+Medicare-certified
+CDPH-licensed
+ACHC-accredited
+Ventura and Los Angeles Counties
+Hospice care at home and in care communities
+24/7 on-call nursing
+Same-day admission when clinically appropriate
+Phone 805.953.7273
+
+Do not duplicate this section multiple times on the page.
+
+INTERNAL LINKING
+
+24. Add descriptive contextual links among:
+
+Homepage
+Family Guide
+Providers
+Refer
+Resources
+Insurance and Medicare content
+Coverage Area
+First 48 Hours content
+Hospice-at-home content
+City pages
+
+Use descriptive anchor text such as:
+
+learn how to choose a hospice
+review the Medicare Hospice Benefit
+refer a hospice patient
+view our Ventura County service area
+learn what happens during the first 48 hours
+hospice care at home
+hospice care in Thousand Oaks
+hospice care in Oxnard
+
+Avoid repetitive “click here” and “read more” anchors where a descriptive phrase can be used.
+
+25. Ensure all important navigation links use real HTML anchor tags with href attributes.
+
+Do not depend exclusively on JavaScript onclick events or homepage hash links for key indexable topics.
+
+ROBOTS.TXT
+
+26. Create or validate:
+
+https://eternallifehospice.com/robots.txt
+
+It should:
+
+allow normal public crawling
+identify the production sitemap
+avoid blocking CSS. JavaScript. images or public content
+block only genuine private or non-public routes
+not block legitimate search or AI crawlers by default
+
+Use:
+
+User-agent: *
+Allow: /
+
+Sitemap: https://eternallifehospice.com/sitemap.xml
+
+Add disallow rules only after confirming the actual private routes.
+
+SITEMAP.XML
+
+27. Create or refresh:
+
+https://eternallifehospice.com/sitemap.xml
+
+The sitemap must contain only:
+
+canonical production URLs
+HTTP 200 pages
+indexable pages
+substantive public pages
+
+Exclude:
+
+redirects
+404 pages
+noindex pages
+query strings
+homepage hash links
+form success states
+Netlify URLs
+Replit URLs
+duplicate URLs
+unfinished pages
+
+28. Use accurate lastmod values based on real substantive page changes. Do not rewrite every lastmod date on every deployment.
+
+CONTENT AND CLAIM REVIEW
+
+29. Flag for human review any language that makes an absolute or potentially unsupported claim including:
+
+included in every care plan
+at no expense in every case
+all equipment arrives within a fixed period
+hospital-grade expertise
+hospice-certified physicians
+92% of families
+every city
+24/7 admissions
+same-day admission guarantees
+mobile dialysis included in hospice care
+all insurance plans accepted
+
+Do not automatically delete approved language. Produce a report showing the exact page. exact phrase and recommended compliant alternative.
+
+PERFORMANCE AND ACCESSIBILITY
+
+30. Audit:
+
+Core Web Vitals risks
+hero image size
+responsive images
+AVIF and WebP use
+lazy loading
+font loading
+unused JavaScript
+audio loading
+layout shifts
+accessible image alt text
+form labels
+heading hierarchy
+keyboard navigation
+contrast
+mobile rendering
+
+31. Define image width and height attributes to reduce layout shift.
+
+32. Lazy-load below-the-fold images and audio components.
+
+33. Do not lazy-load the primary hero image.
+
+34. Preserve Fraunces and Jost. Optimize their loading with font-display: swap and only the required weights.
+
+FINAL VALIDATION
+
+35. After implementation run a complete route crawl and provide a report containing:
+
+final URL
+HTTP status
+redirect source and destination
+canonical URL
+title
+title character count
+meta description
+description character count
+H1
+robots status
+sitemap inclusion
+schema types
+internal-link count
+image-alt issues
+broken links
+duplicate metadata
+orphan-page status
+
+36. Do not mark the task complete until:
+
+every alternate hostname redirects in one hop
+every important page has a self-referencing canonical
+robots.txt returns HTTP 200
+sitemap.xml returns HTTP 200
+the sitemap contains no redirects or 404s
+all production routes have unique metadata
+all structured data validates without critical errors
+all important pages are reachable through crawlable internal links
+no legacy public domain remains visible in the repository

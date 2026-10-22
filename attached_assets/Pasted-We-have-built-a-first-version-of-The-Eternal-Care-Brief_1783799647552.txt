@@ -1,0 +1,143 @@
+We have built a first version of The Eternal Care Brief Library in Base44:
+
+https://eternal-care-brief.base44.app/
+
+Now I want this audited and integrated into the main Eternal Life Hospice website:
+
+https://www.eternallifehospice.com
+
+This should not feel like a separate app. It should feel native to the Eternal Life Hospice website and brand system.
+
+The Eternal Care Brief Library is a living resource created to inform, support and connect care teams and families.
+
+Primary audience:
+professional care teams and referral sources including physicians, discharge planners, case managers, social workers, RCFE/ALF teams, SNF teams, assisted living teams, elder-law professionals and community care leaders.
+
+Secondary audience:
+families who receive sections shared by care teams.
+
+Important terminology:
+Do not use “referral partner.”
+Do not use “care partner.”
+Use “referral sources” in compliance-facing language.
+Use “care teams” or “professional care teams” in public-facing language.
+Use “families” for family-facing sections.
+
+Brand hierarchy:
+The Eternal Care Brief Library = living resource archive
+The Eternal Care Brief = individual issue
+The Eternal Standard = care philosophy
+Care That Honors Life = brand promise
+
+Core objective:
+Integrate the Care Brief Library into the main site so it supports:
+- more qualified referrals
+- education session requests
+- Family Guide sharing
+- website engagement
+- provider trust
+- printable resources
+- weekly email marketing content
+
+Required site routes:
+
+/care-brief
+Care Brief Library landing page
+
+/care-brief/hospice-is-part-of-life
+Issue One page
+
+/care-brief/family-guides
+Future family-share resources page or section
+
+/care-brief/topics
+Future topic archive page or section
+
+Primary CTAs:
+Refer a Patient:
+https://www.eternallifehospice.com/refer
+
+Family Guide:
+https://www.eternallifehospice.com/family-guide
+
+Provider Page:
+https://www.eternallifehospice.com/providers
+
+Resources:
+https://www.eternallifehospice.com/resources
+
+Call:
+tel:8059537273
+
+Schedule an Educational Session:
+create visible CTA placeholder or lightweight form if already supported
+
+Audit the Base44 version first for:
+1. brand alignment with Eternal Life Hospice
+2. typography size and readability
+3. mobile experience
+4. CTA clarity
+5. download / print behavior
+6. standalone Family Section print behavior
+7. SEO structure
+8. page speed
+9. accessibility
+10. whether it feels like a premium resource library rather than a generic newsletter or app dashboard
+
+Readability standards:
+Desktop body copy minimum 18px.
+Mobile body copy minimum 17px.
+Print body copy preferred 12pt.
+No tiny text.
+No low-contrast body copy.
+No long reversed-out paragraphs.
+Ink on cream for body copy.
+Cream on deep plum only for large headings.
+
+Print requirements:
+Every Care Brief issue should allow:
+- Download / Print This Brief
+- Print This Family Section
+- clean office-friendly print styling
+- white or cream print backgrounds
+- no heavy ink blocks
+- 12mm minimum margins
+- phone and website visible on printed pages
+- QR zones visible where used
+- booklet-friendly output
+
+SEO requirements:
+Create proper metadata for the library and Issue One.
+
+Care Brief Library meta:
+Title:
+The Eternal Care Brief Library | Eternal Life Hospice
+
+Description:
+A living hospice education resource from Eternal Life Hospice created to inform, support and connect professional care teams and families across Ventura County and Los Angeles County.
+
+Issue One meta:
+Title:
+Hospice Is Part of Life — A Continuation of Care | Eternal Care Brief
+
+Description:
+Issue One of The Eternal Care Brief explores hospice as a continuation of care centered on comfort, dignity, guidance and responsible admissions for care teams and families.
+
+Open Graph:
+Use Eternal Life Hospice branding and a premium share image.
+Do not use generic stock imagery.
+
+Technical goal:
+Do not embed Base44 as an iframe unless there is no better option.
+Prefer rebuilding or integrating the layout natively into the Eternal site codebase so the page is fast, indexable, responsive and SEO clean.
+
+Deliverables:
+1. Audit of the Base44 Care Brief Library
+2. Recommended integration plan
+3. Native site implementation plan
+4. Route structure
+5. SEO/meta plan
+6. CTA mapping
+7. Print/download implementation plan
+8. Mobile/readability fixes
+9. Final punch list before launch

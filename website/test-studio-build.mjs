@@ -1,9 +1,11 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { mkdtempSync, mkdirSync, writeFileSync, rmSync, readFileSync } from "node:fs";
+import { mkdtempSync, mkdirSync, writeFileSync, rmSync, readFileSync, chmodSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { verifyStudioBuild } from "./verify-studio-build.mjs";
+import {spawnSync} from "node:child_process";
+import {fileURLToPath} from "node:url";
 
 function fixture(run) {
   const directory = mkdtempSync(join(tmpdir(), "studio-build-check-"));
@@ -49,4 +51,40 @@ test("broken manifest dependencies fail validation", () => fixture((directory, m
 test("publish exclusions must not remove the required Studio app", () => {
   const ignored = readFileSync(new URL("../.replitignore", import.meta.url), "utf8");
   assert.ok(!ignored.split(/\r?\n/).some(line => line.trim() === "/website/studio-build/"));
+});
+
+function publishGateFixture(env, check) {
+  const directory=mkdtempSync(join(tmpdir(),"studio-gate-check-"));
+  try {
+    for(const [command,contents] of [
+      ["python3", 'echo "SENTINEL: test-studio-access.py protected access checks OK"\nexit "${FIXTURE_PYTHON_EXIT:-0}"'],
+      ["node", 'echo "BROWSER_FIXTURE_CALLED"\nif [ "${FIXTURE_MISSING_SENTINEL:-0}" = 0 ]; then echo "SENTINEL: test-studio-entry-ui.mjs authenticated checks OK"; fi\nexit "${FIXTURE_NODE_EXIT:-0}"'],
+    ]){
+      const path=join(directory,command);
+      writeFileSync(path,"#!/usr/bin/env bash\n"+contents+"\n");chmodSync(path,0o755);
+    }
+    const result=spawnSync("bash",[fileURLToPath(new URL("./check-studio-regressions.sh",import.meta.url))],
+      {cwd:tmpdir(),encoding:"utf8",env:{...process.env,PATH:directory+":"+process.env.PATH,...env}});
+    check(result);
+  }finally{rmSync(directory,{recursive:true,force:true});}
+}
+
+test("publish gate runs from any directory and requires both completed regressions",()=>{
+  publishGateFixture({},result=>assert.equal(result.status,0,result.stdout+result.stderr));
+  const script=readFileSync(new URL("./build-published-site.sh",import.meta.url),"utf8");
+  assert.ok(script.indexOf("bash website/check-studio-regressions.sh")>
+    script.indexOf("node website/build-studio.mjs --published"));
+});
+test("failed server checks stop publishing before the browser check",()=>{
+  publishGateFixture({FIXTURE_PYTHON_EXIT:"17"},result=>{
+    assert.equal(result.status,17);
+    assert.ok(!result.stdout.includes("BROWSER_FIXTURE_CALLED"));
+  });
+});
+test("browser failures and empty successful check scripts block publishing",()=>{
+  publishGateFixture({FIXTURE_NODE_EXIT:"19"},result=>assert.equal(result.status,19));
+  publishGateFixture({FIXTURE_MISSING_SENTINEL:"1"},result=>{
+    assert.equal(result.status,1);
+    assert.match(result.stderr,/missing SENTINEL/);
+  });
 });

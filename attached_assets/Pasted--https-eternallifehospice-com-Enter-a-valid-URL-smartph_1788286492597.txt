@@ -1,0 +1,258 @@
+
+https://eternallifehospice.com/
+Enter a valid URL
+
+
+smartphone
+Mobile
+
+computer
+Desktop
+
+Discover what your real users are experiencing
+No Data
+
+Diagnose performance issues
+92
+Performance
+97
+Accessibility
+100
+Best Practices
+100
+SEO
+3/3
+Agentic Browsing
+92
+FCP
++8
+LCP
++22
+TBT
++30
+CLS
++25
+SI
++7
+Performance
+Values are estimated and may vary. The performance score is calculated directly from these metrics.See calculator.
+0–49
+50–89
+90–100
+Final Screenshot
+
+Metrics
+Expand view
+First Contentful Paint
+1.1 s
+Largest Contentful Paint
+1.3 s
+Total Blocking Time
+40 ms
+Cumulative Layout Shift
+0
+Speed Index
+1.9 s
+Captured at Sep 1, 2026, 11:11 AM PDT
+Emulated Desktop with Lighthouse 13.4.1
+Single page session
+Initial page load
+Custom throttling
+Using HeadlessChromium 151.0.7922.71 with lr
+View Treemap
+Screenshot
+Screenshot
+Screenshot
+Screenshot
+Screenshot
+Screenshot
+Screenshot
+Screenshot
+Show audits relevant to:
+
+All
+
+FCP
+
+LCP
+
+TBT
+
+CLS
+Insights
+Forced reflow
+A forced reflow occurs when JavaScript queries geometric properties (such as offsetWidth) after styles have been invalidated by a change to the DOM state. This can result in poor performance. Learn more about forced reflows and possible mitigations.Unscored
+Source
+Total reflow time
+https://eternallifehospice.com:1837:63
+1,262 ms
+/assets/header.js?v=20260901:8:46(eternallifehospice.com)
+171 ms
+Use efficient cache lifetimes Est savings of 2 KiB
+A long cache lifetime can speed up repeat visits to your page. Learn more about caching.LCPFCPUnscored
+Request
+Cache TTL
+Transfer Size
+userway.org
+7 KiB
+/widget.js(cdn.userway.org)
+1h
+2 KiB
+…2026-09-01-10-22-26/widget_base.css?v=178…(cdn.userway.org)
+10d
+5 KiB
+Document request latency Est savings of 163 KiB
+Your first network request is the most important. Reduce its latency by avoiding redirects, ensuring a fast server response, and enabling text compression.LCPFCPUnscored
+Avoids redirects
+Server responds quickly (observed 15 ms)
+No compression applied
+Improve image delivery Est savings of 86 KiB
+Reducing the download time of images can improve the perceived load time of the page and LCP. Learn more about optimizing image sizeLCPFCPUnscored
+URL
+Resource Size
+Est Savings
+eternallifehospice.com 1st party
+160.3 KiB	85.8 KiB
+Open hands holding an amethyst geode during a quiet moment of rest
+<img loading="lazy" decoding="async" src="https://eternallifehospice.com/assets/img/inline-33ce6328f1.webp" alt="Open hands holding an amethyst geode during a quiet moment of rest" width="1080" height="1350">
+…img/inline-33ce6328f1.webp(eternallifehospice.com)
+60.5 KiB
+34.7 KiB
+This image file is larger than it needs to be (1041x1350) for its displayed dimensions (693x866). Use responsive images to reduce the image download size.
+34.7 KiB
+ACHC
+<img loading="lazy" decoding="async" src="https://eternallifehospice.com/assets/img/cred-achc-1x.webp" srcset="assets/img/cred-achc-1x.webp 1x, assets/img/cred-achc.webp 2x" width="40" height="40" alt="ACHC">
+…img/cred-achc-1x.webp(eternallifehospice.com)
+20.3 KiB
+20.0 KiB
+Increasing the image compression factor could improve this image's download size.
+13.6 KiB
+This image file is larger than it needs to be (202x202) for its displayed dimensions (40x40). Use responsive images to reduce the image download size.
+19.5 KiB
+A hospice nurse with a stethoscope attending a patient at home
+<img loading="lazy" decoding="async" src="https://eternallifehospice.com/assets/img/inline-5eebc45ba1.webp" alt="A hospice nurse with a stethoscope attending a patient at home">
+…img/inline-5eebc45ba1.webp(eternallifehospice.com)
+55.4 KiB
+12.3 KiB
+This image file is larger than it needs to be (771x1000) for its displayed dimensions (693x866). Use responsive images to reduce the image download size.
+12.3 KiB
+Eternal Life Hospice logo
+<img class="s sym-cream" src="assets/img/elh-logo-h2-cream.webp" alt="Eternal Life Hospice logo" width="331" height="74">
+…img/elh-logo-h2-cream.webp(eternallifehospice.com)
+8.6 KiB
+7.3 KiB
+Increasing the image compression factor could improve this image's download size.
+4.6 KiB
+This image file is larger than it needs to be (332x74) for its displayed dimensions (188x42). Use responsive images to reduce the image download size.
+5.8 KiB
+CMS
+<img loading="lazy" decoding="async" src="https://eternallifehospice.com/assets/img/cred-cms-1x.webp" srcset="assets/img/cred-cms-1x.webp 1x, assets/img/cred-cms.webp 2x" alt="CMS" width="691" height="239">
+…img/cred-cms-1x.webp(eternallifehospice.com)
+9.1 KiB
+6.8 KiB
+Increasing the image compression factor could improve this image's download size.
+6.8 KiB
+CDPH
+<img loading="lazy" decoding="async" src="https://eternallifehospice.com/assets/img/cred-cdph-1x.webp" srcset="assets/img/cred-cdph-1x.webp 1x, assets/img/cred-cdph.webp 2x" alt="CDPH" width="607" height="269">
+…img/cred-cdph-1x.webp(eternallifehospice.com)
+6.5 KiB
+4.7 KiB
+Increasing the image compression factor could improve this image's download size.
+4.7 KiB
+Legacy JavaScript Est savings of 11 KiB
+Polyfills and transforms enable older browsers to use new JavaScript features. However, many aren't necessary for modern browsers. Consider modifying your JavaScript build process to not transpile Baseline features, unless you know you must support older browsers. Learn why most sites can deploy ES6+ code without transpilingLCPFCPUnscored
+URL
+Wasted bytes
+userway.org
+10.5 KiB
+…2026-09-01-10-22-26/widget_app_base_178….js(cdn.userway.org)
+10.5 KiB
+…2026-09-01-10-22-26/widget_app_base_178….js:1:3736(cdn.userway.org)
+Array.prototype.find
+…2026-09-01-10-22-26/widget_app_base_178….js:1:3625(cdn.userway.org)
+Math.imul
+Optimize DOM size
+LCP breakdown
+3rd parties
+These insights are also available in the Chrome DevTools Performance Panel - record a trace to view more detailed information.
+Diagnostics
+Minimize main-thread work 2.1 s
+Consider reducing the time spent parsing, compiling and executing JS. You may find delivering smaller JS payloads helps with this. Learn how to minimize main-thread workTBTUnscored
+Category
+Time Spent
+Style & Layout
+1,486 ms
+Other
+260 ms
+Script Evaluation
+152 ms
+Rendering
+83 ms
+Parse HTML & CSS
+70 ms
+Script Parsing & Compilation
+49 ms
+Garbage Collection
+8 ms
+Minify JavaScript Est savings of 21 KiB
+Minifying JavaScript files can reduce payload sizes and script parse time. Learn how to minify JavaScript.LCPFCPUnscored
+URL
+Transfer Size
+Est Savings
+eternallifehospice.com 1st party
+67.9 KiB	18.2 KiB
+/assets/chat.js?v=20260805(eternallifehospice.com)
+39.4 KiB
+10.0 KiB
+/assets/analytics.js?v=20260727h(eternallifehospice.com)
+17.7 KiB
+5.2 KiB
+/assets/header.js?v=20260901(eternallifehospice.com)
+10.7 KiB
+3.0 KiB
+Unattributable
+22.7 KiB	2.7 KiB
+inline: (function(){ 'use strict'; //…
+22.7 KiB
+2.7 KiB
+Reduce unused CSS Est savings of 40 KiB
+Reduce unused rules from stylesheets and defer CSS not used for above-the-fold content to decrease bytes consumed by network activity. Learn how to reduce unused CSS.LCPFCPUnscored
+URL
+Transfer Size
+Est Savings
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0} …
+84.8 KiB
+39.9 KiB
+Reduce unused JavaScript Est savings of 27 KiB
+Reduce unused JavaScript and defer loading scripts until they are required to decrease bytes consumed by network activity. Learn how to reduce unused JavaScript.LCPFCPUnscored
+URL
+Transfer Size
+Est Savings
+userway.org
+46.8 KiB	26.9 KiB
+…2026-09-01-10-22-26/widget_app_base_178….js(cdn.userway.org)
+46.8 KiB
+26.9 KiB
+Avoid long main-thread tasks 4 long tasks found
+Avoid non-composited animations 1 animated element found
+More information about the performance of your application. These numbers don't directly affect the Performance score.
+Passed audits (13)
+Show
+97
+Accessibility
+These checks highlight opportunities to improve the accessibility of your web app. Automatic detection can only detect a subset of issues and does not guarantee the accessibility of your web app, so manual testing is also encouraged.
+Contrast
+Background and foreground colors do not have a sufficient contrast ratio.
+Low-contrast text is difficult or impossible for many users to read. Learn how to provide sufficient color contrast.
+Failing Elements
+Disclaimer:
+<strong style="color:rgba(245,240,235,.5)">
+Care That Honors Life. Medicare-Certified · CDPH-Licensed · ACHC-Accredited. S…
+<footer id="site-footer">
+These are opportunities to improve the legibility of your content.
+Additional items to manually check (10)
+Show
+These items address areas which an automated testing tool cannot cover. Learn more in our guide on conducting an accessibility review.
+Passed audits (30)
+Show
+Not applicable (32)

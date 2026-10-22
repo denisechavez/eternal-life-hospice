@@ -1,0 +1,469 @@
+ETERNAL LIFE HOSPICE
+ETERNAL GROWTH INTELLIGENCE
+SIDEBAR + EXECUTIVE UX SIMPLIFICATION PASS
+
+We are NOT changing the data architecture.
+
+We are NOT adding new features.
+
+We are NOT changing the reporting logic.
+
+We are simplifying the visual hierarchy so Eternal Growth Intelligence feels like a premium executive intelligence platform rather than a dense admin console.
+
+CORE DESIGN PRINCIPLE:
+
+ANSWER FIRST.
+DETAIL SECOND.
+TECHNICAL INFORMATION THIRD.
+
+Reduce visible complexity by approximately 40%.
+
+==================================================
+1. PRODUCT IDENTITY
+==================================================
+
+Keep:
+
+ETERNAL GROWTH INTELLIGENCE
+
+Subtitle:
+
+Performance · Marketing · Census · Expansion
+
+Remove or de-emphasize:
+
+PRIVATE EXECUTIVE BI
+
+The logo should remain prominent but reduce its visual dominance by approximately 15–20%.
+
+The product name and subtitle should have more breathing room.
+
+==================================================
+2. PRIMARY NAVIGATION — REDUCE TO FOUR ITEMS
+==================================================
+
+Replace the current seven equal-weight primary navigation sections with only four top-level items:
+
+1. PERFORMANCE
+2. MARKETING
+3. CENSUS
+4. EXPANSION
+
+These should be the only main executive navigation categories.
+
+--------------------------------------------------
+PERFORMANCE
+--------------------------------------------------
+
+Contains:
+
+- Executive Overview
+- Referral Performance
+- Attribution
+- Intelligence
+
+Purpose:
+
+Answer:
+- What is happening?
+- Are we improving?
+- What is driving performance?
+- What requires attention?
+
+--------------------------------------------------
+MARKETING
+--------------------------------------------------
+
+Contains:
+
+- SEO
+- Website & Calls
+- Google Business Profile
+- Email Performance
+- Social Performance
+- Advertising
+- Backlinks & PR
+
+Purpose:
+
+Visibility · Acquisition · Conversion
+
+--------------------------------------------------
+CENSUS
+--------------------------------------------------
+
+Contains:
+
+- Census Overview
+- Admissions
+- Movement
+- Trends
+
+Purpose:
+
+Admissions · Movement · Trends
+
+--------------------------------------------------
+EXPANSION
+--------------------------------------------------
+
+Contains:
+
+- Market Performance
+- Visibility Hot Zones
+- Inquiry Hot Zones
+- Opportunity Zones
+
+Growth Hot Zones may remain visible only where clearly labeled:
+
+Awaiting Referral / Census Data
+
+Purpose:
+
+Markets · Penetration · Opportunity
+
+==================================================
+3. COLLAPSE ETERNAL STUDIO
+==================================================
+
+Eternal Studio should remain available but should NOT permanently expose all production items.
+
+Show one single collapsible navigation item:
+
+ETERNAL STUDIO
+Create · Review · Publish
+
+Collapsed by default.
+
+When expanded show:
+
+- Eternal Journal
+- Email
+- Eternal Care Brief
+- Content Calendar
+- Review & Approvals
+- Asset Library
+
+Do not display all six items at all times.
+
+==================================================
+4. MOVE OPERATIONS / DATA INTO A BOTTOM UTILITY
+==================================================
+
+Remove Operations & Data from the normal executive navigation stack.
+
+Create one bottom utility item:
+
+DATA & SETTINGS
+
+or
+
+OPERATIONS & DATA
+
+Use whichever fits the design more cleanly.
+
+Collapsed by default.
+
+Inside:
+
+- Data Connections
+- Reporting Health
+- Change Log
+- KPI Dictionary
+- Workspace Settings
+
+These are important utility functions but should not compete visually with executive performance navigation.
+
+==================================================
+5. REMOVE GOLD PILLS FROM EVERY NAV ITEM
+==================================================
+
+Current issue:
+
+Every section appears visually highlighted because each category uses a gold capsule.
+
+This makes all sections compete equally for attention.
+
+Replace this treatment.
+
+Use:
+
+INACTIVE:
+- plain cream/light text
+- no gold pill
+- plum background
+
+HOVER:
+- subtle tonal lift
+- slightly lighter plum background
+
+ACTIVE:
+- thin gold vertical accent line OR small gold marker
+- slightly brighter text
+- subtle active background
+- no large gold capsule
+
+EXPANDED:
+- gentle tonal container
+- no gold bar spanning the full label
+
+Gold is a premium accent.
+
+Use it sparingly.
+
+==================================================
+6. REDUCE SIDEBAR COPY
+==================================================
+
+Remove most persistent secondary subtitles beneath nav items.
+
+Do not show long descriptors everywhere.
+
+Primary labels should carry the navigation:
+
+Performance
+Marketing
+Census
+Expansion
+
+Use section descriptions only inside the page header or when expanded if truly useful.
+
+Reduce microcopy density.
+
+==================================================
+7. SIMPLIFY SIDEBAR FOOTER
+==================================================
+
+At the bottom show:
+
+● Sources connected
+
+Then:
+
+Data & Settings
+
+Then:
+
+Aleksandra D.
+Founder & CEO
+
+Remove persistent technical explanations from the footer.
+
+Detailed connection information belongs inside Reporting Health.
+
+==================================================
+8. SIDEBAR DIMENSIONS
+==================================================
+
+Reduce sidebar width by approximately 10–15% if the content still fits cleanly.
+
+Increase internal spacing and breathing room.
+
+The sidebar should feel lighter and more refined.
+
+Avoid tightly stacked controls.
+
+==================================================
+9. PROGRESSIVE DISCLOSURE
+==================================================
+
+Apply this rule throughout the application:
+
+EXECUTIVE ANSWER
+→ SUPPORTING DETAIL
+→ TECHNICAL DETAIL
+
+Do not show all layers at once.
+
+Example:
+
+DATA CONNECTIONS
+
+Instead of opening with a large technical matrix, first show:
+
+SOURCE STATUS
+
+4 Connected
+2 Reporting Pending
+3 Awaiting Source
+
+Then show three simple groups:
+
+CONNECTED
+- Search Console
+- GA4
+- WhatConverts
+- Brevo
+
+PENDING
+- Google Business Profile
+- Social / Thryv
+
+AWAITING SOURCE
+- Referral Pipeline
+- Census
+- Advertising
+
+Then provide:
+
+View source details
+
+Only after expansion should the full technical matrix appear.
+
+==================================================
+10. EXECUTIVE OVERVIEW SIMPLIFICATION
+==================================================
+
+The Executive Overview should feel like a leadership dashboard.
+
+Prioritize 4–5 major cards maximum above the fold.
+
+Suggested current cards:
+
+Search Visibility
+Website Sessions
+Tracked Calls
+Current Census — Awaiting Source
+Referral Conversion — Awaiting Source
+
+Below that:
+
+MARKETS TO WATCH
+
+Examples:
+- Thousand Oaks
+- Calabasas
+- Westlake Village
+
+Then:
+
+ATTENTION / OPPORTUNITY
+
+Examples:
+- High search visibility with low click-through
+- Referral and census feeds still pending
+
+Do not fill the page with low-value KPI cards.
+
+==================================================
+11. VISUAL LANGUAGE
+==================================================
+
+The design target is:
+
+premium executive dashboard
++
+editorial luxury brand
++
+calm business intelligence
+
+Avoid:
+
+enterprise admin-console feel
+dense spreadsheet appearance
+too many highlighted navigation elements
+small secondary text everywhere
+technical content dominating the first view
+
+Use:
+
+- larger headings
+- fewer simultaneous controls
+- clearer spacing
+- restrained gold accents
+- calm plum foundation
+- simplified cards
+- stronger whitespace
+- progressive disclosure
+
+==================================================
+12. MAIN CONTENT TABLES
+==================================================
+
+Do not lead with dense tables when a summary can answer the question first.
+
+For technical areas:
+
+Summary cards first.
+
+Expandable detail second.
+
+Full matrix/table third.
+
+Keep detailed tables available but subordinate.
+
+==================================================
+13. PRESERVE FUNCTIONALITY
+==================================================
+
+Do NOT change:
+
+- Search Console reporting logic
+- GA4 reporting logic
+- WhatConverts reporting logic
+- Brevo reporting logic
+- baseline data
+- Hot Zone calculations
+- source readiness logic
+- change log structure
+- KPI definitions
+- Eternal Studio content records
+- data privacy boundaries
+
+This is a UX / information-hierarchy simplification pass only.
+
+==================================================
+14. FINAL NAVIGATION TARGET
+==================================================
+
+PRIMARY:
+
+Performance
+Marketing
+Census
+Expansion
+
+SECONDARY:
+
+Eternal Studio
+Create · Review · Publish
+
+UTILITY:
+
+Data & Settings
+
+FOOTER:
+
+● Sources connected
+
+Aleksandra D.
+Founder & CEO
+
+==================================================
+15. VALIDATION
+==================================================
+
+After implementation return:
+
+1. Old sidebar → new sidebar map
+2. Items moved into Performance
+3. Items moved into Marketing
+4. Eternal Studio collapsed-state behavior
+5. Data & Settings utility behavior
+6. Active/inactive nav styling change
+7. Executive Overview simplification
+8. Data Connections progressive-disclosure change
+9. Exact files changed
+10. Build result
+11. Typecheck result
+12. Browser-console result
+13. Visual review result
+14. Confirmation that no reporting logic changed
+15. Confirmation that the public Eternal Life Hospice website was untouched
+
+STOP after the UX simplification and validation.
+
+Do not add features.
+Do not build funnels.
+Do not add financial intelligence.
+Do not change reporting sources.

@@ -1,0 +1,101 @@
+
+
+/care-brief/hospice-is-part-of-life-a-continuation-of-care
+
+
+
+Transitioned from Plan to Build mode
+
+
+Active task
+Animated GIF hero for intro email
+
+
+
+3 messages & 13 actions
+
+Checkpoint made
+2 hours ago
+
+Worked for 10 minutes
+Denise Chavez completed: Build the introduction email for The Eternal Care Brief
+Updated environment
+
+Checkpoint made
+2 hours ago
+
+2 tasks started, 1 completed
+Updated environment
+
+Checkpoint made
+2 hours ago
+Denise Chavez completed: Publish the Care Brief pages so the email's links work before sending
+Updated environment
+where is the email ?
+
+2 hours ago
+
+1 message & 4 actions
+
+2 output files
+
+Care Brief Introduction Email (HTML + how-to guide)
+File
+
+How to load and send it (plain-language steps)
+Text
+THE ETERNAL CARE BRIEF — INTRODUCTION EMAIL (how-to) ===================================================== One ready-to-send HTML email that introduces The Eternal Care Brief (the new...
+
+Checkpoint made
+2 hours ago
+
+Worked for 21 seconds
+i think the newsletter image must be more engaging and inviting and i would rather see the sound bowl image on the e-mail and reference Whole Person Care Comfort or some type of verbage
+
+1 hour ago
+
+16 actions
+
+1 output file
+
+Care Brief Introduction Email — updated with sound bowl image
+File
+
+Checkpoint made
+59 minutes ago
+
+Worked for 2 minutes
+I think the brief is too long we have to cut down the sections 5 sections max
+
+40 minutes ago
+
+2 messages & 59 actions
+
+Checkpoint made
+34 minutes ago
+
+Worked for 5 minutes
+the images need to be rendered landscape
+remove all care brief issues - this is not necessary at this time
+
+29 minutes ago
+
+1 message & 17 actions
+
+Checkpoint made
+27 minutes ago
+
+Worked for 1 minute
+Can you embed a gif into an e-mail to show movement ?
+
+4 minutes ago
+
+5 actions
+
+Proposed 1 task
+
+Worked for 41 seconds
+
+Started task
+Animated GIF hero for intro email
+Replace the static sound-bowl hero image in the Care Brief introduction email with a subtle animated GIF (gentle candle flicker + soft ripple rings from the singing bowl) so the email shows movement. Animated GIFs play automatically in nearly all email clients; older Outlook on Windows shows only the first frame, so frame one must look identical to the current still photo.

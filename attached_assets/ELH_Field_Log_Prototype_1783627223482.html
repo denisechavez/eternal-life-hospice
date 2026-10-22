@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ELH Field Log — Prototype</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,600&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --plum:#5B2E59;
+  --deep:#3C1C3B;
+  --slate:#6793AC;
+  --gold:#C9B07E;
+  --taupe:#B7A89D;
+  --cream:#F5F0EB;
+  --ink:#241323;
+  --line:rgba(59,28,59,.14);
+  --shadow:0 1px 2px rgba(60,28,59,.06), 0 8px 24px -12px rgba(60,28,59,.28);
+  --serif:"Fraunces", Georgia, serif;
+  --sans:"Jost", -apple-system, "Segoe UI", sans-serif;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--cream);color:var(--ink);font-family:var(--sans);font-weight:400;-webkit-font-smoothing:antialiased}
+.wrap{max-width:760px;margin:0 auto;padding:0 18px 90px}
+
+/* ---------- masthead ---------- */
+.mast{background:var(--deep);color:var(--cream);margin:0 -18px 0;padding:26px 22px 22px;position:relative;overflow:hidden}
+.mast:after{content:"";position:absolute;inset:auto 0 0 0;height:2px;background:linear-gradient(90deg,var(--plum),var(--slate),var(--gold))}
+.brandrow{display:flex;align-items:baseline;justify-content:space-between;gap:14px}
+.brand{font-family:var(--serif);font-size:27px;font-weight:400;letter-spacing:.005em;line-height:1}
+.brand em{font-style:normal;color:var(--gold)}
+.tagpill{font-size:9.5px;letter-spacing:.22em;text-transform:uppercase;color:var(--taupe);border:1px solid rgba(201,176,126,.4);border-radius:999px;padding:5px 10px;white-space:nowrap}
+.subline{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--taupe);margin-top:9px}
+.entity{margin-top:16px;display:flex;align-items:center;gap:9px;font-size:12px;color:var(--cream)}
+.entity .lock{background:var(--plum);border:1px solid rgba(201,176,126,.45);border-radius:4px;padding:5px 11px;font-weight:500;letter-spacing:.08em;font-size:11px;text-transform:uppercase}
+.entity .note{color:var(--taupe);font-size:11.5px;line-height:1.4}
+
+/* ---------- tabs ---------- */
+.tabs{display:flex;gap:0;border-bottom:1px solid var(--line);margin:0 -18px 24px;padding:0 18px;background:var(--cream);position:sticky;top:0;z-index:20}
+.tab{flex:1;background:none;border:0;border-bottom:2px solid transparent;padding:15px 4px 13px;font-family:var(--sans);font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--taupe);cursor:pointer;font-weight:500}
+.tab[aria-selected="true"]{color:var(--plum);border-bottom-color:var(--plum)}
+.tab .count{display:inline-block;margin-left:5px;background:var(--plum);color:var(--cream);border-radius:999px;font-size:10px;padding:1px 6px;letter-spacing:0}
+.tab:focus-visible{outline:2px solid var(--slate);outline-offset:-2px}
+
+/* ---------- form ---------- */
+.sec{margin:0 0 26px}
+.sech{font-family:var(--serif);font-size:14px;font-weight:600;letter-spacing:.02em;color:var(--plum);margin:0 0 3px}
+.secn{font-size:12px;color:#7a6a78;margin:0 0 14px;line-height:1.5}
+label{display:block;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:#7a6a78;margin:0 0 6px;font-weight:500}
+input[type=text],input[type=date],input[type=email],input[type=tel],select,textarea{
+  width:100%;padding:12px 13px;font-family:var(--sans);font-size:15px;color:var(--ink);
+  background:#fff;border:1px solid var(--line);border-radius:3px;appearance:none}
+textarea{min-height:88px;resize:vertical;line-height:1.5}
+input:focus,select:focus,textarea:focus{outline:2px solid var(--slate);outline-offset:1px;border-color:transparent}
+.field{margin-bottom:15px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:15px}
+@media(max-width:560px){.grid2{grid-template-columns:1fr}}
+
+.chips{display:flex;flex-wrap:wrap;gap:7px}
+.chip{position:relative}
+.chip input{position:absolute;opacity:0;width:0;height:0}
+.chip span{display:block;padding:9px 13px;border:1px solid var(--line);border-radius:3px;background:#fff;font-size:13px;cursor:pointer;transition:.12s}
+.chip input:checked + span{background:var(--plum);border-color:var(--plum);color:var(--cream)}
+.chip input:focus-visible + span{outline:2px solid var(--slate);outline-offset:1px}
+
+/* ---------- capture ---------- */
+.cap{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:560px){.cap{grid-template-columns:1fr}}
+.drop{border:1px dashed var(--taupe);border-radius:3px;background:#fff;padding:18px 14px;text-align:center;cursor:pointer;display:block}
+.drop:hover{border-color:var(--plum)}
+.drop input{display:none}
+.drop .k{font-family:var(--serif);font-size:14px;color:var(--plum);display:block;margin-bottom:3px}
+.drop .h{font-size:11.5px;color:#7a6a78;line-height:1.45}
+.thumbs{display:flex;flex-wrap:wrap;gap:8px;margin-top:9px}
+.thumbs img{width:60px;height:60px;object-fit:cover;border-radius:3px;border:1px solid var(--line)}
+
+/* ---------- guardrail ---------- */
+.guard{border-left:3px solid var(--slate);background:rgba(103,147,172,.07);padding:13px 15px;border-radius:0 3px 3px 0;margin-bottom:14px}
+.guard b{font-family:var(--serif);font-size:13px;color:var(--deep);display:block;margin-bottom:4px;font-weight:600}
+.guard p{margin:0;font-size:12.5px;line-height:1.55;color:#4d3a4c}
+.alarm{border-left-color:#9c2f3f;background:rgba(156,47,63,.07)}
+.alarm b{color:#9c2f3f}
+.attest{display:flex;gap:10px;align-items:flex-start;margin-top:12px;font-size:12.5px;line-height:1.5;color:#4d3a4c;cursor:pointer}
+.attest input{margin-top:2px;width:16px;height:16px;accent-color:var(--plum);flex:none}
+
+/* ---------- buttons ---------- */
+.bar{position:fixed;left:0;right:0;bottom:0;background:linear-gradient(180deg,rgba(245,240,235,0),var(--cream) 34%);padding:20px 18px 16px;z-index:30}
+.barin{max-width:760px;margin:0 auto;display:flex;gap:10px}
+.btn{flex:1;background:var(--plum);color:var(--cream);border:0;border-radius:3px;padding:16px;font-family:var(--sans);font-size:12px;letter-spacing:.16em;text-transform:uppercase;font-weight:500;cursor:pointer;box-shadow:var(--shadow)}
+.btn:hover{background:var(--deep)}
+.btn:disabled{background:var(--taupe);cursor:not-allowed}
+.btn.ghost{flex:0 0 auto;background:transparent;color:var(--plum);border:1px solid var(--line);box-shadow:none;padding:16px 18px}
+.btn:focus-visible{outline:2px solid var(--slate);outline-offset:2px}
+
+/* ---------- visit cards (signature) ---------- */
+.card{background:#fff;border:1px solid var(--line);border-radius:3px;box-shadow:var(--shadow);margin-bottom:14px;overflow:hidden;position:relative}
+.card:before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--plum)}
+.card.due:before{background:#C0803A}
+.card.late:before{background:#9C2F3F}
+.card.done:before{background:var(--slate)}
+.cardin{padding:16px 18px 16px 20px}
+.crow{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+.org{font-family:var(--serif);font-size:18px;font-weight:600;color:var(--deep);line-height:1.25;margin:0}
+.meta{font-size:11.5px;color:#7a6a78;margin-top:4px;line-height:1.5}
+.clock{text-align:right;flex:none}
+.clock .n{font-family:var(--serif);font-size:26px;font-weight:600;line-height:1;color:var(--plum)}
+.clock.due .n{color:#C0803A}
+.clock.late .n{color:#9C2F3F}
+.clock.done .n{font-size:15px;color:var(--slate)}
+.clock .l{font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--taupe);margin-top:5px}
+.mats{display:flex;flex-wrap:wrap;gap:5px;margin-top:12px}
+.mat{font-size:10.5px;letter-spacing:.05em;background:var(--cream);border:1px solid var(--line);border-radius:2px;padding:4px 8px;color:#5c4a5b}
+.cardfoot{border-top:1px solid var(--line);padding:11px 18px 11px 20px;display:flex;gap:8px;align-items:center;background:#fdfcfb}
+.cardfoot select{padding:7px 9px;font-size:12px;flex:1;max-width:230px}
+.cardfoot .who{font-size:11.5px;color:#7a6a78;margin-left:auto;text-align:right;line-height:1.4}
+.snap{display:flex;gap:6px;margin-top:11px}
+.snap img{width:52px;height:52px;object-fit:cover;border-radius:2px;border:1px solid var(--line)}
+
+.empty{text-align:center;padding:56px 20px;border:1px dashed var(--taupe);border-radius:3px}
+.empty h3{font-family:var(--serif);font-size:19px;color:var(--plum);margin:0 0 7px;font-weight:400}
+.empty p{font-size:13px;color:#7a6a78;margin:0;line-height:1.6}
+
+.toast{position:fixed;left:50%;transform:translate(-50%,120%);bottom:96px;background:var(--deep);color:var(--cream);padding:13px 22px;border-radius:3px;font-size:13px;z-index:60;transition:transform .28s cubic-bezier(.2,.8,.2,1);box-shadow:var(--shadow)}
+.toast.on{transform:translate(-50%,0)}
+
+.hidden{display:none !important}
+.expbox{background:#fff;border:1px solid var(--line);border-radius:3px;padding:20px;margin-bottom:16px}
+.expbox h3{font-family:var(--serif);font-size:16px;color:var(--deep);margin:0 0 6px;font-weight:600}
+.expbox p{font-size:12.5px;color:#6b5a6a;line-height:1.6;margin:0 0 14px}
+.stat{display:flex;gap:26px;margin:16px 0 4px;flex-wrap:wrap}
+.stat div{min-width:74px}
+.stat .n{font-family:var(--serif);font-size:29px;color:var(--plum);line-height:1;font-weight:600}
+.stat .l{font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--taupe);margin-top:6px}
+@media(prefers-reduced-motion:reduce){*{transition:none !important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="mast">
+    <div class="brandrow">
+      <div class="brand"><em>Eternal</em> Field Log</div>
+      <div class="tagpill">Prototype</div>
+    </div>
+    <div class="subline">Referral Outreach · Visit Capture</div>
+    <div class="entity">
+      <span class="lock">Eternal Life Hospice</span>
+      <span class="note">Entity is fixed at the workspace level. A visit logged here can never surface under another entity.</span>
+    </div>
+  </header>
+
+  <nav class="tabs" role="tablist">
+    <button class="tab" role="tab" aria-selected="true" data-view="log">Log a visit</button>
+    <button class="tab" role="tab" aria-selected="false" data-view="queue">Follow-up <span class="count" id="qcount">0</span></button>
+    <button class="tab" role="tab" aria-selected="false" data-view="export">Export</button>
+  </nav>
+
+  <!-- ================= LOG ================= -->
+  <section id="view-log">
+    <div class="sec">
+      <h2 class="sech">Where you were</h2>
+      <p class="secn">Fill this in the car before you drive away. Two minutes now saves the reconstruction later.</p>
+      <div class="field">
+        <label for="org">Organization</label>
+        <input type="text" id="org" placeholder="Los Robles Regional Medical Center" autocomplete="off">
+      </div>
+      <div class="grid2">
+        <div class="field">
+          <label for="cat">Category</label>
+          <select id="cat">
+            <option>Hospital</option><option>Skilled nursing facility</option>
+            <option>Assisted living</option><option>Memory care</option>
+            <option>Physician office</option><option>Home care agency</option>
+            <option>Placement agency</option><option>Dialysis center</option>
+            <option>Faith community</option><option>Community organization</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="date">Date of visit</label>
+          <input type="date" id="date">
+        </div>
+      </div>
+      <div class="field">
+        <label for="addr">Street address</label>
+        <input type="text" id="addr" placeholder="215 W Janss Rd" autocomplete="off">
+      </div>
+      <div class="grid2">
+        <div class="field">
+          <label for="city">City</label>
+          <input type="text" id="city" placeholder="Thousand Oaks" autocomplete="off">
+        </div>
+        <div class="field">
+          <label for="county">County</label>
+          <select id="county"><option>Ventura</option><option>Los Angeles</option></select>
+        </div>
+      </div>
+    </div>
+
+    <div class="sec">
+      <h2 class="sech">Who you met</h2>
+      <p class="secn">One person per visit. Log a second visit if you spoke with two people worth a follow-up.</p>
+      <div class="grid2">
+        <div class="field"><label for="cname">Name</label><input type="text" id="cname" autocomplete="off"></div>
+        <div class="field"><label for="ctitle">Title</label><input type="text" id="ctitle" placeholder="Director of Case Management" autocomplete="off"></div>
+      </div>
+      <div class="grid2">
+        <div class="field"><label for="cemail">Email</label><input type="email" id="cemail" autocomplete="off"></div>
+        <div class="field"><label for="cphone">Direct line</label><input type="tel" id="cphone" autocomplete="off"></div>
+      </div>
+    </div>
+
+    <div class="sec">
+      <h2 class="sech">What you left</h2>
+      <p class="secn">Collateral only. Anything of value beyond printed materials goes through compliance, never through this log.</p>
+      <div class="chips" id="mats">
+        <label class="chip"><input type="checkbox" value="Pocket folder"><span>Pocket folder</span></label>
+        <label class="chip"><input type="checkbox" value="Clinical Confidence"><span>Clinical Confidence</span></label>
+        <label class="chip"><input type="checkbox" value="Guided Presence"><span>Guided Presence</span></label>
+        <label class="chip"><input type="checkbox" value="Whole-Person Comfort"><span>Whole-Person Comfort</span></label>
+        <label class="chip"><input type="checkbox" value="Compliance-Led Care"><span>Compliance-Led Care</span></label>
+        <label class="chip"><input type="checkbox" value="Full kit"><span>Full kit</span></label>
+      </div>
+    </div>
+
+    <div class="sec">
+      <h2 class="sech">What you captured</h2>
+      <p class="secn">Photograph the business card and the materials in place. Photograph nothing else.</p>
+      <div class="cap">
+        <label class="drop">
+          <input type="file" accept="image/*" capture="environment" id="fCard">
+          <span class="k">Business card</span>
+          <span class="h">Front of the card. Fields fill in from it later.</span>
+        </label>
+        <label class="drop">
+          <input type="file" accept="image/*" capture="environment" id="fSite">
+          <span class="k">Materials in place</span>
+          <span class="h">Rack, front desk, or building exterior.</span>
+        </label>
+      </div>
+      <div class="thumbs" id="thumbs"></div>
+    </div>
+
+    <div class="sec">
+      <h2 class="sech">What was said</h2>
+      <div class="guard" id="guard">
+        <b>This log holds no patient information</b>
+        <p>Write what the contact said about referring, their process, and their timing. Never a patient name, initials, room number, diagnosis, or age. A single patient detail turns this into a regulated system that no field tool is licensed to hold.</p>
+      </div>
+      <div class="field">
+        <textarea id="notes" placeholder="She sends about six referrals a month and decides on Fridays. Asked whether we take patients on the west side. Wants the physician-led piece explained to her team."></textarea>
+      </div>
+      <label class="attest"><input type="checkbox" id="attest"><span>I confirm these notes contain no patient information.</span></label>
+    </div>
+
+    <div class="sec">
+      <h2 class="sech">What happens next</h2>
+      <div class="grid2">
+        <div class="field">
+          <label for="owner">Follow-up owner</label>
+          <select id="owner"><option>Aleksandra Dubina</option><option>Denise Chavez</option><option>Unassigned</option></select>
+        </div>
+        <div class="field">
+          <label for="due">Follow-up due</label>
+          <select id="due"><option value="2">In 2 days</option><option value="5" selected>In 5 days</option><option value="10">In 10 days</option><option value="0">Nothing needed</option></select>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= QUEUE ================= -->
+  <section id="view-queue" class="hidden">
+    <div id="queue"></div>
+  </section>
+
+  <!-- ================= EXPORT ================= -->
+  <section id="view-export" class="hidden">
+    <div class="expbox">
+      <h3>Referral activity record</h3>
+      <p>Every visit, every contact, every outcome, with dates. This is the file a buyer's diligence team asks for when they want to know whether the referral relationships belong to the company or to the founder.</p>
+      <div class="stat">
+        <div><div class="n" id="sVisits">0</div><div class="l">Visits</div></div>
+        <div><div class="n" id="sOrgs">0</div><div class="l">Organizations</div></div>
+        <div><div class="n" id="sOpen">0</div><div class="l">Open</div></div>
+        <div><div class="n" id="sWon">0</div><div class="l">Meetings</div></div>
+      </div>
+    </div>
+    <div class="expbox">
+      <h3>Download</h3>
+      <p>CSV opens in Excel or imports into the master directory. Photographs stay in the record and travel separately.</p>
+      <button class="btn" id="csv" style="max-width:260px">Download CSV</button>
+    </div>
+    <div class="expbox">
+      <h3>Reset</h3>
+      <p>Clears every visit stored in this prototype. Nothing here is production data.</p>
+      <button class="btn ghost" id="reset">Clear all visits</button>
+    </div>
+  </section>
+</div>
+
+<div class="bar" id="bar">
+  <div class="barin">
+    <button class="btn ghost" id="clearBtn">Clear</button>
+    <button class="btn" id="saveBtn" disabled>Save visit</button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const $ = s => document.querySelector(s);
+const INDEX = "elh_field_index";
+let idx = [], visits = [], mem = {}, useMem = false;
+let photos = {card:null, site:null};
+
+/* ---- storage with graceful fallback ---- */
+async function sget(k){
+  if(useMem) return mem[k] ?? null;
+  try{ const r = await window.storage.get(k); return r ? JSON.parse(r.value) : null; }
+  catch(e){ return null; }
+}
+async function sset(k,v){
+  if(useMem){ mem[k]=v; return; }
+  try{ await window.storage.set(k, JSON.stringify(v)); }
+  catch(e){ useMem = true; mem[k]=v; }
+}
+async function sdel(k){
+  if(useMem){ delete mem[k]; return; }
+  try{ await window.storage.delete(k); }catch(e){}
+}
+if(typeof window.storage === "undefined") useMem = true;
+
+/* ---- PHI guardrail ---- */
+const RISK = [/\bpatient\b/i,/\bmrs?\.\s/i,/\bms\.\s/i,/\bdob\b/i,/\bmrn\b/i,/\bdiagnos/i,/\bcancer\b/i,/\bcopd\b/i,/\bdementia\b/i,/\broom\s?\d/i,/\b\d{1,3}\s?(years?\s?old|yo)\b/i,/\bhospice for\b/i];
+function riskCheck(){
+  const t = $("#notes").value;
+  const hit = RISK.some(r => r.test(t));
+  $("#guard").classList.toggle("alarm", hit);
+  $("#guard").querySelector("b").textContent = hit
+    ? "That reads like patient information"
+    : "This log holds no patient information";
+  return hit;
+}
+
+/* ---- photo capture: downscale, never store originals ---- */
+function shrink(file, cb){
+  const img = new Image();
+  img.onload = () => {
+    const max = 640, s = Math.min(1, max/Math.max(img.width,img.height));
+    const c = document.createElement("canvas");
+    c.width = img.width*s|0; c.height = img.height*s|0;
+    c.getContext("2d").drawImage(img,0,0,c.width,c.height);
+    cb(c.toDataURL("image/jpeg",0.55));
+  };
+  img.src = URL.createObjectURL(file);
+}
+function bindPhoto(inputSel, slot){
+  $(inputSel).addEventListener("change", e => {
+    const f = e.target.files[0]; if(!f) return;
+    shrink(f, d => { photos[slot] = d; drawThumbs(); });
+  });
+}
+bindPhoto("#fCard","card"); bindPhoto("#fSite","site");
+function drawThumbs(){
+  $("#thumbs").innerHTML = Object.values(photos).filter(Boolean)
+    .map(d => `<img src="${d}" alt="">`).join("");
+}
+
+/* ---- validation ---- */
+function validate(){
+  const ok = $("#org").value.trim() && $("#date").value && $("#attest").checked && !riskCheck();
+  $("#saveBtn").disabled = !ok;
+}
+["#org","#date","#notes"].forEach(s => $(s).addEventListener("input", validate));
+$("#attest").addEventListener("change", validate);
+
+/* ---- clock ---- */
+const DAY = 864e5;
+function daysTo(iso){ return Math.ceil((new Date(iso+"T00:00:00") - new Date(new Date().toDateString()))/DAY); }
+function addDays(iso,n){ const d = new Date(iso+"T00:00:00"); d.setDate(d.getDate()+ +n); return d.toISOString().slice(0,10); }
+
+/* ---- save ---- */
+$("#saveBtn").addEventListener("click", async () => {
+  const dueDays = $("#due").value;
+  const v = {
+    id: "v" + Date.now(),
+    date: $("#date").value,
+    org: $("#org").value.trim(),
+    cat: $("#cat").value,
+    addr: $("#addr").value.trim(),
+    city: $("#city").value.trim(),
+    county: $("#county").value,
+    cname: $("#cname").value.trim(),
+    ctitle: $("#ctitle").value.trim(),
+    cemail: $("#cemail").value.trim(),
+    cphone: $("#cphone").value.trim(),
+    mats: [...document.querySelectorAll("#mats input:checked")].map(i => i.value),
+    notes: $("#notes").value.trim(),
+    owner: $("#owner").value,
+    due: dueDays === "0" ? "" : addDays($("#date").value, dueDays),
+    status: dueDays === "0" ? "Closed" : "Not started",
+    card: photos.card, site: photos.site
+  };
+  await sset("elh_visit_" + v.id, v);
+  idx.unshift(v.id); await sset(INDEX, idx);
+  visits.unshift(v);
+  clearForm(); render(); toast("Visit saved. Follow-up clock started.");
+});
+
+function clearForm(){
+  ["#org","#addr","#city","#cname","#ctitle","#cemail","#cphone","#notes"].forEach(s => $(s).value = "");
+  document.querySelectorAll("#mats input").forEach(i => i.checked = false);
+  $("#attest").checked = false; photos = {card:null,site:null}; drawThumbs(); riskCheck(); validate();
+}
+$("#clearBtn").addEventListener("click", clearForm);
+
+/* ---- render queue ---- */
+function render(){
+  const open = visits.filter(v => v.status !== "Closed" && v.status !== "No interest");
+  $("#qcount").textContent = open.length;
+  $("#sVisits").textContent = visits.length;
+  $("#sOrgs").textContent = new Set(visits.map(v => v.org)).size;
+  $("#sOpen").textContent = open.length;
+  $("#sWon").textContent = visits.filter(v => v.status === "Meeting booked").length;
+
+  const q = $("#queue");
+  if(!visits.length){
+    q.innerHTML = `<div class="empty"><h3>No visits logged</h3><p>Log your first visit and it appears here with a follow-up clock running against it.</p></div>`;
+    return;
+  }
+  q.innerHTML = visits.map(v => {
+    const closed = v.status === "Closed" || v.status === "No interest";
+    let n = "—", cls = "", lbl = "days out";
+    if(closed){ n = v.status === "Closed" ? "Closed" : "No"; cls = "done"; lbl = v.status === "Closed" ? "complete" : "interest"; }
+    else if(v.due){
+      const d = daysTo(v.due);
+      if(d < 0){ n = Math.abs(d); cls = "late"; lbl = d === -1 ? "day late" : "days late"; }
+      else if(d <= 1){ n = d === 0 ? "Today" : d; cls = "due"; lbl = d === 0 ? "due" : "day out"; }
+      else { n = d; lbl = "days out"; }
+    }
+    const meta = [v.cname && `${v.cname}${v.ctitle ? ", " + v.ctitle : ""}`, [v.city, v.county + " County"].filter(Boolean).join(" · "), "Visited " + v.date]
+      .filter(Boolean).join("<br>");
+    return `<article class="card ${cls}">
+      <div class="cardin">
+        <div class="crow">
+          <div><h3 class="org">${esc(v.org)}</h3><div class="meta">${meta}</div></div>
+          <div class="clock ${cls}"><div class="n" style="${String(n).length>3?'font-size:15px':''}">${n}</div><div class="l">${lbl}</div></div>
+        </div>
+        ${v.mats.length ? `<div class="mats">${v.mats.map(m => `<span class="mat">${esc(m)}</span>`).join("")}</div>` : ""}
+        ${(v.card||v.site) ? `<div class="snap">${[v.card,v.site].filter(Boolean).map(d => `<img src="${d}" alt="">`).join("")}</div>` : ""}
+      </div>
+      <div class="cardfoot">
+        <select data-id="${v.id}" class="st">
+          ${["Not started","Email sent","Replied","Meeting booked","Closed","No interest"].map(s => `<option ${s===v.status?"selected":""}>${s}</option>`).join("")}
+        </select>
+        <div class="who">${esc(v.owner)}${v.due && !closed ? "<br>due " + v.due : ""}</div>
+      </div>
+    </article>`;
+  }).join("");
+
+  q.querySelectorAll(".st").forEach(sel => sel.addEventListener("change", async e => {
+    const v = visits.find(x => x.id === e.target.dataset.id);
+    v.status = e.target.value; await sset("elh_visit_" + v.id, v); render();
+  }));
+}
+const esc = s => String(s ?? "").replace(/[<>&"]/g, c => ({"<":"&lt;",">":"&gt;","&":"&amp;",'"':"&quot;"}[c]));
+
+/* ---- csv ---- */
+$("#csv").addEventListener("click", () => {
+  const cols = ["date","org","cat","addr","city","county","cname","ctitle","cemail","cphone","mats","notes","owner","due","status"];
+  const head = ["Visit date","Organization","Category","Address","City","County","Contact","Title","Email","Phone","Materials left","Notes","Owner","Follow-up due","Status"];
+  const rows = visits.map(v => cols.map(c => `"${String(Array.isArray(v[c]) ? v[c].join("; ") : (v[c]||"")).replace(/"/g,'""')}"`).join(","));
+  const blob = new Blob([[head.join(","), ...rows].join("\n")], {type:"text/csv"});
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob); a.download = "ELH_Field_Log.csv"; a.click();
+  toast("CSV downloaded.");
+});
+$("#reset").addEventListener("click", async () => {
+  for(const id of idx) await sdel("elh_visit_" + id);
+  idx = []; visits = []; await sset(INDEX, []); render(); toast("All visits cleared.");
+});
+
+/* ---- tabs ---- */
+document.querySelectorAll(".tab").forEach(t => t.addEventListener("click", () => {
+  document.querySelectorAll(".tab").forEach(x => x.setAttribute("aria-selected", x === t));
+  ["log","queue","export"].forEach(v => $("#view-" + v).classList.toggle("hidden", v !== t.dataset.view));
+  $("#bar").classList.toggle("hidden", t.dataset.view !== "log");
+}));
+
+let tt;
+function toast(m){ const el = $("#toast"); el.textContent = m; el.classList.add("on"); clearTimeout(tt); tt = setTimeout(() => el.classList.remove("on"), 2600); }
+
+/* ---- boot ---- */
+(async () => {
+  $("#date").value = new Date().toISOString().slice(0,10);
+  idx = (await sget(INDEX)) || [];
+  for(const id of idx){ const v = await sget("elh_visit_" + id); if(v) visits.push(v); }
+  render(); validate();
+})();
+</script>
+</body>
+</html>

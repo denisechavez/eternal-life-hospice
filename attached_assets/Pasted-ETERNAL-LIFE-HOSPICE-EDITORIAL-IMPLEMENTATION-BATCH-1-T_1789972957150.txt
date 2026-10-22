@@ -1,0 +1,327 @@
+ETERNAL LIFE HOSPICE
+EDITORIAL IMPLEMENTATION — BATCH 1
+
+The Combined Legacy + Journal Editorial Map is approved as the working editorial architecture.
+
+The final Search Console Pages verification and internal-link classification produced no architecture-changing evidence.
+
+We are now authorizing a CONTROLLED BODY-CONTENT IMPLEMENTATION PASS for the first five new Journal articles only.
+
+Do not modify core site pages during this pass.
+Do not modify the six legacy articles yet.
+Do not publish to production.
+Do not merge to main.
+
+Work on the current content branch.
+
+==================================================
+AUTHORIZED ARTICLES — BATCH 1
+==================================================
+
+1. What Happens During a Hospice Evaluation?
+2. 10 Signs It May Be Time to Consider Hospice
+3. Hospice at Home in Thousand Oaks: What Families Can Expect
+4. Can Hospice Begin After a Hospital Discharge?
+5. Does Medicare Cover Hospice Care?
+
+Use the approved editorial architecture to revise title, scope and body content.
+
+==================================================
+ARTICLE 1 — HOSPICE EVALUATION
+==================================================
+
+Final working title:
+
+What Happens During a Hospice Evaluation? A Family Guide
+
+Primary job:
+Explain what a family can expect during a hospice evaluation.
+
+Own:
+- what happens during the evaluation
+- who may participate
+- information families may be asked for
+- records or medical history that may be reviewed
+- questions families can ask
+- what happens after the conversation
+
+Do NOT:
+- turn this into an eligibility checklist
+- duplicate the professional referral workflow
+- duplicate the First 48 Hours article
+- pressure the reader toward hospice enrollment
+
+Absorb useful material from Article #12:
+Can a Family Request a Hospice Evaluation?
+
+Article #12 should ultimately not remain a competing standalone article.
+
+Support:
+- /hospice-care
+- /family-guide
+- /refer where professional referral context is relevant
+- Medicare resource where coverage questions arise
+
+==================================================
+ARTICLE 2 — CHANGES THAT MAY PROMPT A CONVERSATION
+==================================================
+
+Final working title:
+
+10 Changes That Can Prompt a Hospice Conversation
+
+Primary job:
+Help families recognize changes worth discussing with a physician or hospice professional.
+
+This is NOT an eligibility test.
+
+The article should use careful language such as:
+- may
+- can
+- could be worth discussing
+- may prompt a conversation
+- should be evaluated individually
+
+Do not present a checklist that determines hospice eligibility.
+
+Do not reproduce disease-specific content that belongs to the dementia, cancer, heart failure or COPD articles.
+
+Support:
+- /hospice-care
+- Article #1
+- /family-guide
+
+Maintain clear distinction from the legacy article:
+Five Hospice Myths That Cause Families to Wait
+
+Legacy article = misconception correction.
+New Article #2 = observable changes and conversation prompts.
+
+==================================================
+ARTICLE 3 — THOUSAND OAKS
+==================================================
+
+Final working title:
+
+Preparing for Hospice at Home in Thousand Oaks: Questions for Families
+
+Primary job:
+Provide practical home-hospice preparation information for families in Thousand Oaks.
+
+The existing city page owns:
+Hospice Care in Thousand Oaks / local commercial discovery.
+
+This article must NOT become another Thousand Oaks landing page.
+
+Focus on practical family questions such as:
+- preparing the home
+- caregiver availability
+- first visits
+- communication with the hospice team
+- medications
+- equipment
+- supplies
+- who to call after hours
+- questions families may want answered before care begins
+
+Use local context only when it is truthful and useful.
+
+Do not stuff:
+"Thousand Oaks hospice"
+"home hospice Thousand Oaks"
+"in-home hospice Thousand Oaks"
+or similar phrases repeatedly.
+
+Include one strong contextual link to:
+/hospice-thousand-oaks-ca
+
+Support where appropriate:
+- /hospice-care
+- Article #20 equipment
+- Article #21 on-call support
+
+==================================================
+ARTICLE 4 — HOSPITAL DISCHARGE
+==================================================
+
+Final working title:
+
+Planning Hospice After Hospital Discharge: A Family Checklist
+
+Primary job:
+Explain the practical transition from hospital discharge toward hospice care.
+
+Own:
+- discharge planning questions
+- records
+- destination
+- equipment coordination
+- medications
+- transportation questions where relevant
+- who is communicating with whom
+- timing and handoff questions
+- what families should confirm before leaving the hospital
+
+Do not duplicate:
+Article #1 evaluation
+Article #11 First 48 Hours
+
+This article owns the transition.
+
+Article #1 owns the evaluation.
+
+Article #11 owns what happens after hospice begins.
+
+Support:
+- /refer
+- /hospice-care
+- Article #1
+- Article #11
+- /resources/first-48-hours
+
+==================================================
+ARTICLE 5 — MEDICARE
+==================================================
+
+Final working title:
+
+Medicare Hospice Coverage: Questions to Confirm Before Choosing Care
+
+Primary job:
+Provide a clear family-friendly orientation to Medicare hospice coverage while sending authoritative coverage detail to the dedicated Medicare resource.
+
+The dedicated resource remains the authoritative owner:
+/resources/medicare-hospice-benefit
+
+This article should NOT become a duplicate comprehensive Medicare-benefit page.
+
+Use authoritative Medicare/CMS sources for factual statements.
+
+Cover at a high level:
+- what the Medicare hospice benefit is
+- general eligibility framework
+- what types of hospice services may be covered
+- benefit periods
+- medications/equipment related to the terminal illness
+- questions families should confirm
+- circumstances where costs or coverage may differ
+
+Avoid:
+- coverage guarantees
+- deterministic statements
+- unsupported cost claims
+- claims that all services are always covered
+- insurance assumptions
+
+Link early to:
+/resources/medicare-hospice-benefit
+
+Also support:
+- /family-guide
+- /hospice-care
+- /refer
+
+==================================================
+WRITING STANDARDS
+==================================================
+
+All five articles should be:
+
+- Written primarily for humans
+- Calm
+- Clear
+- Compassionate
+- Clinically responsible
+- Specific without becoming technical for its own sake
+- Free of keyword stuffing
+- Free of generic filler
+- Free of repetitive hospice definitions
+- Useful enough to justify the URL independently
+
+Do not begin every article with the same generic definition of hospice.
+
+Do not use artificial SEO language.
+
+Do not write for search engines at the expense of readers.
+
+Preserve Eternal Life Hospice brand tone.
+
+Where appropriate use Eternal's established concepts:
+
+The Eternal Standard
+Clinical Confidence
+Guided Presence
+Whole-Person Comfort
+Compliance-Led Care
+
+These are differentiation language, not keywords to force into every article.
+
+==================================================
+HEALTHCARE / COMPLIANCE BOUNDARIES
+==================================================
+
+Do not invent or expand:
+
+- clinical eligibility criteria
+- prognoses
+- treatment advice
+- medication instructions
+- dosage information
+- coverage guarantees
+- outcome claims
+- "best hospice" claims
+- response-time guarantees
+- same-day admission guarantees
+- licensing or accreditation claims
+
+Where medical judgment is required direct the reader toward the appropriate healthcare professional or hospice evaluation.
+
+==================================================
+INTERNAL LINKS
+==================================================
+
+Favor contextual editorial links over broad related-content linking.
+
+Each article should contain a small number of deliberate contextual links based on the approved architecture.
+
+Do not link every article to every major page.
+
+Do not turn the content into an internal-link directory.
+
+==================================================
+DELIVERABLE
+==================================================
+
+For each of the five articles provide:
+
+1. Previous title
+2. Revised title
+3. Revised body
+4. Primary search intent
+5. Core page supported
+6. Contextual internal links added
+7. Material removed or consolidated
+8. Healthcare claims reviewed
+9. Any factual statement requiring final human verification
+10. Word count before and after
+
+Then provide a batch-level cannibalization check confirming that the five revised articles still have separate jobs.
+
+STOP BEFORE PUBLICATION.
+
+Do not alter:
+- core service pages
+- city pages
+- county pages
+- resources
+- legacy blogs
+- schema
+- sitemap
+- robots
+- canonicals
+- analytics
+- tracking
+- forms
+- production configuration
+
+Wait for approval after the five revised articles are reviewed.

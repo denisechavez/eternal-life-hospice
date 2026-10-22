@@ -1,0 +1,70 @@
+we are on all of these platforms now 
+Icon labels
+Use these as the accessible labels or hover text for the icon row, since icon-only links should have clear names for usability and accessibility.
+
+Facebook — aria-label="Visit Eternal Life Hospice on Facebook"
+Instagram — aria-label="Visit Eternal Life Hospice on Instagram"
+LinkedIn — aria-label="Visit Eternal Life Hospice on LinkedIn"
+YouTube — aria-label="Watch Eternal Life Hospice on YouTube"
+TikTok — aria-label="Visit Eternal Life Hospice on TikTok"
+Pinterest — aria-label="Visit Eternal Life Hospice on Pinterest"
+X — aria-label="Visit Eternal Life Hospice on X" how would you recommend placement for maximum seo yet keeping on brand with class and descretion
+Show less
+
+Weighed SEO impact against aesthetic restraint, prioritized selective visibility
+Weighed SEO impact against aesthetic restraint, prioritized selective visibility
+Quick reconciliation first, consistent with last turn: your list now has seven, and YouTube is new — it wasn't in the six we mapped before. Worth flagging because YouTube changes the calculus. It's the one addition with real independent search value (second-largest search engine after Google, and Google embeds video results directly), so it doesn't sit in the same "nice to have" bucket as X or Pinterest.
+
+Now the core point, because it dissolves the tension in your question: class and discretion cost you nothing in SEO. The search value lives in the sameAs schema array, which is invisible, and in NAP consistency across the profiles — neither of which depends on how many icons you display or how loud they are. So you don't trade visibility for restraint. All seven go in sameAs; the visible footer stays disciplined. You get both.
+
+Where to place them. Footer only — never the header. A hospice header should lead a visitor toward the phone, not toward Instagram. Inside the footer, the icon row sits in the lower band, visually subordinate to two things above it: the ELH contact block (Suite 325B, 805.953.7273) and, on family-facing surfaces, the clinical line. That hierarchy is a care-and-compliance signal as much as a design one — the way to reach care comes first, social is tertiary. Icons that outrank the phone number read as a brand that's marketing to you rather than caring for someone.
+
+Which icons show. Same discipline as before — display what you'll feed — now with YouTube as the one genuine promotion candidate:
+
+The core three stay LinkedIn, Facebook and Instagram (referral engine, family decision-maker, brand surface). YouTube earns a visible fourth slot if there's video behind it — a facility walk-through, an "how to choose a hospice" explainer, Aleksandra's founder story told institutionally. Video is a trust surface for end-of-life decisions in a way a Pinterest board isn't. If the channel is empty, hold the icon and keep it schema-only until it's fed. X, Pinterest and TikTok stay in sameAs, no visible icon yet.
+
+Visible order, by audience value and left-to-right scan: LinkedIn, Facebook, Instagram, YouTube.
+
+The single biggest "class" lever is color. Render the icons monochrome in one brand tone — Quiet Plum 
+#5B2E59, or Stone Taupe 
+#B7A89D for a quieter footer — not the native platform colors. A row of Facebook-blue, Instagram-gradient, YouTube-red logos reads consumer and cluttered; a single-tone set reads institutional and premium, and it's what separates a hospice being prepped for a conservative buyer from a nail salon's footer. Hover shifts to Warm Gold 
+#C9B07E. One consistent icon style (all filled or all line — I'd use line at footer scale for refinement), even stroke weight, generous spacing, aligned baseline.
+
+Two flags:
+
+Your aria-labels are correct and worth keeping exactly as written — icon-only links need them for accessibility and they give a small semantic bonus. One nit: they should point to real handles, so when you wire hrefs, X uses @eternallifehosp and Facebook uses @eternallifehospiceinc per the variance we already documented.
+
+Whatever you display, every linked profile must carry the ELH block with zero WVH bleed. An icon is a doorway — a discreet, beautiful footer that opens onto a profile showing WVH's suite or phone undoes the entity separation instantly. That check matters more than the styling.
+
+Net: footer lower band, subordinate to contact; four monochrome plum icons (LinkedIn, Facebook, Instagram, YouTube) if YouTube is fed — three if not; all seven in sameAs.
+
+Want me to render the footer icon row in the Quiet Plum system so you can see the monochrome-plum treatment against the deep-plum footer ground before it goes to build? Given you've already got the aria-labels staged, I can hand back the complete markup with hrefs wired at the same time.
+
+render how you would like it to look
+
+
+Architected branded footer design reconciling constraints and custom styling
+Architected branded footer design reconciling constraints and custom styling
+
+
+That's the treatment. A few notes on the decisions, since seeing it against the ground is the point:
+
+The icons sit exactly where they should — bottom bar, right side, visually the quietest thing in the footer. The contact block reads first, the phone is a live link, the icons are tertiary. That hierarchy is the care signal: a family member finds the way to reach you before they find Instagram.
+
+Rendered in line style, not filled, and in Stone Taupe at rest so they read as a matched set rather than a stack of platform logos. Hover lifts to Warm Gold. Native brand colors would have pulled a facebook-blue, an instagram-gradient and a youtube-red into a deep-plum footer and cheapened the whole band — the single-tone set is what holds the institutional register.
+
+The three-segment rule at the top is the Continuum signature (plum → slate → gold) rendered as solid bars rather than a gradient, so it stays crisp. It ties the footer back to the brand system without shouting.
+
+Two things to weigh:
+
+I gave YouTube the fourth slot on the assumption it's fed. If the channel is empty, drop it and run three — LinkedIn, Facebook, Instagram — and the row stays balanced. An icon opening onto a bare channel is worse than no icon.
+
+The taupe-on-plum contrast is soft by design, which suits the register, but soft can shade toward hard-to-see. If you want the rest state a touch more present, Cream 
+#F5F0EB at rest with the gold hover is the alternative. The trade is legibility against quietness. I'd hold at taupe unless it reads too faint to you on the live plum.
+
+One brand-face echo available if you want it: a thin hairline ring around each glyph that appears on hover, nodding to the double gold seal rings on the medallion. It's a nice detail but it edges toward decorative — I left it off to keep the row clean.
+
+Want me to hand back the production markup with all four hrefs wired and the aria-labels in place, plus the matching sameAs schema block, so this drops straight into the Netlify build? I can also render the three-icon version beside this one so you can compare before locking the count.
+
+
+

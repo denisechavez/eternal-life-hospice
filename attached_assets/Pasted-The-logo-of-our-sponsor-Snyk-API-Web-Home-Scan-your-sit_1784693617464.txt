@@ -1,0 +1,51 @@
+The logo of our sponsor, Snyk API & Web.
+Home
+Scan your site now
+
+eternallifehospice.com
+ 
+ Hide results  Follow redirects
+Security Report Summary
+A
+Site:	https://eternallifehospice.com/
+IP Address:	75.2.60.5
+Report Time:	22 Jul 2026 04:12:26 UTC
+Headers:	
+Content-Security-Policy Permissions-Policy Referrer-Policy Strict-Transport-Security X-Content-Type-Options X-Frame-Options
+Warning:	Grade capped at A, please see warnings below.
+Advanced:	
+Great grade! Perform a deeper security analysis of your website and APIs:	
+Warnings
+Content-Security-Policy	This policy contains 'unsafe-inline' which is dangerous in the script-src directive.
+Raw Headers
+HTTP/2	200
+accept-ranges	bytes
+age	0
+cache-control	public,max-age=0,must-revalidate
+cache-status	"Netlify Edge"; fwd=miss
+content-encoding	gzip
+content-security-policy	default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.clarity.ms https://cdn.brevo.com https://www.google-analytics.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https:; connect-src 'self' https://www.google-analytics.com https://region1.google-analytics.com https://www.clarity.ms https://in.clarity.ms https://cdn.brevo.com https://api.brevo.com; media-src 'self'; frame-src 'none'; frame-ancestors 'self'; form-action 'self';
+content-type	text/html; charset=UTF-8
+date	Wed, 22 Jul 2026 04:12:25 GMT
+etag	"3cb2d75611899963b8c3ffd7a67b50c4-ssl-df"
+permissions-policy	geolocation=(), microphone=(), camera=()
+referrer-policy	strict-origin-when-cross-origin
+server	Netlify
+strict-transport-security	max-age=31536000
+vary	Accept-Encoding
+x-content-type-options	nosniff
+x-frame-options	SAMEORIGIN
+x-nf-request-id	01KY40CPR2K2WY8Z5PF9KA4JC2
+Upcoming Headers
+Cross-Origin-Embedder-Policy	Cross-Origin Embedder Policy allows a site to prevent assets being loaded that do not grant permission to load them via CORS or CORP.
+Cross-Origin-Opener-Policy	Cross-Origin Opener Policy allows a site to opt-in to Cross-Origin Isolation in the browser.
+Cross-Origin-Resource-Policy	Cross-Origin Resource Policy allows a resource owner to specify who can load the resource.
+Additional Information
+content-security-policy	Content Security Policy is an effective measure to protect your site from XSS attacks. By whitelisting sources of approved content, you can prevent the browser from loading malicious assets. Analyse this policy in more detail. You can sign up for a free account on Report URI to collect reports about problems on your site.
+permissions-policy	Permissions Policy is a new header that allows a site to control which features and APIs can be used in the browser.
+referrer-policy	Referrer Policy is a new header that allows a site to control how much information the browser includes with navigations away from a document and should be set by all sites.
+server	Server value has been changed. Typically you will see values like "Microsoft-IIS/8.0" or "nginx 1.7.2".
+strict-transport-security	HTTP Strict Transport Security is an excellent feature to support on your site and strengthens your implementation of TLS by getting the User Agent to enforce the use of HTTPS.
+x-content-type-options	X-Content-Type-Options stops a browser from trying to MIME-sniff the content type and forces it to stick with the declared content-type. The only valid value for this header is "X-Content-Type-Options: nosniff".
+x-frame-options	X-Frame-Options tells the browser whether you want to allow your site to be framed or not. By preventing a browser from framing your site you can defend against attacks like clickjacking.
+A snyk.io project - CC-BY-SA 4.0Powered by Snyk  

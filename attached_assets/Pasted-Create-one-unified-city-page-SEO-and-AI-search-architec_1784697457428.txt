@@ -1,0 +1,452 @@
+Create one unified city-page SEO and AI-search architecture for Eternal Life Hospice.
+
+Do not build isolated city pages using separate inconsistent templates.
+
+The new architecture must govern:
+
+1. Every currently published city page
+2. The next 10 approved city pages
+3. Every future city page added later
+
+PRIMARY OBJECTIVE
+
+Build a reusable production city-page system that guarantees consistent:
+
+- Technical SEO
+- AI-readable summaries
+- Metadata
+- Structured data
+- Breadcrumbs
+- Internal linking
+- Accessibility
+- Conversion tracking
+- Compliance language
+- Sitemap behavior
+- Content-quality validation
+
+The system must also preserve genuinely unique local content for every city.
+
+==================================================
+PHASE 1 — INVENTORY EXISTING PAGES
+==================================================
+
+Identify every currently published city page.
+
+For each page record:
+
+- URL
+- City
+- County
+- Subregion
+- HTTP status
+- Canonical
+- Indexability
+- Title
+- Meta description
+- H1
+- Word count
+- Unique-content percentage
+- FAQ count
+- Structured-data types
+- Breadcrumb status
+- Inbound internal-link count
+- Outbound internal-link count
+- Sitemap inclusion
+- Hero image
+- Image alt text
+- Prohibited healthcare claims
+- Links to redirected URLs
+- Orphan status
+
+Do not modify pages until the complete inventory is produced.
+
+==================================================
+PHASE 2 — BUILD THE SHARED CITY-PAGE SYSTEM
+==================================================
+
+Create a structured city-page data model.
+
+Required fields:
+
+- city
+- county
+- subregion
+- slug
+- canonicalUrl
+- nearbyCommunities
+- nearbyCityPages
+- title
+- metaDescription
+- h1
+- atAGlanceSummary
+- localIntroduction
+- localCareContext
+- providerContext
+- familyContext
+- faqItems
+- closingParagraph
+- heroImage
+- heroImageAlt
+- latitude and longitude only when verified
+- publishStatus
+- sitemapStatus
+- lastMaterialUpdate
+
+Create one reusable city-page renderer.
+
+The reusable renderer must control:
+
+- Breadcrumbs
+- Hero structure
+- At-a-Glance layout
+- CTA hierarchy
+- First 48 Hours section
+- The Eternal Standard section
+- Medicare coverage language
+- Family Guide CTA
+- Provider referral CTA
+- Nearby-city navigation
+- FAQ presentation
+- Footer
+- JSON-LD structure
+- Analytics event names
+
+Do not hard-code duplicate organization information in every city-page file.
+
+Use the shared organization entity:
+
+https://eternallifehospice.com/#organization
+
+==================================================
+PHASE 3 — MIGRATE ALL EXISTING CITY PAGES
+==================================================
+
+Migrate every currently published city page into the shared city-page architecture.
+
+Preserve current canonical URLs unless an existing URL is defective.
+
+Do not change URLs merely for formatting preference.
+
+Every existing city page must receive:
+
+- One unique title
+- One unique meta description
+- Exactly one H1
+- Visible breadcrumbs
+- AI-readable At-a-Glance summary
+- Correct county
+- Correct subregion
+- Nearby communities
+- Five visible FAQs
+- Matching FAQPage schema
+- BreadcrumbList schema
+- MedicalOrganization reference
+- WebPage schema
+- Family Guide link
+- Referral link
+- First 48 Hours link
+- Medicare hospice benefit link
+- Regional hub link
+- Two nearby city links
+- Unique image alt text
+- Self-referencing canonical
+- Sitemap inclusion
+- Crawlable initial HTML
+
+Do not publish template-only city-name substitution.
+
+==================================================
+PHASE 4 — UNIQUE CONTENT REQUIREMENTS
+==================================================
+
+Standardized brand and compliance sections may be shared.
+
+The following fields must be unique for every city:
+
+- Title
+- Meta description
+- H1
+- At-a-Glance summary
+- Opening paragraph
+- Local care context
+- Family context
+- Provider context
+- At least two FAQ answers
+- Nearby-community section
+- Closing paragraph
+- Hero alt text
+
+Flag any page where more than 65% of substantive body copy matches another city page.
+
+Do not publish or keep indexed any city page that fails the uniqueness threshold.
+
+Do not manufacture uniqueness by changing adjectives or rearranging sentences.
+
+==================================================
+PHASE 5 — COMPLETE THE REGIONAL HUB
+==================================================
+
+Upgrade:
+
+/hospice-ventura-and-los-angeles-county-ca
+
+Use it as the authoritative parent page for all city pages.
+
+Add:
+
+- Ventura County section
+- Los Angeles County section
+- Subregional clusters
+- Short original introduction for each cluster
+- Every published city page
+- Family Guide CTA
+- First 48 Hours link
+- Medicare hospice benefit link
+- Provider referral CTA
+- County-level FAQs
+- Accessible service-area directory
+- Visible breadcrumbs
+- WebPage schema
+- BreadcrumbList schema
+- FAQPage schema when FAQs are visible
+
+Do not display unpublished future cities as active links.
+
+==================================================
+PHASE 6 — BUILD THE NEXT 10 PAGES
+==================================================
+
+After all existing pages pass QA create:
+
+1. Mission Hills
+2. Sylmar
+3. Panorama City
+4. North Hills
+5. Pacoima
+6. Sun Valley
+7. Valencia
+8. Palmdale
+9. Lancaster
+10. Oak Park
+
+Use the same shared architecture.
+
+Do not create a separate template for these pages.
+
+Place them in the correct clusters:
+
+North San Fernando Valley:
+- Mission Hills
+- Sylmar
+- Panorama City
+- North Hills
+- Pacoima
+- Sun Valley
+
+Santa Clarita Valley:
+- Valencia
+
+Antelope Valley:
+- Palmdale
+- Lancaster
+
+Conejo Valley and eastern Ventura County:
+- Oak Park
+
+==================================================
+PHASE 7 — FUTURE CITY DATABASE
+==================================================
+
+Create records for the remaining proposed cities but mark them:
+
+publishStatus: draft
+
+Draft city records must:
+
+- Not generate public routes
+- Not appear in sitemap.xml
+- Not appear in internal links
+- Not be indexable
+- Not be submitted through IndexNow
+- Not appear in regional hub city listings
+
+Each future city must require manual approval before publication.
+
+Add prioritization fields:
+
+- operationalCoverageConfirmed
+- searchDemandScore
+- referralMarketScore
+- geographicFitScore
+- contentUniquenessReady
+- outreachListReady
+- approvedForPublication
+
+Do not publish a future city unless all required approvals are true.
+
+==================================================
+APPROVED BRAND AND HEALTHCARE LANGUAGE
+==================================================
+
+Use:
+
+“Physician-supported hospice care”
+
+Use:
+
+“Same-day evaluation may be available when clinically appropriate and operationally available.”
+
+Use:
+
+“Most Medicare-covered hospice services have little to no out-of-pocket cost. Limited copayments may apply in specific circumstances.”
+
+Use:
+
+“Medications. equipment and supplies are coordinated and delivered based on the patient’s clinical needs.”
+
+Do not use:
+
+- Physician-led
+- Best hospice
+- Top hospice
+- Guaranteed admission
+- Free hospice
+- $0 hospice
+- No copay
+- No deductible
+- 100% covered
+- Universal no-additional-expense claims
+- Unsupported medical-treatment claims
+- Fake office locations
+- Hospital affiliations
+- Facility affiliations
+- Fabricated local relationships
+- Fabricated response times
+
+==================================================
+AI-READABLE SUMMARY
+==================================================
+
+Every city page must include a visible section:
+
+Hospice Care in [City] at a Glance
+
+Use 70 to 110 words.
+
+State:
+
+- Eternal Life Hospice is the care organization
+- City
+- County
+- Care is provided where the patient calls home
+- Physician-supported hospice care
+- 24/7 on-call nursing for enrolled patients and families
+- Eligibility requires clinical evaluation and physician certification
+- Medicare-certified
+- CDPH-licensed
+- ACHC-accredited
+
+Do not hide this section.
+
+==================================================
+INTERNAL LINKING
+==================================================
+
+Every city page must link to:
+
+- Regional hub
+- Family Guide
+- Refer page
+- First 48 Hours
+- Medicare hospice benefit
+- What Hospice Covers
+- How to Choose a Hospice
+- Two nearby published city pages
+
+Every page must receive inbound links from:
+
+- Regional hub
+- At least one nearby city page
+- At least one relevant resource or cluster page
+
+Use crawlable HTML anchors.
+
+Do not link to redirected or unpublished URLs.
+
+==================================================
+STRUCTURED DATA
+==================================================
+
+Use:
+
+- WebPage
+- BreadcrumbList
+- FAQPage only for visible FAQs
+- Reference to MedicalOrganization using the shared @id
+
+Do not create a fake branch organization or local address for every city.
+
+Use areaServed for the city and county.
+
+Ensure schema content exactly matches visible page content.
+
+==================================================
+TECHNICAL REQUIREMENTS
+==================================================
+
+Every city page must:
+
+- Return HTTP 200
+- Use HTTPS
+- Use non-www canonical URLs
+- Have a self-referencing canonical
+- Be indexable
+- Appear in sitemap.xml
+- Render primary content in initial HTML
+- Have one H1
+- Have no mixed content
+- Have no broken links
+- Have no console errors
+- Have no crawlable hidden form-state messages
+- Preserve current security headers
+- Preserve Content Security Policy
+- Use optimized responsive images
+- Pass mobile rendering QA
+
+==================================================
+FINAL RELEASE GATE
+==================================================
+
+Do not report completion until:
+
+- Every current city page has been inventoried
+- Every current city page uses the shared architecture
+- Every current city page has one unique title
+- Every current city page has one unique meta description
+- Every current city page has exactly one H1
+- Every current city page has visible breadcrumbs
+- Every current city page has complete internal links
+- Every current city page has valid structured data
+- Every current city page passes the uniqueness threshold
+- The regional hub links to every published city page
+- The next 10 pages use the same architecture
+- No future draft city is public
+- No orphan pages remain
+- No internal link points to a redirect
+- Sitemap contains only canonical published URLs
+- No prohibited claims remain
+- A complete QA report has been produced
+
+Output:
+
+1. Existing city-page inventory
+2. Migration report
+3. List of upgraded existing URLs
+4. List of the 10 new URLs
+5. Regional hub report
+6. Duplicate-content report
+7. Internal-link report
+8. Structured-data validation report
+9. Sitemap report
+10. List of future draft cities
+11. Issues requiring manual review

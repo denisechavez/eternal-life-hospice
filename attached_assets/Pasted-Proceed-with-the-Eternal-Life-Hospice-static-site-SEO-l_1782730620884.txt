@@ -1,0 +1,104 @@
+Proceed with the Eternal Life Hospice static-site SEO launch lock.
+
+Do not convert the site to Next.js, Astro, Eleventy, CMS or dynamic routing. Keep the current static HTML structure.
+
+Before editing:
+
+1. Create a backup snapshot or checkpoint of the current files.
+2. Do not rename any file unless required for a broken or weak slug.
+3. Keep the current root-level city slug pattern unless there is a clear issue.
+
+Final live domain:
+https://eternallifehospice.com
+
+Approved service counties:
+Ventura County and Los Angeles County only.
+Do not add Orange County.
+
+TASKS TO COMPLETE NOW:
+
+1. Sitemap
+   Create sitemap.xml at the site root.
+   Include all public indexable pages.
+   Use clean pretty URLs without .html.
+   Exclude 404.html.
+   Use https://eternallifehospice.com as the domain.
+
+2. Robots
+   Create or update robots.txt.
+   Allow indexing.
+   Include:
+   Sitemap: https://eternallifehospice.com/sitemap.xml
+
+3. Canonicals
+   Review every HTML page.
+   Make sure each page has one canonical tag.
+   Use the clean pretty URL without .html.
+   Example:
+   https://eternallifehospice.com/hospice-malibu-ca
+   Not:
+   https://eternallifehospice.com/hospice-malibu-ca.html
+
+4. Internal Links
+   Audit and fix all internal links.
+   Confirm:
+
+* no broken links
+* no blank hrefs
+* no placeholder buttons
+* no links to missing files
+* no links pointing to old domains
+* no internal links pointing to .html if clean pretty URLs are intended
+* navigation and footer links work on every page
+
+5. SEO Metadata
+   Review every public page and make sure each has:
+
+* unique title tag
+* unique meta description
+* one clear H1
+* location or service relevance where appropriate
+* no duplicate weak metadata
+* no “Untitled”
+* no placeholder copy
+
+6. Schema
+   Add or verify schema markup where appropriate:
+
+* Organization schema on the homepage
+* LocalBusiness or MedicalBusiness schema where appropriate
+* FAQ schema only on pages that visibly contain matching FAQ content
+* Article schema for resource articles
+* Breadcrumb schema where useful
+
+Use Eternal Life Hospice as the organization name.
+Use the final domain:
+https://eternallifehospice.com
+
+7. Redirects
+   Review _redirects.
+   Keep the existing redirects.
+   Add 301 redirects for any renamed or old URLs.
+   Use this format:
+   /old-url  /new-url  301
+
+Do not redirect active final URLs.
+
+8. Old Domain Cleanup
+   Search the entire site for old or incorrect domain references.
+   Replace old Eternal URLs with:
+   https://eternallifehospice.com
+
+9. Launch Report
+   After completing the work, give me a final launch-lock report with:
+
+* Final URL map
+* Sitemap.xml status
+* Robots.txt status
+* Canonical URL confirmation
+* Redirect map
+* Broken link report
+* Pages excluded from sitemap
+* Metadata issues fixed
+* Schema added or verified
+* Any remaining issues that still need approval

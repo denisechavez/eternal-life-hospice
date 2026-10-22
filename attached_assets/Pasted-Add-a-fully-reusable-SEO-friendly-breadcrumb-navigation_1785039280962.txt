@@ -1,0 +1,84 @@
+Add a fully reusable SEO-friendly breadcrumb navigation system across the Eternal Life Hospice website. Do not add breadcrumbs to the homepage. Place breadcrumbs directly below the global header and above the page H1 within the existing content container. Ensure spacing is consistent with the current design and that breadcrumbs never overlap hero images or sticky navigation.
+
+Implement breadcrumbs on every interior page using the following hierarchy:
+
+* Providers: Home → Providers
+* Refer a Patient: Home → Providers → Refer a Patient
+* Family Guide: Home → Family Guide
+* Resources landing page: Home → Resources
+* Every resource article: Home → Resources → Current Page Title
+* Careers: Home → Careers
+* Volunteer: Home → Volunteer
+* Sound Bath Therapy: Home → Comfort Therapies → Sound Bath Therapy
+* CareBidet: Home → Comfort Therapies → CareBidet
+* All service-area pages: Home → Service Areas → Current City
+
+Apply this automatically to all current and future resource pages and city pages.
+
+Breadcrumb links should behave as follows:
+
+* Home links to “/”
+* Parent categories link to their respective landing pages
+* The current page is not clickable and uses aria-current=“page”
+* All breadcrumb links must use the canonical domain https://www.eternallifehospice.com
+* Remove any references to legacy domains
+
+Match the Eternal Life Hospice design system:
+
+* Use Jost typography
+* Font size approximately 13–14px desktop and 12–13px mobile
+* Quiet Plum for links
+* Stone Taupe or similar muted separator color
+* Use a simple chevron (›) separator
+* Provide subtle hover states
+* Maintain WCAG-compliant contrast
+* Allow breadcrumbs to wrap naturally on mobile
+* Do not truncate important page titles
+
+Build breadcrumbs using semantic HTML:
+
+<nav aria-label="Breadcrumb">
+  <ol>
+    <li><a href="/">Home</a></li>
+    <li><a href="/resources">Resources</a></li>
+    <li aria-current="page">Current Page</li>
+  </ol>
+</nav>
+
+Requirements:
+
+* Use semantic HTML
+* Use an ordered list
+* Ensure keyboard accessibility
+* Preserve visible focus states
+* Prevent screen readers from announcing separators unnecessarily
+
+Add valid Schema.org BreadcrumbList JSON-LD to every page with breadcrumbs. The visible breadcrumb trail and the JSON-LD must always match exactly.
+
+Create one reusable breadcrumb component instead of manually coding breadcrumbs on individual pages. Generate breadcrumbs from the site’s route configuration whenever possible so future pages automatically inherit the correct structure.
+
+Do not modify existing URLs page layouts metadata canonicals analytics forms structured data or content except where necessary to integrate breadcrumbs. Do not create duplicate H1 tags. Do not introduce layout shift. Do not add breadcrumbs to the homepage 404 pages or utility pages unless appropriate.
+
+Validate that every breadcrumb link resolves successfully with no broken links or redirects. Verify responsive behavior on desktop tablet and mobile.
+
+Use logical site hierarchy rather than raw URL hierarchy. For example:
+
+Home → Service Areas → Thousand Oaks
+
+is preferred over:
+
+Home → Hospice Ventura and Los Angeles County CA → Thousand Oaks
+
+After implementation perform a complete QA audit and provide:
+
+1. Every page where breadcrumbs were added.
+2. Any pages intentionally excluded.
+3. Confirmation that all breadcrumb links work correctly.
+4. Confirmation that BreadcrumbList schema validates.
+5. Confirmation that no legacy domains remain.
+6. Confirmation that breadcrumbs do not overlap headers heroes or H1 headings.
+7. Confirmation that aria-current=“page” is correctly implemented.
+8. Confirmation that the production build completes successfully with zero errors.
+9. A list of every file component and route modified.
+
+Finally perform a full SEO crawl to verify that Google and AI crawlers can discover the breadcrumb structure correctly and report any additional opportunities to strengthen internal linking and topical authority.
