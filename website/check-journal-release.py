@@ -87,14 +87,15 @@ def check(site, getter=fetch):
     return ("missed" if failures else "healthy"), failures
 
 
-def notify(failures, monitoring_unavailable=False):
+def notify(failures, monitoring_unavailable=False, missing_run=False):
     api_key = os.environ.get("BREVO_API")
     if not api_key:
         raise RuntimeError("BREVO_API is not configured")
     message = {
         "sender": {"name": "Eternal Life Hospice Operations", "email": "no-reply@eternallifehospice.com"},
         "to": [{"name": "Denise", "email": JOURNAL_ALERT_EMAIL}],
-        "subject": ("ACTION REQUIRED: Journal release monitoring unavailable" if monitoring_unavailable
+        "subject": ("ACTION REQUIRED: Journal daily monitor run missing or unverified" if missing_run else
+                    "ACTION REQUIRED: Journal release monitoring unavailable" if monitoring_unavailable
                     else "ACTION REQUIRED: Journal daily publication gap"),
         "textContent": (
             "Journal release time: 6:30 a.m. America/Los_Angeles.\n\n"
@@ -107,7 +108,7 @@ def notify(failures, monitoring_unavailable=False):
             + "\n\nReview the Journal release workflow and Eternal Studio. No content was approved or sent by this check.\n"
         ),
     }
-    email.send_alert(api_key, message)
+    return email.send_alert(api_key, message, require_message_id=True)
 
 
 def main():
@@ -115,26 +116,44 @@ def main():
     parser.add_argument("--site", required=True)
     parser.add_argument("--scheduled-cron", default="")
     parser.add_argument("--no-email", action="store_true")
+    parser.add_argument("--result-file", type=Path)
     args = parser.parse_args()
-    if not scheduled_today(args.scheduled_cron, datetime.now(timezone.utc)):
+    instant = datetime.now(timezone.utc)
+    result = {
+        "schema": 1, "checkedAt": instant.isoformat(),
+        "scheduledCron": args.scheduled_cron, "status": "skipped",
+        "alert": "not-needed", "messageId": None,
+    }
+
+    def finish(code):
+        if args.result_file:
+            args.result_file.write_text(json.dumps(result) + "\n", encoding="utf-8")
+        return code
+
+    if not scheduled_today(args.scheduled_cron, instant):
         print("Journal check skipped: other Pacific UTC offset")
-        return 0
+        return finish(0)
     try:
         status, failures = check(args.site.rstrip("/"))
     except Exception as exc:
         status, failures = "unavailable", [f"Monitoring failed: {type(exc).__name__}"]
-    if status in {"healthy", "not-installed"}:
+    if status == "not-installed":
+        status, failures = "unavailable", ["Journal release status endpoint is not installed"]
+    result["status"] = status
+    if status == "healthy":
         print(f"Journal release check: {status}")
-        return 0
+        return finish(0)
     print(f"Journal release check: {status}\n" + "\n".join(failures), file=sys.stderr)
+    result["alert"] = "suppressed" if args.no_email else "failed"
     if not args.no_email:
         try:
-            notify(failures, monitoring_unavailable=status == "unavailable")
+            result["messageId"] = notify(failures, monitoring_unavailable=status == "unavailable")
+            result["alert"] = "accepted"
             print("Journal release email accepted by provider")
         except Exception as exc:
             print(f"JOURNAL_ALERT_FAILED channel=email error={type(exc).__name__}", file=sys.stderr)
-            return 2
-    return 1
+            return finish(2)
+    return finish(1)
 
 
 if __name__ == "__main__":

@@ -6,6 +6,11 @@ on:
     - cron: "45 13 * * *"
     - cron: "45 14 * * *"
   workflow_dispatch:
+    inputs:
+      send_alerts:
+        description: "Allow real operational alert email (default is no email)"
+        type: boolean
+        default: false
 
 permissions:
   contents: read
@@ -21,10 +26,22 @@ jobs:
     env:
       BREVO_API: ${{ secrets.BREVO_API }}
       JOURNAL_SCHEDULE: ${{ github.event.schedule }}
+      SEND_ALERTS: ${{ github.event_name == 'schedule' || inputs.send_alerts }}
     steps:
       - uses: actions/checkout@v4
       - name: Verify approved versions and email the reviewer on failure
         run: |
+          flags=()
+          if [[ "$SEND_ALERTS" != "true" ]]; then flags+=(--no-email); fi
           python3 website/check-journal-release.py \
             --site https://eternallifehospice.com \
-            --scheduled-cron "$JOURNAL_SCHEDULE"
+            --scheduled-cron "$JOURNAL_SCHEDULE" \
+            --result-file journal-monitor-result.json "${flags[@]}"
+      - name: Preserve monitor execution and provider receipt
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: journal-monitor-result
+          path: journal-monitor-result.json
+          if-no-files-found: error
+          retention-days: 14

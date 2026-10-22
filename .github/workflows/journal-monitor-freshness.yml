@@ -1,0 +1,41 @@
+name: Journal monitor freshness
+
+on:
+  schedule:
+    # 8:17 a.m. Pacific; the checker selects the DST offset.
+    - cron: "17 15 * * *"
+    - cron: "17 16 * * *"
+  workflow_dispatch:
+    inputs:
+      send_alerts:
+        description: "Allow real operational alert email (default is no email)"
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: journal-monitor-freshness
+  cancel-in-progress: false
+
+jobs:
+  verify-monitor-execution:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      GITHUB_TOKEN: ${{ github.token }}
+      BREVO_API: ${{ secrets.BREVO_API }}
+      JOURNAL_SCHEDULE: ${{ github.event.schedule }}
+      REPOSITORY: ${{ github.repository }}
+      SEND_ALERTS: ${{ github.event_name == 'schedule' || inputs.send_alerts }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify daily monitor execution and required provider acceptance
+        run: |
+          flags=()
+          if [[ "$SEND_ALERTS" != "true" ]]; then flags+=(--no-email); fi
+          python3 website/check-journal-monitor-freshness.py \
+            --repository "$REPOSITORY" \
+            --scheduled-cron "$JOURNAL_SCHEDULE" "${flags[@]}"

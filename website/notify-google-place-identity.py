@@ -50,7 +50,7 @@ def build_message(output, run_url, secrets=()):
     }
 
 
-def send_alert(api_key, message, endpoint=BREVO_ENDPOINT):
+def send_alert(api_key, message, endpoint=BREVO_ENDPOINT, require_message_id=False):
     request = Request(
         endpoint,
         data=json.dumps(message, separators=(",", ":")).encode("utf-8"),
@@ -65,6 +65,12 @@ def send_alert(api_key, message, endpoint=BREVO_ENDPOINT):
     with urlopen(request, timeout=10) as response:
         if not 200 <= response.status < 300:
             raise OSError("email provider rejected the notification")
+        if require_message_id:
+            receipt = json.loads(response.read())
+            message_id = receipt.get("messageId")
+            if not isinstance(message_id, str) or not message_id.strip():
+                raise OSError("email provider did not return a message ID")
+            return message_id
 
 
 def main():
