@@ -1,0 +1,130 @@
+/* Eternal Life Hospice service previews — the approved care-community visual system. */
+#service-page{
+  --cc-plum:#5B2E59;--cc-deep:#3C1C3B;--cc-gold:#C9B07E;--cc-cream:#F5F0EB;
+  --cc-ink:#3a2b39;--cc-muted:#6b5d68;--cc-line:#ded2c6;
+  color:var(--cc-ink);background:var(--cc-cream);overflow:clip
+}
+#service-page *{box-sizing:border-box}
+#service-page a:focus-visible,#service-page summary:focus-visible{outline:3px solid var(--cc-gold);outline-offset:4px;border-radius:3px}
+#service-page .cc-wrap{width:min(1120px,calc(100% - 3.2rem));margin-inline:auto}
+#service-page .cc-eyebrow{font:600 12px/1.5 var(--ff-b);letter-spacing:.17em;text-transform:uppercase;color:var(--cc-gold)}
+#service-page h1,#service-page h2,#service-page h3{font-family:var(--ff-d);font-weight:400}
+#service-page .cc-breadcrumb{padding:1rem 0;background:#eee6df;font:500 13px/1.4 var(--ff-b);color:var(--cc-muted)}
+#service-page .cc-breadcrumb ol{display:flex;flex-wrap:wrap;gap:.55rem;list-style:none;margin:0;padding:0}
+#service-page .cc-breadcrumb li+li::before{content:"/";padding-right:.55rem;color:#a897a0}
+#service-page .cc-breadcrumb a{color:var(--cc-plum);text-decoration:underline;text-decoration-color:rgba(91,46,89,.3);text-underline-offset:3px}
+#service-page a.cc-context-link{color:inherit;text-decoration:underline;text-decoration-color:var(--cc-gold);text-decoration-thickness:1.5px;text-underline-offset:3px}
+#service-page a.cc-context-link:hover{color:var(--cc-plum)}
+#service-page a.cc-context-link:focus-visible{outline:2px solid var(--cc-plum);outline-offset:3px}
+#service-page .cc-preview-note{padding:.75rem 1rem;background:#eee6df;border-left:3px solid var(--cc-gold);color:var(--cc-muted);font:500 13px/1.5 var(--ff-b)}
+#service-page .cc-hero{background:var(--cc-deep);color:var(--cc-cream);padding:clamp(3.5rem,7vw,6.5rem) 0}
+#service-page .cc-hero-inner{width:min(1200px,calc(100% - 3.2rem));margin:auto;display:grid;grid-template-columns:1fr 1.02fr;gap:clamp(2.4rem,6vw,6rem);align-items:center}
+#service-page .cc-hero-copy{max-width:560px}
+#service-page .cc-hero-copy h1{font-size:clamp(2.8rem,5.4vw,5.15rem);line-height:.99;letter-spacing:-.035em;margin:1rem 0 1.15rem}
+#service-page .cc-hero-copy .cc-subline{font:italic 400 clamp(1.15rem,2vw,1.48rem)/1.5 var(--ff-d);color:#e8ded8;max-width:32ch}
+#service-page .cc-actions{display:flex;flex-wrap:wrap;gap:.8rem;margin-top:2rem}
+#service-page .cc-button{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:.8rem 1.25rem;border:1px solid var(--cc-gold);border-radius:999px;background:var(--cc-gold);color:var(--cc-deep);font:600 14px/1.25 var(--ff-b);text-align:center;transition:transform .2s,background .2s}
+#service-page .cc-button:hover{transform:translateY(-2px);background:#d6c395}
+#service-page .cc-button--outline{background:transparent;color:var(--cc-cream);border-color:rgba(245,240,235,.55)}
+#service-page .cc-button--outline:hover{background:rgba(245,240,235,.08)}
+#service-page .cc-hero-photo{position:relative;margin:0 1rem 1rem 0;min-height:420px}
+#service-page .cc-hero-photo::before{content:"";position:absolute;z-index:0;inset:18px -16px -16px 18px;background:var(--cc-gold);border-radius:48% 48% 5px 5px}
+#service-page .cc-hero-photo img{position:relative;z-index:1;display:block;width:100%;height:clamp(360px,42vw,545px);object-fit:contain;object-position:center;border-radius:48% 48% 5px 5px;background:#e8ded8}
+#service-page figure{margin:0}
+#service-page .cc-photo-note{position:absolute;z-index:2;right:.65rem;bottom:.65rem;padding:.35rem .55rem;background:rgba(60,28,59,.85);color:#fff;font:500 10px/1.3 var(--ff-b);letter-spacing:.02em}
+#service-page .cc-intro{padding:clamp(4.4rem,8vw,7rem) 0 clamp(3.6rem,6vw,5.7rem)}
+#service-page .cc-intro-inner{max-width:880px;margin:auto;position:relative;padding-left:clamp(2.7rem,7vw,6rem)}
+#service-page .cc-quote-mark{position:absolute;left:0;top:-.54em;font:400 clamp(5.5rem,10vw,9rem)/1 var(--ff-d);color:var(--cc-gold)}
+#service-page .cc-intro p{font-size:clamp(1.15rem,2.2vw,1.5rem);line-height:1.72;color:var(--cc-plum);margin:0}
+#service-page .cc-section{padding:clamp(3.4rem,6vw,5rem) 0}
+#service-page .cc-how{background:#eee6df}
+#service-page .cc-section-heading{font:400 clamp(2rem,3.6vw,3.15rem)/1.12 var(--ff-d);color:var(--cc-deep);max-width:800px;margin:0 0 1.15rem;letter-spacing:-.02em}
+#service-page .cc-section p{font-size:17px;line-height:1.75;color:var(--cc-muted);max-width:800px;margin:0}
+#service-page .cc-copy{max-width:820px}
+#service-page .cc-pullquote{padding:clamp(3.6rem,7vw,5.5rem) 1.5rem;text-align:center}
+#service-page .cc-pullquote blockquote{max-width:840px;margin:0 auto;color:var(--cc-plum);font:italic 400 clamp(1.8rem,4vw,3.35rem)/1.24 var(--ff-d)}
+#service-page .cc-pullquote::after{content:"";display:block;width:58px;height:2px;background:var(--cc-gold);margin:1.55rem auto 0}
+#service-page .cc-communication{padding-top:0}
+#service-page .cc-communication-photo{position:relative;width:min(1120px,calc(100% - 3.2rem));margin:0 auto;overflow:hidden;background:#e8ded8}
+#service-page .cc-communication-photo img{display:block;width:100%;height:clamp(260px,43vw,510px);object-fit:contain;object-position:center;background:#e8ded8}
+#service-page .cc-communication-copy{padding-top:clamp(2.5rem,5vw,4rem)}
+#service-page .cc-tiles{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1px;margin-top:2rem;background:var(--cc-line);border:1px solid var(--cc-line)}
+#service-page .cc-tile{min-height:150px;background:#faf7f3;padding:1.55rem clamp(1rem,2.6vw,2rem);display:flex;flex-direction:column;align-items:flex-start;gap:1.15rem;color:var(--cc-plum);font-size:16px;line-height:1.55}
+#service-page .cc-tile svg{width:34px;height:34px;color:var(--cc-gold);flex:none}
+#service-page .cc-coverage{padding-top:1rem;padding-bottom:clamp(3.5rem,6vw,5.5rem)}
+#service-page .cc-standard{background:var(--cc-deep);color:var(--cc-cream);padding:clamp(3.5rem,6vw,5.5rem) 0}
+#service-page .cc-standard .cc-eyebrow{text-align:center}
+#service-page .cc-standard h2{text-align:center;font-size:clamp(2.1rem,4.3vw,3.5rem);line-height:1.08;margin:.5rem 0 2.4rem;color:var(--cc-cream)}
+#service-page .cc-pillars{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-top:1px solid rgba(201,176,126,.45);border-bottom:1px solid rgba(201,176,126,.45)}
+#service-page .cc-pillar{padding:1.5rem 1.2rem 1.6rem;border-right:1px solid rgba(201,176,126,.35)}
+#service-page .cc-pillar:last-child{border:0}
+#service-page .cc-pillar h3{font:500 1.28rem/1.2 var(--ff-d);color:var(--cc-gold);margin:0 0 .7rem}
+#service-page .cc-pillar p{font-size:14.5px;line-height:1.65;color:rgba(245,240,235,.83);margin:0}
+#service-page .cc-plan{padding:clamp(3.5rem,7vw,6rem) 0}
+#service-page .cc-plan-panel{max-width:1000px;margin:auto;border:1px solid var(--cc-gold);padding:clamp(1.8rem,5vw,3.7rem);text-align:center;position:relative}
+#service-page .cc-plan-panel::before,#service-page .cc-plan-panel::after{content:"";position:absolute;width:11px;height:11px;background:var(--cc-cream);border:1px solid var(--cc-gold);transform:rotate(45deg)}
+#service-page .cc-plan-panel::before{left:-6px;top:-6px}
+#service-page .cc-plan-panel::after{right:-6px;bottom:-6px}
+#service-page .cc-plan-panel .cc-eyebrow{color:var(--cc-plum)}
+#service-page .cc-plan-panel h2{font-size:clamp(2rem,3.6vw,3rem);color:var(--cc-deep);margin:.55rem 0 .8rem;line-height:1.1}
+#service-page .cc-plan-panel p{font-size:16px;color:var(--cc-muted);line-height:1.7;max-width:760px;margin:0 auto}
+#service-page .cc-faq{background:#eee6df;padding:clamp(3.7rem,7vw,5.5rem) 0}
+#service-page .cc-faq h2{font-size:clamp(2.2rem,4vw,3.2rem);color:var(--cc-deep);margin:0 0 1.8rem}
+#service-page .cc-faq-list{max-width:850px;border-top:1px solid #d4c6b9}
+#service-page .cc-faq details{border-bottom:1px solid #d4c6b9}
+#service-page .cc-faq summary{list-style:none;position:relative;padding:1.15rem 2.6rem 1.15rem 0;cursor:pointer;color:var(--cc-plum);font-size:17px;font-weight:600}
+#service-page .cc-faq summary::-webkit-details-marker{display:none}
+#service-page .cc-faq summary::after{content:"+";position:absolute;right:.35rem;top:50%;transform:translateY(-50%);font:400 25px/1 var(--ff-d);color:var(--cc-gold)}
+#service-page .cc-faq details[open] summary::after{content:"−"}
+#service-page .cc-faq details p{padding:0 2rem 1.2rem 0;margin:0;color:var(--cc-muted);font-size:16px;line-height:1.7}
+#service-page .cc-related{padding:clamp(3.4rem,6vw,4.7rem) 0}
+#service-page .cc-related h2{font-size:clamp(1.9rem,3.4vw,2.7rem);color:var(--cc-deep);margin:0 0 1.25rem}
+#service-page .cc-related-links{display:flex;flex-wrap:wrap;gap:.7rem 1.5rem}
+#service-page .cc-related-links a{color:var(--cc-plum);font-weight:600;border-bottom:1px solid rgba(91,46,89,.35);padding-bottom:.18rem}
+#service-page .cc-related-links a:hover{border-color:var(--cc-gold);color:var(--cc-deep)}
+#service-page .cc-closing{background:var(--cc-plum);color:var(--cc-cream);padding:clamp(3rem,6vw,4.8rem) 1.4rem;text-align:center}
+#service-page .cc-closing h2{font-size:clamp(2rem,4vw,3.2rem);line-height:1.12;margin:0 0 1.5rem}
+#service-page .cc-closing .cc-actions{justify-content:center;margin:0}
+#service-page .cc-levels{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1rem;margin-top:1.8rem}
+#service-page .cc-level{padding:1.55rem 1.4rem;background:#faf7f3;border-top:2px solid var(--cc-gold)}
+#service-page .cc-level h3{font-size:1.45rem;color:var(--cc-plum);margin:0 0 .7rem}
+#service-page .cc-level p{font-size:15px;line-height:1.7;color:var(--cc-muted);margin:0}
+#service-page .cc-timeline{counter-reset:step;list-style:none;padding:0;margin:1.8rem 0 0;max-width:860px}
+#service-page .cc-timeline li{counter-increment:step;display:grid;grid-template-columns:3rem 1fr;gap:1rem;padding:1rem 0;border-top:1px solid var(--cc-line);color:var(--cc-muted);line-height:1.65}
+#service-page .cc-timeline li::before{content:counter(step,decimal-leading-zero);font:500 1.1rem/1.5 var(--ff-d);color:var(--cc-plum)}
+#service-page .cc-timeline strong{color:var(--cc-plum)}
+#service-page .directory-groups{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:2.3rem 3rem}
+#service-page .directory-group{border-top:1px solid var(--cc-gold);padding-top:1rem}
+#service-page .directory-group h2{font-size:1.8rem;color:var(--cc-deep);margin:0 0 1.1rem}
+#service-page .directory-item{padding:1rem 0;border-top:1px solid var(--cc-line)}
+#service-page .directory-item:first-of-type{border-top:0}
+#service-page .directory-item a{font:500 1.25rem/1.35 var(--ff-d);color:var(--cc-plum);text-decoration:none}
+#service-page .directory-item a:hover{text-decoration:underline;text-decoration-color:var(--cc-gold);text-underline-offset:4px}
+#service-page .directory-item p{font-size:15px;line-height:1.6;color:var(--cc-muted);margin:.38rem 0 0}
+@media(max-width:800px){
+  #service-page .cc-hero-inner{grid-template-columns:1fr;gap:2.8rem}
+  #service-page .cc-hero-copy{max-width:650px}
+  #service-page .cc-hero-photo{min-height:0;max-width:620px;width:calc(100% - 1rem);margin:0 1rem 1rem 0}
+  #service-page .cc-hero-photo img{height:clamp(320px,75vw,480px)}
+  #service-page .cc-pillars{grid-template-columns:repeat(2,minmax(0,1fr))}
+  #service-page .cc-pillar:nth-child(2){border-right:0}
+  #service-page .cc-pillar:nth-child(-n+2){border-bottom:1px solid rgba(201,176,126,.35)}
+}
+@media(max-width:600px){
+  #service-page .cc-wrap,#service-page .cc-hero-inner{width:calc(100% - 2rem)}
+  #service-page .cc-hero{padding:3rem 0 3.3rem}
+  #service-page .cc-hero-copy h1{font-size:clamp(2.55rem,12vw,3.7rem)}
+  #service-page .cc-hero-photo img{height:350px}
+  #service-page .cc-intro-inner{padding-left:2rem}
+  #service-page .cc-quote-mark{font-size:5rem;left:-.2rem}
+  #service-page .cc-intro p{font-size:1.08rem}
+  #service-page .cc-tiles,#service-page .cc-levels,#service-page .directory-groups{grid-template-columns:1fr}
+  #service-page .cc-tile{min-height:0;flex-direction:row;align-items:center;padding:1.1rem 1rem}
+  #service-page .cc-pillar{padding:1.2rem .8rem}
+  #service-page .cc-pillar h3{font-size:1.1rem}
+  #service-page .cc-pillar p{font-size:13.5px}
+  #service-page .cc-plan-panel{padding:2rem 1.1rem}
+  #service-page .cc-actions{flex-direction:column;align-items:stretch}
+  #service-page .cc-button{width:100%}
+}
+@media(prefers-reduced-motion:reduce){#service-page *,#service-page *::before,#service-page *::after{scroll-behavior:auto!important;transition:none!important}}

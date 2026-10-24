@@ -1,0 +1,72 @@
+[
+  {
+    "slug": "in-home-hospice-care",
+    "title": "In-Home Hospice Care",
+    "summary": "In-home hospice care is for patients with a life-limiting illness and the families caring for them.",
+    "hero": "/__service-preview-assets/in-home-hospice-care-hero.webp",
+    "wide": "/__service-preview-assets/in-home-hospice-care-communication.webp"
+  },
+  {
+    "slug": "hospice-in-assisted-living-and-skilled-nursing",
+    "title": "Hospice in Assisted Living & Skilled Nursing",
+    "summary": "This service is for residents of assisted living, skilled nursing and board and care communities.",
+    "hero": "/__service-preview-assets/hero.webp",
+    "wide": "/__service-preview-assets/communication.webp"
+  },
+  {
+    "slug": "levels-of-hospice-care",
+    "title": "Levels of Hospice Care",
+    "summary": "Medicare defines four levels of hospice care.",
+    "hero": "/__service-preview-assets/levels-of-hospice-care-hero.webp",
+    "wide": "/__service-preview-assets/levels-of-hospice-care-communication.webp"
+  },
+  {
+    "slug": "24-7-nurse-access",
+    "title": "24/7 Nurse Access",
+    "summary": "24/7 nurse access gives enrolled patients and families a way to reach hospice nursing support by phone at any hour.",
+    "hero": "/__service-preview-assets/24-7-nurse-access-hero.webp",
+    "wide": "/__service-preview-assets/24-7-nurse-access-communication.webp"
+  },
+  {
+    "slug": "hospice-care-for-dementia",
+    "title": "Hospice Care for Dementia",
+    "summary": "Hospice care for dementia is for patients in the later stages of Alzheimer's or another dementia and the families beside them.",
+    "hero": "/__service-preview-assets/hospice-care-for-dementia-hero.webp",
+    "wide": "/__service-preview-assets/hospice-care-for-dementia-communication.webp"
+  },
+  {
+    "slug": "hospice-care-for-advanced-cancer",
+    "title": "Hospice Care for Advanced Cancer",
+    "summary": "This service is for patients with advanced cancer who are focusing on comfort.",
+    "hero": "/__service-preview-assets/hospice-care-for-advanced-cancer-hero.webp",
+    "wide": "/__service-preview-assets/hospice-care-for-advanced-cancer-communication.webp"
+  },
+  {
+    "slug": "hospice-care-for-heart-failure",
+    "title": "Hospice Care for Heart Failure",
+    "summary": "This service is for patients with advanced heart failure and the families caring for them.",
+    "hero": "/__service-preview-assets/hospice-care-for-heart-failure-hero.webp",
+    "wide": "/__service-preview-assets/hospice-care-for-heart-failure-communication.webp"
+  },
+  {
+    "slug": "respiratory-care",
+    "title": "Respiratory Care",
+    "summary": "Respiratory support within hospice is for eligible patients with COPD, lung disease or heart failure who experience shortness of breath.",
+    "hero": "/__service-preview-assets/respiratory-care-hero.webp",
+    "wide": "/__service-preview-assets/respiratory-care-communication.webp"
+  },
+  {
+    "slug": "bereavement-support",
+    "title": "Bereavement Support",
+    "summary": "Bereavement support is for family members and close loved ones affected by the loss of a person in hospice care.",
+    "hero": "/__service-preview-assets/bereavement-support-hero.webp",
+    "wide": "/__service-preview-assets/bereavement-support-communication.webp"
+  },
+  {
+    "slug": "hospice-evaluation",
+    "title": "Hospice Evaluation",
+    "summary": "A hospice evaluation is for families, physicians and hospitals considering hospice for a patient.",
+    "hero": "/__service-preview-assets/hospice-evaluation-hero.webp",
+    "wide": "/__service-preview-assets/hospice-evaluation-communication.webp"
+  }
+]
