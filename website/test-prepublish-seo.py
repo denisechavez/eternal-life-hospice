@@ -42,6 +42,31 @@ def record(text):
 
 
 class AuditTests(unittest.TestCase):
+    def test_care_brief_uses_served_hub_not_historical_directory_index(self):
+        with tempfile.TemporaryDirectory() as folder:
+            site = Path(folder)
+            (site / "care-brief").mkdir()
+            source = document("The Eternal Care Brief", "/care-brief",
+                              '<section id="signup"><form name="elh-care-brief-signup">'
+                              '<input type="email" name="email"></form></section>')
+            (site / "care-brief.html").write_text(source)
+            (site / "care-brief/index.html").write_text(
+                document("Old archive", "/care-brief"))
+            pages, redirects = seo.read_pages(site)
+            self.assertEqual(pages["/care-brief"]["file"], site / "care-brief.html")
+            self.assertIn("signup", pages["/care-brief"]["page"].ids)
+            pages["/"] = record(document("Welcome", "/",
+                               '<a href="/care-brief#signup">Sign up</a>'))
+            self.assertFalse(any("/care-brief#signup" in issue["problem"]
+                                 for issue in seo.audit(pages, redirects, site)))
+            # A genuinely missing ID must still be reported.
+            (site / "care-brief.html").write_text(source.replace('id="signup"', 'id="other"'))
+            pages, redirects = seo.read_pages(site)
+            pages["/"] = record(document("Welcome", "/",
+                               '<a href="/care-brief#signup">Sign up</a>'))
+            self.assertTrue(any("/care-brief#signup" in issue["problem"]
+                                for issue in seo.audit(pages, redirects, site)))
+
     def baseline(self):
         return {"/": record(document("Welcome", "/")),
                 "/services": record(document("Services", "/services")),

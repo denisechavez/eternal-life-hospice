@@ -16,14 +16,31 @@ class FooterContactTests(unittest.TestCase):
         self.assertIn('class="fc-line no-swap" href="tel:18059537273"', footer)
         self.assertEqual(document, footer_contact.public_html(document))
 
+    def assert_signup(self, document):
+        from seo_page_parser import Page
+        links = [link for link in Page(document).links
+                 if "foot-signup" in link["attrs"].get("class", "").split()]
+        self.assertEqual(len(links), 1)
+        self.assertEqual(links[0]["href"], "/care-brief#signup")
+        source = Path(__file__).with_name("elh-preview") / "care-brief.html"
+        self.assertIn("signup", Page(source.read_text()).ids)
+
     def test_canonical_and_city_generators(self):
         self.assert_contact(FOOTER_HTML)
+        self.assert_signup(FOOTER_HTML)
         spec = importlib.util.spec_from_file_location(
             "city_builder", Path(__file__).with_name("build-cities.py"))
         builder = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(builder)
         for county in ("Ventura County", "Los Angeles County"):
             self.assert_contact(builder.make_footer(county))
+            # City footers link to the publication hub, without a signup CTA.
+            self.assertIn('href="/care-brief"', builder.make_footer(county))
+
+    def test_frozen_signup_link_is_preserved_by_contact_decoration(self):
+        document = '<footer id="site-footer"><a class="foot-signup" href="/care-brief#signup">Share the Eternal Care Brief</a></footer>'
+        self.assertEqual(footer_contact.public_html(document), document)
+        self.assert_signup(footer_contact.public_html(document))
 
     def test_frozen_chrome_changes_without_rewriting_article_or_cta(self):
         old = (

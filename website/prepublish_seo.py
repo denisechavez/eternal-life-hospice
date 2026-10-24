@@ -40,19 +40,24 @@ def canonical_route(path):
     return path.rstrip("/") or "/"
 
 
-def redirect_rules():
+def routing_value(name):
     # Read literal routing configuration without starting APIs or touching data.
     tree = ast.parse((BASE / "devserver.py").read_text())
     for node in tree.body:
         if isinstance(node, ast.Assign) and any(
-                isinstance(target, ast.Name) and target.id == "LEGACY_PAGE_REDIRECTS"
+                isinstance(target, ast.Name) and target.id == name
                 for target in node.targets):
             return ast.literal_eval(node.value)
-    raise ValueError("The site's redirect configuration could not be read.")
+    raise ValueError(f"The site's routing configuration {name} could not be read.")
+
+
+def redirect_rules():
+    return routing_value("LEGACY_PAGE_REDIRECTS")
 
 
 def read_pages(site=SITE):
     pages, redirects = {}, redirect_rules()
+    canonical_html_routes = routing_value("CANONICAL_HTML_ROUTES")
     archived = {route for route, item in internal_links.journal_records().items()
                 if item.get("publicationStatus") == "archived"}
     for file in sorted(site.rglob("*.html")):
@@ -63,6 +68,11 @@ def read_pages(site=SITE):
         parsed = Page(text)
         file_route = "/" + relative.as_posix().removesuffix(".html")
         route = canonical_route(file_route)
+        # Match the server's explicit hub routing, not filesystem sort order.
+        # A historical directory index can otherwise hide the real page's IDs.
+        if (relative.name == "index.html" and route in canonical_html_routes
+                and (site / (route.lstrip("/") + ".html")).is_file()):
+            continue
         if parsed.refresh:
             target = re.search(r"url\s*=\s*['\"]?([^'\"]+)", parsed.refresh, re.I)
             if target:
