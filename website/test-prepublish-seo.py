@@ -41,6 +41,109 @@ def record(text):
     return {"file": None, "source": text, "page": Page(text)}
 
 
+class PageSelectionTests(unittest.TestCase):
+    def snapshot(self, site):
+        return {file.relative_to(site): file.read_bytes()
+                for file in site.rglob("*") if file.is_file()}
+
+    def test_every_configured_hub_uses_html_over_historical_directory(self):
+        routes = seo.routing_value("CANONICAL_HTML_ROUTES")
+        self.assertTrue(routes, "The hub routing fixture must exercise real routes.")
+        for route in sorted(routes):
+            for historical_redirect in (False, True):
+                with self.subTest(route=route, historical_redirect=historical_redirect), \
+                     tempfile.TemporaryDirectory() as folder:
+                    site = Path(folder)
+                    hub = site / (route.lstrip("/") + ".html")
+                    old = site / route.lstrip("/") / "index.html"
+                    old.parent.mkdir(parents=True)
+                    source = document("Current hub", route, '<section id="current"></section>')
+                    hub.write_text(source, encoding="utf-8")
+                    old.write_text(
+                        '<meta http-equiv="refresh" content="0; url=/obsolete">'
+                        if historical_redirect else document(
+                            "Obsolete hub", route, '<section id="obsolete"></section>'),
+                        encoding="utf-8")
+                    (site / "index.html").write_text(document(
+                        "Welcome", "/", f'<a href="{route}#current">Current section</a>'
+                        f'<a href="{route}#obsolete">Missing section</a>'), encoding="utf-8")
+                    before = self.snapshot(site)
+
+                    pages, redirects = seo.read_pages(site)
+                    self.assertEqual(set(pages), {"/", route})
+                    self.assertEqual(pages[route]["file"], hub)
+                    self.assertEqual(pages[route]["source"], source)
+                    self.assertEqual(pages[route]["page"].headings, ["Current hub"])
+                    self.assertIn("current", pages[route]["page"].ids)
+                    self.assertNotIn("obsolete", pages[route]["page"].ids)
+                    self.assertNotIn(route + "/index", redirects)
+                    self.assertNotIn(route + "/index.html", redirects)
+                    links = [issue for issue in seo.audit(pages, redirects, site)
+                             if issue["check"] == "Internal link"]
+                    self.assertEqual(len(links), 1, links)
+                    self.assertIn(route + "#obsolete", links[0]["problem"])
+                    self.assertIn("section that does not exist", links[0]["problem"])
+                    self.assertEqual(self.snapshot(site), before)
+
+    def test_directory_only_pages_are_audited_without_a_sibling_html_file(self):
+        # Include configured hubs too: the scanner's sibling-file guard must not
+        # drop a directory-only document simply because its route is configured.
+        routes = seo.routing_value("CANONICAL_HTML_ROUTES") | {"/directory-only"}
+        for route in sorted(routes):
+            with self.subTest(route=route), tempfile.TemporaryDirectory() as folder:
+                site = Path(folder)
+                directory_index = site / route.lstrip("/") / "index.html"
+                directory_index.parent.mkdir(parents=True)
+                source = document("Directory page", route, '<section id="present"></section>')
+                directory_index.write_text(source, encoding="utf-8")
+                (site / "index.html").write_text(document(
+                    "Welcome", "/", f'<a href="{route}#present">Present section</a>'
+                    f'<a href="{route}#missing">Missing section</a>'), encoding="utf-8")
+                before = self.snapshot(site)
+
+                pages, redirects = seo.read_pages(site)
+                self.assertEqual(set(pages), {"/", route})
+                self.assertEqual(pages[route]["file"], directory_index)
+                self.assertEqual(pages[route]["source"], source)
+                self.assertEqual(pages[route]["page"].headings, ["Directory page"])
+                links = [issue for issue in seo.audit(pages, redirects, site)
+                         if issue["check"] == "Internal link"]
+                self.assertEqual(len(links), 1, links)
+                self.assertIn(route + "#missing", links[0]["problem"])
+                self.assertIn("section that does not exist", links[0]["problem"])
+                self.assertEqual(self.snapshot(site), before)
+
+    def test_meta_refresh_directory_aliases_remain_redirects_not_pages(self):
+        with tempfile.TemporaryDirectory() as folder:
+            site = Path(folder)
+            alias = site / "old-directory" / "index.html"
+            alias.parent.mkdir()
+            alias.write_text(
+                '<meta http-equiv="refresh" content="0; url=/destination">',
+                encoding="utf-8")
+            (site / "destination.html").write_text(
+                document("Destination", "/destination"), encoding="utf-8")
+            (site / "index.html").write_text(document(
+                "Welcome", "/", '<a href="/old-directory/index">Old index</a>'
+                '<a href="/old-directory/index.html">Old HTML index</a>'
+                '<a href="/destination">Direct destination</a>'), encoding="utf-8")
+            before = self.snapshot(site)
+
+            pages, redirects = seo.read_pages(site)
+            self.assertEqual(set(pages), {"/", "/destination"})
+            aliases = ("/old-directory/index", "/old-directory/index.html")
+            for route in aliases:
+                self.assertEqual(redirects[route], "/destination")
+            links = [issue for issue in seo.audit(pages, redirects, site)
+                     if issue["check"] == "Internal link"]
+            self.assertEqual(len(links), 2, links)
+            self.assertEqual({issue["problem"] for issue in links}, {
+                f"{route} redirects to /destination." for route in aliases})
+            self.assertTrue(all(issue["fix"] == f"Link directly to {seo.ORIGIN}/destination."
+                                for issue in links))
+            self.assertEqual(self.snapshot(site), before)
+
+
 class AuditTests(unittest.TestCase):
     def test_care_brief_uses_served_hub_not_historical_directory_index(self):
         with tempfile.TemporaryDirectory() as folder:
