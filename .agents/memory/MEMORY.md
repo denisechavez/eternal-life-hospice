@@ -61,3 +61,4 @@
 - [History publication reads](history-publication-reads.md) — private history projects due versions without publication locks; metadata and events share a committed snapshot.
 - [Intake spam protection](form-spam-protection.md) — protect all submission paths without area-code bans; share limits across instances and refresh cached chat assets.
 - [PostgreSQL fixture encoding](postgres-fixture-encoding.md) — locale-free disposable clusters need explicit UTF-8; SQL_ASCII returns bytes and produces false idempotency failures.
+- [Service-page wording](service-page-editorial-decisions.md) — approved introduction exception for 24/7 Nurse Access; preserve clinical and publication approval boundaries.
