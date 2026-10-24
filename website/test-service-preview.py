@@ -55,10 +55,8 @@ class PreviewTests(unittest.TestCase):
             self.assertIn(record["summary"], plain(source))
 
     def test_production_never_serves_preview_or_assets(self):
-        paths = ["/services/" + slug + suffix for slug in preview.SLUGS
-                 for suffix in ("", "/", ".html")]
-        paths.extend(preview.ASSET_PREFIX + name
-                     for name in preview.IMAGE_NAMES | set(preview.PRESENTATION_ASSETS))
+        paths = [preview.ASSET_PREFIX + name
+                 for name in preview.IMAGE_NAMES | set(preview.PRESENTATION_ASSETS)]
         with patch.dict(os.environ, {"REPLIT_DEPLOYMENT": "1"}):
             for path in paths:
                 handler = Handler(path)
@@ -68,13 +66,21 @@ class PreviewTests(unittest.TestCase):
 
     def test_existing_production_services_page_falls_through_unchanged(self):
         with patch.dict(os.environ, {"REPLIT_DEPLOYMENT": "1"}):
-            for path in ("/services", "/services/", "/services.html"):
+            for route in ("/services", *("/services/" + slug for slug in preview.SLUGS)):
+              for path in (route, route + "/", route + ".html"):
                 self.assertFalse(preview.serve(Handler(path), lambda value: value))
 
-    def test_production_navigation_is_unchanged(self):
+    def test_production_navigation_uses_approved_public_assets(self):
         source = (preview.BASE / "elh-preview/services.html").read_text()
         with patch.dict(os.environ, {"REPLIT_DEPLOYMENT": "1"}):
-            self.assertEqual(preview.decorate(source, "/services"), source)
+            rendered = preview.decorate(source, "/services")
+            self.assertIn('id="sp-services-menu"', rendered)
+            self.assertIn(preview.PUBLIC_ASSET_PREFIX + "navigation.css", rendered)
+            self.assertNotIn(preview.ASSET_PREFIX, rendered)
+            for tag in ("main", "footer"):
+                pattern = rf"<{tag}\b.*?</{tag}>"
+                self.assertEqual(re.search(pattern, source, re.S)[0],
+                                 re.search(pattern, rendered, re.S)[0])
 
     def test_preview_changes_header_only_not_body_or_footer(self):
         source = (preview.BASE / "elh-preview/services.html").read_text()

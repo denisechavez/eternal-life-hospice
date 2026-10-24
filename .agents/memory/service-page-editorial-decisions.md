@@ -51,14 +51,27 @@ lowering of the Services overview wording.
 **How to apply:** Use natural-color rectangular hero photography meeting
 the right, top and bottom edges beside the plum text field, with a full-width
 stack on mobile. Do not restore arches or offset gold backing. The owner
-authorized this treatment across the Services overview and service-page suite,
-but not publication. Reduce top spacing and place copy higher across the
+authorized this treatment across the Services overview and service-page suite.
+After reviewing the refinements, the owner explicitly approved publishing
+the full suite on 2026-10-24. This does not pre-approve later content changes.
+Reduce top spacing and place copy higher across the
 service-page suite while letting the header plus hero fill at least the opening
 viewport. Keep subsequent sections below the fold, allow longer copy to expand
 naturally and retain uncropped, full-width stacked photography on mobile.
 Do not restore the earlier short overview/Bereavement hero caps.
 Treat further text-position refinements separately from the approved hero
 height and photograph placement.
+
+Keep reviewed service drafts separate from the approved public snapshot.
+
+**Why:** Service imagery originally lived in a generated-artifacts directory
+excluded from publishing. Merely lifting the preview route restriction would
+leave deployed pages without their images and could expose later draft edits.
+
+**How to apply:** Promote the explicitly approved HTML, image and navigation
+bundle into ordinary public site files. Future draft regeneration must not
+silently change that published snapshot. Keep private preview endpoints blocked
+on the public deployment.
 
 Service-directory category headings should have matching font sizes without
 changing the symmetry of the category boxes.

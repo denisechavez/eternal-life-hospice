@@ -128,9 +128,10 @@ LEGACY_PAGE_REDIRECTS = {
 
 
 class PrettyURLHandler(http.server.SimpleHTTPRequestHandler):
-    def _preview_chrome(self, document):
+    def _preview_chrome(self, document, route=None):
         return service_preview.decorate(
-            footer_contact.public_html(document), urlsplit(self.path).path
+            footer_contact.public_html(document),
+            route if route is not None else urlsplit(self.path).path
         )
 
     def _service_preview_chrome(self, document):
@@ -484,7 +485,10 @@ class PrettyURLHandler(http.server.SimpleHTTPRequestHandler):
             body = render_links(body.decode("utf-8"), route, self._journal_today(),
                                 pages=self._journal_pages()).encode("utf-8")
             body = self._hide_unreleased_links(body.decode(), route).encode()
-            body = self._preview_chrome(form_antispam.refresh_assets(recruitment_policy.public_html(body.decode()))).encode()
+            body = self._preview_chrome(
+                form_antispam.refresh_assets(recruitment_policy.public_html(body.decode())),
+                route=route,
+            ).encode()
         elif path.endswith("search-index.json"):
             body = recruitment_policy.public_discovery(body.decode(), "search").encode()
         elif path.endswith("sitemap.xml"):

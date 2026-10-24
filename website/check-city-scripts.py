@@ -578,7 +578,12 @@ try:
         r'<!--\s*SERVICES-HERO-SYNC\b([^-]|-(?!->))*-->',
         _shtml, re.IGNORECASE | re.DOTALL)
 
-    if _sync_m is None:
+    if 'class="directory-groups"' in _shtml_no_comments:
+        from service_preview import directory_issues
+        _services_sync_errors.extend(directory_issues(_shtml_no_comments))
+        if not _services_sync_errors:
+            print("  ✓  approved Services directory: four groups and 13 unique service links")
+    elif _sync_m is None:
         _services_sync_errors.append(
             "services-hero-sync-marker-missing: the "
             "<!-- SERVICES-HERO-SYNC count=\"N\" tc-count=\"M\" --> comment is "

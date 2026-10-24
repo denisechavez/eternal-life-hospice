@@ -1,0 +1,134 @@
+/* Option 2, approved in the canvas: a natural, flush-right photograph.
+   Directory selectors match the existing overview overrides in specificity.
+   Only hero presentation changes; shared chrome and article copy stay intact. */
+#service-page .cc-hero,
+#service-page.services-directory-page .cc-hero{
+  padding:0;
+  background:var(--cc-deep);
+  color:var(--cc-cream);
+}
+#service-page .cc-hero-inner,
+#service-page.services-directory-page .cc-hero-inner{
+  width:100%;max-width:none;margin:0;
+  display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);
+  gap:0;align-items:stretch;
+  min-height:calc(100svh - var(--elh-header-height,112px));
+}
+#service-page .cc-hero-copy,
+#service-page.services-directory-page .cc-hero-copy{
+  align-self:start;max-width:720px;min-width:0;
+  padding:clamp(2rem,5svh,4rem) clamp(2rem,4vw,4rem) 2rem;
+  transform:none;
+}
+#service-page .cc-hero-copy .cc-eyebrow,
+#service-page.services-directory-page .cc-hero-copy .cc-eyebrow{
+  margin:0 0 1.25rem;color:var(--cc-gold);
+  font-size:12px;letter-spacing:.19em;
+}
+#service-page .cc-hero-copy h1,
+#service-page.services-directory-page .cc-hero-copy h1{
+  margin:0;color:var(--cc-cream);
+  font-size:clamp(2.65rem,4.3vw,4.5rem);
+  line-height:1.04;letter-spacing:-.04em;text-wrap:balance;
+  overflow-wrap:break-word;
+}
+#service-page.services-directory-page .cc-hero-copy h1{
+  font-size:clamp(3.7rem,6.3vw,6.2rem);line-height:.98;
+}
+#service-page .cc-hero .cc-subline{margin:1.3rem 0 0}
+#service-page .cc-hero-copy .cc-actions,
+#service-page.services-directory-page .cc-hero-copy .cc-actions{
+  margin-top:clamp(1.7rem,3vw,3.3rem);gap:.75rem;align-items:center;
+}
+#service-page .cc-hero .cc-button,
+#service-page.services-directory-page .cc-hero .cc-button{
+  min-height:50px;padding:.8rem 1.2rem;border-radius:2px;
+  font-size:14px;line-height:1.3;text-decoration:none;
+}
+#service-page .cc-hero-photo,
+#service-page.services-directory-page .cc-hero-photo{
+  position:relative;width:100%;max-width:none;
+  min-height:0;height:auto;margin:0;overflow:hidden;align-self:stretch;
+}
+#service-page .cc-hero-photo::before,
+#service-page.services-directory-page .cc-hero-photo::before{display:none}
+#service-page .cc-hero-photo img,
+#service-page.services-directory-page .cc-hero-photo img{
+  position:absolute;inset:0;width:100%;height:100%;
+  display:block;object-fit:cover;object-position:center;
+  border-radius:0;background:transparent;
+}
+@media(max-width:1050px){
+  #service-page .cc-hero-copy .cc-actions,
+  #service-page.services-directory-page .cc-hero-copy .cc-actions{
+    flex-direction:column;align-items:stretch;
+  }
+  #service-page .cc-hero .cc-button{width:100%}
+}
+@media(max-width:800px){
+  #service-page .cc-hero-inner,
+  #service-page.services-directory-page .cc-hero-inner{
+    width:100%;min-height:calc(100svh - var(--elh-header-height,74px));
+    grid-template-columns:minmax(0,1fr);gap:0;align-content:start;
+  }
+  #service-page .cc-hero-copy,
+  #service-page.services-directory-page .cc-hero-copy{
+    width:100%;max-width:none;min-height:max(0px,calc(100svh - var(--elh-header-height,74px) - 100vw));
+    padding:2.4rem clamp(1.25rem,5vw,3rem) 2rem;transform:none;
+  }
+  #service-page .cc-hero-copy h1,
+  #service-page.services-directory-page .cc-hero-copy h1{
+    font-size:clamp(2.6rem,7vw,4rem);line-height:1.04;
+  }
+  #service-page .cc-hero-copy .cc-actions,
+  #service-page.services-directory-page .cc-hero-copy .cc-actions{
+    max-width:460px;margin-top:1.65rem;align-items:stretch;
+  }
+  #service-page .cc-hero-photo,
+  #service-page.services-directory-page .cc-hero-photo{
+    width:100%;height:auto;max-width:none;min-height:0;margin:0;
+  }
+  #service-page .cc-hero-photo img,
+  #service-page.services-directory-page .cc-hero-photo img{
+    position:static;width:100%;height:auto;max-height:none;
+    object-fit:contain;border-radius:0;
+  }
+}
+
+/* The overview and bereavement retain their higher copy placement. */
+#service-page:is(.services-directory-page,.bereavement-service-page) .cc-hero-copy{
+  align-self:start;
+  padding:clamp(1.8rem,3.5vw,3.5rem) clamp(2rem,4.2vw,4.5rem) 2rem;
+  transform:none;
+}
+#service-page.bereavement-service-page .cc-hero-photo img{
+  object-position:center top;
+}
+@media(max-width:1050px) and (min-width:801px){
+  #service-page:is(.services-directory-page,.bereavement-service-page) .cc-hero-copy{
+    padding:2rem clamp(1.4rem,3.2vw,2.6rem);
+  }
+}
+@media(max-width:800px){
+  #service-page:is(.services-directory-page,.bereavement-service-page) .cc-hero-inner{
+    min-height:calc(100svh - var(--elh-header-height,74px));
+  }
+  #service-page:is(.services-directory-page,.bereavement-service-page) .cc-hero-copy{
+    align-self:auto;
+    min-height:max(0px,calc(100svh - var(--elh-header-height,74px) - 100vw));
+    padding:2.4rem clamp(1.25rem,5vw,3rem) 2rem;
+    transform:none;
+  }
+}
+
+/* Small overview-only text adjustment; retain the approved hero/photo bounds. */
+@media(min-width:801px){
+  #service-page.services-directory-page .cc-hero-copy{
+    padding-top:calc(clamp(1.8rem,3.5vw,3.5rem) + 1.5rem);
+  }
+}
+@media(min-width:801px) and (max-width:1050px){
+  #service-page.services-directory-page .cc-hero-copy{
+    padding-top:3.5rem;
+  }
+}

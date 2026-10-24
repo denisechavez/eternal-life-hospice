@@ -1,4 +1,4 @@
-"""Approved service-page suite and navigation, available in workspace preview only."""
+"""Approved service navigation and workspace-only draft rendering."""
 import html
 import json
 import os
@@ -9,6 +9,7 @@ from urllib.parse import urlsplit
 BASE = Path(__file__).resolve().parent
 PREVIEWS = BASE / "previews"
 ASSET_PREFIX = "/__service-preview-assets/"
+PUBLIC_ASSET_PREFIX = "/assets/service-pages/"
 ROUTE = "/services/hospice-in-assisted-living-and-skilled-nursing"
 LABEL = "Hospice in Assisted Living &amp; Skilled Nursing"
 SLUGS = (
@@ -52,10 +53,35 @@ def enabled():
 
 
 def catalog():
-    records = json.loads((PREVIEWS / "catalog.json").read_text())
+    source = (PREVIEWS / "catalog.json" if enabled() else
+              BASE / "elh-preview" / PUBLIC_ASSET_PREFIX.lstrip("/") / "catalog.json")
+    records = json.loads(source.read_text())
     if len(records) != len(SLUGS) or {r["slug"] for r in records} != set(SLUGS):
         raise ValueError("Service preview catalog must contain exactly ten approved pages")
     return {record["slug"]: record for record in records}
+
+def directory_issues(document):
+    """Validate the approved directory instead of the retired hero card counts."""
+    main = re.search(r"<main\b.*?</main>", document, re.S)
+    if not main:
+        return ["services-directory-missing-main"]
+    headings = [
+        html.unescape(text)
+        for text in re.findall(
+            r'<section class="directory-group[^"]*"><h2>(.*?)</h2>', main[0], re.S)
+    ]
+    links = re.findall(
+        r'<article class="directory-item">\s*<a href="([^"]+)">', main[0], re.S)
+    expected_links = [
+        item[0] if isinstance(item, tuple) else "/services/" + item
+        for _, items in GROUPS for item in items
+    ]
+    issues = []
+    if headings != [name for name, _ in GROUPS]:
+        issues.append("services-directory-groups: expected the four approved groups in order")
+    if sorted(links) != sorted(expected_links):
+        issues.append("services-directory-links: expected each of the 13 approved services exactly once")
+    return issues
 
 
 def menu_markup():
@@ -92,9 +118,8 @@ def menu_markup():
 
 
 def decorate(document, route):
-    """Change only preview Services navigation, never source or approved content."""
-    if not enabled():
-        return document
+    """Apply approved Services navigation without altering page copy or footer."""
+    asset_prefix = ASSET_PREFIX if enabled() else PUBLIC_ASSET_PREFIX
     changed = False
 
     def header(match):
@@ -116,8 +141,8 @@ def decorate(document, route):
     document = re.sub(r'<header\b[^>]*>.*?</header>', header, document,
                       count=1, flags=re.S)
     if changed:
-        stylesheet = ASSET_PREFIX + "navigation.css"
-        script = ASSET_PREFIX + "navigation.js"
+        stylesheet = asset_prefix + "navigation.css"
+        script = asset_prefix + "navigation.js"
         if stylesheet not in document:
             document = document.replace(
                 "</head>", f'<link rel="stylesheet" href="{stylesheet}">\n</head>', 1)
@@ -127,8 +152,7 @@ def decorate(document, route):
         if route.rstrip("/").removesuffix(".html") in {
             "/services", *("/services/" + slug for slug in SLUGS)
         }:
-            # Approved canvas treatment; keep this suite preview-only.
-            edge_styles = ASSET_PREFIX + "service-hero-edge.css"
+            edge_styles = asset_prefix + "service-hero-edge.css"
             if edge_styles not in document:
                 document = document.replace(
                     "</head>", f'<link rel="stylesheet" href="{edge_styles}">\n</head>', 1)
@@ -149,8 +173,8 @@ def serve(handler, chrome):
     if not is_directory and not is_page and not is_asset:
         return False
     if not enabled():
-        # The existing public All Services page must continue to work unchanged.
-        if is_directory:
+        # Approved pages are now ordinary public HTML. Never expose draft assets.
+        if not is_asset:
             return False
         handler.send_error(404)
         return True

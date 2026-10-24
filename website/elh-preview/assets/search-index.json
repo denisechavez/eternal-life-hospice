@@ -1184,8 +1184,8 @@
   },
   {
     "url": "/services",
-    "title": "Hospice Services in Ventura & Los Angeles Counties",
-    "desc": "Hospice care that goes beyond the clinical — integrative therapies, whole-person comfort care, and the Sound Bath, offered at the bedside for every patient we serve. Ventura & LA counties.",
+    "title": "Hospice Services",
+    "desc": "Explore hospice care services across Ventura and Los Angeles counties.",
     "cat": "Service",
     "kw": ""
   },
@@ -1936,6 +1936,76 @@
     "title": "Who Pays for Integrative Comfort Services in Hospice?",
     "desc": "Who pays for optional comfort offerings in hospice care, and what stays within the core benefit? This guide separates Medicare, Medi-Cal and Eternal Life Hospice support.",
     "cat": "Journal",
+    "kw": ""
+  },
+  {
+    "url": "/services/24-7-nurse-access",
+    "title": "24/7 Hospice Nurse Access | Ventura & Los Angeles Counties",
+    "desc": "A hospice nurse available by phone day, night, weekends and holidays, with visits arranged when symptoms change.",
+    "cat": "Service",
+    "kw": ""
+  },
+  {
+    "url": "/services/bereavement-support",
+    "title": "Bereavement Support & Grief Care",
+    "desc": "Bereavement support for hospice families, with information about grief resources, check-ins and support before and after a loss.",
+    "cat": "Service",
+    "kw": ""
+  },
+  {
+    "url": "/services/hospice-care-for-advanced-cancer",
+    "title": "Hospice Care for Advanced Cancer | Ventura & Los Angeles Counties",
+    "desc": "Comfort-focused hospice care for advanced cancer: pain and symptom management, medication coordination and family support.",
+    "cat": "Service",
+    "kw": ""
+  },
+  {
+    "url": "/services/hospice-care-for-dementia",
+    "title": "Hospice Care for Dementia & Alzheimer&#x27;s | Ventura & Los Angeles Counties",
+    "desc": "Comfort-focused hospice care for late-stage Alzheimer&#x27;s and other dementias, at home, in memory care or in board and care.",
+    "cat": "Service",
+    "kw": ""
+  },
+  {
+    "url": "/services/hospice-care-for-heart-failure",
+    "title": "Hospice Care for Heart Failure | Ventura & Los Angeles Counties",
+    "desc": "Hospice care for advanced heart failure: relief for breathlessness, fatigue and fluid-related discomfort, with clear guidance for families.",
+    "cat": "Service",
+    "kw": ""
+  },
+  {
+    "url": "/services/hospice-evaluation",
+    "title": "Hospice Evaluation | Ventura & Los Angeles Counties",
+    "desc": "A nurse assessment reported to the hospice physician, who determines eligibility, with a clear explanation of the Medicare Hospice Benefit.",
+    "cat": "Service",
+    "kw": ""
+  },
+  {
+    "url": "/services/hospice-in-assisted-living-and-skilled-nursing",
+    "title": "Hospice in Assisted Living & Skilled Nursing",
+    "desc": "Hospice care on site in assisted living, skilled nursing and board and care communities across Ventura and Los Angeles counties.",
+    "cat": "Service",
+    "kw": ""
+  },
+  {
+    "url": "/services/in-home-hospice-care",
+    "title": "In-Home Hospice Care | Ventura & Los Angeles Counties",
+    "desc": "Hospice care at home from one interdisciplinary team of physicians, nurses, aides, social workers and chaplains across Ventura and Los Angeles counties.",
+    "cat": "Service",
+    "kw": ""
+  },
+  {
+    "url": "/services/levels-of-hospice-care",
+    "title": "Levels of Hospice Care: Continuous, Respite & Inpatient",
+    "desc": "Continuous Home Care, Inpatient Respite Care and General Inpatient Care: the Medicare hospice levels of care and when each one applies.",
+    "cat": "Service",
+    "kw": ""
+  },
+  {
+    "url": "/services/respiratory-care",
+    "title": "Respiratory Care & COPD Hospice Support | Ventura & Los Angeles Counties",
+    "desc": "Hospice respiratory care for COPD, lung disease and heart failure: oxygen coordination, breathing-focused medications and bedside guidance.",
+    "cat": "Service",
     "kw": ""
   }
 ]

@@ -102,6 +102,10 @@ def self_test():
     }
     assert not audit(pages, "2026-10-07")["errors"]
     assert resolve("/resources/article", "../resources?q=1#answer") == ("/resources", "answer", "q=1")
+    runtime_home = render_links(
+        '<main><div class="mod-card" data-mod="music"></div></main>',
+        "/", "2026-10-07", pages=pages)
+    assert "therapy-music" in PageParser(runtime_home).ids
     for href, expected in [("/missing", "broken"), ("/resources#gone", "fragment"),
                            ("/insurance", "redirecting"), ("/card-denise-chavez", "prohibited"),
                            ("/resources.html", "broken"), ("/__reviews-mockup/", "prohibited")]:
@@ -180,7 +184,15 @@ if __name__ == "__main__":
             rendered = render_links(text, route, args.date)
             block = rendered.split(START)[-1].split(END)[0]
             return re.sub(re.escape(START) + r"[\s\S]*?" + re.escape(END), lambda _: START + block + END, text)
-        pages = {r: (p, dated(t, r), PageParser(dated(t, r), args.date)) for r, (p, t, _) in pages.items()}
+        def checked_parser(text, route):
+            parser = PageParser(dated(text, route), args.date)
+            # Incoming anchors may target IDs added by the existing server
+            # renderer. Retain authored link checks, but validate real targets.
+            parser.ids.update(PageParser(render_links(
+                text, route, args.date), args.date).ids)
+            return parser
+        pages = {r: (p, dated(t, r), checked_parser(t, r))
+                 for r, (p, t, _) in pages.items()}
     result = audit(pages, args.date)
     if not args.baseline:
         result["errors"].extend(map_issues())
