@@ -33,3 +33,14 @@ visual refinement.
 
 **How to apply:** Let the overview hero follow the shared header directly.
 This request does not remove breadcrumbs from individual service detail pages.
+
+Service-page photographs should feel naturally integrated into the page,
+not like shaped cutouts.
+
+**Why:** The owner rejected the cutout appearance of the arched photograph
+and asked to compare alternative treatments on the canvas first.
+
+**How to apply:** Preserve lifelike color and recognizable people when
+exploring framing, full-bleed placement or an edge blend. Present alternatives
+for selection before applying a new treatment to the website. A canvas
+comparison does not authorize a website rollout or publication.

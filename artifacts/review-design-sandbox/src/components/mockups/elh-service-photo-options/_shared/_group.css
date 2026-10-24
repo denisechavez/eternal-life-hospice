@@ -1,0 +1,8 @@
+@import "./fonts.css";
+@import "./source.css";
+
+html,body,#root{margin:0;min-height:100%;width:100%}
+.elh-photo-study{min-height:100vh;background:#F5F0EB}
+.elh-photo-study #service-page{--ff-d:"Fraunces ELH",Georgia,serif;--ff-b:"Jost ELH",sans-serif}
+.elh-photo-study #service-page .cc-hero-photo::before{display:none}
+.elh-photo-study #service-page .cc-hero-photo img{border-radius:0}
