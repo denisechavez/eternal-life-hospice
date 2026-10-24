@@ -105,11 +105,17 @@ try {
       const a=document.querySelector(${JSON.stringify(selector)});
       a.scrollIntoView({block:'center',behavior:'instant'});
       const r=a.getClientRects()[0];
-      return {color:getComputedStyle(a).color,x:r.left+r.width/2,y:r.top+r.height/2};
+      return {color:getComputedStyle(a).color,decoration:getComputedStyle(a).textDecorationLine,
+        x:r.left+r.width/2,y:r.top+r.height/2};
     })()`);
+    const directoryLink=selector==="#service-page .directory-item a";
+    if(directoryLink) assert.equal(before.decoration,"none","directory links are not underlined at rest");
     await call("Input.dispatchMouseEvent", {type:"mouseMoved",x:before.x,y:before.y});
     const changed = `getComputedStyle(document.querySelector(${JSON.stringify(selector)})).color!==${JSON.stringify(before.color)}`;
     await until(changed, "link hover changes text color");
+    if(directoryLink) await until(
+      `getComputedStyle(document.querySelector(${JSON.stringify(selector)})).color==="rgb(33, 94, 122)"`,
+      "directory hover finishes transitioning to blue");
     assert.match(await evaluate(`getComputedStyle(document.querySelector(${JSON.stringify(selector)})).textDecorationLine`), /underline/);
     await call("Input.dispatchMouseEvent", {type:"mouseMoved",x:0,y:0});
     await until(`!(${changed})`, "link returns to its original color");
@@ -117,6 +123,9 @@ try {
     await call("Input.dispatchKeyEvent", {type:"keyUp",key:"Tab",code:"Tab",windowsVirtualKeyCode:9});
     await evaluate(`document.querySelector(${JSON.stringify(selector)}).focus()`);
     await until(changed, "keyboard focus changes text color");
+    if(directoryLink) await until(
+      `getComputedStyle(document.querySelector(${JSON.stringify(selector)})).color==="rgb(33, 94, 122)"`,
+      "directory keyboard focus finishes transitioning to blue");
     assert.match(await evaluate(`getComputedStyle(document.querySelector(${JSON.stringify(selector)})).textDecorationLine`), /underline/);
     await evaluate(`document.querySelector(${JSON.stringify(selector)}).blur()`);
   };
@@ -167,7 +176,7 @@ try {
       assert.equal(layout.h1, page.title);
       assert.ok(layout.details >= 2, page.slug);
       assert.equal(layout.removed, false);
-      if(page.slug==="bereavement-support"){
+      if(["bereavement-support","hospice-care-for-heart-failure"].includes(page.slug)){
         const grid = await evaluate(`(()=>{
           const grid=document.querySelector('.cc-tiles[data-layout="balanced-pairs"]');
           return {columns:getComputedStyle(grid).gridTemplateColumns.split(' ').length,
@@ -176,7 +185,7 @@ try {
               return {top:r.top,height:r.height,width:r.width};
             })};
         })()`);
-        assert.equal(grid.columns, width<=600 ? 1 : 2, "bereavement grid columns");
+        assert.equal(grid.columns, width<=600 ? 1 : 2, page.slug+" grid columns");
         assert.equal(grid.items.length, 4);
         assert.ok(grid.items.every(card=>card.width>0&&card.height>0));
         if(width>600){

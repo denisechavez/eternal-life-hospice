@@ -298,18 +298,20 @@
 #service-page.services-directory-page .directory-item a{
   color:var(--cc-plum);
   font-weight:600;
-  text-decoration:underline;
-  text-decoration-color:#a58b5b;
+  text-decoration:none;
+  text-decoration-color:currentColor;
   text-decoration-thickness:1px;
   text-underline-offset:3px;
   transition:color .16s ease,text-decoration-color .16s ease;
 }
 #service-page.services-directory-page .directory-item a:hover,
 #service-page.services-directory-page .directory-item a:focus-visible{
-  color:#76551f;
-  text-decoration-color:#76551f;
+  color:#215e7a;
+  text-decoration-line:underline;
+  text-decoration-color:currentColor;
   text-decoration-thickness:2px;
   text-underline-offset:4px;
+  outline-color:#215e7a;
 }
 #service-page.services-directory-page .directory-group--getting-started{
   grid-column:1 / -1;
@@ -423,7 +425,7 @@
   #service-page.services-directory-page .directory-item a{transition:none}
 }
 
-/* Bereavement preview: balanced, individually defined care-inclusion cards. */
+/* Bereavement and heart-failure previews: balanced, individually defined care-inclusion cards. */
 #service-page .cc-tiles[data-layout="balanced-pairs"]{
   grid-template-columns:repeat(2,minmax(0,1fr));
   gap:1rem;

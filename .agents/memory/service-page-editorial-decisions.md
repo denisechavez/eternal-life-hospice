@@ -44,7 +44,9 @@ and selected the edge-to-edge treatment after comparing alternatives on the
 canvas. The owner clarified that all service-page wording should sit higher,
 but shortening the hero was the wrong interpretation: the second content
 block must not appear in the opening hero view. The approximate "half inch"
-was a visual estimate, not a fixed layout measurement.
+was a visual estimate, not a fixed layout measurement. The owner subsequently
+confirmed the viewport-filling hero lands perfectly and requested only a slight
+lowering of the Services overview wording.
 
 **How to apply:** Use natural-color rectangular hero photography meeting
 the right, top and bottom edges beside the plum text field, with a full-width
@@ -55,6 +57,8 @@ service-page suite while letting the header plus hero fill at least the opening
 viewport. Keep subsequent sections below the fold, allow longer copy to expand
 naturally and retain uncropped, full-width stacked photography on mobile.
 Do not restore the earlier short overview/Bereavement hero caps.
+Treat further text-position refinements separately from the approved hero
+height and photograph placement.
 
 Hospice clinicians in illustrative service imagery should have believable
 professional details, including a clipped photo-ID badge and a stethoscope

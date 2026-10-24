@@ -167,9 +167,23 @@ class PreviewTests(unittest.TestCase):
         self.assertEqual(source.count('class="cc-tile"'), 4)
         self.assertNotIn("cc-tile--visual", source)
         for slug in preview.SLUGS:
-            if slug != "bereavement-support":
+            if slug not in ("bereavement-support", "hospice-care-for-heart-failure"):
                 self.assertNotIn('data-layout="balanced-pairs"', self.source(slug))
+            if slug != "bereavement-support":
                 self.assertNotIn('class="bereavement-service-page"', self.source(slug))
+
+    def test_heart_failure_uses_four_unchanged_items_in_a_balanced_grid(self):
+        source = self.source("hospice-care-for-heart-failure")
+        self.assertEqual(source.count('data-layout="balanced-pairs"'), 1)
+        self.assertEqual(source.count('class="cc-tile"'), 4)
+        self.assertNotIn("cc-tile--visual", source)
+        for text in (
+            "Relief for breathlessness at rest and during activity",
+            "Guidance on swelling, fluid and comfortable positioning",
+            "Review of heart medications, keeping those that support comfort",
+            "Warning signs to watch and when to call the nurse",
+        ):
+            self.assertIn(text, source)
 
     def test_editorial_approvals_and_preview_metadata(self):
         for slug in preview.SLUGS:

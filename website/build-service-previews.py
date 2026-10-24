@@ -441,7 +441,7 @@ def render_first(page: dict) -> str:
         result += render_tiles(
             page["tiles"],
             home_visual=page["slug"] == "in-home-hospice-care",
-            balanced_pairs=page["slug"] == "bereavement-support",
+            balanced_pairs=page["slug"] in ("bereavement-support", "hospice-care-for-heart-failure"),
         )
     elif page.get("timeline") and page["slug"] == "hospice-evaluation":
         result += '<ol class="cc-timeline">' + "".join('<li><div><strong>' + esc(label) + ':</strong> ' + esc(text) + '</div></li>' for label, text in page["timeline"]) + '</ol>'
