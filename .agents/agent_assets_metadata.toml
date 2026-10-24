@@ -2072,3 +2072,17 @@ mtime_ms = 1792806195100
 storage_uri = "gcs://replit-rams-assets-kirk/rams/assets/repl:e1b2f643-7869-4565-af0e-10c34575ee8d/a64cdf1b-8b50-472e-b706-56faff8ea590/8526112d-49ff-4885-8f8c-a7ff350a8bab"
 storage_version_token = "1792806203537343"
 content_type = "image/jpeg"
+
+[[outputs]]
+id = "-UEO8-_PpOmpmmoG0Fz6e"
+uri = "file://exports/service-pages/recommended-brief-revisions.html"
+type = "html"
+title = "Service-page brief — proposed revisions for review"
+description = "Proposed replacement wording, a search-purpose map for all ten pages and a clinical/billing approval checklist. Website and existing preview unchanged. Includes Print / Save as PDF."
+logical_id = "05cd78b6-405a-453c-95e7-be64d7499ee6"
+content_hash = "sha256:aea84005af002b6fe527e26ac11a9221fc2a471857838aac714e8328666c34bb"
+size = 20741
+mtime_ms = 1792820960288
+storage_uri = "gcs://replit-rams-assets-kirk/rams/assets/repl:e1b2f643-7869-4565-af0e-10c34575ee8d/05cd78b6-405a-453c-95e7-be64d7499ee6/4c312697-0010-43f5-8b25-abd6eee4c3fa"
+storage_version_token = "1792820985228888"
+content_type = "text/html"
