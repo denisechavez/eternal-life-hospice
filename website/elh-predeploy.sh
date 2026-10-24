@@ -44,6 +44,7 @@ set +o pipefail
   python3 ../check-sitemap.py
   python3 ../check-header-parity.py
   python3 ../test-header-mobile.py
+  node --experimental-websocket ../test-care-brief-layout.mjs
   python3 ../check-footer-parity.py
   python3 ../check-agency-separation.py
   python3 ../test-service-publication.py
@@ -94,6 +95,7 @@ SENTINELS=(
   "SENTINEL: check-sitemap.py self-test OK"
   "SENTINEL: check-header-parity.py self-test OK"
   "SENTINEL: test-header-mobile.py browser checks OK"
+  "SENTINEL: test-care-brief-layout.mjs browser checks OK"
   "SENTINEL: check-footer-parity.py self-test OK"
   "SENTINEL: check-agency-separation.py OK"
   "SENTINEL: test-service-publication.py OK"

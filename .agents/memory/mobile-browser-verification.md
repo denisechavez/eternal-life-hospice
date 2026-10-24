@@ -15,3 +15,14 @@ browser reached the correct form at all tested widths.
 **How to apply:** Test anchor navigation and destination visibility separately
 from physical hit-target usability. Report browser anchor activation as such;
 do not claim it verifies real touch gestures.
+
+Desktop Chromium may reserve space for a vertical scrollbar, so its visual
+viewport can be narrower than the requested layout viewport.
+
+**Why:** Treating visualViewport.width as equal to the emulated width rejects
+healthy desktop layouts. Smooth anchor scrolling can also still be moving
+after the document and fonts finish loading.
+
+**How to apply:** Compare the requested width with innerWidth, compare visual
+viewport width with documentElement.clientWidth at scale 1, and wait for
+anchor scrolling to settle before measuring visibility.
