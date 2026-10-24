@@ -50,6 +50,7 @@ import journal_discovery
 import form_antispam
 import recruitment_policy
 import social_downloads
+import service_preview
 
 BASE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.join(BASE, "elh-preview")
@@ -127,6 +128,16 @@ LEGACY_PAGE_REDIRECTS = {
 
 
 class PrettyURLHandler(http.server.SimpleHTTPRequestHandler):
+    def _preview_chrome(self, document):
+        return service_preview.decorate(
+            footer_contact.public_html(document), urlsplit(self.path).path
+        )
+
+    def _service_preview_chrome(self, document):
+        return self._preview_chrome(
+            form_antispam.refresh_assets(recruitment_policy.public_html(document))
+        )
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, directory=ROOT, **kwargs)
 
@@ -473,7 +484,7 @@ class PrettyURLHandler(http.server.SimpleHTTPRequestHandler):
             body = render_links(body.decode("utf-8"), route, self._journal_today(),
                                 pages=self._journal_pages()).encode("utf-8")
             body = self._hide_unreleased_links(body.decode(), route).encode()
-            body = footer_contact.public_html(form_antispam.refresh_assets(recruitment_policy.public_html(body.decode()))).encode()
+            body = self._preview_chrome(form_antispam.refresh_assets(recruitment_policy.public_html(body.decode()))).encode()
         elif path.endswith("search-index.json"):
             body = recruitment_policy.public_discovery(body.decode(), "search").encode()
         elif path.endswith("sitemap.xml"):
@@ -568,7 +579,7 @@ class PrettyURLHandler(http.server.SimpleHTTPRequestHandler):
             # inject new article links into a version after its approval.
             body = record["html"].encode()
             body = self._hide_unreleased_links(body.decode(), "/blog/" + slug).encode()
-            body = footer_contact.public_html(form_antispam.refresh_assets(recruitment_policy.public_html(body.decode()))).encode()
+            body = self._preview_chrome(form_antispam.refresh_assets(recruitment_policy.public_html(body.decode()))).encode()
             self.send_response(200)
             self.send_header("Content-Type", "text/html; charset=utf-8")
             self.send_header("Content-Length", str(len(body)))
@@ -588,7 +599,7 @@ class PrettyURLHandler(http.server.SimpleHTTPRequestHandler):
                     body = render_links(source.read(), route, self._journal_today(),
                                         pages=self._journal_pages()).encode()
                     body = self._hide_unreleased_links(body.decode(), route).encode()
-                    body = footer_contact.public_html(form_antispam.refresh_assets(recruitment_policy.public_html(body.decode()))).encode()
+                    body = self._preview_chrome(form_antispam.refresh_assets(recruitment_policy.public_html(body.decode()))).encode()
                 compressed = "gzip" in (self.headers.get("Accept-Encoding") or "").lower()
                 if compressed:
                     body = gzip.compress(body, mtime=0)
@@ -605,7 +616,7 @@ class PrettyURLHandler(http.server.SimpleHTTPRequestHandler):
         if os.path.isfile(path) and (path.endswith(".html") or path.endswith("llms.txt")):
             with open(path, encoding="utf-8") as source:
                 text = source.read()
-            text = (footer_contact.public_html(form_antispam.refresh_assets(recruitment_policy.public_html(text))) if path.endswith(".html")
+            text = (self._preview_chrome(form_antispam.refresh_assets(recruitment_policy.public_html(text))) if path.endswith(".html")
                     else recruitment_policy.public_discovery(text, "llms"))
             body = text.encode()
             self.send_response(200)
@@ -757,6 +768,8 @@ class PrettyURLHandler(http.server.SimpleHTTPRequestHandler):
         return True
 
     def do_HEAD(self):
+        if service_preview.serve(self, self._service_preview_chrome):
+            return
         if social_downloads.serve(self):
             return
         if self._withdrawn_recruitment():
@@ -787,6 +800,8 @@ class PrettyURLHandler(http.server.SimpleHTTPRequestHandler):
         super().do_HEAD()
 
     def do_GET(self):
+        if service_preview.serve(self, self._service_preview_chrome):
+            return
         if social_downloads.serve(self):
             return
         if self._withdrawn_recruitment():
