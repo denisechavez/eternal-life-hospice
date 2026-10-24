@@ -228,7 +228,7 @@ try {
   }
 
   await navigate("/services");
-  for (const width of [320, 390, 768, 1024, 1440]) {
+  for (const width of [320, 390, 768, 1024, 1280, 1440]) {
     await viewport(width);
     const directory = await evaluate(`({
       width:innerWidth,scroll:document.documentElement.scrollWidth,
@@ -255,12 +255,14 @@ try {
       const peers=[...card.parentElement.children].filter(el=>!el.classList.contains('directory-group--getting-started'));
       return {lines:range.getClientRects().length,overflow:h.scrollWidth>h.clientWidth,
         fontSize:getComputedStyle(h).fontSize,available:h.clientWidth,needed:h.scrollWidth,
+        fonts:peers.map(el=>parseFloat(getComputedStyle(el.querySelector('h2')).fontSize)),
         widths:peers.map(el=>el.getBoundingClientRect().width),
         heights:peers.map(el=>el.getBoundingClientRect().height)};
     })()`);
     if(width>600) assert.equal(conditionsHeading.lines,1,"conditions heading stays on one line");
     assert.equal(conditionsHeading.overflow,false,"conditions heading fits its box at "+width+": "+JSON.stringify(conditionsHeading));
     if(width>800){
+      assert.ok(Math.max(...conditionsHeading.fonts)-Math.min(...conditionsHeading.fonts)<.1,"all three column headings have the same font size");
       assert.ok(Math.max(...conditionsHeading.widths)-Math.min(...conditionsHeading.widths)<1,"directory boxes remain equal width");
       assert.ok(Math.max(...conditionsHeading.heights)-Math.min(...conditionsHeading.heights)<1,"directory boxes remain equal height");
     }
@@ -280,7 +282,7 @@ try {
     await navigate("/services");
     await viewport(1440);
   }
-  console.log("PASS Services overview at five widths, four groups, 13 links and no photo notes");
+  console.log("PASS Services overview at six widths, matching column headings, four groups, 13 links and no photo notes");
   assert.equal(await evaluate(`document.querySelector('.directory-group h2').textContent`), "Getting Started");
   await verifyLinkCues("#service-page .directory-item a");
   console.log("PASS stronger link hover and keyboard-focus cues; Getting Started is first");

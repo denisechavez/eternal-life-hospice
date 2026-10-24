@@ -60,6 +60,17 @@ Do not restore the earlier short overview/Bereavement hero caps.
 Treat further text-position refinements separately from the approved hero
 height and photograph placement.
 
+Service-directory category headings should have matching font sizes without
+changing the symmetry of the category boxes.
+
+**Why:** The owner requested a one-line “Care for Specific Conditions” heading
+but rejected making it visibly smaller than the other two column headings.
+
+**How to apply:** Preserve equal-width, equal-height desktop boxes and match
+the headings' type size. Adjust the heading typography responsively together
+when space is constrained. On narrow phones, allow wrapping rather than
+overflow or unreadably small text.
+
 Hospice clinicians in illustrative service imagery should have believable
 professional details, including a clipped photo-ID badge and a stethoscope
 when appropriate to their role.

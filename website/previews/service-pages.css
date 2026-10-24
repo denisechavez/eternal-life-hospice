@@ -190,12 +190,18 @@
   container-type:inline-size;
 }
 #service-page.services-directory-page .directory-group--conditions h2{
-  font-size:clamp(1rem,7cqi,1.48rem);
-  line-height:calc(clamp(1.48rem,2vw,1.78rem) * 1.16);
+  overflow-wrap:anywhere;
 }
 @media(min-width:601px){
-  #service-page.services-directory-page .directory-group--conditions h2{
+  #service-page.services-directory-page .directory-group:not(.directory-group--getting-started){
+    container-type:inline-size;
+  }
+  #service-page.services-directory-page .directory-group:not(.directory-group--getting-started) h2{
+    font-size:min(clamp(1.48rem,2vw,1.78rem),8.2cqi);
+  }
+  #service-page.services-directory-page .directory-group--conditions:not(.directory-group--getting-started) h2{
     white-space:nowrap;
+    letter-spacing:-.045em;
   }
 }
 #service-page.services-directory-page .directory-item a{
