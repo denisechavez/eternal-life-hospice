@@ -2058,3 +2058,17 @@ mtime_ms = 1792620547701
 storage_uri = "gcs://replit-rams-assets-kirk/rams/assets/repl:e1b2f643-7869-4565-af0e-10c34575ee8d/79af75ad-4d11-491b-a9db-d6400a58ecd1/e8fa4e73-56db-4487-a1c0-ba931456a52d"
 storage_version_token = "1792804308070629"
 content_type = "application/octet-stream"
+
+[[outputs]]
+id = "RLhGVbqMONWF3vVCK6fy8"
+uri = "file://generated-artifacts/social-2026-10-23/2026-10-23-gbp.jpg"
+type = "image"
+title = "GBP graphic — Different roles. Shared support."
+description = "Download the 1200 × 900 JPG for today’s post. Uses the current Journal article’s photograph and Eternal branding, with natural colors and no purple overlay."
+logical_id = "a64cdf1b-8b50-472e-b706-56faff8ea590"
+content_hash = "sha256:fd336561fe81b6274c6ae71c918baf8d5209e15acc311f93ca02af5a544d1419"
+size = 225618
+mtime_ms = 1792806195100
+storage_uri = "gcs://replit-rams-assets-kirk/rams/assets/repl:e1b2f643-7869-4565-af0e-10c34575ee8d/a64cdf1b-8b50-472e-b706-56faff8ea590/8526112d-49ff-4885-8f8c-a7ff350a8bab"
+storage_version_token = "1792806203537343"
+content_type = "image/jpeg"
