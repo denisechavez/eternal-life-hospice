@@ -248,6 +248,22 @@ try {
     assert.ok(directory.scroll <= width, "Services directory overflows: " + JSON.stringify(directory));
     assert.equal(directory.groups, 4);
     assert.equal(directory.links, 13);
+    const conditionsHeading=await evaluate(`(()=>{
+      const card=document.querySelector('.directory-group--conditions');
+      const h=card.querySelector('h2'),r=h.getBoundingClientRect();
+      const range=document.createRange();range.selectNodeContents(h);
+      const peers=[...card.parentElement.children].filter(el=>!el.classList.contains('directory-group--getting-started'));
+      return {lines:range.getClientRects().length,overflow:h.scrollWidth>h.clientWidth,
+        fontSize:getComputedStyle(h).fontSize,available:h.clientWidth,needed:h.scrollWidth,
+        widths:peers.map(el=>el.getBoundingClientRect().width),
+        heights:peers.map(el=>el.getBoundingClientRect().height)};
+    })()`);
+    if(width>600) assert.equal(conditionsHeading.lines,1,"conditions heading stays on one line");
+    assert.equal(conditionsHeading.overflow,false,"conditions heading fits its box at "+width+": "+JSON.stringify(conditionsHeading));
+    if(width>800){
+      assert.ok(Math.max(...conditionsHeading.widths)-Math.min(...conditionsHeading.widths)<1,"directory boxes remain equal width");
+      assert.ok(Math.max(...conditionsHeading.heights)-Math.min(...conditionsHeading.heights)<1,"directory boxes remain equal height");
+    }
     assert.equal(directory.notes, 0);
     assert.ok(Math.abs(directory.hero.photoRight-directory.hero.heroRight)<1);
     await verifyHeroOpening();

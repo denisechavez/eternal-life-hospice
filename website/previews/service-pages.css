@@ -186,6 +186,18 @@
   padding:.68rem 0;
   border-top:1px solid #e4d9d0;
 }
+#service-page.services-directory-page .directory-group--conditions{
+  container-type:inline-size;
+}
+#service-page.services-directory-page .directory-group--conditions h2{
+  font-size:clamp(1rem,7cqi,1.48rem);
+  line-height:calc(clamp(1.48rem,2vw,1.78rem) * 1.16);
+}
+@media(min-width:601px){
+  #service-page.services-directory-page .directory-group--conditions h2{
+    white-space:nowrap;
+  }
+}
 #service-page.services-directory-page .directory-item a{
   font-size:1.12rem;
   line-height:1.28;

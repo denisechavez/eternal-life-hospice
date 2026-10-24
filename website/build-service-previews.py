@@ -571,6 +571,8 @@ def directory_template(header: str, footer: str) -> str:
                 label = item
             cards.append('<article class="directory-item"><a href="' + esc(href) + '">' + esc(label) + '</a><p>' + esc(summary) + '</p></article>')
         group_class = "directory-group directory-group--getting-started" if group_name == "Getting Started" else "directory-group"
+        if group_name == "Care for Specific Conditions":
+            group_class += " directory-group--conditions"
         groups_html.append('<section class="' + group_class + '"><h2>' + esc(group_name) + '</h2>' + "".join(cards) + '</section>')
     return '''<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Hospice Services | Eternal Life Hospice</title><meta name="description" content="Explore hospice care services across Ventura and Los Angeles counties."><meta name="robots" content="noindex,nofollow"><link rel="icon" href="/assets/favicon.png">
