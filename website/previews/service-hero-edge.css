@@ -12,12 +12,13 @@
   width:100%;max-width:none;margin:0;
   display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);
   gap:0;align-items:stretch;
-  min-height:clamp(640px,78svh,860px);
+  min-height:calc(100svh - var(--elh-header-height,112px));
 }
 #service-page .cc-hero-copy,
 #service-page.services-directory-page .cc-hero-copy{
-  align-self:center;max-width:720px;min-width:0;
-  padding:clamp(2.5rem,5.3vw,5.5rem);
+  align-self:start;max-width:720px;min-width:0;
+  padding:clamp(2rem,5svh,4rem) clamp(2rem,4vw,4rem) 2rem;
+  transform:none;
 }
 #service-page .cc-hero-copy .cc-eyebrow,
 #service-page.services-directory-page .cc-hero-copy .cc-eyebrow{
@@ -67,11 +68,13 @@
 @media(max-width:800px){
   #service-page .cc-hero-inner,
   #service-page.services-directory-page .cc-hero-inner{
-    width:100%;min-height:0;grid-template-columns:minmax(0,1fr);gap:0;
+    width:100%;min-height:calc(100svh - var(--elh-header-height,74px));
+    grid-template-columns:minmax(0,1fr);gap:0;align-content:start;
   }
   #service-page .cc-hero-copy,
   #service-page.services-directory-page .cc-hero-copy{
-    width:100%;max-width:none;padding:2.8rem clamp(1.25rem,5vw,3rem) 2.3rem;
+    width:100%;max-width:none;min-height:max(0px,calc(100svh - var(--elh-header-height,74px) - 100vw));
+    padding:2.4rem clamp(1.25rem,5vw,3rem) 2rem;transform:none;
   }
   #service-page .cc-hero-copy h1,
   #service-page.services-directory-page .cc-hero-copy h1{
@@ -92,46 +95,28 @@
   }
 }
 
-/* The overview and bereavement page share a compact, top-aligned hero treatment. */
-#service-page:is(.services-directory-page,.bereavement-service-page) .cc-hero-inner{
-  min-height:clamp(440px,60svh,580px);
-}
+/* The overview and bereavement retain their higher copy placement. */
 #service-page:is(.services-directory-page,.bereavement-service-page) .cc-hero-copy{
   align-self:start;
   padding:clamp(1.8rem,3.5vw,3.5rem) clamp(2rem,4.2vw,4.5rem) 2rem;
-}
-#service-page:is(.services-directory-page,.bereavement-service-page) .cc-hero-copy .cc-actions{
-  margin-top:clamp(1.25rem,2.3vw,2rem);
+  transform:none;
 }
 #service-page.bereavement-service-page .cc-hero-photo img{
   object-position:center top;
 }
 @media(max-width:1050px) and (min-width:801px){
-  #service-page:is(.services-directory-page,.bereavement-service-page) .cc-hero-inner{
-    min-height:clamp(460px,62svh,580px);
-  }
   #service-page:is(.services-directory-page,.bereavement-service-page) .cc-hero-copy{
     padding:2rem clamp(1.4rem,3.2vw,2.6rem);
-  }
-  #service-page:is(.services-directory-page,.bereavement-service-page) .cc-hero-copy .cc-actions{
-    margin-top:1.2rem;
-    gap:.6rem;
-  }
-  #service-page:is(.services-directory-page,.bereavement-service-page) .cc-hero .cc-button{
-    min-height:48px;
-    padding:.7rem .9rem;
-    font-size:13px;
-  }
-  #service-page.bereavement-service-page .cc-hero-inner{
-    min-height:clamp(520px,68svh,620px);
   }
 }
 @media(max-width:800px){
   #service-page:is(.services-directory-page,.bereavement-service-page) .cc-hero-inner{
-    min-height:0;
+    min-height:calc(100svh - var(--elh-header-height,74px));
   }
   #service-page:is(.services-directory-page,.bereavement-service-page) .cc-hero-copy{
     align-self:auto;
-    padding:2.25rem clamp(1.25rem,5vw,3rem) 1.85rem;
+    min-height:max(0px,calc(100svh - var(--elh-header-height,74px) - 100vw));
+    padding:2.4rem clamp(1.25rem,5vw,3rem) 2rem;
+    transform:none;
   }
 }

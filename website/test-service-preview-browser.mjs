@@ -82,9 +82,9 @@ try {
     }
     throw new Error("Timed out: " + label);
   };
-  const viewport = async width => {
+  const viewport = async (width, height = 1000) => {
     await call("Emulation.setDeviceMetricsOverride", {
-      width, height: 1000, deviceScaleFactor: 1, mobile: width < 500,
+      width, height, deviceScaleFactor: 1, mobile: width < 500,
     });
     await sleep(80);
   };
@@ -119,6 +119,27 @@ try {
     await until(changed, "keyboard focus changes text color");
     assert.match(await evaluate(`getComputedStyle(document.querySelector(${JSON.stringify(selector)})).textDecorationLine`), /underline/);
     await evaluate(`document.querySelector(${JSON.stringify(selector)}).blur()`);
+  };
+
+  const verifyHeroOpening = async () => {
+    const opening = await evaluate(`(()=>{
+      const hero=document.querySelector('#service-page .cc-hero');
+      const r=hero.getBoundingClientRect();
+      const next=hero.nextElementSibling.getBoundingClientRect();
+      const title=hero.querySelector('h1').getBoundingClientRect();
+      const actions=hero.querySelector('.cc-actions').getBoundingClientRect();
+      return {viewport:innerHeight,width:innerWidth,
+        bottom:r.bottom+scrollY,nextTop:next.top+scrollY,
+        headingOffset:title.top-r.top,
+        actionsTop:actions.top-r.top,actionsBottom:actions.bottom-r.bottom};
+    })()`);
+    assert.ok(opening.bottom>=opening.viewport-1, "hero must fill the opening view: "+JSON.stringify(opening));
+    assert.ok(opening.nextTop>=opening.viewport-1, "next section must stay below the fold: "+JSON.stringify(opening));
+    assert.ok(opening.headingOffset>=0, "hero heading must not overlap the header");
+    assert.ok(opening.actionsTop>=0 && opening.actionsBottom<=1, "hero buttons must remain inside the hero");
+    if(opening.width>800){
+      assert.ok(opening.headingOffset<200, "hero wording should sit higher");
+    }
   };
 
   for (const page of process.argv.includes("--menus-only") ? [] : catalog) {
@@ -163,19 +184,8 @@ try {
           assert.ok(Math.abs(grid.items[2].top-grid.items[3].top)<1);
           assert.ok(grid.items[2].top>grid.items[0].top);
         }
-        if(width>=1024){
-          assert.ok(layout.photo.heroBottom-layout.photo.heroTop<=(width<=1050 ? 620 : 580),
-            "bereavement hero should be compact");
-          const copy = await evaluate(`({
-            headingTop:document.querySelector('#cc-title').getBoundingClientRect().top,
-            actionsBottom:document.querySelector('.cc-hero .cc-actions').getBoundingClientRect().bottom
-          })`);
-          assert.ok(copy.headingTop-layout.photo.heroTop<200,
-            "bereavement heading should sit higher");
-          assert.ok(copy.actionsBottom<=layout.photo.heroBottom,
-            "bereavement hero CTAs must fit");
-        }
       }
+      await verifyHeroOpening();
       assert.equal(await evaluate(`document.querySelectorAll('#service-page .cc-breadcrumb,#service-page .cc-preview-note').length`), 0);
       assert.equal(layout.photo.radius, "0px", page.slug + " still has an image cutout");
       assert.equal(layout.photo.backing, "none", page.slug + " still has gold backing");
@@ -231,11 +241,19 @@ try {
     assert.equal(directory.links, 13);
     assert.equal(directory.notes, 0);
     assert.ok(Math.abs(directory.hero.photoRight-directory.hero.heroRight)<1);
-    if(width>=1024){
-      assert.ok(directory.hero.height<=600, "overview hero still has excessive height");
-      assert.ok(directory.hero.headingOffset<200, "overview heading should sit higher");
-      assert.ok(directory.hero.actionsBottom<=directory.hero.heroBottom, "overview CTAs must fit");
+    await verifyHeroOpening();
+  }
+  if(!process.argv.includes("--menus-only")){
+    for(const path of ["/services",...catalog.map(page=>"/services/"+page.slug)]){
+      await navigate(path);
+      for(const [width,height] of [[1366,768],[390,874]]){
+        await viewport(width,height);
+        await verifyHeroOpening();
+      }
     }
+    console.log("PASS all 11 heroes keep following content below the fold on short desktops and phones");
+    await navigate("/services");
+    await viewport(1440);
   }
   console.log("PASS Services overview at five widths, four groups, 13 links and no photo notes");
   assert.equal(await evaluate(`document.querySelector('.directory-group h2').textContent`), "Getting Started");
