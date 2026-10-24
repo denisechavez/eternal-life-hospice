@@ -51,6 +51,7 @@ import form_antispam
 import recruitment_policy
 import social_downloads
 import service_preview
+import site_breadcrumbs
 
 BASE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.join(BASE, "elh-preview")
@@ -129,9 +130,11 @@ LEGACY_PAGE_REDIRECTS = {
 
 class PrettyURLHandler(http.server.SimpleHTTPRequestHandler):
     def _preview_chrome(self, document, route=None):
+        route = route if route is not None else urlsplit(self.path).path
+        route = route.rstrip("/").removesuffix(".html") or "/"
         return service_preview.decorate(
-            footer_contact.public_html(document),
-            route if route is not None else urlsplit(self.path).path
+            site_breadcrumbs.decorate(footer_contact.public_html(document), route),
+            route
         )
 
     def _service_preview_chrome(self, document):

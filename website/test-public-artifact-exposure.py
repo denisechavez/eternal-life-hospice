@@ -62,6 +62,9 @@ class PublicArtifactExposureTest(unittest.TestCase):
             "/assets/inject_breadcrumbs.py",
             "/fix-webp-heroes.py",
             "/assets/img/",
+            "/generated-artifacts/seo/prepublish-seo-report.html",
+            "/prepublish-seo-report.html",
+            "/prepublish-seo-report.json",
         ):
             with self.subTest(path=path):
                 for method in ("GET", "HEAD"):

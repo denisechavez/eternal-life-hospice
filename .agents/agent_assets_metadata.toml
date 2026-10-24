@@ -2086,3 +2086,31 @@ mtime_ms = 1792820960288
 storage_uri = "gcs://replit-rams-assets-kirk/rams/assets/repl:e1b2f643-7869-4565-af0e-10c34575ee8d/05cd78b6-405a-453c-95e7-be64d7499ee6/4c312697-0010-43f5-8b25-abd6eee4c3fa"
 storage_version_token = "1792820985228888"
 content_type = "text/html"
+
+[[outputs]]
+id = "wqjqrgpUd_JvCaCE31uFH"
+uri = "file://generated-artifacts/seo/prepublish-seo-report.html"
+type = "html"
+title = "Pre-publish SEO review report"
+description = "Private preview report for 290 page sources. Every finding includes the page URL and a recommended fix. Nothing was published."
+logical_id = "edd9aaf4-cdfa-40c0-a41c-325069ea86e9"
+content_hash = "sha256:1f74f5c083cc18d7027c24a22ae1ded2bc18db21c3597a63150195b3b5910b0e"
+size = 272704
+mtime_ms = 1792829966098
+storage_uri = "gcs://replit-rams-assets-kirk/rams/assets/repl:e1b2f643-7869-4565-af0e-10c34575ee8d/edd9aaf4-cdfa-40c0-a41c-325069ea86e9/29794d5d-fdf8-4467-bfc9-e44f574b7026"
+storage_version_token = "1792830053602764"
+content_type = "text/html"
+
+[[outputs]]
+id = "1Ro4IupMpDy93ocSYPhXn"
+uri = "file://generated-artifacts/seo/prepublish-seo-report.txt"
+type = "text"
+title = "SEO report — plain-text download"
+description = "The complete report in plain text, including all page URLs and fixes."
+logical_id = "13785a0c-9700-40f8-b19d-c6b41a874ac4"
+content_hash = "sha256:1640430793791704f9dcc4d49e7a243411d054a7b77f5725f8b4116e1f2979df"
+size = 269475
+mtime_ms = 1792829966091
+storage_uri = "gcs://replit-rams-assets-kirk/rams/assets/repl:e1b2f643-7869-4565-af0e-10c34575ee8d/13785a0c-9700-40f8-b19d-c6b41a874ac4/1d705854-c2e6-4d33-8bbb-8c0c1ff9cbde"
+storage_version_token = "1792830054519207"
+content_type = "text/plain"
