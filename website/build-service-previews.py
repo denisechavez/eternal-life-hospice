@@ -438,7 +438,7 @@ def render_second(page: dict) -> str:
     alt = esc(page["wide_alt"])
     img_name = "communication.webp" if page["slug"] == "hospice-in-assisted-living-and-skilled-nursing" else page["slug"] + "-communication.webp"
     img = '/__service-preview-assets/' + img_name
-    result = '<section class="cc-communication"><figure class="cc-communication-photo"><img loading="lazy" decoding="async" src="' + img + '" alt="' + alt + '"><figcaption class="cc-photo-note">Illustrative scene · not an actual patient encounter</figcaption></figure>'
+    result = '<section class="cc-communication"><figure class="cc-communication-photo"><img loading="lazy" decoding="async" src="' + img + '" alt="' + alt + '"></figure>'
     result += '<div class="cc-wrap cc-communication-copy"><h2 class="cc-section-heading">' + esc(page["second_heading"]) + '</h2>'
     if page.get("second_text"):
         result += '<p>' + esc(page["second_text"]) + '</p>'
@@ -529,7 +529,7 @@ def page_template(page: dict, header: str, footer: str) -> str:
       <div class="cc-hero-copy"><p class="cc-eyebrow">{esc(page["eyebrow"])}</p><h1 id="cc-title">{crumb_title}</h1><p class="cc-subline">{esc(page["subline"])}</p>
         <div class="cc-actions"><a class="cc-button" href="tel:8059537273">Call Today for Care Options · 805.953.7273</a><a class="cc-button cc-button--outline" href="/refer#referral-form">Refer a Patient</a></div>
       </div>
-      <figure class="cc-hero-photo"><img fetchpriority="high" src="{hero}" alt="{esc(page["hero_alt"])}"><figcaption class="cc-photo-note">Illustrative scene · not an actual patient encounter</figcaption></figure>
+      <figure class="cc-hero-photo"><img fetchpriority="high" src="{hero}" alt="{esc(page["hero_alt"])}"></figure>
     </div></section>
     {body_content}
     {standard_band()}
@@ -564,9 +564,8 @@ def directory_template(header: str, footer: str) -> str:
 <link rel="preload" as="font" href="/assets/fonts/fraunces-latin.woff2" type="font/woff2" crossorigin fetchpriority="high"><link rel="preload" as="font" href="/assets/fonts/fraunces-italic-latin.woff2" type="font/woff2" crossorigin fetchpriority="high">
 <link rel="stylesheet" href="/assets/elh.css?v=20260901"><link rel="stylesheet" href="/assets/header-nav.css?v=20260920a"><link rel="stylesheet" href="/assets/internal-links.css?v=20261007-inline"><link rel="stylesheet" href="/__service-preview-assets/service-pages.css"><script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://eternallifehospice.com/"},{"@type":"ListItem","position":2,"name":"Services","item":"https://eternallifehospice.com/services"}]}</script><script async src="/assets/analytics.js?v=8a19c4a3a193"></script></head><body>
 <a class="skip-link" href="#main-content">Skip to main content</a>''' + header + '''
-<main id="main-content" tabindex="-1"><div id="service-page">
-<nav class="cc-breadcrumb" aria-label="Breadcrumb"><div class="cc-wrap"><ol><li><a href="/">Home</a></li><li aria-current="page">Services</li></ol></div></nav>
-<section class="cc-hero"><div class="cc-hero-inner"><div class="cc-hero-copy"><p class="cc-eyebrow">Services</p><h1>Our Services</h1><div class="cc-actions"><a class="cc-button" href="tel:8059537273">Call Today for Care Options · 805.953.7273</a><a class="cc-button cc-button--outline" href="/refer#referral-form">Refer a Patient</a></div></div><figure class="cc-hero-photo"><img src="/__service-preview-assets/hero.webp" alt="Illustrative hospice care scene"><figcaption class="cc-photo-note">Illustrative scene · not an actual patient encounter</figcaption></figure></div></section>
+<main id="main-content" tabindex="-1"><div id="service-page" class="services-directory-page">
+<section class="cc-hero"><div class="cc-hero-inner"><div class="cc-hero-copy"><p class="cc-eyebrow">Services</p><h1>Our Services</h1><div class="cc-actions"><a class="cc-button" href="tel:8059537273">Call Today for Care Options · 805.953.7273</a><a class="cc-button cc-button--outline" href="/refer#referral-form">Refer a Patient</a></div></div><figure class="cc-hero-photo"><img src="/__service-preview-assets/hero.webp" alt="Illustrative hospice care scene"></figure></div></section>
 <section class="cc-section cc-how"><div class="cc-wrap"><div class="directory-groups">''' + "".join(groups_html) + '''</div></div></section>
 <section class="cc-closing"><h2>Here in Moments That Matter Most</h2><div class="cc-actions"><a class="cc-button cc-button--outline" href="tel:8059537273">805.953.7273</a><a class="cc-button" href="tel:8059537273">Call Today for Care Options</a></div></section></div></main>''' + footer + '''
 ''' + SHARED_SEARCH + '''<script src="/assets/header.js?v=20260920"></script><script src="/assets/chat.js?v=20260805" defer></script></body></html>'''

@@ -125,6 +125,12 @@ class PreviewTests(unittest.TestCase):
             self.assertEqual(breadcrumb["itemListElement"][-1]["item"],
                              "https://eternallifehospice.com/services/" + slug)
 
+    def test_overview_has_no_breadcrumb_bar_but_detail_pages_keep_theirs(self):
+        directory = (preview.PREVIEWS / "services-directory.html").read_text()
+        self.assertNotIn('class="cc-breadcrumb"', directory)
+        for slug in preview.SLUGS:
+            self.assertIn('class="cc-breadcrumb"', self.source(slug))
+
     def test_editorial_approvals_and_preview_metadata(self):
         for slug in preview.SLUGS:
             source = self.source(slug)
@@ -175,6 +181,14 @@ class PreviewTests(unittest.TestCase):
                     self.assertTrue((public / (url.lstrip("/") + ".html")).is_file(), url)
                 self.assertLess(source.index('class="cc-context-link"'),
                                 source.index('<section class="cc-related">'))
+
+    def test_service_photos_have_no_visible_footnote_overlays(self):
+        sources = [self.source(slug) for slug in preview.SLUGS]
+        sources.append((preview.PREVIEWS / "services-directory.html").read_text())
+        for source in sources:
+            self.assertNotIn("<figcaption", source)
+            self.assertNotIn("not an actual patient encounter", source)
+            self.assertIn("Illustrative", source)  # Alt text remains truthful.
 
     def test_tiles_and_timelines_appear_once_in_correct_section(self):
         pages = runpy.run_path(str(preview.BASE / "build-service-previews.py"))["PAGES"]

@@ -15,3 +15,21 @@ claim that continuous bedside nursing is generally provided. Do not generalize
 the removal into deleting clinical distinctions from unrelated existing pages.
 The approval does not waive the brief's outstanding clinical, billing or
 operational checks and does not authorize publication.
+
+Service-page photographs should not carry visible illustrative-scene footnotes
+or caption overlays.
+
+**Why:** The owner explicitly requested removing these notes while refining
+the Services overview's appearance.
+
+**How to apply:** Keep service imagery clean and retain truthful descriptive
+alt text. Removing an overlay is not permission to represent generated scenes
+as actual Eternal patients or staff.
+
+Do not show the Home / Services breadcrumb bar on the Services overview.
+
+**Why:** The owner requested removing this strip as part of the overview's
+visual refinement.
+
+**How to apply:** Let the overview hero follow the shared header directly.
+This request does not remove breadcrumbs from individual service detail pages.

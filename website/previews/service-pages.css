@@ -128,3 +128,119 @@
   #service-page .cc-button{width:100%}
 }
 @media(prefers-reduced-motion:reduce){#service-page *,#service-page *::before,#service-page *::after{scroll-behavior:auto!important;transition:none!important}}
+
+/* Services directory only: a compact editorial index that brings the care pathways
+   into view immediately, without changing the service detail-page system above. */
+#service-page.services-directory-page .cc-breadcrumb{padding:.72rem 0}
+#service-page.services-directory-page .cc-hero{padding:clamp(1.7rem,3.1vw,2.7rem) 0}
+#service-page.services-directory-page .cc-hero-inner{
+  width:min(1120px,calc(100% - 3.2rem));
+  grid-template-columns:minmax(0,1.08fr) minmax(280px,.82fr);
+  gap:clamp(2rem,5vw,4.8rem);
+}
+#service-page.services-directory-page .cc-hero-copy{max-width:600px}
+#service-page.services-directory-page .cc-hero-copy h1{
+  font-size:clamp(3rem,5.2vw,4.45rem);
+  margin:.48rem 0 1.1rem;
+  letter-spacing:-.045em;
+}
+#service-page.services-directory-page .cc-hero-copy .cc-eyebrow{margin:0}
+#service-page.services-directory-page .cc-hero-copy .cc-actions{margin-top:1.4rem;gap:.65rem}
+#service-page.services-directory-page .cc-button{min-height:44px;padding:.68rem 1.05rem;font-size:13px}
+#service-page.services-directory-page .cc-hero-photo{
+  min-height:0;
+  height:clamp(235px,27vw,320px);
+  margin:0 .7rem .7rem 0;
+}
+#service-page.services-directory-page .cc-hero-photo::before{
+  inset:12px -12px -12px 12px;
+  border-radius:42% 42% 4px 4px;
+}
+#service-page.services-directory-page .cc-hero-photo img{
+  height:100%;
+  object-fit:cover;
+  object-position:center 48%;
+  border-radius:42% 42% 4px 4px;
+}
+#service-page.services-directory-page .cc-how{
+  padding:clamp(1.8rem,3vw,2.8rem) 0 clamp(2.2rem,4vw,3.4rem);
+  background:#f0e9e3;
+}
+#service-page.services-directory-page .directory-groups{
+  gap:1.25rem 1.5rem;
+  align-items:start;
+}
+#service-page.services-directory-page .directory-group{
+  padding:1.05rem clamp(1rem,2vw,1.45rem) .75rem;
+  border:1px solid #dfd2c6;
+  border-top:2px solid var(--cc-gold);
+  background:#f8f4ef;
+}
+#service-page.services-directory-page .directory-group h2{
+  font-size:clamp(1.48rem,2vw,1.78rem);
+  line-height:1.16;
+  margin:0 0 .48rem;
+  letter-spacing:-.025em;
+}
+#service-page.services-directory-page .directory-item{
+  padding:.68rem 0;
+  border-top:1px solid #e4d9d0;
+}
+#service-page.services-directory-page .directory-item a{
+  font-size:1.12rem;
+  line-height:1.28;
+  font-weight:500;
+}
+#service-page.services-directory-page .directory-item p{
+  font-size:14px;
+  line-height:1.48;
+  margin:.25rem 0 0;
+}
+#service-page.services-directory-page .cc-closing{padding:2rem 1.4rem}
+#service-page.services-directory-page .cc-closing h2{
+  font-size:clamp(1.7rem,3.2vw,2.35rem);
+  margin-bottom:1rem;
+}
+#service-page.services-directory-page .cc-closing .cc-actions{gap:.65rem}
+@media(max-width:800px){
+  #service-page.services-directory-page .cc-hero{padding:1.55rem 0 1.9rem}
+  #service-page.services-directory-page .cc-hero-inner{
+    grid-template-columns:minmax(0,1fr) minmax(245px,.82fr);
+    gap:1.8rem;
+  }
+  #service-page.services-directory-page .cc-hero-photo{
+    width:auto;
+    height:255px;
+    margin:0 .65rem .65rem 0;
+  }
+  #service-page.services-directory-page .cc-hero-copy h1{font-size:clamp(2.55rem,6vw,3.5rem)}
+  #service-page.services-directory-page .cc-hero-copy .cc-actions{align-items:flex-start}
+  #service-page.services-directory-page .directory-groups{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:600px){
+  #service-page.services-directory-page .cc-wrap,
+  #service-page.services-directory-page .cc-hero-inner{width:calc(100% - 2rem)}
+  #service-page.services-directory-page .cc-hero{padding:1.25rem 0 1.55rem}
+  #service-page.services-directory-page .cc-hero-inner{grid-template-columns:1fr;gap:1.2rem}
+  #service-page.services-directory-page .cc-hero-copy h1{font-size:clamp(2.55rem,11vw,3.35rem);margin:.38rem 0 .85rem}
+  #service-page.services-directory-page .cc-hero-copy .cc-actions{margin-top:.95rem}
+  #service-page.services-directory-page .cc-hero-photo{
+    width:calc(100% - .7rem);
+    height:clamp(205px,62vw,290px);
+    margin:0 .7rem .7rem 0;
+  }
+  #service-page.services-directory-page .cc-how{padding:1.3rem 0 1.8rem}
+  #service-page.services-directory-page .directory-groups{grid-template-columns:1fr;gap:.85rem}
+  #service-page.services-directory-page .directory-group{padding:.9rem 1rem .55rem}
+  #service-page.services-directory-page .directory-item{padding:.62rem 0}
+  #service-page.services-directory-page .directory-item a{font-size:1.08rem}
+  #service-page.services-directory-page .cc-closing{padding:1.65rem 1rem}
+  #service-page.services-directory-page .cc-closing .cc-actions{flex-direction:row;align-items:center}
+  #service-page.services-directory-page .cc-closing .cc-button{width:auto}
+}
+@media(max-width:370px){
+  #service-page.services-directory-page .cc-hero-copy .cc-actions{align-items:stretch}
+  #service-page.services-directory-page .cc-hero-copy .cc-button{width:100%}
+  #service-page.services-directory-page .cc-closing .cc-actions{flex-direction:column}
+  #service-page.services-directory-page .cc-closing .cc-button{width:100%}
+}

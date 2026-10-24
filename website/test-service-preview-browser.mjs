@@ -129,6 +129,20 @@ try {
   }
 
   await navigate("/services");
+  for (const width of [320, 390, 768, 1024, 1440]) {
+    await viewport(width);
+    const directory = await evaluate(`({
+      width:innerWidth,scroll:document.documentElement.scrollWidth,
+      groups:document.querySelectorAll('#service-page .directory-group').length,
+      links:document.querySelectorAll('#service-page .directory-item a').length,
+      notes:document.querySelectorAll('#service-page figcaption').length
+    })`);
+    assert.ok(directory.scroll <= width, "Services directory overflows: " + JSON.stringify(directory));
+    assert.equal(directory.groups, 4);
+    assert.equal(directory.links, 13);
+    assert.equal(directory.notes, 0);
+  }
+  console.log("PASS Services overview at five widths, four groups, 13 links and no photo notes");
   await viewport(1440);
   assert.equal(await evaluate(`document.querySelectorAll('#service-page .directory-item').length`), 13);
   assert.equal(await evaluate(`document.querySelectorAll('#service-page .directory-group').length`), 4);
