@@ -3,14 +3,19 @@ name: Internal-link editorial decisions
 description: Topic ownership and publication-safe recommendations across ELH pages
 ---
 
-Keep the Services dropdown concise as specialist service pages expand; the owner
-does not want all ten planned service pages displayed as one long menu.
+Organize Services into four labeled desktop mega-menu columns and expandable
+mobile groups, rather than one long service list. The supplied consolidated
+brief labels this navigation map approved: Where We Provide Care, Care for
+Specific Conditions, Comfort & Support and Getting Started. Headings are labels,
+not additional category pages; All Services mirrors the grouping.
 
 **Why:** The owner explicitly identified a long service menu as confusing for
-families, even while adding specialist pages to strengthen SEO.
+families, then supplied this grouped architecture to balance direct service
+discovery with usability and SEO/AEO.
 
-**How to apply:** Propose a short menu and an organized All Services directory.
-Do not treat that proposed grouping or any additional pages as approved work.
+**How to apply:** Keep direct service links, a View All Services link and a brief
+footer. Navigation approval is not publication approval or confirmation of
+clinical, contract, insurance or operational claims.
 
 Curated recommendations should connect an article to its topic owner, not substitute
 for substantive editorial links or multiply shared-footer links. Keep local city
