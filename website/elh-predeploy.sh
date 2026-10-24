@@ -40,6 +40,7 @@ set +o pipefail
   python3 ../check-blog-schema.py
   python3 ../check-og-metadata.py
   python3 ../check-img-alt.py
+  python3 ../check-care-brief-signup.py
   python3 ../check-sitemap.py
   python3 ../check-header-parity.py
   python3 ../test-header-mobile.py
@@ -89,6 +90,7 @@ SENTINELS=(
   "SENTINEL: check-blog-schema.py self-test OK"
   "SENTINEL: check-og-metadata.py self-test OK"
   "SENTINEL: check-img-alt.py self-test OK"
+  "SENTINEL: check-care-brief-signup.py self-test OK"
   "SENTINEL: check-sitemap.py self-test OK"
   "SENTINEL: check-header-parity.py self-test OK"
   "SENTINEL: test-header-mobile.py browser checks OK"

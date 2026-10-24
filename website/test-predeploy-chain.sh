@@ -81,6 +81,7 @@ SENTINELS=(
   "SENTINEL: check-blog-schema.py self-test OK"
   "SENTINEL: check-og-metadata.py self-test OK"
   "SENTINEL: check-img-alt.py self-test OK"
+  "SENTINEL: check-care-brief-signup.py self-test OK"
   "SENTINEL: check-sitemap.py self-test OK"
   "SENTINEL: check-header-parity.py self-test OK"
   "SENTINEL: test-header-mobile.py browser checks OK"
