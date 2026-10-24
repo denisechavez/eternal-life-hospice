@@ -6,7 +6,7 @@ PHONE = re.compile(
     r'<a class="fc-line(?: no-swap| fc-direct)" href="tel:1805(?:9537273|4101151)">.*?</a>',
     re.S,
 )
-STYLESHEET = '<link rel="stylesheet" href="/assets/footer-contact.css?v=20261016-main">'
+STYLESHEET = '<link rel="stylesheet" href="/assets/footer-contact.css?v=20261023-nowrap">'
 
 
 def public_html(document):
