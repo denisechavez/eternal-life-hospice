@@ -51,3 +51,34 @@
   #hdr.nav-open .sp-menu-bottom a:last-child{white-space:normal}
 }
 @media(prefers-reduced-motion:reduce){#hdr .sp-group-toggle::after{transition:none}}
+
+/* Preview Services menu links: retain the established focus outline while making
+   pointer and keyboard interaction visible through both color and underline. */
+#hdr .nav-group[data-section="services"] .sp-mega .sp-group-links a,
+#hdr .nav-group[data-section="services"] .sp-mega .sp-menu-bottom a{
+  transition:color .16s ease,text-decoration-color .16s ease;
+}
+#hdr .nav-group[data-section="services"] .sp-mega .sp-group-links a:hover,
+#hdr .nav-group[data-section="services"] .sp-mega .sp-group-links a:focus-visible,
+#hdr .nav-group[data-section="services"] .sp-mega .sp-menu-bottom a:hover,
+#hdr .nav-group[data-section="services"] .sp-mega .sp-menu-bottom a:focus-visible{
+  color:#d7bd82!important;
+  text-decoration:underline;
+  text-decoration-color:#d7bd82;
+  text-decoration-thickness:2px;
+  text-underline-offset:4px;
+}
+@media(max-width:999px){
+  #hdr.nav-open .nav-group[data-section="services"] .sp-group-links a:hover,
+  #hdr.nav-open .nav-group[data-section="services"] .sp-group-links a:focus-visible{
+    color:#d7bd82!important;
+    text-decoration:underline;
+    text-decoration-color:#d7bd82;
+    text-decoration-thickness:2px;
+    text-underline-offset:4px;
+  }
+}
+@media(prefers-reduced-motion:reduce){
+  #hdr .nav-group[data-section="services"] .sp-mega .sp-group-links a,
+  #hdr .nav-group[data-section="services"] .sp-mega .sp-menu-bottom a{transition:none}
+}

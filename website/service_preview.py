@@ -24,6 +24,7 @@ SLUGS = (
     "hospice-evaluation",
 )
 GROUPS = (
+    ("Getting Started", ("hospice-evaluation",)),
     ("Where We Provide Care", SLUGS[:4]),
     ("Care for Specific Conditions", SLUGS[4:8]),
     ("Comfort & Support", (
@@ -32,7 +33,6 @@ GROUPS = (
         ("/sound-bath", "Sound Bath"),
         "bereavement-support",
     )),
-    ("Getting Started", ("hospice-evaluation",)),
 )
 PRESENTATION_ASSETS = {
     "service-pages.css": "text/css; charset=utf-8",

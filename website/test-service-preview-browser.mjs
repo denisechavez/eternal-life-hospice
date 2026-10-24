@@ -99,6 +99,28 @@ try {
   await call("Runtime.enable");
   await call("Fetch.enable", {patterns: [{urlPattern: "*"}]});
 
+  const verifyLinkCues = async selector => {
+    await call("Input.dispatchMouseEvent", {type:"mouseMoved", x:0, y:0});
+    const before = await evaluate(`(()=>{
+      const a=document.querySelector(${JSON.stringify(selector)});
+      a.scrollIntoView({block:'center',behavior:'instant'});
+      const r=a.getClientRects()[0];
+      return {color:getComputedStyle(a).color,x:r.left+r.width/2,y:r.top+r.height/2};
+    })()`);
+    await call("Input.dispatchMouseEvent", {type:"mouseMoved",x:before.x,y:before.y});
+    const changed = `getComputedStyle(document.querySelector(${JSON.stringify(selector)})).color!==${JSON.stringify(before.color)}`;
+    await until(changed, "link hover changes text color");
+    assert.match(await evaluate(`getComputedStyle(document.querySelector(${JSON.stringify(selector)})).textDecorationLine`), /underline/);
+    await call("Input.dispatchMouseEvent", {type:"mouseMoved",x:0,y:0});
+    await until(`!(${changed})`, "link returns to its original color");
+    await call("Input.dispatchKeyEvent", {type:"keyDown",key:"Tab",code:"Tab",windowsVirtualKeyCode:9});
+    await call("Input.dispatchKeyEvent", {type:"keyUp",key:"Tab",code:"Tab",windowsVirtualKeyCode:9});
+    await evaluate(`document.querySelector(${JSON.stringify(selector)}).focus()`);
+    await until(changed, "keyboard focus changes text color");
+    assert.match(await evaluate(`getComputedStyle(document.querySelector(${JSON.stringify(selector)})).textDecorationLine`), /underline/);
+    await evaluate(`document.querySelector(${JSON.stringify(selector)}).blur()`);
+  };
+
   for (const page of process.argv.includes("--menus-only") ? [] : catalog) {
     await navigate("/services/" + page.slug);
     await until("document.querySelector('#service-page .cc-hero-photo img').naturalWidth>0", "hero photograph");
@@ -124,6 +146,25 @@ try {
       assert.equal(layout.h1, page.title);
       assert.ok(layout.details >= 2, page.slug);
       assert.equal(layout.removed, false);
+      if(page.slug==="bereavement-support"){
+        const grid = await evaluate(`(()=>{
+          const grid=document.querySelector('.cc-tiles[data-layout="balanced-pairs"]');
+          return {columns:getComputedStyle(grid).gridTemplateColumns.split(' ').length,
+            items:[...grid.children].map(card=>{
+              const r=card.getBoundingClientRect();
+              return {top:r.top,height:r.height,width:r.width};
+            })};
+        })()`);
+        assert.equal(grid.columns, width<=600 ? 1 : 2, "bereavement grid columns");
+        assert.equal(grid.items.length, 4);
+        assert.ok(grid.items.every(card=>card.width>0&&card.height>0));
+        if(width>600){
+          assert.ok(Math.abs(grid.items[0].top-grid.items[1].top)<1);
+          assert.ok(Math.abs(grid.items[2].top-grid.items[3].top)<1);
+          assert.ok(grid.items[2].top>grid.items[0].top);
+        }
+      }
+      assert.equal(await evaluate(`document.querySelectorAll('#service-page .cc-breadcrumb,#service-page .cc-preview-note').length`), 0);
       assert.equal(layout.photo.radius, "0px", page.slug + " still has an image cutout");
       assert.equal(layout.photo.backing, "none", page.slug + " still has gold backing");
       assert.ok(Math.abs(layout.photo.right-layout.photo.heroRight)<1,
@@ -136,6 +177,12 @@ try {
         assert.equal(layout.photo.fit, "contain");
         assert.ok(Math.abs(layout.photo.width-layout.photo.heroWidth)<1);
       }
+    }
+    if(page.slug==="in-home-hospice-care"){
+      assert.equal(await evaluate(`document.querySelectorAll('.cc-how .cc-tile').length`), 6);
+      assert.equal(await evaluate(`document.querySelector('.cc-tile--visual').getAttribute('aria-hidden')`), "true");
+      await verifyLinkCues("#service-page .cc-context-link");
+      await verifyLinkCues("#service-page .cc-related-links a");
     }
     assert.equal(await evaluate(`(()=>{
       const summary=document.querySelector('#service-page details summary');
@@ -164,6 +211,9 @@ try {
     assert.equal(directory.notes, 0);
   }
   console.log("PASS Services overview at five widths, four groups, 13 links and no photo notes");
+  assert.equal(await evaluate(`document.querySelector('.directory-group h2').textContent`), "Getting Started");
+  await verifyLinkCues("#service-page .directory-item a");
+  console.log("PASS stronger link hover and keyboard-focus cues; Getting Started is first");
   await viewport(1440);
   assert.equal(await evaluate(`document.querySelectorAll('#service-page .directory-item').length`), 13);
   assert.equal(await evaluate(`document.querySelectorAll('#service-page .directory-group').length`), 4);
@@ -211,7 +261,9 @@ try {
     assert.ok(open.count > 0);
     assert.equal(open.otherOpen, 0);
   }
-  await evaluate(`document.querySelector('.sp-group-links.is-open a').click()`);
+  assert.equal(await evaluate(`document.querySelector('.sp-group-toggle').textContent.trim()`), "Getting Started");
+  await evaluate(`document.querySelector('.sp-group-toggle').click();
+    document.querySelector('.sp-group-links.is-open a').click()`);
   await until("location.pathname==='/services/hospice-evaluation' && document.readyState!=='loading'",
     "mobile service link navigation");
   assert.equal(await evaluate(`document.querySelector('#hdr').classList.contains('nav-open')`), false);

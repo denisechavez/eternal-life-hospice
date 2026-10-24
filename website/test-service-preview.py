@@ -120,6 +120,10 @@ class PreviewTests(unittest.TestCase):
         for slug in preview.SLUGS:
             self.assertEqual(main.count('href="/services/' + slug + '"'), 1)
         self.assertNotIn("/services/medical-aid-in-dying-california", main)
+        headings = re.findall(r'<section class="directory-group[^"]*"><h2>(.*?)</h2>', main)
+        self.assertEqual(headings[0], "Getting Started")
+        self.assertEqual(preview.GROUPS[0][0], "Getting Started")
+        self.assertIn('class="directory-group directory-group--getting-started"', main)
 
     def test_faq_schema_matches_every_visible_answer(self):
         for slug in preview.SLUGS:
@@ -139,11 +143,31 @@ class PreviewTests(unittest.TestCase):
             self.assertEqual(breadcrumb["itemListElement"][-1]["item"],
                              "https://eternallifehospice.com/services/" + slug)
 
-    def test_overview_has_no_breadcrumb_bar_but_detail_pages_keep_theirs(self):
+    def test_every_service_page_opens_without_breadcrumb_or_preview_strip(self):
         directory = (preview.PREVIEWS / "services-directory.html").read_text()
         self.assertNotIn('class="cc-breadcrumb"', directory)
         for slug in preview.SLUGS:
-            self.assertIn('class="cc-breadcrumb"', self.source(slug))
+            source = self.source(slug)
+            self.assertNotIn('class="cc-breadcrumb"', source)
+            self.assertNotIn('class="cc-wrap cc-preview-note"', source)
+
+    def test_in_home_grid_has_a_decorative_visual_not_an_invented_service(self):
+        source = self.source("in-home-hospice-care")
+        self.assertEqual(source.count('class="cc-tile cc-tile--visual"'), 1)
+        self.assertIn('class="cc-tile cc-tile--visual" aria-hidden="true"', source)
+        self.assertIn('class="cc-home-visual"', source)
+        for slug in preview.SLUGS:
+            if slug != "in-home-hospice-care":
+                self.assertNotIn("cc-home-visual", self.source(slug))
+
+    def test_bereavement_uses_four_real_items_in_a_balanced_grid(self):
+        source = self.source("bereavement-support")
+        self.assertEqual(source.count('data-layout="balanced-pairs"'), 1)
+        self.assertEqual(source.count('class="cc-tile"'), 4)
+        self.assertNotIn("cc-tile--visual", source)
+        for slug in preview.SLUGS:
+            if slug != "bereavement-support":
+                self.assertNotIn('data-layout="balanced-pairs"', self.source(slug))
 
     def test_editorial_approvals_and_preview_metadata(self):
         for slug in preview.SLUGS:

@@ -244,3 +244,207 @@
   #service-page.services-directory-page .cc-closing .cc-actions{flex-direction:column}
   #service-page.services-directory-page .cc-closing .cc-button{width:100%}
 }
+
+/* Clearer hierarchy and persistent link affordance across service previews. */
+#service-page .cc-section-heading{
+  font-weight:500;
+  letter-spacing:-.028em;
+  text-wrap:balance;
+}
+#service-page a.cc-context-link{
+  color:var(--cc-plum);
+  text-decoration-color:#8b6a32;
+  text-decoration-thickness:1px;
+  transition:color .16s ease,text-decoration-color .16s ease;
+}
+#service-page a.cc-context-link:hover,
+#service-page a.cc-context-link:focus-visible{
+  color:#76551f;
+  text-decoration-color:#76551f;
+  text-decoration-thickness:2px;
+}
+#service-page .cc-related-links a{
+  color:var(--cc-plum);
+  border-bottom-color:#8b6a32;
+  text-decoration:none;
+  transition:color .16s ease,border-color .16s ease;
+}
+#service-page .cc-related-links a:hover,
+#service-page .cc-related-links a:focus-visible{
+  color:#76551f;
+  border-bottom-color:#76551f;
+  text-decoration:underline;
+  text-decoration-color:#76551f;
+  text-decoration-thickness:2px;
+  text-underline-offset:4px;
+}
+#service-page.services-directory-page .directory-groups{
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  align-items:stretch;
+  gap:1.25rem;
+}
+#service-page.services-directory-page .directory-group{
+  height:100%;
+  border-top:3px solid var(--cc-gold);
+  box-shadow:0 5px 16px rgba(60,28,59,.045);
+}
+#service-page.services-directory-page .directory-group h2{
+  color:var(--cc-deep);
+  font-weight:500;
+  letter-spacing:-.03em;
+  padding-bottom:.55rem;
+  border-bottom:1px solid #dfd2c6;
+}
+#service-page.services-directory-page .directory-item a{
+  color:var(--cc-plum);
+  font-weight:600;
+  text-decoration:underline;
+  text-decoration-color:#a58b5b;
+  text-decoration-thickness:1px;
+  text-underline-offset:3px;
+  transition:color .16s ease,text-decoration-color .16s ease;
+}
+#service-page.services-directory-page .directory-item a:hover,
+#service-page.services-directory-page .directory-item a:focus-visible{
+  color:#76551f;
+  text-decoration-color:#76551f;
+  text-decoration-thickness:2px;
+  text-underline-offset:4px;
+}
+#service-page.services-directory-page .directory-group--getting-started{
+  grid-column:1 / -1;
+  min-height:0;
+  display:grid;
+  grid-template-columns:minmax(180px,.7fr) minmax(0,1.3fr);
+  align-items:center;
+  gap:0 1.5rem;
+  padding:1rem clamp(1rem,2vw,1.45rem);
+  background:#f3ece5;
+  border-left:3px solid var(--cc-plum);
+}
+#service-page.services-directory-page .directory-group--getting-started h2{
+  margin:0;
+  border:0;
+  padding:0;
+}
+#service-page.services-directory-page .directory-group--getting-started .directory-item{
+  display:grid;
+  grid-template-columns:minmax(180px,.75fr) minmax(0,1.25fr);
+  align-items:baseline;
+  gap:.25rem 1rem;
+  border:0;
+  padding:.35rem 0;
+}
+#service-page.services-directory-page .directory-group--getting-started .directory-item p{
+  margin:0;
+}
+
+/* A single restrained home-care illustration, supplied by the preview markup. */
+#service-page .cc-how .cc-tiles>.cc-tile--visual{
+  position:relative;
+  display:grid;
+  place-items:center;
+  min-height:150px;
+  overflow:hidden;
+  isolation:isolate;
+  background:#4a2547;
+  border:1px solid rgba(201,176,126,.55);
+}
+#service-page .cc-how .cc-tiles>.cc-tile--visual::before,
+#service-page .cc-how .cc-tiles>.cc-tile--visual::after{
+  content:"";
+  position:absolute;
+  z-index:-1;
+  border:1px solid rgba(201,176,126,.3);
+  border-radius:50%;
+}
+#service-page .cc-how .cc-tiles>.cc-tile--visual::before{
+  width:128px;
+  aspect-ratio:1;
+}
+#service-page .cc-how .cc-tiles>.cc-tile--visual::after{
+  width:94px;
+  aspect-ratio:1;
+}
+#service-page .cc-how .cc-tiles>.cc-tile--visual svg.cc-home-visual{
+  display:block;
+  width:clamp(76px,8vw,96px);
+  height:auto;
+  color:#d7bd82;
+  stroke:currentColor;
+}
+
+@media(max-width:800px){
+  #service-page.services-directory-page .directory-groups{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+  }
+  #service-page.services-directory-page .directory-group--getting-started{
+    grid-column:1 / -1;
+  }
+  #service-page.services-directory-page .directory-group:last-child:not(.directory-group--getting-started){
+    grid-column:1 / -1;
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    column-gap:1.5rem;
+  }
+  #service-page.services-directory-page .directory-group:last-child:not(.directory-group--getting-started) h2{
+    grid-column:1 / -1;
+  }
+}
+@media(max-width:600px){
+  #service-page.services-directory-page .directory-group--getting-started{
+    display:block;
+    padding:.9rem 1rem .55rem;
+  }
+  #service-page.services-directory-page .directory-group--getting-started h2{
+    margin:0 0 .48rem;
+    padding-bottom:.45rem;
+    border-bottom:1px solid #dfd2c6;
+  }
+  #service-page.services-directory-page .directory-group--getting-started .directory-item{
+    display:block;
+    padding:.62rem 0;
+  }
+  #service-page.services-directory-page .directory-group--getting-started .directory-item p{
+    margin:.25rem 0 0;
+  }
+  #service-page.services-directory-page .directory-group:last-child:not(.directory-group--getting-started){
+    display:block;
+  }
+  #service-page .cc-how .cc-tiles>.cc-tile--visual{
+    min-height:130px;
+    display:grid;
+    place-items:center;
+  }
+}
+@media(prefers-reduced-motion:reduce){
+  #service-page a.cc-context-link,
+  #service-page .cc-related-links a,
+  #service-page.services-directory-page .directory-item a{transition:none}
+}
+
+/* Bereavement preview: balanced, individually defined care-inclusion cards. */
+#service-page .cc-tiles[data-layout="balanced-pairs"]{
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:1rem;
+  background:transparent;
+  border:0;
+}
+#service-page .cc-tiles[data-layout="balanced-pairs"]>.cc-tile{
+  min-height:160px;
+  padding:1.5rem clamp(1.15rem,2.4vw,1.8rem);
+  border:1px solid var(--cc-line);
+  border-top:2px solid var(--cc-gold);
+  background:#faf7f3;
+  color:var(--cc-plum);
+}
+@media(max-width:600px){
+  #service-page .cc-tiles[data-layout="balanced-pairs"]{
+    grid-template-columns:1fr;
+    gap:.8rem;
+  }
+  #service-page .cc-tiles[data-layout="balanced-pairs"]>.cc-tile{
+    min-height:0;
+    padding:1.1rem 1rem;
+  }
+}

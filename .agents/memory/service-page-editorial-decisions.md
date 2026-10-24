@@ -26,13 +26,15 @@ the Services overview's appearance.
 alt text. Removing an overlay is not permission to represent generated scenes
 as actual Eternal patients or staff.
 
-Do not show the Home / Services breadcrumb bar on the Services overview.
+Do not show the Home / Services breadcrumb bar on the Services overview
+or any individual service page.
 
-**Why:** The owner requested removing this strip as part of the overview's
-visual refinement.
+**Why:** The owner repeated that the Home bar was still visible on individual
+service pages and expanded the removal beyond the overview.
 
-**How to apply:** Let the overview hero follow the shared header directly.
-This request does not remove breadcrumbs from individual service detail pages.
+**How to apply:** Let every service hero follow the shared header directly,
+without a breadcrumb or preview-notice strip between them. Preserve accurate
+breadcrumb structured data and the server-side preview/publication boundary.
 
 Service-page photographs should feel naturally integrated into the page,
 not like shaped cutouts.
@@ -52,13 +54,19 @@ professional details, including a clipped photo-ID badge and a stethoscope
 when appropriate to their role.
 
 **Why:** The owner explicitly identified these ordinary details as important
-to making care imagery feel true to life.
+to making care imagery feel true to life. The owner also flagged a bereavement
+scene where two people looked like the same person duplicated.
 
 **How to apply:** Preserve natural skin texture, faces, lighting and believable
 equipment placement. Do not give medical equipment to patients, relatives or
 nonclinical support workers. Keep existing stethoscopes rather than duplicating
 them. Badges must not imply verified real staff identities or invented legible
 credentials; these scenes remain illustrative, not actual patient encounters.
+Prefer calm, reassuring care moments over glum patient portraits; an
+over-the-shoulder view is appropriate when an expression distracts from the
+care message. Do not replace natural expressions with forced cheerful poses.
+People sharing a scene should have clearly distinguishable faces and
+appearances rather than looking like near-duplicate models.
 
 Represent nurses with both men and women in the service imagery rather than
 defaulting to an entirely female nursing cast.

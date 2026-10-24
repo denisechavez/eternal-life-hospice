@@ -306,10 +306,10 @@ PAGES = [
 ]
 
 GROUPS = [
+    ("Getting Started", ["hospice-evaluation"]),
     ("Where We Provide Care", ["in-home-hospice-care", "hospice-in-assisted-living-and-skilled-nursing", "levels-of-hospice-care", "24-7-nurse-access"]),
     ("Care for Specific Conditions", ["hospice-care-for-dementia", "hospice-care-for-advanced-cancer", "hospice-care-for-heart-failure", "respiratory-care"]),
     ("Comfort & Support", ["Pain & Symptom Management", "Integrative & Whole-Person Care", "Sound Bath", "bereavement-support"]),
-    ("Getting Started", ["hospice-evaluation"]),
 ]
 EXISTING = {
     "Pain & Symptom Management": ("/resources/pain-symptom-management", "Skilled, physician-directed nursing care to relieve pain, ease breathlessness and manage distress — around the clock, wherever the patient calls home."),
@@ -399,11 +399,21 @@ def icon(index: int) -> str:
     ]
     return '<svg viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">' + paths[index % len(paths)] + '</svg>'
 
-def render_tiles(items: list[str]) -> str:
-    return '<div class="cc-tiles">' + "".join(
+def render_tiles(items: list[str], home_visual: bool = False, balanced_pairs: bool = False) -> str:
+    visual = (
+        '<div class="cc-tile cc-tile--visual" aria-hidden="true">'
+        '<svg class="cc-home-visual" viewBox="0 0 120 120" fill="none" '
+        'stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">'
+        '<path d="M19 55 60 20l41 35M29 48v49h62V48"/>'
+        '<path d="M60 83S41 72 41 61a10 10 0 0 1 19-4 10 10 0 0 1 19 4c0 11-19 22-19 22Z"/>'
+        '<path d="M18 106h84M60 8v-3M14 22l-4-4M106 22l4-4"/>'
+        '</svg></div>'
+    ) if home_visual else ""
+    layout = ' data-layout="balanced-pairs"' if balanced_pairs else ""
+    return '<div class="cc-tiles"' + layout + '>' + "".join(
         '<div class="cc-tile">' + icon(i) + '<span>' + esc(item) + '</span></div>'
         for i, item in enumerate(items)
-    ) + '</div>'
+    ) + visual + '</div>'
 
 def render_faq(items: list[tuple[str, str]]) -> str:
     visible = "".join(
@@ -428,7 +438,11 @@ def render_first(page: dict) -> str:
         result += '</div>'
     elif page.get("tiles") and page["slug"] not in (
             "hospice-in-assisted-living-and-skilled-nursing", "hospice-care-for-dementia"):
-        result += render_tiles(page["tiles"])
+        result += render_tiles(
+            page["tiles"],
+            home_visual=page["slug"] == "in-home-hospice-care",
+            balanced_pairs=page["slug"] == "bereavement-support",
+        )
     elif page.get("timeline") and page["slug"] == "hospice-evaluation":
         result += '<ol class="cc-timeline">' + "".join('<li><div><strong>' + esc(label) + ':</strong> ' + esc(text) + '</div></li>' for label, text in page["timeline"]) + '</ol>'
     result += '</div></section>'
@@ -523,8 +537,6 @@ def page_template(page: dict, header: str, footer: str) -> str:
 {header}
 <main id="main-content" tabindex="-1">
   <div id="service-page">
-    <nav class="cc-breadcrumb" aria-label="Breadcrumb"><div class="cc-wrap"><ol><li><a href="/">Home</a></li><li><a href="/services">Services</a></li><li aria-current="page">{crumb_title}</li></ol></div></nav>
-    <p class="cc-wrap cc-preview-note">Preview only · Not approved for publication</p>
     <section class="cc-hero" aria-labelledby="cc-title"><div class="cc-hero-inner">
       <div class="cc-hero-copy"><p class="cc-eyebrow">{esc(page["eyebrow"])}</p><h1 id="cc-title">{crumb_title}</h1><p class="cc-subline">{esc(page["subline"])}</p>
         <div class="cc-actions"><a class="cc-button" href="tel:8059537273">Call Today for Care Options · 805.953.7273</a><a class="cc-button cc-button--outline" href="/refer#referral-form">Refer a Patient</a></div>
@@ -558,7 +570,8 @@ def directory_template(header: str, footer: str) -> str:
                 href, summary = EXISTING[item]
                 label = item
             cards.append('<article class="directory-item"><a href="' + esc(href) + '">' + esc(label) + '</a><p>' + esc(summary) + '</p></article>')
-        groups_html.append('<section class="directory-group"><h2>' + esc(group_name) + '</h2>' + "".join(cards) + '</section>')
+        group_class = "directory-group directory-group--getting-started" if group_name == "Getting Started" else "directory-group"
+        groups_html.append('<section class="' + group_class + '"><h2>' + esc(group_name) + '</h2>' + "".join(cards) + '</section>')
     return '''<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Hospice Services | Eternal Life Hospice</title><meta name="description" content="Explore hospice care services across Ventura and Los Angeles counties."><meta name="robots" content="noindex,nofollow"><link rel="icon" href="/assets/favicon.png">
 <link rel="preload" as="font" href="/assets/fonts/fraunces-latin.woff2" type="font/woff2" crossorigin fetchpriority="high"><link rel="preload" as="font" href="/assets/fonts/fraunces-italic-latin.woff2" type="font/woff2" crossorigin fetchpriority="high">
