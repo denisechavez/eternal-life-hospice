@@ -82,6 +82,35 @@ public discovery and email-monitor cases. It must not be run against production.
 Studio's signed-in review requires an actual authorized Clerk account; automated
 tests do not bypass application authentication.
 
+### Full-corpus startup regression
+
+Run `python3 website/test-journal-catchup.py` before publishing changes to
+`journal_owner_approval.apply_all` or `journal_release.apply_owner_batch`.
+This is also registered as the `journal-catchup` validation check. It needs
+`psycopg`, `initdb` and `pg_ctl` on PATH and a non-root user.
+
+The test starts and removes its own PostgreSQL cluster using a private Unix
+socket with TCP disabled. It never uses `DATABASE_URL`, existing approvals or
+email services, and never edits article content or owner authorization pins.
+It scans the entire checked-in Journal corpus, applies the bounded owner
+instructions to empty disposable storage, and verifies exact revisions,
+frozen documents/photos, original article dates, actual approval/release times,
+06:30 Pacific release boundaries, saved holds, existing approvals and audit-only
+decisions. It checks rollback after a last-article failure and a clean retry.
+Synthetic copies of the full corpus double the SQL/photo-freezing workload and
+exercise duplicate requests without granting any real publication authority.
+
+Deterministic operation budgets enforce one transaction and candidate scan on
+first start, one image-hashing/freezing pass, bounded reads and linear SQL.
+An unchanged restart must perform no candidate scans, image reads, photo freezes
+or new decision/audit writes, and leave every saved row unchanged. If checked-in
+editorial content no longer matches an owner pin, the check fails rather than
+silently renewing consent; resolve that drift through the approval workflow.
+
+Elapsed milliseconds and operation counts are diagnostic only, without a
+machine-dependent timing threshold. Reports go to ignored
+`generated-artifacts/journal-catchup.json`, outside Git and deployment output.
+
 ### Opt-in large history benchmark
 
 Run `python3 website/benchmark-journal-history.py --run` separately from the

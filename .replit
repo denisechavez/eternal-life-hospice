@@ -102,6 +102,10 @@ args = "Start application"
 task = "workflow.run"
 args = "journal-monitor-freshness"
 
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "journal-catchup"
+
 [[workflows.workflow]]
 name = "intake-browser-regression"
 author = "agent"
@@ -120,6 +124,17 @@ author = "agent"
 [[workflows.workflow.tasks]]
 task = "shell.exec"
 args = "python3 website/test-journal-monitor-freshness.py"
+
+[workflows.workflow.metadata]
+isValidation = true
+
+[[workflows.workflow]]
+name = "journal-catchup"
+author = "agent"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "python3 website/test-journal-catchup.py"
 
 [workflows.workflow.metadata]
 isValidation = true
