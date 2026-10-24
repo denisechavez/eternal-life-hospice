@@ -3,6 +3,15 @@ name: Internal-link editorial decisions
 description: Topic ownership and publication-safe recommendations across ELH pages
 ---
 
+Keep the Services dropdown concise as specialist service pages expand; the owner
+does not want all ten planned service pages displayed as one long menu.
+
+**Why:** The owner explicitly identified a long service menu as confusing for
+families, even while adding specialist pages to strengthen SEO.
+
+**How to apply:** Propose a short menu and an organized All Services directory.
+Do not treat that proposed grouping or any additional pages as approved work.
+
 Curated recommendations should connect an article to its topic owner, not substitute
 for substantive editorial links or multiply shared-footer links. Keep local city
 neighbors editorially chosen; do not infer proximity from a county-wide inventory.
