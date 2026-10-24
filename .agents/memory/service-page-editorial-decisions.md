@@ -38,9 +38,34 @@ Service-page photographs should feel naturally integrated into the page,
 not like shaped cutouts.
 
 **Why:** The owner rejected the cutout appearance of the arched photograph
-and asked to compare alternative treatments on the canvas first.
+and selected the edge-to-edge treatment after comparing alternatives on the
+canvas.
 
-**How to apply:** Preserve lifelike color and recognizable people when
-exploring framing, full-bleed placement or an edge blend. Present alternatives
-for selection before applying a new treatment to the website. A canvas
-comparison does not authorize a website rollout or publication.
+**How to apply:** Use natural-color rectangular hero photography meeting
+the right, top and bottom edges beside the plum text field, with a full-width
+stack on mobile. Do not restore arches or offset gold backing. The owner
+authorized this treatment across the Services overview and service-page suite,
+but not publication.
+
+Hospice clinicians in illustrative service imagery should have believable
+professional details, including a clipped photo-ID badge and a stethoscope
+when appropriate to their role.
+
+**Why:** The owner explicitly identified these ordinary details as important
+to making care imagery feel true to life.
+
+**How to apply:** Preserve natural skin texture, faces, lighting and believable
+equipment placement. Do not give medical equipment to patients, relatives or
+nonclinical support workers. Keep existing stethoscopes rather than duplicating
+them. Badges must not imply verified real staff identities or invented legible
+credentials; these scenes remain illustrative, not actual patient encounters.
+
+Represent nurses with both men and women in the service imagery rather than
+defaulting to an entirely female nursing cast.
+
+**Why:** The owner explicitly requested including a couple of male nurses
+alongside the female nurses.
+
+**How to apply:** Include a natural mix without changing patient or family
+members to achieve it. This is permission for representative illustrative
+imagery, not evidence about the identities or makeup of Eternal's real staff.

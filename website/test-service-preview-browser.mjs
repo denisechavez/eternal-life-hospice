@@ -109,12 +109,33 @@ try {
         h1:document.querySelector('#service-page h1').textContent,
         details:document.querySelectorAll('#service-page details').length,
         removed:document.querySelector('#service-page').textContent.includes(
-          'Phone access does not mean a nurse stays continuously at the bedside.')
+          'Phone access does not mean a nurse stays continuously at the bedside.'),
+        photo:(()=>{
+          const photo=document.querySelector('#service-page .cc-hero-photo');
+          const img=photo.querySelector('img'),hero=photo.closest('.cc-hero');
+          const p=photo.getBoundingClientRect(),h=hero.getBoundingClientRect();
+          return {right:p.right,heroRight:h.right,top:p.top,heroTop:h.top,
+            bottom:p.bottom,heroBottom:h.bottom,width:p.width,heroWidth:h.width,
+            radius:getComputedStyle(img).borderRadius,fit:getComputedStyle(img).objectFit,
+            backing:getComputedStyle(photo,'::before').display};
+        })()
       })`);
       assert.ok(layout.scroll <= width, page.slug + " overflows: " + JSON.stringify(layout));
       assert.equal(layout.h1, page.title);
       assert.ok(layout.details >= 2, page.slug);
       assert.equal(layout.removed, false);
+      assert.equal(layout.photo.radius, "0px", page.slug + " still has an image cutout");
+      assert.equal(layout.photo.backing, "none", page.slug + " still has gold backing");
+      assert.ok(Math.abs(layout.photo.right-layout.photo.heroRight)<1,
+        page.slug + " photograph does not meet the right edge");
+      if(width>=1024){
+        assert.equal(layout.photo.fit, "cover");
+        assert.ok(Math.abs(layout.photo.top-layout.photo.heroTop)<1);
+        assert.ok(Math.abs(layout.photo.bottom-layout.photo.heroBottom)<1);
+      }else{
+        assert.equal(layout.photo.fit, "contain");
+        assert.ok(Math.abs(layout.photo.width-layout.photo.heroWidth)<1);
+      }
     }
     assert.equal(await evaluate(`(()=>{
       const summary=document.querySelector('#service-page details summary');

@@ -98,6 +98,20 @@ class PreviewTests(unittest.TestCase):
         self.assertEqual(once.count('id="sp-services-menu"'), 1)
         self.assertIn('aria-current="page"', once)
 
+    def test_edge_treatment_is_loaded_on_every_service_preview_only(self):
+        stylesheet = preview.ASSET_PREFIX + "service-hero-edge.css"
+        overview = (preview.PREVIEWS / "services-directory.html").read_text()
+        for route, source in [
+            ("/services", overview),
+            *(("/services/" + slug, self.source(slug)) for slug in preview.SLUGS),
+        ]:
+            rendered = preview.decorate(source, route)
+            self.assertEqual(rendered.count(f'href="{stylesheet}"'), 1, route)
+            self.assertEqual(preview.decorate(rendered, route), rendered, route)
+        self.assertNotIn(stylesheet, preview.decorate(overview, "/"))
+        with patch.dict(os.environ, {"REPLIT_DEPLOYMENT": "1"}):
+            self.assertNotIn(stylesheet, preview.decorate(overview, "/services"))
+
     def test_directory_grouping_and_unique_service_cards(self):
         source = (preview.PREVIEWS / "services-directory.html").read_text()
         main = re.search(r"<main\b.*?</main>", source, re.S)[0]

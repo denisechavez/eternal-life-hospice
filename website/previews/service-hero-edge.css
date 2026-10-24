@@ -1,0 +1,93 @@
+/* Option 2, approved in the canvas: a natural, flush-right photograph.
+   Directory selectors match the existing overview overrides in specificity.
+   Only hero presentation changes; shared chrome and article copy stay intact. */
+#service-page .cc-hero,
+#service-page.services-directory-page .cc-hero{
+  padding:0;
+  background:var(--cc-deep);
+  color:var(--cc-cream);
+}
+#service-page .cc-hero-inner,
+#service-page.services-directory-page .cc-hero-inner{
+  width:100%;max-width:none;margin:0;
+  display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);
+  gap:0;align-items:stretch;
+  min-height:clamp(640px,78svh,860px);
+}
+#service-page .cc-hero-copy,
+#service-page.services-directory-page .cc-hero-copy{
+  align-self:center;max-width:720px;min-width:0;
+  padding:clamp(2.5rem,5.3vw,5.5rem);
+}
+#service-page .cc-hero-copy .cc-eyebrow,
+#service-page.services-directory-page .cc-hero-copy .cc-eyebrow{
+  margin:0 0 1.25rem;color:var(--cc-gold);
+  font-size:12px;letter-spacing:.19em;
+}
+#service-page .cc-hero-copy h1,
+#service-page.services-directory-page .cc-hero-copy h1{
+  margin:0;color:var(--cc-cream);
+  font-size:clamp(2.65rem,4.3vw,4.5rem);
+  line-height:1.04;letter-spacing:-.04em;text-wrap:balance;
+  overflow-wrap:break-word;
+}
+#service-page.services-directory-page .cc-hero-copy h1{
+  font-size:clamp(3.7rem,6.3vw,6.2rem);line-height:.98;
+}
+#service-page .cc-hero .cc-subline{margin:1.3rem 0 0}
+#service-page .cc-hero-copy .cc-actions,
+#service-page.services-directory-page .cc-hero-copy .cc-actions{
+  margin-top:clamp(1.7rem,3vw,3.3rem);gap:.75rem;align-items:center;
+}
+#service-page .cc-hero .cc-button,
+#service-page.services-directory-page .cc-hero .cc-button{
+  min-height:50px;padding:.8rem 1.2rem;border-radius:2px;
+  font-size:14px;line-height:1.3;text-decoration:none;
+}
+#service-page .cc-hero-photo,
+#service-page.services-directory-page .cc-hero-photo{
+  position:relative;width:100%;max-width:none;
+  min-height:0;height:auto;margin:0;overflow:hidden;align-self:stretch;
+}
+#service-page .cc-hero-photo::before,
+#service-page.services-directory-page .cc-hero-photo::before{display:none}
+#service-page .cc-hero-photo img,
+#service-page.services-directory-page .cc-hero-photo img{
+  position:absolute;inset:0;width:100%;height:100%;
+  display:block;object-fit:cover;object-position:center;
+  border-radius:0;background:transparent;
+}
+@media(max-width:1050px){
+  #service-page .cc-hero-copy .cc-actions,
+  #service-page.services-directory-page .cc-hero-copy .cc-actions{
+    flex-direction:column;align-items:stretch;
+  }
+  #service-page .cc-hero .cc-button{width:100%}
+}
+@media(max-width:800px){
+  #service-page .cc-hero-inner,
+  #service-page.services-directory-page .cc-hero-inner{
+    width:100%;min-height:0;grid-template-columns:minmax(0,1fr);gap:0;
+  }
+  #service-page .cc-hero-copy,
+  #service-page.services-directory-page .cc-hero-copy{
+    width:100%;max-width:none;padding:2.8rem clamp(1.25rem,5vw,3rem) 2.3rem;
+  }
+  #service-page .cc-hero-copy h1,
+  #service-page.services-directory-page .cc-hero-copy h1{
+    font-size:clamp(2.6rem,7vw,4rem);line-height:1.04;
+  }
+  #service-page .cc-hero-copy .cc-actions,
+  #service-page.services-directory-page .cc-hero-copy .cc-actions{
+    max-width:460px;margin-top:1.65rem;align-items:stretch;
+  }
+  #service-page .cc-hero-photo,
+  #service-page.services-directory-page .cc-hero-photo{
+    width:100%;height:auto;max-width:none;min-height:0;margin:0;
+  }
+  #service-page .cc-hero-photo img,
+  #service-page.services-directory-page .cc-hero-photo img{
+    position:static;width:100%;height:auto;max-height:none;
+    object-fit:contain;border-radius:0;
+  }
+}

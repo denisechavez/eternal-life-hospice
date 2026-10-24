@@ -36,6 +36,7 @@ GROUPS = (
 )
 PRESENTATION_ASSETS = {
     "service-pages.css": "text/css; charset=utf-8",
+    "service-hero-edge.css": "text/css; charset=utf-8",
     "navigation.css": "text/css; charset=utf-8",
     "navigation.js": "application/javascript; charset=utf-8",
 }
@@ -126,6 +127,11 @@ def decorate(document, route):
         if route.rstrip("/").removesuffix(".html") in {
             "/services", *("/services/" + slug for slug in SLUGS)
         }:
+            # Approved canvas treatment; keep this suite preview-only.
+            edge_styles = ASSET_PREFIX + "service-hero-edge.css"
+            if edge_styles not in document:
+                document = document.replace(
+                    "</head>", f'<link rel="stylesheet" href="{edge_styles}">\n</head>', 1)
             document = re.sub(
                 r'(<div\b[^>]*\bdata-section="services"[^>]*>\s*'
                 r'<a\b)(?![^>]*aria-current=)',
