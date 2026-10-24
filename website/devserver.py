@@ -49,6 +49,7 @@ import studio_site
 import journal_discovery
 import form_antispam
 import recruitment_policy
+import social_downloads
 
 BASE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.join(BASE, "elh-preview")
@@ -756,6 +757,8 @@ class PrettyURLHandler(http.server.SimpleHTTPRequestHandler):
         return True
 
     def do_HEAD(self):
+        if social_downloads.serve(self):
+            return
         if self._withdrawn_recruitment():
             return
         if self._studio_api():
@@ -784,6 +787,8 @@ class PrettyURLHandler(http.server.SimpleHTTPRequestHandler):
         super().do_HEAD()
 
     def do_GET(self):
+        if social_downloads.serve(self):
+            return
         if self._withdrawn_recruitment():
             return
         if self._studio_api():
