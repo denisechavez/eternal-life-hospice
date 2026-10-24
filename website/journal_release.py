@@ -115,12 +115,19 @@ def candidates():
 def connect():
     import psycopg
     from psycopg.rows import dict_row
-    return psycopg.connect(os.environ["DATABASE_URL"], connect_timeout=5, row_factory=dict_row)
+    # Apply at connection establishment, before BEGIN or any lock-taking SQL.
+    # Preserve PGOPTIONS (including isolated test search_path), but never allow
+    # an inherited unlimited timeout to override these safety limits.
+    options = os.environ.get("PGOPTIONS", "") + " -c lock_timeout=3000 -c statement_timeout=8000"
+    return psycopg.connect(os.environ["DATABASE_URL"], connect_timeout=5,
+                          options=options, row_factory=dict_row)
 
 
 def initialize():
     """Additive migration, explicitly run in development / at approved publish."""
     with connect() as db:
+        # IF NOT EXISTS alone does not prevent concurrent catalog-create races.
+        db.execute("SELECT pg_advisory_xact_lock(630631)")
         db.execute("""
             CREATE TABLE IF NOT EXISTS journal_decisions (
                 slug text NOT NULL, revision text NOT NULL, release_date date NOT NULL,

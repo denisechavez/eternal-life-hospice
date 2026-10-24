@@ -46,6 +46,8 @@ def refresh_assets(document):
 
 def initialize():
     with connect() as db:
+        # Serialize additive schema setup across concurrent cold starts.
+        db.execute("SELECT pg_advisory_xact_lock(630631)")
         db.execute("""
             CREATE TABLE IF NOT EXISTS intake_abuse_guard (
                 key text PRIMARY KEY, expires_at timestamptz NOT NULL,

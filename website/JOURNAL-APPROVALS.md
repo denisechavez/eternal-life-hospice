@@ -22,6 +22,37 @@ does not modify tracker data. Run `python3 website/migrate-journal.py` for devel
 The next approved publish builds the existing Studio in its build step.
 Autoscale startup only runs the idempotent migration and starts the site.
 
+### Storage startup deadlines
+
+Startup is **fail closed**, not a published-content-only degraded mode. The web
+process does not bind its port unless Journal schema setup, intake security
+schema setup and version-pinned owner reconciliation all succeed. A timeout
+returns nonzero; retry startup after storage recovers. No schema/intake step is
+skipped, no draft is made public and no approval is inferred from a timeout.
+The existing frozen-original fallback applies to an already-running server,
+not permission to bypass a failed startup.
+
+Shared Journal/intake connections have a 5-second connection timeout, 3-second
+lock timeout (including advisory locks) and 8-second per-statement timeout.
+These are connection-startup settings, before the first SQL statement. Existing
+`PGOPTIONS` such as a test schema are retained but cannot disable the limits.
+Schema creation shares a transaction-scoped advisory lock across instances;
+the separate approval lock still serializes decisions and reconciliation.
+
+`migrate-journal.py` supervises a worker with a 25-second total wall-clock budget,
+including imports, content/photo work, all SQL and commit. The shell launcher
+adds a 30-second process-group watchdog with a 2-second forced-kill grace period
+using the system `timeout` command. Neither deadline starts the web server on
+failure. Logs identify the current stage, elapsed completed stages and SQLSTATE
+on database errors, without printing connection strings or exception text.
+
+A failed approval transaction rolls back decisions, frozen photographs,
+releases and audit entries together. Earlier committed additive schema setup
+can remain and is safe to rerun. Existing decisions and later Studio holds
+continue to take precedence on retry. As with any lost commit response, a
+timeout is not proof that nothing committed: reconciliation reads saved
+decisions before retrying, rather than blindly replaying approvals.
+
 The workspace's database and Clerk accounts are separate from production.
 For live publication use `/studio/` on the published domain after an approved
 deployment. The same Studio UI signs in against that environment and saves to its
@@ -75,6 +106,15 @@ jobs, but public eligibility itself always changes at 06:30. Manual workflow run
 can retry failed email delivery. Persistent outages may send a daily reminder.
 
 ## Verification
+
+`python3 website/test-startup-storage.py` creates a disposable UTF-8 PostgreSQL
+cluster using `initdb` and `pg_ctl` on PATH, a private Unix socket, no database
+TCP listener and a separate schema per test. It never connects to the project's
+development or production database. It covers unavailable/unresponsive storage,
+concurrent cold starts, schema/approval advisory-lock contention, intake DDL
+contention, statement cancellation with full approval rollback, later Studio
+holds, idempotent retries and total-deadline worker cleanup. One handshake test
+uses a local fake TCP peer that never responds; it is not a database server.
 
 `python3 website/test-journal-release.py` exercises real PostgreSQL transactions
 in an isolated temporary schema, plus deterministic release/DST, authorization,

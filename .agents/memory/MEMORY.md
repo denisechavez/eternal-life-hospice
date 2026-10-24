@@ -60,3 +60,4 @@
 - [Local dependency overrides](local-dependency-overrides.md) — npm success can hide a stale registry tarball; verify resolved source and patched behavior after a clean install.
 - [History publication reads](history-publication-reads.md) — private history projects due versions without publication locks; metadata and events share a committed snapshot.
 - [Intake spam protection](form-spam-protection.md) — protect all submission paths without area-code bans; share limits across instances and refresh cached chat assets.
+- [PostgreSQL fixture encoding](postgres-fixture-encoding.md) — locale-free disposable clusters need explicit UTF-8; SQL_ASCII returns bytes and produces false idempotency failures.
