@@ -163,6 +163,18 @@ try {
           assert.ok(Math.abs(grid.items[2].top-grid.items[3].top)<1);
           assert.ok(grid.items[2].top>grid.items[0].top);
         }
+        if(width>=1024){
+          assert.ok(layout.photo.heroBottom-layout.photo.heroTop<=(width<=1050 ? 620 : 580),
+            "bereavement hero should be compact");
+          const copy = await evaluate(`({
+            headingTop:document.querySelector('#cc-title').getBoundingClientRect().top,
+            actionsBottom:document.querySelector('.cc-hero .cc-actions').getBoundingClientRect().bottom
+          })`);
+          assert.ok(copy.headingTop-layout.photo.heroTop<200,
+            "bereavement heading should sit higher");
+          assert.ok(copy.actionsBottom<=layout.photo.heroBottom,
+            "bereavement hero CTAs must fit");
+        }
       }
       assert.equal(await evaluate(`document.querySelectorAll('#service-page .cc-breadcrumb,#service-page .cc-preview-note').length`), 0);
       assert.equal(layout.photo.radius, "0px", page.slug + " still has an image cutout");
@@ -203,12 +215,27 @@ try {
       width:innerWidth,scroll:document.documentElement.scrollWidth,
       groups:document.querySelectorAll('#service-page .directory-group').length,
       links:document.querySelectorAll('#service-page .directory-item a').length,
-      notes:document.querySelectorAll('#service-page figcaption').length
+      notes:document.querySelectorAll('#service-page figcaption').length,
+      hero:(()=>{
+        const hero=document.querySelector('#service-page .cc-hero').getBoundingClientRect();
+        const photo=document.querySelector('#service-page .cc-hero-photo').getBoundingClientRect();
+        const heading=document.querySelector('#service-page h1').getBoundingClientRect();
+        const actions=document.querySelector('#service-page .cc-actions').getBoundingClientRect();
+        return {height:hero.height,headingOffset:heading.top-hero.top,
+          actionsBottom:actions.bottom,heroBottom:hero.bottom,
+          photoRight:photo.right,heroRight:hero.right};
+      })()
     })`);
     assert.ok(directory.scroll <= width, "Services directory overflows: " + JSON.stringify(directory));
     assert.equal(directory.groups, 4);
     assert.equal(directory.links, 13);
     assert.equal(directory.notes, 0);
+    assert.ok(Math.abs(directory.hero.photoRight-directory.hero.heroRight)<1);
+    if(width>=1024){
+      assert.ok(directory.hero.height<=600, "overview hero still has excessive height");
+      assert.ok(directory.hero.headingOffset<200, "overview heading should sit higher");
+      assert.ok(directory.hero.actionsBottom<=directory.hero.heroBottom, "overview CTAs must fit");
+    }
   }
   console.log("PASS Services overview at five widths, four groups, 13 links and no photo notes");
   assert.equal(await evaluate(`document.querySelector('.directory-group h2').textContent`), "Getting Started");

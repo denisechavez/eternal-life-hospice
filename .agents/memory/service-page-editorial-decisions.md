@@ -41,13 +41,17 @@ not like shaped cutouts.
 
 **Why:** The owner rejected the cutout appearance of the arched photograph
 and selected the edge-to-edge treatment after comparing alternatives on the
-canvas.
+canvas. The owner also requested less empty space above the Services overview
+wording, rather than keeping its short copy centered in a tall hero.
+The owner requested the same adjustment for Bereavement Support.
 
 **How to apply:** Use natural-color rectangular hero photography meeting
 the right, top and bottom edges beside the plum text field, with a full-width
 stack on mobile. Do not restore arches or offset gold backing. The owner
 authorized this treatment across the Services overview and service-page suite,
-but not publication.
+but not publication. Keep the overview and Bereavement Support heroes compact
+with higher text placement; short-copy heroes do not need to match taller,
+more detailed service-page heroes.
 
 Hospice clinicians in illustrative service imagery should have believable
 professional details, including a clipped photo-ID badge and a stethoscope

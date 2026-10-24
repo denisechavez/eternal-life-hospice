@@ -536,7 +536,7 @@ def page_template(page: dict, header: str, footer: str) -> str:
 <a class="skip-link" href="#main-content">Skip to main content</a>
 {header}
 <main id="main-content" tabindex="-1">
-  <div id="service-page">
+  <div id="service-page"{' class="bereavement-service-page"' if page["slug"] == "bereavement-support" else ""}>
     <section class="cc-hero" aria-labelledby="cc-title"><div class="cc-hero-inner">
       <div class="cc-hero-copy"><p class="cc-eyebrow">{esc(page["eyebrow"])}</p><h1 id="cc-title">{crumb_title}</h1><p class="cc-subline">{esc(page["subline"])}</p>
         <div class="cc-actions"><a class="cc-button" href="tel:8059537273">Call Today for Care Options · 805.953.7273</a><a class="cc-button cc-button--outline" href="/refer#referral-form">Refer a Patient</a></div>

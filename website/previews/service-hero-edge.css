@@ -91,3 +91,47 @@
     object-fit:contain;border-radius:0;
   }
 }
+
+/* The overview and bereavement page share a compact, top-aligned hero treatment. */
+#service-page:is(.services-directory-page,.bereavement-service-page) .cc-hero-inner{
+  min-height:clamp(440px,60svh,580px);
+}
+#service-page:is(.services-directory-page,.bereavement-service-page) .cc-hero-copy{
+  align-self:start;
+  padding:clamp(1.8rem,3.5vw,3.5rem) clamp(2rem,4.2vw,4.5rem) 2rem;
+}
+#service-page:is(.services-directory-page,.bereavement-service-page) .cc-hero-copy .cc-actions{
+  margin-top:clamp(1.25rem,2.3vw,2rem);
+}
+#service-page.bereavement-service-page .cc-hero-photo img{
+  object-position:center top;
+}
+@media(max-width:1050px) and (min-width:801px){
+  #service-page:is(.services-directory-page,.bereavement-service-page) .cc-hero-inner{
+    min-height:clamp(460px,62svh,580px);
+  }
+  #service-page:is(.services-directory-page,.bereavement-service-page) .cc-hero-copy{
+    padding:2rem clamp(1.4rem,3.2vw,2.6rem);
+  }
+  #service-page:is(.services-directory-page,.bereavement-service-page) .cc-hero-copy .cc-actions{
+    margin-top:1.2rem;
+    gap:.6rem;
+  }
+  #service-page:is(.services-directory-page,.bereavement-service-page) .cc-hero .cc-button{
+    min-height:48px;
+    padding:.7rem .9rem;
+    font-size:13px;
+  }
+  #service-page.bereavement-service-page .cc-hero-inner{
+    min-height:clamp(520px,68svh,620px);
+  }
+}
+@media(max-width:800px){
+  #service-page:is(.services-directory-page,.bereavement-service-page) .cc-hero-inner{
+    min-height:0;
+  }
+  #service-page:is(.services-directory-page,.bereavement-service-page) .cc-hero-copy{
+    align-self:auto;
+    padding:2.25rem clamp(1.25rem,5vw,3rem) 1.85rem;
+  }
+}

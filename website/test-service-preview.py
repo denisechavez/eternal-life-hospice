@@ -162,12 +162,14 @@ class PreviewTests(unittest.TestCase):
 
     def test_bereavement_uses_four_real_items_in_a_balanced_grid(self):
         source = self.source("bereavement-support")
+        self.assertIn('id="service-page" class="bereavement-service-page"', source)
         self.assertEqual(source.count('data-layout="balanced-pairs"'), 1)
         self.assertEqual(source.count('class="cc-tile"'), 4)
         self.assertNotIn("cc-tile--visual", source)
         for slug in preview.SLUGS:
             if slug != "bereavement-support":
                 self.assertNotIn('data-layout="balanced-pairs"', self.source(slug))
+                self.assertNotIn('class="bereavement-service-page"', self.source(slug))
 
     def test_editorial_approvals_and_preview_metadata(self):
         for slug in preview.SLUGS:
