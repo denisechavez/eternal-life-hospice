@@ -8,6 +8,7 @@
 - [Approved footer layout](footer-layout.md) — at ~1024px the footer remains one compact seven-column row; only narrower widths reflow to 3/2/1 columns.
 - [Sticky vs overflow trap](sticky-overflow-trap.md) — position:sticky breaks when html gets overflow-x:clip while body keeps overflow-x:hidden; use clip on BOTH; check ancestor overflow, not the sticky element.
 - [Family-guide booklet](family-guide.md) — page-turn duration duplicated in CSS+JS; appended overrides re-break reduced-motion; bootveil blocks screenshots (QA via curl); mobile worksheet restack keeps thead pills; fonts externalized.
+- [Printed patient guide](patient-guide-direction.md) — family-first, premium but relatable; nature and professionally lit photography welcome; founder messages need approval.
 - [Email signatures](email-signatures.md) — exports/email/ HTML sigs mirror the card; table+inline+web-safe fonts; logo via live URL only resolves after Git→Sync (trans mark was 404 at build).
 - [Referral Card 5 locked design](referral-card5-design.md) — approved flagship rack-card layout front+back; replicate for future referral cards; includes print-readiness checks.
 - [Print-ready files](print-files.md) — rack cards/flyers: build temp HTML in elh-preview, 4.25×9.25 (4×9+bleed), chrome print-to-pdf vector, pdfunite, export to repo-root exports/; use logo-eternal-trans.png.
