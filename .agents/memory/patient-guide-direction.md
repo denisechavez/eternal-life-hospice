@@ -12,3 +12,9 @@ The printed patient guide is for patients' families. It should feel premium and 
 A complete cover set has four distinct surfaces: front, inside front, inside back and outside back. Label each explicitly; an inside-back contact page is not a substitute for an outside back cover.
 
 **Why:** The owner expected the actual back cover when reviewing the cover-and-insides concept.
+
+Apply the four-surface requirement to every concept, not just the selected option. Alternative concepts must differ in composition and hierarchy across the set, not merely swap photographs into the same template. The founder welcome on the inside front should include the existing real founder portrait.
+
+**Why:** The owner explicitly flagged missing outside backs in the other options and said the concepts looked the same, then requested the founder's photograph inside.
+
+**How to apply:** Compare concepts at canvas overview scale before presenting. Confirm the front covers and interior organization differ visibly, and verify all four surfaces for each option. Use the real portrait without fabricating a likeness.

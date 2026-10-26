@@ -194,6 +194,27 @@ export function GardenPremium() {
           background: var(--gp-gold);
           margin: 4.4% 0 4.4%;
         }
+        .gp-letter-intro {
+          display: flex;
+          align-items: flex-start;
+          justify-content: space-between;
+          gap: 14px;
+        }
+        .gp-letter-intro-copy {
+          min-width: 0;
+          flex: 1;
+        }
+        .gp-founder-photo {
+          display: block;
+          flex: 0 0 29%;
+          width: 29%;
+          aspect-ratio: .78;
+          object-fit: cover;
+          object-position: center 28%;
+          border: 1px solid rgba(185,156,102,.8);
+          padding: 4px;
+          background: #e9dfd0;
+        }
         .gp-letter-copy {
           display: flex;
           flex-direction: column;
@@ -377,7 +398,7 @@ export function GardenPremium() {
           height: 39%;
           width: 100%;
           object-fit: cover;
-          object-position: center 28%;
+          object-position: center 45%;
         }
         .gp-back-image-shade {
           position: absolute;
@@ -445,7 +466,16 @@ export function GardenPremium() {
         <p className="gp-label">Inside front cover</p>
         <div className="gp-letter-content">
           <p className="gp-overline">A personal welcome</p>
-          <h2>A note from<br />Aleksandra</h2>
+          <div className="gp-letter-intro">
+            <div className="gp-letter-intro-copy">
+              <h2>A note from<br />Aleksandra</h2>
+            </div>
+            <img
+              className="gp-founder-photo"
+              src="/__reviews-mockup/images/elh-patient-guide/aleksandra-founder.jpg"
+              alt="Portrait of Aleksandra Dubina"
+            />
+          </div>
           <span className="gp-letter-title-rule" aria-hidden="true" />
           <div className="gp-letter-copy">
             <p className="gp-salutation">Dear family,</p>
@@ -495,8 +525,8 @@ export function GardenPremium() {
       <section className="gp-panel gp-back" aria-label="Outside back cover">
         <img
           className="gp-back-image"
-          src="/__reviews-mockup/images/elh-patient-guide/premium-garden.jpg"
-          alt="Sunlight through olive branches in a garden"
+          src="/__reviews-mockup/images/elh-patient-guide/seated-coastal-view.jpg"
+          alt="A seated-height view across the ocean toward coastal hills"
         />
         <div className="gp-back-image-shade" aria-hidden="true" />
         <p className="gp-label">Outside back cover</p>

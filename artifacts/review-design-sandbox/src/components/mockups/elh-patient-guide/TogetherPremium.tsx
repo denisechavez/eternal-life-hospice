@@ -2,7 +2,7 @@ import React from "react";
 
 export function TogetherPremium() {
   return (
-    <main className="together-premium" aria-label="Eternal Life Hospice patient and family guide design concept">
+    <main className="together-premium" aria-label="Held Together patient and family guide, four cover surfaces">
       <style>{`
         @font-face {
           font-family: TogetherFraunces;
@@ -35,7 +35,7 @@ export function TogetherPremium() {
         .together-premium, .together-premium * { box-sizing: border-box; }
         .together-premium {
           --tp-paper: #f4efe5;
-          --tp-paper-deep: #e9dfcf;
+          --tp-paper-deep: #e8ddcc;
           --tp-plum: #402841;
           --tp-plum-soft: #624a60;
           --tp-gold: #b59a69;
@@ -43,7 +43,7 @@ export function TogetherPremium() {
           height: 100%;
           min-height: 100dvh;
           display: grid;
-          grid-template-columns: repeat(3, minmax(0, 1fr));
+          grid-template-columns: repeat(4, minmax(0, 1fr));
           overflow: hidden;
           color: var(--tp-plum);
           background: var(--tp-paper);
@@ -51,17 +51,17 @@ export function TogetherPremium() {
           isolation: isolate;
         }
         .tp-panel {
-          min-width: 0;
-          height: 100%;
           position: relative;
+          height: 100%;
+          min-width: 0;
           overflow: hidden;
         }
-        .tp-panel + .tp-panel { border-left: 1px solid rgba(64,40,65,.22); }
+        .tp-panel + .tp-panel { border-left: 1px solid rgba(64,40,65,.24); }
         .tp-surface-label {
           position: absolute;
-          z-index: 4;
+          z-index: 6;
           top: 22px;
-          left: 42px;
+          left: 35px;
           margin: 0;
           color: var(--tp-plum-soft);
           font-size: 9px;
@@ -70,151 +70,183 @@ export function TogetherPremium() {
           text-transform: uppercase;
         }
         .tp-cover {
-          background: var(--tp-paper);
+          background: #d6c9b8;
         }
         .tp-cover-photo {
           position: absolute;
-          inset: 0 0 32% 0;
+          inset: 0;
           width: 100%;
-          height: 68%;
+          height: 100%;
           display: block;
           object-fit: cover;
-          object-position: 51% 45%;
+          object-position: 52% center;
         }
-        .tp-photo-wash {
+        .tp-cover-wash {
           position: absolute;
-          inset: 0 0 31.7% 0;
-          background: linear-gradient(180deg, rgba(244,239,229,.13), rgba(244,239,229,0) 28%, rgba(64,40,65,.1));
+          inset: 0;
+          background: linear-gradient(90deg, rgba(40,29,38,.12), transparent 70%);
+        }
+        .tp-cover-top {
+          position: absolute;
+          z-index: 2;
+          top: 0;
+          left: 0;
+          width: 56%;
+          height: 195px;
+          padding: 52px 34px 20px;
+          background: var(--tp-paper);
+          border-bottom-right-radius: 74px;
         }
         .tp-cover-label {
-          color: #513b4e;
           top: 24px;
-          left: 43px;
-          padding: 8px 10px;
-          background: rgba(244,239,229,.86);
-          backdrop-filter: blur(4px);
+          left: 35px;
+          color: #725e4d;
         }
         .tp-cover-logo {
-          position: absolute;
-          z-index: 2;
-          top: 67px;
-          left: 43px;
-          width: 165px;
-          height: auto;
           display: block;
+          width: 155px;
+          height: auto;
           mix-blend-mode: multiply;
         }
-        .tp-cover-paper {
+        .tp-title-plaque {
           position: absolute;
-          z-index: 2;
-          inset: auto 0 0;
-          height: 35%;
-          padding: 35px 43px 28px;
+          z-index: 3;
+          left: 0;
+          bottom: 0;
+          width: 87%;
+          height: 47%;
+          padding: 61px 38px 31px;
           background:
-            radial-gradient(ellipse at 94% 0%, rgba(181,154,105,.14), transparent 42%),
+            radial-gradient(ellipse at 92% 0%, rgba(181,154,105,.14), transparent 45%),
             var(--tp-paper);
+          border-top-right-radius: 112px;
         }
-        .tp-cover-paper::before {
-          content: "";
-          position: absolute;
-          width: 118px;
-          height: 118px;
-          right: -59px;
-          top: -59px;
-          border-radius: 50%;
-          background: var(--tp-paper);
-        }
-        .tp-cover-rule {
+        .tp-title-rule {
           width: 43px;
           height: 2px;
-          margin: 1px 0 14px;
+          margin: 0 0 17px;
           background: var(--tp-gold);
         }
         .tp-cover-title {
-          position: relative;
-          z-index: 1;
-          max-width: 545px;
           margin: 0;
           color: var(--tp-plum);
           font-family: TogetherFraunces, Georgia, serif;
-          font-size: clamp(38px, 5.6vw, 52px);
+          font-size: 47px;
           font-weight: 500;
           line-height: .99;
           letter-spacing: -.045em;
         }
-        .tp-cover-bottom {
-          position: absolute;
-          right: 43px;
-          bottom: 28px;
-          left: 43px;
-          display: flex;
-          justify-content: space-between;
-          align-items: baseline;
-          gap: 12px;
-        }
-        .tp-cover-tagline, .tp-cover-site {
-          margin: 0;
+        .tp-cover-tagline {
+          margin: 19px 0 0;
+          color: var(--tp-plum-soft);
           font-size: 12px;
           line-height: 1.2;
-          letter-spacing: .015em;
+          letter-spacing: .02em;
         }
-        .tp-cover-tagline { color: var(--tp-plum-soft); }
         .tp-cover-site {
+          position: absolute;
+          right: 27px;
+          bottom: 27px;
+          margin: 0;
           color: var(--tp-plum);
-          font-size: 10px;
+          font-size: 9px;
           letter-spacing: .075em;
         }
+
         .tp-letter {
-          padding: 51px 54px 34px;
-          background:
-            radial-gradient(ellipse at 100% 0%, rgba(181,154,105,.11), transparent 34%),
-            var(--tp-paper);
+          display: grid;
+          grid-template-columns: 35% 65%;
+          background: var(--tp-paper);
         }
-        .tp-letter .tp-surface-label { left: 54px; }
-        .tp-letter-content {
+        .tp-letter-aside {
           position: relative;
+          padding: 105px 20px 39px;
+          background:
+            radial-gradient(ellipse at 0 100%, rgba(181,154,105,.16), transparent 46%),
+            var(--tp-plum);
+          color: var(--tp-paper);
+        }
+        .tp-letter-aside::after {
+          content: "";
+          position: absolute;
+          top: 109px;
+          right: 0;
+          width: 2px;
+          height: 48px;
+          background: var(--tp-gold);
+        }
+        .tp-letter .tp-surface-label { left: auto; right: 30px; color: #ded0b8; }
+        .tp-founder-photo-frame {
+          width: 100%;
+          height: 263px;
+          overflow: hidden;
+          border: 6px solid rgba(244,239,229,.92);
+          background: #d1bfa9;
+          box-shadow: 0 10px 26px rgba(24,14,24,.17);
+        }
+        .tp-founder-photo {
+          display: block;
+          width: 100%;
           height: 100%;
+          object-fit: cover;
+          object-position: 50% 26%;
+        }
+        .tp-founder-caption {
+          margin: 16px 0 0;
+          color: var(--tp-paper);
+          font-family: TogetherFraunces, Georgia, serif;
+          font-size: 21px;
+          line-height: 1.1;
+          letter-spacing: -.02em;
+        }
+        .tp-founder-role {
+          margin: 8px 0 0;
+          color: #d6c5a6;
+          font-size: 10px;
+          line-height: 1.45;
+          letter-spacing: .025em;
+        }
+        .tp-letter-main {
+          position: relative;
+          padding: 79px 31px 36px;
           display: flex;
           flex-direction: column;
-          padding-top: 24px;
+          min-width: 0;
         }
         .tp-draft {
           align-self: flex-start;
-          margin: 0 0 17px;
-          padding: 7px 10px 6px;
-          border: 1px solid rgba(181,154,105,.75);
+          margin: 0 0 16px;
+          padding: 7px 9px 6px;
+          border: 1px solid rgba(181,154,105,.84);
           color: #775d37;
           font-size: 8px;
           line-height: 1;
-          letter-spacing: .12em;
+          letter-spacing: .105em;
           font-weight: 500;
         }
-        .tp-letter h2 {
-          margin: 0 0 18px;
+        .tp-letter-heading {
+          margin: 0 0 15px;
           color: var(--tp-plum);
           font-family: TogetherFraunces, Georgia, serif;
-          font-size: 35px;
-          line-height: 1.04;
-          letter-spacing: -.035em;
+          font-size: 32px;
+          line-height: 1;
+          letter-spacing: -.04em;
           font-weight: 500;
         }
         .tp-letter-copy {
           color: #554950;
-          font-size: 14px;
-          line-height: 1.48;
-          letter-spacing: .002em;
+          font-size: 14.5px;
+          line-height: 1.45;
+          letter-spacing: .001em;
         }
-        .tp-letter-copy p { margin: 0 0 12px; }
-        .tp-letter-copy .tp-salutation { margin-bottom: 13px; color: var(--tp-plum); }
-        .tp-letter-signoff {
-          margin-top: auto;
-          padding-top: 4px;
-        }
+        .tp-letter-copy p { margin: 0 0 11px; }
+        .tp-letter-copy .tp-salutation { margin-bottom: 11px; color: var(--tp-plum); }
+        .tp-letter-signoff { margin-top: 15px; padding-top: 5px; }
         .tp-with-warmth {
           margin: 0 0 4px;
           color: var(--tp-plum-soft);
           font-family: TogetherFraunces, Georgia, serif;
-          font-size: 17px;
+          font-size: 16px;
           font-style: italic;
           line-height: 1.2;
         }
@@ -222,176 +254,238 @@ export function TogetherPremium() {
           margin: 0;
           color: var(--tp-plum);
           font-family: TogetherFraunces, Georgia, serif;
-          font-size: 22px;
+          font-size: 21px;
           line-height: 1.1;
           letter-spacing: -.02em;
         }
         .tp-title-lines {
-          margin: 6px 0 0;
+          margin: 5px 0 0;
           color: #786c70;
-          font-size: 10px;
-          line-height: 1.45;
-          letter-spacing: .025em;
+          font-size: 9px;
+          line-height: 1.4;
+          letter-spacing: .02em;
         }
-        .tp-back {
-          padding: 51px 49px 33px;
+
+        .tp-notes {
+          padding: 70px 42px 45px;
           background:
-            radial-gradient(ellipse at 100% 0%, rgba(181,154,105,.12), transparent 38%),
+            radial-gradient(ellipse at 0 100%, rgba(181,154,105,.11), transparent 38%),
             var(--tp-paper);
         }
-        .tp-back .tp-surface-label { left: 49px; }
-        .tp-back-content {
+        .tp-notes .tp-surface-label { left: 42px; }
+        .tp-notes-head {
           position: relative;
-          height: 100%;
-          display: flex;
-          flex-direction: column;
-          padding-top: 20px;
-        }
-        .tp-back-heading-row {
+          min-height: 157px;
           display: flex;
           align-items: flex-start;
           justify-content: space-between;
-          gap: 16px;
-          margin-bottom: 17px;
+          gap: 12px;
+          margin: 0 -42px 28px;
+          padding: 23px 42px 19px;
+          border-bottom: 1px solid rgba(181,154,105,.62);
         }
-        .tp-back h2 {
-          margin: 0;
+        .tp-notes-heading {
+          margin: 16px 0 0;
+          color: var(--tp-plum);
           font-family: TogetherFraunces, Georgia, serif;
-          font-size: 40px;
+          font-size: 41px;
           line-height: .98;
-          font-weight: 500;
           letter-spacing: -.045em;
+          font-weight: 500;
         }
-        .tp-orbit {
-          flex: 0 0 49px;
-          width: 49px;
-          height: 49px;
-          margin-top: 1px;
-          border: 1px solid rgba(181,154,105,.78);
-          border-radius: 50%;
-          position: relative;
-        }
-        .tp-orbit::before, .tp-orbit::after {
-          content: "";
-          position: absolute;
-          background: var(--tp-gold);
-        }
-        .tp-orbit::before { width: 1px; height: 28px; left: 23px; top: 10px; transform: rotate(37deg); }
-        .tp-orbit::after { width: 24px; height: 1px; left: 12px; top: 24px; transform: rotate(-27deg); }
-        .tp-contact-card {
-          position: relative;
-          margin: 0 -49px 18px;
-          padding: 17px 49px 16px;
-          display: grid;
-          grid-template-columns: 1fr 1fr;
-          gap: 13px 18px;
-          background: var(--tp-plum);
-          color: var(--tp-paper);
-        }
-        .tp-contact-card::after {
-          content: "";
-          position: absolute;
-          right: 49px;
-          bottom: 0;
-          width: 40px;
-          height: 2px;
-          background: var(--tp-gold);
-        }
-        .tp-contact-item { min-width: 0; }
-        .tp-contact-label {
+        .tp-notes-photo {
           display: block;
-          margin-bottom: 4px;
-          color: #d5c4a2;
+          width: 151px;
+          height: 116px;
+          object-fit: cover;
+          object-position: 58% 54%;
+          border-radius: 72px 72px 0 0;
+          border: 1px solid rgba(181,154,105,.75);
+        }
+        .tp-note-group { margin: 0 0 28px; }
+        .tp-note-title {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          margin: 0 0 7px;
+          color: var(--tp-plum);
+          font-family: TogetherFraunces, Georgia, serif;
+          font-size: 21px;
+          line-height: 1.1;
+          font-weight: 500;
+        }
+        .tp-note-title::after {
+          content: "";
+          height: 1px;
+          flex: 1;
+          background: rgba(181,154,105,.72);
+        }
+        .tp-note-line {
+          height: 39px;
+          border-bottom: 1px solid rgba(98,74,96,.35);
+        }
+        .tp-question-lines .tp-note-line { height: 49px; }
+        .tp-notes-foot {
+          position: absolute;
+          right: 42px;
+          bottom: 23px;
+          left: 42px;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          color: #857875;
           font-size: 8px;
-          line-height: 1;
-          letter-spacing: .12em;
+          letter-spacing: .11em;
+          text-transform: uppercase;
+        }
+        .tp-notes-foot::after {
+          content: "";
+          width: 6px;
+          height: 6px;
+          border-radius: 50%;
+          background: var(--tp-gold);
+        }
+
+        .tp-back-cover {
+          background: var(--tp-paper);
+        }
+        .tp-back-photo {
+          position: absolute;
+          top: 0;
+          right: 0;
+          width: 34%;
+          height: 100%;
+          object-fit: cover;
+          object-position: 69% center;
+          display: block;
+        }
+        .tp-back-photo-shade {
+          position: absolute;
+          top: 0;
+          right: 34%;
+          width: 9%;
+          height: 100%;
+          background: linear-gradient(90deg, var(--tp-paper), rgba(244,239,229,0));
+        }
+        .tp-back-content {
+          position: absolute;
+          inset: 0 auto 0 0;
+          width: 70%;
+          padding: 81px 35px 33px;
+          background:
+            radial-gradient(ellipse at 0 0, rgba(181,154,105,.12), transparent 38%),
+            var(--tp-paper);
+        }
+        .tp-back-label { left: 35px; }
+        .tp-back-logo {
+          display: block;
+          width: 154px;
+          height: auto;
+          margin: 0 0 32px;
+          mix-blend-mode: multiply;
+        }
+        .tp-back-heading {
+          margin: 0 0 24px;
+          color: var(--tp-plum);
+          font-family: TogetherFraunces, Georgia, serif;
+          font-size: 37px;
+          line-height: .98;
+          letter-spacing: -.045em;
+          font-weight: 500;
+        }
+        .tp-back-rule {
+          width: 100%;
+          height: 1px;
+          margin: 0 0 21px;
+          background: rgba(181,154,105,.74);
+        }
+        .tp-contact-list { margin: 0; }
+        .tp-contact-row {
+          display: grid;
+          grid-template-columns: 74px 1fr;
+          gap: 8px;
+          align-items: baseline;
+          margin: 0 0 18px;
+        }
+        .tp-contact-label {
+          margin: 0;
+          color: #887668;
+          font-size: 8px;
+          line-height: 1.2;
+          letter-spacing: .11em;
           text-transform: uppercase;
         }
         .tp-contact-value {
           margin: 0;
-          color: var(--tp-paper);
-          font-size: 12px;
-          line-height: 1.28;
+          color: var(--tp-plum);
+          font-size: 13px;
+          line-height: 1.35;
           overflow-wrap: anywhere;
         }
-        .tp-contact-address { grid-column: 1 / -1; }
         .tp-back-site {
-          margin: -8px 0 18px;
-          color: var(--tp-plum-soft);
-          font-size: 10px;
-          letter-spacing: .075em;
-        }
-        .tp-writing-section { margin: 0 0 16px; }
-        .tp-writing-title {
-          display: flex;
-          align-items: center;
-          gap: 9px;
-          margin: 0 0 8px;
-          color: var(--tp-plum);
-          font-family: TogetherFraunces, Georgia, serif;
-          font-size: 19px;
-          line-height: 1.1;
-          font-weight: 500;
-        }
-        .tp-writing-title::after {
-          content: "";
-          height: 1px;
-          flex: 1;
-          background: rgba(181,154,105,.65);
-        }
-        .tp-write-line {
-          height: 25px;
-          border-bottom: 1px solid rgba(98,74,96,.32);
-        }
-        .tp-questions { margin-top: 0; }
-        .tp-questions .tp-write-line { height: 27px; }
-        .tp-review-note {
           position: absolute;
-          right: 0;
-          bottom: 0;
+          bottom: 35px;
+          left: 35px;
           margin: 0;
-          color: #8c7d75;
+          color: var(--tp-plum);
+          font-size: 10px;
+          letter-spacing: .085em;
+        }
+        .tp-review {
+          position: absolute;
+          right: 19px;
+          bottom: 22px;
+          z-index: 3;
+          margin: 0;
+          color: rgba(244,239,229,.94);
           font-size: 8px;
           line-height: 1;
           letter-spacing: .14em;
+          writing-mode: vertical-rl;
         }
-        @media (max-width: 900px) {
+
+        @media (max-width: 1050px) {
           .together-premium { grid-template-columns: 1fr; height: auto; min-height: 100dvh; overflow: visible; }
           .tp-panel { min-height: 100dvh; }
-          .tp-panel + .tp-panel { border-left: 0; border-top: 1px solid rgba(64,40,65,.22); }
-          .tp-cover-photo, .tp-photo-wash { bottom: 31%; }
-          .tp-cover-paper { height: 35%; }
-          .tp-cover-title { font-size: clamp(42px, 10vw, 58px); }
-          .tp-letter-copy { font-size: 16px; line-height: 1.55; }
-          .tp-letter { padding-right: max(32px, 8vw); padding-left: max(32px, 8vw); }
-          .tp-letter .tp-surface-label { left: max(32px, 8vw); }
-          .tp-letter-content { min-height: calc(100dvh - 90px); }
-          .tp-back { padding-right: max(32px, 7vw); padding-left: max(32px, 7vw); }
-          .tp-back .tp-surface-label { left: max(32px, 7vw); }
-          .tp-contact-card { margin-right: calc(max(32px, 7vw) * -1); margin-left: calc(max(32px, 7vw) * -1); padding-right: max(32px, 7vw); padding-left: max(32px, 7vw); }
+          .tp-panel + .tp-panel { border-left: 0; border-top: 1px solid rgba(64,40,65,.24); }
+          .tp-cover-title { font-size: clamp(47px, 10vw, 65px); }
+          .tp-letter-main { padding-right: 8vw; padding-left: 8vw; }
+          .tp-letter-copy { font-size: 15px; line-height: 1.55; }
+          .tp-founder-photo-frame { height: min(42vh, 330px); }
+          .tp-notes { padding-right: max(32px, 8vw); padding-left: max(32px, 8vw); }
+          .tp-notes-head { margin-right: calc(max(32px, 8vw) * -1); margin-left: calc(max(32px, 8vw) * -1); padding-right: max(32px, 8vw); padding-left: max(32px, 8vw); }
+          .tp-notes .tp-surface-label { left: max(32px, 8vw); }
+          .tp-back-content { width: 70%; padding-right: 6vw; padding-left: 6vw; }
         }
       `}</style>
 
       <section className="tp-panel tp-cover" aria-label="Front cover">
         <img className="tp-cover-photo" src="/__reviews-mockup/images/elh-patient-guide/premium-together.jpg" alt="An older mother and adult daughter sit close together in the soft light of a home, looking out into a garden." />
-        <div className="tp-photo-wash" aria-hidden="true" />
-        <p className="tp-surface-label tp-cover-label">Front cover</p>
-        <img className="tp-cover-logo" src="/__reviews-mockup/images/elh-patient-guide/logo-plum.png" alt="Eternal Life Hospice" />
-        <div className="tp-cover-paper">
-          <div className="tp-cover-rule" aria-hidden="true" />
-          <h1 className="tp-cover-title">Patient &amp; Family<br />Guide</h1>
-          <div className="tp-cover-bottom">
-            <p className="tp-cover-tagline">Care That Honors Life.</p>
-            <p className="tp-cover-site">eternallifehospice.com</p>
-          </div>
+        <div className="tp-cover-wash" aria-hidden="true" />
+        <div className="tp-cover-top">
+          <p className="tp-surface-label tp-cover-label">Front cover</p>
+          <img className="tp-cover-logo" src="/__reviews-mockup/images/elh-patient-guide/logo-plum.png" alt="Eternal Life Hospice" />
+        </div>
+        <div className="tp-title-plaque">
+          <div className="tp-title-rule" aria-hidden="true" />
+          <h1 className="tp-cover-title">Patient &amp;<br />Family Guide</h1>
+          <p className="tp-cover-tagline">Care That Honors Life.</p>
+          <p className="tp-cover-site">eternallifehospice.com</p>
         </div>
       </section>
 
-      <section className="tp-panel tp-letter" aria-label="Inside front cover, founder welcome draft">
-        <p className="tp-surface-label">Inside front cover</p>
-        <div className="tp-letter-content">
+      <section className="tp-panel tp-letter" aria-label="Inside front cover, founder letter draft">
+        <aside className="tp-letter-aside">
+          <p className="tp-surface-label">Inside front cover</p>
+          <div className="tp-founder-photo-frame">
+            <img className="tp-founder-photo" src="/__reviews-mockup/images/elh-patient-guide/aleksandra-founder.jpg" alt="Aleksandra Dubina, founder and CEO of Eternal Life Hospice." />
+          </div>
+          <p className="tp-founder-caption">Aleksandra<br />Dubina</p>
+          <p className="tp-founder-role">Founder &amp; CEO<br />Certified Hospice Administrator</p>
+        </aside>
+        <div className="tp-letter-main">
           <p className="tp-draft">DRAFT FOR ALEKSANDRA’S REVIEW</p>
-          <h2>A note from<br />Aleksandra</h2>
+          <h2 className="tp-letter-heading">A note from<br />Aleksandra</h2>
           <div className="tp-letter-copy">
             <p className="tp-salutation">Dear family,</p>
             <p>When someone you love needs hospice care, there can be a great deal to take in. You may have questions you have not yet found words for. You do not need to have every answer today.</p>
@@ -406,47 +500,58 @@ export function TogetherPremium() {
         </div>
       </section>
 
-      <section className="tp-panel tp-back" aria-label="Inside back cover, contact and notes">
+      <section className="tp-panel tp-notes" aria-label="Inside back cover, family notes">
         <p className="tp-surface-label">Inside back cover</p>
-        <div className="tp-back-content">
-          <div className="tp-back-heading-row">
-            <h2>Keep us<br />close</h2>
-            <span className="tp-orbit" aria-hidden="true" />
-          </div>
-          <div className="tp-contact-card">
-            <div className="tp-contact-item">
-              <span className="tp-contact-label">Main</span>
-              <p className="tp-contact-value">805.410.1151</p>
-            </div>
-            <div className="tp-contact-item">
-              <span className="tp-contact-label">Office</span>
-              <p className="tp-contact-value">805.953.7273</p>
-            </div>
-            <div className="tp-contact-item">
-              <span className="tp-contact-label">Email</span>
-              <p className="tp-contact-value">info@eternallifehospice.com</p>
-            </div>
-            <div className="tp-contact-item tp-contact-address">
-              <span className="tp-contact-label">Visit</span>
-              <p className="tp-contact-value">4165 E Thousand Oaks Blvd, Ste 325B<br />Westlake Village, CA 91362</p>
-            </div>
-          </div>
-          <p className="tp-back-site">eternallifehospice.com</p>
-
-          <div className="tp-writing-section">
-            <h3 className="tp-writing-title">Your care team</h3>
-            <div className="tp-write-line" />
-            <div className="tp-write-line" />
-          </div>
-          <div className="tp-writing-section tp-questions">
-            <h3 className="tp-writing-title">Questions to keep close</h3>
-            <div className="tp-write-line" />
-            <div className="tp-write-line" />
-            <div className="tp-write-line" />
-            <div className="tp-write-line" />
-          </div>
-          <p className="tp-review-note">DESIGN CONCEPT · FOR REVIEW</p>
+        <div className="tp-notes-head">
+          <h2 className="tp-notes-heading">Your<br />notes</h2>
+          <img className="tp-notes-photo" src="/__reviews-mockup/images/elh-patient-guide/premium-together.jpg" alt="" />
         </div>
+        <div className="tp-note-group">
+          <h3 className="tp-note-title">Your care team</h3>
+          <div className="tp-note-line" />
+          <div className="tp-note-line" />
+        </div>
+        <div className="tp-note-group tp-question-lines">
+          <h3 className="tp-note-title">Questions to keep close</h3>
+          <div className="tp-note-line" />
+          <div className="tp-note-line" />
+          <div className="tp-note-line" />
+          <div className="tp-note-line" />
+        </div>
+        <div className="tp-notes-foot">
+          <span>DESIGN CONCEPT · FOR REVIEW</span>
+        </div>
+      </section>
+
+      <section className="tp-panel tp-back-cover" aria-label="Outside back cover with contact details">
+        <p className="tp-surface-label tp-back-label">Outside back cover</p>
+        <img className="tp-back-photo" src="/__reviews-mockup/images/elh-patient-guide/premium-together.jpg" alt="The family sits together, looking out toward a sunlit garden." />
+        <div className="tp-back-photo-shade" aria-hidden="true" />
+        <div className="tp-back-content">
+          <img className="tp-back-logo" src="/__reviews-mockup/images/elh-patient-guide/logo-plum.png" alt="Eternal Life Hospice" />
+          <h2 className="tp-back-heading">Keep us<br />close</h2>
+          <div className="tp-back-rule" aria-hidden="true" />
+          <dl className="tp-contact-list">
+            <div className="tp-contact-row">
+              <dt className="tp-contact-label">Main</dt>
+              <dd className="tp-contact-value">805.410.1151</dd>
+            </div>
+            <div className="tp-contact-row">
+              <dt className="tp-contact-label">Office</dt>
+              <dd className="tp-contact-value">805.953.7273</dd>
+            </div>
+            <div className="tp-contact-row">
+              <dt className="tp-contact-label">Email</dt>
+              <dd className="tp-contact-value">info@eternallifehospice.com</dd>
+            </div>
+            <div className="tp-contact-row">
+              <dt className="tp-contact-label">Address</dt>
+              <dd className="tp-contact-value">4165 E Thousand Oaks Blvd, Ste 325B<br />Westlake Village, CA 91362</dd>
+            </div>
+          </dl>
+          <p className="tp-back-site">eternallifehospice.com</p>
+        </div>
+        <p className="tp-review">DESIGN CONCEPT · FOR REVIEW</p>
       </section>
     </main>
   );
