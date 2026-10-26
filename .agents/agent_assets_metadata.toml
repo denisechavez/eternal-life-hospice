@@ -2114,3 +2114,87 @@ mtime_ms = 1792829966091
 storage_uri = "gcs://replit-rams-assets-kirk/rams/assets/repl:e1b2f643-7869-4565-af0e-10c34575ee8d/13785a0c-9700-40f8-b19d-c6b41a874ac4/1d705854-c2e6-4d33-8bbb-8c0c1ff9cbde"
 storage_version_token = "1792830054519207"
 content_type = "text/plain"
+
+[[outputs]]
+id = "U4arlmQSmnLRNdo0GnraI"
+uri = "file://generated-artifacts/social/gbp-sound-bath-bed-1200x900.jpg"
+type = "image"
+title = "GBP image — bedside sound bath"
+description = "1200 × 900 px JPEG. Photorealistic AI-generated scene with no visible faces; plum and cream palette."
+logical_id = "0fd0c6fc-a7ef-42dd-ad22-505800b14d68"
+content_hash = "sha256:8984123005897ac2372b62b361a94607ed062fd3143f33a74f33254b4e0a0d33"
+size = 227539
+mtime_ms = 1793009020845
+storage_uri = "gcs://replit-rams-assets-kirk/rams/assets/repl:e1b2f643-7869-4565-af0e-10c34575ee8d/0fd0c6fc-a7ef-42dd-ad22-505800b14d68/65befb6f-4188-4fe2-bb61-29c523139ffd"
+storage_version_token = "1793009039507031"
+content_type = "image/jpeg"
+
+[[outputs]]
+id = "KqRbBJgFGF19djY8ULm7v"
+uri = "file://generated-artifacts/social/gbp-sound-bath-caption.txt"
+type = "text"
+title = "GBP post — caption and article link"
+description = "Ready-to-copy review draft based on the latest live Journal article about sound bathing, comfort and personal choice."
+logical_id = "bd1f7106-88a6-4239-bb10-6762b27fe61d"
+content_hash = "sha256:dc35a1c299f8324f8ab5e5d3fca3a6111bf3a9c91dfc3c077831dcc53193aab2"
+size = 1262
+mtime_ms = 1793009029601
+storage_uri = "gcs://replit-rams-assets-kirk/rams/assets/repl:e1b2f643-7869-4565-af0e-10c34575ee8d/bd1f7106-88a6-4239-bb10-6762b27fe61d/ee7ab9c5-e5ba-4e20-a13f-088c541c9791"
+storage_version_token = "1793009040362253"
+content_type = "text/plain"
+
+[[outputs]]
+id = "JoIMnb7uIH3NDta3Z8GQm"
+uri = "file://generated-artifacts/social/facebook-sound-bath-1080x1080.jpg"
+type = "image"
+title = "Facebook — sound bath image"
+description = "1080 × 1080 px square JPEG. Photorealistic AI-generated image with no visible faces."
+logical_id = "00623643-dff2-48fe-b0b3-17777851123d"
+content_hash = "sha256:71415e32389ab252dd9d70cf3124b1150d8bee97655a365b6c7600c9232e0815"
+size = 237511
+mtime_ms = 1793009065882
+storage_uri = "gcs://replit-rams-assets-kirk/rams/assets/repl:e1b2f643-7869-4565-af0e-10c34575ee8d/00623643-dff2-48fe-b0b3-17777851123d/e4eea47b-ef50-41f1-8d63-51f947e18247"
+storage_version_token = "1793009092315917"
+content_type = "image/jpeg"
+
+[[outputs]]
+id = "F15pfHisAozvPG2XdA_b1"
+uri = "file://generated-artifacts/social/facebook-sound-bath-caption.txt"
+type = "text"
+title = "Facebook — ready-to-copy caption"
+description = "Family-focused caption with the Journal link and optional comfort offering details."
+logical_id = "cb73fc87-aaf3-4c23-8adb-275f6c465940"
+content_hash = "sha256:d6eee034f4ee929845d85c422189896e23c8454a402508e72ca2838c43d7817f"
+size = 1385
+mtime_ms = 1793009074798
+storage_uri = "gcs://replit-rams-assets-kirk/rams/assets/repl:e1b2f643-7869-4565-af0e-10c34575ee8d/cb73fc87-aaf3-4c23-8adb-275f6c465940/3a6abac5-818d-4174-a3c2-1344925af149"
+storage_version_token = "1793009092958039"
+content_type = "text/plain"
+
+[[outputs]]
+id = "xycG7zLJmK21XL1N4Sghc"
+uri = "file://generated-artifacts/social/linkedin-sound-bath-1200x627.jpg"
+type = "image"
+title = "LinkedIn — sound bath image"
+description = "1200 × 627 px landscape JPEG. Photorealistic AI-generated image with no visible faces."
+logical_id = "aebb4788-f95b-4825-8fba-ada6dbdfc0f3"
+content_hash = "sha256:edb4082d9665487e6b37703be89c68a975d2f27ceae33fe0eb68b3faad8d73ef"
+size = 165948
+mtime_ms = 1793009065906
+storage_uri = "gcs://replit-rams-assets-kirk/rams/assets/repl:e1b2f643-7869-4565-af0e-10c34575ee8d/aebb4788-f95b-4825-8fba-ada6dbdfc0f3/2d4154c1-c42d-4dc5-b7ea-32ffc0483513"
+storage_version_token = "1793009093669906"
+content_type = "image/jpeg"
+
+[[outputs]]
+id = "lY55iGyWR_YM9hLHgIRqr"
+uri = "file://generated-artifacts/social/linkedin-sound-bath-caption.txt"
+type = "text"
+title = "LinkedIn — ready-to-copy caption"
+description = "Professional caption focused on person-centered hospice care, consent and choice."
+logical_id = "1010eab6-1aef-4af5-b781-633931b7fbb5"
+content_hash = "sha256:93c50fcf70d39857a5df40a6a6c3bf5170684b9d93121ae0c0885e1a6a6f2c08"
+size = 1550
+mtime_ms = 1793009080174
+storage_uri = "gcs://replit-rams-assets-kirk/rams/assets/repl:e1b2f643-7869-4565-af0e-10c34575ee8d/1010eab6-1aef-4af5-b781-633931b7fbb5/c8e071e6-b96f-4210-8354-74202c289da5"
+storage_version_token = "1793009094331156"
+content_type = "text/plain"
