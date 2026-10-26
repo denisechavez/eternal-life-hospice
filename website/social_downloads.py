@@ -1,4 +1,4 @@
-"""Narrow workspace-only fallback for social export downloads."""
+"""Narrow workspace-only fallback for reviewed export downloads."""
 import os
 import shutil
 from pathlib import Path
@@ -6,6 +6,18 @@ from urllib.parse import urlsplit
 
 ROOT = Path(__file__).resolve().parents[1]
 FILES = {
+    "ELH-Handbook-Concepts-7-8-9.zip": (
+        "patient-guide/ELH-Handbook-Concepts-7-8-9.zip", "application/zip"
+    ),
+    "7-ELH-Handbook-Concept-Garden.pdf": (
+        "patient-guide/7. ELH-Handbook-Concept-Garden.pdf", "application/pdf"
+    ),
+    "8-ELH-Handbook-Concept-Held-Together.pdf": (
+        "patient-guide/8. ELH-Handbook-Concept-Held-Together.pdf", "application/pdf"
+    ),
+    "9-ELH-Handbook-Concept-Botanical.pdf": (
+        "patient-guide/9. ELH-Handbook-Concept-Botanical.pdf", "application/pdf"
+    ),
     "october-23-gbp.jpg": (
         "social-2026-10-23/2026-10-23-gbp.jpg", "image/jpeg"
     ),
