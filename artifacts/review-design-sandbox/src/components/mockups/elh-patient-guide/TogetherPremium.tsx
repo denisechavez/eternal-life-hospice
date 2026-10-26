@@ -70,21 +70,23 @@ export function TogetherPremium() {
           text-transform: uppercase;
         }
         .tp-cover {
-          background: #d6c9b8;
+          display: flex;
+          align-items: stretch;
+          background: #ece3d6;
         }
         .tp-cover-photo {
           position: absolute;
-          inset: 0;
-          width: 100%;
+          inset: 0 0 0 auto;
+          width: 44%;
           height: 100%;
           display: block;
           object-fit: cover;
-          object-position: 52% center;
+          object-position: 48% center;
         }
         .tp-cover-wash {
           position: absolute;
-          inset: 0;
-          background: linear-gradient(90deg, rgba(40,29,38,.12), transparent 70%);
+          inset: 0 44% 0 0;
+          background: var(--tp-paper);
         }
         .tp-cover-top {
           position: absolute;
@@ -92,19 +94,18 @@ export function TogetherPremium() {
           top: 0;
           left: 0;
           width: 56%;
-          height: 195px;
-          padding: 52px 34px 20px;
-          background: var(--tp-paper);
-          border-bottom-right-radius: 74px;
+          height: 245px;
+          padding: 51px 37px 20px;
+          background: transparent;
         }
         .tp-cover-label {
           top: 24px;
-          left: 35px;
+          left: 37px;
           color: #725e4d;
         }
         .tp-cover-logo {
           display: block;
-          width: 155px;
+          width: 165px;
           height: auto;
           mix-blend-mode: multiply;
         }
@@ -113,40 +114,37 @@ export function TogetherPremium() {
           z-index: 3;
           left: 0;
           bottom: 0;
-          width: 87%;
-          height: 47%;
-          padding: 61px 38px 31px;
-          background:
-            radial-gradient(ellipse at 92% 0%, rgba(181,154,105,.14), transparent 45%),
-            var(--tp-paper);
-          border-top-right-radius: 112px;
+          width: 56%;
+          height: 72%;
+          padding: 20px 37px 75px;
+          background: transparent;
         }
         .tp-title-rule {
           width: 43px;
           height: 2px;
-          margin: 0 0 17px;
+          margin: 0 0 23px;
           background: var(--tp-gold);
         }
         .tp-cover-title {
           margin: 0;
           color: var(--tp-plum);
           font-family: TogetherFraunces, Georgia, serif;
-          font-size: 47px;
+          font-size: 48px;
           font-weight: 500;
-          line-height: .99;
+          line-height: 1.01;
           letter-spacing: -.045em;
         }
         .tp-cover-tagline {
-          margin: 19px 0 0;
+          margin: 22px 0 0;
           color: var(--tp-plum-soft);
-          font-size: 12px;
+          font-size: 13px;
           line-height: 1.2;
-          letter-spacing: .02em;
+          letter-spacing: .045em;
         }
         .tp-cover-site {
           position: absolute;
-          right: 27px;
-          bottom: 27px;
+          left: 37px;
+          bottom: 30px;
           margin: 0;
           color: var(--tp-plum);
           font-size: 9px;
@@ -293,15 +291,6 @@ export function TogetherPremium() {
           letter-spacing: -.045em;
           font-weight: 500;
         }
-        .tp-notes-photo {
-          display: block;
-          width: 151px;
-          height: 116px;
-          object-fit: cover;
-          object-position: 58% 54%;
-          border-radius: 72px 72px 0 0;
-          border: 1px solid rgba(181,154,105,.75);
-        }
         .tp-note-group { margin: 0 0 28px; }
         .tp-note-title {
           display: flex;
@@ -353,28 +342,26 @@ export function TogetherPremium() {
           position: absolute;
           top: 0;
           right: 0;
-          width: 34%;
+          width: 32%;
           height: 100%;
           object-fit: cover;
-          object-position: 69% center;
+          object-position: 50% center;
           display: block;
         }
         .tp-back-photo-shade {
           position: absolute;
           top: 0;
-          right: 34%;
-          width: 9%;
+          right: 32%;
+          width: 0;
           height: 100%;
-          background: linear-gradient(90deg, var(--tp-paper), rgba(244,239,229,0));
+          background: transparent;
         }
         .tp-back-content {
           position: absolute;
           inset: 0 auto 0 0;
-          width: 70%;
+          width: 68%;
           padding: 81px 35px 33px;
-          background:
-            radial-gradient(ellipse at 0 0, rgba(181,154,105,.12), transparent 38%),
-            var(--tp-paper);
+          background: var(--tp-paper);
         }
         .tp-back-label { left: 35px; }
         .tp-back-logo {
@@ -448,19 +435,26 @@ export function TogetherPremium() {
           .together-premium { grid-template-columns: 1fr; height: auto; min-height: 100dvh; overflow: visible; }
           .tp-panel { min-height: 100dvh; }
           .tp-panel + .tp-panel { border-left: 0; border-top: 1px solid rgba(64,40,65,.24); }
+          .tp-cover-photo { inset: auto 0 0; width: 100%; height: 48%; object-position: center 42%; }
+          .tp-cover-wash { inset: 0; background: linear-gradient(180deg, var(--tp-paper) 0 52%, transparent 52%); }
+          .tp-cover-top { width: 100%; height: auto; padding: 52px 8vw 20px; }
+          .tp-cover-label { left: 8vw; }
+          .tp-title-plaque { width: 100%; height: 58%; padding: 15px 8vw 74px; }
           .tp-cover-title { font-size: clamp(47px, 10vw, 65px); }
+          .tp-cover-site { left: 8vw; }
           .tp-letter-main { padding-right: 8vw; padding-left: 8vw; }
           .tp-letter-copy { font-size: 15px; line-height: 1.55; }
           .tp-founder-photo-frame { height: min(42vh, 330px); }
           .tp-notes { padding-right: max(32px, 8vw); padding-left: max(32px, 8vw); }
           .tp-notes-head { margin-right: calc(max(32px, 8vw) * -1); margin-left: calc(max(32px, 8vw) * -1); padding-right: max(32px, 8vw); padding-left: max(32px, 8vw); }
           .tp-notes .tp-surface-label { left: max(32px, 8vw); }
-          .tp-back-content { width: 70%; padding-right: 6vw; padding-left: 6vw; }
+          .tp-back-photo { width: 40%; }
+          .tp-back-content { width: 60%; padding-right: 6vw; padding-left: 6vw; }
         }
       `}</style>
 
       <section className="tp-panel tp-cover" aria-label="Front cover">
-        <img className="tp-cover-photo" src="/__reviews-mockup/images/elh-patient-guide/premium-together.jpg" alt="An older mother and adult daughter sit close together in the soft light of a home, looking out into a garden." />
+        <img className="tp-cover-photo" src="/__reviews-mockup/images/elh-patient-guide/together-family-no-faces.jpg" alt="An older woman and her adult son seated close together at home, photographed below the shoulders with no faces visible." />
         <div className="tp-cover-wash" aria-hidden="true" />
         <div className="tp-cover-top">
           <p className="tp-surface-label tp-cover-label">Front cover</p>
@@ -504,7 +498,6 @@ export function TogetherPremium() {
         <p className="tp-surface-label">Inside back cover</p>
         <div className="tp-notes-head">
           <h2 className="tp-notes-heading">Your<br />notes</h2>
-          <img className="tp-notes-photo" src="/__reviews-mockup/images/elh-patient-guide/premium-together.jpg" alt="" />
         </div>
         <div className="tp-note-group">
           <h3 className="tp-note-title">Your care team</h3>
@@ -525,7 +518,7 @@ export function TogetherPremium() {
 
       <section className="tp-panel tp-back-cover" aria-label="Outside back cover with contact details">
         <p className="tp-surface-label tp-back-label">Outside back cover</p>
-        <img className="tp-back-photo" src="/__reviews-mockup/images/elh-patient-guide/premium-together.jpg" alt="The family sits together, looking out toward a sunlit garden." />
+        <img className="tp-back-photo" src="/__reviews-mockup/images/elh-patient-guide/together-family-no-faces.jpg" alt="An older woman and her adult son seated close together at home, photographed below the shoulders with no faces visible." />
         <div className="tp-back-photo-shade" aria-hidden="true" />
         <div className="tp-back-content">
           <img className="tp-back-logo" src="/__reviews-mockup/images/elh-patient-guide/logo-plum.png" alt="Eternal Life Hospice" />

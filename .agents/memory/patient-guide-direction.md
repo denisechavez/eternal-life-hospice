@@ -5,6 +5,16 @@ description: Audience and visual direction for the printed patient and family gu
 
 The printed patient guide is for patients' families. It should feel premium and sophisticated while remaining relatable, warm and connected. Nature and professionally lit photography are welcome.
 
+Garden is the owner's preferred direction for continued patient-guide review, not blanket approval for final printing.
+
+**Why:** The owner said, “So far I like the direction of Garden” while requesting its download.
+
+Do not show faces in the guide's family/caregiving photography. The real Aleksandra portrait in the welcome remains an explicitly requested exception.
+
+**Why:** The owner rejected the replacement mother-and-son photograph because their faces were visible.
+
+**How to apply:** Choose source imagery that excludes faces altogether, rather than relying on a crop that may expose them in another cover layout. Do not remove the separately requested founder portrait.
+
 For the selected garden cover, keep a straight division between the plum title area and the photograph, not a feathered blend.
 
 **Why:** The owner explicitly requested a straight line instead of feathering because it looks cleaner.
