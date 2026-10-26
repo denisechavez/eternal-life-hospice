@@ -18,3 +18,7 @@ Apply the four-surface requirement to every concept, not just the selected optio
 **Why:** The owner explicitly flagged missing outside backs in the other options and said the concepts looked the same, then requested the founder's photograph inside.
 
 **How to apply:** Compare concepts at canvas overview scale before presenting. Confirm the front covers and interior organization differ visibly, and verify all four surfaces for each option. Use the real portrait without fabricating a likeness.
+
+The supplied table of contents is reference for framing the founder welcome, not authorization to redesign the contents page. Frame the note as an introduction to a practical hospice handbook, including team support, comfort care, safety, privacy and patient rights, rather than a general promotional welcome.
+
+**Why:** The owner explicitly clarified the purpose of the contents-page reference.

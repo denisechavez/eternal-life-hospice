@@ -488,9 +488,9 @@ export function TogetherPremium() {
           <h2 className="tp-letter-heading">A note from<br />Aleksandra</h2>
           <div className="tp-letter-copy">
             <p className="tp-salutation">Dear family,</p>
-            <p>When someone you love needs hospice care, there can be a great deal to take in. You may have questions you have not yet found words for. You do not need to have every answer today.</p>
-            <p>At Eternal, we begin by getting to know the person at the center of care—and the family beside them. What brings comfort? What matters most? What would make today feel more like their own?</p>
-            <p>My hope is that this guide gives you a place to begin, return to and make your own. Bring us your questions, concerns and the small details that help us understand your loved one.</p>
+            <p>When someone you love is receiving hospice care, there can be a great deal to take in. This guide is here to help you understand your loved one’s care, know who to call and feel more prepared for what may come next.</p>
+            <p>Inside, you will find information about your hospice team, comfort and symptom management, family support, safety, privacy and patient rights. You do not need to read it all at once. Begin with what feels most useful today and return to the other sections when you are ready.</p>
+            <p>No guide can replace a conversation. Please share your questions, concerns and the details that make your loved one who they are. Your voice helps us understand what matters most to your family. Thank you for welcoming Eternal into your loved one’s care.</p>
           </div>
           <div className="tp-letter-signoff">
             <p className="tp-with-warmth">With warmth,</p>
