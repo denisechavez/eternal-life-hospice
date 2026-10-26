@@ -64,3 +64,4 @@
 - [Service-page wording](service-page-editorial-decisions.md) — approved introduction exception for 24/7 Nurse Access; preserve clinical and publication approval boundaries.
 - [SEO advisory checks](seo-advisory-checks.md) — report-only before publishing; private reports, explicit breadcrumb fixes and no automatic page or menu renaming.
 - [Mobile browser verification](mobile-browser-verification.md) — distinguish anchor navigation checks from physical tap checks when layout and visual viewport sizes differ.
+- [Accessibility-tree assertions](accessibility-tree-assertions.md) — reconstruct announcement text through child IDs, not flat response order.

@@ -193,6 +193,37 @@ try {
   const email = '#signup input[name="email"]';
   const button = '#signup button[type="submit"]';
   const error = ".cbl-signup-error";
+  // Check browser-exposed semantics, not just HTML attributes. The live-region
+  // containers must exist before submission, even while their messages are hidden.
+  const assertAnnouncements = async (visible = null) => {
+    const {nodes} = await call("Accessibility.getFullAXTree");
+    for (const [selector, role, live] of [
+      [error, "alert", "assertive"],
+      [".cbl-signup-thanks", "status", "polite"],
+    ]) {
+      const {root: {nodeId}} = await call("DOM.getDocument");
+      const {nodeId: regionId} = await call("DOM.querySelector", {
+        nodeId, selector: `#signup [role="${role}"]:has(> ${selector})`,
+      });
+      const {node: {backendNodeId}} = await call("DOM.describeNode", {nodeId: regionId});
+      const region = nodes.find(node => node.backendDOMNodeId === backendNodeId && !node.ignored);
+      assert.ok(region, selector + " has an exposed, persistent announcement container");
+      assert.equal(region.role.value, role);
+      const properties = Object.fromEntries(region.properties.map(p => [p.name, p.value.value]));
+      assert.equal(properties.live, live, selector + " announcement priority");
+      assert.equal(properties.atomic, true, selector + " announces the complete message");
+      // The flat AX response is not in reading order (links may come last).
+      // Follow child IDs so the phone link stays within the error sentence.
+      const byId = new Map(nodes.map(node => [node.nodeId, node]));
+      const readText = node => node.role?.value === "StaticText"
+        ? node.name?.value || ""
+        : (node.childIds || []).map(id => readText(byId.get(id))).join("");
+      const text = readText(region).replace(/\s+/g, " ").trim();
+      const content = await evaluate(`document.querySelector(${JSON.stringify(selector)}).textContent`);
+      assert.equal(text, visible === selector ? content.trim().replace(/\s+/g, " ") : "",
+        selector + " is exposed only when shown");
+    }
+  };
   const metrics = (width, height) => call("Emulation.setDeviceMetricsOverride", {
     width, height, deviceScaleFactor: 1, mobile: true,
   });
@@ -240,6 +271,7 @@ try {
       await evaluate("document.fonts.ready.then(()=>true)");
       await sleep(400); // Let the actual page's delayed anchor correction finish.
       assert.equal(await evaluate("document.querySelector('.cbl-signup-error').hidden"), true);
+      await assertAnnouncements();
       await evaluate(`document.querySelector(${JSON.stringify(first)}).value=${JSON.stringify(entered.first_name)};
         document.querySelector(${JSON.stringify(email)}).value=${JSON.stringify(entered.email)};
         document.querySelector(${JSON.stringify(email)}).focus()`);
@@ -252,6 +284,8 @@ try {
       assert.ok(Math.abs(reduced.scale - 1) < 0.01);
       await key("Tab", 9);
       assert.equal((await assertReachable(button, label + " initial submit")).active, true);
+      await evaluate(`window.signupFocusChanges=[];
+        document.addEventListener('focusin',e=>window.signupFocusChanges.push(e.target.tagName))`);
       await key("Enter", 13); // Native form submission; no handler replacements.
       await until("!document.querySelector('.cbl-signup-error').hidden", label + " failure");
       assert.equal(submissions.length, start + 1, "Exactly one failed attempt");
@@ -260,6 +294,9 @@ try {
       assert.match(await evaluate("document.querySelector('.cbl-signup-error').textContent"),
         /couldn.t confirm your signup.*try again/s);
       assert.deepEqual(await values(), entered, label + " preserves entered values");
+      await assertAnnouncements(error);
+      assert.deepEqual(await evaluate("window.signupFocusChanges"), [],
+        "Failure announcement must not move focus");
       await assertReachable(error, label + " error message");
       await assertReachable(error + " a", label + " help link");
       await assertReachable(button, label + " retry");
@@ -307,10 +344,15 @@ try {
         await key("Tab", 9);
         assert.equal((await assertReachable(button, "restored retry focus")).active, true);
       }
+      await evaluate("window.signupFocusChanges=[]");
       await key("Enter", 13);
       await until("!document.querySelector('.cbl-signup-thanks').hidden", label + " retry success");
       assert.equal(await evaluate("document.querySelector('#signup form').hidden"), true);
       assert.equal(await evaluate("document.querySelector('.cbl-signup-error').hidden"), true);
+      await assertAnnouncements(".cbl-signup-thanks");
+      assert.deepEqual(await evaluate("window.signupFocusChanges"), [],
+        "Success announcement must not move focus to another element");
+      assert.deepEqual(await values(), entered, "Success must not clear entered values");
       await assertReachable(".cbl-signup-thanks", label + " success message");
       assert.equal(submissions.length, start + 2, "Retry must issue exactly one more request");
       assert.equal(securityRequests, securityStart + 2, "Each attempt uses local security fixture");

@@ -143,8 +143,12 @@ a.cbl-topic:focus-visible{outline:2px solid #B08D3E;outline-offset:2px}
       </div>
       <p class="cbl-signup-note">Educational content only. We never sell or share your information.</p>
     </form>
-    <p class="cbl-signup-thanks" hidden>Thank you &mdash; you&rsquo;re on the list. The next issue of The Eternal Care Brief will arrive in your inbox.</p>
-    <p class="cbl-signup-error" hidden style="font-size:14px;line-height:1.65;color:#F5F0EB;max-width:520px;margin:1rem auto 0">We couldn&rsquo;t confirm your signup. Please try again, or call <a href="tel:18059537273" style="color:#C9B07E;font-weight:700">805.953.7273</a> if you need help now.</p>
+    <div role="status" aria-live="polite" aria-atomic="true">
+      <p class="cbl-signup-thanks" hidden>Thank you &mdash; you&rsquo;re on the list. The next issue of The Eternal Care Brief will arrive in your inbox.</p>
+    </div>
+    <div role="alert" aria-live="assertive" aria-atomic="true">
+      <p class="cbl-signup-error" hidden style="font-size:14px;line-height:1.65;color:#F5F0EB;max-width:520px;margin:1rem auto 0">We couldn&rsquo;t confirm your signup. Please try again, or call <a href="tel:18059537273" style="color:#C9B07E;font-weight:700">805.953.7273</a> if you need help now.</p>
+    </div>
   </div>
 </section>
 
