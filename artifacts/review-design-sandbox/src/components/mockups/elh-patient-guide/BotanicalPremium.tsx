@@ -508,7 +508,7 @@ export function BotanicalPremium() {
             <p className="cg-outside-website">Care That Honors Life.</p>
           </div>
         </div>
-        <img className="cg-outside-photo" src="/__reviews-mockup/images/elh-patient-guide/botanical-coastal-meadow.jpg" alt="Coastal meadow beneath a broad oak, overlooking the ocean" />
+        <img className="cg-outside-photo" src="/__reviews-mockup/images/elh-patient-guide/nature-olive-ocean.jpg" alt="Sunlit olive branches against a softly blue ocean." />
       </section>
     </main>
   );

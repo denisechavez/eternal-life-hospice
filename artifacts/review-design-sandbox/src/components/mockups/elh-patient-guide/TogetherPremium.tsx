@@ -454,7 +454,7 @@ export function TogetherPremium() {
       `}</style>
 
       <section className="tp-panel tp-cover" aria-label="Front cover">
-        <img className="tp-cover-photo" src="/__reviews-mockup/images/elh-patient-guide/together-family-no-faces.jpg" alt="An older woman and her adult son seated close together at home, photographed below the shoulders with no faces visible." />
+        <img className="tp-cover-photo" src="/__reviews-mockup/images/elh-patient-guide/nature-oak-path.jpg" alt="A sunlit garden path beneath a leafy California oak canopy." />
         <div className="tp-cover-wash" aria-hidden="true" />
         <div className="tp-cover-top">
           <p className="tp-surface-label tp-cover-label">Front cover</p>
@@ -518,7 +518,7 @@ export function TogetherPremium() {
 
       <section className="tp-panel tp-back-cover" aria-label="Outside back cover with contact details">
         <p className="tp-surface-label tp-back-label">Outside back cover</p>
-        <img className="tp-back-photo" src="/__reviews-mockup/images/elh-patient-guide/together-family-no-faces.jpg" alt="An older woman and her adult son seated close together at home, photographed below the shoulders with no faces visible." />
+        <img className="tp-back-photo" src="/__reviews-mockup/images/elh-patient-guide/nature-creek.jpg" alt="Clear water flowing gently over smooth stones beside ferns." />
         <div className="tp-back-photo-shade" aria-hidden="true" />
         <div className="tp-back-content">
           <img className="tp-back-logo" src="/__reviews-mockup/images/elh-patient-guide/logo-plum.png" alt="Eternal Life Hospice" />

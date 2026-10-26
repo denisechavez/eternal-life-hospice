@@ -9,11 +9,11 @@ Garden is the owner's preferred direction for continued patient-guide review, no
 
 **Why:** The owner said, “So far I like the direction of Garden” while requesting its download.
 
-Do not show faces in the guide's family/caregiving photography. The real Aleksandra portrait in the welcome remains an explicitly requested exception.
+Use nature photographs rather than people for the guide's cover imagery. The real Aleksandra portrait in the welcome remains an explicitly requested exception. Front and back should use different, complementary scenes, not repeat the same photograph.
 
-**Why:** The owner rejected the replacement mother-and-son photograph because their faces were visible.
+**Why:** After rejecting visible faces, the owner clarified “use nature photos not people no faces” and flagged repeated front/back imagery.
 
-**How to apply:** Choose source imagery that excludes faces altogether, rather than relying on a crop that may expose them in another cover layout. Do not remove the separately requested founder portrait.
+**How to apply:** Select nature-only sources, with a distinct scene for each exterior cover. Do not remove the separately requested founder portrait.
 
 For the selected garden cover, keep a straight division between the plum title area and the photograph, not a feathered blend.
 
