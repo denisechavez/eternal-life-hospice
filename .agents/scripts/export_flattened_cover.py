@@ -17,7 +17,12 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("source", type=Path)
     parser.add_argument("destination", type=Path)
+    parser.add_argument("--width", type=float, default=17, help="Flat width in inches")
+    parser.add_argument("--height", type=float, default=11, help="Flat height in inches")
     args = parser.parse_args()
+    if args.width <= 0 or args.height <= 0:
+        parser.error("Page dimensions must be positive")
+    expected_pixels = (round(args.width * 300), round(args.height * 300))
     if not args.source.is_file():
         parser.error("Source PDF does not exist")
     if args.source.resolve() == args.destination.resolve():
@@ -37,8 +42,11 @@ def main():
                 raise ValueError(f"Expected two cover spreads, found {len(paths)}")
             for path in paths:
                 with Image.open(path) as image:
-                    if image.size != (5100, 3300):
-                        raise ValueError(f"Expected 17×11 at 300 dpi, got {image.size}")
+                    if image.size != expected_pixels:
+                        raise ValueError(
+                            f"Expected {args.width:g}×{args.height:g} at 300 dpi "
+                            f"({expected_pixels}), got {image.size}"
+                        )
                     images.append(image.convert("RGB"))
             images[0].save(
                 args.destination,
@@ -48,7 +56,7 @@ def main():
                 resolution=300,
                 quality=97,
                 subsampling=0,
-                title="Eternal Life Hospice — Garden Cover — 17 × 11 Review Proof",
+                title=f"Eternal Life Hospice — Garden Cover — {args.width:g} × {args.height:g} Review Proof",
                 author="Eternal Life Hospice",
                 subject="Outside and inside cover spreads; flattened for viewer compatibility",
             )
@@ -56,7 +64,10 @@ def main():
             for image in images:
                 image.close()
     print(args.destination)
-    print("Two 17 × 11-inch RGB spreads, flattened at 300 dpi; no live transparency.")
+    print(
+        f"Two {args.width:g} × {args.height:g}-inch RGB spreads, "
+        "flattened at 300 dpi; no live transparency."
+    )
 
 
 if __name__ == "__main__":

@@ -27,9 +27,9 @@ The supplied table of contents is reference for framing the founder welcome, not
 
 **Why:** The owner explicitly clarified the purpose of the contents-page reference.
 
-The selected cover prints flat at 17 × 11 inches and folds to 8.5 × 11 inches. Review flat artwork as two spreads: outside back on the left/front on the right, then inside front on the left/inside back on the right.
+The selected cover prints flat at 17.5 × 11 inches: an 8.5-inch back cover, a 0.5-inch spine for inserts and an 8.5-inch front cover. Review flat artwork as two spreads: outside back on the left/front on the right, then inside front on the left/inside back on the right.
 
-**Why:** The owner specified a 17 × 11-inch printed piece and asked for the cover surfaces to be stitched together.
+**Why:** After initially specifying 17 × 11, the owner requested a half-inch spine for inserts and explicitly chose 17.5 × 11 flat to preserve both 8.5 × 11 covers.
 
 **How to apply:** Preserve the approved artwork when assembling spreads. Distinguish an actual-size review proof from a press-ready file; printer bleed, color requirements and final content approval still need confirmation.
 

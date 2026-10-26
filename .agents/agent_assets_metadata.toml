@@ -2338,3 +2338,17 @@ mtime_ms = 1793054729870
 storage_uri = "gcs://replit-rams-assets-kirk/rams/assets/repl:e1b2f643-7869-4565-af0e-10c34575ee8d/2af8acb9-aa54-420a-b403-f2e4fc2f123c/7041da9d-5602-45f1-b29e-2760fdfb08b8"
 storage_version_token = "1793054751608731"
 content_type = "application/pdf"
+
+[[outputs]]
+id = "WjF0_BEqGLt96k3bPs-Xq"
+uri = "file://generated-artifacts/patient-guide/elh-garden-cover-17.5x11-half-inch-spine-proof.pdf"
+type = "pdf"
+title = "Garden Cover — 17.5 × 11 with ½-inch Spine"
+description = "Two actual-size cover spreads: 8.5-inch cover + half-inch plain plum spine + 8.5-inch cover. Straight-edge photo treatment preserved. Flattened review PDF; draft labels retained, no bleed or crop marks."
+logical_id = "e36662a1-cc06-49e1-a5b7-1ceb7087af80"
+content_hash = "sha256:88fd140a2287a3633ad8828cd53f30e8d05d10439afd188db8e46b99264cd0c0"
+size = 5408275
+mtime_ms = 1793055770722
+storage_uri = "gcs://replit-rams-assets-kirk/rams/assets/repl:e1b2f643-7869-4565-af0e-10c34575ee8d/e36662a1-cc06-49e1-a5b7-1ceb7087af80/d6b33ce9-9b15-4ca5-b8e4-12085d585c46"
+storage_version_token = "1793055802942407"
+content_type = "application/pdf"
