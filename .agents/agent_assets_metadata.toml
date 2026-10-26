@@ -2240,3 +2240,59 @@ mtime_ms = 1793009542434
 storage_uri = "gcs://replit-rams-assets-kirk/rams/assets/repl:e1b2f643-7869-4565-af0e-10c34575ee8d/1dd0a890-042a-446a-9e13-20e16302b26a/d7c564fa-0c82-4607-9f96-3efacecd06ef"
 storage_version_token = "1793009559863547"
 content_type = "image/jpeg"
+
+[[outputs]]
+id = "jO3L93GQh2dqav3COJI_3"
+uri = "file://generated-artifacts/social/gbp-sound-bath-playing-logo-1200x900.jpg"
+type = "image"
+title = "GBP — branded sound-bath image"
+description = "1200 × 900 pixels. Eternal logo bottom right; no faces visible."
+logical_id = "6152f745-cc73-483c-be10-56da22d652c1"
+content_hash = "sha256:bbd70cc4db1e9a0972f2dc035324e179bd0401d099261d71ef1f9d1ba2236b9c"
+size = 265335
+mtime_ms = 1793009743733
+storage_uri = "gcs://replit-rams-assets-kirk/rams/assets/repl:e1b2f643-7869-4565-af0e-10c34575ee8d/6152f745-cc73-483c-be10-56da22d652c1/eb2dee30-3e30-4b6b-b49f-5d07ec9a927a"
+storage_version_token = "1793009758855788"
+content_type = "image/jpeg"
+
+[[outputs]]
+id = "PA8yzcNjx5Rkrj5uVAz5i"
+uri = "file://generated-artifacts/social/facebook-sound-bath-playing-logo-1080x1080.jpg"
+type = "image"
+title = "Facebook — branded sound-bath image"
+description = "1080 × 1080 pixels. Eternal logo bottom right; no faces visible."
+logical_id = "37c25089-91f4-4324-92e8-875df12cfee2"
+content_hash = "sha256:9d033b78eb3e5af0c7f738a3612465ac10b9828f97db364cdb7b29c6b685fc1b"
+size = 276367
+mtime_ms = 1793009743765
+storage_uri = "gcs://replit-rams-assets-kirk/rams/assets/repl:e1b2f643-7869-4565-af0e-10c34575ee8d/37c25089-91f4-4324-92e8-875df12cfee2/7c0db3bc-806b-4152-abfe-57c6c7701693"
+storage_version_token = "1793009759606987"
+content_type = "image/jpeg"
+
+[[outputs]]
+id = "eafGCf9q4OtS4bwzhCMvf"
+uri = "file://generated-artifacts/social/linkedin-sound-bath-playing-logo-1200x627.jpg"
+type = "image"
+title = "LinkedIn — branded sound-bath image"
+description = "1200 × 627 pixels. Eternal logo bottom right; no faces visible."
+logical_id = "58b2a97c-fc93-4a15-a487-c356d0f9b8a3"
+content_hash = "sha256:ced2709e95f5e687620ceaf7b30cd8a7835f8316a8086067135559e0786cd127"
+size = 192983
+mtime_ms = 1793009743785
+storage_uri = "gcs://replit-rams-assets-kirk/rams/assets/repl:e1b2f643-7869-4565-af0e-10c34575ee8d/58b2a97c-fc93-4a15-a487-c356d0f9b8a3/89330763-853c-4f61-bf4f-0d33b04ebb84"
+storage_version_token = "1793009760376123"
+content_type = "image/jpeg"
+
+[[outputs]]
+id = "W_kT9eqsvTMrnseQJQfA4"
+uri = "file://generated-artifacts/social/sound-bath-branded-platform-captions.txt"
+type = "text"
+title = "GBP, Facebook and LinkedIn — post content"
+description = "Three separate ready-to-copy captions, article link and image alt text. Review drafts, not posted."
+logical_id = "6df4e866-9c9f-42de-b09d-4beef2849716"
+content_hash = "sha256:b935d3216478b64cba6bb332fda044558ce0902047cc9a11ed764a6c90a6b6a6"
+size = 4079
+mtime_ms = 1793009737501
+storage_uri = "gcs://replit-rams-assets-kirk/rams/assets/repl:e1b2f643-7869-4565-af0e-10c34575ee8d/6df4e866-9c9f-42de-b09d-4beef2849716/39529e38-aa80-43fd-8e7a-3b19cc5fb7fa"
+storage_version_token = "1793009761029323"
+content_type = "text/plain"
