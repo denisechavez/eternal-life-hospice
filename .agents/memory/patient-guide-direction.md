@@ -8,3 +8,7 @@ The printed patient guide is for patients' families. It should feel premium and 
 **Why:** The owner explicitly identified families as the audience and requested a stronger sense of connection than the initial cover concepts provided.
 
 **How to apply:** Evaluate concepts as a family resource to keep at home, not a clinical sales brochure. Carry the visual identity through the inside covers. Proposed founder-message copy remains a review draft until explicitly approved; do not present drafted wording as an authentic quotation or imitate a handwritten signature.
+
+A complete cover set has four distinct surfaces: front, inside front, inside back and outside back. Label each explicitly; an inside-back contact page is not a substitute for an outside back cover.
+
+**Why:** The owner expected the actual back cover when reviewing the cover-and-insides concept.

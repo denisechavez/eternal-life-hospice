@@ -2,7 +2,7 @@ import React from "react";
 
 export function GardenPremium() {
   return (
-    <main className="garden-premium" aria-label="Eternal Life Hospice patient and family guide, three-panel concept">
+    <main className="garden-premium" aria-label="Eternal Life Hospice patient and family guide, front cover, inside covers and outside back cover">
       <style>{`
         @font-face {
           font-family: GardenFraunces;
@@ -44,7 +44,7 @@ export function GardenPremium() {
           height: 100%;
           min-height: 100dvh;
           display: grid;
-          grid-template-columns: repeat(3, minmax(0, 1fr));
+          grid-template-columns: repeat(4, minmax(0, 1fr));
           overflow: hidden;
           background: var(--gp-paper);
           color: var(--gp-ink);
@@ -366,6 +366,57 @@ export function GardenPremium() {
           letter-spacing: .16em;
           text-transform: uppercase;
         }
+        .gp-back {
+          background: var(--gp-plum);
+          color: var(--gp-paper);
+        }
+        .gp-back .gp-label { color: #e1cfb4; }
+        .gp-back-image {
+          position: absolute;
+          inset: 0 0 auto;
+          height: 39%;
+          width: 100%;
+          object-fit: cover;
+          object-position: center 28%;
+        }
+        .gp-back-image-shade {
+          position: absolute;
+          inset: 0 0 auto;
+          height: 39%;
+          background: linear-gradient(180deg, rgba(35,24,34,.45), transparent 45%, rgba(68,43,67,.18));
+          border-bottom: 1px solid var(--gp-gold);
+        }
+        .gp-back-content {
+          position: absolute;
+          inset: 44% 8.2% 8.2%;
+          display: flex;
+          flex-direction: column;
+          align-items: flex-start;
+        }
+        .gp-back-logo { width: 145px; height: auto; display: block; }
+        .gp-back-tagline {
+          font: italic 400 27px/1.25 GardenFraunces, Georgia, serif;
+          margin: 27px 0 26px;
+          color: #f7efdf;
+        }
+        .gp-back-contacts {
+          width: 100%;
+          border-top: 1px solid rgba(225,207,180,.5);
+          padding-top: 20px;
+          font-size: 14px;
+          line-height: 1.65;
+        }
+        .gp-back-contacts p { margin: 0 0 9px; }
+        .gp-back-contacts strong { font-size: 21px; font-weight: 500; }
+        .gp-back-contacts small { font-size: 11px; letter-spacing: .1em; color: #e1cfb4; margin-left: 12px; }
+        .gp-back-site {
+          margin: auto 0 0;
+          padding-top: 18px;
+          font-size: 13px;
+          letter-spacing: .09em;
+          color: #e1cfb4;
+        }
+        .gp-back .gp-review { color: #e1cfb4; }
         @media (max-width: 700px) {
           .garden-premium { min-height: 100dvh; }
           .gp-letter-copy { line-height: 1.42; }
@@ -439,6 +490,32 @@ export function GardenPremium() {
           </div>
         </div>
         <div className="gp-review">eternallifehospice.com <span aria-hidden="true"> · </span> DESIGN CONCEPT · FOR REVIEW</div>
+      </section>
+
+      <section className="gp-panel gp-back" aria-label="Outside back cover">
+        <img
+          className="gp-back-image"
+          src="/__reviews-mockup/images/elh-patient-guide/premium-garden.jpg"
+          alt="Sunlight through olive branches in a garden"
+        />
+        <div className="gp-back-image-shade" aria-hidden="true" />
+        <p className="gp-label">Outside back cover</p>
+        <div className="gp-back-content">
+          <img
+            className="gp-back-logo"
+            src="/__reviews-mockup/images/elh-patient-guide/logo-cream.png"
+            alt="Eternal Life Hospice"
+          />
+          <p className="gp-back-tagline">Care That Honors Life.</p>
+          <div className="gp-back-contacts">
+            <p><strong>805.410.1151</strong><small>MAIN</small></p>
+            <p>805.953.7273<small>OFFICE</small></p>
+            <p>info@eternallifehospice.com</p>
+            <p>4165 E Thousand Oaks Blvd, Ste 325B<br />Westlake Village, CA 91362</p>
+          </div>
+          <p className="gp-back-site">eternallifehospice.com</p>
+        </div>
+        <div className="gp-review">DESIGN CONCEPT · FOR REVIEW</div>
       </section>
     </main>
   );
