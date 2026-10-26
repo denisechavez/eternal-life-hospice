@@ -6,6 +6,7 @@
 #
 # Usage (from repo root):
 #     bash website/test-predeploy-chain.sh
+#     bash website/test-predeploy-chain.sh --isolated  # No app APIs or site writes
 #
 # Exit: 0 = all checks passed,  1 = at least one check failed
 # ─────────────────────────────────────────────────────────────────────────────
@@ -16,6 +17,96 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 BASE_ABS="$SCRIPT_DIR/elh-preview"
 COMMAND="bash ../elh-predeploy.sh"
+
+# Exercise the real wrapper with temporary command stubs. Never run application
+# APIs, providers, generators or publication jobs in this regression check.
+python3 - "$SCRIPT_DIR" <<'PY'
+import os
+from pathlib import Path
+import re
+import shutil
+import subprocess
+import sys
+import tempfile
+
+source = Path(sys.argv[1])
+retry = "node --experimental-websocket ../test-care-brief-signup-retry.mjs"
+layout = "node --experimental-websocket ../test-care-brief-layout.mjs"
+footer = "python3 ../check-footer-parity.py"
+sentinel = "SENTINEL: test-care-brief-signup-retry.mjs browser checks OK"
+wrapper = (source / "elh-predeploy.sh").read_text()
+chain = wrapper.split("set +o pipefail\n(\n", 1)[1].split("\n) 2>&1", 1)[0]
+commands = [line.strip() for line in chain.splitlines() if line.strip()]
+assert commands.count(retry) == 1, "Retry suite must run exactly once with WebSocket support"
+assert commands.index(retry) == commands.index(layout) + 1, "Retry suite must follow layout guard"
+assert commands.index(footer) == commands.index(retry) + 1, "Retry suite must precede footer guard"
+assert commands.index(retry) < commands.index("node assets/build-search-index.js --check")
+assert wrapper.count('"' + sentinel + '"') == 1, "Wrapper must require retry sentinel"
+smoke = (source / "test-predeploy-chain.sh").read_text()
+assert smoke.count('  "' + sentinel + '"') == 1, "Smoke test must require retry sentinel"
+sentinels = re.findall(r'^  "(SENTINEL: .+)"$', wrapper, re.M)
+
+with tempfile.TemporaryDirectory(prefix="elh-predeploy-chain-") as temp:
+    root = Path(temp)
+    site = root / "elh-preview"
+    site.mkdir()
+    (root / "elh-predeploy.sh").write_text(wrapper)
+    log = root / "commands.log"
+    bindir = root / "bin"
+    bindir.mkdir()
+    # Use the real interpreter path so PATH shims cannot recursively invoke
+    # themselves. Every command is logged, including the Node feature flag.
+    stub = f"#!{sys.executable}\n" + '''
+import os
+from pathlib import Path
+import sys
+command = Path(sys.argv[0]).name + " " + " ".join(sys.argv[1:])
+if Path(sys.argv[0]).name == "cookie-stub":
+    command = "bash ../check-cookie-settings.sh"
+with open(os.environ["CHAIN_LOG"], "a") as output:
+    output.write(command + "\\n")
+is_retry = command == os.environ["RETRY_COMMAND"]
+if is_retry and os.environ["CHAIN_MODE"] == "failure":
+    print("Injected Care Brief retry failure", flush=True)
+    sys.exit(37)
+if not (is_retry and os.environ["CHAIN_MODE"] == "missing"):
+    for sentinel in os.environ["CHAIN_SENTINELS"].splitlines():
+        if sentinel.split(": ", 1)[1].split(" ", 1)[0] in command:
+            print(sentinel)
+'''
+    for name in ("node", "python3", "cookie-stub"):
+        executable = bindir / name
+        executable.write_text(stub)
+        executable.chmod(0o755)
+    (root / "check-cookie-settings.sh").write_text('exec cookie-stub "$@"\n')
+    env = dict(os.environ, PATH=str(bindir) + os.pathsep + os.environ["PATH"],
+               CHAIN_LOG=str(log), RETRY_COMMAND=retry,
+               CHAIN_SENTINELS="\n".join(sentinels))
+    for mode in ("success", "failure", "missing"):
+        log.write_text("")
+        before = {p.relative_to(site): p.read_bytes() for p in site.rglob("*") if p.is_file()}
+        result = subprocess.run([shutil.which("bash"), "../elh-predeploy.sh"],
+                                cwd=site, env=dict(env, CHAIN_MODE=mode),
+                                text=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+        actual = log.read_text().splitlines()
+        expected = commands[:commands.index(retry) + 1] if mode == "failure" else commands
+        assert actual == expected, f"{mode}: wrong command order: {actual}"
+        expected_status = {"success": 0, "failure": 37, "missing": 1}[mode]
+        assert result.returncode == expected_status, f"{mode}: {result.stdout}"
+        if mode == "failure":
+            assert "Injected Care Brief retry failure" in result.stdout
+            assert "Pre-deploy chain FAILED (exit 37)" in result.stdout
+        if mode == "missing":
+            assert "MISSING: " + sentinel in result.stdout, result.stdout
+        after = {p.relative_to(site): p.read_bytes() for p in site.rglob("*") if p.is_file()}
+        assert after == before, f"{mode}: changed publication fixture"
+        print(f"PASS: isolated pre-deploy chain {mode}")
+print("SENTINEL: test-predeploy-chain.sh isolated checks OK")
+PY
+
+if [[ "${1:-}" == "--isolated" ]]; then
+  exit 0
+fi
 
 if [[ ! -d "$BASE_ABS" ]]; then
   echo "❌  build.base directory not found: $BASE_ABS"
@@ -86,6 +177,7 @@ SENTINELS=(
   "SENTINEL: check-header-parity.py self-test OK"
   "SENTINEL: test-header-mobile.py browser checks OK"
   "SENTINEL: test-care-brief-layout.mjs browser checks OK"
+  "SENTINEL: test-care-brief-signup-retry.mjs browser checks OK"
   "SENTINEL: check-footer-parity.py self-test OK"
   "SENTINEL: check-agency-separation.py OK"
   "SENTINEL: test-service-publication.py OK"
