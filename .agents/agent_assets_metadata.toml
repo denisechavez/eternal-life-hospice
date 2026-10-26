@@ -2198,3 +2198,45 @@ mtime_ms = 1793009080174
 storage_uri = "gcs://replit-rams-assets-kirk/rams/assets/repl:e1b2f643-7869-4565-af0e-10c34575ee8d/1010eab6-1aef-4af5-b781-633931b7fbb5/c8e071e6-b96f-4210-8354-74202c289da5"
 storage_version_token = "1793009094331156"
 content_type = "text/plain"
+
+[[outputs]]
+id = "yNoEmZuZdP1Jw_UETeRst"
+uri = "file://generated-artifacts/social/gbp-sound-bath-playing-1200x900.jpg"
+type = "image"
+title = "GBP — singing bowl being played"
+description = "1200 × 900 px. Photorealistic AI-generated bedside scene; no faces visible."
+logical_id = "e6dd69d7-2289-4397-ad7f-0d1ed11eed54"
+content_hash = "sha256:5c3423a8f2ce2165fe556434b9fadbd56975c53e83063241bc67a78a645744ec"
+size = 239801
+mtime_ms = 1793009542370
+storage_uri = "gcs://replit-rams-assets-kirk/rams/assets/repl:e1b2f643-7869-4565-af0e-10c34575ee8d/e6dd69d7-2289-4397-ad7f-0d1ed11eed54/025fd642-f514-495e-bed5-e806abb91a43"
+storage_version_token = "1793009558424531"
+content_type = "image/jpeg"
+
+[[outputs]]
+id = "qktkncmfdYkONNCIh9l48"
+uri = "file://generated-artifacts/social/facebook-sound-bath-playing-1080x1080.jpg"
+type = "image"
+title = "Facebook — singing bowl being played"
+description = "1080 × 1080 px. Updated image to pair with the Facebook caption."
+logical_id = "697a6527-7a6d-4557-ab6d-d447d47f77e3"
+content_hash = "sha256:ca98fa3a56f27dd724494123293e272e3a47338b2ea06d1f6d2498000fdbffc1"
+size = 250116
+mtime_ms = 1793009542410
+storage_uri = "gcs://replit-rams-assets-kirk/rams/assets/repl:e1b2f643-7869-4565-af0e-10c34575ee8d/697a6527-7a6d-4557-ab6d-d447d47f77e3/5455b61b-d465-48c4-8faf-1969cc8b7469"
+storage_version_token = "1793009559215477"
+content_type = "image/jpeg"
+
+[[outputs]]
+id = "GSDW0Gte0yYnUOBQ19fjJ"
+uri = "file://generated-artifacts/social/linkedin-sound-bath-playing-1200x627.jpg"
+type = "image"
+title = "LinkedIn — singing bowl being played"
+description = "1200 × 627 px. Updated image to pair with the LinkedIn caption."
+logical_id = "1dd0a890-042a-446a-9e13-20e16302b26a"
+content_hash = "sha256:d724ca4687436a3782bfafee48f9dd01948e1af19f66da95ce6c4a907a90093f"
+size = 172903
+mtime_ms = 1793009542434
+storage_uri = "gcs://replit-rams-assets-kirk/rams/assets/repl:e1b2f643-7869-4565-af0e-10c34575ee8d/1dd0a890-042a-446a-9e13-20e16302b26a/d7c564fa-0c82-4607-9f96-3efacecd06ef"
+storage_version_token = "1793009559863547"
+content_type = "image/jpeg"
