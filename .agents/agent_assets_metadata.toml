@@ -2352,3 +2352,45 @@ mtime_ms = 1793055770722
 storage_uri = "gcs://replit-rams-assets-kirk/rams/assets/repl:e1b2f643-7869-4565-af0e-10c34575ee8d/e36662a1-cc06-49e1-a5b7-1ceb7087af80/37835a21-b941-427b-8009-8ab322a383eb"
 storage_version_token = "1793056160194025"
 content_type = "application/pdf"
+
+[[outputs]]
+id = "4KN4M_2GoUxJLXTKAO8gF"
+uri = "file://generated-artifacts/patient-guide/elh-garden-17.5x11-spine-review.pdf"
+type = "pdf"
+title = "Garden — Two-Page Cover PDF"
+description = "17.5 × 11 inches with a ½-inch spine. Page 1: outside back + spine + front. Page 2: inside front + spine + inside back. Flattened review proof, not press-ready."
+logical_id = "303b6a36-89bd-41d8-87a0-f69457cfc7e3"
+content_hash = "sha256:92e4ce7ef15a97df03ff40dc028a8c5d592acd0b3f3babf19b6e51dc31762c98"
+size = 5408275
+mtime_ms = 1793058421487
+storage_uri = "gcs://replit-rams-assets-kirk/rams/assets/repl:e1b2f643-7869-4565-af0e-10c34575ee8d/303b6a36-89bd-41d8-87a0-f69457cfc7e3/d2dc72be-973a-48d6-a389-7325eaa04011"
+storage_version_token = "1793058567803178"
+content_type = "application/pdf"
+
+[[outputs]]
+id = "hToG73NiBybWUWZnEsnxw"
+uri = "file://generated-artifacts/patient-guide/elh-together-17.5x11-spine-review.pdf"
+type = "pdf"
+title = "Held Together — Two-Page Cover PDF"
+description = "17.5 × 11 inches with a ½-inch spine. Page 1: outside back + spine + front. Page 2: inside front + spine + inside back. Flattened review proof, not press-ready."
+logical_id = "b8bc2512-0a8e-438d-9083-f8ae7ea6a278"
+content_hash = "sha256:baaad38d850237f5e6657d757eab38c1c5cbe9469bf9fcfc74a852147b9d47e5"
+size = 5051080
+mtime_ms = 1793058525462
+storage_uri = "gcs://replit-rams-assets-kirk/rams/assets/repl:e1b2f643-7869-4565-af0e-10c34575ee8d/b8bc2512-0a8e-438d-9083-f8ae7ea6a278/e6ee687e-a88a-4be4-ad80-e6bc90d40ec8"
+storage_version_token = "1793058568540738"
+content_type = "application/pdf"
+
+[[outputs]]
+id = "VVUK7oM6N0Zg8crTE87AI"
+uri = "file://generated-artifacts/patient-guide/elh-botanical-17.5x11-spine-review.pdf"
+type = "pdf"
+title = "Botanical — Two-Page Cover PDF"
+description = "17.5 × 11 inches with a ½-inch spine. Page 1: outside back + spine + front. Page 2: inside front + spine + inside back. Flattened review proof, not press-ready."
+logical_id = "aef4b350-2dab-485a-8e10-32d0fd48c516"
+content_hash = "sha256:fe5bf7d9022215d06fa450ebb795c827dde69b0197a23db48546a406e729e9be"
+size = 5038701
+mtime_ms = 1793058544578
+storage_uri = "gcs://replit-rams-assets-kirk/rams/assets/repl:e1b2f643-7869-4565-af0e-10c34575ee8d/aef4b350-2dab-485a-8e10-32d0fd48c516/7b262233-1a14-457f-9ca5-d58a30c3b5a1"
+storage_version_token = "1793058569532253"
+content_type = "application/pdf"

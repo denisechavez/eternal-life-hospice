@@ -411,7 +411,7 @@ export function BotanicalPremium() {
           font-size: 10px;
           letter-spacing: .09em;
         }
-        @media (max-width: 1200px) {
+        @media screen and (max-width: 1200px) {
           .cg-front-logo { left: 8%; width: 28%; }
           .cg-front-title { left: 8%; font-size: clamp(35px, 2.1vw, 57px); }
           .cg-title-mark, .cg-front-tagline, .cg-front-site { left: 8%; }

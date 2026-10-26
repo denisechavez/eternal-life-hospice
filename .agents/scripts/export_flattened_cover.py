@@ -19,6 +19,7 @@ def main():
     parser.add_argument("destination", type=Path)
     parser.add_argument("--width", type=float, default=17, help="Flat width in inches")
     parser.add_argument("--height", type=float, default=11, help="Flat height in inches")
+    parser.add_argument("--concept", default="Garden", help="Concept name for PDF metadata")
     args = parser.parse_args()
     if args.width <= 0 or args.height <= 0:
         parser.error("Page dimensions must be positive")
@@ -56,7 +57,7 @@ def main():
                 resolution=300,
                 quality=97,
                 subsampling=0,
-                title=f"Eternal Life Hospice — Garden Cover — {args.width:g} × {args.height:g} Review Proof",
+                title=f"Eternal Life Hospice — {args.concept} Cover — {args.width:g} × {args.height:g} Review Proof",
                 author="Eternal Life Hospice",
                 subject="Outside and inside cover spreads; flattened for viewer compatibility",
             )

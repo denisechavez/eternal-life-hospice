@@ -48,3 +48,9 @@ Use a flattened compatibility PDF for owner review when transparency-heavy cover
 **Why:** The owner's PDF viewer omitted the front cover's plum shading even though the same source PDF rendered correctly in Poppler. A valid PDF, matching checksum and successful local render do not prove all viewers preserve its appearance.
 
 **How to apply:** Composite each finished spread to opaque RGB at the intended print resolution before embedding it in a compatibility copy. Verify page dimensions and visual appearance. Keep the editable/vector original separately and disclose that flattened text is no longer selectable; this does not replace press-specific color and bleed preparation.
+
+Keep responsive screen breakpoints out of printed cover artwork.
+
+**Why:** Chromium printing activated small-viewport rules despite the large physical sheet size, rearranging photographs and clipping the founder letter while still producing a valid two-page PDF.
+
+**How to apply:** Limit responsive layout rules to screen media and visually inspect both rendered PDF pages, not just page count and dimensions.

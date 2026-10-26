@@ -431,7 +431,7 @@ export function TogetherPremium() {
           writing-mode: vertical-rl;
         }
 
-        @media (max-width: 1050px) {
+        @media screen and (max-width: 1050px) {
           .together-premium { grid-template-columns: 1fr; height: auto; min-height: 100dvh; overflow: visible; }
           .tp-panel { min-height: 100dvh; }
           .tp-panel + .tp-panel { border-left: 0; border-top: 1px solid rgba(64,40,65,.24); }
