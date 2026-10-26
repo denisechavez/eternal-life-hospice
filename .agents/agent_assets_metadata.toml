@@ -2436,3 +2436,17 @@ mtime_ms = 1793058699244
 storage_uri = "gcs://replit-rams-assets-kirk/rams/assets/repl:e1b2f643-7869-4565-af0e-10c34575ee8d/b2fcce8d-0683-43d1-abf8-d3b083330220/b05cb8cf-b890-457e-a488-e6d7b6f73d76"
 storage_version_token = "1793058706373880"
 content_type = "application/pdf"
+
+[[outputs]]
+id = "N09HqrxSB6WsNeX7t94YY"
+uri = "file://generated-artifacts/patient-guide/ELH-Handbook-Concepts-7-8-9.zip"
+type = "unspecified"
+title = "Download All Three Handbook Concepts"
+description = "One ZIP containing the numbered Garden, Held Together and Botanical PDFs—each with two pages and a ½-inch spine."
+logical_id = "ab0c9b95-dd13-4271-9192-d782b0af1536"
+content_hash = "sha256:3fe94eff774cc26db6732b7e9ae9d12c06f7734d989a11162983a5e2e2355e2d"
+size = 13075369
+mtime_ms = 1793058733396
+storage_uri = "gcs://replit-rams-assets-kirk/rams/assets/repl:e1b2f643-7869-4565-af0e-10c34575ee8d/ab0c9b95-dd13-4271-9192-d782b0af1536/025a6bec-e48c-4130-a5c6-bc9bc9d74cf6"
+storage_version_token = "1793058738918431"
+content_type = "application/octet-stream"
