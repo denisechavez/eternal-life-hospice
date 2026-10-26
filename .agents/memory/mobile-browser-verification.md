@@ -36,3 +36,12 @@ keyboard controls or autofill overlays.
 **How to apply:** Report resized-viewport checks as emulation. Keep physical
 device keyboard testing separate; never infer native keyboard usability
 from passing headless geometry and focus-order checks.
+
+For deterministic connection-failure coverage, abort at the browser request
+layer rather than destroying the local fixture's HTTP socket.
+
+**Why:** Chromium can transparently resend a POST after a socket closes,
+consuming a queued retry response before the UI ever sees a failure.
+
+**How to apply:** Keep failure injection local and count browser-level attempts;
+do not assume one destroyed connection equals one failed user submission.
