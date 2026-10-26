@@ -2394,3 +2394,45 @@ mtime_ms = 1793058544578
 storage_uri = "gcs://replit-rams-assets-kirk/rams/assets/repl:e1b2f643-7869-4565-af0e-10c34575ee8d/aef4b350-2dab-485a-8e10-32d0fd48c516/7b262233-1a14-457f-9ca5-d58a30c3b5a1"
 storage_version_token = "1793058569532253"
 content_type = "application/pdf"
+
+[[outputs]]
+id = "ZXddWIsAkRLppuf5pVJyU"
+uri = "file://generated-artifacts/patient-guide/7.%20ELH-Handbook-Concept-Garden.pdf"
+type = "pdf"
+title = "7. ELH-Handbook-Concept-Garden"
+description = "Two-page cover review PDF: outside and inside spreads, 17.5 × 11 inches with a ½-inch spine."
+logical_id = "b5c8bb50-8261-4544-87f9-8f8e8d6f04fb"
+content_hash = "sha256:92e4ce7ef15a97df03ff40dc028a8c5d592acd0b3f3babf19b6e51dc31762c98"
+size = 5408275
+mtime_ms = 1793058699204
+storage_uri = "gcs://replit-rams-assets-kirk/rams/assets/repl:e1b2f643-7869-4565-af0e-10c34575ee8d/b5c8bb50-8261-4544-87f9-8f8e8d6f04fb/429b3ff7-d8a9-4244-891f-6ed3e447d5b0"
+storage_version_token = "1793058704871889"
+content_type = "application/pdf"
+
+[[outputs]]
+id = "jttcFlcW-B1bNcfNZaqex"
+uri = "file://generated-artifacts/patient-guide/8.%20ELH-Handbook-Concept-Held-Together.pdf"
+type = "pdf"
+title = "8. ELH-Handbook-Concept-Held-Together"
+description = "Two-page cover review PDF: outside and inside spreads, 17.5 × 11 inches with a ½-inch spine."
+logical_id = "2ad23f86-71af-4530-a758-21f0085d6d21"
+content_hash = "sha256:baaad38d850237f5e6657d757eab38c1c5cbe9469bf9fcfc74a852147b9d47e5"
+size = 5051080
+mtime_ms = 1793058699228
+storage_uri = "gcs://replit-rams-assets-kirk/rams/assets/repl:e1b2f643-7869-4565-af0e-10c34575ee8d/2ad23f86-71af-4530-a758-21f0085d6d21/96bb00e7-ca3b-4f6e-a4c1-9aef3a6993a0"
+storage_version_token = "1793058705644910"
+content_type = "application/pdf"
+
+[[outputs]]
+id = "yUHVnwRhealUerFL1vT6w"
+uri = "file://generated-artifacts/patient-guide/9.%20ELH-Handbook-Concept-Botanical.pdf"
+type = "pdf"
+title = "9. ELH-Handbook-Concept-Botanical"
+description = "Two-page cover review PDF: outside and inside spreads, 17.5 × 11 inches with a ½-inch spine."
+logical_id = "b2fcce8d-0683-43d1-abf8-d3b083330220"
+content_hash = "sha256:fe5bf7d9022215d06fa450ebb795c827dde69b0197a23db48546a406e729e9be"
+size = 5038701
+mtime_ms = 1793058699244
+storage_uri = "gcs://replit-rams-assets-kirk/rams/assets/repl:e1b2f643-7869-4565-af0e-10c34575ee8d/b2fcce8d-0683-43d1-abf8-d3b083330220/b05cb8cf-b890-457e-a488-e6d7b6f73d76"
+storage_version_token = "1793058706373880"
+content_type = "application/pdf"
