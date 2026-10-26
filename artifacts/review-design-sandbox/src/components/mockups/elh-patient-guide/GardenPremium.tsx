@@ -77,17 +77,14 @@ export function GardenPremium() {
         .gp-cover:before {
           content: "";
           position: absolute;
-          inset: 0;
-          background:
-            linear-gradient(180deg, rgba(52,33,50,.97) 0%, rgba(61,39,57,.94) 35%, rgba(55,37,51,.1) 65%, rgba(50,34,47,.12) 100%),
-            url("/__reviews-mockup/images/elh-patient-guide/premium-garden.jpg") center 54% / cover;
+          inset: 53% 0 0;
+          background: url("/__reviews-mockup/images/elh-patient-guide/premium-garden.jpg") center 74% / cover;
         }
         .gp-cover:after {
           content: "";
           position: absolute;
           inset: 0;
           pointer-events: none;
-          background: linear-gradient(180deg, transparent 62%, rgba(39,26,38,.44) 100%);
           box-shadow: inset 0 0 0 13px rgba(185,156,102,.18);
         }
         .gp-cover .gp-label { color: rgba(247,239,224,.73); }
@@ -132,12 +129,15 @@ export function GardenPremium() {
         .gp-cover-bottom {
           position: absolute;
           z-index: 2;
-          left: 8.2%;
-          right: 8.2%;
-          bottom: 5.1%;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          height: 8.5%;
+          padding: 0 8.2%;
+          background: var(--gp-plum);
           display: flex;
           justify-content: space-between;
-          align-items: flex-end;
+          align-items: center;
           color: #fff8eb;
           font-size: clamp(9px, 1.55vw, 12px);
           letter-spacing: .12em;
@@ -145,9 +145,9 @@ export function GardenPremium() {
         .gp-cover-bottom:before {
           content: "";
           position: absolute;
-          left: 0;
-          right: 0;
-          top: -11px;
+          left: 8.2%;
+          right: 8.2%;
+          top: 0;
           height: 1px;
           background: rgba(229,208,168,.72);
         }

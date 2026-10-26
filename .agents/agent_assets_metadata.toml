@@ -2310,3 +2310,31 @@ mtime_ms = 1793053824782
 storage_uri = "gcs://replit-rams-assets-kirk/rams/assets/repl:e1b2f643-7869-4565-af0e-10c34575ee8d/836afbf3-15ea-4e8a-9348-ee0930dbefb3/c043367d-9ca5-40d5-8c0a-750a4772ce78"
 storage_version_token = "1793053903477555"
 content_type = "application/pdf"
+
+[[outputs]]
+id = "P65Z3G5pey-OWYC6grEfQ"
+uri = "file://generated-artifacts/patient-guide/elh-garden-cover-17x11-flattened-proof.pdf"
+type = "pdf"
+title = "Corrected Garden Cover — Flattened 17 × 11 PDF"
+description = "Two-page compatibility proof with plum shading baked into the artwork. Outside and inside spreads at exactly 17 × 11 inches, flattened at 300 dpi. Draft labels retained; no bleed or crop marks."
+logical_id = "deb17570-a940-43d3-b925-a1363581c6d2"
+content_hash = "sha256:e79472f8ccedbc0b375584db302c56afed8f566358dceb8ca8d05fb932e9e3c2"
+size = 5681347
+mtime_ms = 1793054568482
+storage_uri = "gcs://replit-rams-assets-kirk/rams/assets/repl:e1b2f643-7869-4565-af0e-10c34575ee8d/deb17570-a940-43d3-b925-a1363581c6d2/6195123b-2d3f-4bee-afdb-3d64b3ccb173"
+storage_version_token = "1793054621647222"
+content_type = "application/pdf"
+
+[[outputs]]
+id = "AM0ndNHnZHZ5v-TzHpaBk"
+uri = "file://generated-artifacts/patient-guide/elh-garden-cover-17x11-straight-edge-proof.pdf"
+type = "pdf"
+title = "Garden Cover — Straight-Edge 17 × 11 Proof"
+description = "Updated garden front cover with solid plum and a crisp horizontal photo edge instead of feathering. Two 17 × 11-inch spreads, flattened for consistent viewing. Inside covers unchanged; draft labels retained. Review proof without bleed or crop marks."
+logical_id = "2af8acb9-aa54-420a-b403-f2e4fc2f123c"
+content_hash = "sha256:9cbf0ccda0cedf63ba2190265b7b75d14e90470b9393ac076cc6944b8de9e27a"
+size = 5357987
+mtime_ms = 1793054729870
+storage_uri = "gcs://replit-rams-assets-kirk/rams/assets/repl:e1b2f643-7869-4565-af0e-10c34575ee8d/2af8acb9-aa54-420a-b403-f2e4fc2f123c/7041da9d-5602-45f1-b29e-2760fdfb08b8"
+storage_version_token = "1793054751608731"
+content_type = "application/pdf"

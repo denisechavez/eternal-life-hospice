@@ -5,6 +5,10 @@ description: Audience and visual direction for the printed patient and family gu
 
 The printed patient guide is for patients' families. It should feel premium and sophisticated while remaining relatable, warm and connected. Nature and professionally lit photography are welcome.
 
+For the selected garden cover, keep a straight division between the plum title area and the photograph, not a feathered blend.
+
+**Why:** The owner explicitly requested a straight line instead of feathering because it looks cleaner.
+
 **Why:** The owner explicitly identified families as the audience and requested a stronger sense of connection than the initial cover concepts provided.
 
 **How to apply:** Evaluate concepts as a family resource to keep at home, not a clinical sales brochure. Carry the visual identity through the inside covers. Proposed founder-message copy remains a review draft until explicitly approved; do not present drafted wording as an authentic quotation or imitate a handwritten signature.
@@ -28,3 +32,9 @@ The selected cover prints flat at 17 × 11 inches and folds to 8.5 × 11 inches.
 **Why:** The owner specified a 17 × 11-inch printed piece and asked for the cover surfaces to be stitched together.
 
 **How to apply:** Preserve the approved artwork when assembling spreads. Distinguish an actual-size review proof from a press-ready file; printer bleed, color requirements and final content approval still need confirmation.
+
+Use a flattened compatibility PDF for owner review when transparency-heavy cover art is exported from Chromium.
+
+**Why:** The owner's PDF viewer omitted the front cover's plum shading even though the same source PDF rendered correctly in Poppler. A valid PDF, matching checksum and successful local render do not prove all viewers preserve its appearance.
+
+**How to apply:** Composite each finished spread to opaque RGB at the intended print resolution before embedding it in a compatibility copy. Verify page dimensions and visual appearance. Keep the editable/vector original separately and disclose that flattened text is no longer selectable; this does not replace press-specific color and bleed preparation.
