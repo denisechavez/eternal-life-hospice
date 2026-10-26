@@ -26,3 +26,13 @@ after the document and fonts finish loading.
 **How to apply:** Compare the requested width with innerWidth, compare visual
 viewport width with documentElement.clientWidth at scale 1, and wait for
 anchor scrolling to settle before measuring visibility.
+
+Resized Chromium viewports are not real software-keyboard verification.
+
+**Why:** Desktop emulation can shrink both layout and visual viewports but
+does not reproduce iOS visual-only panning, automatic input zoom, native
+keyboard controls or autofill overlays.
+
+**How to apply:** Report resized-viewport checks as emulation. Keep physical
+device keyboard testing separate; never infer native keyboard usability
+from passing headless geometry and focus-order checks.

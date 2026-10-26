@@ -2,7 +2,10 @@
 // Run from any directory:
 // node --experimental-websocket website/test-care-brief-layout.mjs
 // Requires Chromium and Node's built-in WebSocket; no preview server or secrets.
+// Includes focused reduced-viewport checks from care-brief-keyboard-checks.mjs.
+// These emulate a keyboard resize, not a real-device software keyboard.
 import assert from "node:assert/strict";
+import {checkKeyboardViewports} from "./care-brief-keyboard-checks.mjs";
 import {spawn} from "node:child_process";
 import {createServer} from "node:http";
 import {mkdtemp, readFile, rm} from "node:fs/promises";
@@ -237,6 +240,7 @@ try {
     console.log("PASS negative control: " + label);
   }
   assert.deepEqual((await inspect()).errors, [], "Restored layout should pass");
+  await checkKeyboardViewports({call, evaluate, until, sleep});
   // Prove the submit-event fence without activating or filling the form.
   assert.equal(await evaluate(`(()=>{
     const event=new Event('submit',{bubbles:true,cancelable:true});
