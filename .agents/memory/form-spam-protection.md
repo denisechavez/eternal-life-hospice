@@ -15,6 +15,18 @@ instances. Persist keyed digests rather than intake contents or raw contacts.
 When a configured CAPTCHA service is unavailable, fail clearly with a telephone
 fallback rather than claiming delivery or silently skipping verification.
 
+Do not assume a normal browser's same-origin GET includes an Origin header.
+Challenge issuance and submission need different, tightly scoped origin checks.
+
+**Why:** A real referral failed before submission because the browser-style
+security GET was rejected, while test helpers that always supplied Origin
+passed. Mocking the challenge endpoint also hid this integration failure.
+
+**How to apply:** Test actual challenge HTTP requests with browser-default
+headers, not only explicit-Origin helpers or mocked challenge responses.
+Keep POST verification strict, reject conflicting origins and validate
+cross-site denial alongside every legitimate-browser regression.
+
 A missed acknowledgment warrants an operations alert even when isolated;
 do not apply the verification outage's multi-failure threshold to it.
 

@@ -856,7 +856,7 @@ class PrettyURLHandler(http.server.SimpleHTTPRequestHandler):
             return
         if parsed.path == "/api/form-security":
             try:
-                if not self._is_same_origin():
+                if not self._is_same_origin(allow_same_origin_get=True):
                     raise IntakeError("invalid_origin", "Open this form from the Eternal website.", 403)
                 if not FORM_CLIENT_RATE_LIMITER.allow("challenge:" + self._client_key()):
                     raise IntakeError("rate_limited", "Please wait or call 805.953.7273.", 429)
@@ -1206,11 +1206,23 @@ class PrettyURLHandler(http.server.SimpleHTTPRequestHandler):
                 },
             )
 
-    def _is_same_origin(self):
+    def _is_same_origin(self, allow_same_origin_get=False):
         origin = (self.headers.get("Origin") or "").strip()
         host = (self.headers.get("Host") or "").strip().lower()
-        if not origin or not host:
+        if not host:
             return False
+        if not origin:
+            # Browsers normally omit Origin on same-origin GET fetches.
+            # Fetch Metadata is browser-controlled; never relax POST checks.
+            if not allow_same_origin_get or self.command != "GET":
+                return False
+            if (self.headers.get("Sec-Fetch-Site") or "").lower() != "same-origin":
+                return False
+            origin = (self.headers.get("Referer") or "").strip()
+            # Referrer-Policy/privacy tools may omit Referer. Same-origin
+            # Fetch Metadata still identifies this browser request correctly.
+            if not origin:
+                return True
         try:
             parsed = urlsplit(origin)
         except ValueError:

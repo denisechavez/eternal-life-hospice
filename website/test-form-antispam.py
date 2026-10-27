@@ -19,6 +19,39 @@ import form_antispam as guard
 import form_intake
 
 
+class OriginChecksTests(unittest.TestCase):
+    def test_browser_get_metadata_is_scoped_to_challenge_get_only(self):
+        handler = object.__new__(devserver.PrettyURLHandler)
+        handler.command = "GET"
+        handler.headers = {"Host": "eternallifehospice.com",
+                           "Sec-Fetch-Site": "same-origin",
+                           "Referer": "https://eternallifehospice.com/refer"}
+        self.assertTrue(handler._is_same_origin(allow_same_origin_get=True))
+        self.assertFalse(handler._is_same_origin())
+        handler.command = "POST"
+        self.assertFalse(handler._is_same_origin(allow_same_origin_get=True))
+        handler.command = "GET"
+        handler.headers.pop("Referer")
+        self.assertTrue(handler._is_same_origin(allow_same_origin_get=True))
+        for metadata in ("cross-site", "same-site", "none", ""):
+            handler.headers["Sec-Fetch-Site"] = metadata
+            self.assertFalse(handler._is_same_origin(allow_same_origin_get=True))
+
+    def test_explicit_bad_origin_and_mismatched_referrer_remain_rejected(self):
+        handler = object.__new__(devserver.PrettyURLHandler)
+        handler.command = "GET"
+        handler.headers = {"Host": "eternallifehospice.com",
+                           "Sec-Fetch-Site": "same-origin",
+                           "Referer": "https://other.invalid/refer"}
+        self.assertFalse(handler._is_same_origin(allow_same_origin_get=True))
+        handler.headers["Referer"] = "https://eternallifehospice.com/refer"
+        for origin in ("https://other.invalid", "null", "file://eternallifehospice.com"):
+            handler.headers["Origin"] = origin
+            self.assertFalse(handler._is_same_origin(allow_same_origin_get=True))
+        handler.headers["Origin"] = "https://eternallifehospice.com"
+        self.assertTrue(handler._is_same_origin())
+
+
 class SecurityAlertTests(unittest.TestCase):
     def test_threshold_window_cooldown_and_bounded_memory(self):
         alerter = form_intake.DeliveryFailureAlerter(
@@ -157,6 +190,32 @@ class GuardTests(unittest.TestCase):
         self.assertEqual(status, 200)
         fields["_elh_security"] = response["token"]
         return fields
+
+    def test_real_browser_style_challenge_get_and_synthetic_referral(self):
+        # Same-origin GET fetches carry Fetch Metadata, not normally Origin.
+        request = Request(self.origin + "/api/form-security?form=elh-physician",
+                          headers={"Sec-Fetch-Site": "same-origin",
+                                   "Referer": self.origin + "/refer",
+                                   "Accept": "application/json"})
+        with urlopen(request, timeout=8) as response:
+            self.assertEqual(response.status, 200)
+            security = json.loads(response.read())
+        self.mail.assert_not_called()
+        fields = {"form-name": "elh-physician", "referrer_name": "Synthetic Professional",
+                  "phone": "2025550190",
+                  "message": "Synthetic regression only.",
+                  "_elh_security": security["token"]}
+        self.assertEqual(self.request("/api/form-submit", fields)[0], 200)
+        self.mail.assert_called_once()
+
+    def test_cross_site_challenge_get_without_origin_is_rejected(self):
+        request = Request(self.origin + "/api/form-security?form=elh-physician",
+                          headers={"Sec-Fetch-Site": "cross-site",
+                                   "Referer": "https://other.invalid/"})
+        with self.assertRaises(HTTPError) as caught:
+            urlopen(request, timeout=8)
+        self.assertEqual(caught.exception.code, 403)
+        self.mail.assert_not_called()
 
     def test_direct_bot_and_tampered_token_cannot_deliver(self):
         self.assertEqual(self.request("/api/form-submit", self.fields)[0], 403)

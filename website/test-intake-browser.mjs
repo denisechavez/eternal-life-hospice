@@ -142,6 +142,12 @@ try {
     await call("Emulation.setTouchEmulationEnabled", {enabled: mobile});
     await call("Page.navigate", {url: fixture.origin + flow.path});
     await until("document.readyState === 'complete'");
+    // A real first-time visitor chooses consent before using content beneath
+    // the notification. Exercise that control rather than hiding the overlay.
+    if (await evaluate("!!document.getElementById('elh-cc-decl')")) {
+      await activate("#elh-cc-decl", mobile);
+      await until("!document.getElementById('elh-cc')");
+    }
     if (flow.name === "chat") {
       await until("document.querySelector('.elhc-launch')");
       await activate(".elhc-launch", mobile);
