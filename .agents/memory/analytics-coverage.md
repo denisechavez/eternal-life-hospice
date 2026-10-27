@@ -77,3 +77,17 @@ Request-time HTML transforms can also undo a correct authored asset version.
 
 **How to apply:** Check asset-version consistency as part of publishing, not
 just event behavior. Keep the unchanged-URL mutation check in the release chain.
+
+## Approved consent presentation
+
+Use the selected Refined Privacy Panel rather than the old cookie pill.
+The owner approved its cream, plum and muted-gold treatment with Essential
+only, Accept all and inline Manage preferences.
+
+**Why:** The owner requested a different notification style and explicitly
+selected this canvas design on October 27, 2026.
+
+**How to apply:** Preserve the selected presentation when maintaining consent.
+Keep optional trackers grouped and off until accepted; preserve saved choices
+and the footer entry point. Treat future visual edits separately from changing
+what visitors consent to.

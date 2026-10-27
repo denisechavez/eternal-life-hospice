@@ -355,127 +355,83 @@
 
   /* ── Save preference + act on it ───────────────────────────────────── */
   function saveConsent(level) {
+    var previous = null;
+    try { previous = localStorage.getItem(KEY); } catch (e) {}
     try { localStorage.setItem(KEY, level); } catch (e) {}
     var bar = document.getElementById('elh-cc');
-    var mod = document.getElementById('elh-cc-modal');
-    if (bar) { bar.classList.remove('elh-cc-in'); setTimeout(function () { bar.remove(); }, 380); }
-    if (mod) { mod.classList.remove('elh-cc-open'); }
+    if (bar) { bar.remove(); }
+    if (cookieReturnFocus && cookieReturnFocus.isConnected) { cookieReturnFocus.focus(); }
+    // Already-loaded third-party scripts cannot be unloaded reliably. A fresh
+    // document applies an essential-only choice before any optional boot.
+    if (previous === 'all' && level === 'essential') { window.location.reload(); return; }
     if (level === 'all') { loadAnalytics(); }
   }
+
+  var cookieReturnFocus = null;
 
   /* ── Inject CSS (idempotent) ─────────────────────────────────────────── */
   function ensureCSS() {
     if (document.getElementById('elh-cc-css')) { return; }
     var css = document.createElement('style');
     css.id = 'elh-cc-css';
-    css.textContent =
-      /* Banner — ultra-minimal pill, bottom-right */
-      '#elh-cc{position:fixed;bottom:1.2rem;left:1.2rem;z-index:99999;' +
-      'background:rgba(255,255,255,.92);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);' +
-      'border:1px solid rgba(0,0,0,.08);border-radius:99px;' +
-      'box-shadow:0 2px 12px rgba(0,0,0,.10);' +
-      'font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;' +
-      'font-size:12px;line-height:1;' +
-      'opacity:0;transform:translateY(6px);transition:opacity .28s ease,transform .28s ease}' +
-      '#elh-cc.elh-cc-in{opacity:1;transform:translateY(0)}' +
-      '#elh-cc-in{padding:.45rem .55rem .45rem .85rem;display:flex;align-items:center;gap:.5rem}' +
-      '#elh-cc p{margin:0;font-size:11.5px;color:#4f4a52;white-space:nowrap}' +
-      '#elh-cc a{color:#5b3f86;text-underline-offset:2px}' +
-      '#elh-cc-btns{display:flex;align-items:center;gap:.5rem;flex-shrink:0}' +
-      '.elh-ccb{min-height:44px;border:none;border-radius:99px;font-size:11.5px;' +
-      'font-weight:600;cursor:pointer;transition:opacity .15s;white-space:nowrap}' +
-      '.elh-ccb:hover{opacity:.78}' +
-      '.elh-cc-ok{background:#7c5cbf;color:#fff;padding:.35rem .75rem}' +
-      '.elh-cc-mg{background:transparent;color:#5c5360;border:none;padding:.35rem .55rem;' +
-      'font-size:11px;font-weight:500;text-decoration:underline;text-underline-offset:2px}' +
-      /* Modal overlay */
-      '#elh-cc-modal{display:none;position:fixed;inset:0;z-index:100000;' +
-      'background:rgba(0,0,0,.58);align-items:center;justify-content:center;padding:1rem}' +
-      '#elh-cc-modal.elh-cc-open{display:flex}' +
-      /* Modal box */
-      '#elh-cc-box{background:#fff;border-radius:14px;max-width:460px;width:100%;' +
-      'padding:1.8rem;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;' +
-      'max-height:90vh;overflow-y:auto}' +
-      '#elh-cc-box h2{font-size:1.05rem;font-weight:700;color:#1a1225;margin:0 0 .25rem}' +
-      '#elh-cc-box>p{font-size:13px;color:#666;margin:0 0 1.2rem;line-height:1.6}' +
-      '.elh-cc-row{display:flex;align-items:center;justify-content:space-between;' +
-      'gap:.8rem;padding:.8rem 0;border-top:1px solid #f0ede8}' +
-      '.elh-cc-row-lbl strong{display:block;font-size:13.5px;color:#1a1225;margin-bottom:.1rem}' +
-      '.elh-cc-row-lbl span{font-size:12px;color:#888;line-height:1.45;display:block}' +
-      /* Toggle switch */
-      '.elh-tog{position:relative;width:40px;height:22px;flex-shrink:0}' +
-      '.elh-tog input{opacity:0;width:0;height:0;position:absolute}' +
-      '.elh-tog-tr{position:absolute;inset:0;background:#ccc;border-radius:22px;' +
-      'cursor:pointer;transition:background .2s}' +
-      '.elh-tog input:checked+.elh-tog-tr{background:#7c5cbf}' +
-      '.elh-tog-tr::after{content:"";position:absolute;width:16px;height:16px;' +
-      'left:3px;top:3px;background:#fff;border-radius:50%;transition:transform .2s}' +
-      '.elh-tog input:checked+.elh-tog-tr::after{transform:translateX(18px)}' +
-      '.elh-tog input:disabled+.elh-tog-tr{opacity:.55;cursor:default}' +
-      /* Modal buttons */
-      '#elh-cc-mbtns{display:flex;gap:.65rem;margin-top:1.4rem}' +
-      '.elh-cc-save{flex:1;background:#7c5cbf;color:#fff;border:none;border-radius:8px;' +
-      'padding:.62rem 1rem;font-size:13.5px;font-weight:600;cursor:pointer}' +
-      '.elh-cc-save:hover{opacity:.88}' +
-      '.elh-cc-decl{flex:1;background:#f4f1ec;color:#333;border:none;border-radius:8px;' +
-      'padding:.62rem 1rem;font-size:13.5px;font-weight:600;cursor:pointer}' +
-      '.elh-cc-decl:hover{background:#ebe6de}';
+    css.textContent = `
+      #elh-cc{position:fixed;bottom:20px;left:20px;z-index:2147483001;box-sizing:border-box;
+        width:540px;max-width:calc(100vw - 40px);max-height:calc(100dvh - 40px);overflow-y:auto;
+        background:#fffdf8;border:1px solid #d8cebd;border-top:3px solid #b5a279;border-radius:3px;
+        padding:27px 30px 20px;box-shadow:0 12px 34px #43244018;color:#484442;
+        font-family:'Jost ELH','Jost',Arial,sans-serif;text-align:left;line-height:1.5}
+      #elh-cc *{box-sizing:border-box}
+      #elh-cc [hidden]{display:none!important}
+      #elh-cc :focus-visible{outline:2px solid #6a4268;outline-offset:4px}
+      #elh-cc .privacy-eyebrow{display:flex;align-items:center;gap:9px;color:#655b60;
+        text-transform:uppercase;font-size:10px;letter-spacing:.14em;font-weight:500}
+      #elh-cc .privacy-mark{color:#9a855c;font:24px Georgia,serif;line-height:1}
+      #elh-cc h2{font:400 31px/1.15 Georgia,'Times New Roman',serif;
+        letter-spacing:-.7px;color:#432440;margin:16px 0 13px;text-transform:none}
+      #elh-cc .privacy-copy{color:#585359;font-size:14px;line-height:1.65;margin:0 0 11px}
+      #elh-cc .privacy-policy{color:#62475e;text-decoration:underline;text-underline-offset:4px;
+        font-size:12px;display:inline-flex;align-items:center;gap:6px}
+      #elh-cc .privacy-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:23px 0 17px}
+      #elh-cc button{cursor:pointer}
+      #elh-cc .privacy-actions button,#elh-cc .privacy-save{font:500 14px 'Jost ELH','Jost',Arial,sans-serif;
+        border:1px solid #6e5369;min-height:46px;padding:10px 14px;border-radius:2px;
+        transition:background .15s,color .15s;letter-spacing:normal;text-transform:none}
+      #elh-cc .privacy-actions button:first-child{background:transparent;color:#432440}
+      #elh-cc .privacy-actions button:last-child,#elh-cc .privacy-save{background:#432440;color:#fffdf8}
+      #elh-cc .privacy-actions button:first-child:hover{background:#f2ece7}
+      #elh-cc .privacy-actions button:last-child:hover,#elh-cc .privacy-save:hover{background:#5c3958}
+      #elh-cc .privacy-bottom{border-top:1px solid #e4ddd1;padding-top:14px;display:flex;
+        align-items:center;justify-content:space-between;gap:12px}
+      #elh-cc .privacy-bottom button{color:#584752;background:none;border:0;padding:3px 0;min-height:28px;
+        font:400 12px 'Jost ELH','Jost',Arial,sans-serif;text-decoration:underline;text-underline-offset:4px}
+      #elh-cc .privacy-bottom button span{margin-left:7px;text-decoration:none;display:inline-block}
+      #elh-cc .privacy-bottom>span{font-size:10px;color:#70666a}
+      #elh-cc .privacy-preferences{border-top:1px solid #ded6c9;margin-top:20px;padding-top:13px}
+      #elh-cc .privacy-pref-heading{display:flex;align-items:center;justify-content:space-between}
+      #elh-cc .privacy-pref-heading h3{margin:0;color:#432440;font:400 21px Georgia,serif;letter-spacing:normal;text-transform:none}
+      #elh-cc .privacy-pref-heading button{border:0;background:none;color:#432440;font-size:25px;min-width:40px;min-height:40px}
+      #elh-cc .privacy-pref-row{display:flex;align-items:center;justify-content:space-between;gap:16px;
+        padding:15px 0;border-bottom:1px solid #e4ddd1;font-size:14px}
+      #elh-cc .privacy-pref-row strong{font-weight:500;color:#484442}
+      #elh-cc .privacy-pref-row p{font-size:12px;line-height:1.5;color:#655d61;margin:5px 0 0;max-width:330px}
+      #elh-cc .privacy-always{font-size:11px;color:#70666a;white-space:nowrap}
+      #elh-cc .privacy-optional{cursor:pointer}
+      #elh-cc .privacy-pref-row input{width:22px;height:22px;flex-shrink:0;accent-color:#432440;cursor:pointer;margin:0}
+      #elh-cc .privacy-save{width:100%;margin-top:16px}
+      @media(max-width:460px){
+        #elh-cc{bottom:14px;left:14px;max-width:calc(100vw - 28px);max-height:calc(100dvh - 28px);padding:23px 21px 18px}
+        #elh-cc h2{font-size:28px}#elh-cc .privacy-break{display:none}
+        #elh-cc .privacy-bottom{align-items:flex-start;flex-direction:column;gap:7px}
+        #elh-cc .privacy-actions{gap:8px}#elh-cc .privacy-actions button{font-size:13px;padding:10px}
+      }
+      @media(prefers-reduced-motion:reduce){#elh-cc *{transition:none!important}}
+    `;
     document.head.appendChild(css);
   }
 
-  /* ── Inject modal only (for returning visitors opening Cookie Settings) ── */
-  function ensureModal() {
-    if (document.getElementById('elh-cc-modal')) { return; }
-    ensureCSS();
-
-    var currentConsent = null;
-    try { currentConsent = localStorage.getItem(KEY); } catch (e) {}
-    var analyticsOn = currentConsent === 'all';
-
-    var modal = document.createElement('div');
-    modal.id = 'elh-cc-modal';
-    modal.setAttribute('role', 'dialog');
-    modal.setAttribute('aria-modal', 'true');
-    modal.setAttribute('aria-label', 'Cookie preferences');
-    modal.innerHTML =
-      '<div id="elh-cc-box">' +
-        '<h2>Cookie Preferences</h2>' +
-        '<p>Choose which cookies you allow. You can update your choice at any time using the Cookie Settings link in the footer.</p>' +
-        '<div class="elh-cc-row">' +
-          '<div class="elh-cc-row-lbl"><strong>Essential</strong>' +
-          '<span>Required for basic site functions. Always active.</span></div>' +
-          '<label class="elh-tog"><input type="checkbox" checked disabled>' +
-          '<span class="elh-tog-tr"></span></label>' +
-        '</div>' +
-        '<div class="elh-cc-row">' +
-          '<div class="elh-cc-row-lbl"><strong>Analytics &amp; Tracking</strong>' +
-          '<span>Google Analytics, Microsoft Clarity, Brevo, and call-tracking — ' +
-          'help us understand how the site is used and how visitors find us. ' +
-          'All non-essential tracking is enabled or disabled together.</span></div>' +
-          '<label class="elh-tog"><input type="checkbox" id="elh-tog-all"' + (analyticsOn ? ' checked' : '') + '>' +
-          '<span class="elh-tog-tr"></span></label>' +
-        '</div>' +
-        '<div id="elh-cc-mbtns">' +
-          '<button class="elh-cc-decl" id="elh-cc-decl">Decline All</button>' +
-          '<button class="elh-cc-save" id="elh-cc-save">Save Preferences</button>' +
-        '</div>' +
-      '</div>';
-    document.body.appendChild(modal);
-
-    modal.addEventListener('click', function (e) {
-      if (e.target === modal) { modal.classList.remove('elh-cc-open'); }
-    });
-    document.getElementById('elh-cc-save').addEventListener('click', function () {
-      var all = document.getElementById('elh-tog-all').checked;
-      saveConsent(all ? 'all' : 'essential');
-    });
-    document.getElementById('elh-cc-decl').addEventListener('click', function () {
-      saveConsent('essential');
-    });
-  }
-
-  /* ── Banner + modal (injected for first-time visitors) ──────────────── */
+  /* ── Approved Refined Privacy panel; preferences expand in place ───── */
   function showBanner() {
+    if (document.getElementById('elh-cc')) { return; }
     ensureCSS();
 
     /* --- Banner ---------------------------------------------------------- */
@@ -484,38 +440,59 @@
     bar.setAttribute('role', 'region');
     bar.setAttribute('aria-label', 'Cookie consent');
     bar.innerHTML =
-      '<div id="elh-cc-in">' +
-        '<p>We use <a href="/privacy-policy#cookies">cookies</a></p>' +
-        '<div id="elh-cc-btns">' +
-          '<button class="elh-ccb elh-cc-ok" id="elh-cc-okbtn">Accept</button>' +
-          '<button class="elh-ccb elh-cc-mg" id="elh-cc-mgbtn" aria-haspopup="dialog">Manage</button>' +
-        '</div>' +
-      '</div>';
+      '<div class="privacy-eyebrow"><span aria-hidden="true" class="privacy-mark">✧</span>Your privacy, your choice</div>' +
+      '<h2>A thoughtful approach<br class="privacy-break"> to your privacy.</h2>' +
+      '<p class="privacy-copy">We use essential cookies to keep this website working. With your permission, we also use analytics and tracking to understand visits and how people find us.</p>' +
+      '<a class="privacy-policy" href="/privacy-policy#cookies">Read our cookie policy <span aria-hidden="true">↗</span></a>' +
+      '<div class="privacy-preferences" id="elh-cc-preferences" hidden>' +
+        '<div class="privacy-pref-heading"><h3>Cookie preferences</h3><button type="button" id="elh-cc-close" aria-label="Close preferences">×</button></div>' +
+        '<div class="privacy-pref-row"><div><strong>Essential</strong><p>Needed for site features and security.</p></div><span class="privacy-always">Always on</span></div>' +
+        '<label class="privacy-pref-row privacy-optional"><div><strong>Analytics &amp; tracking</strong><p>Google Analytics and Ads, Clarity, Brevo and other non-essential site and call tracking. Enabled or disabled together.</p></div>' +
+          '<input type="checkbox" id="elh-tog-all" aria-label="Allow analytics and tracking"></label>' +
+        '<button type="button" class="privacy-save" id="elh-cc-save">Save preferences</button>' +
+      '</div>' +
+      '<div class="privacy-actions"><button type="button" id="elh-cc-decl">Essential only</button><button type="button" id="elh-cc-okbtn">Accept all</button></div>' +
+      '<div class="privacy-bottom"><button type="button" id="elh-cc-mgbtn" aria-expanded="false" aria-controls="elh-cc-preferences">Manage preferences <span aria-hidden="true">+</span></button><span>Change your choice anytime.</span></div>';
     document.body.appendChild(bar);
-    // Slide in after two frames so transition fires
-    requestAnimationFrame(function () {
-      requestAnimationFrame(function () { bar.classList.add('elh-cc-in'); });
-    });
-
-    ensureModal();
-
     /* --- Handlers -------------------------------------------------------- */
     document.getElementById('elh-cc-okbtn').addEventListener('click', function () {
       saveConsent('all');
     });
     document.getElementById('elh-cc-mgbtn').addEventListener('click', function () {
-      var mod = document.getElementById('elh-cc-modal');
-      mod.classList.add('elh-cc-open');
-      document.getElementById('elh-cc-save').focus();
+      var opening = document.getElementById('elh-cc-preferences').hidden;
+      setCookiePreferences(opening);
     });
+    document.getElementById('elh-cc-close').addEventListener('click', function () { setCookiePreferences(false); });
+    document.getElementById('elh-cc-decl').addEventListener('click', function () { saveConsent('essential'); });
+    document.getElementById('elh-cc-save').addEventListener('click', function () {
+      saveConsent(document.getElementById('elh-tog-all').checked ? 'all' : 'essential');
+    });
+    bar.addEventListener('keydown', function (event) {
+      if (event.key === 'Escape' && !document.getElementById('elh-cc-preferences').hidden) {
+        event.preventDefault(); setCookiePreferences(false);
+      }
+    });
+  }
+
+  function setCookiePreferences(open) {
+    var prefs = document.getElementById('elh-cc-preferences');
+    var button = document.getElementById('elh-cc-mgbtn');
+    prefs.hidden = !open;
+    button.setAttribute('aria-expanded', String(open));
+    button.querySelector('span').textContent = open ? '−' : '+';
+    if (open) {
+      var current = null;
+      try { current = localStorage.getItem(KEY); } catch (e) {}
+      document.getElementById('elh-tog-all').checked = current === 'all';
+      document.getElementById('elh-tog-all').focus();
+    } else { button.focus(); }
   }
 
   /* ── Public API — called by "Cookie Settings" footer link ───────────── */
   window.elhCookieSettings = function () {
-    ensureModal();
-    var mod = document.getElementById('elh-cc-modal');
-    mod.classList.add('elh-cc-open');
-    document.getElementById('elh-cc-save').focus();
+    cookieReturnFocus = document.activeElement;
+    showBanner();
+    setCookiePreferences(true);
   };
 
   /* ── Entry point ────────────────────────────────────────────────────── */
