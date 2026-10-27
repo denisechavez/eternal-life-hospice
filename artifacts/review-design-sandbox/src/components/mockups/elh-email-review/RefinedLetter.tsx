@@ -86,7 +86,12 @@ function makeEmailDocument(message: ApprovedMessage) {
         <tr><td class="letter-footer" style="padding:0 42px 25px">
           <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
             <tr><td style="padding-top:14px;border-top:1px solid #e5e4de;font:13px/1.5 Arial,sans-serif">
-              <a href="mailto:info@eternallifehospice.com" style="color:#535353;text-decoration:none;overflow-wrap:anywhere">info@eternallifehospice.com</a>
+              <a href="mailto:info@eternallifehospice.com" style="color:#535353;text-decoration:none;overflow-wrap:anywhere">info@eternallifehospice.com</a><br>
+              <span style="display:inline-block;padding-top:9px;color:#555d59;font:12px/1.55 Arial,sans-serif">
+                Eternal Life Hospice<br>
+                4165 E Thousand Oaks Blvd, Suite 325B<br>
+                Westlake Village, CA 91362
+              </span>
             </td></tr>
           </table>
         </td></tr>
