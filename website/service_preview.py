@@ -118,13 +118,30 @@ def menu_markup():
 
 
 def decorate(document, route):
-    """Apply approved Services navigation without altering page copy or footer."""
+    """Apply approved navigation without rewriting signed article sources."""
     asset_prefix = ASSET_PREFIX if enabled() else PUBLIC_ASSET_PREFIX
     changed = False
 
     def header(match):
         nonlocal changed
         source = match.group()
+        # Refresh shared navigation in old/frozen pages at response time too.
+        # Do not rewrite Journal approval snapshots for a chrome-only change.
+        insurance_link = (
+            '<a href="/resources/medicare-hospice-benefit#insurance">'
+            'Insurance &amp; Coverage</a>'
+        )
+        resources = (
+            r'(<div\b[^>]*\bdata-section="resources"[^>]*>\s*'
+            r'<a\b[^>]*>.*?</a>\s*<div class="nav-sub">)(.*?)(</div>)'
+        )
+        source = re.sub(
+            resources,
+            lambda m: m.group(1) +
+            ("" if insurance_link in m.group(2) else insurance_link) +
+            m.group(2) + m.group(3),
+            source, count=1, flags=re.S,
+        )
         if 'id="sp-services-menu"' in source:
             changed = True
             return source

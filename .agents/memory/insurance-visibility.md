@@ -11,6 +11,8 @@ the insurance information while showing the website to a friend and explicitly
 asked for the insurers to be listed on the website.
 
 **How to apply:** Preserve a clear homepage route to the coverage information.
+Keep an explicitly labeled **Insurance & Coverage** link in the Resources
+dropdown as requested by the owner; the homepage shortcut alone is not enough.
 Use the approved marketing materials as the reference for listed organizations,
 but do not interpret a listing as proof of every product's acceptance or of an
 in-network contract. Keep plan-specific eligibility, authorization and LOA
