@@ -12,3 +12,6 @@ __pycache__/
 
 # Built during publishing; draft chunks require authenticated server delivery.
 /website/studio-build/
+
+# Workspace-only copies of publicly released Journal pages; never approvals.
+/.local/journal-preview/

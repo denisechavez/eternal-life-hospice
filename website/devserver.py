@@ -17,6 +17,7 @@ import socket
 import subprocess
 import sys
 import footer_contact
+import journal_workspace_preview
 from datetime import date, datetime
 from zoneinfo import ZoneInfo
 from urllib.parse import parse_qs, unquote, urlsplit
@@ -218,7 +219,8 @@ class PrettyURLHandler(http.server.SimpleHTTPRequestHandler):
 
     def _released_journal(self):
         if not hasattr(self, "_journal_snapshot"):
-            self._journal_snapshot = journal_release.released()
+            records, healthy = journal_release.released()
+            self._journal_snapshot = (journal_workspace_preview.overlay(records), healthy)
         return self._journal_snapshot[0]
 
     def _journal_pages(self):
@@ -263,7 +265,7 @@ class PrettyURLHandler(http.server.SimpleHTTPRequestHandler):
         manifest = cls._journal_manifest()
         if manifest is None:
             return True
-        return slug not in journal_release.released()[0]
+        return slug not in journal_workspace_preview.overlay(journal_release.released()[0])
 
     def _studio_api(self):
         if studio_site.proxy(self) or studio_site.serve(self):

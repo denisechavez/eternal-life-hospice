@@ -15,6 +15,22 @@ origin. Never bridge the environments by accepting development session tokens,
 copying browser statuses or automatically approving every past-dated article.
 Preserve explicit revision review and require user permission before deployment.
 
+An owner-requested workspace display refresh may mirror articles that are
+already public, without copying production decisions into workspace approvals.
+Keep that display cache workspace-only and use the same eligibility set for
+archive cards and article access.
+
+**Why:** The workspace stopped at October 9 while the live Journal was current
+through October 27. The owner asked to correct the preview without changing
+live approvals. Updating cards alone left their article links blocked.
+
+**How to apply:** Verify each downloaded article against the public release
+revision, retain its original frozen photographs and exclude the display cache
+from publishing. Do not turn public display snapshots into Studio consent.
+During this refresh, some extensionless live URLs returned 404 while explicit
+`.html` URLs served the correct revision; check both before assuming a public
+article is missing.
+
 Protect draft-bearing JavaScript chunks as well as review APIs.
 
 **Why:** The Studio preview imports complete unpublished articles. An API-only
