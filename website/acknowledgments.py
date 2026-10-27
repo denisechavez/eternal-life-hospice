@@ -1,5 +1,5 @@
 """Approved transactional copy and stable request categories; no transport calls."""
-import html
+from acknowledgment_layout import render_document
 
 CTA_LINES = (
     "Need to speak with someone now?",
@@ -282,27 +282,7 @@ def render(key, first_name, receipt_id, contact_email):
     if key == "speaking-engagement":
         paragraphs.append("Important: This confirms receipt of the invitation. It does not confirm Aleksandra's availability or a scheduled engagement.")
     text = "\n\n".join(p.replace("{cta}", CTA_TEXT) for p in paragraphs)
-    markup = "".join(
-        CTA_HTML if p == "{cta}" else
-        '<p style="margin:0 0 18px">' + html.escape(p) + "</p>"
-        for p in paragraphs
-    )
-    # Remote official logo, not a recreated wordmark. The review renderer embeds
-    # this same asset locally for an offline, self-contained proof.
-    logo = "https://eternallifehospice.com/assets/logo-cream.png"
-    document = (
-        '<!doctype html><html><head><meta name="viewport" content="width=device-width,initial-scale=1">'
-        '</head><body style="margin:0;background:#F5F0EB">'
-        '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#F5F0EB">'
-        '<tr><td align="center" style="padding:24px 12px">'
-        '<table role="presentation" width="560" cellpadding="0" cellspacing="0" '
-        'style="max-width:560px;width:100%;background:#fff;border:1px solid #D8CDBF">'
-        '<tr><td align="center" style="background:#5B2E59;padding:24px">'
-        f'<img src="{logo}" alt="Eternal Life Hospice" width="145" style="display:block;width:145px;max-width:100%;height:auto">'
-        '</td></tr><tr><td style="padding:24px;color:#3C1C3B;font:16px/1.65 Georgia,serif">'
-        + markup
-        + '<p style="margin:24px 0 0;font:13px Arial,sans-serif">'
-        + f'<a style="color:#5B2E59" href="mailto:{html.escape(contact_email, quote=True)}">{html.escape(contact_email)}</a>'
-        + '</p></td></tr></table></td></tr></table></body></html>'
+    document = render_document(
+        [p.replace("{cta}", CTA_TEXT) for p in paragraphs], contact_email
     )
     return subject, text, document

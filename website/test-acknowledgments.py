@@ -86,7 +86,12 @@ class AcknowledgmentTests(unittest.TestCase):
                 else:
                     self.assertNotIn(ack.CTA_LINES[1], receipt["textContent"])
                     self.assertEqual(result["care_cta_html"], "")
-                self.assertIn("logo-cream.png", receipt["htmlContent"])
+                self.assertIn("logo-plum.png", receipt["htmlContent"])
+                self.assertIn("Correspondence", receipt["htmlContent"])
+                self.assertIn("4165 E Thousand Oaks Blvd, Suite 325B", receipt["htmlContent"])
+                self.assertIn("Westlake Village, CA 91362", receipt["htmlContent"])
+                self.assertNotIn("text-decoration:underline", receipt["htmlContent"])
+                self.assertNotIn("color:#3C1C3B", receipt["htmlContent"])
 
     def test_original_approved_paragraphs_preserved_except_cta_override(self):
         self.assertEqual(len(APPROVED["templates"]), 14)

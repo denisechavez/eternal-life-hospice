@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <style>
+    html,body{margin:0;width:100%;background:#f5f0eb}
+    *{box-sizing:border-box}
+    @media only screen and (max-width:480px){
+      .outer-pad{padding:11px 9px 18px!important}
+      .letterhead{padding:22px 22px 17px!important}
+      .letter-body{padding:23px 22px 22px!important}
+      .letter-footer{padding:16px 22px 23px!important}
+      .brand-logo{width:116px!important}
+    }
+  </style>
+</head>
+<body style="margin:0;background:#f5f0eb;color:#414141">
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="width:100%;background:#f5f0eb">
+    <tr><td class="outer-pad" align="center" style="padding:25px 16px 34px">
+      <table role="presentation" width="620" cellpadding="0" cellspacing="0" style="width:100%;max-width:620px;background:#fffefa">
+        <tr><td class="letterhead" style="padding:30px 46px 19px;border-top:2px solid #432440">
+          <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
+            <tr>
+              <td align="left" valign="middle">
+                <img class="brand-logo" src="https://eternallifehospice.com/assets/logo-plum.png" width="132" alt="Eternal Life Hospice" style="display:block;width:132px;max-width:100%;height:auto;border:0">
+              </td>
+              <td align="right" valign="middle" style="color:#757575;font:10px/1.4 Arial,sans-serif;letter-spacing:1.15px;text-transform:uppercase">
+                <span style="display:inline-block;width:23px;height:1px;background:#b5a279;vertical-align:middle;margin-right:8px"></span>
+                Correspondence
+              </td>
+            </tr>
+          </table>
+          <div style="height:1px;margin-top:21px;background:#ded8ce;line-height:1px;font-size:1px">&nbsp;</div>
+        </td></tr>
+        <tr><td class="letter-body" style="padding:22px 46px 28px">
+          <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="width:100%;color:#414141;font:16px/1.7 Georgia,'Times New Roman',serif">
+            <!-- LETTER_ROWS -->
+          </table>
+        </td></tr>
+        <tr><td class="letter-footer" style="padding:17px 46px 27px;border-top:1px solid #ded8ce">
+          <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
+            <tr><td style="font:13px/1.5 Arial,sans-serif">
+              <a href="mailto:{{CONTACT_EMAIL}}" style="color:#535353;text-decoration:none;overflow-wrap:anywhere">{{CONTACT_EMAIL}}</a><br>
+              <span style="display:inline-block;padding-top:9px;color:#555555;font:12px/1.55 Arial,sans-serif">
+                Eternal Life Hospice<br>
+                4165 E Thousand Oaks Blvd, Suite 325B<br>
+                Westlake Village, CA 91362
+              </span>
+            </td></tr>
+          </table>
+        </td></tr>
+      </table>
+    </td></tr>
+  </table>
+</body>
+</html>
