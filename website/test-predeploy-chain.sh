@@ -33,6 +33,8 @@ source = Path(sys.argv[1])
 retry = "node --experimental-websocket ../test-care-brief-signup-retry.mjs"
 layout = "node --experimental-websocket ../test-care-brief-layout.mjs"
 footer = "python3 ../check-footer-parity.py"
+ack = "python3 ../test-acknowledgments.py"
+ack_sentinel = "SENTINEL: test-acknowledgments.py OK"
 sentinel = "SENTINEL: test-care-brief-signup-retry.mjs browser checks OK"
 wrapper = (source / "elh-predeploy.sh").read_text()
 chain = wrapper.split("set +o pipefail\n(\n", 1)[1].split("\n) 2>&1", 1)[0]
@@ -42,8 +44,12 @@ assert commands.index(retry) == commands.index(layout) + 1, "Retry suite must fo
 assert commands.index(footer) == commands.index(retry) + 1, "Retry suite must precede footer guard"
 assert commands.index(retry) < commands.index("node assets/build-search-index.js --check")
 assert wrapper.count('"' + sentinel + '"') == 1, "Wrapper must require retry sentinel"
+assert commands.count(ack) == 1, "Acknowledgment suite must run exactly once"
+assert commands.index(ack) < commands.index("node assets/build-search-index.js --check")
+assert wrapper.count('"' + ack_sentinel + '"') == 1, "Wrapper must require acknowledgment sentinel"
 smoke = (source / "test-predeploy-chain.sh").read_text()
 assert smoke.count('  "' + sentinel + '"') == 1, "Smoke test must require retry sentinel"
+assert smoke.count('  "' + ack_sentinel + '"') == 1, "Smoke test must require acknowledgment sentinel"
 sentinels = re.findall(r'^  "(SENTINEL: .+)"$', wrapper, re.M)
 
 with tempfile.TemporaryDirectory(prefix="elh-predeploy-chain-") as temp:
@@ -65,11 +71,11 @@ if Path(sys.argv[0]).name == "cookie-stub":
     command = "bash ../check-cookie-settings.sh"
 with open(os.environ["CHAIN_LOG"], "a") as output:
     output.write(command + "\\n")
-is_retry = command == os.environ["RETRY_COMMAND"]
-if is_retry and os.environ["CHAIN_MODE"] == "failure":
-    print("Injected Care Brief retry failure", flush=True)
+is_target = command == os.environ["TARGET_COMMAND"]
+if is_target and os.environ["CHAIN_MODE"] == "failure":
+    print("Injected check failure: " + command, flush=True)
     sys.exit(37)
-if not (is_retry and os.environ["CHAIN_MODE"] == "missing"):
+if not (is_target and os.environ["CHAIN_MODE"] == "missing"):
     for sentinel in os.environ["CHAIN_SENTINELS"].splitlines():
         if sentinel.split(": ", 1)[1].split(" ", 1)[0] in command:
             print(sentinel)
@@ -80,27 +86,30 @@ if not (is_retry and os.environ["CHAIN_MODE"] == "missing"):
         executable.chmod(0o755)
     (root / "check-cookie-settings.sh").write_text('exec cookie-stub "$@"\n')
     env = dict(os.environ, PATH=str(bindir) + os.pathsep + os.environ["PATH"],
-               CHAIN_LOG=str(log), RETRY_COMMAND=retry,
+               CHAIN_LOG=str(log),
                CHAIN_SENTINELS="\n".join(sentinels))
-    for mode in ("success", "failure", "missing"):
+    scenarios = [(retry, sentinel, "success"),
+                 (retry, sentinel, "failure"), (retry, sentinel, "missing"),
+                 (ack, ack_sentinel, "failure"), (ack, ack_sentinel, "missing")]
+    for target, target_sentinel, mode in scenarios:
         log.write_text("")
         before = {p.relative_to(site): p.read_bytes() for p in site.rglob("*") if p.is_file()}
         result = subprocess.run([shutil.which("bash"), "../elh-predeploy.sh"],
-                                cwd=site, env=dict(env, CHAIN_MODE=mode),
+                                cwd=site, env=dict(env, CHAIN_MODE=mode, TARGET_COMMAND=target),
                                 text=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
         actual = log.read_text().splitlines()
-        expected = commands[:commands.index(retry) + 1] if mode == "failure" else commands
+        expected = commands[:commands.index(target) + 1] if mode == "failure" else commands
         assert actual == expected, f"{mode}: wrong command order: {actual}"
         expected_status = {"success": 0, "failure": 37, "missing": 1}[mode]
         assert result.returncode == expected_status, f"{mode}: {result.stdout}"
         if mode == "failure":
-            assert "Injected Care Brief retry failure" in result.stdout
+            assert "Injected check failure: " + target in result.stdout
             assert "Pre-deploy chain FAILED (exit 37)" in result.stdout
         if mode == "missing":
-            assert "MISSING: " + sentinel in result.stdout, result.stdout
+            assert "MISSING: " + target_sentinel in result.stdout, result.stdout
         after = {p.relative_to(site): p.read_bytes() for p in site.rglob("*") if p.is_file()}
         assert after == before, f"{mode}: changed publication fixture"
-        print(f"PASS: isolated pre-deploy chain {mode}")
+        print(f"PASS: isolated pre-deploy chain {target}: {mode}")
 print("SENTINEL: test-predeploy-chain.sh isolated checks OK")
 PY
 
@@ -183,6 +192,7 @@ SENTINELS=(
   "SENTINEL: test-service-publication.py OK"
   "SENTINEL: test-public-artifact-exposure.py OK"
   "SENTINEL: test-growth-intelligence-access.py OK"
+  "SENTINEL: test-acknowledgments.py OK"
   "SENTINEL: check-internal-links.py self-test OK"
   "SENTINEL: test-internal-link-journeys.py browser checks OK"
 )
