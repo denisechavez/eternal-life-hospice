@@ -22,6 +22,16 @@ pages had zero measurement. A shared file = one place to update, no per-page dri
 
 ## Conversion measurement semantics
 
+Keep care/referral and reading custom events explicitly routed to GA4 when
+the shared Google tag also has an advertising destination.
+
+**Why:** Adding an Ads configuration changes the destinations of unscoped
+Google events; care-seeking activity must not silently become advertising events.
+
+**How to apply:** Preserve the explicit analytics-only destination when adding
+or changing custom events. Installing the base Ads tag does not authorize
+care-event conversion tracking, remarketing audiences or enhanced conversions.
+
 Website submission success means the intake endpoint accepted the request, not that a patient was admitted. Keep care-request intent separate from general team-contact intent when interpreting conversions.
 
 **Why:** ELH's objective is census growth, but website interaction counts cannot establish clinical eligibility, completed referrals or admissions. Combining unrelated contact clicks or treating submission attempts as completed intake would overstate the conversion funnel.

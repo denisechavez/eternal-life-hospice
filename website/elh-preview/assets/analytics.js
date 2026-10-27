@@ -1,5 +1,5 @@
 /* Eternal Life Hospice — Cookie Consent + Analytics loader
-   (GA4 + Microsoft Clarity + Brevo + Thryv)
+   (GA4 + Google Ads + Microsoft Clarity + Brevo + Thryv)
    Analytics load only after explicit visitor consent.
    Consent stored in localStorage: elh_cc = "all" | "essential"
    Global: window.elhCookieSettings() — re-opens preferences at any time  */
@@ -47,7 +47,10 @@
     if (!analyticsConsentGranted()) { return; }
     try {
       if (typeof window.gtag === 'function') {
-        var result = window.gtag('event', name, data);
+        // Care-related custom events belong in GA4, not the Ads destination.
+        var result = window.gtag('event', name, Object.assign({}, data, {
+          send_to: 'G-WTMEYKXW8H'
+        }));
         if (result && typeof result.catch === 'function') {
           result.catch(function () {});
         }
@@ -277,7 +280,7 @@
       document.head.appendChild(l);
     });
 
-    // GA4
+    // One Google tag loader for GA4 and Google Ads, after visitor consent.
     var GA = 'G-WTMEYKXW8H';
     var s = document.createElement('script');
     s.async = true; s.src = 'https://www.googletagmanager.com/gtag/js?id=' + GA;
@@ -285,6 +288,7 @@
     window.dataLayer = window.dataLayer || [];
     window.gtag = function () { dataLayer.push(arguments); };
     gtag('js', new Date()); gtag('config', GA);
+    gtag('config', 'AW-18384023405');
 
     // Microsoft Clarity — excluded on pages that set window.__noClarity = true
     // (currently: /refer — referral intake form collects provider & patient data)

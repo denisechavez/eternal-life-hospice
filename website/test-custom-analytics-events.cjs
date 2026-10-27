@@ -20,7 +20,11 @@ function setup(initialConsent = 'all') {
     umami: { track(name, data) { events.push({ name, data: JSON.parse(JSON.stringify(data)) }); } }
   };
   window.gtag = (command, name, data) => {
-    gaEvents.push({ command, name, data: JSON.parse(JSON.stringify(data)) });
+    assert.equal(data.send_to, 'G-WTMEYKXW8H',
+      'Care and reading events must not broadcast to the Ads destination');
+    const payload = JSON.parse(JSON.stringify(data));
+    delete payload.send_to;
+    gaEvents.push({ command, name, data: payload });
   };
   const context = vm.createContext({
     window,
@@ -321,7 +325,9 @@ test('full loader boots GA4 once and checks consent again at window load', () =>
     load.forEach(callback => { callback(); callback(); });
     assert.equal(appended.filter(el => (el.src || '').includes('googletagmanager.com')).length, revoke ? 0 : 1);
     const config = (context.dataLayer || []).filter(args => args[0] === 'config');
-    assert.equal(config.length, revoke ? 0 : 1);
+    assert.equal(config.length, revoke ? 0 : 2);
+    assert.deepEqual(Array.from(config, args => args[1]),
+      revoke ? [] : ['G-WTMEYKXW8H', 'AW-18384023405']);
     // Exercise the public hook in the complete loader too: textual merges can
     // leave helpers outside its closure or accidentally remove the assignment.
     assert.equal(typeof context.elhTrackEvent, 'function');
@@ -331,5 +337,6 @@ test('full loader boots GA4 once and checks consent again at window load', () =>
     const outcomes = (context.dataLayer || []).filter(args =>
       args[0] === 'event' && args[1] === 'form_success');
     assert.equal(outcomes.length, revoke ? 0 : 1);
+    if (!revoke) assert.equal(outcomes[0][2].send_to, 'G-WTMEYKXW8H');
   }
 });

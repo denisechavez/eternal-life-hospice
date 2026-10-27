@@ -4,6 +4,7 @@
 import json
 import re
 import runpy
+import sys
 from pathlib import Path
 
 from analytics_assets import ANALYTICS_FILE, analytics_url
@@ -20,6 +21,19 @@ def mismatches(html: str, content: bytes) -> list[str]:
 def main() -> None:
     content = ANALYTICS_FILE.read_bytes()
     current = analytics_url(content)
+    if "--sync" in sys.argv:
+        # Explicit maintenance mode: refresh immutable URLs without regenerating
+        # page copy. Normal pre-publish checks remain read-only.
+        sources = list((BASE / "elh-preview").rglob("*.html"))
+        sources += list((BASE / "previews").rglob("*.html"))
+        sources.append(BASE / "build-service-previews.py")
+        for page in sources:
+            html = page.read_text(encoding="utf-8")
+            updated = REFERENCE.sub(
+                lambda match: match[0].replace(match[1], current), html
+            )
+            if updated != html:
+                page.write_text(updated, encoding="utf-8")
     valid = f'<script defer src="{current}"></script>'
     # An asset-byte mutation must invalidate the old URL, regardless of its label.
     assert not mismatches(valid, content)
