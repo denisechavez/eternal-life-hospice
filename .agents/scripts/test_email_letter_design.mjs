@@ -7,7 +7,7 @@ import {join} from "node:path";
 import {setTimeout as sleep} from "node:timers/promises";
 
 const messages = JSON.parse(await readFile("artifacts/review-design-sandbox/public/email-design/approved-messages.json", "utf8"));
-const base = "http://127.0.0.1:21921/__reviews-mockup/preview/elh-email-review/RefinedLetter";
+const base = process.env.EMAIL_REVIEW_URL || "http://127.0.0.1:21921/__reviews-mockup/preview/elh-email-review/RefinedLetter";
 const profile = await mkdtemp(join(tmpdir(), "elh-letter-proof-"));
 const browser = spawn("chromium", ["--headless", "--no-sandbox", "--disable-dev-shm-usage",
   "--disable-background-networking", "--remote-debugging-port=0", `--user-data-dir=${profile}`, "about:blank"],
@@ -84,5 +84,5 @@ try {
   ws?.close();
   browser.kill("SIGTERM");
   await new Promise(resolve=>browser.once("exit",resolve));
-  await rm(profile,{recursive:true,force:true});
+  await rm(profile,{recursive:true,force:true,maxRetries:5,retryDelay:150});
 }
