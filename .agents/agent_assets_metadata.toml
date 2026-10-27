@@ -2492,3 +2492,17 @@ mtime_ms = 1793083857830
 storage_uri = "gcs://replit-rams-assets-kirk/rams/assets/repl:e1b2f643-7869-4565-af0e-10c34575ee8d/b612faa9-d406-4c1d-bff9-cc88134dcba7/e8674bb1-38a4-4fff-8f8a-8af200f15fba"
 storage_version_token = "1793083869809852"
 content_type = "text/html"
+
+[[outputs]]
+id = "noa0C5Gy1W591KkLOD7bG"
+uri = "file://generated-artifacts/email-review/ELH-Refined-Acknowledgment-Emails-Review.pdf"
+type = "pdf"
+title = "ELH Acknowledgment Emails — Review for Aleksandra"
+description = "One 15-page PDF: review cover and contents, followed by all 14 redesigned emails, one per page. For review only—not live."
+logical_id = "7aa8defa-58ea-4d91-aa70-74e8db01a82b"
+content_hash = "sha256:c22b855f72d089ab0a27846a676d381648724c4ab7b79cf17665d59d52ab0351"
+size = 239542
+mtime_ms = 1793087437371
+storage_uri = "gcs://replit-rams-assets-kirk/rams/assets/repl:e1b2f643-7869-4565-af0e-10c34575ee8d/7aa8defa-58ea-4d91-aa70-74e8db01a82b/d53ac094-0944-43e6-b83c-f1504e66d05c"
+storage_version_token = "1793087448847849"
+content_type = "application/pdf"
