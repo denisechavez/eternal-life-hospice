@@ -118,6 +118,7 @@ class DeliveryFailureAlerter:
         if processor_status not in {
             "delivery_unavailable", "guard_storage_unavailable",
             "turnstile_unavailable", "guard_configuration_unavailable",
+            "acknowledgement_unavailable",
         }:
             raise ValueError("Unknown intake alert status")
         self.processor_status = processor_status
@@ -246,6 +247,12 @@ FORM_GLOBAL_RATE_LIMITER = SlidingWindowRateLimiter(
     GLOBAL_RATE_LIMIT_ATTEMPTS, RATE_LIMIT_WINDOW_SECONDS
 )
 FORM_DELIVERY_ALERTER = DeliveryFailureAlerter()
+# Even an isolated missed receipt needs attention. Keep this counter separate
+# from failed internal delivery and verification outages.
+FORM_ACKNOWLEDGEMENT_ALERTER = DeliveryFailureAlerter(
+    processor_status="acknowledgement_unavailable",
+    failure_threshold=1,
+)
 FORM_SECURITY_ALERTERS = {
     status: DeliveryFailureAlerter(processor_status=status)
     for status in (
@@ -267,6 +274,11 @@ def notify_security_failure(status: str) -> bool:
 def notify_delivery_failure() -> bool:
     """Notify the configured independent alert channel after a Brevo failure."""
     return FORM_DELIVERY_ALERTER.record_failure()
+
+
+def notify_acknowledgement_failure() -> bool:
+    """Report a missed receipt without accepting any submitted information."""
+    return FORM_ACKNOWLEDGEMENT_ALERTER.record_failure()
 
 
 @dataclass(frozen=True)
@@ -639,6 +651,7 @@ def process_submission(
             # and retain an auditable acknowledgement flag.
             acknowledgement_error = True
             print(f"FORM_ACK_FAILED form={form_name} receipt={receipt_id}", file=sys.stderr)
+            notify_acknowledgement_failure()
 
     print(
         f"FORM_ACK_STATUS form={form_name} receipt={receipt_id} "

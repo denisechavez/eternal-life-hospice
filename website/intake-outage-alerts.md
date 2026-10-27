@@ -19,6 +19,16 @@ an outage must not disable its own notification path.
 | `turnstile_unavailable` | Configured verification cannot operate: timeout, HTTP/JSON/protocol failure, provider internal error, rejected server secret or incomplete key pair. Check provider health and server configuration without logging keys. |
 | `guard_configuration_unavailable` | Intake signing key is absent or too short. Check server configuration without logging the key. |
 | `delivery_unavailable` | Existing email-delivery alert; independent of the guard counters. |
+| `acknowledgement_unavailable` | Internal intake was accepted but the separate receipt email was not accepted by the provider. Check transactional-provider health and receipt sending; do not resend the original referral. |
+
+Acknowledgment failures are a separate counter and alert on the **first**
+failure, including an isolated missed receipt. Further attempts have the same
+15-minute cooldown per process, even when the webhook fails. The failure
+count covers the last five minutes and is capped at 1,000. This category
+does not share counters or cooldowns with internal delivery or verification
+outages. It indicates provider acceptance failure, not inbox delivery or a
+later bounce. Successful receipts, requests without an email address,
+honeypots and failed internal messages do not count.
 
 Missing/invalid/expired visitor tokens, duplicate/replayed submissions,
 hostname/action mismatches, honeypots and rate-limit rejections are not
@@ -38,6 +48,10 @@ already failed, cleanup outages preserve the existing HTTP 502 telephone
 fallback. Webhook failures are best-effort and keep the cooldown; they log
 only the exception type, not the endpoint or response. An unset webhook
 means no notification is sent. No recovery notification is currently sent.
+An acknowledgment or webhook failure after internal acceptance keeps the
+successful submission, original provider record and `acknowledgement_error`
+flag. It never retries the intake or sends an extra email. The operations
+webhook destination and all existing intake destinations are unchanged.
 
 ## Verification
 
@@ -45,3 +59,6 @@ Run `python3 website/test-form-antispam.py` for guard, alert and real
 HTTP/PostgreSQL regressions, and `python3 website/test-form-intake.py` for
 delivery regressions. Both use synthetic submissions; guard alerts are
 intercepted or sent to a mock endpoint. Do not run these against production.
+Run `python3 website/test-acknowledgement-alerts.py` for isolated receipt
+failures, cooldowns, privacy and alert-channel failures. All email and
+operations transports in that suite are intercepted.

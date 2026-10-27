@@ -15,6 +15,17 @@ instances. Persist keyed digests rather than intake contents or raw contacts.
 When a configured CAPTCHA service is unavailable, fail clearly with a telephone
 fallback rather than claiming delivery or silently skipping verification.
 
+A missed acknowledgment warrants an operations alert even when isolated;
+do not apply the verification outage's multi-failure threshold to it.
+
+**Why:** Low-volume legitimate requests can lose their only receipt without
+ever reaching an outage threshold. The internal intake is already accepted,
+so asking the visitor to retry risks duplicate referrals.
+
+**How to apply:** Keep acknowledgment alerts separate from verification and
+internal-delivery incidents, preserve successful submission semantics and
+never retry the original intake to repair a missing receipt.
+
 Shared chat assets also need a new immutable URL when security behavior changes.
 
 **Why:** Older, frozen published pages can retain cache-immutable script URLs,

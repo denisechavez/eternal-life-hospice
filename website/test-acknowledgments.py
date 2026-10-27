@@ -6,6 +6,7 @@ import io
 from pathlib import Path
 import re
 import unittest
+from unittest import mock
 
 import acknowledgments as ack
 import form_intake as intake
@@ -133,8 +134,11 @@ class AcknowledgmentTests(unittest.TestCase):
     def test_ack_failure_keeps_original_internal_record_and_reports_status(self):
         mailer = Mailer(fail_at=2)
         logs = io.StringIO()
-        with contextlib.redirect_stderr(logs):
+        with contextlib.redirect_stderr(logs), mock.patch.object(
+            intake, "notify_acknowledgement_failure"
+        ) as notify:
             result = intake.process_submission(fields_for("elh-family"), {}, mailer)
+        notify.assert_called_once_with()
         self.assertTrue(result["accepted"])
         self.assertTrue(result["acknowledgement_error"])
         self.assertFalse(result["acknowledgement_sent"])
