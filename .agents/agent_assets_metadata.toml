@@ -2450,3 +2450,31 @@ mtime_ms = 1793058733396
 storage_uri = "gcs://replit-rams-assets-kirk/rams/assets/repl:e1b2f643-7869-4565-af0e-10c34575ee8d/ab0c9b95-dd13-4271-9192-d782b0af1536/025a6bec-e48c-4130-a5c6-bc9bc9d74cf6"
 storage_version_token = "1793058738918431"
 content_type = "application/octet-stream"
+
+[[outputs]]
+id = "UfJbLl3D6JlDbeMD3X5Ph"
+uri = "file://generated-artifacts/email-review/ELH-Acknowledgment-Emails-Review.pdf"
+type = "pdf"
+title = "Branded acknowledgment emails — review PDF"
+description = "Eight proposed emails, one per page after the introduction. Drafts only; no live changes or emails sent."
+logical_id = "a3711410-3295-430a-9925-aad270c543f2"
+content_hash = "sha256:89f527da79089f9eefb16d662c9d9e06608054964f2bae7d925f4effb2d2c046"
+size = 255101
+mtime_ms = 1793081478939
+storage_uri = "gcs://replit-rams-assets-kirk/rams/assets/repl:e1b2f643-7869-4565-af0e-10c34575ee8d/a3711410-3295-430a-9925-aad270c543f2/e7b042c8-5557-445e-97ac-9da9abac7479"
+storage_version_token = "1793081501943885"
+content_type = "application/pdf"
+
+[[outputs]]
+id = "fZg1HGGS4hNwdFCPvr_60"
+uri = "file://generated-artifacts/email-review/ELH-Acknowledgment-Emails-Review.html"
+type = "html"
+title = "Browse all eight email previews"
+description = "Self-contained review document with the Eternal logo, subject lines and navigation to each proposed email."
+logical_id = "8490a7bf-68b3-40e6-a2f0-1a503312676e"
+content_hash = "sha256:217f60a13f52a02e558bb249558dc6d119a558392f7d90476ee85bea3b5bcc21"
+size = 659011
+mtime_ms = 1793081470103
+storage_uri = "gcs://replit-rams-assets-kirk/rams/assets/repl:e1b2f643-7869-4565-af0e-10c34575ee8d/8490a7bf-68b3-40e6-a2f0-1a503312676e/b3257794-28ae-4346-8d3e-c97034fce1b1"
+storage_version_token = "1793081502788132"
+content_type = "text/html"

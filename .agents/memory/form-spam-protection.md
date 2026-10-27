@@ -46,3 +46,17 @@ install CAPTCHA test keys or introduce a production bypass.
 against test-only provider/submission boundaries. Keep real server guard coverage
 separate, and state clearly that a simulated challenge cannot validate the
 provider's own cross-origin widget.
+
+## Request acknowledgments
+
+The owner requires an immediate branded receipt email for support requests,
+referrals and other form requests when the submitter provides an email address.
+Care-request wording should explain that the care team will make contact based
+on urgency, without promising an unapproved response deadline.
+
+**Why:** Families and referring professionals need reassurance that their
+request was received and clear expectations about the next contact.
+
+**How to apply:** Keep acknowledgments specific to the request type, exclude
+patient or clinical details and give urgent care requests a telephone fallback.
+Never describe a queued or provider-accepted email as confirmed inbox delivery.
