@@ -45,6 +45,7 @@
 - [Canvas organization](canvas-organization.md) — keep one consolidated ELH marketing/publications hub; remove redundant operational frames instead of adding parallel dashboards.
 - [Preview generator and Git](preview-generator-git.md) — nondeterministic generated preview order can dirty the worktree and block Git sync; keep discovery stable.
 - [Journal editorial conventions](journal-editorial-conventions.md) — avoid Oxford commas; archived Journal sources must stay out of every public-generation surface.
+- [Eternal writing tone](elh-writing-tone.md) — compliant, informative, welcoming and professional; approved acknowledgments are the reference; preserve exact approved copy.
 - [Growth Intelligence source APIs](growth-intelligence-source-apis.md) — WhatConverts needs explicit dates; Brevo campaign truth is in per-list campaignStats, not zeroed globalStats.
 - [Agent-facing coverage counts](agent-coverage-counts.md) — avoid fixed public city totals without operations sign-off; document live published-page counts, not guaranteed clinical coverage.
 - [City content differentiation](city-content-differentiation.md) — wider rollout approved; preserve pilots and hub, compare the same corpus/method and retain valid clinical caveats.

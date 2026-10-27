@@ -24,6 +24,7 @@ from email.parser import BytesParser
 from email.policy import default
 from typing import Dict, Iterable, Mapping, Optional, Tuple
 from urllib.parse import parse_qs
+import acknowledgments
 
 
 PHONE_DISPLAY = "805.953.7273"
@@ -311,12 +312,14 @@ FORM_RULES: Dict[str, FormRule] = {
         "Care coordinator inquiry",
         REFERRAL_EMAIL,
         ("first_name", "last_name", "phone"),
+        acknowledge=True,
         referral=True,
     ),
     "elh-chat-callback": FormRule(
         "Website chat callback",
         REFERRAL_EMAIL,
         ("name", "phone"),
+        acknowledge=True,
         referral=True,
     ),
     "elh-voice": FormRule(
@@ -466,6 +469,11 @@ def validate_submission(
     if email and not EMAIL_RE.match(email):
         raise IntakeError("invalid_email", "Please enter a valid email address.")
 
+    interest = fields.get("interest", "").strip()
+    if form_name == "elh-voice" and interest not in {"", "Select…", "Select..."}:
+        if acknowledgments.interest_id(interest) is None:
+            raise IntakeError("invalid_interest", "Please choose a request category.")
+
     if rule.attachment_required:
         resume = files.get("resume")
         if not resume or not resume.content:
@@ -565,10 +573,24 @@ def process_submission(
     if fields.get("bot-field", "").strip():
         return {"ok": True, "accepted": True, "acknowledgement_sent": False}
 
+    # Normalize only this request copy; historical stored labels remain valid.
+    fields = dict(fields)
+    if form_name == "elh-voice":
+        category = acknowledgments.interest_id(fields.get("interest", ""))
+        if category:
+            fields["interest"] = category
     receipt_id = secrets.token_hex(6).upper()
     sender_name = _sender_name(fields) or "Website visitor"
     subject = f"{rule.label} — {sender_name} [{receipt_id}]"
     text, html_body = _internal_message(rule, fields, receipt_id)
+    if form_name == "elh-voice":
+        flags = list(dict.fromkeys(
+            acknowledgments.FLAGS[key]
+            for key in acknowledgments.request_categories(fields.get("interest", ""))
+            if key in acknowledgments.FLAGS
+        ))
+        if flags:
+            subject = " | ".join(flags) + " — " + subject
     payload: Dict[str, object] = {
         "sender": {"name": FROM_NAME, "email": FROM_EMAIL},
         "to": [{"email": rule.destination, "name": "Eternal Life Hospice Intake"}],
@@ -598,6 +620,9 @@ def process_submission(
 
     active_mailer = mailer or BrevoMailer()
     provider_id = active_mailer.send(payload)
+    # Existing internal transport must accept the submission before a receipt
+    # can be sent. Never turn a failed acknowledgment into a lost intake.
+    print(f"FORM_INTERNAL_ACCEPTED form={form_name} receipt={receipt_id}", file=sys.stderr)
     acknowledged = False
     acknowledgement_error = False
 
@@ -613,6 +638,13 @@ def process_submission(
             # failure here would invite a duplicate referral, so report success
             # and retain an auditable acknowledgement flag.
             acknowledgement_error = True
+            print(f"FORM_ACK_FAILED form={form_name} receipt={receipt_id}", file=sys.stderr)
+
+    print(
+        f"FORM_ACK_STATUS form={form_name} receipt={receipt_id} "
+        f"status={'failed' if acknowledgement_error else 'provider_accepted' if acknowledged else 'not_requested_no_email'}",
+        file=sys.stderr,
+    )
 
     return {
         "ok": True,
@@ -621,6 +653,11 @@ def process_submission(
         "provider_message_id": provider_id,
         "acknowledgement_sent": acknowledged,
         "acknowledgement_error": acknowledgement_error,
+        "care_cta_html": (
+            acknowledgments.CTA_HTML
+            if acknowledgments.template_key(form_name, fields) in acknowledgments.CARE_TEMPLATES
+            else ""
+        ),
     }
 
 
@@ -629,6 +666,25 @@ def _internal_message(
 ) -> Tuple[str, str]:
     rows = []
     text_rows = []
+    meta = {
+        "Submission timestamp": datetime.now(timezone.utc).isoformat(),
+        "Follow-up status": "New — follow-up pending",
+    }
+    categories = acknowledgments.request_categories(fields.get("interest", ""))
+    if categories:
+        meta["Request categories"] = "; ".join(
+            f"{key}: {acknowledgments.INTEREST_LABELS[key]}" for key in categories
+        )
+        meta["Coordination flags"] = "; ".join(dict.fromkeys(
+            acknowledgments.FLAGS[key] for key in categories if key in acknowledgments.FLAGS
+        )) or "GENERAL MEETING REQUEST"
+    for label, value in meta.items():
+        text_rows.append(f"{label}: {value}")
+        rows.append(
+            '<tr><th align="left" style="padding:6px 16px 6px 0">'
+            + html.escape(label) + '</th><td style="padding:6px 0">'
+            + html.escape(value) + "</td></tr>"
+        )
     for key, label in FIELD_LABELS.items():
         value = fields.get(key, "").strip()
         if not value:
@@ -697,57 +753,8 @@ def _acknowledgement_payload(
     email: str,
 ) -> Dict[str, object]:
     first_name = _sender_name(fields).split(" ", 1)[0]
-    greeting = f"Hi {first_name}," if first_name else "Hello,"
-    if rule.referral:
-        subject = "We received your request — Eternal Life Hospice"
-        lead = (
-            "Our intake team received your request and will follow up by phone. "
-            "No patient or clinical details are included in this email."
-        )
-    elif form_name == "elh-careers":
-        subject = "We received your application — Eternal Life Hospice"
-        lead = "We received your application and résumé. A member of our team will review it and be in touch."
-    elif form_name == "elh-care-brief-signup":
-        subject = "You're on the list — The Eternal Care Brief"
-        lead = "Thank you for signing up for The Eternal Care Brief. We will share each new issue with you."
-    elif form_name == "elh-voice":
-        subject = "Thank you for raising your hand — The Eternal Care Brief"
-        lead = "Thank you for offering your voice. A member of our team will reach out shortly."
-    else:
-        subject = "We received your message — Eternal Life Hospice"
-        lead = "We received your message and a member of our team will be in touch."
-
-    text = "\n".join(
-        [
-            greeting,
-            "",
-            lead,
-            "",
-            f"Confirmation: {receipt_id}",
-            f"If you need us right away, call {PHONE_DISPLAY}. We are here 24/7.",
-            "",
-            "With care,",
-            "Eternal Life Hospice",
-            PHONE_DISPLAY,
-            CONTACT_EMAIL,
-        ]
-    )
-    html_body = (
-        "<!doctype html><html><body style=\"margin:0;background:#F5F0EB\">"
-        "<table role=\"presentation\" width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" "
-        "style=\"padding:32px;background:#F5F0EB\"><tr><td align=\"center\">"
-        "<table role=\"presentation\" width=\"520\" cellpadding=\"0\" cellspacing=\"0\" "
-        "style=\"max-width:520px;width:100%;background:#fff;border:1px solid #D8CDBF;"
-        "border-radius:14px;overflow:hidden\"><tr><td style=\"background:#5B2E59;"
-        "padding:22px 30px;color:#F5F0EB;font:20px Georgia,serif\">Eternal Life Hospice"
-        "</td></tr><tr><td style=\"padding:30px;color:#3C1C3B;font:16px/1.7 Georgia,serif\">"
-        f"<p style=\"margin:0 0 16px\">{html.escape(greeting)}</p>"
-        f"<p style=\"margin:0 0 18px\">{html.escape(lead)}</p>"
-        f"<p style=\"margin:0 0 18px;color:#6b5f57;font-size:13px\">Confirmation: {html.escape(receipt_id)}</p>"
-        f"<p style=\"margin:0\">If you need us right away, call <a href=\"tel:{PHONE_TEL}\" "
-        f"style=\"color:#5B2E59;font-weight:bold\">{PHONE_DISPLAY}</a>. We are here 24/7.</p>"
-        "</td></tr></table></td></tr></table></body></html>"
-    )
+    key = acknowledgments.template_key(form_name, fields)
+    subject, text, html_body = acknowledgments.render(key, first_name, receipt_id, CONTACT_EMAIL)
     return {
         "sender": {"name": FROM_NAME, "email": FROM_EMAIL},
         "to": [{"email": email}],

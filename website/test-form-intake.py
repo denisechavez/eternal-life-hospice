@@ -112,7 +112,7 @@ class FormIntakeTests(unittest.TestCase):
         self.assertFalse(result["acknowledgement_sent"])
         self.assertEqual(len(mailer.payloads), 1)
 
-    def test_chat_callback_routes_internally_without_acknowledgement(self):
+    def test_chat_callback_routes_internally_and_acknowledges_when_email_given(self):
         fields = {
             "form-name": "elh-chat-callback",
             "name": "Synthetic Caller",
@@ -122,8 +122,8 @@ class FormIntakeTests(unittest.TestCase):
         mailer = FakeMailer()
         result = form_intake.process_submission(fields, {}, mailer)
         self.assertTrue(result["accepted"])
-        self.assertFalse(result["acknowledgement_sent"])
-        self.assertEqual(len(mailer.payloads), 1)
+        self.assertTrue(result["acknowledgement_sent"])
+        self.assertEqual(len(mailer.payloads), 2)
         self.assertEqual(
             mailer.payloads[0]["to"][0]["email"],
             "referral@eternallifehospice.com",

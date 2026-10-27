@@ -261,10 +261,26 @@ try {
     assert.match(post.headers["content-type"], /application\/x-www-form-urlencoded/);
     assert.equal(await evaluate("document.querySelectorAll('[aria-label=\"Spam protection\"]').length"), 0);
     assert.ok(state.assets.includes("/assets/intake-security.js"), "Real shared module was not loaded");
-    if (flow.name !== "family") assert.ok(await evaluate(`document.body.innerText.includes("SYNTHETIC-RECEIPT")`));
+    assert.ok(await evaluate(`document.body.innerText.includes("SYNTHETIC-RECEIPT")`));
+    assert.ok(await evaluate(`document.body.innerText.includes("Need to speak with someone now?")`));
+    assert.ok(await evaluate(`document.body.innerText.includes("We're here for you 24 hours a day, 7 days a week.")`));
+    assert.ok(await evaluate(`Array.from(document.querySelectorAll('a[href="tel:18059537273"]')).some(a=>a.textContent==="Call 805.953.7273")`));
     console.log(`PASS ${currentCase}: validation, interactive challenge, load/error/expiry/timeout,
   security and delivery failures, preserved fields, retry, guarded confirmation`);
   }
+  currentCase = "request category choices";
+  await call("Page.navigate", {url: fixture.origin + "/"});
+  await until("document.readyState === 'complete' && document.querySelector('#founderConnect option[value=\"aleksandra-meeting\"]')");
+  const requestIds = ["share-voice", "be-featured", "education-session", "speaking-engagement",
+    "general-meeting", "all-interests", "aleksandra-meeting"];
+  for (const selector of ["#founderConnect", '.lead-form[data-form="voice"] select[name="interest"]']) {
+    assert.deepEqual(await evaluate(`Array.from(document.querySelector(${JSON.stringify(selector)}).options).slice(1).map(o=>o.value)`), requestIds);
+  }
+  for (const category of requestIds) {
+    await evaluate(`document.querySelector('#founderConnect').value=${JSON.stringify(category)};document.querySelector('#founderConnectGo').click()`);
+    assert.equal(await evaluate(`document.querySelector('.lead-form[data-form="voice"] select[name="interest"]').value`), category);
+  }
+  console.log("PASS all seven request choices: unchanged order, stable IDs and founder-to-form selection");
   assert.deepEqual(fixture.state.violations, [], "Unexpected local transport");
   assert.deepEqual(transportErrors, [], "Request interception failed");
   assert.deepEqual(browserErrors, [], "Uncaught browser exceptions");

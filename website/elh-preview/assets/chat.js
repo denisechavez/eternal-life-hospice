@@ -642,11 +642,14 @@
             data.name.split(" ")[0] +
             ". Your callback request was accepted (confirmation " +
             result.receipt_id +
-            ") and a member of our team will call you back within the hour. If anything comes up in the meantime, please feel free to call us anytime at " +
-            PHONE_DISPLAY +
-            ". We're here 24/7.";
-        addMsg(confirmation, "bot", false, null, true);
-        announceCallback(confirmation, false);
+            ") and a member of our team will call you back.";
+        var receiptBubble = addMsg(confirmation, "bot", false, null, true);
+        if (result.care_cta_html) {
+          var careCta = document.createElement("div");
+          careCta.innerHTML = result.care_cta_html;
+          receiptBubble.appendChild(careCta);
+        }
+        announceCallback(receiptBubble.textContent, false);
       })
       .catch(function () {
         track("chat_callback_error", { page: window.location.pathname || "/" });

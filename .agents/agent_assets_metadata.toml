@@ -2455,14 +2455,14 @@ content_type = "application/octet-stream"
 id = "UfJbLl3D6JlDbeMD3X5Ph"
 uri = "file://generated-artifacts/email-review/ELH-Acknowledgment-Emails-Review.pdf"
 type = "pdf"
-title = "Branded acknowledgment emails — review PDF"
-description = "Eight proposed emails, one per page after the introduction. Drafts only; no live changes or emails sent."
+title = "Approved acknowledgment emails — review PDF"
+description = "All 14 approved messages plus the standardized care confirmation screen. Development preview only; not published."
 logical_id = "a3711410-3295-430a-9925-aad270c543f2"
-content_hash = "sha256:89f527da79089f9eefb16d662c9d9e06608054964f2bae7d925f4effb2d2c046"
-size = 255101
-mtime_ms = 1793081478939
-storage_uri = "gcs://replit-rams-assets-kirk/rams/assets/repl:e1b2f643-7869-4565-af0e-10c34575ee8d/a3711410-3295-430a-9925-aad270c543f2/e7b042c8-5557-445e-97ac-9da9abac7479"
-storage_version_token = "1793081501943885"
+content_hash = "sha256:db9d8ca36a1f1cd9b3a27cef02aec3822ddb67a13c8b120a39e0b66c5d4d9258"
+size = 239479
+mtime_ms = 1793083633292
+storage_uri = "gcs://replit-rams-assets-kirk/rams/assets/repl:e1b2f643-7869-4565-af0e-10c34575ee8d/a3711410-3295-430a-9925-aad270c543f2/05cba16b-42f4-4bda-b029-bc1c0d888c03"
+storage_version_token = "1793083868816439"
 content_type = "application/pdf"
 
 [[outputs]]
@@ -2477,4 +2477,18 @@ size = 659011
 mtime_ms = 1793081470103
 storage_uri = "gcs://replit-rams-assets-kirk/rams/assets/repl:e1b2f643-7869-4565-af0e-10c34575ee8d/8490a7bf-68b3-40e6-a2f0-1a503312676e/b3257794-28ae-4346-8d3e-c97034fce1b1"
 storage_version_token = "1793081502788132"
+content_type = "text/html"
+
+[[outputs]]
+id = "kzuqKGXg8O7s3YThUwKl3"
+uri = "file://generated-artifacts/email-review/ELH-Acknowledgment-Implementation-Report.html"
+type = "html"
+title = "Implementation and test report"
+description = "Form inventory, exact modified files, before/after comparisons, routing, test results and delivery limitations."
+logical_id = "b612faa9-d406-4c1d-bff9-cc88134dcba7"
+content_hash = "sha256:0fead929526bbd6bc4f033feacfeadde3d05fb89d1775192f0f4d21ea8dd82ba"
+size = 86688
+mtime_ms = 1793083857830
+storage_uri = "gcs://replit-rams-assets-kirk/rams/assets/repl:e1b2f643-7869-4565-af0e-10c34575ee8d/b612faa9-d406-4c1d-bff9-cc88134dcba7/e8674bb1-38a4-4fff-8f8a-8af200f15fba"
+storage_version_token = "1793083869809852"
 content_type = "text/html"

@@ -60,3 +60,22 @@ request was received and clear expectations about the next contact.
 **How to apply:** Keep acknowledgments specific to the request type, exclude
 patient or clinical details and give urgent care requests a telephone fallback.
 Never describe a queued or provider-accepted email as confirmed inbox delivery.
+
+The owner's final approved care CTA supersedes all previous availability
+variations in acknowledgment emails and online confirmation screens:
+
+> Need to speak with someone now?
+>
+> We're here for you 24 hours a day, 7 days a week.
+>
+> Call 805.953.7273
+
+**Why:** The owner explicitly approved this exact wording for consistent,
+unmistakable care-related phone availability. It does not promise immediate
+appointments, editorial responses or clinical eligibility.
+
+**How to apply:** Preserve the wording exactly and make the call label a
+telephone link. Apply it to care requests/referrals/callbacks and the
+care-support portion of general meeting acknowledgments. Do not substitute
+shorter “24/7” phrases or alter other owner-approved copy. Keep development
+changes unpublished until the owner approves publishing.

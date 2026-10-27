@@ -59,7 +59,8 @@ export async function startIntakeFixture() {
         if (result?.raw) {
           response.writeHead(200, {"Content-Type": "application/json"});
           response.end("not json");
-        } else json(result?.body ?? {ok: true, accepted: true, receipt_id: "SYNTHETIC-RECEIPT"},
+        } else json(result?.body ?? {ok: true, accepted: true, receipt_id: "SYNTHETIC-RECEIPT",
+          care_cta_html: '<p>Need to speak with someone now?</p><p>We&#x27;re here for you 24 hours a day, 7 days a week.</p><p><a href="tel:18059537273">Call 805.953.7273</a></p>'},
           result?.status ?? 200);
       };
       if (state.hold) state.held = reply;

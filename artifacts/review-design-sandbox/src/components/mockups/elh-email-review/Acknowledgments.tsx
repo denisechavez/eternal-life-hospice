@@ -4,7 +4,7 @@ import React from "react";
 export function Acknowledgments() {
   return (
     <iframe
-      title="Eight proposed Eternal Life Hospice acknowledgment emails — drafts only"
+      title="Fourteen approved Eternal Life Hospice acknowledgment emails — unpublished development preview"
       src="/__reviews-mockup/email-acknowledgments-review.html#family"
       style={{
         display: "block",
