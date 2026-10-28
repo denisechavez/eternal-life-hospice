@@ -13,15 +13,16 @@ from urllib.request import Request, urlopen
 
 from form_intake import FORM_RULES, IntakeError, notify_security_failure
 from journal_release import connect
+from website_phone import public_text
 
 MIN_AGE_SECONDS = 1.8
 TOKEN_TTL_SECONDS = 1800
 VERIFY_URL = "https://challenges.cloudflare.com/turnstile/v0/siteverify"
 SAFE_MESSAGE = "We could not verify this submission. Please retry or call 805.953.7273."
 ASSETS = Path(__file__).parent / "elh-preview/assets"
-SECURITY_VERSION = hashlib.sha256((ASSETS / "intake-security.js").read_bytes()).hexdigest()[:12]
+SECURITY_VERSION = hashlib.sha256(public_text((ASSETS / "intake-security.js").read_bytes().decode()).encode()).hexdigest()[:12]
 CHAT_VERSION = hashlib.sha256(
-    (ASSETS / "chat.js").read_bytes() + SECURITY_VERSION.encode()
+    public_text((ASSETS / "chat.js").read_bytes().decode()).encode() + SECURITY_VERSION.encode()
 ).hexdigest()[:12]
 
 

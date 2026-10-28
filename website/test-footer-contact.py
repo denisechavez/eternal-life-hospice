@@ -6,17 +6,18 @@ import unittest
 
 import footer_contact
 from fragments import FOOTER_HTML
+from website_phone import MAIN_DISPLAY, MAIN_TEL
 
 
 class FooterContactTests(unittest.TestCase):
     def assert_contact(self, document):
         footer = footer_contact.FOOTER.search(document).group()
-        self.assertEqual(footer.count('tel:18054099262'), 1)
-        self.assertIn('<span>805.409.9262 · Main</span>', footer)
+        self.assertEqual(footer.count('tel:' + MAIN_TEL), 1)
+        self.assertIn(f'<span>{MAIN_DISPLAY} · Main</span>', footer)
         self.assertNotIn("805.410.1151", footer)
         self.assertNotIn("18054101151", footer)
         self.assertNotIn("805.953.7273", footer)
-        self.assertIn('class="fc-line fc-direct no-swap" href="tel:18054099262"', footer)
+        self.assertIn(f'class="fc-line fc-direct no-swap" href="tel:{MAIN_TEL}"', footer)
         self.assertEqual(document, footer_contact.public_html(document))
 
     def assert_signup(self, document):
@@ -69,7 +70,7 @@ class FooterContactTests(unittest.TestCase):
         prefix = '<head></head><article>Approved content</article><a href="tel:18059537273">Call 805.953.7273</a>'
         old = '<footer id="site-footer"><a class="fc-line fc-direct" href="tel:18054101151"><span>805.410.1151 · Main</span></a><span>805.953.8530 fax</span></footer>'
         updated = footer_contact.update_main_number(prefix + old)
-        expected = old.replace("18054101151", "18054099262").replace("805.410.1151", "805.409.9262")
+        expected = old.replace("18054101151", MAIN_TEL).replace("805.410.1151", MAIN_DISPLAY)
         self.assertEqual(updated, prefix + expected)
         self.assertEqual(footer_contact.update_main_number(updated), updated)
 

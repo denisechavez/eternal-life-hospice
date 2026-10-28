@@ -122,11 +122,11 @@ FOOTER_HTML = FOOTER_HTML.replace(
 ).replace(
     '<span>805.953.7273</span></a><span class="fc-line fc-direct">',
     '<span>805.953.7273</span></a>'
-    '<a class="fc-line fc-direct" href="tel:18054099262">',
+    '<a class="fc-line fc-direct" href="tel:__ELH_MAIN_TEL__">',
     1,
 ).replace(
     '<span>805.953.7273 · Direct</span></span>',
-    '<span>805.409.9262</span></a>',
+    '<span>__ELH_MAIN_DISPLAY__</span></a>',
     1,
 )
 from footer_contact import public_html as update_footer_contact

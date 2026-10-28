@@ -30,13 +30,8 @@
 const fs   = require('fs');
 const path = require('path');
 
-// Match the website-only contact projection without altering signed sources.
-function publicPhoneText(text) {
-  return text.replace(/(?<!\d)(\+?1[ .-]?)?(\(?805\)?)([ .-]?)(953[ .-]?7273|410[ .-]?1151)(?!\d)/g,
-    (match, country, area, first, oldNumber) => {
-      return (country || '') + area + first + '409' + oldNumber.replace(/\d/g, '') + '9262';
-    });
-}
+// Read the same website-only setting as the server; never rewrite signed sources.
+const {publicPhoneText} = require('../../website-phone.cjs');
 
 // ── Paths ────────────────────────────────────────────────────────────────────
 const SITE_ROOT  = path.resolve(__dirname, '..');          // website/elh-preview/

@@ -26,3 +26,13 @@ unapproved editorial version or interrupt its scheduled release.
 
 **How to apply:** Keep signed Journal sources out of bulk footer synchronization
 and check the publicly rendered contact order without changing approval hashes.
+
+Website main-number approval does not authorize changing acknowledgment letters
+or external Google/WhatConverts profile identity. Preserve employee identities,
+role mailboxes, independent direct numbers and no-swap behavior.
+
+**Why:** The owner explicitly limited future phone-setting consolidation to the
+website, including its public call links, not email copy or external profiles.
+
+**How to apply:** Treat historical company numbers as website projection inputs,
+not permission for a repository-wide number replacement or profile update.

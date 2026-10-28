@@ -19,6 +19,7 @@ import form_intake
 import website_phone
 from devserver import PrettyURLHandler
 from fragments import FOOTER_HTML
+from website_phone import MAIN_DISPLAY, MAIN_TEL
 
 
 class NetworkFreePhoneTests(unittest.TestCase):
@@ -43,9 +44,9 @@ class WebsitePhoneTests(NetworkFreePhoneTests):
             if digits == "18006334227":  # Medicare, not an Eternal contact.
                 continue
             visible = re.sub(r"<[^>]+>", "", label).strip()
-            self.assertEqual(digits, "18054099262", f"Wrong public call target: {target}")
+            self.assertEqual(digits, MAIN_TEL, f"Wrong public call target: {target}")
             if re.search(r"\d{3}[. -]\d{3}[. -]\d{4}", visible):
-                self.assertIn("805.409.9262", visible, f"Wrong call label: {visible}")
+                self.assertIn(MAIN_DISPLAY, visible, f"Wrong call label: {visible}")
 
     def boundary(self, route, body, status=200):
         handler = object.__new__(PrettyURLHandler)
@@ -69,23 +70,23 @@ class WebsitePhoneTests(NetworkFreePhoneTests):
         source = (Path(__file__).parent / "elh-preview" / "index.html").read_text()
         rendered = handler._preview_chrome(source)
         self.assertFalse(website_phone.OLD_PUBLIC_PHONE.search(rendered))
-        self.assertIn("805.409.9262", rendered)
+        self.assertIn(MAIN_DISPLAY, rendered)
 
     def test_phone_formats_and_click_to_call_stay_consistent(self):
         for old, new in (
-            ("805.953.7273", "805.409.9262"),
-            ("tel:18059537273", "tel:18054099262"),
-            ("tel:+18059537273", "tel:+18054099262"),
-            ("+1-805-953-7273", "+1-805-409-9262"),
-            ("(805) 953-7273", "(805) 409-9262"),
-            ("805.410.1151", "805.409.9262"),
-            ("tel:18054101151", "tel:18054099262"),
-            ("+1-805-410-1151", "+1-805-409-9262"),
+            ("805.953.7273", MAIN_DISPLAY),
+            ("tel:18059537273", "tel:" + MAIN_TEL),
+            ("tel:+18059537273", "tel:+" + MAIN_TEL),
+            ("+1-805-953-7273", "+1-" + MAIN_DISPLAY.replace(".", "-")),
+            ("(805) 953-7273", f"({MAIN_DISPLAY[:3]}) {MAIN_DISPLAY[4:7]}-{MAIN_DISPLAY[8:]}"),
+            ("805.410.1151", MAIN_DISPLAY),
+            ("tel:18054101151", "tel:" + MAIN_TEL),
+            ("+1-805-410-1151", "+1-" + MAIN_DISPLAY.replace(".", "-")),
         ):
             self.assertEqual(website_phone.public_text(old), new)
         original = '<a href="tel:18059537273">Call 805.953.7273</a>'
         updated = website_phone.public_html(original)
-        self.assertEqual(updated, '<a href="tel:18054099262">Call 805.409.9262</a>')
+        self.assertEqual(updated, f'<a href="tel:{MAIN_TEL}">Call {MAIN_DISPLAY}</a>')
         self.assertEqual(website_phone.public_html(updated), updated)
 
     def test_public_calls_change_but_explicit_office_contacts_are_retained(self):
@@ -131,8 +132,8 @@ class WebsitePhoneTests(NetworkFreePhoneTests):
         approved = acknowledgments.CTA_HTML
         self.assertIn("Call 805.953.7273", approved)
         response = website_phone.public_payload({"care_cta_html": approved, "accepted":True})
-        self.assertIn("Call 805.409.9262", response["care_cta_html"])
-        self.assertIn("tel:18054099262", response["care_cta_html"])
+        self.assertIn("Call " + MAIN_DISPLAY, response["care_cta_html"])
+        self.assertIn("tel:" + MAIN_TEL, response["care_cta_html"])
         self.assertTrue(response["accepted"])
         self.assertEqual(acknowledgments.CTA_HTML, approved)
         for key in acknowledgments.TEMPLATES:
@@ -173,9 +174,9 @@ class WebsitePhoneTests(NetworkFreePhoneTests):
                 self.assertIn(b"805.953.7273", source)
 
     def test_chat_defaults_and_guarded_public_response(self):
-        source = (Path(__file__).parent / "elh-preview/assets/chat.js").read_text()
-        for name, value in (("PHONE_DISPLAY", "805.409.9262"),
-                            ("PHONE_TEL", "18054099262")):
+        source = website_phone.public_text((Path(__file__).parent / "elh-preview/assets/chat.js").read_text())
+        for name, value in (("PHONE_DISPLAY", MAIN_DISPLAY),
+                            ("PHONE_TEL", MAIN_TEL)):
             self.assertRegex(source, rf'var {name}\s*=\s*"{re.escape(value)}"')
         self.assertIn('phone.href = "tel:" + PHONE_TEL', source)
         self.assertFalse(website_phone.OLD_PUBLIC_PHONE.search(source))
@@ -238,9 +239,9 @@ class WebsitePhoneTests(NetworkFreePhoneTests):
                 self.assert_public_call_links(link)
 
     def test_shared_form_error_links_use_main_phone(self):
-        source = (Path(__file__).parent / "elh-preview/assets/intake-security.js").read_text()
-        self.assertIn("805.409.9262", source)
-        self.assertIn("tel:18054099262", source)
+        source = website_phone.public_text((Path(__file__).parent / "elh-preview/assets/intake-security.js").read_text())
+        self.assertIn(MAIN_DISPLAY, source)
+        self.assertIn("tel:" + MAIN_TEL, source)
         self.assertFalse(website_phone.OLD_PUBLIC_PHONE.search(source))
 
     def test_http_boundary_changes_only_public_api_responses(self):

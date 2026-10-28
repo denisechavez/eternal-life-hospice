@@ -57,7 +57,9 @@ set +o pipefail
   python3 ../test-public-artifact-exposure.py
   python3 ../test-growth-intelligence-access.py
   python3 ../test-acknowledgments.py
+  python3 ../test-website-phone-config.py
   python3 ../test-website-phone.py
+  python3 ../test-footer-contact.py
   node assets/build-search-index.js --check
   node assets/build-search-index.js
   node assets/update-sitemap-dates.js

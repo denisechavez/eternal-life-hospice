@@ -17,8 +17,8 @@
   import("/assets/contact-fields.js").then(function(fields){fields.install(document);})
     .catch(function(error){console.error("Contact field formatting could not load.", error);});
 
-  var PHONE_DISPLAY = "805.409.9262";
-  var PHONE_TEL = "18054099262";
+  var PHONE_DISPLAY = "__ELH_MAIN_DISPLAY__";
+  var PHONE_TEL = "__ELH_MAIN_TEL__";
   var ENDPOINT = "/api/chat";
 
   // Concise, on-brand answers drawn from the site content.
@@ -784,7 +784,7 @@
         submitBtn.textContent = unknown ? "Please call to confirm receipt" : "Send request";
         if(unknown){callbackReminder(err);}
         else if(intakeSecurity){intakeSecurity.showFailure(error, err);}
-        else{err.innerHTML = "We couldn't load the security check, so your request has not been sent. Your information is still here. You can try again or call our care team. <p>Need to speak with someone now?</p><p>We're here for you 24 hours a day, 7 days a week.</p><p><a href=\"tel:18054099262\">Call 805.409.9262</a></p>";}
+        else{err.innerHTML = "We couldn't load the security check, so your request has not been sent. Your information is still here. You can try again or call our care team. <p>Need to speak with someone now?</p><p>We're here for you 24 hours a day, 7 days a week.</p><p><a href=\"tel:" + PHONE_TEL + "\">Call " + PHONE_DISPLAY + "</a></p>";}
         announceCallback(err.textContent, true);
       });
   }

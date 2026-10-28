@@ -501,7 +501,7 @@ class PrettyURLHandler(http.server.SimpleHTTPRequestHandler):
                 route=route,
             ).encode()
         elif path.endswith("search-index.json"):
-            body = recruitment_policy.public_discovery(body.decode(), "search").encode()
+            body = website_phone.public_text(recruitment_policy.public_discovery(body.decode(), "search")).encode()
         elif path.endswith("sitemap.xml"):
             body = recruitment_policy.public_discovery(body.decode(), "sitemap").encode()
         self.send_response(200)
@@ -577,6 +577,19 @@ class PrettyURLHandler(http.server.SimpleHTTPRequestHandler):
         Last-Modified and byte-range semantics remain intact.
         """
         path = self.translate_path(self.path)
+        public_path = urlsplit(self.path).path
+        if (public_path in {"/assets/chat.js", "/assets/intake-security.js",
+                            "/assets/aleksandra-dubina.vcf", "/assets/denise-chavez.vcf"}
+                or (public_path.startswith("/.well-known/") and path.endswith(".json"))) and os.path.isfile(path):
+            with open(path, "rb") as source:
+                text = website_phone.public_text(source.read().decode("utf-8"))
+            body = text.encode("utf-8")
+            self.send_response(200)
+            self.send_header("Content-Type", self.guess_type(path))
+            self.send_header("Content-Length", str(len(body)))
+            self.send_header("Cache-Control", self._cache_control_for_path())
+            self.end_headers()
+            return io.BytesIO(body)
         if os.path.isdir(path):
             for index_name in ("index.html", "index.htm"):
                 index_path = os.path.join(path, index_name)

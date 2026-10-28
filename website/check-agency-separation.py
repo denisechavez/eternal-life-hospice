@@ -4,6 +4,7 @@
 from pathlib import Path
 import sys
 from footer_contact import public_html as update_footer_contact
+from website_phone import MAIN_DISPLAY, MAIN_TEL
 
 
 ROOT = Path(__file__).resolve().parent
@@ -26,10 +27,10 @@ RETIRED_ETERNAL_PLACE_URL = (
     "https://www.google.com/maps/place/?q=place_id:ChIJ8TnEjG4l6IARTsNF_xMDyyI"
 )
 PRIMARY_FOOTER_PHONE = (
-    '<a class="fc-line fc-direct no-swap" href="tel:18054099262">'
+    f'<a class="fc-line fc-direct no-swap" href="tel:{MAIN_TEL}">'
 )
 TRACKED_FOOTER_PHONE = (
-    '<a class="fc-line fc-direct no-swap" href="tel:18054099262">'
+    f'<a class="fc-line fc-direct no-swap" href="tel:{MAIN_TEL}">'
 )
 
 
@@ -67,7 +68,7 @@ def main() -> int:
                 findings.append(
                     f"{path.relative_to(ROOT)}: protected primary footer phone missing"
                 )
-            if TRACKED_FOOTER_PHONE not in text or "<span>805.409.9262 · Main</span>" not in text:
+            if TRACKED_FOOTER_PHONE not in text or f"<span>{MAIN_DISPLAY} · Main</span>" not in text:
                 findings.append(
                     f"{path.relative_to(ROOT)}: WhatConverts footer phone missing"
                 )

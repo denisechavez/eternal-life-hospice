@@ -1,11 +1,26 @@
 """Website-only primary phone projection; never applied to acknowledgment mail."""
+import json
 import re
+from pathlib import Path
 
-MAIN_DISPLAY = "805.409.9262"
-MAIN_TEL = "18054099262"
-PUBLIC_API_ROUTES = {"/api/chat", "/api/coverage", "/api/form-submit"}
+CONFIG_PATH = Path(__file__).with_name("website-contact.json")
+CONFIG = json.loads(CONFIG_PATH.read_text(encoding="utf-8"))
+MAIN = CONFIG["main"]
+ALIASES = set(CONFIG["previousWebsiteNumbers"]) | {MAIN}
+if any(not re.fullmatch(r"[2-9]\d{9}", number) for number in ALIASES):
+    raise ValueError("Website phone settings must contain ten-digit US numbers")
+MAIN_DISPLAY = f"{MAIN[:3]}.{MAIN[3:6]}.{MAIN[6:]}"
+MAIN_TEL = "1" + MAIN
+PUBLIC_API_ROUTES = {"/api/chat", "/api/coverage", "/api/form-submit", "/api/form-security"}
+PHONE_PATTERN = (
+    r"(?<!\d)(\+?1[ .-]?)?(\(?\d{3}\)?)([ .-]?)(\d{3})([ .-]?)(\d{4})(?!\d)"
+)
+# Retained for callers that check for retired website numbers.
 OLD_PUBLIC_PHONE = re.compile(
-    r"(?<!\d)(\+?1[ .-]?)?(\(?805\)?)([ .-]?)(953[ .-]?7273|410[ .-]?1151)(?!\d)"
+    r"(?<!\d)(?:\+?1[ .-]?)?(?:" + "|".join(
+        rf"\(?{number[:3]}\)?[ .-]?{number[3:6]}[ .-]?{number[6:]}"
+        for number in sorted(ALIASES - {MAIN})
+    ) + r")(?!\d)"
 )
 # An anchor cannot swallow another anchor, and a plain paragraph cannot
 # swallow anchors or sibling paragraphs. Never exempt a container of CTAs.
@@ -21,11 +36,13 @@ OFFICE_KEYS = {"officephone", "office_phone", "office"}
 def public_text(text):
     """Unify all website company contacts, including office and referral labels."""
     def replace(match):
-        _, middle, last = MAIN_DISPLAY.split(".")
-        separator = re.sub(r"\d", "", match.group(4))
-        return ((match.group(1) or "") + match.group(2)
-                + match.group(3) + middle + separator + last)
-    return OLD_PUBLIC_PHONE.sub(replace, text)
+        country, area, first, middle, second, last = match.groups()
+        if re.sub(r"\D", "", area) + middle + last not in ALIASES:
+            return match.group()
+        return ((country or "") + re.sub(r"\d{3}", MAIN[:3], area)
+                + first + MAIN[3:6] + second + MAIN[6:])
+    text = text.replace("__ELH_MAIN_DISPLAY__", MAIN_DISPLAY).replace("__ELH_MAIN_TEL__", MAIN_TEL)
+    return re.sub(PHONE_PATTERN, replace, text)
 
 
 def public_html(document, route=None):

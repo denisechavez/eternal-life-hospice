@@ -17,6 +17,7 @@ from psycopg.rows import dict_row
 import devserver
 import form_antispam as guard
 import form_intake
+from website_phone import MAIN_DISPLAY
 
 
 class OriginChecksTests(unittest.TestCase):
@@ -367,7 +368,7 @@ class GuardTests(unittest.TestCase):
         with patch.object(guard, "connect", side_effect=OSError("Synthetic outage")):
             status, response = self.request("/api/form-submit", fields)
         self.assertEqual(status, 503)
-        self.assertIn("805.953.7273", response["message"])
+        self.assertIn(MAIN_DISPLAY, response["message"])
         self.mail.assert_not_called()
 
     def test_sustained_storage_outage_alerts_without_request_data(self):
@@ -378,7 +379,7 @@ class GuardTests(unittest.TestCase):
             for _ in range(4):
                 status, response = self.request("/api/form-submit", fields)
                 self.assertEqual(status, 503)
-                self.assertIn("805.953.7273", response["message"])
+                self.assertIn(MAIN_DISPLAY, response["message"])
         send = self.alerters["guard_storage_unavailable"]._send
         send.assert_called_once()
         payload = send.call_args.args[0]
@@ -419,7 +420,7 @@ class GuardTests(unittest.TestCase):
                 with patch.object(guard, "urlopen", return_value=response):
                     status, public = self.request("/api/form-submit", fields)
                     self.assertEqual(status, 503)
-                    self.assertIn("805.953.7273", public["message"])
+                    self.assertIn(MAIN_DISPLAY, public["message"])
             for error in [TimeoutError("private token"), OSError("private URL")]:
                 form_intake.FORM_CLIENT_RATE_LIMITER.reset()
                 with patch.object(guard, "urlopen", side_effect=error):
@@ -438,7 +439,7 @@ class GuardTests(unittest.TestCase):
             for _ in range(4):
                 status, public = self.request("/api/form-security?form=elh-family")
                 self.assertEqual(status, 503)
-                self.assertIn("805.953.7273", public["message"])
+                self.assertIn(MAIN_DISPLAY, public["message"])
         self.alerters["turnstile_unavailable"]._send.assert_called_once()
 
     def test_ordinary_rejections_do_not_alert(self):
@@ -461,7 +462,7 @@ class GuardTests(unittest.TestCase):
                 with patch.object(guard, "connect", return_value=db):
                     status, public = self.request("/api/form-submit", self.protected())
                     self.assertEqual(status, 503)
-                    self.assertIn("805.953.7273", public["message"])
+                    self.assertIn(MAIN_DISPLAY, public["message"])
         self.assertEqual(len(self.alerters["guard_storage_unavailable"]._failures), 2)
         self.mail.assert_not_called()
 
@@ -474,7 +475,7 @@ class GuardTests(unittest.TestCase):
                 status, public = self.request("/api/form-submit", fields)
                 self.assertEqual(status, 503)
                 self.assertEqual(public["error"], "security_unavailable")
-                self.assertIn("805.953.7273", public["message"])
+                self.assertIn(MAIN_DISPLAY, public["message"])
         alerter._send.assert_called_once()
         self.mail.assert_not_called()
 
@@ -489,7 +490,7 @@ class GuardTests(unittest.TestCase):
         ):
             status, public = self.request("/api/form-submit", fields)
         self.assertEqual(status, 502)
-        self.assertIn("805.953.7273", public["message"])
+        self.assertIn(MAIN_DISPLAY, public["message"])
         self.assertEqual(len(self.alerters["guard_storage_unavailable"]._failures), 1)
 
     def test_missing_signing_configuration_alerts_without_logging_secret(self):
@@ -497,7 +498,7 @@ class GuardTests(unittest.TestCase):
             for _ in range(3):
                 status, public = self.request("/api/form-security?form=elh-family")
                 self.assertEqual(status, 503)
-                self.assertIn("805.953.7273", public["message"])
+                self.assertIn(MAIN_DISPLAY, public["message"])
         self.alerters["guard_configuration_unavailable"]._send.assert_called_once()
         self.alerters["turnstile_unavailable"]._send.assert_not_called()
 

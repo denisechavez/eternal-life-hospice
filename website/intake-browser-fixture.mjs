@@ -3,6 +3,7 @@ import {createServer, request as httpRequest} from "node:http";
 import {spawn, execFileSync} from "node:child_process";
 import {readFile} from "node:fs/promises";
 import {resolve, extname, sep} from "node:path";
+import websitePhone from "./website-phone.cjs";
 
 // Match the real website's response-only phone boundary without rewriting
 // approved source HTML or ever reaching a form/email/provider transport.
@@ -176,7 +177,11 @@ export async function startIntakeFixture() {
     const file = resolve(root, "." + decodeURIComponent(path));
     if (!file.startsWith(root + sep)) {response.writeHead(403);response.end();return;}
     try {
-      const content = await readFile(file);
+      let content = await readFile(file);
+      if (path === "/assets/chat.js" || path === "/assets/intake-security.js") {
+        // Mirror the production handler's website-only source projection.
+        content = Buffer.from(websitePhone.publicPhoneText(content.toString("utf8")));
+      }
       state.assets.push(path);
       const types = {".html": "text/html", ".js": "text/javascript", ".css": "text/css",
         ".svg": "image/svg+xml", ".png": "image/png", ".jpg": "image/jpeg", ".webp": "image/webp",
