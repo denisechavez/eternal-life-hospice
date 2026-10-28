@@ -45,3 +45,15 @@ consuming a queued retry response before the UI ever sees a failure.
 
 **How to apply:** Keep failure injection local and count browser-level attempts;
 do not assume one destroyed connection equals one failed user submission.
+
+History traversal and back-forward cache restoration are different test outcomes.
+Use `pageshow.persisted` plus document identity to establish a real cached restore,
+not just a `back_forward` navigation entry.
+
+**Why:** A no-store fixture can reload successfully on every Back/Forward traversal
+while never exercising the old document's retained state. Cache-eligible fixture
+HTML exposed actual cached restores in the same Chromium session.
+
+**How to apply:** Test both reload and cached restoration without changing deployed
+headers or API no-store protection. Report cache misses explicitly when the browser
+cannot restore a document; never label a fallback reload as a cache hit.

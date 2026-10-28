@@ -220,6 +220,12 @@ try {
   await call("Fetch.enable", {patterns: [{urlPattern: "*"}]});
   await call("Page.addScriptToEvaluateOnNewDocument", {source: fixtureBootstrap});
 
+  const historyCacheMisses = [], historyModeSkips = [];
+  ws.addEventListener("message", event => {
+    const message = JSON.parse(event.data);
+    if (message.method === "Page.backForwardCacheNotUsed")
+      historyCacheMisses.push(message.params.notRestoredExplanations);
+  });
   const flows = [
     {name: "newsletter", path: "/care-brief.html", form: 'form[name="elh-care-brief-signup"]',
       submit: 'form[name="elh-care-brief-signup"] button[type="submit"]',
@@ -241,13 +247,14 @@ try {
         'input[id$="-email"]': "chat@example.invalid", 'textarea': "Synthetic chat only"}}
   ];
   for (const outcome of ["accepted", "interrupted", "unreadable", "unconfirmed", "server-error", "module-unavailable",
-    "pending-reload", "pending-navigation"])
+    "pending-reload", "pending-navigation", "pending-history", "pending-history-cacheable"])
   for (const mobile of [false, true]) for (const flow of flows) {
     if (outcome.startsWith("pending-") && flow.name !== "chat") continue;
     currentCase = `${flow.name} ${mobile ? "mobile/touch" : "desktop/keyboard"} ${outcome}`;
     const {state} = fixture;
     state.security = [];state.posts = [];state.securityFailure = false;state.submitResponse = null;
     state.moduleFailure = outcome === "module-unavailable";
+    state.historyCacheable = outcome === "pending-history-cacheable";
     await call("Emulation.setDeviceMetricsOverride", {width: mobile ? 390 : 1280,
       height: mobile ? 844 : 900, deviceScaleFactor: 1, mobile});
     await call("Emulation.setTouchEmulationEnabled", {enabled: mobile});
@@ -374,6 +381,111 @@ try {
       assert.equal(state.posts.length, 1);
       assert.equal(await evaluate("document.querySelectorAll('.elhc-cb-reminder').length"), 0,
         "Response must still be pending, not already recorded as interrupted");
+      if (outcome.startsWith("pending-history")) {
+        const source = await call("Page.getNavigationHistory");
+        const sourceEntry = source.entries[source.currentIndex];
+        const originalDocument = await evaluate("intakeFixture.documentId");
+        const cacheMissStart = historyCacheMisses.length;
+        await call("Page.navigate", {url: fixture.origin + "/refer"});
+        await until(`location.pathname === "/refer" && document.readyState === "complete" &&
+          intakeFixture.pageShows.length > 0 && document.querySelector(".elhc-launch")`);
+        const destination = await call("Page.getNavigationHistory");
+        const destinationEntry = destination.entries[destination.currentIndex];
+        assert.notEqual(sourceEntry.id, destinationEntry.id, "Must create distinct history entries");
+        const destinationDocument = await evaluate("intakeFixture.documentId");
+        const restorations = [];
+        const restore = async (entry, previousDocument) => {
+          await call("Page.navigateToHistoryEntry", {entryId: entry.id});
+          await until(`location.href === ${JSON.stringify(entry.url)} &&
+            document.readyState === "complete" && intakeFixture.pageShows.length > 0 &&
+            document.querySelector(".elhc-launch")`, "history destination has shown");
+          const evidence = await evaluate(`({
+            documentId: intakeFixture.documentId,
+            persisted: intakeFixture.pageShows.at(-1),
+            navigation: performance.getEntriesByType("navigation")[0]?.type
+          })`);
+          if (evidence.persisted) {
+            assert.equal(evidence.documentId, previousDocument, "BFCache must restore the old document");
+          } else {
+            assert.notEqual(evidence.documentId, previousDocument, "Fallback must load a new document");
+            assert.equal(evidence.navigation, "back_forward", "Must traverse history, not navigate directly");
+          }
+          restorations.push(evidence.persisted ? "BFCache" : "history reload");
+          return evidence.documentId;
+        };
+        const assertProtected = async () => {
+          if (!await evaluate("!!document.querySelector('.elhc-panel.open')"))
+            await activate(".elhc-launch", mobile);
+          await until("document.querySelector('.elhc-chip-cb')");
+          await activate(".elhc-chip-cb", mobile);
+          // Cached documents may still have the original disabled pending form;
+          // reconstructed documents must show a call-first reminder, not a fresh form.
+          const pendingForm = await evaluate("document.querySelector('.elhc-cb')?.__elhSubmissionState");
+          if (pendingForm === "pending" || pendingForm === "unknown") {
+            assert.equal(await evaluate("document.querySelectorAll('.elhc-cb').length"), 1,
+              "Restored pending document must not open a second form");
+            assert.ok(await evaluate("document.querySelector('.elhc-cb-submit').disabled"));
+            // The callback container is a div: its actual submission handler is
+            // on the button's click event. dispatchEvent reaches that handler even
+            // on a disabled button, exercising its guard rather than disabled UI.
+            await evaluate(`document.querySelector(".elhc-cb-submit").dispatchEvent(
+              new MouseEvent("click",{bubbles:true,cancelable:true}))`);
+          } else {
+            await until("document.querySelector('.elhc-cb-reminder')");
+            assert.equal(await evaluate("document.querySelectorAll('.elhc-cb').length"), 0);
+            assert.match(await evaluate("document.querySelector('.elhc-cb-reminder').textContent"),
+              /call our care team to confirm receipt before sending another request/);
+          }
+          assert.equal(await evaluate(`sessionStorage.getItem(${JSON.stringify(reminderKey)})`), stored,
+            "History restoration must preserve the original deadline");
+          assert.doesNotMatch(await evaluate("JSON.stringify(Object.entries(sessionStorage))"),
+            /Synthetic|example.invalid|202[. ]?555[. ]?0190|clinical/i);
+          await noCallbackSuccess();
+          // Capture a genuine keyboard/touch click on the real anchor, but prevent
+          // the OS dialer/default navigation. No real phone call can leave the test.
+          const phoneSelector = await evaluate("!!document.querySelector('.elhc-cb-reminder')")
+            ? '.elhc-cb-reminder a[href="tel:18059537273"]'
+            : '.elhc-panel a[href="tel:18059537273"]';
+          await evaluate(`(()=>{
+            const a=document.querySelector(${JSON.stringify(phoneSelector)});
+            if(!a)throw new Error("Missing call-first link");
+            intakeFixture.phoneClicks=0;
+            a.addEventListener("click",e=>{e.preventDefault();intakeFixture.phoneClicks++;},{once:true});
+          })()`);
+          await activate(phoneSelector, mobile);
+          await until("intakeFixture.phoneClicks === 1", "call-first anchor receives an actual activation");
+          await sleep(200);
+          assert.equal(state.posts.length, 1, "History restoration must never duplicate the callback POST");
+          assert.equal(state.security.length, securityCount, "History restoration must not request another challenge");
+        };
+        const restoredSource = await restore(sourceEntry, originalDocument);
+        await assertProtected();
+        await restore(destinationEntry, destinationDocument);
+        await assertProtected();
+        await restore(sourceEntry, restoredSource);
+        await assertProtected();
+        // Deliver a late, unconfirmed reply: never claim acceptance or reset the
+        // deadline if the original document resumes its outstanding promise.
+        state.submitResponse = {body: {ok: true, accepted: false}};
+        state.held();state.held = null;state.hold = false;
+        await sleep(250);
+        await assertProtected();
+        const requiredMode = outcome === "pending-history-cacheable" ? "BFCache" : "history reload";
+        const cacheMisses = JSON.stringify(historyCacheMisses.slice(cacheMissStart));
+        if (!restorations.every(mode => mode === requiredMode)) {
+          // Browser support/eligibility varies. A fallback may satisfy safety
+          // assertions, but it must never pass as coverage of the requested mode.
+          historyModeSkips.push(`${currentCase}: ${requiredMode} unavailable for full traversal`);
+          console.log(`SKIP ${historyModeSkips.at(-1)}; observed=${restorations.join(", ")};
+  safety assertions passed on observed paths only; BFCache misses=${cacheMisses}`);
+        } else {
+          assert.deepEqual(restorations, [requiredMode, requiredMode, requiredMode],
+            "PASS requires the intended restoration mode on Back, Forward and Back");
+          console.log(`PASS ${currentCase}: Back/Forward/Back ${restorations.join(", ")};
+  original deadline, no duplicate POST/challenge, activated call link; BFCache misses=${cacheMisses}`);
+        }
+        continue;
+      }
       if (outcome === "pending-reload") await call("Page.reload", {ignoreCache: true});
       else await call("Page.navigate", {url: fixture.origin + "/refer"});
       await until("document.readyState === 'complete' && document.querySelector('.elhc-launch')");
@@ -795,7 +907,8 @@ try {
   assert.deepEqual(fixture.state.violations, [], "Unexpected local transport");
   assert.deepEqual(transportErrors, [], "Request interception failed");
   assert.deepEqual(browserErrors, [], "Uncaught browser exceptions");
-  console.log("PASS all rendered intake outcomes on desktop and mobile; no external request or real lead transport");
+  console.log(`PASS all exercised rendered intake outcomes on desktop and mobile; no external request or real lead transport;
+  history restoration mode skips=${historyModeSkips.length}${historyModeSkips.length ? ": " + historyModeSkips.join("; ") : ""}`);
 } catch (error) {
   console.error(`FAIL ${currentCase}`, error);
   process.exitCode = 1;

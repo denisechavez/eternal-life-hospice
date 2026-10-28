@@ -29,6 +29,10 @@ window.turnstile = {
 
 export const fixtureBootstrap = `
 window.intakeFixture = {challenge:"success", renders:0, removed:0, scriptFailure:false};
+// Test-only lifecycle evidence; no submitted values are copied into storage.
+window.intakeFixture.documentId = crypto.randomUUID();
+window.intakeFixture.pageShows = [];
+addEventListener("pageshow", event => window.intakeFixture.pageShows.push(event.persisted));
 // Only accelerate the module's two-minute timeout; keep its minimum-age wait real.
 const originalTimeout = window.setTimeout.bind(window);
 window.setTimeout = (callback, ms, ...args) =>
@@ -39,7 +43,8 @@ export async function startIntakeFixture() {
   if (process.env.REPLIT_DEPLOYMENT === "1") throw new Error("Never run fixtures in production");
   const root = resolve("website/elh-preview");
   const state = {security: [], posts: [], violations: [], held: null, securityFailure: false,
-    submitResponse: null, hold: false, assets: [], realSecurity: false, realRequests: []};
+    submitResponse: null, hold: false, assets: [], realSecurity: false, realRequests: [],
+    historyCacheable: false};
   let backend;
   let backendPort;
   let backendLog = "";
@@ -158,7 +163,9 @@ export async function startIntakeFixture() {
         ".svg": "image/svg+xml", ".png": "image/png", ".jpg": "image/jpeg", ".webp": "image/webp",
         ".woff2": "font/woff2", ".json": "application/json"};
       response.writeHead(200, {"Content-Type": types[extname(file)] || "application/octet-stream",
-        "Cache-Control": "no-store"});
+        // Opt-in only for history tests. Never changes deployed page headers,
+        // API no-store responses or security/transport isolation.
+        "Cache-Control": state.historyCacheable && extname(file) === ".html" ? "private, max-age=0" : "no-store"});
       response.end(content);
     } catch {
       response.writeHead(404);response.end();
