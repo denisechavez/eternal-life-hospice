@@ -146,6 +146,74 @@ try {
     await call("Input.dispatchTouchEvent", {type: "touchStart", touchPoints: [point]});
     await call("Input.dispatchTouchEvent", {type: "touchEnd", touchPoints: []});
   }
+  async function assertCallbackReminderAccessibility(selector) {
+    const {nodes} = await call("Accessibility.getFullAXTree");
+    const {root: {nodeId}} = await call("DOM.getDocument");
+    const exposed = async (selector, allowIgnoredContainer = false) => {
+      const {nodeId: selected} = await call("DOM.querySelector", {nodeId, selector});
+      assert.ok(selected, currentCase + ": missing " + selector);
+      const {node: {backendNodeId}} = await call("DOM.describeNode", {nodeId: selected});
+      // Generic visual wrappers may be ignored while their text and controls
+      // remain exposed. A partial tree retains that wrapper as a traversal root.
+      if (allowIgnoredContainer) {
+        const partial = await call("Accessibility.getPartialAXTree", {backendNodeId});
+        nodes.push(...partial.nodes);
+      }
+      const node = nodes.find(node => node.backendDOMNodeId === backendNodeId &&
+        (allowIgnoredContainer || !node.ignored));
+      assert.ok(node, currentCase + ": not exposed in accessibility tree: " + selector);
+      return node;
+    };
+    const properties = node => Object.fromEntries((node.properties || []).map(p => [p.name, p.value.value]));
+    // Flat AX responses are not in reading order. Traverse child IDs, stopping
+    // at StaticText to avoid counting its inline-text children twice.
+    const byId = new Map();
+    const readText = node => node.role?.value === "StaticText"
+      ? node.name?.value || ""
+      : (node.childIds || []).map(id => readText(byId.get(id))).join("");
+    const normalize = text => text.replace(/\s+/g, " ").trim();
+    const expected = normalize(await evaluate(`document.querySelector(${JSON.stringify(selector)}).textContent`));
+    const reminder = await exposed(selector, true);
+    for (const node of nodes) byId.set(node.nodeId, node);
+    const text = normalize(readText(reminder));
+    assert.equal(text, expected, currentCase + ": complete reminder is accessible");
+    assert.match(text, /couldn't confirm whether your request was received/);
+    assert.match(text, /call our care team to confirm receipt before sending another request/);
+    assert.match(text, /expiry does not mean your request failed/);
+    assert.match(text, /If the team confirms receipt, no new request is needed/);
+    assert.doesNotMatch(text, /request was accepted|confirmation [A-Z0-9-]+|successfully sent|try again/i);
+    const announcement = await exposed('.elhc-sr[role="alert"]');
+    assert.equal(announcement.role.value, "alert");
+    assert.equal(properties(announcement).live, "assertive");
+    assert.equal(properties(announcement).atomic, true);
+    assert.equal(normalize(readText(announcement)), expected,
+      currentCase + ": live announcement includes the full current reminder, not success");
+    const phone = await exposed(selector + ' a[href="tel:18059537273"]');
+    const recovery = await exposed(selector + " .elhc-cb-confirm-not-received");
+    assert.equal(phone.role.value, "link");
+    assert.equal(phone.name.value, "Call 805.953.7273");
+    assert.equal(recovery.role.value, "button");
+    assert.equal(recovery.name.value, "The team confirmed it was not received");
+    for (const control of [phone, recovery]) {
+      assert.equal(properties(control).focusable, true, control.name.value + ": focusable");
+      assert.notEqual(properties(control).disabled, true, control.name.value + ": enabled");
+    }
+    // Use real Tab events, not .focus() on the recovery button, to prove it
+    // remains in keyboard order after the old callback form has been removed.
+    await focus(selector + ' a[href="tel:18059537273"]');
+    await key("Tab", "Tab", 9);
+    await until(`document.activeElement === document.querySelector(${JSON.stringify(selector + " .elhc-cb-confirm-not-received")})`,
+      "Tab reaches the confirmed-non-receipt button");
+    await key("Tab", "Tab", 9, 8);
+    await until(`document.activeElement === document.querySelector(${JSON.stringify(selector + ' a[href="tel:18059537273"]')})`,
+      "Shift+Tab returns to the care-team phone link");
+    await noCallbackSuccess();
+  }
+  async function noCallbackSuccess() {
+    assert.equal(await evaluate(`[...document.querySelectorAll('.elhc-sr[role="status"],.elhc-msg.elhc-bot')]
+      .some(el=>/request was accepted|SYNTHETIC-RECEIPT/.test(el.textContent))`), false,
+      currentCase + ": uncertain reminder must not claim success");
+  }
   await call("Page.enable");
   await call("Runtime.enable");
   await call("Emulation.setEmulatedMedia", {features: [{name: "prefers-reduced-motion", value: "reduce"}]});
@@ -325,6 +393,7 @@ try {
       assert.equal(state.security.length, securityCount, currentCase + ": uncertain request restarted verification");
       await noSuccess();
       if (flow.name === "chat" && outcome === "interrupted") {
+        await assertCallbackReminderAccessibility(".elhc-cb-err");
         const reminderKey = "elhcCallbackUncertainUntil";
         const stored = await evaluate(`sessionStorage.getItem(${JSON.stringify(reminderKey)})`);
         assert.match(stored, /^\d+$/, "Only an expiry timestamp may be stored");
@@ -332,9 +401,11 @@ try {
         // Closing chat, cancelling the form and starting again must not bypass the guard.
         await activate('button[aria-label="Close the support guide"]', mobile);
         await activate(".elhc-launch", mobile);
+        await assertCallbackReminderAccessibility(".elhc-cb-err");
         await activate(".elhc-cb-cancel", mobile);
         await activate(".elhc-chip-cb", mobile);
         await until("document.querySelector('.elhc-cb-reminder')");
+        await assertCallbackReminderAccessibility(".elhc-cb-reminder");
         assert.equal(await evaluate("document.querySelectorAll('.elhc-cb').length"), 0);
         assert.ok(await evaluate(`document.querySelector('.elhc-cb-reminder a[href="tel:18059537273"]')`));
         assert.match(await evaluate("document.querySelector('.elhc-cb-reminder').textContent"),
@@ -348,6 +419,7 @@ try {
         await until("document.querySelector('.elhc-chip-cb')");
         await activate(".elhc-chip-cb", mobile);
         await until("document.querySelector('.elhc-cb-reminder')");
+        await assertCallbackReminderAccessibility(".elhc-cb-reminder");
         assert.equal(await evaluate("document.querySelectorAll('.elhc-cb').length"), 0);
         assert.equal(state.posts.length, 1);
         assert.equal(state.security.length, securityCount);
@@ -356,6 +428,9 @@ try {
         // Confirmation unlocks a blank form, not a replay of the old submission.
         await activate(".elhc-cb-confirm-not-received", mobile);
         await until("document.querySelector('.elhc-cb')");
+        await until(`document.activeElement === document.querySelector('.elhc-cb input[id$="-name"]')`,
+          "Recovery returns keyboard focus to the blank name input");
+        await noCallbackSuccess();
         assert.equal(await evaluate(`sessionStorage.getItem(${JSON.stringify(reminderKey)})`), null);
         assert.deepEqual(await evaluate(`Array.from(document.querySelectorAll('.elhc-cb input,.elhc-cb textarea')).map(e=>e.value)`),
           ["", "", "", "", ""]);
@@ -377,11 +452,13 @@ try {
         await activate(".elhc-cb-cancel", mobile);
         await activate(".elhc-chip-cb", mobile);
         await until("document.querySelectorAll('.elhc-cb-reminder').length === 1");
+        await assertCallbackReminderAccessibility(".elhc-cb-reminder");
         assert.equal(await evaluate("document.querySelectorAll('.elhc-cb').length"), 0);
         assert.equal(state.posts.length, 2);
         await evaluate("Storage.prototype.setItem=window.fixtureSetItem");
         await activate(".elhc-cb-confirm-not-received", mobile);
-        console.log(`PASS ${currentCase}: reopen/navigation reminder, timestamp-only storage, confirmation, expiry and blocked storage`);
+        console.log(`PASS ${currentCase}: accessible reminder/alert/names, keyboard recovery, reopen/navigation,
+  timestamp-only storage, confirmation, expiry and blocked storage`);
       }
       console.log(`PASS ${currentCase}: unknown delivery, preserved fields, clickable phone and no retry`);
       continue;
