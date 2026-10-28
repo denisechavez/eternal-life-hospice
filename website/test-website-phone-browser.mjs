@@ -110,6 +110,20 @@ try {
       assert.equal(link.resolved, link.href, "Actual browser dial URL differs");
     }
   };
+  const warningMainLink = async (selector, expected) => {
+    await until(`document.querySelector(${JSON.stringify(selector)})?.hidden === false`);
+    const text = await evaluate(`document.querySelector(${JSON.stringify(selector)}).innerText`);
+    assert.match(text, expected, caseName + ": wrong warning branch");
+    assert.match(text, /Call 805\.409\.9262/, caseName + ": missing Main label in warning");
+    assert.doesNotMatch(text, /805[. -](?:953[. -]7273|410[. -]1151)/,
+      caseName + ": warning includes a non-Main number");
+    await mainLinks(selector);
+    assert.deepEqual(await evaluate(`[...document.querySelector(${JSON.stringify(selector)})
+      .querySelectorAll('a[href^="tel:"]')].map(a=>({
+        text:a.innerText, href:a.getAttribute('href'), resolved:a.href
+      }))`), [{text: "Call 805.409.9262", href: "tel:18054099262", resolved: "tel:18054099262"}],
+    caseName + ": warning label and actual dial URL must both match Main");
+  };
   const ask = async (question, expected) => {
     await evaluate(`(()=>{
       const input=document.querySelector('.elhc-in'); input.value=${JSON.stringify(question)};
@@ -177,6 +191,69 @@ try {
     await mainLinks(".elhc-cb-reminder");
     await evaluate("sessionStorage.removeItem('elhcCallbackUncertainUntil')");
     console.log(`PASS ${width}px: chat routing, fallback, three intake displays and reopened reminder`);
+
+    for (const mode of ["access-blocked", "write-blocked"]) {
+      caseName = `${width}px ${mode} callback storage warning`;
+      // Install before chat.js runs, as in test-intake-browser.mjs. Keep the
+      // native methods only for seeding/removing a timestamp, never contact data.
+      const {identifier} = await call("Page.addScriptToEvaluateOnNewDocument", {source: `(()=>{
+        const storage=sessionStorage, nativeSet=Storage.prototype.setItem;
+        window.fixtureStorageWrites=[];
+        window.fixtureSeedReminder=()=>nativeSet.call(storage,
+          "elhcCallbackUncertainUntil",String(Date.now()+600000));
+        window.fixtureClearReminder=()=>storage.removeItem("elhcCallbackUncertainUntil");
+        Storage.prototype.setItem=function(key,value){
+          if(this===storage){
+            fixtureStorageWrites.push(String(key));
+            throw new DOMException("Blocked storage (synthetic fixture)","QuotaExceededError");
+          }
+          return nativeSet.call(this,key,value);
+        };
+        if(${JSON.stringify(mode)}==="access-blocked")
+          Object.defineProperty(window,"sessionStorage",{get(){
+            throw new DOMException("Blocked access (synthetic fixture)","SecurityError");
+          }});
+      })()`});
+      try {
+        await navigate("/");
+        await click(".elhc-launch");
+        await until("document.querySelector('.elhc-chip-cb')");
+        await click(".elhc-chip-cb");
+        await warningMainLink(".elhc-cb-storage-warning",
+          /Your browser cannot save the callback reminder/);
+        assert.match(await evaluate("document.querySelector('.elhc-cb-storage-warning').innerText"),
+          /after a reload or leaving this page/);
+        await mainLinks(".elhc-head");
+
+        if (mode === "write-blocked") {
+          assert.ok((await evaluate("fixtureStorageWrites"))
+            .includes("elhcCallbackUncertainUntilProbe"), "Quota fixture must reject a real storage probe");
+          // Seed only the uncertain timestamp, not a submitted request. The real
+          // chat renderer must detect failing writes and add its storage warning.
+          await click(".elhc-cb-cancel");
+          await evaluate("fixtureSeedReminder()");
+          await click(".elhc-chip-cb");
+          caseName = `${width}px quota-failure uncertain reminder`;
+          await warningMainLink(".elhc-cb-reminder", /Your browser could not save this reminder/);
+          assert.match(await evaluate("document.querySelector('.elhc-cb-reminder').innerText"),
+            /only while this page stays open/);
+          // Remove persisted state: the next reminder is backed only by chat's
+          // in-memory timestamp while all sessionStorage writes still throw.
+          await evaluate(`fixtureClearReminder();
+            document.querySelector('.elhc-cb-reminder').remove()`);
+          assert.equal(await evaluate("sessionStorage.getItem('elhcCallbackUncertainUntil')"), null);
+          await click(".elhc-chip-cb");
+          await warningMainLink(".elhc-cb-reminder", /Your browser could not save this reminder/);
+          await click(".elhc-x");
+          await click(".elhc-launch");
+          await warningMainLink(".elhc-cb-reminder", /Reloading or leaving this page will lose this protection/);
+        }
+        console.log(`PASS ${width}px ${mode}: warning text and dial URL use Main` +
+          (mode === "write-blocked" ? "; uncertain/in-memory/reopened reminders also use Main" : ""));
+      } finally {
+        await call("Page.removeScriptToEvaluateOnNewDocument", {identifier});
+      }
+    }
   }
 
   caseName = "explicit office role";
