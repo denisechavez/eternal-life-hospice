@@ -63,6 +63,7 @@
 - [Studio shared React runtime](studio-react-runtime.md) — root-installed auth packages and the artifact must resolve to one React instance; builds alone miss hook failures.
 - [Local dependency overrides](local-dependency-overrides.md) — npm success can hide a stale registry tarball; verify resolved source and patched behavior after a clean install.
 - [History publication reads](history-publication-reads.md) — private history projects due versions without publication locks; metadata and events share a committed snapshot.
+- [Journal regression consent](journal-regression-consent.md) — old approval pins need not match current drafts; test safe rejection separately from synthetic bulk fixtures.
 - [Intake spam protection](form-spam-protection.md) — protect all submission paths without area-code bans; share limits across instances and refresh cached chat assets.
 - [PostgreSQL fixture encoding](postgres-fixture-encoding.md) — locale-free disposable clusters need explicit UTF-8; SQL_ASCII returns bytes and produces false idempotency failures.
 - [Service-page wording](service-page-editorial-decisions.md) — approved introduction exception for 24/7 Nurse Access; preserve clinical and publication approval boundaries.

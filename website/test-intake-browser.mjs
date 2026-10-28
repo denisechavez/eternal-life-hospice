@@ -61,7 +61,11 @@ try {
       const challenge = url.origin === "https://challenges.cloudflare.com" &&
         url.pathname === "/turnstile/v0/api.js";
       (async () => {
-        if (local) return call("Fetch.continueRequest", {requestId});
+        if (local) {
+          if (url.pathname === "/assets/intake-security.js" && fixture.state.moduleFailure)
+            return call("Fetch.failRequest", {requestId, errorReason: "Failed"});
+          return call("Fetch.continueRequest", {requestId});
+        }
         if (challenge) {
           const fail = await evaluate("intakeFixture.scriptFailure");
           if (fail) return call("Fetch.failRequest", {requestId, errorReason: "Failed"});
@@ -69,7 +73,13 @@ try {
         await call("Fetch.fulfillRequest", {requestId, responseCode: 200,
           responseHeaders: [{name: "Content-Type", value: challenge ? "text/javascript" : "text/plain"}],
           body: Buffer.from(challenge ? turnstileFixture : "").toString("base64")});
-      })().catch(error => transportErrors.push(String(error)));
+      })().catch(error => {
+        // Navigating between cases can cancel a paused request before CDP's
+        // reply arrives. Its interception ID is then gone; it cannot escape
+        // interception. Keep every other transport failure fatal.
+        if (error.message === '{"code":-32602,"message":"Invalid InterceptionId."}') return;
+        transportErrors.push(String(error));
+      });
     }
   });
   const evaluate = async expression => {
@@ -99,6 +109,15 @@ try {
   const fill = async (selector, value) => {
     await focus(selector);
     await call("Input.insertText", {text: value});
+  };
+  const replace = async (selector, value) => {
+    // Initial contact entry uses keyboard input. Negative fixtures exercise the
+    // same input listener and native validation with exact synthetic values.
+    await evaluate(`(()=>{
+      const input=document.querySelector(${JSON.stringify(selector)});
+      input.value=${JSON.stringify(value)};
+      input.dispatchEvent(new Event('input',{bubbles:true}));
+    })()`);
   };
   async function activate(selector, mobile) {
     if (!mobile) {await focus(selector);await key("Enter", "Enter", 13);return;}
@@ -133,10 +152,12 @@ try {
       fields: {'input[id$="-name"]': "Synthetic Chat", 'input[id$="-phone"]': "2025550190",
         'input[id$="-email"]': "chat@example.invalid", 'textarea': "Synthetic chat only"}}
   ];
+  for (const outcome of ["accepted", "interrupted", "unreadable", "unconfirmed", "server-error", "module-unavailable"])
   for (const mobile of [false, true]) for (const flow of flows) {
-    currentCase = `${flow.name} ${mobile ? "mobile/touch" : "desktop/keyboard"}`;
+    currentCase = `${flow.name} ${mobile ? "mobile/touch" : "desktop/keyboard"} ${outcome}`;
     const {state} = fixture;
     state.security = [];state.posts = [];state.securityFailure = false;state.submitResponse = null;
+    state.moduleFailure = outcome === "module-unavailable";
     await call("Emulation.setDeviceMetricsOverride", {width: mobile ? 390 : 1280,
       height: mobile ? 844 : 900, deviceScaleFactor: 1, mobile});
     await call("Emulation.setTouchEmulationEnabled", {enabled: mobile});
@@ -166,12 +187,44 @@ try {
     }
     for (const [field, value] of Object.entries(flow.fields)) await fill(flow.form + " " + field, value);
     if (flow.name === "provider") await evaluate(`document.querySelector('#rf-county').value="Ventura County"`);
+    if (outcome === "accepted") {
+      const phone = flow.form + ' input[type="tel"]', email = flow.form + ' input[type="email"]';
+      await until(`document.querySelector(${JSON.stringify(phone)}).getAttribute("inputmode")==="tel"`);
+      assert.equal(await evaluate(`document.querySelector(${JSON.stringify(phone)}).value`), "202.555.0190");
+      assert.equal(await evaluate(`document.querySelector(${JSON.stringify(email)}).getAttribute("inputmode")`), "email");
+      // Run exact negative fixtures on desktop. Mobile still exercises actual
+      // typed formatting and all subsequent touch submission outcomes.
+      if (!mobile) {
+      for (const [selector, invalid] of [[phone, "2025550"], [phone, "call2025550190"],
+        [phone, "2025550190123456"],
+        [email, "synthetic@invalid"]]) {
+        const before = state.security.length;
+        await replace(selector, invalid);
+        assert.equal(await evaluate(`document.querySelector(${JSON.stringify(selector)}).checkValidity()`), false,
+          currentCase + ": invalid contact accepted: " + invalid + " value=" +
+          await evaluate(`document.querySelector(${JSON.stringify(selector)}).value`));
+        await activate(flow.submit, mobile);
+        await sleep(50);
+        assert.equal(state.security.length, before, currentCase + ": invalid contact reached security: " + invalid);
+        assert.equal(state.posts.length, 0, currentCase + ": invalid contact POSTed");
+        assert.equal(await evaluate(`document.querySelector(${JSON.stringify(selector)}).checkValidity()`), false);
+        const valid = selector === phone ? "2025550190" : flow.fields[Object.keys(flow.fields).find(k=>k.includes("email"))];
+        await replace(selector, valid);
+      }
+      await replace(phone, "+12025550190");
+      assert.equal(await evaluate(`document.querySelector(${JSON.stringify(phone)}).value`), "+1 202.555.0190");
+      await replace(phone, "+442079460123");
+      assert.equal(await evaluate(`document.querySelector(${JSON.stringify(phone)}).value`), "+442079460123");
+      assert.equal(await evaluate(`document.querySelector(${JSON.stringify(phone)}).checkValidity()`), true);
+      await replace(phone, "2025550190");
+      }
+    }
     if (flow.name === "chat") {
       assert.ok(await evaluate(`[...document.querySelectorAll('.elhc-cb input,.elhc-cb textarea')].every(
         input=>document.querySelector('label[for="'+input.id+'"]'))`));
     }
     const expectedFields = flow.name === "chat"
-      ? {name: "Synthetic Chat", phone: "2025550190", email: "chat@example.invalid",
+      ? {name: "Synthetic Chat", phone: "202.555.0190", email: "chat@example.invalid",
         message: "Synthetic chat only", source: "chat", preferred_time: "", "bot-field": "",
         "form-name": flow.formName}
       : await evaluate(`Object.fromEntries(new FormData(document.querySelector(${JSON.stringify(flow.form)})))`);
@@ -186,9 +239,10 @@ try {
       assert.ok(await evaluate(`document.querySelector(${JSON.stringify(flow.submit)}).disabled`));
       await noSuccess();
     };
-    const failed = async () => {
+    const failed = async (unknown = false) => {
+      if (unknown) await until(`document.querySelector(${JSON.stringify(flow.form)}).__elhSubmissionState === "unknown"`);
       await until(`document.querySelector(${JSON.stringify(flow.error)})?.textContent.length > 0`);
-      await until(`!document.querySelector(${JSON.stringify(flow.submit)}).disabled`);
+      await until(`document.querySelector(${JSON.stringify(flow.submit)}).disabled === ${unknown}`);
       assert.equal(await evaluate("document.querySelectorAll('[aria-label=\"Spam protection\"]').length"), 0);
       assert.equal(await evaluate("intakeFixture.renders"), await evaluate("intakeFixture.removed"));
       await noSuccess();
@@ -198,13 +252,57 @@ try {
       }
       assert.ok(await evaluate(`document.querySelector(${JSON.stringify(flow.error)}).getAttribute("aria-live")==="assertive"`));
       assert.ok(await evaluate(`document.querySelector(${JSON.stringify(flow.error)}).textContent.includes("805.953.7273")`));
-      if (flow.name !== "chat") assert.ok(await evaluate(
-        `document.querySelector(${JSON.stringify(flow.error)}).querySelector('a[href="tel:18059537273"]')`));
+      const visibleError = flow.name === "chat" ? ".elhc-cb-err" : flow.error;
+      assert.ok(await evaluate(
+        `document.querySelector(${JSON.stringify(visibleError)}).querySelector('a[href="tel:18059537273"]')`));
+      assert.ok(await evaluate(
+        `document.querySelector(${JSON.stringify(visibleError)}).textContent.includes("We're here for you 24 hours a day, 7 days a week.")`));
     };
+    if (outcome === "module-unavailable") {
+      await activate(flow.submit, mobile);await failed();
+      assert.equal(state.posts.length, 0);
+      assert.equal(state.security.length, 0);
+      assert.match(await evaluate(`document.querySelector(${JSON.stringify(flow.error)}).textContent`),
+        /couldn't load the security check.*not been sent/);
+      console.log(`PASS ${currentCase}: no POST, preserved fields and clickable phone`);
+      continue;
+    }
+    if (outcome !== "accepted") {
+      state.submitResponse = {
+        interrupted: {disconnect: true},
+        unreadable: {raw: true},
+        unconfirmed: {body: {ok: true, accepted: false}},
+        "server-error": {status: 500, body: {ok: false, error: "processing_error",
+          message: "Please retry (untrusted server copy)"}}
+      }[outcome];
+      await start();await activate("#fixture-challenge", mobile);await failed(true);
+      const text = await evaluate(`document.querySelector(${JSON.stringify(flow.error)}).textContent`);
+      assert.match(text, /couldn't confirm whether your request was received/);
+      assert.match(text, /avoid a duplicate request/);
+      assert.doesNotMatch(text, /not been sent|not accepted|try again|Please retry|couldn't send/);
+      assert.equal(state.posts.length, 1, currentCase + ": missing synthetic POST");
+      const securityCount = state.security.length;
+      // Guard both ordinary activation and a programmatic submit event.
+      await evaluate(`(()=>{
+        const f=document.querySelector(${JSON.stringify(flow.form)});
+        const b=document.querySelector(${JSON.stringify(flow.submit)});
+        b.click();
+        if(f.tagName==='FORM')f.dispatchEvent(new Event('submit',{cancelable:true}));
+        else b.dispatchEvent(new Event('click'));
+      })()`);
+      await sleep(250);
+      assert.equal(state.posts.length, 1, currentCase + ": uncertain request was retried");
+      assert.equal(state.security.length, securityCount, currentCase + ": uncertain request restarted verification");
+      await noSuccess();
+      console.log(`PASS ${currentCase}: unknown delivery, preserved fields, clickable phone and no retry`);
+      continue;
+    }
     // A script load failure must not POST and must allow loading the script again on retry.
     await evaluate("intakeFixture.scriptFailure=true");
     await activate(flow.submit, mobile);await failed();
     assert.equal(state.posts.length, 0);
+    assert.match(await evaluate(`document.querySelector(${JSON.stringify(flow.error)}).textContent`),
+      /security check.*not been sent/);
     await evaluate("intakeFixture.scriptFailure=false");
     for (const mode of ["error", "expired", "timeout"]) {
       await evaluate(`intakeFixture.challenge=${JSON.stringify(mode)}`);
@@ -218,16 +316,18 @@ try {
     await activate(flow.submit, mobile);await failed();
     assert.equal(state.posts.length, 0, "Security service failure must not POST");
     state.securityFailure = false;
-    // Transport failures and even HTTP 200 without explicit acceptance cannot show success.
+    // Explicit rejections preserve fields and allow a fresh verified attempt.
     for (const response of [
       {status: 403, body: {ok: false, accepted: false}},
       {status: 429, body: {ok: false, accepted: false}},
       {status: 503, body: {ok: false, accepted: false}},
-      {body: {ok: true, accepted: false}}, {raw: true}
+      {status: 503, body: {ok: false, error: "security_unavailable"}}
     ]) {
       state.submitResponse = response;
       await evaluate('intakeFixture.challenge="success"');
       await start();await activate("#fixture-challenge", mobile);await failed();
+      assert.match(await evaluate(`document.querySelector(${JSON.stringify(flow.error)}).textContent`),
+        /request was not accepted/);
     }
     state.submitResponse = null;state.hold = true;
     await start();
@@ -290,7 +390,7 @@ try {
   assert.deepEqual(fixture.state.violations, [], "Unexpected local transport");
   assert.deepEqual(transportErrors, [], "Request interception failed");
   assert.deepEqual(browserErrors, [], "Uncaught browser exceptions");
-  console.log("PASS all six rendered intake flows; no external request or real lead transport");
+  console.log("PASS all rendered intake outcomes on desktop and mobile; no external request or real lead transport");
 } catch (error) {
   console.error(`FAIL ${currentCase}`, error);
   process.exitCode = 1;

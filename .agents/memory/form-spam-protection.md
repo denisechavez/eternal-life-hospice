@@ -5,6 +5,18 @@ description: Abuse prevention must preserve real families and professional refer
 Do not blacklist a telephone area code as a proxy for spam. Preserve genuine
 out-of-area callers and allow professional offices to make multiple referrals.
 
+Use one shared contact formatter across intake surfaces. Never silently truncate
+a number to ten digits or strip arbitrary text into an apparently valid number.
+
+**Why:** A legacy homepage-only formatter changed input before the shared
+validator could examine it, concealing malformed values and losing international
+digits. The owner asks for automatic phone formatting and email checks to reduce
+junk requests, not exclusion of legitimate callers.
+
+**How to apply:** Preserve country codes, validate the complete value on both
+browser and server and retain optional-email callback paths. Email syntax
+validation cannot establish that a mailbox exists or replace spam verification.
+
 **Why:** The owner reported a burst of suspicious 202 callbacks; that is evidence
 of an incident, not evidence that every caller with that area code is abusive.
 Telephone numbers do not reliably identify a family's current location.
@@ -69,6 +81,19 @@ install CAPTCHA test keys or introduce a production bypass.
 against test-only provider/submission boundaries. Keep real server guard coverage
 separate, and state clearly that a simulated challenge cannot validate the
 provider's own cross-origin widget.
+
+An interrupted intake request has an unknown delivery outcome, not a confirmed
+failure. Preserve entered fields and direct the visitor to call to confirm
+receipt before another request; never automatically retry it.
+
+**Why:** The owner explicitly requires avoiding duplicate referrals when the
+browser loses the response after intake may already have received the request.
+Verification failure before submission and explicit rejection are different
+from an unknown delivery outcome.
+
+**How to apply:** Keep these outcomes distinct across family, referral and chat
+journeys. Use the approved clickable care-team CTA below. Do not change accepted
+submission semantics to recover a missing receipt email.
 
 ## Request acknowledgments
 

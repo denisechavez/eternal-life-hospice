@@ -22,6 +22,31 @@ import form_intake
 import form_antispam
 
 
+class ContactValidationTests(unittest.TestCase):
+    def test_phone_validation_cannot_be_bypassed(self):
+        base = {"form-name": "elh-family", "first_name": "Synthetic",
+                "last_name": "Contact", "phone": "202.555.0190"}
+        for phone in ("202.555.0190", "+1 202.555.0190", "+442079460123"):
+            with self.subTest(phone=phone):
+                form_intake.validate_submission({**base, "phone": phone}, {})
+        for phone in ("2025550", "call2025550190", "22025550190", "+1 202555019", "+120255501901", "+2025550190123456"):
+            with self.subTest(phone=phone):
+                with self.assertRaises(form_intake.IntakeError) as error:
+                    form_intake.validate_submission({**base, "phone": phone}, {})
+                self.assertEqual(error.exception.code, "invalid_phone")
+
+    def test_email_syntax_is_checked_without_sending_email(self):
+        base = {"form-name": "elh-family", "first_name": "Synthetic",
+                "last_name": "Contact", "phone": "202.555.0190"}
+        for email in ("synthetic@example.invalid", ""):
+            form_intake.validate_submission({**base, "email": email}, {})
+        for email in ("synthetic@invalid", "not-an-email", "name@@example.invalid"):
+            with self.subTest(email=email):
+                with self.assertRaises(form_intake.IntakeError) as error:
+                    form_intake.validate_submission({**base, "email": email}, {})
+                self.assertEqual(error.exception.code, "invalid_email")
+
+
 class CaptureHandler(BaseHTTPRequestHandler):
     payloads = []
 

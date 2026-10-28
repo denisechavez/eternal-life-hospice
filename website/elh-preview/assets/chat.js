@@ -8,6 +8,9 @@
   "use strict";
   if (window.__elhChatLoaded) return;
   window.__elhChatLoaded = true;
+  // Shared contact-field behavior also covers the page's family/referral forms.
+  import("/assets/contact-fields.js").then(function(fields){fields.install(document);})
+    .catch(function(error){console.error("Contact field formatting could not load.", error);});
 
   var PHONE_DISPLAY = "805.953.7273";
   var PHONE_TEL = "18059537273";
@@ -496,6 +499,7 @@
     var phoneIn = el("input");
     phoneIn.id = callbackPrefix + "phone";
     phoneIn.type = "tel";
+    phoneIn.required = true;
     phoneIn.setAttribute("autocomplete", "tel");
     phoneIn.placeholder = "805.000.0000";
     phoneWrap.appendChild(phoneIn);
@@ -565,6 +569,7 @@
     });
 
     submitBtn.addEventListener("click", function () {
+      if(form.__elhSubmissionState){return;}
       var name = (nameIn.value || "").trim();
       var phone = (phoneIn.value || "").trim();
       if (!name) {
@@ -574,7 +579,7 @@
         nameIn.focus();
         return;
       }
-      if (phone.replace(/[^0-9]/g, "").length < 10) {
+      if (!phoneIn.checkValidity() || phone.replace(/[^0-9]/g, "").length < 10) {
         var phoneError = "Please add a phone number we can reach you at.";
         err.textContent = phoneError;
         announceCallback(phoneError, true);
@@ -582,7 +587,7 @@
         return;
       }
       var email = (emailIn.value || "").trim();
-      if (email && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) {
+      if (email && (!emailIn.checkValidity() || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email))) {
         var emailError = "That email doesn\u2019t look quite right \u2014 please check it, or leave it blank.";
         err.textContent = emailError;
         announceCallback(emailError, true);
@@ -590,6 +595,7 @@
         return;
       }
       err.textContent = "";
+      form.__elhSubmissionState = "pending";
       submitBtn.disabled = true;
       submitBtn.textContent = "Sending\u2026";
       track("chat_callback_submit", { page: window.location.pathname || "/" });
@@ -619,7 +625,8 @@
       preferred_time: data.preferred_time,
       message: data.message
     });
-    import("/assets/intake-security.js").then(function(security){return security.submit({
+    var intakeSecurity;
+    import("/assets/intake-security.js").then(function(security){intakeSecurity=security;return security.submit({
       method: "POST",
       headers: {
         "Content-Type": "application/x-www-form-urlencoded",
@@ -636,6 +643,7 @@
         });
       })
       .then(function (result) {
+        form.__elhSubmissionState = "accepted";
         track("chat_callback_success", { page: window.location.pathname || "/" });
         if (form.parentNode) form.parentNode.removeChild(form);
         var confirmation = "Thank you, " +
@@ -651,16 +659,16 @@
         }
         announceCallback(receiptBubble.textContent, false);
       })
-      .catch(function () {
+      .catch(function (error) {
+        if(form.__elhSubmissionState === "accepted"){return;}
         track("chat_callback_error", { page: window.location.pathname || "/" });
-        submitBtn.disabled = false;
-        submitBtn.textContent = "Send request";
-        var failure =
-          "I couldn't send that just now \u2014 please call us at " +
-          PHONE_DISPLAY +
-          " and we'll help right away.";
-        err.textContent = failure;
-        announceCallback(failure, true);
+        var unknown = intakeSecurity && (!error.intakeOutcome || error.intakeOutcome === "unknown");
+        form.__elhSubmissionState = unknown ? "unknown" : null;
+        submitBtn.disabled = !!unknown;
+        submitBtn.textContent = unknown ? "Please call to confirm receipt" : "Send request";
+        if(intakeSecurity){intakeSecurity.showFailure(error, err);}
+        else{err.innerHTML = "We couldn't load the security check, so your request has not been sent. Your information is still here. You can try again or call our care team. <p>Need to speak with someone now?</p><p>We're here for you 24 hours a day, 7 days a week.</p><p><a href=\"tel:18059537273\">Call 805.953.7273</a></p>";}
+        announceCallback(err.textContent, true);
       });
   }
 

@@ -56,7 +56,14 @@ export async function startIntakeFixture() {
         headers: request.headers});
       const reply = () => {
         const result = state.submitResponse;
-        if (result?.raw) {
+        if (result?.disconnect) {
+          // Simulate losing the response AFTER the fixture has received the POST.
+          // Send headers first: an empty reused connection can cause Chromium's
+          // own transport to replay a request before JavaScript sees the error.
+          response.writeHead(200, {"Content-Type": "application/json", "Content-Length": "10000"});
+          response.write('{"ok":');
+          setTimeout(() => response.destroy(), 20);
+        } else if (result?.raw) {
           response.writeHead(200, {"Content-Type": "application/json"});
           response.end("not json");
         } else json(result?.body ?? {ok: true, accepted: true, receipt_id: "SYNTHETIC-RECEIPT",

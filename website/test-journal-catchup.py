@@ -3,6 +3,8 @@
 
 Timing is diagnostic, not a machine-dependent pass/fail threshold. Scan and SQL
 budgets fail deterministically. Run from any directory; no article files change.
+Historical owner approvals are checked separately from synthetic bulk fixtures:
+current review drafts may legitimately differ from the approved versions.
 """
 from collections import Counter
 from contextlib import ExitStack
@@ -72,9 +74,16 @@ class CatchupTests(unittest.TestCase):
         cls.local_connect = staticmethod(cls.stack.enter_context(storage.disposable_postgres()))
         cls.stack.enter_context(patch.object(jr, "connect", cls.local_connect))
         cls.records = jr.candidates()  # Actual corpus, including real image hashing.
-        cls.requests = pinned_requests()
-        if len(cls.records) < 83 or len(cls.requests) < 83:
+        cls.owner_requests = pinned_requests()
+        if len(cls.records) < 83 or len(cls.owner_requests) < 83:
             raise AssertionError("Full owner-consent corpus unexpectedly shrank")
+        # Synthetic permissions exist only in this disposable database. Do not
+        # re-pin real owner approvals or equate a changed draft with consent.
+        cls.requests = [
+            (record["date"], slug, record["revision"],
+             "Synthetic catch-up regression approval", False)
+            for slug, record in sorted(cls.records.items())
+        ]
         jr.initialize()
 
     @classmethod
@@ -83,7 +92,8 @@ class CatchupTests(unittest.TestCase):
         REPORT.write_text(json.dumps({
             "disposable_storage_only": True,
             "corpus_articles": len(cls.records),
-            "owner_pins": len(cls.requests),
+            "owner_pins": len(cls.owner_requests),
+            "synthetic_approvals": len(cls.requests),
             "runs": cls.reports,
         }, indent=2) + "\n")
 
@@ -222,13 +232,10 @@ class CatchupTests(unittest.TestCase):
 
     def test_full_corpus_first_start_and_noop_restart(self):
         self.active_records = self.records
-        # Do not silently re-pin changed editorial content to make this pass.
-        for day, slug, revision, _, _ in self.requests:
-            self.assertEqual((self.records[slug]["date"], self.records[slug]["revision"]),
-                             (day, revision), "Owner pin drift requires explicit review")
-        self.measure("full-first-start", owner.apply_all, len(self.requests))
+        apply = lambda: jr.apply_owner_batch(self.requests)
+        self.measure("full-first-start", apply, len(self.requests))
         before = self.assert_saved(self.requests)
-        self.measure("full-noop-restart", owner.apply_all, 0)
+        self.measure("full-noop-restart", apply, 0)
         self.assertEqual(self.snapshot(), before, "Restart changed saved decisions/photos/audit")
         # The daily release boundary remains 06:30 Pacific, including post-DST dates.
         for day in ("2026-10-24", "2026-11-15", "2026-12-31"):
@@ -325,14 +332,47 @@ class CatchupTests(unittest.TestCase):
 
         with patch.object(jr, "_write_decision", side_effect=fail_at_end):
             with self.assertRaisesRegex(RuntimeError, "Synthetic last-article"):
-                owner.apply_all()
+                jr.apply_owner_batch(self.requests)
         self.assertEqual(len(written), len(self.requests))
         self.assertEqual(self.snapshot(), before, "Partial approvals/photos/audit escaped rollback")
         self.active_records = self.records
-        self.measure("full-retry-after-rollback", owner.apply_all, len(self.requests))
+        apply = lambda: jr.apply_owner_batch(self.requests)
+        self.measure("full-retry-after-rollback", apply, len(self.requests))
         saved = self.assert_saved(self.requests)
-        self.measure("full-retry-noop", owner.apply_all, 0)
+        self.measure("full-retry-noop", apply, 0)
         self.assertEqual(self.snapshot(), saved)
+
+    def test_real_owner_requests_only_approve_matching_current_versions(self):
+        # These expectations use the original owner pins, not synthetic ones.
+        # Staged edits and photo replacements must remain pending fresh review.
+        expected = [
+            request for request in self.owner_requests
+            if request[1] in self.records
+            and (self.records[request[1]]["date"], self.records[request[1]]["revision"])
+            == (request[0], request[2])
+        ]
+        self.active_records = self.records
+        with patch.object(jr, "_write_decision", wraps=jr._write_decision) as writes:
+            self.assertEqual(owner.apply_all(), len(expected))
+            self.assertEqual(writes.call_count, len(expected))
+        saved = self.assert_saved(expected)
+        self.assertEqual(owner.apply_all(), 0)
+        self.assertEqual(self.snapshot(), saved)
+
+    def test_real_owner_requests_do_not_authorize_changed_review_drafts(self):
+        # Deliberately drift every candidate without editing the public corpus
+        # or production approval constants. No old pin can authorize this set.
+        changed = {
+            slug: {**record, "revision": "0" * 64}
+            for slug, record in self.records.items()
+        }
+        before = self.snapshot()
+        with patch.object(jr, "candidates", return_value=changed), \
+             patch.object(jr, "_write_decision", wraps=jr._write_decision) as writes:
+            self.assertEqual(owner.apply_all(), 0)
+            writes.assert_not_called()
+        self.assertEqual(self.snapshot(), before,
+                         "Changed drafts gained approvals, releases, photos or audit records")
 
 
 if __name__ == "__main__":

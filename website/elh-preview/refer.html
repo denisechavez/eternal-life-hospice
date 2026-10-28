@@ -459,7 +459,8 @@
     if(btn){ btn.disabled=true; btn.textContent='Sending\u2026'; }
     var body=new URLSearchParams(); new FormData(f).forEach(function(v,k){ body.append(k,v); });
     var oldError=f.parentNode.querySelector('.apply-error'); if(oldError) oldError.remove();
-    import('/assets/intake-security.js').then(function(security){return security.submit({method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded','Accept':'application/json'},body:body.toString()},f);})
+    var intakeSecurity;
+    import('/assets/intake-security.js').then(function(security){intakeSecurity=security;return security.submit({method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded','Accept':'application/json'},body:body.toString()},f);})
       .then(function(r){
         return r.json().catch(function(){return null;}).then(function(data){
           if(!r.ok||!data||data.ok!==true||data.accepted!==true) throw new Error('submit failed');
@@ -481,16 +482,18 @@
           f.parentNode.insertBefore(su,f.nextSibling);
           su.scrollIntoView({behavior:'smooth',block:'center'});
       })
-      .catch(function(){
+      .catch(function(error){
         if(f.__elhSubmissionState==='accepted'){return;}
-        f.__elhSubmissionState=null;
-        if(btn){ btn.disabled=false; btn.innerHTML=orig; }
+        var unknown=intakeSecurity&&(!error.intakeOutcome||error.intakeOutcome==='unknown');
+        f.__elhSubmissionState=unknown?'unknown':null;
+        if(btn){ btn.disabled=!!unknown; if(unknown){btn.textContent='Please call to confirm receipt';}else{btn.innerHTML=orig;} }
         var er=document.createElement('div');
         er.className='apply-error';
          er.setAttribute('role','alert');
          er.setAttribute('aria-live','assertive');
          er.setAttribute('aria-atomic','true');
-        er.innerHTML='Sorry — something went wrong sending your referral. Please try again, or call us at <a href="tel:18059537273">805.953.7273</a>.';
+        if(intakeSecurity){intakeSecurity.showFailure(error,er);}
+        else{er.innerHTML="We couldn't load the security check, so your referral has not been sent. Your information is still here. You can try again or call our care team. <p>Need to speak with someone now?</p><p>We're here for you 24 hours a day, 7 days a week.</p><p><a href=\"tel:18059537273\">Call 805.953.7273</a></p>";}
         f.parentNode.insertBefore(er,f.nextSibling);
         er.scrollIntoView({behavior:'smooth',block:'center'});
       });

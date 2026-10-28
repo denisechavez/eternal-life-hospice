@@ -473,9 +473,16 @@ def validate_submission(
             "Please complete all required fields and try again.",
         )
 
-    phone = fields.get("phone", "")
-    if phone and len(PHONE_RE.findall(phone)) < 10:
-        raise IntakeError("invalid_phone", "Please enter a valid callback phone number.")
+    phone = fields.get("phone", "").strip()
+    if phone:
+        digits = "".join(PHONE_RE.findall(phone))
+        valid_phone = bool(re.fullmatch(r"\+?[0-9().\s-]+", phone)) and (
+            len(digits) == 11 if phone.startswith("+1") else
+            10 <= len(digits) <= 15 if phone.startswith("+") else
+            len(digits) == 10 or (len(digits) == 11 and digits.startswith("1"))
+        )
+        if not valid_phone:
+            raise IntakeError("invalid_phone", "Please enter a valid callback phone number.")
 
     email = fields.get("email", "")
     if email and not EMAIL_RE.match(email):
