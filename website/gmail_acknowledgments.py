@@ -1,12 +1,14 @@
-"""Approved client letters delivered only through the managed Gmail connector."""
+"""Approved client letters through separately authorized company Gmail SMTP."""
 import base64
 import json
 import subprocess
+import sys
 from email.headerregistry import Address
 from email.message import EmailMessage
 from email.policy import SMTP
 from email.utils import formatdate, make_msgid
 from pathlib import Path
+from gmail_smtp_transport import mailbox_for_form
 
 
 class GmailDeliveryError(Exception):
@@ -20,11 +22,10 @@ class GmailAcknowledgmentMailer:
                     or payload.get("attachment") or len(payload["to"]) != 1):
                 raise ValueError("Not a client acknowledgment")
             message = EmailMessage(policy=SMTP)
-            # The Node adapter sets From using the verified connected mailbox.
+            mailbox = mailbox_for_form(payload["headers"]["X-ELH-Form"])
+            message["From"] = Address(display_name="Eternal Life Hospice", addr_spec=mailbox)
             message["To"] = str(Address(addr_spec=payload["to"][0]["email"]))
-            reply = payload["replyTo"]
-            message["Reply-To"] = Address(display_name=reply.get("name", ""),
-                                          addr_spec=reply["email"])
+            message["Reply-To"] = Address(display_name="Eternal Life Hospice", addr_spec=mailbox)
             message["Subject"] = payload["subject"]
             message["Date"] = formatdate(localtime=False, usegmt=True)
             message["Message-ID"] = make_msgid(domain="eternallifehospice.com")
@@ -36,11 +37,11 @@ class GmailAcknowledgmentMailer:
             if len(raw) > 200000:
                 raise ValueError("Acknowledgment too large")
             completed = subprocess.run(
-                ["node", str(Path(__file__).with_name("gmail-acknowledgment-transport.mjs"))],
+                [sys.executable, str(Path(__file__).with_name("gmail_smtp_transport.py"))],
                 input=json.dumps({"action": "send_acknowledgment",
                     "raw": base64.urlsafe_b64encode(raw).decode().rstrip("=")}),
                 stdout=subprocess.PIPE, stderr=subprocess.DEVNULL,
-                text=True, timeout=25, check=False,
+                text=True, timeout=12, check=False,
             )
             result = json.loads(completed.stdout)
             if (completed.returncode or result.get("ok") is not True

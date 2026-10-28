@@ -12,6 +12,7 @@ from unittest.mock import Mock, patch
 import acknowledgments
 import form_intake as intake
 from gmail_acknowledgments import GmailAcknowledgmentMailer, GmailDeliveryError
+from gmail_smtp_transport import ACCOUNTS, FORM_ACCOUNTS
 
 
 FIELDS = {"form-name":"elh-family", "first_name":"Synthetic",
@@ -30,6 +31,24 @@ def letter(key="family"):
 
 
 class GmailRoutingTests(unittest.TestCase):
+    def test_every_form_selects_its_own_sender_and_reply_mailbox(self):
+        self.assertEqual(set(FORM_ACCOUNTS), set(intake.FORM_RULES))
+        for form_name, account in FORM_ACCOUNTS.items():
+            with self.subTest(form=form_name):
+                payload = intake._acknowledgement_payload(form_name,
+                    intake.FORM_RULES[form_name], dict(FIELDS, **{"form-name":form_name}),
+                    "AB1234CD5678", FIELDS["email"])
+                self.assertEqual(payload["sender"]["email"], ACCOUNTS[account][0])
+                self.assertEqual(payload["replyTo"]["email"], ACCOUNTS[account][0])
+                completed = SimpleNamespace(returncode=0, stdout='{"ok":true,"message_id":"synthetic"}')
+                with patch("gmail_acknowledgments.subprocess.run", return_value=completed) as run:
+                    GmailAcknowledgmentMailer().send(payload)
+                request = json.loads(run.call_args.kwargs["input"])
+                raw = base64.urlsafe_b64decode(request["raw"] + "=" * (-len(request["raw"]) % 4))
+                message = BytesParser(policy=default).parsebytes(raw)
+                self.assertEqual(message["From"].addresses[0].addr_spec, ACCOUNTS[account][0])
+                self.assertEqual(message["Reply-To"].addresses[0].addr_spec, ACCOUNTS[account][0])
+
     def test_default_transports_are_separate_and_client_never_uses_brevo(self):
         with patch.object(intake, "BrevoMailer") as internal, patch.object(
                 intake, "GmailAcknowledgmentMailer") as gmail:
@@ -86,7 +105,8 @@ class GmailMimeTests(unittest.TestCase):
                     request = json.loads(kwargs["input"])
                     raw = base64.urlsafe_b64decode(request["raw"] + "=" * (-len(request["raw"]) % 4))
                     message = BytesParser(policy=default).parsebytes(raw)
-                    self.assertIsNone(message["From"])  # Gmail supplies verified primary mailbox.
+                    self.assertEqual(message["From"].addresses[0].addr_spec,
+                                     "info@eternallifehospice.com")
                     self.assertEqual(message["To"], "synthetic@example.invalid")
                     self.assertIn("info@eternallifehospice.com", str(message["Reply-To"]))
                     self.assertEqual(message["Subject"], payload["subject"])
@@ -97,12 +117,12 @@ class GmailMimeTests(unittest.TestCase):
                         self.assertEqual(actual.replace("\r\n","\n").rstrip("\n"),
                                          expected.rstrip("\n"))
                     self.assertNotIn(FIELDS["email"], " ".join(args[0]))
-                    self.assertEqual(kwargs["timeout"], 25)
+                    self.assertEqual(kwargs["timeout"], 12)
                     self.assertNotIn("shell", kwargs)
         self.assertEqual(run.call_count, len(acknowledgments.TEMPLATES))
 
     def test_failures_never_retry(self):
-        for outcome in (subprocess.TimeoutExpired("node",25), OSError("synthetic"),
+        for outcome in (subprocess.TimeoutExpired("worker",12), OSError("synthetic"),
                         SimpleNamespace(returncode=1,stdout='{"ok":false}'),
                         SimpleNamespace(returncode=0,stdout="not-json"),
                         SimpleNamespace(returncode=0,stdout='{"ok":true}')):

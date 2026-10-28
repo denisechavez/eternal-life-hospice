@@ -20,3 +20,9 @@ Do not confuse default/custom OAuth configuration with authorization for a diffe
 **Why:** The owner explicitly stated, “I do not want the e-mail that goes to client to go through brevo,” then selected “let it go through our gmail.” Form processing in Replit and the service delivering an email must be explained separately; a WhatConverts lead notification is not the approved customer acknowledgment.
 
 **How to apply:** Use an authorized company Gmail delivery path with a verified company mailbox and preserve the approved branded copy and layout. Test without creating duplicate intake requests; identify any real test recipient and obtain confirmation before sending. A Gmail acknowledgment failure must not turn an already accepted intake into a failed request. This instruction does not authorize removing Brevo from newsletters, marketing or internal notifications, or disabling WhatConverts tracking. Keep changes in preview until publishing is approved. Never impersonate an unverified sender alias.
+
+A successful secure SMTP connection is not proof of mailbox authorization or email delivery.
+
+**Why:** Workspace checks reached Google's secure SMTP service but connections closed during authentication on both supported secure connection methods, without a password-rejection response. That observation alone does not establish invalid credentials or a hosting restriction.
+
+**How to apply:** Verify authentication separately for both role mailboxes, then obtain consent for a real receipt test. Report authentication failures plainly and keep publication blocked; do not repeatedly retry, assume passwords are wrong, or fall back to the employee mailbox or Brevo.

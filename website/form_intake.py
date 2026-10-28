@@ -26,7 +26,7 @@ from email.policy import default
 from typing import Dict, Iterable, Mapping, Optional, Tuple
 from urllib.parse import parse_qs
 import acknowledgments
-from gmail_acknowledgments import GmailAcknowledgmentMailer, GmailDeliveryError
+from gmail_acknowledgments import GmailAcknowledgmentMailer, GmailDeliveryError, mailbox_for_form
 
 
 PHONE_DISPLAY = "805.953.7273"
@@ -782,10 +782,11 @@ def _acknowledgement_payload(
     first_name = _sender_name(fields).split(" ", 1)[0]
     key = acknowledgments.template_key(form_name, fields)
     subject, text, html_body = acknowledgments.render(key, first_name, receipt_id, CONTACT_EMAIL)
+    client_mailbox = mailbox_for_form(form_name)
     return {
-        "sender": {"name": FROM_NAME, "email": FROM_EMAIL},
+        "sender": {"name": FROM_NAME, "email": client_mailbox},
         "to": [{"email": email}],
-        "replyTo": {"email": CONTACT_EMAIL, "name": FROM_NAME},
+        "replyTo": {"email": client_mailbox, "name": FROM_NAME},
         "subject": subject,
         "textContent": text,
         "htmlContent": html_body,
