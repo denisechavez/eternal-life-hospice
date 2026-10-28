@@ -30,6 +30,25 @@ description: Master social content drafts file — location, structure, and key 
 - **GBP:** Mon/Wed/Fri, photo every time, Learn More vs. Call Now CTAs
 - **All scripts written in brand voice** — user edits and posts; agent drafts only
 
+## Thryv social import requirements
+
+Use the owner's supplied Thryv Marketing Center CSV specification: required
+columns `Link`, `Image`, `Caption`; optional columns `Title`, `Approved`,
+`Recycle`, `Comment`, `Schedule`. `Image` must be a direct, publicly accessible
+image URL, not an attachment or workspace path. Boolean values are `TRUE` or
+`FALSE`; scheduled times use `yyyy-MM-dd HH:mm`.
+
+**Why:** The owner wants file uploads to replace manually entering each post
+and supplied this format for Social → Content Library → Upload CSV Content.
+This is user-supplied guidance, not an independently tested import.
+
+**How to apply:** Draft separate platform-specific batches for GBP, Facebook,
+LinkedIn and Pinterest using the matching Journal imagery. Keep TikTok and
+YouTube video work separate. Default drafts to `Approved=FALSE`, leave
+`Schedule` blank until authorized and do not enable recycling without consent.
+Confirm network assignment in Thryv because the supplied CSV has no platform
+column. Test a sample import before claiming the package is fully compatible.
+
 ## Other social files (same folder)
 - `elh-4-week-multi-platform-content-kit.md` — 4-week calendar
 - `elh-organic-growth-playbook.md` — growth strategy, 30 post ideas
