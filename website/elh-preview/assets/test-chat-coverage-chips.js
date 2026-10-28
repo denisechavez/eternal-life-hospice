@@ -64,7 +64,7 @@ function extractCityQuery(text) {
 // between these tests and the production code is visible as a test failure that
 // prompts a sync.  We inject `fetchImpl` so tests can control the network.
 
-const PHONE_DISPLAY = "805.953.7273";
+const PHONE_DISPLAY = "805.409.9262";
 
 function makeMocks() {
   return {

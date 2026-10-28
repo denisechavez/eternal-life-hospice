@@ -67,7 +67,7 @@ export function showFailure(error, container) {
   const outcome = error && error.intakeOutcome || "unknown";
   container.textContent = failureMessages[outcome] || failureMessages.unknown;
   const cta = document.createElement("div");
-  cta.innerHTML = '<p>Need to speak with someone now?</p><p>We&#x27;re here for you 24 hours a day, 7 days a week.</p><p><a href="tel:18059537273">Call 805.953.7273</a></p>';
+  cta.innerHTML = '<p>Need to speak with someone now?</p><p>We&#x27;re here for you 24 hours a day, 7 days a week.</p><p><a href="tel:18054099262">Call 805.409.9262</a></p>';
   container.appendChild(cta);
   return outcome;
 }

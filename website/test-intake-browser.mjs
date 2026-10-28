@@ -191,10 +191,10 @@ try {
     assert.equal(properties(announcement).atomic, true);
     assert.equal(normalize(readText(announcement)), expected,
       currentCase + ": live announcement includes the full current reminder, not success");
-    const phone = await exposed(selector + ' a[href="tel:18059537273"]');
+    const phone = await exposed(selector + ' a[href="tel:18054099262"]');
     const recovery = await exposed(selector + " .elhc-cb-confirm-not-received");
     assert.equal(phone.role.value, "link");
-    assert.equal(phone.name.value, "Call 805.953.7273");
+    assert.equal(phone.name.value, "Call 805.409.9262");
     assert.equal(recovery.role.value, "button");
     assert.equal(recovery.name.value, "The team confirmed it was not received");
     for (const control of [phone, recovery]) {
@@ -203,12 +203,12 @@ try {
     }
     // Use real Tab events, not .focus() on the recovery button, to prove it
     // remains in keyboard order after the old callback form has been removed.
-    await focus(selector + ' a[href="tel:18059537273"]');
+    await focus(selector + ' a[href="tel:18054099262"]');
     await key("Tab", "Tab", 9);
     await until(`document.activeElement === document.querySelector(${JSON.stringify(selector + " .elhc-cb-confirm-not-received")})`,
       "Tab reaches the confirmed-non-receipt button");
     await key("Tab", "Tab", 9, 8);
-    await until(`document.activeElement === document.querySelector(${JSON.stringify(selector + ' a[href="tel:18059537273"]')})`,
+    await until(`document.activeElement === document.querySelector(${JSON.stringify(selector + ' a[href="tel:18054099262"]')})`,
       "Shift+Tab returns to the care-team phone link");
     await noCallbackSuccess();
   }
@@ -354,10 +354,10 @@ try {
         assert.equal(field.includes("phone") ? actual.replace(/\D/g, "") : actual, value);
       }
       assert.ok(await evaluate(`document.querySelector(${JSON.stringify(flow.error)}).getAttribute("aria-live")==="assertive"`));
-      assert.ok(await evaluate(`document.querySelector(${JSON.stringify(flow.error)}).textContent.includes("805.953.7273")`));
+      assert.ok(await evaluate(`document.querySelector(${JSON.stringify(flow.error)}).textContent.includes("805.409.9262")`));
       const visibleError = flow.name === "chat" ? ".elhc-cb-err" : flow.error;
       assert.ok(await evaluate(
-        `document.querySelector(${JSON.stringify(visibleError)}).querySelector('a[href="tel:18059537273"]')`));
+        `document.querySelector(${JSON.stringify(visibleError)}).querySelector('a[href="tel:18054099262"]')`));
       if (flow.name === "newsletter") {
         const text = await evaluate(`document.querySelector(${JSON.stringify(visibleError)}).textContent`);
         assert.match(text, /newsletter subscription help/);
@@ -448,8 +448,8 @@ try {
           // Capture a genuine keyboard/touch click on the real anchor, but prevent
           // the OS dialer/default navigation. No real phone call can leave the test.
           const phoneSelector = await evaluate("!!document.querySelector('.elhc-cb-reminder')")
-            ? '.elhc-cb-reminder a[href="tel:18059537273"]'
-            : '.elhc-panel a[href="tel:18059537273"]';
+            ? '.elhc-cb-reminder a[href="tel:18054099262"]'
+            : '.elhc-panel a[href="tel:18054099262"]';
           await evaluate(`(()=>{
             const a=document.querySelector(${JSON.stringify(phoneSelector)});
             if(!a)throw new Error("Missing call-first link");
@@ -500,7 +500,7 @@ try {
       assert.equal(await evaluate("document.querySelectorAll('.elhc-cb').length"), 0);
       assert.match(await evaluate("document.querySelector('.elhc-cb-reminder').textContent"),
         /please call our care team to confirm receipt before sending another request/);
-      assert.ok(await evaluate(`document.querySelector('.elhc-cb-reminder a[href="tel:18059537273"]')`));
+      assert.ok(await evaluate(`document.querySelector('.elhc-cb-reminder a[href="tel:18054099262"]')`));
       assert.equal(await evaluate(`sessionStorage.getItem(${JSON.stringify(reminderKey)})`), stored,
         "Navigation must not extend the deadline");
       assert.doesNotMatch(await evaluate("JSON.stringify(Object.entries(sessionStorage))"),
@@ -573,7 +573,7 @@ try {
         await until("document.querySelector('.elhc-cb-reminder')");
         await assertCallbackReminderAccessibility(".elhc-cb-reminder");
         assert.equal(await evaluate("document.querySelectorAll('.elhc-cb').length"), 0);
-        assert.ok(await evaluate(`document.querySelector('.elhc-cb-reminder a[href="tel:18059537273"]')`));
+        assert.ok(await evaluate(`document.querySelector('.elhc-cb-reminder a[href="tel:18054099262"]')`));
         assert.match(await evaluate("document.querySelector('.elhc-cb-reminder').textContent"),
           /If the team confirms receipt, no new request is needed/);
         assert.equal(await evaluate(`sessionStorage.getItem(${JSON.stringify(reminderKey)})`), stored,
@@ -706,7 +706,7 @@ try {
       // Missing receipt email is still accepted intake, never uncertain delivery.
       state.submitResponse = {body: {ok: true, accepted: true, receipt_id: "SYNTHETIC-RECEIPT",
         acknowledgement_sent: false,
-        care_cta_html: `<p>Need to speak with someone now?</p><p>We're here for you 24 hours a day, 7 days a week.</p><p><a href="tel:18059537273">Call 805.953.7273</a></p>`}};
+        care_cta_html: `<p>Need to speak with someone now?</p><p>We're here for you 24 hours a day, 7 days a week.</p><p><a href="tel:18054099262">Call 805.409.9262</a></p>`}};
     }
     state.held();state.held = null;state.hold = false;
     await until(success);
@@ -744,7 +744,7 @@ try {
     assert.ok(await evaluate(`document.body.innerText.includes("SYNTHETIC-RECEIPT")`));
     assert.ok(await evaluate(`document.body.innerText.includes("Need to speak with someone now?")`));
     assert.ok(await evaluate(`document.body.innerText.includes("We're here for you 24 hours a day, 7 days a week.")`));
-    assert.ok(await evaluate(`Array.from(document.querySelectorAll('a[href="tel:18059537273"]')).some(a=>a.textContent==="Call 805.953.7273")`));
+    assert.ok(await evaluate(`Array.from(document.querySelectorAll('a[href="tel:18054099262"]')).some(a=>a.textContent==="Call 805.409.9262")`));
     }
     console.log(`PASS ${currentCase}: validation, interactive challenge, load/error/expiry/timeout,
   security and delivery failures, preserved fields, retry, guarded confirmation`);
@@ -805,8 +805,8 @@ try {
         const {nodes} = await call("Accessibility.getFullAXTree");
         assert.ok(nodes.some(n => !n.ignored && n.role?.value === "StaticText" &&
           n.name?.value.includes("Your browser cannot save the callback reminder")));
-        await focus(selector + ' a[href="tel:18059537273"]');
-        assert.equal(await evaluate("document.activeElement.textContent"), "Call 805.953.7273");
+        await focus(selector + ' a[href="tel:18054099262"]');
+        assert.equal(await evaluate("document.activeElement.textContent"), "Call 805.409.9262");
       };
       if (await evaluate("!!document.getElementById('elh-cc-decl')")) await activate("#elh-cc-decl", mobile);
       if (mode === "late-write-failure") await evaluate("fixtureBlockStorage=false");

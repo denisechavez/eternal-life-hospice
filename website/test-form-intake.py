@@ -420,7 +420,7 @@ class SyntheticEndToEndTest(unittest.TestCase):
 
             self.assertEqual(statuses, [502, 502, 502, 502])
             self.assertTrue(
-                all("805.953.7273" in result["message"] for result in response_bodies)
+                all("805.409.9262" in result["message"] for result in response_bodies)
             )
             self.assertEqual(len(AlertCaptureHandler.payloads), 1)
             alert = AlertCaptureHandler.payloads[0]

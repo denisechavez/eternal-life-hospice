@@ -69,7 +69,7 @@
                       "county": "Los Angeles County",
                       "subregion": "San Gabriel Valley and nearby communities",
                       "pageUrl": "https://eternallifehospice.com/hospice-pasadena-ca",
-                      "phone": "805.953.7273"
+                      "phone": "805.409.9262"
                     }
                   },
                   "not-served": {
@@ -77,7 +77,7 @@
                     "value": {
                       "served": false,
                       "city": "San Francisco",
-                      "message": "Eternal Life Hospice does not have a published service-area page for \u201cSan Francisco\u201d. Please call 805.953.7273 to confirm coverage \u2014 our service area across Ventura and Los Angeles counties may extend beyond our published city pages."
+                      "message": "Eternal Life Hospice does not have a published service-area page for \u201cSan Francisco\u201d. Please call 805.409.9262 to confirm coverage \u2014 our service area across Ventura and Los Angeles counties may extend beyond our published city pages."
                     }
                   }
                 }
@@ -151,7 +151,7 @@
           "phone": {
             "type": "string",
             "description": "ELH 24/7 intake and nursing line.",
-            "example": "805.953.7273"
+            "example": "805.409.9262"
           }
         }
       },
@@ -224,7 +224,7 @@
           "phone": {
             "type": "string",
             "description": "ELH 24/7 intake and nursing line.",
-            "example": "805.953.7273"
+            "example": "805.409.9262"
           }
         }
       }

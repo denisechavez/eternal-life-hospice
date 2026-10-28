@@ -30,6 +30,15 @@
 const fs   = require('fs');
 const path = require('path');
 
+// Match the website-only contact projection without altering signed sources.
+function publicPhoneText(text) {
+  return text.replace(/(?<!\d)(\+?1[ .-]?)?(\(?805\)?)([ .-]?)953([ .-]?)7273(?!\d)/g,
+    (match, country, area, first, second, offset) => {
+      if (/\boffice\b[^<>]{0,35}$/i.test(text.slice(Math.max(0, offset - 50), offset))) return match;
+      return (country || '') + area + first + '409' + second + '9262';
+    });
+}
+
 // ── Paths ────────────────────────────────────────────────────────────────────
 const SITE_ROOT  = path.resolve(__dirname, '..');          // website/elh-preview/
 const INDEX_PATH = path.resolve(__dirname, 'search-index.json');
@@ -255,8 +264,8 @@ function main() {
     const canonical = extractCanonical(html);
     if (!canonical) continue;  // No canonical = don't index
 
-    const title = extractTitle(html);
-    const desc  = extractMeta(html, 'description');
+    const title = publicPhoneText(extractTitle(html));
+    const desc  = publicPhoneText(extractMeta(html, 'description'));
 
     if (!title && !desc) continue;  // Nothing useful
 

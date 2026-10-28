@@ -17,6 +17,7 @@ import socket
 import subprocess
 import sys
 import footer_contact
+import website_phone
 import journal_workspace_preview
 from datetime import date, datetime
 from zoneinfo import ZoneInfo
@@ -134,7 +135,8 @@ class PrettyURLHandler(http.server.SimpleHTTPRequestHandler):
         route = route if route is not None else urlsplit(self.path).path
         route = route.rstrip("/").removesuffix(".html") or "/"
         return service_preview.decorate(
-            site_breadcrumbs.decorate(footer_contact.public_html(document), route),
+            site_breadcrumbs.decorate(
+                website_phone.public_html(footer_contact.public_html(document), route), route),
             route
         )
 
@@ -1255,6 +1257,10 @@ class PrettyURLHandler(http.server.SimpleHTTPRequestHandler):
     def _send_json(
         self, status, body, cache_control="no-store", extra_headers=None
     ):
+        if urlsplit(self.path).path in website_phone.PUBLIC_API_ROUTES:
+            if isinstance(body, (bytes, bytearray, str)):
+                body = json.loads(body)
+            body = website_phone.public_payload(body)
         if not isinstance(body, (bytes, bytearray)):
             if not isinstance(body, str):
                 body = json.dumps(
