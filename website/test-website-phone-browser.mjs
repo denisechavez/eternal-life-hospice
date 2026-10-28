@@ -13,6 +13,13 @@ const profile = await mkdtemp(join(tmpdir(), "elh-phone-browser-"));
 const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
 let fixture, browser, socket, caseName = "startup", id = 0;
 const pending = new Map(), errors = [], apiRequests = [], blocked = [];
+const aiPayloads = [], unexpectedRequests = [];
+let coverageFailure = null, chatReply = null;
+const coverageFailures = [
+  {name: "HTTP 503", status: 503, body: '{"error":"synthetic_coverage_unavailable"}'},
+  {name: "invalid JSON", status: 200, body: '{"served":'},
+  {name: "JSON null", status: 200, body: "null"},
+];
 // Synthetic lookup results only: exercise direct and refined suggestion outcomes.
 const coverageResponses = {
   San: {served: false, city: "San", ambiguous: true, suggestions: ["San Fernando", "San Francisco", "San F"]},
@@ -68,16 +75,24 @@ try {
       const city = url.searchParams.get("city");
       if (api) apiRequests.push({path: url.pathname, method: request.method,
         ...(url.pathname === "/api/coverage" ? {city} : {})});
+      if (api && url.pathname === "/api/chat" && request.method === "POST") {
+        try { aiPayloads.push(JSON.parse(request.postData)); }
+        catch (error) { errors.push(String(error)); }
+      }
+      if (local && !api && request.method !== "GET") unexpectedRequests.push(request.method + " " + url.pathname);
       const coverage = api && url.pathname === "/api/coverage" && request.method === "GET"
         && Object.hasOwn(coverageResponses, city) ? coverageResponses[city] : null;
+      const failure = coverage && city === "San Fernando" ? coverageFailure : null;
+      const aiReply = api && url.pathname === "/api/chat" && request.method === "POST" ? chatReply : null;
       if (!local) blocked.push(request.url);
       // Fulfill every API and third-party request locally, including unexpected
       // submission attempts (which also fail the final assertions).
       const operation = local && !api && request.method === "GET"
         ? call("Fetch.continueRequest", {requestId})
-        : call("Fetch.fulfillRequest", {requestId, responseCode: coverage ? 200 : api ? 503 : 200,
+        : call("Fetch.fulfillRequest", {requestId, responseCode: failure ? failure.status : coverage || aiReply ? 200 : api ? 503 : 200,
           responseHeaders: [{name: "Content-Type", value: api ? "application/json" : "text/plain"}],
-          body: Buffer.from(coverage ? JSON.stringify(coverage)
+          body: Buffer.from(failure ? failure.body : coverage ? JSON.stringify(coverage)
+            : aiReply ? JSON.stringify({reply: aiReply})
             : api ? '{"error":"synthetic_unavailable"}' : "").toString("base64")});
       operation.catch(error => errors.push(String(error)));
     }
@@ -173,6 +188,10 @@ try {
   await call("Page.enable");
   await call("Runtime.enable");
   await call("Fetch.enable", {patterns: [{urlPattern: "*"}]});
+  await call("Page.addScriptToEvaluateOnNewDocument", {source: `
+    window.fixtureFormSubmits = 0;
+    document.addEventListener('submit', () => { window.fixtureFormSubmits++; }, true);
+  `});
   await call("Emulation.setEmulatedMedia", {features: [{name: "prefers-reduced-motion", value: "reduce"}]});
 
   for (const width of [1280, 390]) {
@@ -233,6 +252,52 @@ try {
     }
     caseName = `${width}px unavailable AI fallback`;
     await ask("What is hospice care?", "having trouble responding");
+
+    for (const failure of coverageFailures) {
+      for (const fromChip of [false, true]) {
+        for (const aiAvailable of [true, false]) {
+          caseName = `${width}px ${failure.name}, ${fromChip ? "selected city" : "typed city"}, AI ${aiAvailable ? "reply" : "unavailable"}`;
+          // A unique reply proves that a successful AI response, rather than a
+          // local served/unserved answer, was actually rendered.
+          const expected = aiAvailable ? `Synthetic coverage fallback: ${caseName}` : "having trouble responding";
+          chatReply = aiAvailable ? `${expected}. Please call Main at 805.409.9262 any time.` : null;
+          coverageFailure = failure;
+          try {
+            // localFallback disables AI for the rest of that chat session.
+            // Reload the real script so every case starts with AI available.
+            await navigate("/");
+            await click(".elhc-launch");
+            await until("document.querySelector('.elhc-chip-cb')");
+            if (fromChip) await ask("Do you serve San?", "“San” matches several cities", false);
+            const requestStart = apiRequests.length, aiStart = aiPayloads.length;
+            if (fromChip) await chooseCity("San Fernando", expected);
+            else await ask("Do you serve San Fernando?", expected);
+            assert.deepEqual(apiRequests.slice(requestStart), [
+              {path: "/api/coverage", method: "GET", city: "San Fernando"},
+              {path: "/api/chat", method: "POST"},
+            ], caseName + ": failed lookup must reach exactly one stubbed AI request");
+            assert.equal(aiPayloads.length, aiStart + 1, caseName);
+            assert.deepEqual(aiPayloads.at(-1).messages.at(-1), {
+              role: "user", content: "Do you serve San Fernando?",
+            }, caseName + ": AI must receive the original city question");
+            const reply = await evaluate(`[...document.querySelectorAll('.elhc-bot')].at(-1).innerText`);
+            assert.doesNotMatch(reply, /Yes—we do serve|We don’t have a published service page/, caseName);
+            assert.equal(await evaluate(`(()=>{
+              const reply=[...document.querySelectorAll('.elhc-bot')].at(-1);
+              const rect=reply.getBoundingClientRect(), log=document.querySelector('.elhc-log').getBoundingClientRect();
+              return getComputedStyle(reply).visibility==='visible' &&
+                rect.width>0 && rect.height>0 && rect.bottom>log.top && rect.top<log.bottom;
+            })()`), true, caseName + ": final reply must be visible in the chat log");
+            assert.equal(await evaluate("document.querySelectorAll('.elhc-typing').length"), 0, caseName);
+            assert.equal(await evaluate("window.fixtureFormSubmits"), 0, caseName + ": no form submissions");
+            console.log("PASS " + caseName + ": coverage → stubbed AI → visible Main matching persistent dial link");
+          } finally {
+            coverageFailure = null;
+            chatReply = null;
+          }
+        }
+      }
+    }
 
     caseName = `${width}px callback and simulated intake displays`;
     await click(".elhc-chip-cb");
@@ -346,6 +411,8 @@ try {
   assert.deepEqual(fixture.state.posts, [], "No submissions permitted");
   assert.deepEqual(fixture.state.security, [], "No verification requests permitted");
   assert.deepEqual(fixture.state.violations, []);
+  assert.deepEqual(unexpectedRequests, [], "No non-API submissions permitted");
+  assert.ok(fixture.state.assets.includes("/assets/chat.js"), "Must exercise the real chat.js asset");
   assert.deepEqual(errors, [], "Browser/transport errors");
   console.log(`PASS office role retained; all APIs/third parties stubbed (${blocked.length} external requests); zero submissions`);
 } catch (error) {
