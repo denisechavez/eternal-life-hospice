@@ -95,6 +95,17 @@ from an unknown delivery outcome.
 journeys. Use the approved clickable care-team CTA below. Do not change accepted
 submission semantics to recover a missing receipt email.
 
+Keep uncertain-delivery reminders bounded and tab-scoped, with no saved contact
+or clinical information. Reopening a widget is not confirmation of non-receipt,
+and a reminder expiring is not evidence that intake failed.
+
+**Why:** A response can be lost after intake accepts the request; a new form
+must not encourage a duplicate, but an indefinite lockout can also prevent care.
+
+**How to apply:** Offer a clickable care-team call link and explain both outcomes:
+confirmed receipt needs no resubmission; confirmed non-receipt permits a new,
+blank manual request. Never use the reminder as authority to retry automatically.
+
 ## Request acknowledgments
 
 The owner requires an immediate branded receipt email for support requests,

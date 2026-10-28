@@ -199,6 +199,49 @@
   var panel, log, replyStatus, callbackStatus, openBtn, dock, inputEl, sendBtn, teaser, backdrop, opened = false, aiAvailable = true;
   var greeted = false, greetTimer = null, closeTimer = null, focusTimer = null;
   var callbackInstance = 0;
+  // Tab-scoped, fixed-lifetime reminder: never store contact or clinical data.
+  var callbackReminderKey = "elhcCallbackUncertainUntil";
+  var callbackReminderMs = 30 * 60 * 1000;
+  var callbackUncertainUntil = 0, callbackPending = false;
+  function callbackNeedsConfirmation() {
+    var now = Date.now();
+    try {
+      var stored = Number(sessionStorage.getItem(callbackReminderKey));
+      if (stored > now && stored <= now + callbackReminderMs) callbackUncertainUntil = stored;
+      else sessionStorage.removeItem(callbackReminderKey);
+    } catch (e) {} // In-memory protection still works when storage is blocked.
+    if (callbackUncertainUntil > now && callbackUncertainUntil <= now + callbackReminderMs) return true;
+    callbackUncertainUntil = 0;
+    return false;
+  }
+  function rememberUncertainCallback() {
+    callbackUncertainUntil = Date.now() + callbackReminderMs;
+    try { sessionStorage.setItem(callbackReminderKey, String(callbackUncertainUntil)); } catch (e) {}
+  }
+  function callbackReminder(container) {
+    var reminderUntil = callbackUncertainUntil;
+    container.textContent = "We couldn't confirm whether your request was received. To avoid a duplicate request, please call our care team to confirm receipt before sending another request. This reminder lasts up to 30 minutes in this tab; its expiry does not mean your request failed. If the team confirms receipt, no new request is needed. Only if the team confirms it was not received, choose the button below to start a new request.";
+    container.appendChild(el("p", null, "Need to speak with someone now?"));
+    container.appendChild(el("p", null, "We're here for you 24 hours a day, 7 days a week."));
+    var phone = el("a", null, "Call " + PHONE_DISPLAY);
+    phone.href = "tel:" + PHONE_TEL;
+    container.appendChild(phone);
+    var actions = el("div", "elhc-cb-actions");
+    var confirmed = el("button", "elhc-cb-confirm-not-received", "The team confirmed it was not received");
+    confirmed.type = "button";
+    actions.appendChild(confirmed);
+    container.appendChild(actions);
+    confirmed.addEventListener("click", function () {
+      // An expired or superseded reminder must not remove a newer pending form.
+      if (callbackPending || callbackUncertainUntil !== reminderUntil || !confirmed.isConnected) return;
+      callbackUncertainUntil = 0;
+      try { sessionStorage.removeItem(callbackReminderKey); } catch (e) {}
+      log.querySelectorAll(".elhc-cb, .elhc-cb-reminder").forEach(function (node) { node.remove(); });
+      showCallbackForm(); // Blank form only; never submit or restore saved details.
+    });
+    announceCallback(container.textContent, true);
+    scrollDown();
+  }
 
   /* ---------- styles ---------- */
   function injectStyles() {
@@ -219,7 +262,7 @@
       ".elhc-teaser-close svg{width:10px;height:10px}",
       ".elhc-chip-cb{background:var(--p);color:var(--cream);border-color:var(--p)}",
       ".elhc-chip-cb:hover{background:var(--deep);border-color:var(--deep);color:var(--cream)}",
-      ".elhc-cb{align-self:stretch;background:#fff;border:1px solid var(--cdark);border-radius:14px;padding:.75rem .8rem;display:flex;flex-direction:column;gap:.55rem;animation:elhcRise .4s cubic-bezier(.22,1,.36,1) both}",
+      ".elhc-cb,.elhc-cb-reminder{align-self:stretch;background:#fff;border:1px solid var(--cdark);border-radius:14px;padding:.75rem .8rem;display:flex;flex-direction:column;gap:.55rem;animation:elhcRise .4s cubic-bezier(.22,1,.36,1) both}",
       ".elhc-cb label{font-size:11.5px;color:var(--mid);display:block;margin-bottom:.22rem}",
       ".elhc-cb input,.elhc-cb textarea{width:100%;border:1px solid var(--cdark);border-radius:10px;padding:.5rem .6rem;font-family:inherit;font-size:13.5px;color:var(--ink);background:#fff}",
       ".elhc-cb textarea{resize:none;min-height:46px;line-height:1.4}",
@@ -227,6 +270,7 @@
       ".elhc-cb-err{color:#9a2b2b;font-size:11.5px}",
       ".elhc-sr{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important}",
       ".elhc-cb-actions{display:flex;gap:.5rem;align-items:center}",
+      ".elhc-cb-confirm-not-received{font:inherit;white-space:normal;min-height:44px;padding:.5rem .6rem;border:1px solid var(--p);border-radius:10px;background:#fff;color:var(--p);cursor:pointer}",
       ".elhc-cb-submit{flex:1;border:none;cursor:pointer;background:var(--p);color:var(--cream);font-family:inherit;font-weight:700;font-size:13.5px;padding:.58rem;border-radius:10px;transition:background .15s}",
       ".elhc-cb-submit:hover{background:var(--deep)}.elhc-cb-submit:disabled{opacity:.6;cursor:default}",
       ".elhc-cb-cancel{background:transparent;border:none;color:var(--mid);font-family:inherit;font-size:12.5px;cursor:pointer;padding:.42rem}",
@@ -470,6 +514,16 @@
 
   /* ---------- callback request ---------- */
   function showCallbackForm() {
+    if (callbackPending) {
+      addMsg("Your callback request is still being checked. Please wait for its result before starting another request.", "bot");
+      return;
+    }
+    if (callbackNeedsConfirmation()) {
+      var reminder = el("div", "elhc-cb-reminder");
+      log.appendChild(reminder);
+      callbackReminder(reminder);
+      return;
+    }
     track("chat_callback_start", { page: window.location.pathname || "/" });
     addMsg(
       "Of course \u2014 I'd be glad to arrange that. Leave your name and number below and a member of our team will call you. If it's urgent, calling " +
@@ -569,6 +623,13 @@
     });
 
     submitBtn.addEventListener("click", function () {
+      if (callbackPending) return;
+      if (callbackNeedsConfirmation()) {
+        callbackReminder(err);
+        return;
+      }
+      // Expiry permits a manual request, never an automatic retry.
+      if (form.__elhSubmissionState === "unknown") form.__elhSubmissionState = null;
       if(form.__elhSubmissionState){return;}
       var name = (nameIn.value || "").trim();
       var phone = (phoneIn.value || "").trim();
@@ -596,6 +657,7 @@
       }
       err.textContent = "";
       form.__elhSubmissionState = "pending";
+      callbackPending = true;
       submitBtn.disabled = true;
       submitBtn.textContent = "Sending\u2026";
       track("chat_callback_submit", { page: window.location.pathname || "/" });
@@ -643,6 +705,7 @@
         });
       })
       .then(function (result) {
+        callbackPending = false;
         form.__elhSubmissionState = "accepted";
         track("chat_callback_success", { page: window.location.pathname || "/" });
         if (form.parentNode) form.parentNode.removeChild(form);
@@ -660,13 +723,16 @@
         announceCallback(receiptBubble.textContent, false);
       })
       .catch(function (error) {
+        callbackPending = false;
         if(form.__elhSubmissionState === "accepted"){return;}
         track("chat_callback_error", { page: window.location.pathname || "/" });
         var unknown = intakeSecurity && (!error.intakeOutcome || error.intakeOutcome === "unknown");
+        if (unknown) rememberUncertainCallback();
         form.__elhSubmissionState = unknown ? "unknown" : null;
         submitBtn.disabled = !!unknown;
         submitBtn.textContent = unknown ? "Please call to confirm receipt" : "Send request";
-        if(intakeSecurity){intakeSecurity.showFailure(error, err);}
+        if(unknown){callbackReminder(err);}
+        else if(intakeSecurity){intakeSecurity.showFailure(error, err);}
         else{err.innerHTML = "We couldn't load the security check, so your request has not been sent. Your information is still here. You can try again or call our care team. <p>Need to speak with someone now?</p><p>We're here for you 24 hours a day, 7 days a week.</p><p><a href=\"tel:18059537273\">Call 805.953.7273</a></p>";}
         announceCallback(err.textContent, true);
       });

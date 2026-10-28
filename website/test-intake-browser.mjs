@@ -168,6 +168,8 @@ try {
     await call("Emulation.setTouchEmulationEnabled", {enabled: mobile});
     await call("Page.navigate", {url: fixture.origin + flow.path});
     await until("document.readyState === 'complete'");
+    // Cases model independent visits, except explicit reopen/reload tests below.
+    await evaluate('sessionStorage.removeItem("elhcCallbackUncertainUntil")');
     // A real first-time visitor chooses consent before using content beneath
     // the notification. Exercise that control rather than hiding the overlay.
     if (await evaluate("!!document.getElementById('elh-cc-decl')")) {
@@ -307,6 +309,65 @@ try {
       assert.equal(state.posts.length, 1, currentCase + ": uncertain request was retried");
       assert.equal(state.security.length, securityCount, currentCase + ": uncertain request restarted verification");
       await noSuccess();
+      if (flow.name === "chat" && outcome === "interrupted") {
+        const reminderKey = "elhcCallbackUncertainUntil";
+        const stored = await evaluate(`sessionStorage.getItem(${JSON.stringify(reminderKey)})`);
+        assert.match(stored, /^\d+$/, "Only an expiry timestamp may be stored");
+        assert.ok(Number(stored) > Date.now() && Number(stored) <= Date.now() + 1800000);
+        // Closing chat, cancelling the form and starting again must not bypass the guard.
+        await activate('button[aria-label="Close the support guide"]', mobile);
+        await activate(".elhc-launch", mobile);
+        await activate(".elhc-cb-cancel", mobile);
+        await activate(".elhc-chip-cb", mobile);
+        await until("document.querySelector('.elhc-cb-reminder')");
+        assert.equal(await evaluate("document.querySelectorAll('.elhc-cb').length"), 0);
+        assert.ok(await evaluate(`document.querySelector('.elhc-cb-reminder a[href="tel:18059537273"]')`));
+        assert.match(await evaluate("document.querySelector('.elhc-cb-reminder').textContent"),
+          /If the team confirms receipt, no new request is needed/);
+        assert.equal(await evaluate(`sessionStorage.getItem(${JSON.stringify(reminderKey)})`), stored,
+          "Reopening must not extend reminder lifetime");
+        // Same-tab navigation also retains the privacy-safe marker, not the inputs.
+        await call("Page.navigate", {url: fixture.origin + "/refer"});
+        await until("document.readyState === 'complete' && document.querySelector('.elhc-launch')");
+        await activate(".elhc-launch", mobile);
+        await until("document.querySelector('.elhc-chip-cb')");
+        await activate(".elhc-chip-cb", mobile);
+        await until("document.querySelector('.elhc-cb-reminder')");
+        assert.equal(await evaluate("document.querySelectorAll('.elhc-cb').length"), 0);
+        assert.equal(state.posts.length, 1);
+        assert.equal(state.security.length, securityCount);
+        assert.doesNotMatch(await evaluate(`JSON.stringify(Object.entries(sessionStorage))`),
+          /Synthetic|example.invalid|2025550190|clinical/i);
+        // Confirmation unlocks a blank form, not a replay of the old submission.
+        await activate(".elhc-cb-confirm-not-received", mobile);
+        await until("document.querySelector('.elhc-cb')");
+        assert.equal(await evaluate(`sessionStorage.getItem(${JSON.stringify(reminderKey)})`), null);
+        assert.deepEqual(await evaluate(`Array.from(document.querySelectorAll('.elhc-cb input,.elhc-cb textarea')).map(e=>e.value)`),
+          ["", "", "", "", ""]);
+        assert.equal(state.posts.length, 1);
+        assert.equal(state.security.length, securityCount);
+        // Expired, malformed and excessive future markers must not lock out care.
+        for (const marker of [String(Date.now() - 1), "invalid", String(Date.now() + 3600000)]) {
+          await activate(".elhc-cb-cancel", mobile);
+          await evaluate(`sessionStorage.setItem(${JSON.stringify(reminderKey)},${JSON.stringify(marker)})`);
+          await activate(".elhc-chip-cb", mobile);
+          await until("document.querySelector('.elhc-cb')");
+          assert.equal(await evaluate(`sessionStorage.getItem(${JSON.stringify(reminderKey)})`), null);
+        }
+        // Blocked storage falls back to memory, even after the failed form is removed.
+        await evaluate(`window.fixtureSetItem=Storage.prototype.setItem;
+          Storage.prototype.setItem=function(){throw new Error("Storage blocked (fixture)")}`);
+        for (const [selector, value] of Object.entries(flow.fields)) await fill(flow.form + " " + selector, value);
+        await start();await activate("#fixture-challenge", mobile);await failed(true);
+        await activate(".elhc-cb-cancel", mobile);
+        await activate(".elhc-chip-cb", mobile);
+        await until("document.querySelectorAll('.elhc-cb-reminder').length === 1");
+        assert.equal(await evaluate("document.querySelectorAll('.elhc-cb').length"), 0);
+        assert.equal(state.posts.length, 2);
+        await evaluate("Storage.prototype.setItem=window.fixtureSetItem");
+        await activate(".elhc-cb-confirm-not-received", mobile);
+        console.log(`PASS ${currentCase}: reopen/navigation reminder, timestamp-only storage, confirmation, expiry and blocked storage`);
+      }
       console.log(`PASS ${currentCase}: unknown delivery, preserved fields, clickable phone and no retry`);
       continue;
     }
@@ -368,8 +429,25 @@ try {
     assert.ok(state.held, "Submission did not reach isolated fixture");
     await noSuccess();
     assert.ok(await evaluate(`document.querySelector(${JSON.stringify(flow.submit)}).disabled`));
+    if (flow.name === "chat") {
+      // A slow response cannot be bypassed by opening another callback form.
+      await activate('button[aria-label="Close the support guide"]', mobile);
+      await activate(".elhc-launch", mobile);
+      await activate(".elhc-chip-cb", mobile);
+      assert.equal(await evaluate("document.querySelectorAll('.elhc-cb').length"), 1);
+      assert.ok(await evaluate(`document.querySelector('.elhc-log').textContent.includes("still being checked")`));
+      assert.equal(state.posts.length, before + 1);
+      // Missing receipt email is still accepted intake, never uncertain delivery.
+      state.submitResponse = {body: {ok: true, accepted: true, receipt_id: "SYNTHETIC-RECEIPT",
+        acknowledgement_sent: false,
+        care_cta_html: `<p>Need to speak with someone now?</p><p>We're here for you 24 hours a day, 7 days a week.</p><p><a href="tel:18059537273">Call 805.953.7273</a></p>`}};
+    }
     state.held();state.held = null;state.hold = false;
     await until(success);
+    if (flow.name === "chat") {
+      assert.equal(await evaluate('sessionStorage.getItem("elhcCallbackUncertainUntil")'), null);
+      assert.equal(await evaluate("document.querySelectorAll('.elhc-cb-reminder').length"), 0);
+    }
     assert.equal(state.posts.length, before + 1);
     const post = state.posts.at(-1), security = state.security.at(-1);
     for (const [field, value] of Object.entries(expectedFields)) assert.equal(post.fields[field], value, field);
