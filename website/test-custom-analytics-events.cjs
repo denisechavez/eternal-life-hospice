@@ -302,7 +302,7 @@ test('consent revoked before accepted submission suppresses both destinations', 
 test('full loader boots GA4 once and checks consent again at window load', () => {
   for (const revoke of [false, true]) {
     let consent = 'all';
-    const load = [], appended = [];
+    const load = [], appended = [], bodyAppended = [];
     const context = {
       __noClarity: true,
       location: { pathname: '/', search: '', hash: '' },
@@ -312,7 +312,7 @@ test('full loader boots GA4 once and checks consent again at window load', () =>
         addEventListener() {},
         createElement() { return { setAttribute() {} }; },
         head: { appendChild(el) { appended.push(el); } },
-        body: { appendChild(el) { appended.push(el); } }
+        body: { appendChild(el) { appended.push(el); bodyAppended.push(el); } }
       },
       addEventListener(name, callback) { if (name === 'load') load.push(callback); },
       URL
@@ -324,6 +324,15 @@ test('full loader boots GA4 once and checks consent again at window load', () =>
     if (revoke) consent = 'essential';
     load.forEach(callback => { callback(); callback(); });
     assert.equal(appended.filter(el => (el.src || '').includes('googletagmanager.com')).length, revoke ? 0 : 1);
+    assert.equal(appended.filter(el => el.src === 'https://cdn.dni.nimbata.com/72680137074.min.js').length,
+      revoke ? 0 : 1, 'Nimbata loads once, only after optional-tracking consent');
+    assert.equal(appended.filter(el => (el.src || '').includes('s.ksrndkehqnwntyxlhgto.com/172406.js')).length,
+      revoke ? 0 : 1, 'The existing WhatConverts browser tracker remains enabled');
+    if (!revoke) {
+      const nimbata = appended.find(el => el.src === 'https://cdn.dni.nimbata.com/72680137074.min.js');
+      assert.equal(nimbata.async, true);
+      assert.ok(bodyAppended.includes(nimbata), 'Nimbata is appended to body, not head');
+    }
     const config = (context.dataLayer || []).filter(args => args[0] === 'config');
     assert.equal(config.length, revoke ? 0 : 2);
     assert.deepEqual(Array.from(config, args => args[1]),

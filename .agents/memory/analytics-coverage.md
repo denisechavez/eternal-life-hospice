@@ -22,6 +22,19 @@ pages had zero measurement. A shared file = one place to update, no per-page dri
 
 ## Conversion measurement semantics
 
+The owner explicitly authorized the Google Ads Website Lead Form conversion
+destination `AW-18384023405/JC8lCKGQ9qsdEO3el75E`, value 1 USD, for confirmed
+website form submissions. This supersedes the earlier base-tag-only scope for
+that specific conversion, not permission for enhanced conversions or remarketing.
+
+**Why:** The owner supplied the event snippet to measure successful advertising
+leads; attempts, uncertain delivery and validation failures must not count.
+
+**How to apply:** Emit from the shared verified-intake acceptance boundary,
+after HTTP success plus explicit `ok` and `accepted`, with optional-tracking
+consent. Deduplicate receipt IDs locally only; never send receipts or entered
+form data to advertising. Preserve explicit GA4 destinations for other events.
+
 Keep care/referral and reading custom events explicitly routed to GA4 when
 the shared Google tag also has an advertising destination.
 
@@ -91,3 +104,18 @@ selected this canvas design on October 27, 2026.
 Keep optional trackers grouped and off until accepted; preserve saved choices
 and the footer entry point. Treat future visual edits separately from changing
 what visitors consent to.
+
+## Call-tracking ownership
+
+Keep both WhatConverts and Nimbata browser trackers enabled behind optional
+tracking consent.
+
+**Why:** After being told that two phone-number replacement systems could
+conflict and that removing the WhatConverts browser tag would also stop its
+automatic form tracking, the owner explicitly chose “Keep both browser trackers.”
+
+**How to apply:** Do not remove either browser tag or change intake email
+delivery as part of call-tracking maintenance. Account-side number replacement
+and actual call attribution still require provider verification. Preserve
+approval-hashed Journal source bytes when updating analytics versions; refresh
+their script URLs in the final served HTML instead.

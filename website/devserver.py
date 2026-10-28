@@ -18,6 +18,7 @@ import subprocess
 import sys
 import footer_contact
 import website_phone
+import analytics_assets
 import journal_workspace_preview
 from datetime import date, datetime
 from zoneinfo import ZoneInfo
@@ -136,10 +137,10 @@ class PrettyURLHandler(http.server.SimpleHTTPRequestHandler):
         route = route.rstrip("/").removesuffix(".html") or "/"
         # Approved navigation can inject its own phone pills; normalize last.
         return website_phone.public_html(
-            service_preview.decorate(
+            analytics_assets.refresh_html(service_preview.decorate(
                 site_breadcrumbs.decorate(footer_contact.public_html(document), route),
                 route
-            ),
+            )),
             route
         )
 

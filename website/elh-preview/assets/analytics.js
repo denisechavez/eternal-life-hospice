@@ -1,5 +1,5 @@
 /* Eternal Life Hospice — Cookie Consent + Analytics loader
-   (GA4 + Google Ads + Microsoft Clarity + Brevo + Thryv)
+   (GA4 + Google Ads + Microsoft Clarity + Brevo + Thryv + Nimbata)
    Analytics load only after explicit visitor consent.
    Consent stored in localStorage: elh_cc = "all" | "essential"
    Global: window.elhCookieSettings() — re-opens preferences at any time  */
@@ -333,6 +333,13 @@
       wc.src = '//s.ksrndkehqnwntyxlhgto.com/172406.js';
       document.body.appendChild(wc);
     }());
+
+    // Nimbata call tracking. The owner explicitly chose to keep WhatConverts too.
+    var nimbata = document.createElement('script');
+    nimbata.type = 'text/javascript';
+    nimbata.async = true;
+    nimbata.src = 'https://cdn.dni.nimbata.com/72680137074.min.js';
+    document.body.appendChild(nimbata);
 
   }
 

@@ -110,3 +110,79 @@ await assert.rejects(()=>submit({method:"POST",body:"form-name=elh-family"}),
 assert.equal(requests.length, 0, "Missing secure randomness must fail before GET or POST");
 Object.defineProperty(globalThis, "crypto", {configurable:true, value:realCrypto});
 console.log("PASS missing secure randomness fails closed without sending a request");
+
+// Ads measurement is tied to confirmed intake responses, never attempts or UI.
+let adsConsent = "all";
+let adsCalls = [];
+globalThis.localStorage = {getItem: () => adsConsent};
+globalThis.document.readyState = "complete";
+window.gtag = (...args) => adsCalls.push(args);
+let intakeStatus = 200;
+let intakeResult;
+globalThis.fetch = async url => new Response(JSON.stringify(url.startsWith("/api/form-security")
+  ? {token:"synthetic-token", siteKey:"", waitMs:0} : intakeResult),
+  {status:url.startsWith("/api/form-security") ? 200 : intakeStatus});
+const accepted = async (receipt, extra = {}) => {
+  intakeStatus = 200;
+  intakeResult = {ok:true, accepted:true, receipt_id:receipt, ...extra};
+  return submit({method:"POST", body:"form-name=elh-family&email=private%40example.invalid&message=PRIVATE"});
+};
+await accepted("ADS-SYNTHETIC-1", {acknowledgement_sent:false});
+await accepted("ADS-SYNTHETIC-1");
+assert.equal(adsCalls.length, 1, "Repeated receipt must not create another Ads conversion");
+assert.deepEqual(adsCalls[0], ["event", "conversion", {
+  send_to:"AW-18384023405/JC8lCKGQ9qsdEO3el75E", value:1, currency:"USD"
+}]);
+assert.ok(!/PRIVATE|private|ADS-SYNTHETIC|email|receipt|message/.test(JSON.stringify(adsCalls)));
+for (const [status, data] of [
+  [403, {ok:false, accepted:false}], [502, {ok:false}],
+  [200, {ok:true}], [200, {ok:true, accepted:false}],
+  [503, {ok:true, accepted:true}]
+]) {
+  intakeStatus = status;
+  intakeResult = data;
+  await assert.rejects(() => submit({method:"POST", body:"form-name=elh-family"}));
+  assert.equal(adsCalls.length, 1);
+}
+adsConsent = "essential";
+await accepted("ADS-OPT-OUT");
+assert.equal(adsCalls.length, 1, "No conversion without optional-tracking consent");
+adsConsent = "all";
+assert.equal(adsCalls.length, 1, "Later consent must not replay past submissions");
+window.gtag = () => {throw new Error("synthetic tracker outage");};
+assert.equal((await accepted("ADS-THROW")).status, 200);
+window.gtag = () => Promise.reject(new Error("synthetic asynchronous tracker outage"));
+assert.equal((await accepted("ADS-REJECT")).status, 200);
+await new Promise(resolve => setTimeout(resolve, 0));
+console.log("PASS Google Ads fires once per confirmed receipt, with consent and no entered data; failures never affect intake");
+
+let onLoad;
+window.gtag = undefined;
+window.addEventListener = (name, callback, options) => {
+  assert.equal(name, "load");
+  assert.equal(options.once, true);
+  onLoad = callback;
+};
+document.readyState = "loading";
+await accepted("ADS-BEFORE-LOAD");
+assert.equal(typeof onLoad, "function");
+window.gtag = (...args) => adsCalls.push(args);
+onLoad();
+await new Promise(resolve => setTimeout(resolve, 5));
+assert.equal(adsCalls.length, 2, "Confirmed submission waits for the existing Google loader");
+window.gtag = undefined;
+await accepted("ADS-REVOKED-BEFORE-LOAD");
+adsConsent = "essential";
+window.gtag = (...args) => adsCalls.push(args);
+onLoad();
+await new Promise(resolve => setTimeout(resolve, 5));
+assert.equal(adsCalls.length, 2, "Consent is rechecked before delayed reporting");
+console.log("PASS delayed Google boot and consent revocation do not duplicate or leak conversions");
+adsConsent = "all";
+document.readyState = "complete";
+await accepted(undefined);
+assert.equal(adsCalls.length, 3, "Acceptance without a receipt number is still a conversion");
+localStorage.getItem = () => {throw new Error("synthetic storage restriction");};
+assert.equal((await accepted("ADS-NO-STORAGE")).status, 200);
+assert.equal(adsCalls.length, 3, "Unavailable consent storage must suppress conversion");
+console.log("PASS missing receipt numbers and restricted consent storage preserve correct intake outcomes");

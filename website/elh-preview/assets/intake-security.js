@@ -1,6 +1,40 @@
 // Shared by every intake entry point, including chat. No contact data is sent
 // to the bot-verification provider.
 let turnstileScript;
+// Local-only deduplication. Receipt IDs never leave this module for advertising.
+const adsReceipts = new Set();
+const adsResponses = new WeakSet();
+
+function reportAcceptedAdsConversion(response, data) {
+  try {
+    if (localStorage.getItem("elh_cc") !== "all") return;
+    const receipt = typeof data.receipt_id === "string" ? data.receipt_id : "";
+    if (receipt ? adsReceipts.has(receipt) : adsResponses.has(response)) return;
+    if (receipt) adsReceipts.add(receipt);
+    else adsResponses.add(response);
+    const report = () => {
+      try {
+        // Consent may have changed while waiting for the site's Google tag.
+        if (localStorage.getItem("elh_cc") !== "all" || typeof window.gtag !== "function") return;
+        const result = window.gtag("event", "conversion", {
+          send_to: "AW-18384023405/JC8lCKGQ9qsdEO3el75E",
+          value: 1.0,
+          currency: "USD"
+        });
+        if (result && typeof result.catch === "function") result.catch(() => {});
+      } catch (_) {
+        // Advertising failures must never change an accepted intake outcome.
+      }
+    };
+    if (typeof window.gtag === "function") report();
+    else if (document.readyState !== "complete" && typeof window.addEventListener === "function") {
+      // The existing consent-aware Google loader boots on window load.
+      window.addEventListener("load", () => window.setTimeout(report, 0), {once: true});
+    }
+  } catch (_) {
+    // Unavailable consent storage fails closed without affecting form delivery.
+  }
+}
 function loadTurnstile() {
   if (window.turnstile) return Promise.resolve();
   if (!turnstileScript) {
@@ -115,7 +149,10 @@ export async function submit(options, form, beforeSend) {
     // POST may already have reached intake. Never retry or claim non-delivery.
     throw submissionError("unknown");
   }
-  if (response.ok && data && data.ok === true && data.accepted === true) return response;
+  if (response.ok && data && data.ok === true && data.accepted === true) {
+    reportAcceptedAdsConversion(response, data);
+    return response;
+  }
   // A generic 5xx may follow delivery; only an explicit rejection is definitive.
   if (data && data.ok === false && data.accepted !== true &&
       (data.accepted === false || response.status < 500 || data.error === "security_unavailable")) {
