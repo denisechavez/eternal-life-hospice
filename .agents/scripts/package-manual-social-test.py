@@ -7,6 +7,9 @@ from pathlib import Path
 import zipfile
 
 from PIL import Image
+from social_copy_contract import (
+    expected_rows, manual_caption, validate_manifest, validate_rows,
+)
 
 ROOT = Path(__file__).resolve().parents[2]
 NAME = "Eternal-Manual-Social-October-27-31-2026"
@@ -28,12 +31,18 @@ def main():
         (ROOT / "website/content/journal-q4-photo-sources.json").read_text())}
     with CSV.open(encoding="utf-8-sig", newline="") as stream:
         rows = list(csv.DictReader(stream))
-    row_lookup = {}
-    for row in rows:
-        platform, date, _ = row["Title"].split(" | ", 2)
-        assert (date, platform) not in row_lookup
-        row_lookup[date, platform] = row
-    assert len(row_lookup) == 20
+    source_posts = json.loads(
+        (ROOT / "generated-artifacts/social-2026-10-27-31/posts.json").read_text())
+    row_lookup = validate_rows(rows, expected_rows(topics, articles, credits, source_posts))
+    manifest = json.loads((OUT / "image-manifest.json").read_text())
+    validate_manifest(manifest, topics, articles, FORMATS)
+    # Validate every image before replacing any existing captions or archive.
+    for record in manifest:
+        image_file = record["image_file"]
+        with Image.open(OUT / image_file) as image:
+            if image.size != FORMATS[record["platform"]]:
+                raise ValueError(f"Wrong image dimensions: {image_file}: {image.size}")
+            image.verify()
     OUT.mkdir(parents=True, exist_ok=True)
     all_copy, credit_notes, table, expected = [], [], [], set()
     for topic in topics:
@@ -49,9 +58,7 @@ def main():
         for platform, spec in topic["posts"].items():
             row = row_lookup[date, platform]
             assert row["Approved"] == "FALSE" and not row["Schedule"]
-            caption = row["Caption"].replace(
-                "Photo: Niceley, CC BY-SA 4.0; resized.",
-                "Photo: Niceley, CC BY-SA 4.0; cropped and color-adjusted.")
+            caption = manual_caption(row["Caption"])
             limit = {"GBP": 1500, "Facebook": 63206, "LinkedIn": 3000, "Pinterest": 500}[platform]
             assert len(caption) <= limit, (date, platform, len(caption))
             if platform == "Pinterest":
@@ -147,10 +154,12 @@ bottom right. No eyebrow, descriptive subline or detached lower text panel.
         for relative in sorted(expected):
             archive.write(OUT / relative, f"{NAME}/{relative}")
     with zipfile.ZipFile(archive_path) as archive:
-        assert archive.testzip() is None
-        assert len(archive.namelist()) == 65
+        names = [f"{NAME}/{relative}" for relative in sorted(expected)]
+        if archive.testzip() is not None or sorted(archive.namelist()) != names:
+            raise ValueError("Incomplete or corrupt manual social archive")
         for relative in sorted(expected):
-            assert archive.read(f"{NAME}/{relative}") == (OUT / relative).read_bytes()
+            if archive.read(f"{NAME}/{relative}") != (OUT / relative).read_bytes():
+                raise ValueError(f"Archive content mismatch: {relative}")
         for row in table:
             decoded = archive.read(f"{NAME}/{row['CaptionFile']}").decode("utf-8").rstrip("\n")
             assert decoded == row["Caption"]
@@ -161,4 +170,7 @@ bottom right. No eyebrow, descriptive subline or detached lower text panel.
 
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except (ValueError, KeyError, FileNotFoundError) as error:
+        raise SystemExit(f"Cannot package manual social posts: {error}") from error

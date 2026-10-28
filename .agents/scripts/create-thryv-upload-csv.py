@@ -3,14 +3,18 @@ import csv
 import json
 from pathlib import Path
 import re
-from urllib.parse import urlsplit
+from social_copy_contract import expected_rows, validate_rows
 
 ROOT = Path(__file__).resolve().parents[2]
 source_posts = json.loads((ROOT / "generated-artifacts/social-2026-10-27-31/posts.json").read_text())
 articles = json.loads((ROOT / "website/content/30-day-journal/additional-2026-q4.json").read_text())
-photos = {row["slug"]: row["heroImage"] for row in articles}
 copy = {row["slug"]: row for row in json.loads(
     (ROOT / "exports/social/october-27-31-2026-copy.json").read_text())}
+credits = {row["slug"]: row for row in json.loads(
+    (ROOT / "website/content/journal-q4-photo-sources.json").read_text())}
+expected = expected_rows(
+    json.loads((ROOT / "exports/social/october-27-31-2026-copy.json").read_text()),
+    {row["slug"]: row for row in articles}, credits, source_posts)
 # Captions define the current cadence; the original review packet only supplies
 # article links and photo credits, which are shared across the platforms.
 posts = []
@@ -33,16 +37,7 @@ rows, audit = [], []
 for post in posts:
     row = dict(post["row"])
     spec = copy[post["slug"]]["posts"][post["platform"]]
-    row["Caption"] = spec["caption"].replace("{url}", row["Link"])
-    row["Title"] = f"{post['platform']} | {post['proposedDate']} | {spec['title']}"
-    if post["photo"]["license"] == "CC BY-SA 4.0":
-        row["Caption"] += ("\n\nPhoto: Niceley, CC BY-SA 4.0; resized.\n" +
-                           post["photo"]["sourceUrl"] +
-                           "\nhttps://creativecommons.org/licenses/by-sa/4.0/")
-    origin = urlsplit(row["Link"])
-    row["Image"] = f"{origin.scheme}://{origin.netloc}" + photos[post["slug"]]
-    row["Caption"] = row["Caption"].replace("CC BY-SA 4.0; cropped.", "CC BY-SA 4.0; resized.")
-    row["Approved"], row["Recycle"], row["Schedule"] = "FALSE", "FALSE", ""
+    row.update(expected[post["proposedDate"], post["platform"]])
     row["Comment"] = (
         f"{post['platform']} | Proposed date {post['proposedDate']} | "
         "Posting time not selected (America/Los_Angeles). "
@@ -78,6 +73,7 @@ expected_days = {article["date"] for article in copy.values()}
 for platform in ("GBP", "Pinterest", "Facebook", "LinkedIn"):
     assert {post["proposedDate"] for post in posts if post["platform"] == platform} == expected_days
 assert len({(post["proposedDate"], post["platform"]) for post in posts}) == 20
+validate_rows(rows, expected)
 with target.open("w", encoding="utf-8-sig", newline="") as stream:
     writer = csv.DictWriter(stream, fieldnames=columns)
     writer.writeheader()
