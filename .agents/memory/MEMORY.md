@@ -72,3 +72,4 @@
 - [Mobile browser verification](mobile-browser-verification.md) — distinguish anchor navigation checks from physical tap checks when layout and visual viewport sizes differ.
 - [Accessibility-tree assertions](accessibility-tree-assertions.md) — reconstruct announcement text through child IDs, not flat response order.
 - [Intake proxy binding](intake-proxy-binding.md) — live security-token client bindings can change between requests even when preview is stable; separate browser verification from network abuse limits.
+- [Client acknowledgment delivery](client-acknowledgment-delivery.md) — client acknowledgments must not use Brevo; confirm an approved replacement without changing marketing or internal routes.
