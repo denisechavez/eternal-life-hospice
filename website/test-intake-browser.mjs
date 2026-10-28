@@ -1,4 +1,4 @@
-// Real HTML + chat + shared ES module, synthetic transports only.
+// Real HTML + chat + shared ES module, plus real Python/PostgreSQL security.
 // Run with Node 20: node --experimental-websocket website/test-intake-browser.mjs
 // Requires Chromium on PATH (or CHROMIUM_BIN). No npm/browser downloads needed.
 import assert from "node:assert/strict";
@@ -16,6 +16,8 @@ let fixture, browser, ws;
 const pending = new Map();
 const browserErrors = [], transportErrors = [];
 let id = 0, currentCase = "startup";
+let postOriginOverride; // CDP-only negative cases; normal requests remain untouched.
+let attackerOrigin;
 try {
   fixture = await startIntakeFixture();
   browser = spawn(process.env.CHROMIUM_BIN || "chromium", ["--headless", "--no-sandbox",
@@ -64,7 +66,20 @@ try {
         if (local) {
           if (url.pathname === "/assets/intake-security.js" && fixture.state.moduleFailure)
             return call("Fetch.failRequest", {requestId, errorReason: "Failed"});
+          if (request.method === "POST" && url.pathname === "/api/form-submit" &&
+              postOriginOverride !== undefined) {
+            const headers = Object.entries(request.headers)
+              .filter(([name]) => name.toLowerCase() !== "origin")
+              .map(([name, value]) => ({name, value}));
+            if (postOriginOverride !== null) headers.push({name: "Origin", value: postOriginOverride});
+            return call("Fetch.continueRequest", {requestId, headers});
+          }
           return call("Fetch.continueRequest", {requestId});
+        }
+        if (url.origin === attackerOrigin) {
+          return call("Fetch.fulfillRequest", {requestId, responseCode: 200,
+            responseHeaders: [{name: "Content-Type", value: "text/html"}],
+            body: Buffer.from("<!doctype html><title>Synthetic cross-site caller</title>").toString("base64")});
         }
         if (challenge) {
           const fail = await evaluate("intakeFixture.scriptFailure");
@@ -495,6 +510,153 @@ try {
     assert.equal(await evaluate(`document.querySelector('.lead-form[data-form="voice"] select[name="interest"]').value`), category);
   }
   console.log("PASS all seven request choices: unchanged order, stable IDs and founder-to-form selection");
+
+  // Unlike UI failure injection above, every request below traverses the real
+  // devserver handler, signed-token verifier and disposable PostgreSQL schema.
+  attackerOrigin = fixture.origin.replace("127.0.0.1", "localhost");
+  const realState = () => fixture.backendState();
+  const browserFetch = (path, options = {}) => evaluate(`(async()=>{
+    const response=await fetch(${JSON.stringify(path)},${JSON.stringify(options)});
+    return {status:response.status, body:await response.json()};
+  })()`);
+  const postOptions = fields => ({method: "POST",
+    headers: {"Content-Type": "application/x-www-form-urlencoded"},
+    body: new URLSearchParams(fields).toString()});
+  for (const mobile of [false, true]) {
+    currentCase = `real security ${mobile ? "mobile" : "desktop"}`;
+    await fixture.useRealSecurity();
+    await call("Emulation.setDeviceMetricsOverride", {width: mobile ? 390 : 1280,
+      height: mobile ? 844 : 900, deviceScaleFactor: 1, mobile});
+    await call("Emulation.setTouchEmulationEnabled", {enabled: mobile});
+    await call("Page.navigate", {url: fixture.origin + "/"});
+    await until("document.readyState === 'complete'");
+    // This section tests the shared module + real server, not page placement
+    // (covered by all six UI flows above). Keep its synthetic widget visible
+    // without editing or hiding the site's mobile phone/consent overlays.
+    await evaluate(`{
+      const host=document.createElement("section");host.id="real-security-fixture";
+      host.setAttribute("aria-label","Real security test harness");
+      host.style.cssText="position:fixed;top:100px;left:20px;width:280px;z-index:2147483647;background:white";
+      document.body.appendChild(host);
+    }`);
+    const baseline = await realState();
+    const fields = {"form-name": "elh-family", first_name: "Synthetic", last_name: "Security",
+      phone: mobile ? "2025550182" : "2025550181", email: "security@example.invalid"};
+    const challenge = await browserFetch("/api/form-security?form=elh-family");
+    assert.equal(challenge.status, 200, currentCase + ": default browser GET");
+    assert.equal(challenge.body.siteKey, "synthetic-site-key");
+    assert.equal(challenge.body.waitMs, 1800, "Do not shorten the real minimum age");
+    assert.match(challenge.body.token, /^[\w-]+\.[a-f0-9]{64}$/);
+    const get = fixture.state.realRequests.at(-1);
+    assert.equal(get.headers.origin, undefined, "Default GET must omit Origin");
+    assert.equal(get.headers["sec-fetch-site"], "same-origin");
+    assert.ok(get.headers.referer.startsWith(fixture.origin));
+    const privateGet = await browserFetch("/api/form-security?form=elh-family",
+      {referrerPolicy: "no-referrer"});
+    assert.equal(privateGet.status, 200, "Same-origin GET without Referer");
+    assert.equal(fixture.state.realRequests.at(-1).headers.referer, undefined);
+
+    for (const origin of [null, "null", "https://other.invalid"]) {
+      postOriginOverride = origin;
+      try {
+        const denied = await browserFetch("/api/form-submit",
+          postOptions({...fields, _elh_security: challenge.body.token,
+            "cf-turnstile-response": "synthetic-provider-token"}));
+        assert.equal(denied.status, 403);
+        assert.equal(denied.body.error, "invalid_origin");
+        const post = fixture.state.realRequests.at(-1);
+        assert.equal(post.headers["sec-fetch-site"], "same-origin");
+        assert.equal(post.headers.origin, origin === null ? undefined : origin);
+      } finally {postOriginOverride = undefined;}
+    }
+    const missingToken = await browserFetch("/api/form-submit", postOptions(fields));
+    assert.equal(missingToken.status, 403);
+    assert.equal(missingToken.body.error, "verification_required");
+    const missingProvider = await browserFetch("/api/form-submit",
+      postOptions({...fields, _elh_security: challenge.body.token}));
+    assert.equal(missingProvider.status, 403);
+    assert.ok(["verification_invalid", "bot_verification_required"].includes(missingProvider.body.error));
+    assert.deepEqual(await realState(), baseline, "Rejected POST must not reserve or deliver");
+
+    // Finish token denials on this backend before creating independent form
+    // clients. More form types must never exhaust the production POST budget.
+    await sleep(challenge.body.waitMs + 100);
+    const noProvider = await browserFetch("/api/form-submit",
+      postOptions({...fields, _elh_security: challenge.body.token}));
+    assert.equal(noProvider.status, 403);
+    assert.equal(noProvider.body.error, "bot_verification_required", "Aged token still requires CAPTCHA");
+    const crossForm = await browserFetch("/api/form-submit", postOptions({...fields,
+      "form-name": "elh-physician", referrer_name: "Synthetic Provider",
+      _elh_security: challenge.body.token, "cf-turnstile-response": "synthetic-provider-token"}));
+    assert.equal(crossForm.status, 403);
+    assert.equal(crossForm.body.error, "verification_invalid");
+    assert.deepEqual(await realState(), baseline, "Invalid tokens must not reserve or deliver");
+
+    // Each real shared-module submission/replay pair gets fresh backend state,
+    // retaining unmodified GET headers, provider checks and minimum token age.
+    for (const [index, flow] of flows.entries()) {
+      await fixture.useRealSecurity();
+      const uniqueFields = {...fields, "form-name": flow.formName,
+        name: "Synthetic Chat", referrer_name: "Synthetic Provider",
+        phone: `20255501${(mobile ? 40 : 30) + index}`,
+        email: `security-${mobile}-${index}@example.invalid`};
+      const before = await realState();
+      const requestOffset = fixture.state.realRequests.length;
+      await evaluate(`intakeFixture.realBackend=true;
+        window.realSubmission=null;window.realSubmissionError=null;
+        void import("/assets/intake-security.js").then(module=>module.submit(
+          ${JSON.stringify(postOptions(uniqueFields))}, document.querySelector("#real-security-fixture")))
+        .then(async response=>{window.realSubmission={status:response.status,body:await response.json()}})
+        .catch(error=>{window.realSubmissionError=String(error)});`);
+      await until("document.querySelector('#fixture-challenge') || realSubmissionError");
+      assert.equal(await evaluate("realSubmissionError"), null);
+      await activate("#fixture-challenge", mobile);
+      await until("realSubmission || realSubmissionError");
+      assert.equal(await evaluate("realSubmissionError"), null);
+      const accepted = await evaluate("realSubmission");
+      assert.equal(accepted.status, 200, JSON.stringify(accepted));
+      assert.equal(accepted.body.accepted, true);
+      assert.ok(accepted.body.receipt_id);
+      const requests = fixture.state.realRequests.slice(requestOffset);
+      assert.equal(requests.length, 2);
+      assert.equal(requests[0].headers.origin, undefined);
+      assert.equal(requests[0].headers["sec-fetch-site"], "same-origin");
+      assert.equal(requests[1].headers.origin, fixture.origin);
+      assert.equal(requests[1].headers["sec-fetch-site"], "same-origin");
+      assert.ok(requests[1].at - requests[0].at >= 1800, "Real token minimum age skipped");
+      const after = await realState();
+      assert.equal(after.mail, before.mail + 2, "Synthetic internal email and acknowledgment");
+      assert.equal(after.provider, before.provider + 1, "Server must verify provider token");
+      assert.ok(after.guard_rows > before.guard_rows, "Real reservation must be persisted");
+      assert.equal(after.blocked_network, 0);
+      const replay = await browserFetch("/api/form-submit", postOptions(requests[1].fields));
+      assert.equal(replay.status, 403);
+      assert.equal(replay.body.error, "verification_reused");
+      assert.equal((await realState()).mail, after.mail, "Replay must not send mail");
+    }
+    // A genuine second browser origin generates cross-site Fetch Metadata.
+    // Its document alone is fulfilled locally; security requests are not mocked.
+    const beforeCrossSite = await realState();
+    await call("Page.navigate", {url: attackerOrigin + "/synthetic-attacker"});
+    await until(`location.origin === ${JSON.stringify(attackerOrigin)} && document.readyState === "complete"`);
+    for (const method of ["GET", "POST"]) {
+      const offset = fixture.state.realRequests.length;
+      await evaluate(`fetch(${JSON.stringify(fixture.origin + (method === "GET"
+        ? "/api/form-security?form=elh-family" : "/api/form-submit"))},
+        ${JSON.stringify({mode: "no-cors", ...(method === "POST" ? postOptions(fields) : {})})})
+        .then(()=>true)`);
+      const denied = fixture.state.realRequests[offset];
+      assert.ok(denied, "Cross-site request must reach the real handler");
+      assert.equal(denied.headers["sec-fetch-site"], "cross-site");
+      assert.equal(denied.headers.origin, method === "GET" ? undefined : attackerOrigin);
+      assert.equal(denied.status, 403);
+      assert.equal(denied.result.error, "invalid_origin");
+      assert.equal(denied.result.token, undefined, "Cross-site GET must not disclose tokens");
+    }
+    assert.deepEqual(await realState(), beforeCrossSite, "Cross-site requests must not touch guard or mail");
+    console.log(`PASS ${currentCase}: default/no-referrer GET, strict POST, ${flows.length} protected forms,
+  real signed tokens and database reservations, replay rejection, cross-site GET/POST denial`);
+  }
   assert.deepEqual(fixture.state.violations, [], "Unexpected local transport");
   assert.deepEqual(transportErrors, [], "Request interception failed");
   assert.deepEqual(browserErrors, [], "Uncaught browser exceptions");

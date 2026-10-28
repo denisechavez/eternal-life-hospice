@@ -164,3 +164,15 @@ date-based serving path. The user requires review before any version goes live.
 **How to apply:** Keep original public dates, URLs and photographs intact during
 review. Use revision-specific review identities so an older saved approval cannot
 approve changed content, and clearly distinguish draft placements from releases.
+
+Maintaining Journal regression tests is not permission to renew historical
+approvals. Treat changed versions as expected denials and report their drift
+separately from correctness failures.
+
+**Why:** A catch-up regression assumed every old owner-approved revision still
+matched the editable corpus. Later draft changes made that assumption false;
+the server's refusal to reuse those approvals was the correct safety behavior.
+
+**How to apply:** Leave production pins and editorial bytes unchanged. Check
+exact-version acceptance for unchanged records and absence of approval/release
+writes for changed records, while keeping full-workload and rollback coverage.

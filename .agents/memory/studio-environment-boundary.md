@@ -27,9 +27,6 @@ live approvals. Updating cards alone left their article links blocked.
 **How to apply:** Verify each downloaded article against the public release
 revision, retain its original frozen photographs and exclude the display cache
 from publishing. Do not turn public display snapshots into Studio consent.
-During this refresh, some extensionless live URLs returned 404 while explicit
-`.html` URLs served the correct revision; check both before assuming a public
-article is missing.
 
 Protect draft-bearing JavaScript chunks as well as review APIs.
 

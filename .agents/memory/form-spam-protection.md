@@ -78,9 +78,21 @@ The requested regression coverage is not permission to create clinical leads,
 install CAPTCHA test keys or introduce a production bypass.
 
 **How to apply:** Exercise the actual rendered UI and shared security module
-against test-only provider/submission boundaries. Keep real server guard coverage
-separate, and state clearly that a simulated challenge cannot validate the
-provider's own cross-origin widget.
+against test-only provider/submission boundaries. Real-handler browser checks
+must use a disposable local database and synthetic external transports, not
+the project's database or credentials. State clearly that a simulated challenge
+cannot validate the provider's own cross-origin widget.
+
+Real-handler browser scenarios should get fresh isolated client state rather
+than relaxed production rate limits.
+
+**Why:** Combining negative requests with accepted/replay pairs can exhaust the
+real per-client limit even within one viewport as new form types are added.
+That is expected guard behavior, not a reason to bypass security in the fixture.
+
+**How to apply:** Start a fresh disposable backend/database for the negative
+security matrix and for each form's accepted/replay pair, within each viewport.
+Preserve the real token age, origin, replay and rate checks.
 
 An interrupted intake request has an unknown delivery outcome, not a confirmed
 failure. Preserve entered fields and direct the visitor to call to confirm

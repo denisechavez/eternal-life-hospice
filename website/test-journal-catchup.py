@@ -77,6 +77,13 @@ class CatchupTests(unittest.TestCase):
         cls.owner_requests = pinned_requests()
         if len(cls.records) < 83 or len(cls.owner_requests) < 83:
             raise AssertionError("Full owner-consent corpus unexpectedly shrank")
+        cls.eligible_owner_requests = [
+            r for r in cls.owner_requests if r[1] in cls.records
+            and (cls.records[r[1]]["date"], cls.records[r[1]]["revision"]) == (r[0], r[2])
+        ]
+        cls.stale_owner_requests = [
+            r for r in cls.owner_requests if r not in cls.eligible_owner_requests
+        ]
         # Synthetic permissions exist only in this disposable database. Do not
         # re-pin real owner approvals or equate a changed draft with consent.
         cls.requests = [
@@ -93,6 +100,12 @@ class CatchupTests(unittest.TestCase):
             "disposable_storage_only": True,
             "corpus_articles": len(cls.records),
             "owner_pins": len(cls.owner_requests),
+            "eligible_owner_pins": len(cls.eligible_owner_requests),
+            "stale_owner_pins": [
+                {"date": r[0], "slug": r[1], "approved_revision": r[2],
+                 "current_revision": cls.records.get(r[1], {}).get("revision")}
+                for r in cls.stale_owner_requests
+            ],
             "synthetic_approvals": len(cls.requests),
             "runs": cls.reports,
         }, indent=2) + "\n")
@@ -356,6 +369,10 @@ class CatchupTests(unittest.TestCase):
             self.assertEqual(owner.apply_all(), len(expected))
             self.assertEqual(writes.call_count, len(expected))
         saved = self.assert_saved(expected)
+        for request in self.stale_owner_requests:
+            for table in ("journal_decisions", "journal_releases", "journal_review_audit"):
+                self.assertNotIn(request[1], {row["slug"] for row in saved[table]},
+                                 "Changed/missing versions require fresh consent")
         self.assertEqual(owner.apply_all(), 0)
         self.assertEqual(self.snapshot(), saved)
 
