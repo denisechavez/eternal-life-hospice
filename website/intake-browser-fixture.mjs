@@ -1,8 +1,24 @@
 // Test-only UI fixture plus an opt-in real handler in an isolated Python process.
 import {createServer, request as httpRequest} from "node:http";
-import {spawn} from "node:child_process";
+import {spawn, execFileSync} from "node:child_process";
 import {readFile} from "node:fs/promises";
 import {resolve, extname, sep} from "node:path";
+
+// Match the real website's response-only phone boundary without rewriting
+// approved source HTML or ever reaching a form/email/provider transport.
+function publicPhoneResponse(body, kind, route) {
+  return execFileSync("python3", ["-c", `
+import json, sys
+import website_phone
+body = sys.stdin.read()
+kind, route = sys.argv[1:]
+if kind == "html":
+    body = website_phone.public_html(body, route)
+elif route in website_phone.PUBLIC_API_ROUTES:
+    body = json.dumps(website_phone.public_payload(json.loads(body)))
+sys.stdout.write(body)
+`, kind, route], {cwd: resolve("website"), input: body, maxBuffer: 4 * 1024 * 1024});
+}
 
 export const turnstileFixture = `
 window.turnstile = {
@@ -94,7 +110,7 @@ export async function startIntakeFixture() {
     const url = new URL(request.url, "http://fixture.invalid");
     const json = (data, status = 200) => {
       response.writeHead(status, {"Content-Type": "application/json", "Cache-Control": "no-store"});
-      response.end(JSON.stringify(data));
+      response.end(publicPhoneResponse(JSON.stringify(data), "json", url.pathname));
     };
     if (state.realSecurity && ["/api/form-security", "/api/form-submit"].includes(url.pathname)) {
       let body = "";
@@ -169,7 +185,8 @@ export async function startIntakeFixture() {
         // Opt-in only for history tests. Never changes deployed page headers,
         // API no-store responses or security/transport isolation.
         "Cache-Control": state.historyCacheable && extname(file) === ".html" ? "private, max-age=0" : "no-store"});
-      response.end(content);
+      response.end(extname(file) === ".html"
+        ? publicPhoneResponse(content, "html", url.pathname) : content);
     } catch {
       response.writeHead(404);response.end();
     }

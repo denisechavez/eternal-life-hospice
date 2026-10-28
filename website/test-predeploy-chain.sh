@@ -35,6 +35,8 @@ layout = "node --experimental-websocket ../test-care-brief-layout.mjs"
 footer = "python3 ../check-footer-parity.py"
 ack = "python3 ../test-acknowledgments.py"
 ack_sentinel = "SENTINEL: test-acknowledgments.py OK"
+phone = "python3 ../test-website-phone.py"
+phone_sentinel = "SENTINEL: test-website-phone.py OK"
 sentinel = "SENTINEL: test-care-brief-signup-retry.mjs browser checks OK"
 wrapper = (source / "elh-predeploy.sh").read_text()
 chain = wrapper.split("set +o pipefail\n(\n", 1)[1].split("\n) 2>&1", 1)[0]
@@ -47,9 +49,14 @@ assert wrapper.count('"' + sentinel + '"') == 1, "Wrapper must require retry sen
 assert commands.count(ack) == 1, "Acknowledgment suite must run exactly once"
 assert commands.index(ack) < commands.index("node assets/build-search-index.js --check")
 assert wrapper.count('"' + ack_sentinel + '"') == 1, "Wrapper must require acknowledgment sentinel"
+assert commands.count(phone) == 1, "Phone-role suite must run exactly once"
+assert commands.index(phone) == commands.index(ack) + 1, "Phone guard must follow acknowledgment guard"
+assert commands.index(phone) < commands.index("node assets/build-search-index.js --check")
+assert wrapper.count('"' + phone_sentinel + '"') == 1, "Wrapper must require phone sentinel"
 smoke = (source / "test-predeploy-chain.sh").read_text()
 assert smoke.count('  "' + sentinel + '"') == 1, "Smoke test must require retry sentinel"
 assert smoke.count('  "' + ack_sentinel + '"') == 1, "Smoke test must require acknowledgment sentinel"
+assert smoke.count('  "' + phone_sentinel + '"') == 1, "Smoke test must require phone sentinel"
 sentinels = re.findall(r'^  "(SENTINEL: .+)"$', wrapper, re.M)
 
 with tempfile.TemporaryDirectory(prefix="elh-predeploy-chain-") as temp:
@@ -90,7 +97,8 @@ if not (is_target and os.environ["CHAIN_MODE"] == "missing"):
                CHAIN_SENTINELS="\n".join(sentinels))
     scenarios = [(retry, sentinel, "success"),
                  (retry, sentinel, "failure"), (retry, sentinel, "missing"),
-                 (ack, ack_sentinel, "failure"), (ack, ack_sentinel, "missing")]
+                 (ack, ack_sentinel, "failure"), (ack, ack_sentinel, "missing"),
+                 (phone, phone_sentinel, "failure"), (phone, phone_sentinel, "missing")]
     for target, target_sentinel, mode in scenarios:
         log.write_text("")
         before = {p.relative_to(site): p.read_bytes() for p in site.rglob("*") if p.is_file()}
@@ -193,6 +201,7 @@ SENTINELS=(
   "SENTINEL: test-public-artifact-exposure.py OK"
   "SENTINEL: test-growth-intelligence-access.py OK"
   "SENTINEL: test-acknowledgments.py OK"
+  "SENTINEL: test-website-phone.py OK"
   "SENTINEL: check-internal-links.py self-test OK"
   "SENTINEL: test-internal-link-journeys.py browser checks OK"
 )
