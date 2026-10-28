@@ -1,7 +1,8 @@
 """Production form intake for the Eternal Life Hospice website.
 
 The Replit Python deployment validates same-origin form submissions and
-delivers them through Brevo without storing them locally.
+delivers internal notifications through Brevo and client letters through Gmail
+without storing submissions locally.
 """
 
 from __future__ import annotations
@@ -25,6 +26,7 @@ from email.policy import default
 from typing import Dict, Iterable, Mapping, Optional, Tuple
 from urllib.parse import parse_qs
 import acknowledgments
+from gmail_acknowledgments import GmailAcknowledgmentMailer, GmailDeliveryError
 
 
 PHONE_DISPLAY = "805.953.7273"
@@ -583,6 +585,8 @@ def process_submission(
     fields: Mapping[str, str],
     files: Mapping[str, UploadedFile],
     mailer: Optional[BrevoMailer] = None,
+    *,
+    acknowledgement_mailer=None,
 ) -> Dict[str, object]:
     """Validate, deliver internally, then optionally send a static acknowledgement."""
     form_name, rule = validate_submission(fields, files)
@@ -650,14 +654,17 @@ def process_submission(
             form_name, rule, fields, receipt_id, email
         )
         try:
-            active_mailer.send(ack_payload)
+            # A separate transport is mandatory: never send a client letter
+            # through the internal/marketing Brevo mailer, including on failure.
+            client_mailer = acknowledgement_mailer if acknowledgement_mailer is not None else GmailAcknowledgmentMailer()
+            client_mailer.send(ack_payload)
             acknowledged = True
-        except DeliveryError:
+        except (DeliveryError, GmailDeliveryError):
             # The internal intake message was already accepted. Returning a
             # failure here would invite a duplicate referral, so report success
             # and retain an auditable acknowledgement flag.
             acknowledgement_error = True
-            print(f"FORM_ACK_FAILED form={form_name} receipt={receipt_id}", file=sys.stderr)
+            print(f"FORM_ACK_FAILED form={form_name} receipt={receipt_id} provider=gmail", file=sys.stderr)
             notify_acknowledgement_failure()
 
     print(

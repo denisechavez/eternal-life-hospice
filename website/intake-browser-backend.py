@@ -70,7 +70,8 @@ def main():
                     return "synthetic-mail-id"
 
             def submit(fields, files):
-                return form_intake.process_submission(fields, files, mailer=SyntheticMailer())
+                return form_intake.process_submission(fields, files, mailer=SyntheticMailer(),
+                    acknowledgement_mailer=SyntheticMailer())
 
             def verify(request, **kwargs):
                 if request.full_url != guard.VERIFY_URL:

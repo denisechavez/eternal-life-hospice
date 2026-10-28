@@ -22,6 +22,11 @@ import form_intake
 import form_antispam
 
 
+def synthetic_submission(fields, files, mailer):
+    return form_intake.process_submission(fields, files, mailer,
+        acknowledgement_mailer=mailer)
+
+
 class ContactValidationTests(unittest.TestCase):
     def test_phone_validation_cannot_be_bypassed(self):
         base = {"form-name": "elh-family", "first_name": "Synthetic",
@@ -107,7 +112,7 @@ class FormIntakeTests(unittest.TestCase):
             "bot-field": "",
         }
         mailer = FakeMailer()
-        result = form_intake.process_submission(fields, {}, mailer)
+        result = synthetic_submission(fields, {}, mailer)
 
         self.assertTrue(result["accepted"])
         self.assertTrue(result["acknowledgement_sent"])
@@ -132,7 +137,7 @@ class FormIntakeTests(unittest.TestCase):
             "phone": "805-555-0102",
         }
         mailer = FakeMailer()
-        result = form_intake.process_submission(fields, {}, mailer)
+        result = synthetic_submission(fields, {}, mailer)
         self.assertTrue(result["accepted"])
         self.assertFalse(result["acknowledgement_sent"])
         self.assertEqual(len(mailer.payloads), 1)
@@ -145,7 +150,7 @@ class FormIntakeTests(unittest.TestCase):
             "email": "synthetic@example.com",
         }
         mailer = FakeMailer()
-        result = form_intake.process_submission(fields, {}, mailer)
+        result = synthetic_submission(fields, {}, mailer)
         self.assertTrue(result["accepted"])
         self.assertTrue(result["acknowledgement_sent"])
         self.assertEqual(len(mailer.payloads), 2)
@@ -162,7 +167,7 @@ class FormIntakeTests(unittest.TestCase):
             "phone": "805.555.0104",
         }
         with self.assertRaises(form_intake.DeliveryError):
-            form_intake.process_submission(fields, {}, FakeMailer(fail_at=1))
+            synthetic_submission(fields, {}, FakeMailer(fail_at=1))
 
     def test_invalid_or_unknown_submissions_are_rejected(self):
         with self.assertRaises(form_intake.IntakeError):
@@ -183,7 +188,7 @@ class FormIntakeTests(unittest.TestCase):
     def test_common_identifiers_are_rejected_before_delivery(self):
         mailer = FakeMailer()
         with self.assertRaises(form_intake.IntakeError) as context:
-            form_intake.process_submission(
+            synthetic_submission(
                 {
                     "form-name": "elh-physician",
                     "referrer_name": "Synthetic Referrer",
@@ -198,7 +203,7 @@ class FormIntakeTests(unittest.TestCase):
 
     def test_honeypot_is_not_delivered(self):
         mailer = FakeMailer()
-        result = form_intake.process_submission(
+        result = synthetic_submission(
             {"form-name": "elh-family", "bot-field": "spam"}, {}, mailer
         )
         self.assertTrue(result["accepted"])
@@ -233,7 +238,7 @@ class SyntheticEndToEndTest(unittest.TestCase):
         self.addCleanup(guard.stop)
 
     def test_http_to_internal_and_acknowledgement_then_cleanup(self):
-        """POST through the app, capture both Brevo messages, then erase them."""
+        """POST through the app with both transports explicitly synthetic."""
         CaptureHandler.payloads = []
         brevo = ThreadingHTTPServer(("127.0.0.1", 0), CaptureHandler)
         brevo_thread = threading.Thread(target=brevo.serve_forever, daemon=True)
@@ -246,7 +251,7 @@ class SyntheticEndToEndTest(unittest.TestCase):
         real_process = form_intake.process_submission
 
         def process_with_capture(fields, files):
-            return real_process(fields, files, mailer=mailer)
+            return real_process(fields, files, mailer=mailer, acknowledgement_mailer=mailer)
 
         app = ThreadingHTTPServer(("127.0.0.1", 0), devserver.PrettyURLHandler)
         app_thread = threading.Thread(target=app.serve_forever, daemon=True)

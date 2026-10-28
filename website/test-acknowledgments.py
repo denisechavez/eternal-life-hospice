@@ -14,6 +14,11 @@ import acknowledgments as ack
 import form_intake as intake
 
 
+def synthetic_submission(fields, files, mailer):
+    return intake.process_submission(fields, files, mailer,
+        acknowledgement_mailer=mailer)
+
+
 APPROVED = json.loads(
     (Path(__file__).resolve().parent / "test-fixtures/acknowledgments-approved.json")
     .read_text(encoding="utf-8")
@@ -61,7 +66,7 @@ class AcknowledgmentTests(unittest.TestCase):
             with self.subTest(form=form, interest=interest):
                 files = {"resume": intake.UploadedFile("synthetic.pdf", "application/pdf", b"%PDF-synthetic")} if form == "elh-careers" else {}
                 mailer = Mailer()
-                result = intake.process_submission(fields_for(form, interest), files, mailer)
+                result = synthetic_submission(fields_for(form, interest), files, mailer)
                 self.assertTrue(result["accepted"])
                 self.assertTrue(result["acknowledgement_sent"])
                 self.assertEqual(len(mailer.payloads), 2)
@@ -121,7 +126,7 @@ class AcknowledgmentTests(unittest.TestCase):
                 with self.subTest(key=key, value=value):
                     self.assertEqual(ack.template_key("elh-voice", {"interest": value}), key)
                     mailer = Mailer()
-                    result = intake.process_submission(fields_for("elh-voice", value), {}, mailer)
+                    result = synthetic_submission(fields_for("elh-voice", value), {}, mailer)
                     self.assertTrue(result["accepted"])
                     self.assertEqual(len(mailer.payloads), 2)
                     self.assertEqual(mailer.payloads[1]["subject"],
@@ -129,7 +134,7 @@ class AcknowledgmentTests(unittest.TestCase):
 
     def test_all_interests_retains_categories_and_flags_but_one_receipt(self):
         mailer = Mailer()
-        intake.process_submission(fields_for("elh-voice", "All of the above"), {}, mailer)
+        synthetic_submission(fields_for("elh-voice", "All of the above"), {}, mailer)
         self.assertEqual(len(mailer.payloads), 2)
         internal, receipt = mailer.payloads
         self.assertEqual(receipt["subject"], ack.TEMPLATES["all-interests"][0])
@@ -141,7 +146,7 @@ class AcknowledgmentTests(unittest.TestCase):
     def test_meeting_is_not_a_speaking_engagement(self):
         for key in ("aleksandra-meeting", "speaking-engagement"):
             mailer = Mailer()
-            intake.process_submission(fields_for("elh-voice", key), {}, mailer)
+            synthetic_submission(fields_for("elh-voice", key), {}, mailer)
             self.assertEqual(mailer.payloads[1]["subject"], ack.TEMPLATES[key][0])
             self.assertIn("ALEKSANDRA — SCHEDULING REQUEST", mailer.payloads[0]["subject"])
         self.assertNotEqual(ack.TEMPLATES["aleksandra-meeting"][0], ack.TEMPLATES["speaking-engagement"][0])
@@ -157,7 +162,7 @@ class AcknowledgmentTests(unittest.TestCase):
             fields = fields_for(form)
             fields.pop("email")
             mailer = Mailer()
-            result = intake.process_submission(fields, {}, mailer)
+            result = synthetic_submission(fields, {}, mailer)
             self.assertTrue(result["accepted"])
             self.assertFalse(result["acknowledgement_sent"])
             self.assertEqual(len(mailer.payloads), 1)
@@ -166,7 +171,7 @@ class AcknowledgmentTests(unittest.TestCase):
     def test_internal_failure_never_sends_receipt(self):
         mailer = Mailer(fail_at=1)
         with self.assertRaises(intake.DeliveryError):
-            intake.process_submission(fields_for("elh-family"), {}, mailer)
+            synthetic_submission(fields_for("elh-family"), {}, mailer)
         self.assertEqual(len(mailer.payloads), 1)
 
     def test_ack_failure_keeps_original_internal_record_and_reports_status(self):
@@ -175,7 +180,7 @@ class AcknowledgmentTests(unittest.TestCase):
         with contextlib.redirect_stderr(logs), mock.patch.object(
             intake, "notify_acknowledgement_failure"
         ) as notify:
-            result = intake.process_submission(fields_for("elh-family"), {}, mailer)
+            result = synthetic_submission(fields_for("elh-family"), {}, mailer)
         notify.assert_called_once_with()
         self.assertTrue(result["accepted"])
         self.assertTrue(result["acknowledgement_error"])
@@ -189,7 +194,7 @@ class AcknowledgmentTests(unittest.TestCase):
     def test_invalid_interest_rejected_before_delivery(self):
         mailer = Mailer()
         with self.assertRaises(intake.IntakeError):
-            intake.process_submission(fields_for("elh-voice", "unknown-id"), {}, mailer)
+            synthetic_submission(fields_for("elh-voice", "unknown-id"), {}, mailer)
         self.assertFalse(mailer.payloads)
 
 

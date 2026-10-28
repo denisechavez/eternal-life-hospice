@@ -14,6 +14,10 @@ import devserver
 import form_intake as intake
 
 
+def synthetic_submission(fields, files, mailer):
+    return intake.process_submission(fields, files, mailer,
+        acknowledgement_mailer=mailer)
+
 FIELDS = {
     "form-name": "elh-family",
     "first_name": "Synthetic", "last_name": "Visitor",
@@ -97,7 +101,7 @@ class AcknowledgementAlertTests(unittest.TestCase):
     def test_isolated_failure_alert_has_only_allowlisted_metadata(self):
         mailer = self.mailer()
         with patch.object(self.alerter, "_send") as send:
-            result = intake.process_submission(FIELDS, {}, mailer)
+            result = synthetic_submission(FIELDS, {}, mailer)
         self.assert_accepted(result, mailer)
         send.assert_called_once()
         payload = send.call_args.args[0]
@@ -113,16 +117,16 @@ class AcknowledgementAlertTests(unittest.TestCase):
 
     def test_no_alert_for_success_no_email_honeypot_or_internal_failure(self):
         with patch.object(self.alerter, "_send") as send:
-            intake.process_submission(FIELDS, {}, self.mailer(failure=0))
+            synthetic_submission(FIELDS, {}, self.mailer(failure=0))
             no_email = self.mailer()
-            intake.process_submission(dict(FIELDS, email=""), {}, no_email)
+            synthetic_submission(dict(FIELDS, email=""), {}, no_email)
             self.assertEqual(no_email.send.call_count, 1)
             honeypot = self.mailer()
-            intake.process_submission(dict(FIELDS, **{"bot-field": "synthetic"}), {}, honeypot)
+            synthetic_submission(dict(FIELDS, **{"bot-field": "synthetic"}), {}, honeypot)
             honeypot.send.assert_not_called()
             internal_failure = self.mailer(failure=1)
             with self.assertRaises(intake.DeliveryError):
-                intake.process_submission(FIELDS, {}, internal_failure)
+                synthetic_submission(FIELDS, {}, internal_failure)
             self.assertEqual(internal_failure.send.call_count, 1)
         send.assert_not_called()
 
@@ -163,7 +167,7 @@ class AcknowledgementAlertTests(unittest.TestCase):
                 ) as send, patch("sys.stderr", logs):
                     for _ in range(2):
                         mailer = self.mailer()
-                        result = intake.process_submission(FIELDS, {}, mailer)
+                        result = synthetic_submission(FIELDS, {}, mailer)
                         self.assert_accepted(result, mailer)
                 send.assert_called_once()
                 self.assertIn("FORM_ALERT_FAILED channel=webhook error=" + error.__name__,
@@ -177,7 +181,7 @@ class AcknowledgementAlertTests(unittest.TestCase):
             self.alerter, "_send"
         ) as send:
             mailer = self.mailer()
-            result = intake.process_submission(FIELDS, {}, mailer)
+            result = synthetic_submission(FIELDS, {}, mailer)
         self.assert_accepted(result, mailer)
         send.assert_not_called()
 
@@ -185,8 +189,8 @@ class AcknowledgementAlertTests(unittest.TestCase):
         others = [intake.FORM_DELIVERY_ALERTER, *intake.FORM_SECURITY_ALERTERS.values()]
         before = [(list(item._failures), item._last_alert_at) for item in others]
         with patch.object(self.alerter, "_send") as send:
-            intake.process_submission(FIELDS, {}, self.mailer())
-            intake.process_submission(FIELDS, {}, self.mailer())
+            synthetic_submission(FIELDS, {}, self.mailer())
+            synthetic_submission(FIELDS, {}, self.mailer())
         send.assert_called_once()
         self.assertEqual(before, [
             (list(item._failures), item._last_alert_at) for item in others])
@@ -208,7 +212,7 @@ class AcknowledgementAlertTests(unittest.TestCase):
         mailer = self.mailer()
         with patch.object(devserver.form_antispam, "reserve", return_value=None), patch.object(
             devserver, "process_submission",
-            side_effect=lambda fields, files: intake.process_submission(fields, files, mailer)
+            side_effect=lambda fields, files: synthetic_submission(fields, files, mailer)
         ), patch.object(self.alerter, "_send", side_effect=OSError("private alert response")), patch.object(
             devserver.form_antispam, "release_failed"
         ) as release:
