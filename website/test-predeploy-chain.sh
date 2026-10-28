@@ -36,7 +36,10 @@ footer = "python3 ../check-footer-parity.py"
 ack = "python3 ../test-acknowledgments.py"
 ack_sentinel = "SENTINEL: test-acknowledgments.py OK"
 phone = "python3 ../test-website-phone.py"
+phone_config = "python3 ../test-website-phone-config.py"
 phone_sentinel = "SENTINEL: test-website-phone.py OK"
+tracker = "python3 ../test-tracker-policy.py"
+tracker_sentinel = "SENTINEL: test-tracker-policy.py OK"
 sentinel = "SENTINEL: test-care-brief-signup-retry.mjs browser checks OK"
 wrapper = (source / "elh-predeploy.sh").read_text()
 chain = wrapper.split("set +o pipefail\n(\n", 1)[1].split("\n) 2>&1", 1)[0]
@@ -47,10 +50,14 @@ assert commands.index(footer) == commands.index(retry) + 1, "Retry suite must pr
 assert commands.index(retry) < commands.index("node assets/build-search-index.js --check")
 assert wrapper.count('"' + sentinel + '"') == 1, "Wrapper must require retry sentinel"
 assert commands.count(ack) == 1, "Acknowledgment suite must run exactly once"
+assert commands.count(tracker) == 1, "Tracker policy suite must run exactly once"
+assert wrapper.count('"' + tracker_sentinel + '"') == 1, "Wrapper must require tracker policy sentinel"
 assert commands.index(ack) < commands.index("node assets/build-search-index.js --check")
 assert wrapper.count('"' + ack_sentinel + '"') == 1, "Wrapper must require acknowledgment sentinel"
 assert commands.count(phone) == 1, "Phone-role suite must run exactly once"
-assert commands.index(phone) == commands.index(ack) + 1, "Phone guard must follow acknowledgment guard"
+assert commands.count(phone_config) == 1, "Phone configuration suite must run exactly once"
+assert commands.index(phone_config) == commands.index(ack) + 1, "Phone configuration guard must follow acknowledgment guard"
+assert commands.index(phone) == commands.index(phone_config) + 1, "Phone guard must follow configuration guard"
 assert commands.index(phone) < commands.index("node assets/build-search-index.js --check")
 assert wrapper.count('"' + phone_sentinel + '"') == 1, "Wrapper must require phone sentinel"
 smoke = (source / "test-predeploy-chain.sh").read_text()
@@ -98,7 +105,8 @@ if not (is_target and os.environ["CHAIN_MODE"] == "missing"):
     scenarios = [(retry, sentinel, "success"),
                  (retry, sentinel, "failure"), (retry, sentinel, "missing"),
                  (ack, ack_sentinel, "failure"), (ack, ack_sentinel, "missing"),
-                 (phone, phone_sentinel, "failure"), (phone, phone_sentinel, "missing")]
+                 (phone, phone_sentinel, "failure"), (phone, phone_sentinel, "missing"),
+                 (tracker, tracker_sentinel, "failure"), (tracker, tracker_sentinel, "missing")]
     for target, target_sentinel, mode in scenarios:
         log.write_text("")
         before = {p.relative_to(site): p.read_bytes() for p in site.rglob("*") if p.is_file()}
@@ -185,6 +193,7 @@ SENTINELS=(
   "SENTINEL: test-a11y-forms.js self-test OK"
   "SENTINEL: check-city-scripts.py self-test OK"
   "SENTINEL: check-analytics-version.py self-test OK"
+  "SENTINEL: test-tracker-policy.py OK"
   "SENTINEL: check-structured-data.py self-test OK"
   "SENTINEL: check-blog-schema.py self-test OK"
   "SENTINEL: check-og-metadata.py self-test OK"

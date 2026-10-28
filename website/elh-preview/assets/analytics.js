@@ -324,17 +324,7 @@
     };
     document.head.appendChild(mc);
 
-    // WhatConverts call-tracking (marketing consent required)
-    // bootAnalytics() only runs after window load, so inject directly — no listener needed.
-    (function () {
-      var f = function (a) { return JSON.parse(JSON.stringify(a)); };
-      window.$wc_leads = window.$wc_leads || { doc: { url: f(document.URL), ref: f(document.referrer), search: f(location.search), hash: f(location.hash) } };
-      var wc = document.createElement('script');
-      wc.src = '//s.ksrndkehqnwntyxlhgto.com/172406.js';
-      document.body.appendChild(wc);
-    }());
-
-    // Nimbata call tracking. The owner explicitly chose to keep WhatConverts too.
+    // Nimbata is the website's sole call-tracking browser tag.
     var nimbata = document.createElement('script');
     nimbata.type = 'text/javascript';
     nimbata.async = true;

@@ -107,15 +107,27 @@ what visitors consent to.
 
 ## Call-tracking ownership
 
-Keep both WhatConverts and Nimbata browser trackers enabled behind optional
-tracking consent.
+Use Nimbata, not WhatConverts, as the website browser call tracker. Keep it
+behind optional tracking consent.
 
-**Why:** After being told that two phone-number replacement systems could
-conflict and that removing the WhatConverts browser tag would also stop its
-automatic form tracking, the owner explicitly chose “Keep both browser trackers.”
+**Why:** On October 28, 2026, the owner explicitly authorized uninstalling
+WhatConverts. This supersedes the earlier instruction to keep both browser
+trackers.
 
-**How to apply:** Do not remove either browser tag or change intake email
-delivery as part of call-tracking maintenance. Account-side number replacement
-and actual call attribution still require provider verification. Preserve
+**How to apply:** Do not reintroduce WhatConverts browser scripts or automatic
+form capture. Preserve intake email delivery, both existing phone-number
+placements and historical reporting/account data. Removing the website tag
+does not authorize closing the provider account or deleting historical data.
+Account-side number replacement and actual call attribution still require provider verification. Preserve
 approval-hashed Journal source bytes when updating analytics versions; refresh
 their script URLs in the final served HTML instead.
+
+Verify tracker execution against the site's security policy, not just the
+presence of a script element.
+
+**Why:** Nimbata's tag was present in the DOM while its CDN was blocked by the
+response policy. Installation alone did not prove that the tracker ran.
+
+**How to apply:** Test script and connection permissions for the configured
+provider endpoints, and check browser network responses when changing trackers.
+Keep permissions specific rather than allowing arbitrary third-party hosts.

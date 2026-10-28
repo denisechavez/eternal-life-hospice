@@ -119,7 +119,7 @@ OUT_DIR   = os.path.join(BASE, "elh-preview")
 
 HEAD_SCRIPTS = (
     f'<script defer src="{analytics_url()}"></script>'
-    # UserWay (accessibility, essential) and WhatConverts (call-tracking, marketing)
+    # UserWay (accessibility, essential) and Nimbata (call-tracking, marketing)
     # are both bootstrapped by analytics.js to respect the cookie consent gate.
 )
 

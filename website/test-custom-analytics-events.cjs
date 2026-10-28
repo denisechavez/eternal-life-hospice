@@ -326,8 +326,9 @@ test('full loader boots GA4 once and checks consent again at window load', () =>
     assert.equal(appended.filter(el => (el.src || '').includes('googletagmanager.com')).length, revoke ? 0 : 1);
     assert.equal(appended.filter(el => el.src === 'https://cdn.dni.nimbata.com/72680137074.min.js').length,
       revoke ? 0 : 1, 'Nimbata loads once, only after optional-tracking consent');
-    assert.equal(appended.filter(el => (el.src || '').includes('s.ksrndkehqnwntyxlhgto.com/172406.js')).length,
-      revoke ? 0 : 1, 'The existing WhatConverts browser tracker remains enabled');
+    assert.equal(appended.filter(el => /whatconverts|ksrndkehqnwntyxlhgto/i.test(el.src || '')).length,
+      0, 'WhatConverts must not load, including for returning consented visitors');
+    assert.equal(context.$wc_leads, undefined, 'Removed tracker must not collect page/referrer metadata');
     if (!revoke) {
       const nimbata = appended.find(el => el.src === 'https://cdn.dni.nimbata.com/72680137074.min.js');
       assert.equal(nimbata.async, true);

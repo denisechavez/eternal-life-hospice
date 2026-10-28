@@ -531,7 +531,7 @@ def page_template(page: dict, header: str, footer: str) -> str:
 <link rel="stylesheet" href="/assets/internal-links.css?v=20261007-inline">
 <link rel="stylesheet" href="/__service-preview-assets/service-pages.css">
 {schema(page)}
-<script async src="/assets/analytics.js?v=4c46db18aacb"></script>
+<script async src="/assets/analytics.js?v=bb63d0afaba9"></script>
 </head><body>
 <a class="skip-link" href="#main-content">Skip to main content</a>
 {header}
@@ -577,7 +577,7 @@ def directory_template(header: str, footer: str) -> str:
     return '''<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Hospice Services | Eternal Life Hospice</title><meta name="description" content="Explore hospice care services across Ventura and Los Angeles counties."><meta name="robots" content="noindex,nofollow"><link rel="icon" href="/assets/favicon.png">
 <link rel="preload" as="font" href="/assets/fonts/fraunces-latin.woff2" type="font/woff2" crossorigin fetchpriority="high"><link rel="preload" as="font" href="/assets/fonts/fraunces-italic-latin.woff2" type="font/woff2" crossorigin fetchpriority="high">
-<link rel="stylesheet" href="/assets/elh.css?v=20260901"><link rel="stylesheet" href="/assets/header-nav.css?v=20260920a"><link rel="stylesheet" href="/assets/internal-links.css?v=20261007-inline"><link rel="stylesheet" href="/__service-preview-assets/service-pages.css"><script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://eternallifehospice.com/"},{"@type":"ListItem","position":2,"name":"Services","item":"https://eternallifehospice.com/services"}]}</script><script async src="/assets/analytics.js?v=4c46db18aacb"></script></head><body>
+<link rel="stylesheet" href="/assets/elh.css?v=20260901"><link rel="stylesheet" href="/assets/header-nav.css?v=20260920a"><link rel="stylesheet" href="/assets/internal-links.css?v=20261007-inline"><link rel="stylesheet" href="/__service-preview-assets/service-pages.css"><script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://eternallifehospice.com/"},{"@type":"ListItem","position":2,"name":"Services","item":"https://eternallifehospice.com/services"}]}</script><script async src="/assets/analytics.js?v=bb63d0afaba9"></script></head><body>
 <a class="skip-link" href="#main-content">Skip to main content</a>''' + header + '''
 <main id="main-content" tabindex="-1"><div id="service-page" class="services-directory-page">
 <section class="cc-hero"><div class="cc-hero-inner"><div class="cc-hero-copy"><p class="cc-eyebrow">Services</p><h1>Our Services</h1><div class="cc-actions"><a class="cc-button" href="tel:8059537273">Call Today for Care Options · 805.953.7273</a><a class="cc-button cc-button--outline" href="/refer#referral-form">Refer a Patient</a></div></div><figure class="cc-hero-photo"><img src="/__service-preview-assets/hero.webp" alt="Illustrative hospice care scene"></figure></div></section>
