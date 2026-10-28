@@ -13,9 +13,10 @@ const profile = await mkdtemp(join(tmpdir(), "elh-phone-browser-"));
 const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
 let fixture, browser, socket, caseName = "startup", id = 0;
 const pending = new Map(), errors = [], apiRequests = [], blocked = [];
-// Synthetic lookup results only: exercise both outcomes from the same chip list.
+// Synthetic lookup results only: exercise direct and refined suggestion outcomes.
 const coverageResponses = {
-  San: {served: false, city: "San", ambiguous: true, suggestions: ["San Fernando", "San Francisco"]},
+  San: {served: false, city: "San", ambiguous: true, suggestions: ["San Fernando", "San Francisco", "San F"]},
+  "San F": {served: false, city: "San F", ambiguous: true, suggestions: ["San Fernando", "San Francisco"]},
   "San Fernando": {served: true, city: "San Fernando", county: "Los Angeles County", phone: "805.409.9262"},
   "San Francisco": {served: false, city: "San Francisco"},
 };
@@ -157,7 +158,7 @@ try {
     })()`);
     await checkReply(previousCount, expected, hasPhone);
   };
-  const chooseCity = async (city, expected) => {
+  const chooseCity = async (city, expected, hasPhone = true) => {
     const previousCount = await evaluate("document.querySelectorAll('.elhc-bot').length");
     await evaluate(`(()=>{
       const chips=[...document.querySelectorAll('.elhc-log > .elhc-chips')].at(-1);
@@ -165,7 +166,7 @@ try {
       if(!chip || !chip.getClientRects().length) throw new Error('Missing visible city suggestion');
       chip.click();
     })()`);
-    await checkReply(previousCount, expected);
+    await checkReply(previousCount, expected, hasPhone);
     assert.equal(await evaluate(`[...document.querySelectorAll('.elhc-user')].at(-1).innerText`),
       `Do you serve ${city}?`);
   };
@@ -199,7 +200,7 @@ try {
       assert.deepEqual(await evaluate(`(()=>{
         const chips=[...document.querySelectorAll('.elhc-log > .elhc-chips')].at(-1);
         return [...chips.querySelectorAll('button')].map(button=>button.innerText);
-      })()`), ["San Fernando", "San Francisco"]);
+      })()`), ["San Fernando", "San Francisco", "San F"]);
       caseName = `${width}px selected ${city} coverage`;
       await chooseCity(city, expected);
     }
@@ -209,6 +210,27 @@ try {
       {path: "/api/coverage", method: "GET", city: "San"},
       {path: "/api/coverage", method: "GET", city: "San Francisco"},
     ], "Suggestion transitions must use coverage only, not AI or submissions");
+    for (const [city, expected] of [
+      ["San Fernando", "Yes—we do serve San Fernando in Los Angeles County."],
+      ["San Francisco", "We don’t have a published service page for “San Francisco”"],
+    ]) {
+      const refinedStart = apiRequests.length;
+      caseName = `${width}px initial coverage before narrowing to ${city}`;
+      await ask("Do you serve San?", "“San” matches several cities", false);
+      caseName = `${width}px selected suggestion still ambiguous before ${city}`;
+      await chooseCity("San F", "“San F” matches several cities", false);
+      assert.deepEqual(await evaluate(`(()=>{
+        const chips=[...document.querySelectorAll('.elhc-log > .elhc-chips')].at(-1);
+        return [...chips.querySelectorAll('button')].map(button=>button.innerText);
+      })()`), ["San Fernando", "San Francisco"], caseName + ": wrong refined suggestions");
+      caseName = `${width}px refined ${city} coverage`;
+      await chooseCity(city, expected);
+      assert.deepEqual(apiRequests.slice(refinedStart), [
+        {path: "/api/coverage", method: "GET", city: "San"},
+        {path: "/api/coverage", method: "GET", city: "San F"},
+        {path: "/api/coverage", method: "GET", city},
+      ], caseName + ": refined suggestions must use coverage only, not AI or submissions");
+    }
     caseName = `${width}px unavailable AI fallback`;
     await ask("What is hospice care?", "having trouble responding");
 
@@ -244,7 +266,7 @@ try {
     await mainLinks(".elhc-head");
     await mainLinks(".elhc-cb-reminder");
     await evaluate("sessionStorage.removeItem('elhcCallbackUncertainUntil')");
-    console.log(`PASS ${width}px: chat routing, ambiguous/served/unserved coverage, fallback, three intake displays and reopened reminder`);
+    console.log(`PASS ${width}px: chat routing, direct/refined ambiguous/served/unserved coverage, fallback, three intake displays and reopened reminder`);
 
     for (const mode of ["access-blocked", "write-blocked"]) {
       caseName = `${width}px ${mode} callback storage warning`;
