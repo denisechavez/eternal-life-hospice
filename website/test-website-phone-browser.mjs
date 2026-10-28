@@ -13,6 +13,12 @@ const profile = await mkdtemp(join(tmpdir(), "elh-phone-browser-"));
 const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
 let fixture, browser, socket, caseName = "startup", id = 0;
 const pending = new Map(), errors = [], apiRequests = [], blocked = [];
+// Synthetic lookup results only: exercise both outcomes from the same chip list.
+const coverageResponses = {
+  San: {served: false, city: "San", ambiguous: true, suggestions: ["San Fernando", "San Francisco"]},
+  "San Fernando": {served: true, city: "San Fernando", county: "Los Angeles County", phone: "805.409.9262"},
+  "San Francisco": {served: false, city: "San Francisco"},
+};
 try {
   fixture = await startIntakeFixture(); // Synthetic mode only; never start its real backend.
   browser = spawn(process.env.CHROMIUM_BIN || "chromium", ["--headless", "--no-sandbox",
@@ -58,15 +64,20 @@ try {
       const {requestId, request} = message.params, url = new URL(request.url);
       const local = url.origin === fixture.origin;
       const api = local && url.pathname.startsWith("/api/");
-      if (api) apiRequests.push({path: url.pathname, method: request.method});
+      const city = url.searchParams.get("city");
+      if (api) apiRequests.push({path: url.pathname, method: request.method,
+        ...(url.pathname === "/api/coverage" ? {city} : {})});
+      const coverage = api && url.pathname === "/api/coverage" && request.method === "GET"
+        && Object.hasOwn(coverageResponses, city) ? coverageResponses[city] : null;
       if (!local) blocked.push(request.url);
       // Fulfill every API and third-party request locally, including unexpected
       // submission attempts (which also fail the final assertions).
       const operation = local && !api && request.method === "GET"
         ? call("Fetch.continueRequest", {requestId})
-        : call("Fetch.fulfillRequest", {requestId, responseCode: api ? 503 : 200,
+        : call("Fetch.fulfillRequest", {requestId, responseCode: coverage ? 200 : api ? 503 : 200,
           responseHeaders: [{name: "Content-Type", value: api ? "application/json" : "text/plain"}],
-          body: Buffer.from(api ? '{"error":"synthetic_unavailable"}' : "").toString("base64")});
+          body: Buffer.from(coverage ? JSON.stringify(coverage)
+            : api ? '{"error":"synthetic_unavailable"}' : "").toString("base64")});
       operation.catch(error => errors.push(String(error)));
     }
   });
@@ -124,18 +135,39 @@ try {
       }))`), [{text: "Call 805.409.9262", href: "tel:18054099262", resolved: "tel:18054099262"}],
     caseName + ": warning label and actual dial URL must both match Main");
   };
-  const ask = async (question, expected) => {
+  const checkReply = async (previousCount, expected, hasPhone = true) => {
+    await until(`document.querySelectorAll('.elhc-bot').length > ${previousCount} &&
+      [...document.querySelectorAll('.elhc-bot')].at(-1).innerText.includes(${JSON.stringify(expected)}) &&
+      !document.querySelector('.elhc-send').disabled`);
+    const reply = await evaluate(`[...document.querySelectorAll('.elhc-bot')].at(-1).innerText`);
+    if (hasPhone) {
+      assert.match(reply, /805\.409\.9262/, caseName);
+      const dial = await evaluate(`document.querySelector('.elhc-head a[href^="tel:"]').getAttribute('href')`);
+      assert.equal(digits(reply.match(/805\.409\.9262/)[0]), digits(dial), caseName);
+    }
+    assert.doesNotMatch(reply, /805[. -](?:953[. -]7273|410[. -]1151)/, caseName);
+    await mainLinks(".elhc-head");
+  };
+  const ask = async (question, expected, hasPhone = true) => {
+    const previousCount = await evaluate("document.querySelectorAll('.elhc-bot').length");
     await evaluate(`(()=>{
       const input=document.querySelector('.elhc-in'); input.value=${JSON.stringify(question)};
       input.dispatchEvent(new Event('input',{bubbles:true}));
       document.querySelector('.elhc-send').click();
     })()`);
-    await until(`document.querySelector('.elhc-bot') &&
-      [...document.querySelectorAll('.elhc-bot')].at(-1).innerText.includes(${JSON.stringify(expected)})`);
-    const reply = await evaluate(`[...document.querySelectorAll('.elhc-bot')].at(-1).innerText`);
-    assert.match(reply, /805\.409\.9262/);
-    assert.doesNotMatch(reply, /805[. -](?:953[. -]7273|410[. -]1151)/);
-    await mainLinks(".elhc-head");
+    await checkReply(previousCount, expected, hasPhone);
+  };
+  const chooseCity = async (city, expected) => {
+    const previousCount = await evaluate("document.querySelectorAll('.elhc-bot').length");
+    await evaluate(`(()=>{
+      const chips=[...document.querySelectorAll('.elhc-log > .elhc-chips')].at(-1);
+      const chip=[...chips.querySelectorAll('button')].find(button=>button.innerText===${JSON.stringify(city)});
+      if(!chip || !chip.getClientRects().length) throw new Error('Missing visible city suggestion');
+      chip.click();
+    })()`);
+    await checkReply(previousCount, expected);
+    assert.equal(await evaluate(`[...document.querySelectorAll('.elhc-user')].at(-1).innerText`),
+      `Do you serve ${city}?`);
   };
   await call("Page.enable");
   await call("Runtime.enable");
@@ -155,6 +187,28 @@ try {
     await ask("This is an emergency, call 911", "If this is a medical emergency");
     caseName = `${width}px nurse routing`;
     await ask("I have a medication question", "best for one of our nurses");
+    const coverageStart = apiRequests.length;
+    for (const [city, expected] of [
+      ["San Fernando", "Yes—we do serve San Fernando in Los Angeles County."],
+      ["San Francisco", "We don’t have a published service page for “San Francisco”"],
+    ]) {
+      caseName = `${width}px ambiguous coverage before ${city}`;
+      // The disambiguation prompt has no phone in its copy; its persistent
+      // Main dial link must still be visible and correct.
+      await ask("Do you serve San?", "“San” matches several cities", false);
+      assert.deepEqual(await evaluate(`(()=>{
+        const chips=[...document.querySelectorAll('.elhc-log > .elhc-chips')].at(-1);
+        return [...chips.querySelectorAll('button')].map(button=>button.innerText);
+      })()`), ["San Fernando", "San Francisco"]);
+      caseName = `${width}px selected ${city} coverage`;
+      await chooseCity(city, expected);
+    }
+    assert.deepEqual(apiRequests.slice(coverageStart), [
+      {path: "/api/coverage", method: "GET", city: "San"},
+      {path: "/api/coverage", method: "GET", city: "San Fernando"},
+      {path: "/api/coverage", method: "GET", city: "San"},
+      {path: "/api/coverage", method: "GET", city: "San Francisco"},
+    ], "Suggestion transitions must use coverage only, not AI or submissions");
     caseName = `${width}px unavailable AI fallback`;
     await ask("What is hospice care?", "having trouble responding");
 
@@ -190,7 +244,7 @@ try {
     await mainLinks(".elhc-head");
     await mainLinks(".elhc-cb-reminder");
     await evaluate("sessionStorage.removeItem('elhcCallbackUncertainUntil')");
-    console.log(`PASS ${width}px: chat routing, fallback, three intake displays and reopened reminder`);
+    console.log(`PASS ${width}px: chat routing, ambiguous/served/unserved coverage, fallback, three intake displays and reopened reminder`);
 
     for (const mode of ["access-blocked", "write-blocked"]) {
       caseName = `${width}px ${mode} callback storage warning`;
@@ -266,7 +320,7 @@ try {
     assert.equal(digits(link.href), "18059537273");
   }
   assert.ok(apiRequests.some(request => request.path === "/api/chat"), "AI fallback was not exercised");
-  assert.deepEqual(apiRequests.filter(request => !["/api/chat", "/api/google-reviews"].includes(request.path)), []);
+  assert.deepEqual(apiRequests.filter(request => !["/api/chat", "/api/google-reviews", "/api/coverage"].includes(request.path)), []);
   assert.deepEqual(fixture.state.posts, [], "No submissions permitted");
   assert.deepEqual(fixture.state.security, [], "No verification requests permitted");
   assert.deepEqual(fixture.state.violations, []);
