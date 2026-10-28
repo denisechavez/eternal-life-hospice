@@ -202,21 +202,45 @@
   // Tab-scoped, fixed-lifetime reminder: never store contact or clinical data.
   var callbackReminderKey = "elhcCallbackUncertainUntil";
   var callbackReminderMs = 30 * 60 * 1000;
-  var callbackUncertainUntil = 0, callbackPending = false;
+  var callbackUncertainUntil = 0, callbackPending = false, callbackStorageUnavailable = false;
+  function checkCallbackStorage() {
+    // A disposable timestamp tests writes as well as reads (e.g. quota failures).
+    // Never overwrite an existing delivery marker or persist entered details.
+    var probeKey = callbackReminderKey + "Probe", stamp = String(Date.now());
+    try {
+      sessionStorage.setItem(probeKey, stamp);
+      callbackStorageUnavailable = sessionStorage.getItem(probeKey) !== stamp;
+      sessionStorage.removeItem(probeKey);
+    } catch (e) { callbackStorageUnavailable = true; }
+  }
+  function callbackStorageWarning(container) {
+    container.hidden = !callbackStorageUnavailable;
+    container.textContent = "";
+    if (!callbackStorageUnavailable) return;
+    container.appendChild(el("p", null, "Your browser cannot save the callback reminder that helps prevent duplicate requests after a reload or leaving this page. If you already sent a request and did not receive confirmation, please call our care team to confirm receipt before sending another request. If the team confirms receipt, no new request is needed. Keep this page open while your request is being checked."));
+    container.appendChild(el("p", null, "Need to speak with someone now?"));
+    container.appendChild(el("p", null, "We're here for you 24 hours a day, 7 days a week."));
+    var phone = el("a", null, "Call " + PHONE_DISPLAY);
+    phone.href = "tel:" + PHONE_TEL;
+    container.appendChild(phone);
+  }
   function callbackNeedsConfirmation() {
     var now = Date.now();
     try {
       var stored = Number(sessionStorage.getItem(callbackReminderKey));
       if (stored > now && stored <= now + callbackReminderMs) callbackUncertainUntil = stored;
       else sessionStorage.removeItem(callbackReminderKey);
-    } catch (e) {} // In-memory protection still works when storage is blocked.
+    } catch (e) { callbackStorageUnavailable = true; } // Memory protects only this document.
     if (callbackUncertainUntil > now && callbackUncertainUntil <= now + callbackReminderMs) return true;
     callbackUncertainUntil = 0;
     return false;
   }
   function rememberUncertainCallback() {
     callbackUncertainUntil = Date.now() + callbackReminderMs;
-    try { sessionStorage.setItem(callbackReminderKey, String(callbackUncertainUntil)); } catch (e) {}
+    try {
+      sessionStorage.setItem(callbackReminderKey, String(callbackUncertainUntil));
+      callbackStorageUnavailable = sessionStorage.getItem(callbackReminderKey) !== String(callbackUncertainUntil);
+    } catch (e) { callbackStorageUnavailable = true; }
   }
   function clearCallbackReminder() {
     callbackUncertainUntil = 0;
@@ -225,6 +249,9 @@
   function callbackReminder(container) {
     var reminderUntil = callbackUncertainUntil;
     container.textContent = "We couldn't confirm whether your request was received. To avoid a duplicate request, please call our care team to confirm receipt before sending another request. This reminder lasts up to 30 minutes in this tab; its expiry does not mean your request failed. If the team confirms receipt, no new request is needed. Only if the team confirms it was not received, choose the button below to start a new request.";
+    if (callbackStorageUnavailable) {
+      container.textContent = "We couldn't confirm whether your request was received. To avoid a duplicate request, please call our care team to confirm receipt before sending another request. Your browser could not save this reminder. It lasts up to 30 minutes only while this page stays open; its expiry does not mean your request failed. Reloading or leaving this page will lose this protection, not confirm that your request failed. If the team confirms receipt, no new request is needed. Only if the team confirms it was not received, choose the button below to start a new request.";
+    }
     container.appendChild(el("p", null, "Need to speak with someone now?"));
     container.appendChild(el("p", null, "We're here for you 24 hours a day, 7 days a week."));
     var phone = el("a", null, "Call " + PHONE_DISPLAY);
@@ -271,6 +298,7 @@
       ".elhc-cb textarea{resize:none;min-height:46px;line-height:1.4}",
       ".elhc-cb input:focus,.elhc-cb textarea:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 3px rgba(79,115,150,.22)}",
       ".elhc-cb-err{color:#9a2b2b;font-size:11.5px}",
+      ".elhc-cb-storage-warning{color:var(--mid);font-size:12px;line-height:1.5;border-bottom:1px solid var(--cdark);padding-bottom:.6rem}",
       ".elhc-sr{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important}",
       ".elhc-cb-actions{display:flex;gap:.5rem;align-items:center}",
       ".elhc-cb-confirm-not-received{font:inherit;white-space:normal;min-height:44px;padding:.5rem .6rem;border:1px solid var(--p);border-radius:10px;background:#fff;color:var(--p);cursor:pointer}",
@@ -521,6 +549,7 @@
       addMsg("Your callback request is still being checked. Please wait for its result before starting another request.", "bot");
       return;
     }
+    checkCallbackStorage();
     if (callbackNeedsConfirmation()) {
       var reminder = el("div", "elhc-cb-reminder");
       log.appendChild(reminder);
@@ -537,6 +566,9 @@
 
     var form = el("div", "elhc-cb");
     var callbackPrefix = "elhc-callback-" + (++callbackInstance) + "-";
+    var storageWarning = el("div", "elhc-cb-storage-warning");
+    callbackStorageWarning(storageWarning);
+    form.appendChild(storageWarning);
 
     var nameWrap = el("div");
     var nameLabel = el("label", null, "Your name");
@@ -612,6 +644,7 @@
     form.appendChild(actions);
     log.appendChild(form);
     if (callbackStatus) callbackStatus.textContent = "";
+    if (!storageWarning.hidden) announceCallback(storageWarning.textContent, true);
     scrollDown();
     try { nameIn.focus(); } catch (e) {}
 
@@ -698,7 +731,14 @@
         "Accept": "application/json"
       },
       body: body
-    },form,rememberUncertainCallback);})
+    },form,function () {
+      rememberUncertainCallback();
+      // Storage can become unavailable after the form was opened. Warn before
+      // the POST begins, even if its response stays pending until navigation.
+      var warning = form.querySelector(".elhc-cb-storage-warning");
+      callbackStorageWarning(warning);
+      if (!warning.hidden) announceCallback(warning.textContent, true);
+    });})
       .then(function (r) {
         return r.json().catch(function () { return null; }).then(function (data) {
           if (!r.ok || !data || data.ok !== true || data.accepted !== true) {

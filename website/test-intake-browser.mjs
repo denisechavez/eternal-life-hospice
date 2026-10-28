@@ -744,6 +744,137 @@ try {
     console.log(`PASS ${currentCase}: validation, interactive challenge, load/error/expiry/timeout,
   security and delivery failures, preserved fields, retry, guarded confirmation`);
   }
+  // Every request still goes only to the isolated synthetic transport above.
+  // Install failures before page scripts and keep them across a real reload.
+  for (const mobile of [false, true]) for (const mode of ["write-blocked", "access-blocked", "late-write-failure"])
+  for (const outcome of ["pending", "unknown", "pre-send", "rejected", "accepted"]) {
+    if (mode !== "write-blocked" && !["pending", "unknown"].includes(outcome)) continue;
+    currentCase = `chat ${mobile ? "mobile/touch" : "desktop/keyboard"} ${mode} ${outcome} reload`;
+    const {state} = fixture;
+    state.security = [];state.posts = [];state.securityFailure = false;
+    state.submitResponse = null;state.moduleFailure = false;state.hold = false;
+    await call("Emulation.setDeviceMetricsOverride", {width: mobile ? 390 : 1280,
+      height: mobile ? 844 : 900, deviceScaleFactor: 1, mobile});
+    await call("Emulation.setTouchEmulationEnabled", {enabled: mobile});
+    await call("Page.navigate", {url: fixture.origin + "/"});
+    await until("document.readyState === 'complete'");
+    await evaluate('sessionStorage.removeItem("elhcCallbackUncertainUntil")');
+    const {identifier} = await call("Page.addScriptToEvaluateOnNewDocument", {source: `(()=>{
+      const storage=sessionStorage, nativeSet=Storage.prototype.setItem, nativeGet=Storage.prototype.getItem;
+      window.fixtureStorageWrites=[];
+      window.fixtureBlockStorage=true;
+      window.fixtureSavedStorage=()=>Object.fromEntries(Object.keys(storage).map(k=>[k,nativeGet.call(storage,k)]));
+      Storage.prototype.setItem=function(key,value){
+        if(this===storage){
+          fixtureStorageWrites.push([String(key),String(value)]);
+          if(${JSON.stringify(mode)}!=="late-write-failure" || fixtureBlockStorage)
+            throw new DOMException("Blocked storage (synthetic fixture)","QuotaExceededError");
+        }
+        return nativeSet.call(this,key,value);
+      };
+      if(${JSON.stringify(mode)}==="access-blocked")
+        Object.defineProperty(window,"sessionStorage",{get(){throw new DOMException("Blocked access (synthetic fixture)","SecurityError")}});
+    })()`});
+    try {
+      await call("Page.reload", {ignoreCache: true});
+      await until("document.readyState === 'complete' && window.fixtureSavedStorage");
+      const openCallback = async () => {
+        await until("document.querySelector('.elhc-launch')");
+        await activate(".elhc-launch", mobile);
+        await until("document.querySelector('.elhc-chip-cb')");
+        await activate(".elhc-chip-cb", mobile);
+        await until("document.querySelector('.elhc-cb')");
+      };
+      const assertStorageWarning = async () => {
+        const selector = ".elhc-cb-storage-warning";
+        await until(`document.querySelector('${selector}')?.hidden === false`);
+        const text = await evaluate(`document.querySelector('${selector}').textContent`);
+        assert.match(text, /cannot save.*after a reload or leaving this page/);
+        assert.match(text, /If you already sent a request and did not receive confirmation/);
+        assert.match(text, /call our care team to confirm receipt before sending another request/);
+        assert.match(text, /If the team confirms receipt, no new request is needed/);
+        assert.match(text, /Keep this page open/);
+        assert.match(text, /Need to speak with someone now\?We're here for you 24 hours a day, 7 days a week\./);
+        assert.doesNotMatch(text, /request failed|not been sent|try again|request was accepted/);
+        assert.equal(await evaluate(`document.querySelector('.elhc-sr[role="alert"]').textContent`), text);
+        const {nodes} = await call("Accessibility.getFullAXTree");
+        assert.ok(nodes.some(n => !n.ignored && n.role?.value === "StaticText" &&
+          n.name?.value.includes("Your browser cannot save the callback reminder")));
+        await focus(selector + ' a[href="tel:18059537273"]');
+        assert.equal(await evaluate("document.activeElement.textContent"), "Call 805.953.7273");
+      };
+      if (await evaluate("!!document.getElementById('elh-cc-decl')")) await activate("#elh-cc-decl", mobile);
+      if (mode === "late-write-failure") await evaluate("fixtureBlockStorage=false");
+      await openCallback();
+      if (mode === "late-write-failure")
+        assert.equal(await evaluate("document.querySelector('.elhc-cb-storage-warning').hidden"), true);
+      else await assertStorageWarning();
+      for (const [selector, value] of Object.entries(flows.find(f=>f.name==="chat").fields))
+        await fill(".elhc-cb " + selector, value);
+      if (mode === "late-write-failure") await evaluate("fixtureBlockStorage=true");
+      if (outcome === "pre-send") await evaluate("intakeFixture.scriptFailure=true");
+      if (outcome === "unknown") state.submitResponse = {disconnect: true};
+      if (outcome === "rejected") state.submitResponse = {status: 403, body: {ok: false, accepted: false}};
+      if (outcome === "pending") state.hold = true;
+      await activate(".elhc-cb-submit", mobile);
+      if (outcome !== "pre-send") {
+        await until("document.querySelector('#fixture-challenge')");
+        await activate("#fixture-challenge", mobile);
+      }
+      if (outcome === "pending") {
+        for (let i=0; !state.held && i<100; i++) await sleep(20);
+        assert.ok(state.held);
+        await assertStorageWarning(); // Including a write failure first discovered just before POST.
+      } else if (outcome === "unknown") {
+        await until("document.querySelector('.elhc-cb').__elhSubmissionState === 'unknown'");
+        await assertCallbackReminderAccessibility(".elhc-cb-err");
+        const text = await evaluate("document.querySelector('.elhc-cb-err').textContent");
+        assert.match(text, /browser could not save this reminder/);
+        assert.match(text, /Reloading or leaving this page will lose this protection/);
+        assert.match(text, /only while this page stays open/);
+        await activate(".elhc-cb-cancel", mobile);
+        await activate(".elhc-chip-cb", mobile);
+        await until("document.querySelector('.elhc-cb-reminder')");
+        assert.equal(await evaluate("document.querySelectorAll('.elhc-cb').length"), 0);
+        await assertCallbackReminderAccessibility(".elhc-cb-reminder");
+      } else if (outcome === "accepted") {
+        await until(`[...document.querySelectorAll('.elhc-sr[role="status"]')]
+          .some(el=>el.textContent.includes('SYNTHETIC-RECEIPT'))`);
+        assert.equal(await evaluate("document.querySelectorAll('.elhc-cb-reminder,.elhc-cb').length"), 0);
+      } else {
+        await until("document.querySelector('.elhc-cb-err').textContent.length > 0");
+        assert.match(await evaluate("document.querySelector('.elhc-cb-err').textContent"),
+          outcome === "pre-send" ? /not been sent/ : /not accepted/);
+        assert.equal(await evaluate("document.querySelector('.elhc-cb-submit').disabled"), false);
+        assert.equal(await evaluate("document.querySelector('.elhc-cb').__elhSubmissionState"), null);
+        assert.equal(await evaluate("document.querySelectorAll('.elhc-cb-confirm-not-received').length"), 0);
+      }
+      assert.equal(state.posts.length, outcome === "pre-send" ? 0 : 1);
+      assert.ok(await evaluate(`fixtureStorageWrites.every(([key,value])=>
+        !key.startsWith("elhcCallback") || /^\\d+$/.test(value))`), "Only timestamps may be written");
+      assert.doesNotMatch(await evaluate("JSON.stringify(fixtureSavedStorage())"),
+        /Synthetic|example.invalid|2025550190|clinical|elhcCallback/);
+      const count = state.posts.length, securityCount = state.security.length;
+      await call("Page.reload", {ignoreCache: true});
+      await until("document.readyState === 'complete' && window.fixtureSavedStorage");
+      await openCallback();
+      await assertStorageWarning();
+      assert.deepEqual(await evaluate(`Array.from(document.querySelectorAll('.elhc-cb input,.elhc-cb textarea')).map(e=>e.value)`),
+        ["", "", "", "", ""]);
+      await noCallbackSuccess();
+      if (state.held) {state.held();state.held=null;state.hold=false;}
+      await sleep(250);
+      assert.equal(state.posts.length, count, "Reload must not automatically retry");
+      assert.equal(state.security.length, securityCount, "Reload must not restart verification");
+      assert.doesNotMatch(await evaluate("JSON.stringify(fixtureSavedStorage())"),
+        /Synthetic|example.invalid|2025550190|clinical|elhcCallback/);
+      console.log(`PASS ${currentCase}: call-first fallback, truthful outcome, no saved contact or automatic retry`);
+    } finally {
+      await call("Page.removeScriptToEvaluateOnNewDocument", {identifier});
+      if (state.held) {state.held();state.held=null;}
+      state.hold=false;
+    }
+  }
   currentCase = "request category choices";
   await call("Page.navigate", {url: fixture.origin + "/"});
   await until("document.readyState === 'complete' && document.querySelector('#founderConnect option[value=\"aleksandra-meeting\"]')");

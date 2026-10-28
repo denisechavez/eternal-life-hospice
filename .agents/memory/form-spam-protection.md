@@ -118,6 +118,20 @@ must not encourage a duplicate, but an indefinite lockout can also prevent care.
 confirmed receipt needs no resubmission; confirmed non-receipt permits a new,
 blank manual request. Never use the reminder as authority to retry automatically.
 
+When browser storage is unavailable, use a conditional call-first warning on
+each fresh callback form rather than claiming reload protection still exists.
+Keep the current document's guard but explain that reloading loses it.
+
+**Why:** A fresh document cannot distinguish a first visit from an earlier
+unconfirmed send if the browser refused the marker. Saving contacts, adding
+cross-tab tracking or describing the request as failed would violate the
+privacy and delivery-outcome boundaries.
+
+**How to apply:** Check write capability, not just reads, and also handle a
+write failure first discovered immediately before sending. On subsequent loads,
+say "if you already sent" rather than asserting prior delivery or failure.
+Known pre-send failures and explicit rejections still permit a manual retry.
+
 ## Request acknowledgments
 
 The owner requires an immediate branded receipt email for support requests,
