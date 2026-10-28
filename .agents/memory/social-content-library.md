@@ -30,6 +30,7 @@ description: Master social content drafts file — location, structure, and key 
 - **Cadence:** GBP daily; Facebook, LinkedIn and Pinterest three times weekly.
 - **GBP:** Photo every time; Learn More vs. Call Now CTAs.
 - **All scripts written in brand voice** — user edits and posts; agent drafts only
+- **Keyword alignment:** Every post must align with its Journal article's relevant approved SEO keywords before export; see `seo-audit-decisions.md`.
 
 ## Thryv social import requirements
 

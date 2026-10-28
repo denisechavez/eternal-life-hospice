@@ -2548,3 +2548,17 @@ mtime_ms = 1793148919467
 storage_uri = "gcs://replit-rams-assets-kirk/rams/assets/repl:e1b2f643-7869-4565-af0e-10c34575ee8d/0897dda6-e605-4da0-8fd2-0b06a94b7b68/e12277cb-a350-43ab-9bb5-728d95b30f3f"
 storage_version_token = "1793148924192474"
 content_type = "text/csv"
+
+[[outputs]]
+id = "O1H5rKtVgV-5ouweF7GzN"
+uri = "file://generated-artifacts/Eternal-Thryv-October-27-31-2026-SEO.csv"
+type = "table"
+title = "Updated Thryv CSV · SEO-aligned posts"
+description = "All 14 captions checked against the approved keywords relevant to their matching Journal articles. Keeps verified public blog-image URLs, Approved=FALSE, Recycle=FALSE and blank schedules. Use this file instead of the previous CSV."
+logical_id = "d0f6e5c4-1950-4b02-96ba-a6d0d4dadf09"
+content_hash = "sha256:9dbe41b5c26c4941665fc0c2364ac1e9704ed45aa656114335a88c61089029f1"
+size = 20800
+mtime_ms = 1793149610639
+storage_uri = "gcs://replit-rams-assets-kirk/rams/assets/repl:e1b2f643-7869-4565-af0e-10c34575ee8d/d0f6e5c4-1950-4b02-96ba-a6d0d4dadf09/f0091f1d-09e7-4fb9-a4eb-13ffa7e8fb01"
+storage_version_token = "1793149622589214"
+content_type = "text/csv"
