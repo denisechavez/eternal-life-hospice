@@ -27,7 +27,8 @@ description: Master social content drafts file — location, structure, and key 
 - **Team on camera = safe** (they transition with the agency on sale)
 - **Brand = Eternal Life Hospice**, not a person — every post anchors to the institution
 - **Amethyst = monthly maximum** — Script 27 is the account launch post
-- **GBP:** Mon/Wed/Fri, photo every time, Learn More vs. Call Now CTAs
+- **Cadence:** GBP daily; Facebook, LinkedIn and Pinterest three times weekly.
+- **GBP:** Photo every time; Learn More vs. Call Now CTAs.
 - **All scripts written in brand voice** — user edits and posts; agent drafts only
 
 ## Thryv social import requirements
@@ -48,6 +49,18 @@ YouTube video work separate. Default drafts to `Approved=FALSE`, leave
 `Schedule` blank until authorized and do not enable recycling without consent.
 Confirm network assignment in Thryv because the supplied CSV has no platform
 column. Test a sample import before claiming the package is fully compatible.
+
+Deliver the actual CSV directly as a downloadable file; a review PDF or ZIP
+alone does not meet the Thryv handoff requirement.
+
+**Why:** The owner clarified, “I just need to create a downloadable file so I
+can upload.”
+
+The owner set GBP to daily and the other three non-video social platforms to
+three posts per week, superseding the older GBP Mon/Wed/Fri cadence.
+
+**Why:** This cadence was explicitly requested while scoping the October
+social package. TikTok and YouTube remain a separate video phase.
 
 ## Other social files (same folder)
 - `elh-4-week-multi-platform-content-kit.md` — 4-week calendar

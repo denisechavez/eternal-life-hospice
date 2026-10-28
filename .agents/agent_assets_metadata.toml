@@ -2506,3 +2506,45 @@ mtime_ms = 1793087437371
 storage_uri = "gcs://replit-rams-assets-kirk/rams/assets/repl:e1b2f643-7869-4565-af0e-10c34575ee8d/7aa8defa-58ea-4d91-aa70-74e8db01a82b/d53ac094-0944-43e6-b83c-f1504e66d05c"
 storage_version_token = "1793087448847849"
 content_type = "application/pdf"
+
+[[outputs]]
+id = "NawasJGPzqM_AbpeHhtHh"
+uri = "file://generated-artifacts/social-2026-10-27-31/Eternal-Social-October-27-31-2026-Review.pdf"
+type = "pdf"
+title = "Social posts for review · October 27–31"
+description = "15-page PDF: posting calendar, 14 platform-specific captions and their matching branded images. Review only; nothing scheduled."
+logical_id = "babc079f-731e-4f88-b4d2-2dd0c393ffd1"
+content_hash = "sha256:0cbc904d126cf953ac643b08112d5c5f880ccce4d6aceb8cc8b7f343e200c3d2"
+size = 4317441
+mtime_ms = 1793148668492
+storage_uri = "gcs://replit-rams-assets-kirk/rams/assets/repl:e1b2f643-7869-4565-af0e-10c34575ee8d/babc079f-731e-4f88-b4d2-2dd0c393ffd1/f979522b-0f68-4715-9569-c84d45db0f25"
+storage_version_token = "1793148844189813"
+content_type = "application/pdf"
+
+[[outputs]]
+id = "e98FXCDAW7pYGA-Y5hGwk"
+uri = "file://generated-artifacts/Eternal-Social-October-27-31-2026-REVIEW.zip"
+type = "unspecified"
+title = "Complete social package · October 27–31"
+description = "14 JPEG graphics, four draft Thryv CSVs, review PDF, captions and photo credits. CSVs are NOT import-ready until the image URLs are hosted and verified."
+logical_id = "e2d6c6e9-7939-4fdb-9e5f-a02c2b1b8730"
+content_hash = "sha256:dd1713ecaf02bf9ce9f5551691426cba72c223382baeb69ebc28a1ebf9fbb2d2"
+size = 12264505
+mtime_ms = 1793148670092
+storage_uri = "gcs://replit-rams-assets-kirk/rams/assets/repl:e1b2f643-7869-4565-af0e-10c34575ee8d/e2d6c6e9-7939-4fdb-9e5f-a02c2b1b8730/c4faee3a-bf53-44e7-b206-5ebc99d89870"
+storage_version_token = "1793148845374597"
+content_type = "application/octet-stream"
+
+[[outputs]]
+id = "es4dRS8jTRNLUdytwDYPm"
+uri = "file://generated-artifacts/Eternal-Thryv-October-27-31-2026.csv"
+type = "table"
+title = "Thryv upload CSV · October 27–31"
+description = "One CSV containing all 14 posts, labeled by platform. Uses verified, publicly hosted original blog photographs. Posts remain unapproved and unscheduled."
+logical_id = "0897dda6-e605-4da0-8fd2-0b06a94b7b68"
+content_hash = "sha256:65ce9e1979f4fbb82483d47c6951208652ea677cc533d2d99e66770853e4c2dd"
+size = 19094
+mtime_ms = 1793148919467
+storage_uri = "gcs://replit-rams-assets-kirk/rams/assets/repl:e1b2f643-7869-4565-af0e-10c34575ee8d/0897dda6-e605-4da0-8fd2-0b06a94b7b68/e12277cb-a350-43ab-9bb5-728d95b30f3f"
+storage_version_token = "1793148924192474"
+content_type = "text/csv"
