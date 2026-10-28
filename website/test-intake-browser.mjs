@@ -138,6 +138,11 @@ try {
   await call("Page.addScriptToEvaluateOnNewDocument", {source: fixtureBootstrap});
 
   const flows = [
+    {name: "newsletter", path: "/care-brief.html", form: 'form[name="elh-care-brief-signup"]',
+      submit: 'form[name="elh-care-brief-signup"] button[type="submit"]',
+      error: ".cbl-signup-error", success: ".cbl-signup-thanks:not([hidden])",
+      formName: "elh-care-brief-signup",
+      fields: {'[name="first_name"]': "Synthetic Newsletter", '[name="email"]': "newsletter@example.invalid"}},
     {name: "family", path: "/", form: 'form[name="elh-family"]', submit: '[data-submit="family"]',
       error: ".lead-submit-error", success: "#leadSuccess.show", formName: "elh-family",
       fields: {'[name="first_name"]': "Synthetic", '[name="last_name"]': "Family",
@@ -187,7 +192,7 @@ try {
     }
     for (const [field, value] of Object.entries(flow.fields)) await fill(flow.form + " " + field, value);
     if (flow.name === "provider") await evaluate(`document.querySelector('#rf-county').value="Ventura County"`);
-    if (outcome === "accepted") {
+    if (outcome === "accepted" && flow.name !== "newsletter") {
       const phone = flow.form + ' input[type="tel"]', email = flow.form + ' input[type="email"]';
       await until(`document.querySelector(${JSON.stringify(phone)}).getAttribute("inputmode")==="tel"`);
       assert.equal(await evaluate(`document.querySelector(${JSON.stringify(phone)}).value`), "202.555.0190");
@@ -255,15 +260,23 @@ try {
       const visibleError = flow.name === "chat" ? ".elhc-cb-err" : flow.error;
       assert.ok(await evaluate(
         `document.querySelector(${JSON.stringify(visibleError)}).querySelector('a[href="tel:18059537273"]')`));
-      assert.ok(await evaluate(
-        `document.querySelector(${JSON.stringify(visibleError)}).textContent.includes("We're here for you 24 hours a day, 7 days a week.")`));
+      if (flow.name === "newsletter") {
+        const text = await evaluate(`document.querySelector(${JSON.stringify(visibleError)}).textContent`);
+        assert.match(text, /newsletter subscription help/);
+        assert.doesNotMatch(text, /care team|help now|speak with someone now|24 hours|7 days|urgent/i);
+        assert.equal(await evaluate(`document.querySelector(${JSON.stringify(flow.form)}).hidden`), false);
+        assert.equal(await evaluate(`document.querySelector(${JSON.stringify(visibleError)}).hidden`), false);
+      } else {
+        assert.ok(await evaluate(
+          `document.querySelector(${JSON.stringify(visibleError)}).textContent.includes("We're here for you 24 hours a day, 7 days a week.")`));
+      }
     };
     if (outcome === "module-unavailable") {
       await activate(flow.submit, mobile);await failed();
       assert.equal(state.posts.length, 0);
       assert.equal(state.security.length, 0);
       assert.match(await evaluate(`document.querySelector(${JSON.stringify(flow.error)}).textContent`),
-        /couldn't load the security check.*not been sent/);
+        flow.name === "newsletter" ? /security check.*signup has not been sent/ : /couldn't load the security check.*not been sent/);
       console.log(`PASS ${currentCase}: no POST, preserved fields and clickable phone`);
       continue;
     }
@@ -277,8 +290,8 @@ try {
       }[outcome];
       await start();await activate("#fixture-challenge", mobile);await failed(true);
       const text = await evaluate(`document.querySelector(${JSON.stringify(flow.error)}).textContent`);
-      assert.match(text, /couldn't confirm whether your request was received/);
-      assert.match(text, /avoid a duplicate request/);
+      assert.match(text, flow.name === "newsletter" ? /couldn't confirm whether your newsletter signup was received/ : /couldn't confirm whether your request was received/);
+      assert.match(text, flow.name === "newsletter" ? /avoid a duplicate signup/ : /avoid a duplicate request/);
       assert.doesNotMatch(text, /not been sent|not accepted|try again|Please retry|couldn't send/);
       assert.equal(state.posts.length, 1, currentCase + ": missing synthetic POST");
       const securityCount = state.security.length;
@@ -327,13 +340,17 @@ try {
       await evaluate('intakeFixture.challenge="success"');
       await start();await activate("#fixture-challenge", mobile);await failed();
       assert.match(await evaluate(`document.querySelector(${JSON.stringify(flow.error)}).textContent`),
-        /request was not accepted/);
+        flow.name === "newsletter" ? /newsletter signup was not accepted/ : /request was not accepted/);
     }
     state.submitResponse = null;state.hold = true;
     await start();
     const before = state.posts.length;
     // The disabled submit cannot create a second challenge or request.
-    await evaluate(`document.querySelector(${JSON.stringify(flow.submit)}).click()`);
+    await evaluate(`(()=>{
+      document.querySelector(${JSON.stringify(flow.submit)}).click();
+      const form=document.querySelector(${JSON.stringify(flow.form)});
+      if(form.tagName==='FORM')form.dispatchEvent(new Event('submit',{cancelable:true}));
+    })()`);
     assert.equal(await evaluate("intakeFixture.renders-intakeFixture.removed"), 1);
     assert.equal(state.posts.length, before, "POST before interactive verification");
     await focus("#fixture-challenge");
@@ -362,15 +379,28 @@ try {
     assert.equal(post.fields["cf-turnstile-response"], "synthetic-provider-token");
     assert.equal(new Set(state.posts.map(post => post.fields._elh_security)).size, state.posts.length,
       "Each retry must request a fresh security token");
-    assert.equal(post.fields.phone.replace(/\D/g, ""), "2025550190", "Out-of-area numbers must be preserved");
+    if (flow.name !== "newsletter")
+      assert.equal(post.fields.phone.replace(/\D/g, ""), "2025550190", "Out-of-area numbers must be preserved");
     assert.ok(post.at - security.at >= 140, "Shared minimum-age wait was skipped");
     assert.match(post.headers["content-type"], /application\/x-www-form-urlencoded/);
     assert.equal(await evaluate("document.querySelectorAll('[aria-label=\"Spam protection\"]').length"), 0);
     assert.ok(state.assets.includes("/assets/intake-security.js"), "Real shared module was not loaded");
+    if (flow.name === "newsletter") {
+      assert.ok(await evaluate(`document.querySelector(${JSON.stringify(flow.form)}).hidden`));
+      assert.match(await evaluate(`document.querySelector(${JSON.stringify(flow.success)}).textContent`),
+        /Thank you.*you’re on the list.*next issue of The Eternal Care Brief/s);
+      assert.ok(await evaluate(`document.querySelector(${JSON.stringify(flow.error)}).hidden`));
+      const count = state.posts.length, securityCount = state.security.length;
+      await evaluate(`document.querySelector(${JSON.stringify(flow.form)}).dispatchEvent(new Event('submit',{cancelable:true}))`);
+      await sleep(250);
+      assert.equal(state.posts.length, count, "Accepted newsletter signup retried");
+      assert.equal(state.security.length, securityCount, "Accepted newsletter signup restarted verification");
+    } else {
     assert.ok(await evaluate(`document.body.innerText.includes("SYNTHETIC-RECEIPT")`));
     assert.ok(await evaluate(`document.body.innerText.includes("Need to speak with someone now?")`));
     assert.ok(await evaluate(`document.body.innerText.includes("We're here for you 24 hours a day, 7 days a week.")`));
     assert.ok(await evaluate(`Array.from(document.querySelectorAll('a[href="tel:18059537273"]')).some(a=>a.textContent==="Call 805.953.7273")`));
+    }
     console.log(`PASS ${currentCase}: validation, interactive challenge, load/error/expiry/timeout,
   security and delivery failures, preserved fields, retry, guarded confirmation`);
   }

@@ -147,7 +147,7 @@ a.cbl-topic:focus-visible{outline:2px solid #B08D3E;outline-offset:2px}
       <p class="cbl-signup-thanks" hidden>Thank you &mdash; you&rsquo;re on the list. The next issue of The Eternal Care Brief will arrive in your inbox.</p>
     </div>
     <div role="alert" aria-live="assertive" aria-atomic="true">
-      <p class="cbl-signup-error" hidden style="font-size:14px;line-height:1.65;color:#F5F0EB;max-width:520px;margin:1rem auto 0">We couldn&rsquo;t confirm your signup. Please try again, or call <a href="tel:18059537273" style="color:#C9B07E;font-weight:700">805.953.7273</a> if you need help now.</p>
+      <p class="cbl-signup-error" hidden aria-live="assertive" aria-atomic="true" style="font-size:14px;line-height:1.65;color:#F5F0EB;max-width:520px;margin:1rem auto 0"></p>
     </div>
   </div>
 </section>
@@ -195,14 +195,40 @@ a.cbl-topic:focus-visible{outline:2px solid #B08D3E;outline-offset:2px}
 (function(){
   var f=document.querySelector('form[name="elh-care-brief-signup"]');
   if(!f)return;
+  var btn=f.querySelector('button[type="submit"]');
+  var originalLabel=btn.textContent;
+  var failureMessages={
+    verification:"We couldn't complete the security check, so your newsletter signup has not been sent. Your information is still here. You can try the security check again.",
+    rejected:"Your newsletter signup was not accepted. Your information is still here. Please contact us for help with your subscription before trying again.",
+    unknown:"We couldn't confirm whether your newsletter signup was received. To avoid a duplicate signup, please contact us to confirm your subscription before signing up again. Your information is still here."
+  };
   f.addEventListener('submit',function(e){
     e.preventDefault();
+    if(f.__elhSubmissionState)return;
+    f.__elhSubmissionState='pending';
+    btn.disabled=true;btn.textContent='Signing up…';
     var data=new URLSearchParams(new FormData(f)).toString();
     var er=document.querySelector('.cbl-signup-error');if(er)er.hidden=true;
-    import('/assets/intake-security.js').then(function(security){return security.submit({method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded','Accept':'application/json'},body:data},f);})
+    import('/assets/intake-security.js').catch(function(){var error=new Error('Security check unavailable');error.intakeOutcome='verification';throw error;})
+      .then(function(security){return security.submit({method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded','Accept':'application/json'},body:data},f);})
       .then(function(r){return r.json().catch(function(){return null;}).then(function(body){if(!r.ok||!body||body.ok!==true||body.accepted!==true)throw new Error('submit failed');return body;});})
-      .then(function(){if(window.elhTrackEvent){window.elhTrackEvent('form_success',{page:location.pathname||'/',form:'elh-care-brief-signup'});}f.hidden=true;var t=document.querySelector('.cbl-signup-thanks');if(t)t.hidden=false;})
-      .catch(function(){if(er)er.hidden=false;});
+      .then(function(){f.__elhSubmissionState='accepted';f.hidden=true;var t=document.querySelector('.cbl-signup-thanks');if(t)t.hidden=false;if(window.elhTrackEvent){window.elhTrackEvent('form_success',{page:location.pathname||'/',form:'elh-care-brief-signup'});}})
+      .catch(function(error){
+        if(f.__elhSubmissionState==='accepted')return;
+        var outcome=error&&error.intakeOutcome;
+        if(!Object.prototype.hasOwnProperty.call(failureMessages,outcome))outcome='unknown';
+        f.__elhSubmissionState=outcome==='unknown'?'unknown':null;
+        btn.disabled=outcome==='unknown';
+        btn.textContent=outcome==='unknown'?'Signup status unconfirmed':originalLabel;
+        if(er){
+          er.textContent=failureMessages[outcome]+' ';
+          var contact=document.createElement('a');
+          contact.href='tel:18059537273';
+          contact.style.cssText='color:#C9B07E;font-weight:700';
+          contact.textContent='Call 805.953.7273 for newsletter subscription help.';
+          er.appendChild(contact);er.hidden=false;
+        }
+      });
   });
 })();
 </script>
