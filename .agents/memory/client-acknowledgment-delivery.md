@@ -26,3 +26,9 @@ A successful secure SMTP connection is not proof of mailbox authorization or ema
 **Why:** Workspace checks reached Google's secure SMTP service but connections closed during authentication on both supported secure connection methods, without a password-rejection response. That observation alone does not establish invalid credentials or a hosting restriction.
 
 **How to apply:** Verify authentication separately for both role mailboxes, then obtain consent for a real receipt test. Report authentication failures plainly and keep publication blocked; do not repeatedly retry, assume passwords are wrong, or fall back to the employee mailbox or Brevo.
+
+Google Workspace User log events are not an exhaustive SMTP sign-in record.
+
+**Why:** Google's administrator documentation says email-client and non-browser sign-ins are omitted unless the programmatic session was considered suspicious. The advanced Security investigation tool also has edition restrictions that the basic Reporting audit view does not share.
+
+**How to apply:** Start with Reporting → Audit and investigation → User log events when guiding the owner. Missing SMTP events do not prove the request never reached Google or that Replit blocked it. Inspect available failure details before recommending any security-setting change.
