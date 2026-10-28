@@ -1,9 +1,14 @@
 #!/usr/bin/env python3
 """Website phone changes must not alter office contacts or acknowledgment mail."""
+import gzip
 import io
 import json
 import re
+import tempfile
 import unittest
+from email.message import Message
+from email.parser import BytesParser
+from http.server import SimpleHTTPRequestHandler
 from pathlib import Path
 from unittest.mock import patch
 
@@ -16,7 +21,17 @@ from devserver import PrettyURLHandler
 from fragments import FOOTER_HTML
 
 
-class WebsitePhoneTests(unittest.TestCase):
+class NetworkFreePhoneTests(unittest.TestCase):
+    def setUp(self):
+        # No HTTP requests, form submissions, email deliveries or AI calls.
+        for target in ("socket.socket.connect", "socket.socket.connect_ex",
+                       "socket.create_connection", "urllib.request.urlopen"):
+            blocker = patch(target, side_effect=AssertionError("External transport forbidden"))
+            blocker.start()
+            self.addCleanup(blocker.stop)
+
+
+class WebsitePhoneTests(NetworkFreePhoneTests):
     def assert_public_call_links(self, document):
         links = re.findall(r'<a\b[^>]*href=["\']tel:([^"\']+)["\'][^>]*>(.*?)</a>',
                            document, re.S | re.I)
@@ -31,14 +46,6 @@ class WebsitePhoneTests(unittest.TestCase):
             self.assertEqual(digits, "18054099262", f"Wrong public call target: {target}")
             if re.search(r"\d{3}[. -]\d{3}[. -]\d{4}", visible):
                 self.assertIn("805.409.9262", visible, f"Wrong call label: {visible}")
-
-    def setUp(self):
-        # No HTTP requests, form submissions, email deliveries or AI calls.
-        for target in ("socket.socket.connect", "socket.socket.connect_ex",
-                       "socket.create_connection", "urllib.request.urlopen"):
-            blocker = patch(target, side_effect=AssertionError("External transport forbidden"))
-            blocker.start()
-            self.addCleanup(blocker.stop)
 
     def boundary(self, route, body, status=200):
         handler = object.__new__(PrettyURLHandler)
@@ -253,6 +260,213 @@ class WebsitePhoneTests(unittest.TestCase):
                     actual = json.loads(handler.wfile.getvalue())
                     expected = website_phone.public_payload(original) if route in website_phone.PUBLIC_API_ROUTES else original
                     self.assertEqual(actual, expected)
+
+
+class StaticWebsitePhoneTests(NetworkFreePhoneTests):
+    """Exercise real send_head branches without a socket or approved documents."""
+
+    OFFICE = '<a href="tel:18059537273">Office 805.953.7273</a>'
+    OFFICE_PARAGRAPH = '<p>Our office phone is 805.953.7273.</p>'
+    OLD_CALL = '<a href="tel:18059537273">Call 805.953.7273</a>'
+    MAIN_CALL = '<a href="tel:18054099262">Call 805.409.9262</a>'
+    RELATED_CALL = '<a href="tel:18054101151">Referral 805.410.1151</a>'
+    MAIN_RELATED_CALL = '<a href="tel:18054099262">Referral 805.409.9262</a>'
+
+    def setUp(self):
+        super().setUp()
+        temporary = tempfile.TemporaryDirectory(prefix="unsigned-phone-responses-")
+        self.addCleanup(temporary.cleanup)
+        self.root = Path(temporary.name)
+        self.approved_cta = acknowledgments.CTA_HTML
+        self.approved_templates = dict(acknowledgments.TEMPLATES)
+        self.source = (
+            '<!doctype html><html><head><meta charset="utf-8">'
+            '<script type="application/ld+json">'
+            '{"@type":"Organization","telephone":"+18059537273"}'
+            '</script></head><body><main><h1>Synthetic café — care</h1>'
+            + self.OLD_CALL + self.OFFICE + self.OFFICE_PARAGRAPH
+            + '<p>Fax 805.953.8530; Medicare 1-800-633-4227.</p>'
+            + '<p>Unsigned test content.</p>' * 40
+            + '</main></body></html>'
+        ).encode("utf-8")
+        for name in ("synthetic.html", "index.html"):
+            (self.root / name).write_bytes(self.source)
+
+        def replace(target, **kwargs):
+            mocked = patch(target, **kwargs)
+            result = mocked.start()
+            self.addCleanup(mocked.stop)
+            return result
+
+        replace("devserver.ROOT", new=str(self.root))
+        # Inventory normally scans approved source pages. Supply unsigned entries
+        # instead; never allow a release snapshot or a provider to be consulted.
+        self.inventory = replace("internal_links.inventory", return_value={})
+        self.render_links = replace(
+            "internal_links.render_links",
+            side_effect=lambda text, *args, **kwargs: text.replace(
+                "</main>", self.RELATED_CALL + "</main>"))
+        replace("devserver.PrettyURLHandler._journal_today", return_value="2026-01-01")
+        replace("devserver.PrettyURLHandler._journal_pages", return_value={})
+        replace("devserver.PrettyURLHandler._hide_unreleased_links",
+                side_effect=lambda text, route: text)
+        for target in ("devserver.PrettyURLHandler._released_journal",
+                       "devserver.journal_release.released",
+                       "devserver.process_submission", "devserver.process_chat",
+                       "devserver.get_reviews", "devserver.notify_delivery_failure"):
+            replace(target, side_effect=AssertionError("Journal/provider access forbidden"))
+
+    def tearDown(self):
+        self.assertEqual(acknowledgments.CTA_HTML, self.approved_cta)
+        self.assertEqual(acknowledgments.TEMPLATES, self.approved_templates)
+        super().tearDown()
+
+    def static_response(self, route, method="GET", accept_gzip=False):
+        """Use stdlib body handling, real headers and our real send_head.
+
+        Deliberately bypass GET/HEAD routing for APIs and Journal publication:
+        this test owns only static response serving, with an isolated directory.
+        """
+        handler = object.__new__(PrettyURLHandler)
+        handler.path = route
+        handler.directory = str(self.root)
+        handler.command = method
+        handler.request_version = "HTTP/1.1"
+        handler.requestline = f"{method} {route} HTTP/1.1"
+        handler.headers = Message()
+        if accept_gzip:
+            handler.headers["Accept-Encoding"] = "gzip"
+        handler.wfile = io.BytesIO()
+        handler.log_message = lambda *args: None
+        with patch.object(handler, "send_head", wraps=handler.send_head) as send_head:
+            if method == "HEAD":
+                SimpleHTTPRequestHandler.do_HEAD(handler)
+            else:
+                SimpleHTTPRequestHandler.do_GET(handler)
+            send_head.assert_called_once_with()
+        raw_headers, body = handler.wfile.getvalue().split(b"\r\n\r\n", 1)
+        status, raw_headers = raw_headers.split(b"\r\n", 1)
+        self.assertRegex(status, rb"^HTTP/\d\.\d 200 ")
+        headers = BytesParser().parsebytes(raw_headers + b"\r\n\r\n")
+        self.assertEqual(len(headers.get_all("Content-Length", [])), 1)
+        if method == "HEAD":
+            self.assertEqual(body, b"", "HEAD must never write response bytes")
+        else:
+            self.assertEqual(int(headers["Content-Length"]), len(body))
+        return headers, body
+
+    def response_matrix(self, route, expected_gzip, media_type, expected_headers=None):
+        """Check decoded GET parity and HEAD lengths for both encodings."""
+        decoded = []
+        for accept_gzip in (False, True):
+            with self.subTest(route=route, gzip=accept_gzip):
+                headers, body = self.static_response(route, accept_gzip=accept_gzip)
+                head, _ = self.static_response(route, "HEAD", accept_gzip)
+                compressed = accept_gzip and expected_gzip
+                self.assertEqual(headers.get("Content-Encoding"),
+                                 "gzip" if compressed else None)
+                self.assertEqual(headers.get_content_type(), media_type)
+                for name in ("Content-Length", "Content-Type", "Content-Encoding",
+                             "Vary", "Cache-Control", "Last-Modified"):
+                    self.assertEqual(head.get(name), headers.get(name), name)
+                for name, value in (expected_headers or {}).items():
+                    self.assertEqual(headers.get(name), value)
+                    self.assertEqual(head.get(name), value)
+                if compressed:
+                    self.assertIn("Accept-Encoding", headers.get("Vary", ""))
+                decoded.append(gzip.decompress(body) if compressed else body)
+        self.assertEqual(decoded[0], decoded[1], "Encoding must not change public content")
+        return decoded[0]
+
+    def test_html_with_and_without_contextual_inventory(self):
+        for contextual in (False, True):
+            self.inventory.return_value = (
+                {"/synthetic": None, "/": None} if contextual else {})
+            for route in ("/synthetic?unsigned=1", "/synthetic.html", "/"):
+                with self.subTest(contextual=contextual, route=route):
+                    self.render_links.reset_mock()
+                    document = self.response_matrix(
+                        route, expected_gzip=contextual, media_type="text/html").decode("utf-8")
+                    self.assertIn(self.MAIN_CALL, document)
+                    self.assertNotIn(self.OLD_CALL, document)
+                    self.assertIn('"telephone":"+18054099262"', document)
+                    self.assertIn(self.OFFICE, document)
+                    self.assertIn(self.OFFICE_PARAGRAPH, document)
+                    self.assertIn("Fax 805.953.8530; Medicare 1-800-633-4227.", document)
+                    self.assertIn("Synthetic café — care", document)
+                    if contextual:
+                        self.assertEqual(self.render_links.call_count, 4)
+                        self.assertIn(self.MAIN_RELATED_CALL, document)
+                        self.assertNotIn(self.RELATED_CALL, document)
+                    else:
+                        self.render_links.assert_not_called()
+                    self.assertEqual((self.root / "synthetic.html").read_bytes(), self.source)
+                    self.assertEqual((self.root / "index.html").read_bytes(), self.source)
+
+    def test_journal_response_uses_only_an_unsigned_in_memory_snapshot(self):
+        directory = self.root / "blog"
+        directory.mkdir()
+        path = directory / "synthetic.html"
+        path.write_bytes(b"<article>Unsigned disk fixture, not the snapshot.</article>")
+        record = {"html": self.source.decode("utf-8"), "revision": "unsigned-fixture"}
+        # Exercise the snapshot response branch without reading a real approval,
+        # manifest or Journal document. The underlying release loader stays blocked.
+        with patch.object(PrettyURLHandler, "_released_journal",
+                          return_value={"synthetic": record}) as released:
+            document = self.response_matrix(
+                "/blog/synthetic", False, "text/html",
+                {"X-Journal-Revision": "unsigned-fixture"}).decode("utf-8")
+            self.assertEqual(released.call_count, 4)
+        self.inventory.assert_not_called()
+        self.render_links.assert_not_called()
+        self.assertIn(self.MAIN_CALL, document)
+        self.assertNotIn(self.OLD_CALL, document)
+        self.assertIn('"telephone":"+18054099262"', document)
+        self.assertIn(self.OFFICE, document)
+        self.assertIn(self.OFFICE_PARAGRAPH, document)
+        self.assertEqual(record["html"].encode("utf-8"), self.source)
+        self.assertEqual(path.read_bytes(),
+                         b"<article>Unsigned disk fixture, not the snapshot.</article>")
+
+    def test_llms_discovery_projects_phone_even_when_gzip_is_requested(self):
+        source = ("# Synthetic café — discovery\n"
+                  "Call 805.953.7273; tel:+18059537273\n"
+                  "Referral +1-805-410-1151\n"
+                  "Fax 805.953.8530; Medicare 1-800-633-4227\n"
+                  + "Unsigned discovery information.\n" * 40).encode("utf-8")
+        (self.root / "llms.txt").write_bytes(source)
+        # This dynamic text branch intentionally serves identity, even to gzip clients.
+        body = self.response_matrix("/llms.txt?unsigned=1", False, "text/plain")
+        self.assertEqual(body, source.decode("utf-8").replace(
+            "805.953.7273", "805.409.9262").replace(
+            "+18059537273", "+18054099262").replace(
+            "+1-805-410-1151", "+1-805-409-9262").encode("utf-8"))
+        self.assertEqual((self.root / "llms.txt").read_bytes(), source)
+
+    def test_public_metadata_preserves_canonical_main_and_explicit_office(self):
+        directory = self.root / ".well-known"
+        directory.mkdir()
+        # Metadata is authored with Main, not HTML-projected at runtime. Office
+        # fields must not be swept up by a future blanket static rewrite.
+        for large in (False, True):
+            with self.subTest(large=large):
+                metadata = {
+                    "openapi": "3.1.0",
+                    "info": {"title": "Synthetic café", "version": "1",
+                             "contact": {"phone": "805.409.9262",
+                                         "url": "tel:18054099262"}},
+                    "officePhone": "805.953.7273",
+                    "description": "Unsigned metadata. " * (80 if large else 1),
+                }
+                source = json.dumps(metadata, ensure_ascii=False).encode("utf-8")
+                self.assertEqual(len(source) >= 512, large)
+                path = directory / "openapi.json"
+                path.write_bytes(source)
+                body = self.response_matrix(
+                    "/.well-known/openapi.json?unsigned=1", large, "application/json")
+                self.assertEqual(body, source)
+                self.assertEqual(json.loads(body), metadata)
+                self.assertEqual(path.read_bytes(), source)
 
 
 if __name__ == "__main__":
