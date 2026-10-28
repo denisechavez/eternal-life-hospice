@@ -76,8 +76,14 @@ export async function submit(options, form, beforeSend) {
   const body = options.body instanceof FormData
     ? options.body : new URLSearchParams(options.body);
   try {
+    // Per-attempt, unguessable proof stays only in memory. Do not bind a
+    // legitimate browser to the hosting proxy's changing network address.
+    const bytes = new Uint8Array(32);
+    globalThis.crypto.getRandomValues(bytes);
+    const browserProof = Array.from(bytes, byte => byte.toString(16).padStart(2, "0")).join("");
     const response = await fetch("/api/form-security?form=" + encodeURIComponent(body.get("form-name") || ""), {
-      credentials: "same-origin", cache: "no-store", headers: {Accept: "application/json"}
+      credentials: "same-origin", cache: "no-store",
+      headers: {Accept: "application/json", "X-ELH-Intake-Proof": browserProof}
     });
     if (!response.ok) throw new Error("Security unavailable");
     const security = await response.json();
@@ -90,6 +96,7 @@ export async function submit(options, form, beforeSend) {
       new Promise(resolve => window.setTimeout(resolve, security.waitMs + 100))
     ]);
     body.set("_elh_security", security.token);
+    body.set("_elh_browser_proof", browserProof);
     if (verification) body.set("cf-turnstile-response", verification);
   } catch (_) {
     throw submissionError("verification");

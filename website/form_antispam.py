@@ -18,7 +18,11 @@ MIN_AGE_SECONDS = 1.8
 TOKEN_TTL_SECONDS = 1800
 VERIFY_URL = "https://challenges.cloudflare.com/turnstile/v0/siteverify"
 SAFE_MESSAGE = "We could not verify this submission. Please retry or call 805.953.7273."
-CHAT_VERSION = hashlib.sha256((Path(__file__).parent / "elh-preview/assets/chat.js").read_bytes()).hexdigest()[:12]
+ASSETS = Path(__file__).parent / "elh-preview/assets"
+SECURITY_VERSION = hashlib.sha256((ASSETS / "intake-security.js").read_bytes()).hexdigest()[:12]
+CHAT_VERSION = hashlib.sha256(
+    (ASSETS / "chat.js").read_bytes() + SECURITY_VERSION.encode()
+).hexdigest()[:12]
 
 
 def unavailable(status):
@@ -40,6 +44,8 @@ def guard_database():
 
 def refresh_assets(document):
     """Retired immutable chat URLs must not keep posting without protection."""
+    document = re.sub(r'(["\'])/assets/intake-security\.js(?:\?[^"\']*)?',
+                      lambda match: match[1] + "/assets/intake-security.js?v=" + SECURITY_VERSION, document)
     return re.sub(r'(\bsrc=["\'])/assets/chat\.js(?:\?[^"\']*)?',
                   lambda match: match[1] + "/assets/chat.js?v=" + CHAT_VERSION, document)
 
@@ -72,11 +78,19 @@ def turnstile_configuration():
     return site, secret
 
 
-def issue(form_name, client):
+def valid_browser_proof(proof):
+    return isinstance(proof, str) and re.fullmatch(r"[a-f0-9]{64}", proof) is not None
+
+
+def issue(form_name, browser_proof):
     if form_name not in FORM_RULES:
         raise IntakeError("unknown_form", "This form is not available.", 400)
+    if not valid_browser_proof(browser_proof):
+        raise IntakeError("verification_required", SAFE_MESSAGE, 403)
     site, _ = turnstile_configuration()
-    payload = {"form": form_name, "client": digest("client:" + client),
+    # A fresh, in-memory browser proof binds this attempt, not the proxy's
+    # changing address. The raw proof is never put in URLs, tokens or storage.
+    payload = {"v": 2, "form": form_name, "client": digest("browser-proof:" + browser_proof),
                "at": time.time(), "nonce": secrets.token_hex(16)}
     encoded = base64.urlsafe_b64encode(json.dumps(payload, separators=(",", ":")).encode()).decode().rstrip("=")
     return {"token": encoded + "." + digest("token:" + encoded),
@@ -118,7 +132,8 @@ def verify_turnstile(token, hostname):
 
 def reserve(fields, client, hostname):
     token = fields.get("_elh_security", "")
-    if not token or len(token) > 1500:
+    proof = fields.get("_elh_browser_proof", "")
+    if not token or len(token) > 1500 or not valid_browser_proof(proof):
         raise IntakeError("verification_required", SAFE_MESSAGE, 403)
     try:
         encoded, signature = token.split(".")
@@ -128,7 +143,8 @@ def reserve(fields, client, hostname):
         age = time.time() - payload["at"]
         if not MIN_AGE_SECONDS <= age <= TOKEN_TTL_SECONDS:
             raise ValueError()
-        if payload["form"] != fields.get("form-name") or not hmac.compare_digest(payload["client"], digest("client:" + client)):
+        if (payload.get("v") != 2 or payload["form"] != fields.get("form-name")
+                or not hmac.compare_digest(payload["client"], digest("browser-proof:" + proof))):
             raise ValueError()
         nonce = digest("used:" + payload["nonce"])
     except IntakeError:

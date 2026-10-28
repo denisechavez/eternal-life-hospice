@@ -173,9 +173,13 @@ class GuardTests(unittest.TestCase):
             self.addCleanup(send.stop)
         self.fields = {"form-name": "elh-family", "first_name": "Synthetic",
                        "last_name": "Family", "phone": "2025550190", "message": "Please call."}
+        self.proof = uuid.uuid4().hex + uuid.uuid4().hex
 
-    def request(self, path, data=None, origin=None):
-        headers = {"Origin": origin or self.origin, "Content-Type": "application/x-www-form-urlencoded"}
+    def request(self, path, data=None, origin=None, forwarded=None):
+        headers = {"Origin": origin or self.origin, "Content-Type": "application/x-www-form-urlencoded",
+                   "X-ELH-Intake-Proof": self.proof}
+        if forwarded:
+            headers["X-Forwarded-For"] = forwarded
         request = Request(self.origin + path, headers=headers,
                           data=urlencode(data).encode() if data is not None else None)
         try:
@@ -189,6 +193,7 @@ class GuardTests(unittest.TestCase):
         status, response = self.request("/api/form-security?form=" + fields["form-name"])
         self.assertEqual(status, 200)
         fields["_elh_security"] = response["token"]
+        fields["_elh_browser_proof"] = self.proof
         return fields
 
     def test_real_browser_style_challenge_get_and_synthetic_referral(self):
@@ -196,7 +201,8 @@ class GuardTests(unittest.TestCase):
         request = Request(self.origin + "/api/form-security?form=elh-physician",
                           headers={"Sec-Fetch-Site": "same-origin",
                                    "Referer": self.origin + "/refer",
-                                   "Accept": "application/json"})
+                                   "Accept": "application/json",
+                                   "X-ELH-Intake-Proof": self.proof})
         with urlopen(request, timeout=8) as response:
             self.assertEqual(response.status, 200)
             security = json.loads(response.read())
@@ -204,7 +210,7 @@ class GuardTests(unittest.TestCase):
         fields = {"form-name": "elh-physician", "referrer_name": "Synthetic Professional",
                   "phone": "2025550190",
                   "message": "Synthetic regression only.",
-                  "_elh_security": security["token"]}
+                  "_elh_security": security["token"], "_elh_browser_proof": self.proof}
         self.assertEqual(self.request("/api/form-submit", fields)[0], 200)
         self.mail.assert_called_once()
 
@@ -229,6 +235,44 @@ class GuardTests(unittest.TestCase):
         self.assertEqual(self.request("/api/form-submit", fields)[0], 200)
         self.assertEqual(self.request("/api/form-submit", fields)[0], 403)
         self.assertEqual(self.mail.call_count, 1)
+
+    def test_proxy_address_changes_do_not_reject_same_browser_attempt(self):
+        status, challenge = self.request("/api/form-security?form=elh-family",
+                                         forwarded="192.0.2.11")
+        self.assertEqual(status, 200)
+        fields = {**self.fields, "_elh_security": challenge["token"],
+                  "_elh_browser_proof": self.proof}
+        self.assertEqual(self.request("/api/form-submit", fields,
+                                      forwarded="192.0.2.22")[0], 200)
+        self.assertEqual(self.request("/api/form-submit", fields,
+                                      forwarded="192.0.2.33")[0], 403)
+        self.mail.assert_called_once()
+
+    def test_missing_wrong_and_malformed_browser_proofs_do_not_deliver(self):
+        fields = self.protected()
+        for proof in ("", "a" * 64, "not-a-proof", "b" * 65):
+            with self.subTest(proof_length=len(proof)):
+                status, result = self.request("/api/form-submit",
+                    {**fields, "_elh_browser_proof": proof})
+                self.assertEqual(status, 403)
+                self.assertIn(result["error"], ("verification_required", "verification_invalid"))
+        self.mail.assert_not_called()
+        # A rejected cross-browser attempt must not consume the valid token.
+        self.assertEqual(self.request("/api/form-submit", fields)[0], 200)
+        self.mail.assert_called_once()
+
+    def test_security_get_requires_browser_proof_and_never_echoes_it(self):
+        for proof in ("", "short", "g" * 64):
+            with patch.object(self, "proof", proof):
+                self.assertEqual(self.request("/api/form-security?form=elh-family")[0], 403)
+        status, result = self.request("/api/form-security?form=elh-family")
+        self.assertEqual(status, 200)
+        import base64
+        encoded = result["token"].split(".")[0]
+        payload = json.loads(base64.urlsafe_b64decode(encoded + "=" * (-len(encoded) % 4)))
+        self.assertEqual(payload["v"], 2)
+        self.assertNotIn(self.proof, json.dumps(result) + json.dumps(payload))
+        self.mail.assert_not_called()
 
     def test_duplicate_with_new_token_is_not_delivered_twice(self):
         self.assertEqual(self.request("/api/form-submit", self.protected())[0], 200)
@@ -312,6 +356,11 @@ class GuardTests(unittest.TestCase):
         updated = guard.refresh_assets(original)
         self.assertIn("v=" + guard.CHAT_VERSION, updated)
         self.assertNotIn("20260805", updated)
+        source = """import('/assets/intake-security.js');import("/assets/intake-security.js?v=old");"""
+        updated = guard.refresh_assets(source)
+        self.assertEqual(updated.count("/assets/intake-security.js?v=" + guard.SECURITY_VERSION), 2)
+        self.assertNotIn("v=old", updated)
+        self.assertEqual(guard.refresh_assets(updated), updated)
 
     def test_guard_storage_outage_fails_closed_with_phone_fallback(self):
         fields = self.protected()

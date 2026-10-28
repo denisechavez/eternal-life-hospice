@@ -8,6 +8,11 @@
   "use strict";
   if (window.__elhChatLoaded) return;
   window.__elhChatLoaded = true;
+  // The server's chat revision includes the shared verification module.
+  // Use that revision for the module too, including on frozen Journal pages.
+  var chatScript = document.currentScript;
+  var securityVersion = chatScript && new URL(chatScript.src, location.href).searchParams.get("v");
+  var securityModuleUrl = "/assets/intake-security.js?v=" + (securityVersion || "browser-proof-v2");
   // Shared contact-field behavior also covers the page's family/referral forms.
   import("/assets/contact-fields.js").then(function(fields){fields.install(document);})
     .catch(function(error){console.error("Contact field formatting could not load.", error);});
@@ -724,7 +729,7 @@
       message: data.message
     });
     var intakeSecurity;
-    import("/assets/intake-security.js").then(function(security){intakeSecurity=security;return security.submit({
+    import(securityModuleUrl).then(function(security){intakeSecurity=security;return security.submit({
       method: "POST",
       headers: {
         "Content-Type": "application/x-www-form-urlencoded",

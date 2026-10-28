@@ -863,7 +863,8 @@ class PrettyURLHandler(http.server.SimpleHTTPRequestHandler):
                 if not FORM_CLIENT_RATE_LIMITER.allow("challenge:" + self._client_key()):
                     raise IntakeError("rate_limited", "Please wait or call 805.953.7273.", 429)
                 form_name = parse_qs(parsed.query).get("form", [""])[0]
-                self._send_json(200, form_antispam.issue(form_name, self._client_key()))
+                self._send_json(200, form_antispam.issue(
+                    form_name, self.headers.get("X-ELH-Intake-Proof", "")))
             except IntakeError as exc:
                 if exc.code == "security_unavailable":
                     print("FORM_SECURITY_UNAVAILABLE", file=sys.stderr)

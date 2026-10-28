@@ -103,8 +103,11 @@ export async function startIntakeFixture() {
         fields: Object.fromEntries(new URLSearchParams(body)), at: Date.now()};
       state.realRequests.push(record);
       try {
-        // Preserve browser headers verbatim, including Host and absent Origin.
-        const result = await backendRequest(request.url, request.method, request.headers, body);
+        // Preserve browser-controlled headers, including Host/absent Origin,
+        // but emulate the live proxy selecting a different address each time.
+        record.proxyClient = `192.0.2.${(state.realRequests.length % 200) + 1}`;
+        const result = await backendRequest(request.url, request.method,
+          {...request.headers, "x-forwarded-for": record.proxyClient}, body);
         record.status = result.status;
         record.result = JSON.parse(result.content);
         response.writeHead(result.status, result.headers);

@@ -1,12 +1,15 @@
 // Test the actual browser module with synthetic fetch/Turnstile transports.
 import assert from "node:assert/strict";
 import {readFile} from "node:fs/promises";
+import {webcrypto} from "node:crypto";
+globalThis.crypto ??= webcrypto;
 const source=await readFile(new URL("./elh-preview/assets/intake-security.js",import.meta.url),"utf8");
 const {submit}=await import("data:text/javascript;base64,"+Buffer.from(source).toString("base64"));
 let requests=[];
 let siteKey="";
 let failChallenge=false;
 let removed=0;
+const browserProofs = new Set();
 globalThis.window={
   setTimeout:(fn,ms)=>setTimeout(fn,ms>=15000?1000:0), clearTimeout,
   turnstile:{
@@ -35,6 +38,11 @@ for(const formName of ["elh-family","elh-physician","elh-casemanager","elh-coord
   assert.equal(requests.length,2);
   assert.equal(requests[0].url,"/api/form-security?form="+formName);
   assert.equal(new URLSearchParams(requests[1].options.body).get("_elh_security"),"synthetic-signed-token");
+  const proof = requests[0].options.headers["X-ELH-Intake-Proof"];
+  assert.match(proof, /^[a-f0-9]{64}$/);
+  assert.ok(!browserProofs.has(proof), "Each attempt must use a fresh proof");
+  browserProofs.add(proof);
+  assert.equal(new URLSearchParams(requests[1].options.body).get("_elh_browser_proof"),proof);
   assert.equal(new URLSearchParams(requests[1].options.body).get("phone"),"2025550190");
 }
 const multipart=new FormData();
@@ -94,3 +102,11 @@ for (const test of [
   assert.equal(requests.length,test.phase==="security"?1:2,test.name+": no automatic retry");
 }
 console.log("PASS verification, explicit rejection, ambiguous delivery and unchanged missing-receipt acceptance");
+const realCrypto = globalThis.crypto;
+Object.defineProperty(globalThis, "crypto", {configurable:true, value:undefined});
+requests=[];
+await assert.rejects(()=>submit({method:"POST",body:"form-name=elh-family"}),
+  error=>error.intakeOutcome==="verification" && /not been sent/.test(error.message));
+assert.equal(requests.length, 0, "Missing secure randomness must fail before GET or POST");
+Object.defineProperty(globalThis, "crypto", {configurable:true, value:realCrypto});
+console.log("PASS missing secure randomness fails closed without sending a request");

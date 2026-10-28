@@ -214,7 +214,7 @@ class FormIntakeTests(unittest.TestCase):
 
         for content in (index, refer, careers, brief):
             self.assertIn("/api/form-submit", content)
-        self.assertIn('import("/assets/intake-security.js")', chat)
+        self.assertIn('import(securityModuleUrl)', chat)
         self.assertNotIn(
             "fetch('/',{method:'POST'", index + refer + careers + brief
         )

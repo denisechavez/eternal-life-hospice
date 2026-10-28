@@ -1,6 +1,9 @@
 // Real HTML + chat + shared ES module, plus real Python/PostgreSQL security.
 // Run with Node 20: node --experimental-websocket website/test-intake-browser.mjs
 // Requires Chromium on PATH (or CHROMIUM_BIN). No npm/browser downloads needed.
+// --real-security-only runs the actual verifier/proxy regressions without
+// repeating the longer, independent history and storage-restoration UI suite.
+// --mobile-security-only limits that regression to a fresh mobile context.
 import assert from "node:assert/strict";
 import {spawn} from "node:child_process";
 import {mkdtemp, readFile, rm} from "node:fs/promises";
@@ -246,6 +249,7 @@ try {
       fields: {'input[id$="-name"]': "Synthetic Chat", 'input[id$="-phone"]': "2025550190",
         'input[id$="-email"]': "chat@example.invalid", 'textarea': "Synthetic chat only"}}
   ];
+  if (!process.argv.includes("--real-security-only") && !process.argv.includes("--mobile-security-only")) {
   for (const outcome of ["accepted", "interrupted", "unreadable", "unconfirmed", "server-error", "module-unavailable",
     "pending-reload", "pending-navigation", "pending-history", "pending-history-cacheable"])
   for (const mobile of [false, true]) for (const flow of flows) {
@@ -716,6 +720,7 @@ try {
     assert.equal(post.fields["form-name"], flow.formName);
     assert.equal(security.form, flow.formName);
     assert.equal(post.fields._elh_security, security.token);
+    assert.match(post.fields._elh_browser_proof, /^[a-f0-9]{64}$/);
     assert.equal(post.fields["cf-turnstile-response"], "synthetic-provider-token");
     assert.equal(new Set(state.posts.map(post => post.fields._elh_security)).size, state.posts.length,
       "Each retry must request a fresh security token");
@@ -888,6 +893,7 @@ try {
     assert.equal(await evaluate(`document.querySelector('.lead-form[data-form="voice"] select[name="interest"]').value`), category);
   }
   console.log("PASS all seven request choices: unchanged order, stable IDs and founder-to-form selection");
+  }
 
   // Unlike UI failure injection above, every request below traverses the real
   // devserver handler, signed-token verifier and disposable PostgreSQL schema.
@@ -900,8 +906,9 @@ try {
   const postOptions = fields => ({method: "POST",
     headers: {"Content-Type": "application/x-www-form-urlencoded"},
     body: new URLSearchParams(fields).toString()});
-  for (const mobile of [false, true]) {
+  for (const mobile of (process.argv.includes("--mobile-security-only") ? [true] : [false, true])) {
     currentCase = `real security ${mobile ? "mobile" : "desktop"}`;
+    console.log(`CHECK ${currentCase}: starting actual verifier/proxy regression`);
     await fixture.useRealSecurity();
     await call("Emulation.setDeviceMetricsOverride", {width: mobile ? 390 : 1280,
       height: mobile ? 844 : 900, deviceScaleFactor: 1, mobile});
@@ -920,7 +927,11 @@ try {
     const baseline = await realState();
     const fields = {"form-name": "elh-family", first_name: "Synthetic", last_name: "Security",
       phone: mobile ? "2025550182" : "2025550181", email: "security@example.invalid"};
-    const challenge = await browserFetch("/api/form-security?form=elh-family");
+    const browserProof = await evaluate(`Array.from(crypto.getRandomValues(new Uint8Array(32)),
+      byte=>byte.toString(16).padStart(2,"0")).join("")`);
+    fields._elh_browser_proof = browserProof;
+    const challenge = await browserFetch("/api/form-security?form=elh-family",
+      {headers: {"X-ELH-Intake-Proof": browserProof}});
     assert.equal(challenge.status, 200, currentCase + ": default browser GET");
     assert.equal(challenge.body.siteKey, "synthetic-site-key");
     assert.equal(challenge.body.waitMs, 1800, "Do not shorten the real minimum age");
@@ -930,7 +941,7 @@ try {
     assert.equal(get.headers["sec-fetch-site"], "same-origin");
     assert.ok(get.headers.referer.startsWith(fixture.origin));
     const privateGet = await browserFetch("/api/form-security?form=elh-family",
-      {referrerPolicy: "no-referrer"});
+      {referrerPolicy: "no-referrer", headers: {"X-ELH-Intake-Proof": browserProof}});
     assert.equal(privateGet.status, 200, "Same-origin GET without Referer");
     assert.equal(fixture.state.realRequests.at(-1).headers.referer, undefined);
 
@@ -972,7 +983,10 @@ try {
 
     // Each real shared-module submission/replay pair gets fresh backend state,
     // retaining unmodified GET headers, provider checks and minimum token age.
-    for (const [index, flow] of flows.entries()) {
+    const protectedFlows = [...flows, {formName:"elh-casemanager"},
+      {formName:"elh-coordinator"}, {formName:"elh-voice"}];
+    for (const [index, flow] of protectedFlows.entries()) {
+      console.log(`CHECK ${currentCase}: ${flow.formName}`);
       await fixture.useRealSecurity();
       const uniqueFields = {...fields, "form-name": flow.formName,
         name: "Synthetic Chat", referrer_name: "Synthetic Provider",
@@ -1001,6 +1015,9 @@ try {
       assert.equal(requests[0].headers["sec-fetch-site"], "same-origin");
       assert.equal(requests[1].headers.origin, fixture.origin);
       assert.equal(requests[1].headers["sec-fetch-site"], "same-origin");
+      assert.notEqual(requests[0].proxyClient, requests[1].proxyClient,
+        "Verification must survive a changed hosting proxy address");
+      assert.equal(requests[0].headers["x-elh-intake-proof"], requests[1].fields._elh_browser_proof);
       assert.ok(requests[1].at - requests[0].at >= 1800, "Real token minimum age skipped");
       const after = await realState();
       assert.equal(after.mail, before.mail + 2, "Synthetic internal email and acknowledgment");
@@ -1032,8 +1049,8 @@ try {
       assert.equal(denied.result.token, undefined, "Cross-site GET must not disclose tokens");
     }
     assert.deepEqual(await realState(), beforeCrossSite, "Cross-site requests must not touch guard or mail");
-    console.log(`PASS ${currentCase}: default/no-referrer GET, strict POST, ${flows.length} protected forms,
-  real signed tokens and database reservations, replay rejection, cross-site GET/POST denial`);
+    console.log(`PASS ${currentCase}: default/no-referrer GET, strict POST, ${protectedFlows.length} protected forms,
+  rotating proxy addresses, real signed tokens and database reservations, replay rejection, cross-site GET/POST denial`);
   }
   assert.deepEqual(fixture.state.violations, [], "Unexpected local transport");
   assert.deepEqual(transportErrors, [], "Request interception failed");
