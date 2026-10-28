@@ -8,6 +8,31 @@ node website/test-intake-security.mjs
 python3 website/test-form-antispam.py
 ```
 
+## Phone-link interaction checks
+
+```sh
+node --experimental-websocket website/test-website-phone-browser.mjs
+python3 website/test-website-phone.py
+```
+
+The focused phone browser suite needs Node 20+ and Chromium only; it does not
+start PostgreSQL or the real intake backend. It loads the actual homepage,
+contact card, chat script and intake-security module through the synthetic
+fixture. Every API and third-party request is fulfilled locally. No form is
+submitted and no email or AI provider is contacted.
+
+At desktop and mobile widths it opens the chat, exercises the reachable local
+emergency/nurse guidance and unavailable-AI fallback, opens a callback form and
+calls the real `showFailure` renderer for verification, rejection and unknown
+outcomes. A seeded tab reminder also exercises chat's own uncertain-outcome
+renderer and close/reopen behavior. Assertions inspect rendered text and the
+actual `tel:` URLs, not source strings. The historical FAQ chip definitions are
+not exposed by the current chat UI and are not artificially enabled by this test.
+The contact card's explicitly labeled office number remains distinct. Run the
+paired Python suite to also protect approved acknowledgment email copy and
+public response projection. This is display coverage, not submission coverage;
+the broader intake suite below exercises submission outcome routing.
+
 The browser suite requires Node 20+, Chromium on PATH (or `CHROMIUM_BIN`),
 Python with `psycopg` and PostgreSQL's `initdb`/`pg_ctl` binaries on PATH.
 Node 20 needs the WebSocket flag. It uses the browser's debugging protocol
