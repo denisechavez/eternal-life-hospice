@@ -29,7 +29,7 @@ PRIMARY_FOOTER_PHONE = (
     '<a class="fc-line no-swap" href="tel:18059537273">'
 )
 TRACKED_FOOTER_PHONE = (
-    '<a class="fc-line fc-direct" href="tel:18054101151">'
+    '<a class="fc-line fc-direct" href="tel:18054099262">'
 )
 
 
@@ -60,14 +60,14 @@ def main() -> int:
         if not path.is_file() or path.suffix.lower() not in TEXT_SUFFIXES:
             continue
         text = path.read_text(encoding="utf-8")
-        if path.suffix.lower() == ".html" and path.parent == PUBLIC / "blog":
+        if path.suffix.lower() == ".html":
             text = update_footer_contact(text)
         if path.suffix.lower() == ".html" and 'id="site-footer"' in text:
             if PRIMARY_FOOTER_PHONE not in text or "<span>805.953.7273</span>" not in text:
                 findings.append(
                     f"{path.relative_to(ROOT)}: protected primary footer phone missing"
                 )
-            if TRACKED_FOOTER_PHONE not in text or "<span>805.410.1151 · Main</span>" not in text:
+            if TRACKED_FOOTER_PHONE not in text or "<span>805.409.9262 · Main</span>" not in text:
                 findings.append(
                     f"{path.relative_to(ROOT)}: WhatConverts footer phone missing"
                 )

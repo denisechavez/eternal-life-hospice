@@ -24,7 +24,7 @@ import os, re, sys, argparse
 # ── Import canonical footer ───────────────────────────────────────────────────
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from fragments import FOOTER_HTML
-from footer_contact import public_html as update_footer_contact
+from footer_contact import public_html as update_footer_contact, update_main_number
 
 # ── Configuration ─────────────────────────────────────────────────────────────
 OUT_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "elh-preview")
@@ -61,6 +61,8 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--dry-run", action="store_true",
                         help="Print what would be changed without writing files")
+    parser.add_argument("--main-number-only", action="store_true",
+                        help="Update only the main footer number; preserve all other markup")
     args = parser.parse_args()
 
     updated, already_ok, skipped, no_footer, errors = [], [], [], [], []
@@ -89,7 +91,9 @@ def main():
                 errors.append((rel, str(e)))
                 continue
 
-            if is_city:
+            if args.main_number_only:
+                new_html = update_main_number(html)
+            elif is_city:
                 new_html = update_footer_contact(html)
             elif not FOOTER_RE.search(html):
                 if rel in INSERT_IF_MISSING and "</body>" in html:
