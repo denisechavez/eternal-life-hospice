@@ -20,7 +20,7 @@ document = fitz.open(pdf) if fitz else None
 texts = ([page.get_text() for page in document] if document else
          [page for page in subprocess.check_output(
              ["pdftotext", "-raw", str(pdf), "-"], text=True).split("\f") if page.strip()])
-assert len(texts) == 15, len(texts)
+assert len(texts) == len(posts) + 1, len(texts)
 normalize = lambda text: re.sub(r"\s+", "", text)
 for number, post in enumerate(posts, 1):
     text = texts[number]
@@ -29,11 +29,11 @@ for number, post in enumerate(posts, 1):
     if document:
         for block in document[number].get_text("blocks"):
             assert block[3] < document[number].rect.height - 10, (number, "Text below safe page edge")
-for number in (0, 3, 6, 9, 14):
+for number in (0, 3, 6, 9, len(posts)):
     if document:
         document[number].get_pixmap(matrix=fitz.Matrix(1.5, 1.5)).save(output / f"page-{number+1}.png")
     else:
         subprocess.run(["pdftoppm", "-f", str(number + 1), "-l", str(number + 1),
                         "-scale-to", "1400", "-png", "-singlefile", str(pdf),
                         str(output / f"page-{number+1}")], check=True)
-print(f"PASS: {len(texts)} PDF pages; all 14 complete captions; five QA renders.")
+print(f"PASS: {len(texts)} PDF pages; all {len(posts)} complete captions; five QA renders.")

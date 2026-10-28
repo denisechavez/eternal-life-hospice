@@ -2562,3 +2562,17 @@ mtime_ms = 1793149610639
 storage_uri = "gcs://replit-rams-assets-kirk/rams/assets/repl:e1b2f643-7869-4565-af0e-10c34575ee8d/d0f6e5c4-1950-4b02-96ba-a6d0d4dadf09/f0091f1d-09e7-4fb9-a4eb-13ffa7e8fb01"
 storage_version_token = "1793149622589214"
 content_type = "text/csv"
+
+[[outputs]]
+id = "nBA0PCDn3iAkFyW5QU9br"
+uri = "file://generated-artifacts/Eternal-Thryv-October-27-31-2026-SEO-Daily-All-Platforms.csv"
+type = "table"
+title = "Thryv CSV · Daily posts on all four platforms"
+description = "20 SEO-aligned posts for October 27–31: five each for GBP, Facebook, LinkedIn and Pinterest. Uses existing publicly hosted blog photos. Unapproved and unscheduled. Replaces the previous CSV."
+logical_id = "2d88706a-59fd-4648-8056-c56ca4be16cc"
+content_hash = "sha256:68440b1f4e275c1aa0ec5ed7df094e188f5b002637f86d076e5fa7c351b54f9a"
+size = 30154
+mtime_ms = 1793152203867
+storage_uri = "gcs://replit-rams-assets-kirk/rams/assets/repl:e1b2f643-7869-4565-af0e-10c34575ee8d/2d88706a-59fd-4648-8056-c56ca4be16cc/414a058e-8a3d-43e0-ac05-c2fa401bc384"
+storage_version_token = "1793152231259287"
+content_type = "text/csv"

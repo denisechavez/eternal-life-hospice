@@ -27,7 +27,7 @@ description: Master social content drafts file — location, structure, and key 
 - **Team on camera = safe** (they transition with the agency on sale)
 - **Brand = Eternal Life Hospice**, not a person — every post anchors to the institution
 - **Amethyst = monthly maximum** — Script 27 is the account launch post
-- **Cadence:** GBP daily; Facebook, LinkedIn and Pinterest three times weekly.
+- **Cadence:** GBP, Facebook, LinkedIn and Pinterest daily. TikTok and YouTube remain a separate video phase.
 - **GBP:** Photo every time; Learn More vs. Call Now CTAs.
 - **All scripts written in brand voice** — user edits and posts; agent drafts only
 - **Keyword alignment:** Every post must align with its Journal article's relevant approved SEO keywords before export; see `seo-audit-decisions.md`.
@@ -57,11 +57,12 @@ alone does not meet the Thryv handoff requirement.
 **Why:** The owner clarified, “I just need to create a downloadable file so I
 can upload.”
 
-The owner set GBP to daily and the other three non-video social platforms to
-three posts per week, superseding the older GBP Mon/Wed/Fri cadence.
+The owner set GBP, Facebook, LinkedIn and Pinterest to daily. This supersedes
+all earlier three-times-weekly schedules for these platforms.
 
-**Why:** This cadence was explicitly requested while scoping the October
-social package. TikTok and YouTube remain a separate video phase.
+**Why:** After adding daily Pinterest posts, the owner explicitly requested
+daily posts on all the remaining platforms as well. TikTok and YouTube remain
+a separate video phase.
 
 ## Other social files (same folder)
 - `elh-4-week-multi-platform-content-kit.md` — 4-week calendar

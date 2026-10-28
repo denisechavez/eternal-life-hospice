@@ -6,11 +6,18 @@ import re
 from urllib.parse import urlsplit
 
 ROOT = Path(__file__).resolve().parents[2]
-posts = json.loads((ROOT / "generated-artifacts/social-2026-10-27-31/posts.json").read_text())
+source_posts = json.loads((ROOT / "generated-artifacts/social-2026-10-27-31/posts.json").read_text())
 articles = json.loads((ROOT / "website/content/30-day-journal/additional-2026-q4.json").read_text())
 photos = {row["slug"]: row["heroImage"] for row in articles}
 copy = {row["slug"]: row for row in json.loads(
     (ROOT / "exports/social/october-27-31-2026-copy.json").read_text())}
+# Captions define the current cadence; the original review packet only supplies
+# article links and photo credits, which are shared across the platforms.
+posts = []
+for article in copy.values():
+    template = next(post for post in source_posts if post["slug"] == article["slug"])
+    for platform in article["posts"]:
+        posts.append({**template, "platform": platform})
 keywords = {row["id"]: row for row in json.loads(
     (ROOT / "website/content/seo-keyword-master.json").read_text())["keywords"]}
 targets = {
@@ -21,7 +28,7 @@ targets = {
     "2026-10-31": [7, 81, 95],
 }
 columns = ["Link", "Image", "Caption", "Title", "Approved", "Recycle", "Comment", "Schedule"]
-target = ROOT / "generated-artifacts/Eternal-Thryv-October-27-31-2026-SEO.csv"
+target = ROOT / "generated-artifacts/Eternal-Thryv-October-27-31-2026-SEO-Daily-All-Platforms.csv"
 rows, audit = [], []
 for post in posts:
     row = dict(post["row"])
@@ -50,7 +57,7 @@ for post in posts:
         assert post["proposedDate"] in keywords[identifier]["draftDates"], (identifier, "Not matched to article")
         if re.search(r"(?<!\w)" + re.escape(phrase) + r"(?!\w)", row["Caption"], re.IGNORECASE):
             matched.append({"id": identifier, "phrase": phrase, "coverage": "exact"})
-        elif identifier == 27 and "hospice care in Calabasas" in row["Caption"]:
+        elif identifier == 27 and "hospice care in calabasas" in row["Caption"].casefold():
             matched.append({"id": identifier, "phrase": phrase, "coverage": "semantic",
                             "publicWording": "hospice care in Calabasas"})
         else:
@@ -66,7 +73,11 @@ for post in posts:
                   "article": row["Link"], "characters": len(row["Caption"]),
                   "keywordMatches": matched})
     rows.append(row)
-assert len(rows) == 14
+assert len(rows) == 20
+expected_days = {article["date"] for article in copy.values()}
+for platform in ("GBP", "Pinterest", "Facebook", "LinkedIn"):
+    assert {post["proposedDate"] for post in posts if post["platform"] == platform} == expected_days
+assert len({(post["proposedDate"], post["platform"]) for post in posts}) == 20
 with target.open("w", encoding="utf-8-sig", newline="") as stream:
     writer = csv.DictWriter(stream, fieldnames=columns)
     writer.writeheader()

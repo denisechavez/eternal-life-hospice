@@ -169,10 +169,10 @@ def build(origin):
 {('<p class="small"><b>Pin title:</b> '+e(spec['title'])+'</p>') if platform == 'Pinterest' else ''}</div></div></section>""")
             notes.append(f"{topic['date']} | {platform}\n{spec['title']}\n\n{caption}\n\n"
                          f"LINK: {url}\nIMAGE: {post['imageFile']}\nALT: {post['altText']}\n\n{'='*65}\n")
-    assert len(posts) == 14
+    assert len(posts) == 20
     for platform in FORMATS:
         selected = [post["row"] for post in posts if post["platform"] == platform]
-        assert len(selected) == (5 if platform == "GBP" else 3)
+        assert len(selected) == 5
         with (OUT / "thryv-drafts" / (platform.lower() + "-DRAFT.csv")).open(
                 "w", newline="", encoding="utf-8-sig") as stream:
             writer = csv.DictWriter(stream, fieldnames=COLUMNS)
@@ -196,7 +196,7 @@ def build(origin):
     .small{font-size:9px}h1{font-size:30px}h2{font-size:21px;margin:12px 0}.eyebrow{font-size:10px}.page:last-child{break-after:auto}}
     """
     overview = f"""<section class="page"><div class="eyebrow">Eternal Life Hospice · Social review · October 27–31, 2026</div>
-<h1>Four platforms.<br>One thoughtful conversation.</h1><p>14 posts: GBP daily; Facebook, LinkedIn and Pinterest Tuesday, Thursday and Saturday. TikTok and YouTube video work is separate.</p>
+<h1>Four platforms.<br>One thoughtful conversation.</h1><p>20 posts: GBP, Facebook, LinkedIn and Pinterest daily. TikTok and YouTube video work is separate.</p>
 <table><thead><tr><th>Proposed date</th><th>Matching Journal article</th><th>Platforms</th></tr></thead><tbody>{''.join(summary)}</tbody></table>
 <p class="notice"><b>Review only. Nothing is scheduled or approved.</b> CSVs use the supplied Thryv columns with Approved=FALSE, Recycle=FALSE and Schedule blank. Dates are proposed; choose times in America/Los_Angeles. The formatted-image URLs are not live yet. Host the JPEGs and verify article availability before importing or approving a post.</p>
 <p class="small">The October 28–31 articles are future-dated at preparation time. Do not publish social links before the corresponding article is publicly available. Thryv network assignment and Pinterest title mapping still require a sample import check.</p></section>"""
@@ -205,11 +205,11 @@ def build(origin):
     (OUT / "README.txt").write_text(
         "ETERNAL LIFE HOSPICE — OCTOBER 27–31, 2026\n"
         "REVIEW PACKAGE, NOT YET IMPORT-READY\n\n"
-        "14 posts: GBP daily (5); Facebook, LinkedIn, Pinterest Tue/Thu/Sat (3 each).\n"
+        "20 posts: GBP, Facebook, LinkedIn and Pinterest daily (5 each).\n"
         "All Approved=FALSE; Recycle=FALSE; Schedule blank. No posts were sent or scheduled.\n"
         "Suggested dates appear in Title, Comment and the review packet. Posting times remain to be chosen.\n\n"
         "IMAGE HOSTING REQUIRED:\nThe Image fields point to planned /assets/social/2026-10-27-31/ URLs.\n"
-        "These URLs are NOT LIVE. Do not import until all 14 JPEGs are hosted and return image/jpeg.\n"
+        "These URLs are NOT LIVE. Do not import until all 20 JPEGs are hosted and return image/jpeg.\n"
         "The images/ folder supplies the exact matching files. Nothing was published to host them.\n\n"
         "ARTICLE GATE:\nOctober 28–31 articles are not due yet. Confirm each article is live before posting.\n"
         "Keep drafts unapproved until the owner approves the social copy, imagery and timing.\n\n"
