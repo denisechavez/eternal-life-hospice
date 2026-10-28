@@ -1,13 +1,13 @@
 ---
 name: Website phone roles
-description: Distinguishes the website tracking number, the footer direct number and approved email copy.
+description: Preserve both existing website phone numbers and placements; the owner declined the proposed footer restoration.
 ---
 
-The website tracking number is **805.409.9262**. The footer's direct company contact is **805.953.7273**. Approved acknowledgment emails remain a separately controlled surface.
+Preserve **805.409.9262** and **805.953.7273** in their existing website roles and placements. Approved acknowledgment emails remain a separately controlled surface.
 
-**Why:** The owner explicitly clarified these two website roles on October 28, 2026, after a different number appeared in the Request Care dropdown. The footer exception supersedes earlier all-website unification.
+**Why:** After receiving the October 28, 2026 audit and the offer to restore the footer's direct number, the owner said “keep both numbers as is.” Do not implement the proposed footer restoration without fresh approval.
 
-**How to apply:** Keep the direct-footer exception narrow; an office label elsewhere is not automatic permission to bypass the website tracking-number rule. Separate authored phone links from third-party dynamic number replacement when auditing. Test response boundaries with synthetic payloads and block external transports. Keep signed Journal documents unchanged. Do not send real submissions, emails or phone calls to verify formatting.
+**How to apply:** Do not move or standardize either number based on earlier instructions or audit findings alone. Separate authored phone links from third-party dynamic number replacement when auditing. Test response boundaries with synthetic payloads and block external transports. Keep signed Journal documents unchanged. Do not send real submissions, emails or phone calls to verify formatting.
 
 Browser tests must distinguish approval-controlled source content from the public response.
 

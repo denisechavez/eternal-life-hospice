@@ -11,8 +11,8 @@ At approximately 1024px wide, preserve the complete footer as one compact seven-
 
 ## Phone-number rule
 
-Use **805.409.9262** for website tracking/care call points, including intake forms and phone pills. The footer's direct company contact must instead show **805.953.7273** and must not be replaced by a call-tracking number. Preserve the approved footer emphasis and layout.
+Preserve **805.409.9262** and **805.953.7273** in their current website placements. Do not restore or relocate the footer number based on an audit finding alone. Preserve the approved footer emphasis and layout.
 
-**Why:** On October 28, 2026, the owner clarified: “805.409.9262 is the only trackable number used on the site and on the footer we have 805.953.7273.” This is an explicit footer exception to the earlier instruction to unify all website numbers.
+**Why:** On October 28, 2026, after the audit explained that the footer currently used the tracking number and offered to restore the direct number, the owner instructed: “keep both numbers as is.” This supersedes the proposed footer restoration.
 
-**How to apply:** Preserve the tracking/direct distinction through the final public response, including standard pages, city pages, chat and frozen article chrome. Normalize after runtime navigation decoration, but protect the footer's direct contact from the global Main-number rewrite and third-party number replacement. Preserve signed Journal sources through response-time projection. Do not replace fax, government numbers or visitor-entered phone data. Website-only changes do not authorize rewriting approved acknowledgment emails, print collateral or external business-profile configuration.
+**How to apply:** Leave existing phone roles and placements unchanged unless the owner gives fresh approval. Do not use older all-number unification instructions or the earlier footer expectation to override this decision. Preserve signed Journal sources through response-time projection. Do not replace fax, government numbers or visitor-entered phone data. Website-only changes do not authorize rewriting approved acknowledgment emails, print collateral or external business-profile configuration.
