@@ -1,13 +1,13 @@
 ---
 name: Website phone roles
-description: Main-number regressions must retain office contacts and approved email copy without invalidating Journal approvals.
+description: Distinguishes the website tracking number, the footer direct number and approved email copy.
 ---
 
-Public Main contacts, explicitly labeled office contacts and approved acknowledgment emails are distinct phone roles.
+The website tracking number is **805.409.9262**. The footer's direct company contact is **805.953.7273**. Approved acknowledgment emails remain a separately controlled surface.
 
-**Why:** Phone consistency is role-specific, not permission to replace every occurrence of the office number. Website confirmations may project the care CTA to Main without altering the approved emailed letter.
+**Why:** The owner explicitly clarified these two website roles on October 28, 2026, after a different number appeared in the Request Care dropdown. The footer exception supersedes earlier all-website unification.
 
-**How to apply:** Test public response boundaries with synthetic payloads and block external transports. Keep signed Journal documents unchanged; use synthetic documents to exercise the runtime phone projection. Do not send real submissions or emails to verify phone formatting.
+**How to apply:** Keep the direct-footer exception narrow; an office label elsewhere is not automatic permission to bypass the website tracking-number rule. Separate authored phone links from third-party dynamic number replacement when auditing. Test response boundaries with synthetic payloads and block external transports. Keep signed Journal documents unchanged. Do not send real submissions, emails or phone calls to verify formatting.
 
 Browser tests must distinguish approval-controlled source content from the public response.
 

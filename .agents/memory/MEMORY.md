@@ -73,4 +73,4 @@
 - [Accessibility-tree assertions](accessibility-tree-assertions.md) — reconstruct announcement text through child IDs, not flat response order.
 - [Intake proxy binding](intake-proxy-binding.md) — live security-token client bindings can change between requests even when preview is stable; separate browser verification from network abuse limits.
 - [Client acknowledgment delivery](client-acknowledgment-delivery.md) — company Gmail only, never Brevo fallback; preserve approved letters and leave internal/marketing routes unchanged.
-- [Website phone roles](website-phone-roles.md) — Main differs from explicit office contacts and approved acknowledgment email copy; test runtime boundaries without changing signed Journal documents.
+- [Website phone roles](website-phone-roles.md) — tracking calls use 805.409.9262; footer direct contact uses 805.953.7273; preserve approved email copy and signed Journal sources.
