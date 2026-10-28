@@ -32,6 +32,20 @@ description: Master social content drafts file — location, structure, and key 
 - **All scripts written in brand voice** — user edits and posts; agent drafts only
 - **Keyword alignment:** Every post must align with its Journal article's relevant approved SEO keywords before export; see `seo-audit-decisions.md`.
 
+## Selected social graphic directions
+
+Retain the full-photograph treatment and the sculpted graphic-crop treatment
+as the selected visual directions. Do not carry forward the editorial split.
+Keep the official Eternal logo bottom right, without an eyebrow, descriptive
+subline or detached lower text panel.
+
+**Why:** The owner selected the full-photograph and graphic-crop concepts
+after reviewing three alternatives for the Westlake Village Facebook post.
+
+**How to apply:** Use these directions for subsequent social graphic
+development. Selection of a visual direction does not authorize publication
+or replacement of the live image URLs in an upload CSV.
+
 ## Thryv social import requirements
 
 Use the owner's supplied Thryv Marketing Center CSV specification: required
