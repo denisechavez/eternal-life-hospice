@@ -38,6 +38,7 @@
 - [SEO audit and keyword rules](seo-audit-decisions.md) — schema/canonical constraints; Q4 101-term program; Thousand Oaks nursing priority; coverage is not ranking evidence.
 - [The Amethyst — brand origin](amethyst-origin.md) — core of the brand; Greek amethystos = clarity in difficulty; name+colors from the stone; founder origin = personal family caregiving experience; weave carefully, not in every post.
 - [Social content library](social-content-library.md) — exports/social/elh-master-content-drafts.md (4,100+ lines, 14 parts); acquisition-safe strategy: voice+stills not face; Aleksandra voice=brand anchor not face; team on camera is safe; GBP 8-week library in Part 11.
+- [Social image contrast approval](social-image-contrast.md) — extending headline shading is approved; typography/layout/publication are not; preserve the approved Facebook reference verbatim.
 - [PageSpeed mobile optimisation](pagespeed-preload-rules.md) — 72→97 formula: fetchpriority="high" on preload LINK (not img), all 3 font preloads, analytics defer, Brevo preconnect.
 - [Weekly email send rule](weekly-email-send-rule.md) — all weekly campaigns go to aggregate of ALL active Brevo lists; exclude system/test lists 3,6,11,12.
 - [NeverBounce verification rule](neverbounce-rule.md) — ALL emails verified through NeverBounce before adding to Brevo; no exceptions; invalid=remove, catchall/unknown=add with caution.

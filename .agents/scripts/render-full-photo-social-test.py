@@ -45,14 +45,16 @@ def source_path(hero_image: str) -> Path:
 def tint_mask(size: tuple[int, int]) -> Image.Image:
     """A gentle upper-left vignette, matching the approved local contrast wash."""
     width, height = size
-    horizontal = Image.linear_gradient("L").transpose(Image.Transpose.ROTATE_90)
+    horizontal = Image.linear_gradient("L").transpose(Image.Transpose.ROTATE_270)
     vertical = ImageOps.invert(Image.linear_gradient("L"))
     horizontal = horizontal.resize((width, height), Image.Resampling.BILINEAR)
     vertical = vertical.resize((width, height), Image.Resampling.BILINEAR)
     # Hold contrast across the complete headline, including bright walls;
     # fade smoothly outside the title area without adding a text panel.
-    horizontal = horizontal.point(lambda value: min(255, round(value * 2.5)))
-    vertical = vertical.point(lambda value: min(255, round(value * 1.3)))
+    # Extend the plateau (not the peak opacity) so long lines on bright walls
+    # retain at least 3:1 cream-text contrast in the local regression fixtures.
+    horizontal = horizontal.point(lambda value: min(255, round(value * 6.0)))
+    vertical = vertical.point(lambda value: min(255, round(value * 1.8)))
     strength = ImageChops.multiply(horizontal, vertical)
     return strength.point(lambda value: round(value * 175 / 255))
 
