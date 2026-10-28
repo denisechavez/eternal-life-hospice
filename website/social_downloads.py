@@ -6,6 +6,9 @@ from urllib.parse import urlsplit
 
 ROOT = Path(__file__).resolve().parents[1]
 FILES = {
+    "Eternal-Manual-Social-October-27-31-2026.zip": (
+        "Eternal-Manual-Social-October-27-31-2026.zip", "application/zip"
+    ),
     "ELH-Handbook-Concepts-7-8-9.zip": (
         "patient-guide/ELH-Handbook-Concepts-7-8-9.zip", "application/zip"
     ),
