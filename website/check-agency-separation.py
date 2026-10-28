@@ -26,10 +26,10 @@ RETIRED_ETERNAL_PLACE_URL = (
     "https://www.google.com/maps/place/?q=place_id:ChIJ8TnEjG4l6IARTsNF_xMDyyI"
 )
 PRIMARY_FOOTER_PHONE = (
-    '<a class="fc-line no-swap" href="tel:18059537273">'
+    '<a class="fc-line fc-direct no-swap" href="tel:18054099262">'
 )
 TRACKED_FOOTER_PHONE = (
-    '<a class="fc-line fc-direct" href="tel:18054099262">'
+    '<a class="fc-line fc-direct no-swap" href="tel:18054099262">'
 )
 
 
@@ -63,7 +63,7 @@ def main() -> int:
         if path.suffix.lower() == ".html":
             text = update_footer_contact(text)
         if path.suffix.lower() == ".html" and 'id="site-footer"' in text:
-            if PRIMARY_FOOTER_PHONE not in text or "<span>805.953.7273</span>" not in text:
+            if PRIMARY_FOOTER_PHONE not in text:
                 findings.append(
                     f"{path.relative_to(ROOT)}: protected primary footer phone missing"
                 )
@@ -71,9 +71,6 @@ def main() -> int:
                 findings.append(
                     f"{path.relative_to(ROOT)}: WhatConverts footer phone missing"
                 )
-            if PRIMARY_FOOTER_PHONE in text and TRACKED_FOOTER_PHONE in text:
-                if text.index(TRACKED_FOOTER_PHONE) > text.index(PRIMARY_FOOTER_PHONE):
-                    findings.append(f"{path.relative_to(ROOT)}: Main tracking number must be first")
         for token, label in FORBIDDEN.items():
             if token.lower() in text.lower():
                 findings.append(f"{path.relative_to(ROOT)}: {label} ({token})")

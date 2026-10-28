@@ -32,10 +32,9 @@ const path = require('path');
 
 // Match the website-only contact projection without altering signed sources.
 function publicPhoneText(text) {
-  return text.replace(/(?<!\d)(\+?1[ .-]?)?(\(?805\)?)([ .-]?)953([ .-]?)7273(?!\d)/g,
-    (match, country, area, first, second, offset) => {
-      if (/\boffice\b[^<>]{0,35}$/i.test(text.slice(Math.max(0, offset - 50), offset))) return match;
-      return (country || '') + area + first + '409' + second + '9262';
+  return text.replace(/(?<!\d)(\+?1[ .-]?)?(\(?805\)?)([ .-]?)(953[ .-]?7273|410[ .-]?1151)(?!\d)/g,
+    (match, country, area, first, oldNumber) => {
+      return (country || '') + area + first + '409' + oldNumber.replace(/\d/g, '') + '9262';
     });
 }
 

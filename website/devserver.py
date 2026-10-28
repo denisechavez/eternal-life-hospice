@@ -134,9 +134,12 @@ class PrettyURLHandler(http.server.SimpleHTTPRequestHandler):
     def _preview_chrome(self, document, route=None):
         route = route if route is not None else urlsplit(self.path).path
         route = route.rstrip("/").removesuffix(".html") or "/"
-        return service_preview.decorate(
-            site_breadcrumbs.decorate(
-                website_phone.public_html(footer_contact.public_html(document), route), route),
+        # Approved navigation can inject its own phone pills; normalize last.
+        return website_phone.public_html(
+            service_preview.decorate(
+                site_breadcrumbs.decorate(footer_contact.public_html(document), route),
+                route
+            ),
             route
         )
 
@@ -628,7 +631,7 @@ class PrettyURLHandler(http.server.SimpleHTTPRequestHandler):
             with open(path, encoding="utf-8") as source:
                 text = source.read()
             text = (self._preview_chrome(form_antispam.refresh_assets(recruitment_policy.public_html(text))) if path.endswith(".html")
-                    else recruitment_policy.public_discovery(text, "llms"))
+                    else website_phone.public_text(recruitment_policy.public_discovery(text, "llms")))
             body = text.encode()
             self.send_response(200)
             self.send_header("Content-Type", self.guess_type(path))

@@ -11,11 +11,12 @@ from fragments import FOOTER_HTML
 class FooterContactTests(unittest.TestCase):
     def assert_contact(self, document):
         footer = footer_contact.FOOTER.search(document).group()
-        self.assertLess(footer.index('tel:18054099262'), footer.index('tel:18059537273'))
+        self.assertEqual(footer.count('tel:18054099262'), 1)
         self.assertIn('<span>805.409.9262 · Main</span>', footer)
         self.assertNotIn("805.410.1151", footer)
         self.assertNotIn("18054101151", footer)
-        self.assertIn('class="fc-line no-swap" href="tel:18059537273"', footer)
+        self.assertNotIn("805.953.7273", footer)
+        self.assertIn('class="fc-line fc-direct no-swap" href="tel:18054099262"', footer)
         self.assertEqual(document, footer_contact.public_html(document))
 
     def assert_signup(self, document):

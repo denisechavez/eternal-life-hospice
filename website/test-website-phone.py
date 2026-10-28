@@ -3,6 +3,7 @@
 import io
 import json
 import unittest
+from pathlib import Path
 
 import acknowledgments
 import website_phone
@@ -11,6 +12,14 @@ from fragments import FOOTER_HTML
 
 
 class WebsitePhoneTests(unittest.TestCase):
+    def test_final_header_decoration_cannot_reintroduce_old_phone_pills(self):
+        handler = object.__new__(PrettyURLHandler)
+        handler.path = "/"
+        source = (Path(__file__).parent / "elh-preview" / "index.html").read_text()
+        rendered = handler._preview_chrome(source)
+        self.assertFalse(website_phone.OLD_PUBLIC_PHONE.search(rendered))
+        self.assertIn("805.409.9262", rendered)
+
     def test_phone_formats_and_click_to_call_stay_consistent(self):
         for old, new in (
             ("805.953.7273", "805.409.9262"),
@@ -18,6 +27,9 @@ class WebsitePhoneTests(unittest.TestCase):
             ("tel:+18059537273", "tel:+18054099262"),
             ("+1-805-953-7273", "+1-805-409-9262"),
             ("(805) 953-7273", "(805) 409-9262"),
+            ("805.410.1151", "805.409.9262"),
+            ("tel:18054101151", "tel:18054099262"),
+            ("+1-805-410-1151", "+1-805-409-9262"),
         ):
             self.assertEqual(website_phone.public_text(old), new)
         original = '<a href="tel:18059537273">Call 805.953.7273</a>'
@@ -25,14 +37,20 @@ class WebsitePhoneTests(unittest.TestCase):
         self.assertEqual(updated, '<a href="tel:18054099262">Call 805.409.9262</a>')
         self.assertEqual(website_phone.public_html(updated), updated)
 
-    def test_footer_office_links_and_employee_cards_are_preserved(self):
+    def test_footer_office_links_and_employee_cards_use_the_same_number(self):
         office = '<a href="tel:18059537273"><span>Call Office &nbsp; 805.953.7273</span></a>'
         paragraph = '<p>Please contact our office at 805.953.7273.</p>'
         self.assertEqual(website_phone.public_html(FOOTER_HTML), FOOTER_HTML)
-        self.assertEqual(website_phone.public_html(office + paragraph), office + paragraph)
-        for route in website_phone.EMPLOYEE_CARD_ROUTES:
+        self.assertEqual(website_phone.public_html(office + paragraph),
+                         (office + paragraph).replace("18059537273", "18054099262").replace("805.953.7273", "805.409.9262"))
+        for route in ("/card-aleksandra-dubina", "/card-denise-chavez"):
             card = '<script>{"telephone":"+18059537273"}</script>' + office
-            self.assertEqual(website_phone.public_html(card, route), card)
+            self.assertNotIn("8059537273", website_phone.public_html(card, route))
+            self.assertNotIn("805.953.7273", website_phone.public_html(card, route))
+
+    def test_fax_external_numbers_and_other_contact_numbers_are_not_rewritten(self):
+        unrelated = "Fax 805.953.8530; Medicare 1-800-633-4227; visitor 202.555.0190"
+        self.assertEqual(website_phone.public_text(unrelated), unrelated)
 
     def test_email_copy_stays_approved_while_web_confirmation_uses_main_number(self):
         approved = acknowledgments.CTA_HTML
@@ -46,14 +64,14 @@ class WebsitePhoneTests(unittest.TestCase):
             _, text, html = acknowledgments.render(key, "Synthetic", "SYNTHETIC", "info@eternallifehospice.com")
             self.assertNotIn("805.409.9262", text + html)
 
-    def test_public_api_projection_preserves_explicit_office_and_referral_fields(self):
+    def test_public_api_projection_includes_office_and_referral_fields(self):
         original = {"phone":"805.953.7273", "officePhone":"805.953.7273",
                     "referral_phone":"805.953.7273", "ok":False,
                     "nested":[{"message":"Please call 805.953.7273."}]}
         result = website_phone.public_payload(original)
         self.assertEqual(result["phone"], "805.409.9262")
-        self.assertEqual(result["officePhone"], original["officePhone"])
-        self.assertEqual(result["referral_phone"], original["referral_phone"])
+        self.assertEqual(result["officePhone"], "805.409.9262")
+        self.assertEqual(result["referral_phone"], "805.409.9262")
         self.assertEqual(result["nested"][0]["message"], "Please call 805.409.9262.")
         self.assertEqual(original["phone"], "805.953.7273")
 
