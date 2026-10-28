@@ -2576,3 +2576,17 @@ mtime_ms = 1793152203867
 storage_uri = "gcs://replit-rams-assets-kirk/rams/assets/repl:e1b2f643-7869-4565-af0e-10c34575ee8d/2d88706a-59fd-4648-8056-c56ca4be16cc/414a058e-8a3d-43e0-ac05-c2fa401bc384"
 storage_version_token = "1793152231259287"
 content_type = "text/csv"
+
+[[outputs]]
+id = "L1rTjGNLQtGg71-SQBFeC"
+uri = "file://generated-artifacts/Eternal-Manual-Social-October-27-31-2026.zip"
+type = "unspecified"
+title = "Manual social test · Style 1 · October 27–31"
+description = "One ZIP containing 20 full-photo graphics, matching captions and article links, organized into GBP, Facebook, LinkedIn and Pinterest folders. Each graphic is sized for its platform. Includes simple manual-posting instructions; nothing has been published or scheduled."
+logical_id = "626d011c-adc2-486f-9e24-8cdc22d5ca5a"
+content_hash = "sha256:b7b787794bafc494650c9c8a6b845e4512374f4cf437844a2c1df472d0eff8a3"
+size = 8460822
+mtime_ms = 1793158128138
+storage_uri = "gcs://replit-rams-assets-kirk/rams/assets/repl:e1b2f643-7869-4565-af0e-10c34575ee8d/626d011c-adc2-486f-9e24-8cdc22d5ca5a/290ba9a2-2242-4c19-a4b9-be46f1fbaa47"
+storage_version_token = "1793158178981752"
+content_type = "application/octet-stream"
