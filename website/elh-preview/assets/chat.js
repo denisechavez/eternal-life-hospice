@@ -218,6 +218,10 @@
     callbackUncertainUntil = Date.now() + callbackReminderMs;
     try { sessionStorage.setItem(callbackReminderKey, String(callbackUncertainUntil)); } catch (e) {}
   }
+  function clearCallbackReminder() {
+    callbackUncertainUntil = 0;
+    try { sessionStorage.removeItem(callbackReminderKey); } catch (e) {}
+  }
   function callbackReminder(container) {
     var reminderUntil = callbackUncertainUntil;
     container.textContent = "We couldn't confirm whether your request was received. To avoid a duplicate request, please call our care team to confirm receipt before sending another request. This reminder lasts up to 30 minutes in this tab; its expiry does not mean your request failed. If the team confirms receipt, no new request is needed. Only if the team confirms it was not received, choose the button below to start a new request.";
@@ -234,8 +238,7 @@
     confirmed.addEventListener("click", function () {
       // An expired or superseded reminder must not remove a newer pending form.
       if (callbackPending || callbackUncertainUntil !== reminderUntil || !confirmed.isConnected) return;
-      callbackUncertainUntil = 0;
-      try { sessionStorage.removeItem(callbackReminderKey); } catch (e) {}
+      clearCallbackReminder();
       log.querySelectorAll(".elhc-cb, .elhc-cb-reminder").forEach(function (node) { node.remove(); });
       showCallbackForm(); // Blank form only; never submit or restore saved details.
     });
@@ -695,7 +698,7 @@
         "Accept": "application/json"
       },
       body: body
-    },form);})
+    },form,rememberUncertainCallback);})
       .then(function (r) {
         return r.json().catch(function () { return null; }).then(function (data) {
           if (!r.ok || !data || data.ok !== true || data.accepted !== true) {
@@ -706,6 +709,7 @@
       })
       .then(function (result) {
         callbackPending = false;
+        clearCallbackReminder();
         form.__elhSubmissionState = "accepted";
         track("chat_callback_success", { page: window.location.pathname || "/" });
         if (form.parentNode) form.parentNode.removeChild(form);
@@ -727,7 +731,9 @@
         if(form.__elhSubmissionState === "accepted"){return;}
         track("chat_callback_error", { page: window.location.pathname || "/" });
         var unknown = intakeSecurity && (!error.intakeOutcome || error.intakeOutcome === "unknown");
-        if (unknown) rememberUncertainCallback();
+        // Keep the original pre-POST deadline; a lost response must not extend it.
+        if (unknown && !callbackUncertainUntil) rememberUncertainCallback();
+        if (!unknown) clearCallbackReminder();
         form.__elhSubmissionState = unknown ? "unknown" : null;
         submitBtn.disabled = !!unknown;
         submitBtn.textContent = unknown ? "Please call to confirm receipt" : "Send request";

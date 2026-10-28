@@ -72,7 +72,7 @@ export function showFailure(error, container) {
   return outcome;
 }
 
-export async function submit(options, form) {
+export async function submit(options, form, beforeSend) {
   const body = options.body instanceof FormData
     ? options.body : new URLSearchParams(options.body);
   try {
@@ -94,6 +94,9 @@ export async function submit(options, form) {
   } catch (_) {
     throw submissionError("verification");
   }
+  // Synchronous boundary: callers can persist a privacy-safe delivery reminder
+  // after verification but before the POST can outlive this document.
+  if (beforeSend) beforeSend();
   let response, data;
   try {
     response = await fetch("/api/form-submit", {

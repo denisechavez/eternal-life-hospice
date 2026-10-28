@@ -240,8 +240,10 @@ try {
       fields: {'input[id$="-name"]': "Synthetic Chat", 'input[id$="-phone"]': "2025550190",
         'input[id$="-email"]': "chat@example.invalid", 'textarea': "Synthetic chat only"}}
   ];
-  for (const outcome of ["accepted", "interrupted", "unreadable", "unconfirmed", "server-error", "module-unavailable"])
+  for (const outcome of ["accepted", "interrupted", "unreadable", "unconfirmed", "server-error", "module-unavailable",
+    "pending-reload", "pending-navigation"])
   for (const mobile of [false, true]) for (const flow of flows) {
+    if (outcome.startsWith("pending-") && flow.name !== "chat") continue;
     currentCase = `${flow.name} ${mobile ? "mobile/touch" : "desktop/keyboard"} ${outcome}`;
     const {state} = fixture;
     state.security = [];state.posts = [];state.securityFailure = false;state.submitResponse = null;
@@ -356,6 +358,54 @@ try {
           `document.querySelector(${JSON.stringify(visibleError)}).textContent.includes("We're here for you 24 hours a day, 7 days a week.")`));
       }
     };
+    if (outcome.startsWith("pending-")) {
+      const reminderKey = "elhcCallbackUncertainUntil";
+      state.hold = true;
+      await start();
+      assert.equal(await evaluate(`sessionStorage.getItem(${JSON.stringify(reminderKey)})`), null,
+        "Verification alone must not mark delivery as uncertain");
+      await activate("#fixture-challenge", mobile);
+      for (let i = 0; !state.held && i < 100; i++) await sleep(20);
+      assert.ok(state.held, "POST must reach the synthetic fixture before leaving the page");
+      const stored = await evaluate(`sessionStorage.getItem(${JSON.stringify(reminderKey)})`);
+      assert.match(stored, /^\d+$/, "Pending delivery must save only an expiry timestamp");
+      assert.ok(Number(stored) > Date.now() && Number(stored) <= Date.now() + 1800000);
+      const securityCount = state.security.length;
+      assert.equal(state.posts.length, 1);
+      assert.equal(await evaluate("document.querySelectorAll('.elhc-cb-reminder').length"), 0,
+        "Response must still be pending, not already recorded as interrupted");
+      if (outcome === "pending-reload") await call("Page.reload", {ignoreCache: true});
+      else await call("Page.navigate", {url: fixture.origin + "/refer"});
+      await until("document.readyState === 'complete' && document.querySelector('.elhc-launch')");
+      await activate(".elhc-launch", mobile);
+      await until("document.querySelector('.elhc-chip-cb')");
+      await activate(".elhc-chip-cb", mobile);
+      await until("document.querySelector('.elhc-cb-reminder')");
+      assert.equal(await evaluate("document.querySelectorAll('.elhc-cb').length"), 0);
+      assert.match(await evaluate("document.querySelector('.elhc-cb-reminder').textContent"),
+        /please call our care team to confirm receipt before sending another request/);
+      assert.ok(await evaluate(`document.querySelector('.elhc-cb-reminder a[href="tel:18059537273"]')`));
+      assert.equal(await evaluate(`sessionStorage.getItem(${JSON.stringify(reminderKey)})`), stored,
+        "Navigation must not extend the deadline");
+      assert.doesNotMatch(await evaluate("JSON.stringify(Object.entries(sessionStorage))"),
+        /Synthetic|example.invalid|2025550190|clinical/i);
+      // Even a late accepted reply to the abandoned document cannot unlock this page.
+      state.held();state.held = null;state.hold = false;
+      await sleep(250);
+      assert.equal(await evaluate(`sessionStorage.getItem(${JSON.stringify(reminderKey)})`), stored);
+      await activate(".elhc-chip-cb", mobile);
+      assert.equal(state.posts.length, 1, "Reload/navigation must never auto-retry");
+      assert.equal(state.security.length, securityCount, "Reminder must not start another challenge");
+      await activate(".elhc-cb-confirm-not-received", mobile);
+      await until("document.querySelector('.elhc-cb')");
+      assert.equal(await evaluate(`sessionStorage.getItem(${JSON.stringify(reminderKey)})`), null);
+      assert.deepEqual(await evaluate(`Array.from(document.querySelectorAll('.elhc-cb input,.elhc-cb textarea')).map(e=>e.value)`),
+        ["", "", "", "", ""]);
+      assert.equal(state.posts.length, 1, "Confirmation only opens a blank manual request");
+      assert.equal(state.security.length, securityCount);
+      console.log(`PASS ${currentCase}: pre-response timestamp survives, call-first reminder and no retry`);
+      continue;
+    }
     if (outcome === "module-unavailable") {
       await activate(flow.submit, mobile);await failed();
       assert.equal(state.posts.length, 0);
@@ -482,6 +532,9 @@ try {
     await activate(flow.submit, mobile);await failed();
     assert.equal(state.posts.length, 0, "Security service failure must not POST");
     state.securityFailure = false;
+    if (flow.name === "chat")
+      assert.equal(await evaluate('sessionStorage.getItem("elhcCallbackUncertainUntil")'), null,
+        "Pre-send verification failures must not leave a delivery reminder");
     // Explicit rejections preserve fields and allow a fresh verified attempt.
     for (const response of [
       {status: 403, body: {ok: false, accepted: false}},
@@ -494,6 +547,9 @@ try {
       await start();await activate("#fixture-challenge", mobile);await failed();
       assert.match(await evaluate(`document.querySelector(${JSON.stringify(flow.error)}).textContent`),
         flow.name === "newsletter" ? /newsletter signup was not accepted/ : /request was not accepted/);
+      if (flow.name === "chat")
+        assert.equal(await evaluate('sessionStorage.getItem("elhcCallbackUncertainUntil")'), null,
+          "Explicit rejection must clear the pre-POST reminder");
     }
     state.submitResponse = null;state.hold = true;
     await start();
@@ -522,6 +578,8 @@ try {
     await noSuccess();
     assert.ok(await evaluate(`document.querySelector(${JSON.stringify(flow.submit)}).disabled`));
     if (flow.name === "chat") {
+      assert.match(await evaluate('sessionStorage.getItem("elhcCallbackUncertainUntil")'), /^\d+$/,
+        "Pending POST must already have a privacy-safe reminder");
       // A slow response cannot be bypassed by opening another callback form.
       await activate('button[aria-label="Close the support guide"]', mobile);
       await activate(".elhc-launch", mobile);
