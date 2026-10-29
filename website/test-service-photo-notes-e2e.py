@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
-"""Disposable service rebuild/HTTP checks, independent of Journal and layout tests.
+"""Disposable service rebuild/HTTP/browser checks, independent of Journal.
 
 Run: python3 website/test-service-photo-notes-e2e.py
+Requires Chromium (CHROME_BIN / CHROMIUM_BIN overrides are supported).
 """
-from contextlib import ExitStack
+from contextlib import ExitStack, contextmanager
 from email.parser import BytesParser
 from email.utils import formatdate
 import gzip
@@ -15,8 +16,10 @@ import os
 from pathlib import Path
 import re
 import socket
+import subprocess
 import tempfile
 from threading import Thread
+import time
 import unittest
 from unittest.mock import patch
 from urllib.request import Request, urlopen
@@ -33,6 +36,10 @@ SPEC = importlib.util.spec_from_file_location(
     "service_photo_fixture_builder", ROOT / "build-service-previews.py")
 builder = importlib.util.module_from_spec(SPEC)
 SPEC.loader.exec_module(builder)
+BROWSER_SPEC = importlib.util.spec_from_file_location(
+    "service_photo_browser_tools", ROOT / "test-header-mobile.py")
+browser_tools = importlib.util.module_from_spec(BROWSER_SPEC)
+BROWSER_SPEC.loader.exec_module(browser_tools)
 
 OLD_NOTE = (
     '<p class="journal-photo-credit"><small>Illustrative photograph: Fixture author / '
@@ -94,7 +101,7 @@ class ServicePhotoNoteTests(unittest.TestCase):
         # only disposable service entries, never real publication state.
         self.inventory = self.stack.enter_context(patch.object(
             internal_links, "inventory", return_value={}))
-        self.stack.enter_context(patch.object(
+        self.journal_releases = self.stack.enter_context(patch.object(
             devserver.PrettyURLHandler, "_released_journal",
             side_effect=AssertionError("Service requests must not read Journal releases")))
         self.transform = self.stack.enter_context(patch.object(
@@ -116,6 +123,95 @@ class ServicePhotoNoteTests(unittest.TestCase):
         for path in (self.image, self.public_image):
             self.assertEqual(path.read_bytes(), self.image_bytes)
             self.assertEqual(hashlib.sha256(path.read_bytes()).hexdigest(), self.digest)
+        self.journal_releases.assert_not_called()
+
+    @contextmanager
+    def responsive_browser(self):
+        # Reuse the project's dependency-free Chromium/CDP conventions.
+        with socket.socket() as sock:
+            sock.bind(("127.0.0.1", 0))
+            port = sock.getsockname()[1]
+        with tempfile.TemporaryDirectory(prefix="elh-service-photo-chrome-") as profile:
+            browser = subprocess.Popen([
+                browser_tools.browser_binary(), "--headless=new", "--no-sandbox",
+                "--disable-gpu", "--disable-background-networking",
+                "--no-proxy-server",
+                "--host-resolver-rules=MAP * ~NOTFOUND, EXCLUDE 127.0.0.1",
+                "--remote-allow-origins=*", f"--remote-debugging-port={port}",
+                f"--user-data-dir={profile}", "about:blank",
+            ], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+            client = None
+            try:
+                client = browser_tools.DevTools(browser_tools.wait_for_page_debugger(port))
+                client.call("Page.enable")
+                client.call("Network.enable")
+                client.call("Network.setCacheDisabled", {"cacheDisabled": True})
+                yield client
+            finally:
+                if client is not None:
+                    client.close()
+                browser.terminate()
+                try:
+                    browser.wait(timeout=5)
+                except subprocess.TimeoutExpired:
+                    browser.kill()
+                    browser.wait(timeout=5)
+
+    def assert_responsive_loaded(self, client, origin, candidates):
+        # Fresh documents avoid Chromium retaining a larger cached candidate
+        # after shrinking the viewport. At DPR=1 the phone uses img's 1x;
+        # desktop uses picture's width descriptors and sizes (half the viewport).
+        for width, candidate, natural_width, decoded_width in (
+                (390, "small", 640, 640), (1440, "large", 720, 1280),
+                (1024, "small", 512, 640)):
+            with self.subTest(browser_width=width, candidate=candidate):
+                client.call("Page.navigate", {"url": "about:blank"})
+                client.call("Emulation.setDeviceMetricsOverride", {
+                    "width": width, "height": 900,
+                    "deviceScaleFactor": 1, "mobile": width < 640})
+                url = origin + ROUTE + f"?responsive-width={width}"
+                navigation = client.call("Page.navigate", {"url": url})
+                self.assertNotIn("errorText", navigation)
+                state = None
+                deadline = time.monotonic() + 10
+                while time.monotonic() < deadline:
+                    result = client.call("Runtime.evaluate", {
+                        "expression": """(() => {
+                          const img=document.querySelector('#responsive-photo-fixture img');
+                          if (!img) return null;
+                          return {url:location.href, ready:document.readyState,
+                            width:innerWidth, dpr:devicePixelRatio,
+                            currentSrc:img.currentSrc, complete:img.complete,
+                            naturalWidth:img.naturalWidth, naturalHeight:img.naturalHeight};
+                        })()""", "returnByValue": True})
+                    self.assertNotIn("exceptionDetails", result)
+                    state = result["result"].get("value")
+                    if (state and state["url"] == url and state["ready"] == "complete"
+                            and state["complete"] and state["currentSrc"]):
+                        break
+                    time.sleep(.05)
+                self.assertIsNotNone(state, "Responsive fixture never appeared")
+                self.assertEqual(state["url"], url, state)
+                self.assertEqual(state["ready"], "complete", state)
+                self.assertEqual(state["width"], width, state)
+                self.assertEqual(state["dpr"], 1, state)
+                self.assertEqual(state["currentSrc"], origin + candidates[candidate], state)
+                self.assertTrue(state["complete"], state)
+                self.assertEqual(state["naturalWidth"], natural_width, state)
+                self.assertEqual(state["naturalHeight"], natural_width * 5 // 8, state)
+                decoded = client.call("Runtime.evaluate", {
+                    "expression": """(async () => {
+                      const img=document.querySelector('#responsive-photo-fixture img');
+                      await img.decode();
+                      const bitmap=await createImageBitmap(img);
+                      const size=[bitmap.width, bitmap.height];
+                      bitmap.close();
+                      return size;
+                    })()""",
+                    "awaitPromise": True, "returnByValue": True})
+                self.assertNotIn("exceptionDetails", decoded)
+                self.assertEqual(decoded["result"].get("value"),
+                                 [decoded_width, decoded_width * 5 // 8])
 
     def read_head(self, port, path, headers):
         # HTTP clients normally discard HEAD bodies, hiding server regressions.
@@ -182,11 +278,20 @@ class ServicePhotoNoteTests(unittest.TestCase):
         if contextual:
             # Disposable markup only: exercise responsive images and embedded
             # provenance without editing public pages or Journal releases.
-            responsive_urls = (
-                image_url + "?variant=small",
-                image_url + "?variant=large",
-                image_url + "?variant=fallback",
-            )
+            candidates = {}
+            candidate_bytes = {}
+            for name, size, color in (
+                    ("small", (640, 400), (190, 40, 40)),
+                    ("large", (1280, 800), (40, 160, 70)),
+                    ("fallback", (120, 75), (40, 70, 190))):
+                filename = f"fixture-responsive-{name}.webp"
+                path = self.public / "assets/service-pages" / filename
+                Image.new("RGB", size, color).save(path)
+                candidates[name] = prefix + filename
+                candidate_bytes[path] = path.read_bytes()
+            responsive_urls = tuple(candidates[name] for name in ("small", "large", "fallback"))
+            self.assertEqual(len(set(candidate_bytes.values())), 3)
+            client = self.stack.enter_context(self.responsive_browser())
             responsive_alt = "Fixture caregiver beside a sunlit window"
             provenance = {
                 "@context": "https://schema.org",
@@ -196,7 +301,8 @@ class ServicePhotoNoteTests(unittest.TestCase):
                 "creditText": "Fixture image provenance",
                 "acquireLicensePage": "https://example.org/service-photo",
                 "license": "https://www.pexels.com/license/",
-                "sha256": self.digest,
+                "sha256": hashlib.sha256(
+                    (self.public / candidates["fallback"].lstrip("/")).read_bytes()).hexdigest(),
             }
             provenance_json = json.dumps(provenance, indent=2)
             responsive_fixture = (
@@ -339,6 +445,12 @@ class ServicePhotoNoteTests(unittest.TestCase):
                             self.assert_preserved()
                     with urlopen(origin + image_url, timeout=5) as response:
                         self.assertEqual(response.read(), self.image_bytes)
+                    self.assert_preserved()
+                if contextual:
+                    self.assert_responsive_loaded(client, origin, candidates)
+                    self.assertEqual(target.read_bytes(), before)
+                    for path, original in candidate_bytes.items():
+                        self.assertEqual(path.read_bytes(), original)
                     self.assert_preserved()
 
     def test_workspace_service_preview_after_rebuilds(self):
