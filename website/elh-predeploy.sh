@@ -38,6 +38,7 @@ set +o pipefail
   python3 ../check-analytics-version.py
   python3 ../test-tracker-policy.py
   node --experimental-websocket ../test-cookie-browser.mjs
+  node --experimental-websocket ../test-landing-consent-browser.mjs
   node ../test-submission-analytics.cjs
   python3 ../check-structured-data.py
   python3 ../check-blog-schema.py
@@ -97,6 +98,7 @@ SENTINELS=(
   "SENTINEL: check-analytics-version.py self-test OK"
   "SENTINEL: test-tracker-policy.py OK"
   "SENTINEL: test-cookie-browser.mjs OK"
+  "SENTINEL: test-landing-consent-browser.mjs OK"
   "SENTINEL: test-submission-analytics.cjs OK"
   "SENTINEL: check-structured-data.py self-test OK"
   "SENTINEL: check-blog-schema.py self-test OK"

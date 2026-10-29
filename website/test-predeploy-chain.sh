@@ -51,6 +51,8 @@ tracker = "python3 ../test-tracker-policy.py"
 tracker_sentinel = "SENTINEL: test-tracker-policy.py OK"
 tracker_browser = "node --experimental-websocket ../test-cookie-browser.mjs"
 tracker_browser_sentinel = "SENTINEL: test-cookie-browser.mjs OK"
+landing_browser = "node --experimental-websocket ../test-landing-consent-browser.mjs"
+landing_browser_sentinel = "SENTINEL: test-landing-consent-browser.mjs OK"
 analytics = "node ../test-submission-analytics.cjs"
 analytics_sentinel = "SENTINEL: test-submission-analytics.cjs OK"
 sentinel = "SENTINEL: test-care-brief-signup-retry.mjs browser checks OK"
@@ -67,6 +69,9 @@ assert commands.count(tracker) == 1, "Tracker policy suite must run exactly once
 assert commands.count(tracker_browser) == 1, "Synthetic tracker runtime suite must run exactly once"
 assert commands.index(tracker_browser) == commands.index(tracker) + 1
 assert wrapper.count('"' + tracker_browser_sentinel + '"') == 1, "Require browser runtime sentinel"
+assert commands.count(landing_browser) == 1, "Real-page consent suite must run exactly once"
+assert commands.index(landing_browser) == commands.index(tracker_browser) + 1
+assert wrapper.count('"' + landing_browser_sentinel + '"') == 1, "Require real-page consent sentinel"
 assert wrapper.count('"' + tracker_sentinel + '"') == 1, "Wrapper must require tracker policy sentinel"
 assert commands.count(analytics) == 1, "Synthetic submission analytics suite must run exactly once"
 assert commands.index(analytics) < commands.index("node assets/build-search-index.js --check")
@@ -194,6 +199,9 @@ if not (is_target and os.environ["CHAIN_MODE"] == "missing"):
                  (tracker_browser, tracker_browser_sentinel, "success"),
                  (tracker_browser, tracker_browser_sentinel, "failure"),
                  (tracker_browser, tracker_browser_sentinel, "missing"),
+                 (landing_browser, landing_browser_sentinel, "success"),
+                 (landing_browser, landing_browser_sentinel, "failure"),
+                 (landing_browser, landing_browser_sentinel, "missing"),
                  (analytics, analytics_sentinel, "success"),
                  (analytics, analytics_sentinel, "failure"), (analytics, analytics_sentinel, "missing")]
     for script in ("test-journal-campaign.py", "test-google-reviews.py", "test-replit-chat-coverage.py"):
@@ -401,6 +409,7 @@ SENTINELS=(
   "SENTINEL: check-analytics-version.py self-test OK"
   "SENTINEL: test-tracker-policy.py OK"
   "SENTINEL: test-cookie-browser.mjs OK"
+  "SENTINEL: test-landing-consent-browser.mjs OK"
   "SENTINEL: test-submission-analytics.cjs OK"
   "SENTINEL: check-structured-data.py self-test OK"
   "SENTINEL: check-blog-schema.py self-test OK"
