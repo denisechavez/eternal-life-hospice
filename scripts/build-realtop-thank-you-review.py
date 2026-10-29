@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build the unpublished RealTop thank-you design packet with local assets."""
+"""Build the unpublished Google PPC thank-you review from existing sources."""
 from pathlib import Path
 import re
 import shutil
@@ -11,8 +11,9 @@ ROOT = Path(__file__).resolve().parents[1]
 DESIGN = ROOT / "artifacts/review-design-sandbox/public/elh-realtop-thank-you-review.html"
 NOTES = ROOT / "exports/realtop-thank-you/RealTop-Implementation-Notes.html"
 README = ROOT / "exports/realtop-thank-you/README.md"
-OUTPUT = ROOT / "generated-artifacts/realtop-thank-you"
-STEM = "ELH-RealTop-Thank-You-Review"
+OUTPUT = ROOT / "generated-artifacts/google-ppc-thank-you"
+STEM = "ELH-Google-PPC-Thank-You-Review"
+NOTES_NAME = "Google-PPC-Implementation-Notes.html"
 
 
 def run(args):
@@ -58,16 +59,16 @@ def main():
         stage = Path(tmp)
         html = stage / f"{STEM}.html"
         shutil.copyfile(DESIGN, html)
-        shutil.copyfile(NOTES, stage / NOTES.name)
+        shutil.copyfile(NOTES, stage / NOTES_NAME)
         shutil.copyfile(README, stage / README.name)
         render(html, stage / "design.pdf")
-        render(stage / NOTES.name, stage / "notes.pdf")
+        render(stage / NOTES_NAME, stage / "notes.pdf")
         packet = stage / f"{STEM}.pdf"
         run(["pdfunite", stage / "design.pdf", stage / "notes.pdf", packet])
         if page_count(packet) != 2:
             raise RuntimeError("The review packet must contain exactly two pages.")
         archive = stage / f"{STEM}-Handoff.zip"
-        deliverables = (html, packet, stage / NOTES.name, stage / README.name)
+        deliverables = (html, packet, stage / NOTES_NAME, stage / README.name)
         with zipfile.ZipFile(archive, "w", zipfile.ZIP_DEFLATED) as zipped:
             for path in deliverables:
                 zipped.write(path, arcname=path.name)
@@ -75,7 +76,7 @@ def main():
             destination = OUTPUT / path.name
             shutil.copyfile(path, destination)
             print(f"{destination.relative_to(ROOT)} ({destination.stat().st_size:,} bytes)")
-    print("SENTINEL: RealTop review packet built; 2 pages; no live integration.")
+    print("SENTINEL: Google PPC review packet built; 2 pages; no live integration.")
 
 
 if __name__ == "__main__":

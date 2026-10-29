@@ -1,21 +1,25 @@
-# Eternal Life Hospice — RealTop thank-you page review
+# Eternal Life Hospice — Google PPC thank-you page review
 
-Prepared for RealTop, the marketing partner for
+Prepared for the Google PPC campaign landing page:
 https://eternal-life-hospice.rt-go.com/.
+
+RealTop helps Eternal understand PPC. This packet does not assume RealTop owns
+the landing page or manages its form. Confirm who has form-settings access
+before configuring the live confirmation flow.
 
 ## What is included
 
-- `ELH-RealTop-Thank-You-Review.pdf`: two-page review packet. Page 1 is the
+- `ELH-Google-PPC-Thank-You-Review.pdf`: two-page review packet. Page 1 is the
   proposed design; page 2 contains the implementation requirements.
-- `ELH-RealTop-Thank-You-Review.html`: responsive, self-contained design
+- `ELH-Google-PPC-Thank-You-Review.html`: responsive, self-contained design
   reference with embedded official logo and fonts. It can be opened locally.
-- `RealTop-Implementation-Notes.html`: printable implementation brief.
+- `Google-PPC-Implementation-Notes.html`: printable implementation brief.
 
 **This is a design review, not an active confirmation flow.** No form is
 submitted, no email is sent and no tracking event is fired by these files.
 The review disclosure is intentional. Do not publish this file unchanged or
 remove the disclosure until Eternal Life Hospice approves the design and
-RealTop implements a genuine successful-submission flow.
+the form administrator implements a genuine successful-submission flow.
 
 ## Approved wording to retain
 
@@ -33,7 +37,7 @@ The phone link is `tel:+18059537273`. This preserves the number currently
 displayed on the external campaign page. Do not change the main website's
 805.409.9262 placements as part of this handoff.
 
-## RealTop integration requirements
+## Google PPC integration requirements
 
 1. Display the confirmation only after the actual form provider confirms that
    the request was accepted and saved. A button click, attempted request, URL
@@ -68,4 +72,6 @@ displayed on the external campaign page. Do not change the main website's
 The visual source is the existing review sandbox's
 `public/elh-realtop-thank-you-review.html`, not the main public website.
 Run `python3 scripts/build-realtop-thank-you-review.py` to rebuild the PDF
-and ZIP in the ignored `generated-artifacts/realtop-thank-you/` directory.
+and ZIP in the ignored `generated-artifacts/google-ppc-thank-you/` directory.
+Internal source paths retain their original names to preserve existing review
+links; all exported deliverables use the Google PPC name.

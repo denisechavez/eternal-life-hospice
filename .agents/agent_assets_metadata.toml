@@ -2618,3 +2618,31 @@ mtime_ms = 1793241825566
 storage_uri = "gcs://replit-rams-assets-kirk/rams/assets/repl:e1b2f643-7869-4565-af0e-10c34575ee8d/ca8ad465-c03f-4441-a2e9-16331a999fb0/00f1efb8-7d98-4a67-968c-9c9e87607ed1"
 storage_version_token = "1793241877814152"
 content_type = "application/octet-stream"
+
+[[outputs]]
+id = "Pzew2tc_GaEu4b4B07xV2"
+uri = "file://generated-artifacts/google-ppc-thank-you/ELH-Google-PPC-Thank-You-Review.pdf"
+type = "pdf"
+title = "Google PPC — Thank-you Page Review"
+description = "Updated two-page PDF: branded design and implementation notes. RealTop is identified only as an adviser; form administration remains unconfirmed."
+logical_id = "29b8496b-77d1-405c-8070-c7b3d68c7668"
+content_hash = "sha256:dd2133ddcaf2068189c91523aa72211859b62b39838d697dfe5368e8e85327af"
+size = 186914
+mtime_ms = 1793242118743
+storage_uri = "gcs://replit-rams-assets-kirk/rams/assets/repl:e1b2f643-7869-4565-af0e-10c34575ee8d/29b8496b-77d1-405c-8070-c7b3d68c7668/47f8a12d-9416-4b7c-a4bd-6d43ca75bb99"
+storage_version_token = "1793242127340517"
+content_type = "application/pdf"
+
+[[outputs]]
+id = "vGjzcrKHX2-pVHrNCRear"
+uri = "file://generated-artifacts/google-ppc-thank-you/ELH-Google-PPC-Thank-You-Review-Handoff.zip"
+type = "unspecified"
+title = "Google PPC — Thank-you Page Package"
+description = "Renamed HTML, review PDF and implementation notes. Review only; nothing published or connected to the live form."
+logical_id = "af2c3c9b-0fdf-4df0-ba34-54f98e971dcf"
+content_hash = "sha256:a42d16a17580623cded064a5f51ae50e12de829583b4f47a10cca6123dd7757c"
+size = 205086
+mtime_ms = 1793242118747
+storage_uri = "gcs://replit-rams-assets-kirk/rams/assets/repl:e1b2f643-7869-4565-af0e-10c34575ee8d/af2c3c9b-0fdf-4df0-ba34-54f98e971dcf/3144a1d8-3cbb-4c55-8d70-49853058e8ae"
+storage_version_token = "1793242128047264"
+content_type = "application/octet-stream"

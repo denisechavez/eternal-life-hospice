@@ -9,12 +9,16 @@ The owner identified https://eternal-life-hospice.rt-go.com/ as the PPC landing 
 
 **How to apply:** Inspect the actual campaign page and establish access to its form configuration before promising an automatic thank-you redirect or acknowledgment. Viewing the public page does not verify successful submission or delivery. Do not submit real requests or send email without authorization.
 
-The owner identified **RealTop** as the marketing partner for this campaign
-page and requested a branded thank-you design to send to them.
+Name this campaign and its thank-you deliverables **Google PPC**. The owner
+clarified that **RealTop is only the company helping us understand PPC**.
+Do not infer that RealTop owns the landing page or administers the form.
 
-**Why:** The external form is managed separately from this project's main site.
+**Why:** The owner corrected the assumption that RealTop must configure the
+form. Sending an advisory company a review file does not establish its
+administrative access.
 
 **How to apply:** Treat initial thank-you designs as review handoffs, not live
-receipt confirmations. RealTop must connect an approved design to a verified
-successful-submission flow; providing a mockup or PDF does not establish that
-the request was received or that a conversion or email was delivered.
+receipt confirmations. Confirm who has form-settings access before configuring
+an approved design to appear after a verified successful submission. Providing
+a mockup or PDF does not establish that a request was received or that a
+conversion or email was delivered.

@@ -3,7 +3,7 @@ export default function ThankYouReview() {
 
   return (
     <iframe
-      title="Eternal Life Hospice thank-you page design review"
+      title="Google PPC thank-you page design review for Eternal Life Hospice"
       src={reviewPage}
       className="block h-[100dvh] min-h-[560px] w-full border-0 bg-[#f6f1e8]"
       loading="eager"
