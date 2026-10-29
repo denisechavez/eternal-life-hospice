@@ -204,7 +204,8 @@ if not (is_target and os.environ["CHAIN_MODE"] == "missing"):
                  (landing_browser, landing_browser_sentinel, "missing"),
                  (analytics, analytics_sentinel, "success"),
                  (analytics, analytics_sentinel, "failure"), (analytics, analytics_sentinel, "missing")]
-    for script in ("test-journal-campaign.py", "test-google-reviews.py", "test-replit-chat-coverage.py"):
+    for script in ("test-journal-campaign.py", "test-journal-photo-notes-e2e.py",
+                   "test-google-reviews.py", "test-replit-chat-coverage.py"):
         for mode in ("failure", "missing"):
             scenarios.append((f"python3 ../{script}", f"SENTINEL: {script} OK", mode))
     for target, target_sentinel, mode in scenarios:
@@ -425,6 +426,7 @@ SENTINELS=(
   "SENTINEL: check-agency-separation.py OK"
   "SENTINEL: test-service-publication.py OK"
   "SENTINEL: test-journal-campaign.py OK"
+  "SENTINEL: test-journal-photo-notes-e2e.py OK"
   "SENTINEL: check-internal-links.py self-test OK"
   "SENTINEL: test-internal-link-journeys.py browser checks OK"
   "SENTINEL: test-google-reviews.py OK"

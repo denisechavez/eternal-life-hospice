@@ -54,6 +54,7 @@ set +o pipefail
   python3 ../check-agency-separation.py
   python3 ../test-service-publication.py
   python3 ../test-journal-campaign.py
+  python3 ../test-journal-photo-notes-e2e.py
   python3 ../check-internal-links.py
   python3 ../test-internal-link-journeys.py
   python3 ../test-google-reviews.py
@@ -114,6 +115,7 @@ SENTINELS=(
   "SENTINEL: check-agency-separation.py OK"
   "SENTINEL: test-service-publication.py OK"
   "SENTINEL: test-journal-campaign.py OK"
+  "SENTINEL: test-journal-photo-notes-e2e.py OK"
   "SENTINEL: check-internal-links.py self-test OK"
   "SENTINEL: test-internal-link-journeys.py browser checks OK"
   "SENTINEL: test-google-reviews.py OK"

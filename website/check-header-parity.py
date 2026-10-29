@@ -37,7 +37,6 @@ INTENTIONAL_EXCEPTIONS = {
     "blog/index.html":             "redirect stub → /blog.html",
     # Care Brief issue pages — clean reader layouts without standard site chrome
     "care-brief/issue-1.html":     "reader view — clean issue layout intentionally",
-    # Homepage — IS the canonical; uses inline JS not header.js file
     # Internal / utility pages not in public nav
     "assets/img/amethyst-tmp/gallery.html": "internal asset gallery",
     # Social graphics — not public pages
@@ -69,6 +68,15 @@ REQUIRED = {
     "header_js":   ('header.js?v=20260901d', "current header.js included"),
     "no_stale_url":('/aleksandradubina',  "stale /aleksandradubina URL"),  # must NOT appear
 }
+
+
+def required_for_page(rel):
+    """Keep the approved homepage cache version separate from signed pages."""
+    if rel == "index.html":
+        return {**REQUIRED, "header_js": (
+            "header.js?v=20261028-care-direct", "current header.js included")}
+    return REQUIRED
+
 
 class HeaderStructureParser(HTMLParser):
     """Extract the canonical header structure from actual HTML elements."""
@@ -237,6 +245,16 @@ _st_bad_order = """<header id="hdr"><nav aria-label="Main navigation">
 if not any("NAV ORDER" in failure for failure in structural_header_failures(_st_bad_order)):
     print("❌  SELF-TEST FAILED: guard did not detect a changed nav label/order fingerprint")
     sys.exit(1)
+for _st_page, _st_expected, _st_rejected in (
+    ("index.html", "20261028-care-direct", "20260901d"),
+    ("blog/example.html", "20260901d", "20260813"),
+):
+    _st_script = required_for_page(_st_page)["header_js"][0]
+    if (_st_script not in f'<script src="/assets/header.js?v={_st_expected}" defer></script>'
+            or _st_script in f'<script src="/assets/header.js?v={_st_rejected}" defer></script>'
+            or _st_script in "<html><body>No header script</body></html>"):
+        print("❌  SELF-TEST FAILED: incorrect page-specific header script requirement")
+        sys.exit(1)
 print("SENTINEL: check-header-parity.py self-test OK")
 
 results = {"pass": [], "fail": [], "exception": []}
@@ -262,11 +280,7 @@ for dirpath, dirs, files in os.walk(ROOT):
         page_fails = []
 
         # Standard presence checks
-        for key, (token, label) in REQUIRED.items():
-            # The homepage uses the approved direct-care mobile navigation build.
-            # Other pages retain the shared header version checked above.
-            if key == "header_js" and rel == "index.html":
-                token = "header.js?v=20261028-care-direct"
+        for key, (token, label) in required_for_page(rel).items():
             if key == "no_stale_url":
                 if token in html:
                     page_fails.append(f"STALE URL: {token} found")
@@ -410,7 +424,7 @@ for exc_rel, exc_reason in INTENTIONAL_EXCEPTIONS.items():
     # File exists — check whether it now passes all parity checks
     html = open(exc_path, encoding="utf-8", errors="replace").read()
     page_fails = []
-    for key, (token, label) in REQUIRED.items():
+    for key, (token, label) in required_for_page(exc_rel).items():
         if key == "no_stale_url":
             if token in html:
                 page_fails.append(f"STALE URL: {token} found")

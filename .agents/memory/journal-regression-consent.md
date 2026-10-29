@@ -29,3 +29,14 @@ a layout fixture hides date-gating regressions and changes the featured story.
 membership. Keep Pacific-day checks, the authoritative 06:30 release boundary,
 held/unapproved drafts and archive rendering covered separately. Do not change
 production overlay semantics to satisfy a date-rewind test.
+
+Keep photo-note presentation regressions independent of the full editorial
+archive fixture. Synthetic release-storage records are appropriate for exercising
+rebuilt files through the real public HTTP handler.
+
+**Why:** Presentation-only checks must remain runnable when historical approval
+pins or the broader archive corpus need separate repair, without renewing consent.
+
+**How to apply:** Use disposable documents, photos and approval snapshots. Exercise
+the real build and response transformations; leave authorization and database
+publication coverage in their dedicated suites.
