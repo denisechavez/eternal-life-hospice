@@ -24,6 +24,7 @@ from devserver import PrettyURLHandler
 import journal_release
 import journal_workspace_preview
 import analytics_assets
+from photo_note_test_fixtures import NOTE_VARIANTS, PRESERVED_HTML
 
 
 class JournalCampaignTests(unittest.TestCase):
@@ -92,6 +93,52 @@ class JournalCampaignTests(unittest.TestCase):
         ):
             self.assertEqual(builder.render_photo_credit({"licenseUrl": license_url}), "")
         self.assertEqual(builder.render_photo_credit(None), "")
+
+    def test_legacy_photo_note_refresh_variants_preserve_other_bytes(self):
+        for note_html in NOTE_VARIANTS:
+            with self.subTest(note=note_html), tempfile.TemporaryDirectory() as directory:
+                root = Path(directory)
+                article = {
+                    "slug": "legacy",
+                    "photoCredit": {"author": "Original author",
+                                    "sourceUrl": "https://example.org/source",
+                                    "licenseUrl": "https://creativecommons.org/licenses/by/4.0/"},
+                }
+                original = PRESERVED_HTML + note_html + PRESERVED_HTML + note_html
+                expected = PRESERVED_HTML * 2
+                page = root / "legacy.html"
+                page.write_text(original)
+                review = root / "review.json"
+                draft = {"reviewHtml": original, "revision": "old",
+                         "photoCredit": article["photoCredit"], "date": "2020-01-01",
+                         "title": "Unchanged article", "heroImage": "/assets/original.jpg"}
+                document = {"articles": {"legacy": draft, "unmatched": dict(draft)},
+                            "metadata": {"source": "unchanged"}}
+                review.write_text(json.dumps(document))
+                frozen = root / "frozen-approval.json"
+                frozen.write_text(json.dumps({"html": original, "revision": "approved",
+                                              "approval": {"action": "approve"},
+                                              "photoCredit": article["photoCredit"]}))
+                frozen_bytes = frozen.read_bytes()
+                source = json.dumps(article)
+                with patch.object(builder, "OUT", root):
+                    self.assertEqual(builder.refresh_photo_credits([article]), 1)
+                    self.assertEqual(builder.refresh_review_photo_credits([article], review), 1)
+                    self.assertEqual(page.read_text(), expected)
+                    updated = json.loads(review.read_text())
+                    self.assertEqual(updated["articles"]["legacy"], {
+                        **draft, "reviewHtml": expected,
+                        "revision": hashlib.sha256(expected.encode()).hexdigest()[:12],
+                    })
+                    self.assertEqual(updated["articles"]["unmatched"], draft)
+                    self.assertEqual(updated["metadata"], document["metadata"])
+                    page_bytes, review_bytes = page.read_bytes(), review.read_bytes()
+                    self.assertEqual(builder.refresh_photo_credits([article]), 0)
+                    self.assertEqual(builder.refresh_review_photo_credits([article], review), 0)
+                    self.assertEqual(page.read_bytes(), page_bytes)
+                    self.assertEqual(review.read_bytes(), review_bytes)
+                self.assertEqual(frozen.read_bytes(), frozen_bytes)
+                self.assertEqual(json.dumps(article), source)
 
     def test_photo_source_metadata_is_preserved_but_not_rendered(self):
         credit = {
@@ -263,7 +310,8 @@ class JournalCampaignTests(unittest.TestCase):
     def test_metadata_cli_is_read_only_and_returns_failure_for_stale_copy(self):
         with self.metadata_fixture() as (public, path, page, _):
             root = public.parent
-            for name in ("build-journal-campaign.py", "journal_metadata.py"):
+            for name in ("build-journal-campaign.py", "journal_metadata.py",
+                         "journal_photo_notes.py"):
                 (root / name).write_bytes((ROOT / name).read_bytes())
             command = [sys.executable, str(root / "build-journal-campaign.py"), "--check-metadata"]
             for text, expected_code in ((page, 0), (page.replace("Care &amp;", "Edited &amp;"), 1)):

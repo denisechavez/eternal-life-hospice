@@ -6,6 +6,7 @@ import re
 import unittest
 
 from journal_photo_notes import public_html
+from photo_note_test_fixtures import NOTE_VARIANTS, PRESERVED_HTML
 
 PREFIX = '<p class="journal-photo-credit"><small>Illustrative photograph: Photographer / '
 DISCLAIMER = (
@@ -19,6 +20,14 @@ def note(license_url):
 
 
 class PhotoNoteTests(unittest.TestCase):
+    def test_legacy_variants_remove_only_explicit_credit_paragraphs(self):
+        for note_html in NOTE_VARIANTS:
+            with self.subTest(note=note_html):
+                original = PRESERVED_HTML + note_html + PRESERVED_HTML + note_html
+                expected = PRESERVED_HTML * 2
+                self.assertEqual(public_html(original), expected)
+                self.assertEqual(public_html(expected), expected)
+
     def test_pexels_and_public_domain_notes_are_removed(self):
         for url in (
             "https://www.pexels.com/license/",

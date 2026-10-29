@@ -12,7 +12,6 @@ from http.server import ThreadingHTTPServer
 import importlib.util
 import json
 from pathlib import Path
-import re
 import shutil
 import tempfile
 from threading import Thread
@@ -37,7 +36,15 @@ OLD_NOTE = (
     'Resized for display. The photograph does not depict an Eternal patient '
     'or service encounter.</small></p>\n'
 )
-NOTE_PATTERN = re.compile(r'<p class="journal-photo-credit">.*?</p>\n?', re.S)
+# Keep the expected removal independent of the production recognizer.
+LEGACY_NOTES = (
+    OLD_NOTE.replace('class="journal-photo-credit"', "class='journal-photo-credit'"),
+    OLD_NOTE.replace('class="journal-photo-credit"',
+                     'id="photo-note" class="muted journal-photo-credit compact"'),
+    OLD_NOTE.replace('class="journal-photo-credit"',
+                     "data-source='photo'\n class \t= ' muted\tjournal-photo-credit\ncompact '")
+            .replace("</p>", "</p \t>"),
+)
 
 
 class RebuiltPhotoNoteTests(unittest.TestCase):
@@ -156,12 +163,12 @@ class RebuiltPhotoNoteTests(unittest.TestCase):
         generated = (self.posts / (self.articles[0]["slug"] + ".html")).read_text()
         self.assert_no_notes(generated)
         # Seed an older generated article, a review copy and a frozen approval
-        # with the exact legacy block. A fresh build must not replace their copy.
+        # with varied legacy blocks. A fresh build must not replace their copy.
         old_documents = {}
-        for article in self.articles:
+        for article, old_note in zip(self.articles, LEGACY_NOTES):
             path = self.posts / (article["slug"] + ".html")
             old_documents[article["slug"]] = path.read_text().replace(
-                "</article>", OLD_NOTE + "</article>")
+                "</article>", old_note + "</article>")
             path.write_text(old_documents[article["slug"]])
         staged_slug = self.articles[1]["slug"]
         self.review.write_text(json.dumps({"articles": {staged_slug: {
@@ -201,15 +208,15 @@ class RebuiltPhotoNoteTests(unittest.TestCase):
                         clean_review_bytes = self.review.read_bytes()
                         staged = json.loads(clean_review_bytes)["articles"][staged_slug]
                         self.assertEqual(staged["reviewHtml"],
-                                         NOTE_PATTERN.sub("", old_documents[staged_slug]))
+                                         old_documents[staged_slug].replace(LEGACY_NOTES[1], ""))
                         self.assertEqual(staged["photoCredit"], self.articles[1]["photoCredit"])
                         self.assertEqual(staged["date"], "2020-01-01")
                         self.assertEqual(staged["revision"], hashlib.sha256(
                             staged["reviewHtml"].encode()).hexdigest()[:12])
-                        for article in self.articles:
+                        for article, old_note in zip(self.articles, LEGACY_NOTES):
                             self.assertEqual(
                                 (self.posts / (article["slug"] + ".html")).read_text(),
-                                NOTE_PATTERN.sub("", old_documents[article["slug"]]))
+                                old_documents[article["slug"]].replace(old_note, ""))
                     self.publish_fixture_records()
                     records_before = deepcopy(self.records)
                     for slug, row in self.records.items():

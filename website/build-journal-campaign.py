@@ -20,6 +20,7 @@ from pathlib import Path
 from urllib.parse import urlsplit
 from PIL import Image
 from journal_metadata import article_metadata_issues
+from journal_photo_notes import public_html
 
 ROOT = Path(__file__).resolve().parent
 PUBLIC = ROOT / "elh-preview"
@@ -214,13 +215,7 @@ def refresh_photo_credits(articles):
         if not path.exists() or not article.get("photoCredit"):
             continue
         text = path.read_text(encoding="utf-8")
-        credit = render_photo_credit(article["photoCredit"])
-        updated = re.sub(
-            r'<p class="journal-photo-credit">.*?</p>\n?',
-            lambda match: credit + ("\n" if credit and match[0].endswith("\n") else ""),
-            text,
-            flags=re.DOTALL,
-        )
+        updated = public_html(text)
         if updated != text:
             path.write_text(updated, encoding="utf-8")
             updated_count += 1
@@ -239,13 +234,7 @@ def refresh_review_photo_credits(articles, review_path):
         original = draft.get("reviewHtml")
         if not credit or not original:
             continue
-        replacement = render_photo_credit(credit)
-        updated = re.sub(
-            r'<p class="journal-photo-credit">.*?</p>\n?',
-            lambda match: replacement + (
-                "\n" if replacement and match[0].endswith("\n") else ""),
-            original, flags=re.DOTALL,
-        )
+        updated = public_html(original)
         if updated != original:
             draft["reviewHtml"] = updated
             draft["revision"] = hashlib.sha256(updated.encode()).hexdigest()[:12]
