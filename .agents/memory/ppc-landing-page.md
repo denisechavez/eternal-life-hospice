@@ -45,15 +45,18 @@ three canvas concepts.
 thank-you design variants and any later approved implementation; it does not
 authorize rewriting separately approved emails.
 
-The owner requested removing the visible review-status notice from all three
-thank-you canvas concepts. This is visual-review approval only, not permission
-to publish them or connect the external form.
+The owner authorized RealTop to use any or all three Google PPC thank-you
+designs without further approval in the edited handoff wording. The earlier
+requirement to choose one design and request another approval is superseded.
 
-**Why:** The design notice was removed while the confirmation integration and
-publication remained separate, uncompleted steps.
+**Why:** The owner explicitly changed the handoff to allow all options and
+remove the additional approval step.
 
-**How to apply:** Preserve the workspace-only boundary even when the artwork
-looks production-ready. Obtain publication and integration approval separately.
+**How to apply:** Do not add a new design-approval gate to this campaign's
+handoff. The files remain unconnected until the external form administrator
+implements them; do not claim a live integration or publish this Replit project
+solely because RealTop has permission to use the designs. This permission does
+not extend to unrelated campaigns or content.
 
 The owner approved the expanded Google PPC privacy note covering both the
 visitor and their loved one, with guidance to ask the care team how to share
