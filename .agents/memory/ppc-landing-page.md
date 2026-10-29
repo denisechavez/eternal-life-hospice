@@ -44,3 +44,13 @@ three canvas concepts.
 **How to apply:** Keep this acknowledgment wording consistent across campaign
 thank-you design variants and any later approved implementation; it does not
 authorize rewriting separately approved emails.
+
+The owner requested removing the visible review-status notice from all three
+thank-you canvas concepts. This is visual-review approval only, not permission
+to publish them or connect the external form.
+
+**Why:** The design notice was removed while the confirmation integration and
+publication remained separate, uncompleted steps.
+
+**How to apply:** Preserve the workspace-only boundary even when the artwork
+looks production-ready. Obtain publication and integration approval separately.

@@ -23,7 +23,6 @@ export function QuietWelcome() {
           <span className="qw-tagline">Care That Honors Life.</span>
         </div>
         <p className="qw-scene-caption">A little room to pause</p>
-        <div className="qw-disclosure">Google PPC · Design review only · Not connected to the live form</div>
       </section>
 
       <section className="qw-content" aria-labelledby="qw-heading">
@@ -34,7 +33,11 @@ export function QuietWelcome() {
             </svg>
           </div>
           <p className="qw-overline">Your message is received</p>
-          <h1 id="qw-heading">Thank you. We have received your request.</h1>
+          <h1 id="qw-heading">
+            <span>Thank you.</span>{" "}
+            <span>We have received</span>{" "}
+            <span>your request.</span>
+          </h1>
           <p className="qw-body">A member of our care team will contact you to discuss your needs and next steps.</p>
           <p className="qw-privacy">Please avoid sending medical details by email.</p>
           <a className="qw-return" href="https://eternallifehospice.com/">

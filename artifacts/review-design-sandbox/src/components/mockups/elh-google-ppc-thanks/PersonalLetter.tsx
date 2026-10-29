@@ -5,10 +5,6 @@ export function PersonalLetter() {
 
   return (
     <main className="elh-letter-page" aria-labelledby="elh-letter-title">
-      <div className="elh-letter-disclosure" role="note">
-        Google PPC · Design review only · Not connected to the live form
-      </div>
-
       <header className="elh-letter-masthead">
         <img
           className="elh-letter-logo"
@@ -27,7 +23,9 @@ export function PersonalLetter() {
         <div className="elh-letter-message">
           <p className="elh-letter-eyebrow">A note from our care team</p>
           <h1 id="elh-letter-title">
-            Thank you. We have received your request.
+            <span>Thank you.</span>{" "}
+            <span>We have received</span>{" "}
+            <span>your request.</span>
           </h1>
           <p className="elh-letter-body">
             A member of our care team will contact you to discuss your needs and

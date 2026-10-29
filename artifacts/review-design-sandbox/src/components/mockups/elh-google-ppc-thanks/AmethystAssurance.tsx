@@ -17,7 +17,6 @@ export function AmethystAssurance() {
             alt="Eternal Life Hospice"
           />
         </a>
-        <p className="aa-disclosure">Google PPC · Design review only · Not connected to the live form</p>
       </header>
 
       <section className="aa-confirmation" aria-labelledby="aa-title">

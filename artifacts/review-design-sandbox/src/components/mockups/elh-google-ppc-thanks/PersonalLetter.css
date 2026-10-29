@@ -115,6 +115,7 @@
 
 .elh-letter-message {
   max-width: 605px;
+  container-type: inline-size;
 }
 
 .elh-letter-eyebrow {
@@ -142,10 +143,15 @@
   margin: 0;
   color: var(--letter-plum);
   font-family: "ELH Letter Fraunces", Georgia, serif;
-  font-size: clamp(44px, 5.5vw, 66px);
+  font-size: clamp(24px, 11.4cqw, 66px);
   font-weight: 500;
   letter-spacing: -0.045em;
   line-height: 1.03;
+}
+
+.elh-letter-page h1 > span {
+  display: block;
+  white-space: nowrap;
 }
 
 .elh-letter-body {
@@ -336,7 +342,7 @@
   }
 
   .elh-letter-page h1 {
-    font-size: clamp(43px, 11vw, 58px);
+    font-size: clamp(24px, 11.4cqw, 58px);
   }
 
   .elh-letter-body {
