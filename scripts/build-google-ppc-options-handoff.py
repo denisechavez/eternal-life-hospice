@@ -152,9 +152,9 @@ footer{border-top:1px solid #ded5c7;margin-top:24px;padding-top:16px;font-size:1
 </style>
 <p class="label">Eternal Life Hospice · Google PPC · Implementation handoff</p>
 <h1>Three options. One verified confirmation.</h1>
-<p class="notice">For RealTop to review with Eternal Life Hospice. Choose one option,
-then obtain Eternal's approval before publication. These files have not been
-connected to the external landing-page form.</p>
+<p class="notice">For RealTop to implement for Eternal Life Hospice’s Google PPC
+campaign. Any one or all of the provided options may be used. No approval is
+required. These files have not yet been connected to the external landing-page form.</p>
 <div class="grid"><section><h2>What is included</h2>
 <p>1 · Personal Letter<br>2 · Amethyst Assurance<br>3 · Quiet Welcome</p>
 <p>Each HTML file is self-contained with embedded fonts and images. Open locally
@@ -167,22 +167,8 @@ are included. Detailed instructions are in README.md.</p>
 </ul><h2>Image quality</h2><p>Text remains selectable; decoration is vector.
 Quiet Welcome includes the original 1080 × 1350 photograph, not a screenshot.
 For full-width Retina sharpness, supply the same licensed image at least 2560 pixels wide.</p>
-</section><section><h2>Confirm receipt without delay</h2><p>Show a sending state immediately.
-Show thanks only after acceptance and saving are verified. Do not wait for staff,
-email delivery or analytics. Measure actual timing in testing.</p>
-<p>Failed or pending requests need honest status and retry/call guidance.
-A direct visit without verified submission needs neutral guidance, not a receipt claim.</p>
-<h2>Preserve tracking and privacy</h2><p>Use <strong>805.409.9262</strong> /
+</section><section><h2>Phone number</h2><p>Use <strong>805.409.9262</strong> /
 <code>tel:+18054099262</code>. Verify Nimbata number replacement and call routing.</p>
-<p>Inspect existing Google Ads tracking. Choose one verified-success conversion owner,
-not both the form and thank-you page. Respect consent and prevent repeats on reload,
-history navigation and duplicate callbacks.</p>
-<p>Destination: <code>AW-18384023405/JC8lCKGQ9qsdEO3el75E</code><br>Supplied value: 1.0 USD.</p>
-<p>Never place patient or contact details in URLs, tracking or logs.
-Email acknowledgment is separate and uses approved company Gmail, not Brevo.</p>
-<h2>Before launch</h2><p>With authorization, test accepted, failed, pending, duplicate,
-direct-visit and consent states using synthetic data. Verify request receipt,
-mobile links and one eligible conversion. No real patient requests or calls.</p>
 </section></div><footer>External campaign: https://eternal-life-hospice.rt-go.com/ ·
 Replit project changes do not automatically update its form. No publication or email
 sending is performed by this packet.</footer></html>"""

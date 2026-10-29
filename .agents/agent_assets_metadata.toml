@@ -2651,28 +2651,28 @@ content_type = "application/octet-stream"
 id = "9QIHb4QIAFcVuJUrL4Q_A"
 uri = "file://generated-artifacts/google-ppc-three-options/ELH-Google-PPC-Three-Thank-You-Options.pdf"
 type = "pdf"
-title = "Google PPC — Three Thank-You Options"
-description = "Four-page review: Personal Letter, Amethyst Assurance, Quiet Welcome and integration requirements."
+title = "Updated Google PPC Review PDF"
+description = "Three thank-you designs and revised handoff instructions. Requested section removed; no further design approval required."
 logical_id = "a0c35e92-4ad5-4850-a6f7-795ff64c8475"
-content_hash = "sha256:abd20f2d41172ac0dea457d3d461758ecb52c6cd48a9e3b0ff4b9c6399c663f6"
-size = 1998258
-mtime_ms = 1793245340602
-storage_uri = "gcs://replit-rams-assets-kirk/rams/assets/repl:e1b2f643-7869-4565-af0e-10c34575ee8d/a0c35e92-4ad5-4850-a6f7-795ff64c8475/5e373fb0-c705-4103-b607-ce6f5bd3be14"
-storage_version_token = "1793245401104212"
+content_hash = "sha256:b4dbe0a70b9116bb598eb6e8e2989a2cc82f3a8b3e619517293625fecae2eb88"
+size = 1996600
+mtime_ms = 1793247964588
+storage_uri = "gcs://replit-rams-assets-kirk/rams/assets/repl:e1b2f643-7869-4565-af0e-10c34575ee8d/a0c35e92-4ad5-4850-a6f7-795ff64c8475/c273cfbd-8441-42e6-8e17-da58bbf37c82"
+storage_version_token = "1793247985548443"
 content_type = "application/pdf"
 
 [[outputs]]
 id = "N50m9jdgJ6XGzot-WFgnJ"
 uri = "file://generated-artifacts/google-ppc-three-options/ELH-Google-PPC-Three-Thank-You-Options-Handoff.zip"
 type = "unspecified"
-title = "RealTop Handoff — Complete Files"
-description = "All three self-contained page files, comparison PDF and implementation instructions. Ready to attach and send; nothing published or connected."
+title = "Updated RealTop Handoff ZIP"
+description = "Before launch section removed from the README, handoff notes and PDF. All three designs are unchanged."
 logical_id = "31a2db7e-67c1-47f9-aae0-b9ecf7da9002"
-content_hash = "sha256:60b041e5f882ee4d333d2517c8cb081adec9e26a4a7f65f00e5e798794f011c9"
-size = 2555919
-mtime_ms = 1793245340586
-storage_uri = "gcs://replit-rams-assets-kirk/rams/assets/repl:e1b2f643-7869-4565-af0e-10c34575ee8d/31a2db7e-67c1-47f9-aae0-b9ecf7da9002/1e2c64c4-7771-4433-90f7-a83efeb18bba"
-storage_version_token = "1793245401910064"
+content_hash = "sha256:00d45866521fbf707b8197425a641f74c04fcd070881c540e4d500cebb4ed97d"
+size = 2550133
+mtime_ms = 1793248153875
+storage_uri = "gcs://replit-rams-assets-kirk/rams/assets/repl:e1b2f643-7869-4565-af0e-10c34575ee8d/31a2db7e-67c1-47f9-aae0-b9ecf7da9002/2831fb52-eac0-438f-9fb0-beecac57e0ff"
+storage_version_token = "1793248163230226"
 content_type = "application/octet-stream"
 
 [[outputs]]
