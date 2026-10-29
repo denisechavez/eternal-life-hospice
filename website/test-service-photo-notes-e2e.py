@@ -6,6 +6,7 @@ Run: python3 website/test-service-photo-notes-e2e.py
 from contextlib import ExitStack
 from email.parser import BytesParser
 from email.utils import formatdate
+import gzip
 import hashlib
 from http.server import ThreadingHTTPServer
 import importlib.util
@@ -23,6 +24,7 @@ from urllib.request import Request, urlopen
 from PIL import Image
 import devserver
 import internal_links
+import inline_links
 import journal_photo_notes
 import service_preview
 
@@ -42,6 +44,8 @@ OLD_NOTE = (
 SLUG = "in-home-hospice-care"
 ROUTE = "/services/" + SLUG
 IMAGE_NAME = SLUG + "-hero.webp"
+RELATED_ROUTE = "/services/fixture-care-guide"
+RELATED_LABEL = "Fixture care guide"
 
 
 class ServicePhotoNoteTests(unittest.TestCase):
@@ -86,13 +90,17 @@ class ServicePhotoNoteTests(unittest.TestCase):
         ):
             for key, value in values.items():
                 self.stack.enter_context(patch.object(module, key, value))
-        # This fixture has no contextual-link inventory or publication state.
-        self.stack.enter_context(patch.object(internal_links, "inventory", return_value={}))
+        # Default cases retain the no-inventory path; contextual cases supply
+        # only disposable service entries, never real publication state.
+        self.inventory = self.stack.enter_context(patch.object(
+            internal_links, "inventory", return_value={}))
         self.stack.enter_context(patch.object(
             devserver.PrettyURLHandler, "_released_journal",
             side_effect=AssertionError("Service requests must not read Journal releases")))
         self.transform = self.stack.enter_context(patch.object(
             journal_photo_notes, "public_html", wraps=journal_photo_notes.public_html))
+        self.render_links = self.stack.enter_context(patch.object(
+            internal_links, "render_links", wraps=internal_links.render_links))
 
     def assert_clean(self, document):
         for text in ("journal-photo-credit", "Illustrative photograph:",
@@ -129,9 +137,32 @@ class ServicePhotoNoteTests(unittest.TestCase):
         self.assertEqual(body, b"", "HEAD must not send any body bytes")
         return BytesParser().parsebytes(fields + b"\r\n\r\n")
 
-    def exercise(self, production):
+    def exercise(self, production, contextual=False):
         self.stack.enter_context(patch.dict(
             os.environ, {"REPLIT_DEPLOYMENT": "1" if production else "0"}))
+        pages = {}
+        if contextual:
+            self.assertTrue(production, "Contextual checks must use static public HTML")
+            related_path = self.public / (RELATED_ROUTE.lstrip("/") + ".html")
+            related_html = "<main><h1>" + RELATED_LABEL + "</h1></main>"
+            related_path.write_text(related_html)
+            related_bytes = related_path.read_bytes()
+            pages[RELATED_ROUTE] = (
+                related_path, related_html, internal_links.PageParser(related_html))
+            self.inventory.return_value = pages
+            # _journal_pages normally overlays approved Journal snapshots.
+            # Isolate that boundary, not the real contextual-link renderer.
+            self.journal_pages = self.stack.enter_context(patch.object(
+                devserver.PrettyURLHandler, "_journal_pages", return_value=pages))
+            self.stack.enter_context(patch.object(internal_links, "config", return_value={
+                "pages": {ROUTE: ["fixture"]},
+                "topics": {"fixture": [RELATED_ROUTE, RELATED_LABEL]},
+                "supportLinks": {}, "journalCategories": {}, "journalOwners": {},
+            }))
+            self.stack.enter_context(patch.object(
+                internal_links, "journal_records", return_value={}))
+            self.stack.enter_context(patch.object(
+                inline_links, "editorial_map", return_value={}))
 
         class QuietHandler(devserver.PrettyURLHandler):
             def log_message(self, *args):
@@ -165,6 +196,9 @@ class ServicePhotoNoteTests(unittest.TestCase):
                 target.write_text(legacy)
                 before = target.read_bytes()
                 self.assertEqual(legacy.count('class="journal-photo-credit"'), 2)
+                if contextual:
+                    pages[ROUTE] = (target, legacy, internal_links.PageParser(legacy))
+                    self.assertNotIn(internal_links.START, legacy)
                 clean_response = None
                 modified = target.stat().st_mtime
                 conditions = (
@@ -173,13 +207,20 @@ class ServicePhotoNoteTests(unittest.TestCase):
                     ("matching", formatdate(modified, usegmt=True)),
                     ("newer", formatdate(modified + 86400, usegmt=True)),
                 )
-                for suffix in ("", ".html?refresh=1", ""):
+                requests = [(suffix, encoding)
+                            for suffix in ("", ".html?refresh=1", "")
+                            for encoding in (("identity", "gzip") if contextual
+                                             else ("identity",))]
+                for suffix, encoding in requests:
                     for condition, date in conditions:
-                        with self.subTest(suffix=suffix, condition=condition):
-                            headers = {"Cache-Control": "no-cache"}
+                        with self.subTest(suffix=suffix, condition=condition,
+                                          encoding=encoding):
+                            headers = {"Cache-Control": "no-cache",
+                                       "Accept-Encoding": encoding}
                             if date is not None:
                                 headers["If-Modified-Since"] = date
                             calls = self.transform.call_count
+                            render_calls = self.render_links.call_count
                             request = Request(origin + ROUTE + suffix, headers=headers)
                             # Presentation-filtered pages deliberately return a
                             # fresh 200 even when the source mtime matches.
@@ -192,12 +233,38 @@ class ServicePhotoNoteTests(unittest.TestCase):
                                     self.assertIn("must-revalidate", get_headers["Cache-Control"])
                                 else:
                                     self.assertEqual(get_headers["Cache-Control"], "no-store")
-                                body = response.read()
-                                self.assertEqual(int(get_headers["Content-Length"]), len(body))
+                                wire_body = response.read()
+                                self.assertEqual(int(get_headers["Content-Length"]),
+                                                 len(wire_body))
+                                if contextual:
+                                    self.assertEqual(get_headers["Vary"], "Accept-Encoding")
+                                if encoding == "gzip":
+                                    self.assertEqual(get_headers["Content-Encoding"], "gzip")
+                                    body = gzip.decompress(wire_body)
+                                else:
+                                    self.assertIsNone(get_headers.get("Content-Encoding"))
+                                    body = wire_body
                             self.assertGreater(self.transform.call_count, calls)
-                            self.assertLess(len(body), len(before))
+                            if not contextual:
+                                self.assertLess(len(body), len(before))
                             document = body.decode()
                             self.assert_clean(document)
+                            if contextual:
+                                self.assertEqual(self.render_links.call_count, render_calls + 1)
+                                self.assertEqual(self.render_links.call_args.args[0], legacy)
+                                self.assertEqual(self.render_links.call_args.args[1], ROUTE)
+                                self.assertIs(self.render_links.call_args.kwargs["pages"], pages)
+                                self.journal_pages.assert_called()
+                                self.assertEqual(document.count('class="elh-related"'), 1)
+                                self.assertEqual(document.count(internal_links.START), 1)
+                                self.assertIn(
+                                    f'<a href="{RELATED_ROUTE}" data-reading-source="{ROUTE}"'
+                                    f' data-reading-destination="{RELATED_ROUTE}"'
+                                    f' data-reading-topic="fixture">{RELATED_LABEL}</a>',
+                                    document)
+                                self.assertEqual(related_path.read_bytes(), related_bytes)
+                            else:
+                                self.assertEqual(self.render_links.call_count, render_calls)
                             self.assertEqual(document.count(image_url), generated.count(image_url))
                             self.assertEqual(re.findall(r"<img\b[^>]*>", document),
                                              re.findall(r"<img\b[^>]*>", generated))
@@ -211,10 +278,10 @@ class ServicePhotoNoteTests(unittest.TestCase):
                                 server.server_port, ROUTE + suffix, headers)
                             self.assertGreater(self.transform.call_count, calls)
                             for name in ("Content-Length", "Content-Type", "Cache-Control",
-                                         "X-Journal-Revision"):
+                                         "X-Journal-Revision", "Content-Encoding", "Vary"):
                                 self.assertEqual(head_headers.get(name), get_headers.get(name),
                                                  f"HEAD/GET {name} mismatch")
-                            self.assertEqual(int(head_headers["Content-Length"]), len(body))
+                            self.assertEqual(int(head_headers["Content-Length"]), len(wire_body))
                             self.assertEqual(target.read_bytes(), before)
                             self.assert_preserved()
                     with urlopen(origin + image_url, timeout=5) as response:
@@ -226,6 +293,9 @@ class ServicePhotoNoteTests(unittest.TestCase):
 
     def test_public_non_journal_html_after_rebuilds(self):
         self.exercise(production=True)
+
+    def test_public_contextual_service_html_identity_and_gzip_after_rebuilds(self):
+        self.exercise(production=True, contextual=True)
 
 
 if __name__ == "__main__":
