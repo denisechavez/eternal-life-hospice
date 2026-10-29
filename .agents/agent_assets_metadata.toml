@@ -2400,13 +2400,13 @@ id = "ZXddWIsAkRLppuf5pVJyU"
 uri = "file://generated-artifacts/patient-guide/7.%20ELH-Handbook-Concept-Garden.pdf"
 type = "pdf"
 title = "7. ELH-Handbook-Concept-Garden"
-description = "Two-page cover review PDF: outside and inside spreads, 17.5 × 11 inches with a ½-inch spine."
+description = "Garden Patient & Family Guide cover review. Two PDF pages: outside and inside spreads, each 17.5 × 11 inches with a ½-inch spine."
 logical_id = "b5c8bb50-8261-4544-87f9-8f8e8d6f04fb"
 content_hash = "sha256:92e4ce7ef15a97df03ff40dc028a8c5d592acd0b3f3babf19b6e51dc31762c98"
 size = 5408275
 mtime_ms = 1793058699204
-storage_uri = "gcs://replit-rams-assets-kirk/rams/assets/repl:e1b2f643-7869-4565-af0e-10c34575ee8d/b5c8bb50-8261-4544-87f9-8f8e8d6f04fb/429b3ff7-d8a9-4244-891f-6ed3e447d5b0"
-storage_version_token = "1793058704871889"
+storage_uri = "gcs://replit-rams-assets-kirk/rams/assets/repl:e1b2f643-7869-4565-af0e-10c34575ee8d/b5c8bb50-8261-4544-87f9-8f8e8d6f04fb/6d7f6dcc-a77f-465f-b797-4ffb64232f33"
+storage_version_token = "1793233868079917"
 content_type = "application/pdf"
 
 [[outputs]]
