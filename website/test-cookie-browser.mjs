@@ -59,10 +59,11 @@ const browser = spawn(process.env.CHROMIUM_BIN || "chromium", [
   "--host-resolver-rules=MAP * ~NOTFOUND, EXCLUDE 127.0.0.1",
   "--no-first-run", "--remote-debugging-port=0", `--user-data-dir=${profile}`, "about:blank"
 ], {stdio: ["ignore", "ignore", "pipe"]});
-let log = "", ws, id = 0;
+let log = "";
+const sockets = [];
 browser.stderr.on("data", chunk => { log = (log + chunk).slice(-4000); });
 const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
-const pending = new Map(), external = [], errors = [], sessions = [], tags = [], policies = [], expectedEvalErrors = [];
+const errors = [], expectedEvalErrors = [];
 let negativeControl = false;
 try {
   let port;
@@ -73,69 +74,79 @@ try {
   }
   assert.ok(port, log);
   const tabs = await (await fetch(`http://127.0.0.1:${port}/json/list`)).json();
-  ws = new WebSocket(tabs.find(tab => tab.type === "page").webSocketDebuggerUrl);
-  await new Promise(resolve => ws.addEventListener("open", resolve, {once: true}));
-  const call = (method, params = {}) => new Promise((resolve, reject) => {
-    const key = ++id;
-    const timer = setTimeout(() => {
-      pending.delete(key); reject(new Error("Browser command timed out: " + method));
-    }, 10000);
-    pending.set(key, [resolve, reject, timer]); ws.send(JSON.stringify({id:key, method, params}));
-  });
-  ws.addEventListener("message", event => {
-    const m = JSON.parse(event.data);
-    if (pending.has(m.id)) {
-      const [resolve, reject, timer] = pending.get(m.id); pending.delete(m.id); clearTimeout(timer);
-      m.error ? reject(m.error) : resolve(m.result);
-    }
-    if (m.method === "Fetch.requestPaused") {
-      const {url, method} = m.params.request;
-      const local = new URL(url).origin === origin;
-      if (!local) external.push(url);
-      const allowedLocal = local && method === "GET" &&
-        ["/", "/no-eval", "/analytics.js", "/favicon.ico"].includes(new URL(url).pathname);
-      let stub = "", type = "text/javascript";
-      if (url === tagURL) { tags.push(url); stub = syntheticTag; }
-      else if (url === sessionURL && method === "GET") {
-        sessions.push(url); stub = '{"session":"synthetic-session-ok"}'; type = "application/json";
-      } else if (url.includes("tracker.metricool.com")) stub = "window.beTracker={t:function(){}};";
-      // All external resources are synthetic; no intercepted request ever goes
-      // to a provider. Local API/mutation requests are denied too.
-      (allowedLocal ? call("Fetch.continueRequest", {requestId:m.params.requestId}) :
-        local ? call("Fetch.failRequest", {requestId:m.params.requestId, errorReason:"BlockedByClient"}) :
-        call("Fetch.fulfillRequest", {requestId:m.params.requestId, responseCode:200,
-          responseHeaders:[{name:"Content-Type", value:type},
-            {name:"Access-Control-Allow-Origin", value:origin}],
-          body:Buffer.from(stub).toString("base64")})).catch(e => errors.push(e));
-      if (local && !allowedLocal) errors.push({unexpectedLocalRequest: url, method});
-    }
-    if (m.method === "Network.responseReceived" && m.params.type === "Document") {
-      const headers = m.params.response.headers;
-      policies.push(Object.entries(headers).find(([key]) => key.toLowerCase() === "content-security-policy")?.[1]);
-    }
-    if (m.method === "Runtime.exceptionThrown") {
-      const details = m.params.exceptionDetails;
-      if (negativeControl && isExpectedEvalError(details)) expectedEvalErrors.push(details);
-      else errors.push(details);
-    }
-  });
-  const evaluate = async expression => {
-    const r = await call("Runtime.evaluate", {expression, returnByValue:true});
-    assert.ok(!r.exceptionDetails, JSON.stringify(r.exceptionDetails)); return r.result.value;
-  };
-  const until = async expression => {
-    for (let i = 0; i < 150; i++) { if (await evaluate(expression)) return; await sleep(40); }
-    throw new Error("Timed out: " + expression);
-  };
-  await call("Page.enable"); await call("Runtime.enable"); await call("Network.enable");
-  await call("Network.setBypassServiceWorker", {bypass:true});
-  await call("Page.addScriptToEvaluateOnNewDocument", {source:`
-    window.__policyViolations = [];
-    document.addEventListener('securitypolicyviolation', e => {
-      window.__policyViolations.push({directive:e.effectiveDirective, blocked:e.blockedURI});
+  async function connectTarget(target) {
+    const ws = new WebSocket(target.webSocketDebuggerUrl);
+    sockets.push(ws);
+    let id = 0, navigations = 0;
+    const pending = new Map(), external = [], sessions = [], tags = [], policies = [];
+    await new Promise(resolve => ws.addEventListener("open", resolve, {once: true}));
+    const call = (method, params = {}) => new Promise((resolve, reject) => {
+      const key = ++id;
+      const timer = setTimeout(() => {
+        pending.delete(key); reject(new Error("Browser command timed out: " + method));
+      }, 10000);
+      pending.set(key, [resolve, reject, timer]); ws.send(JSON.stringify({id:key, method, params}));
     });
-  `});
-  await call("Fetch.enable", {patterns:[{urlPattern:"*"}]});
+    ws.addEventListener("message", event => {
+      const m = JSON.parse(event.data);
+      if (pending.has(m.id)) {
+        const [resolve, reject, timer] = pending.get(m.id); pending.delete(m.id); clearTimeout(timer);
+        m.error ? reject(m.error) : resolve(m.result);
+      }
+      if (m.method === "Fetch.requestPaused") {
+        const {url, method} = m.params.request;
+        const local = new URL(url).origin === origin;
+        if (!local) external.push(url);
+        const allowedLocal = local && method === "GET" &&
+          ["/", "/no-eval", "/analytics.js", "/favicon.ico"].includes(new URL(url).pathname);
+        let stub = "", type = "text/javascript";
+        if (url === tagURL) { tags.push(url); stub = syntheticTag; }
+        else if (url === sessionURL && method === "GET") {
+          sessions.push(url); stub = '{"session":"synthetic-session-ok"}'; type = "application/json";
+        } else if (url.includes("tracker.metricool.com")) stub = "window.beTracker={t:function(){}};";
+        // All external resources are synthetic; no intercepted request ever goes
+        // to a provider. Local API/mutation requests are denied too.
+        (allowedLocal ? call("Fetch.continueRequest", {requestId:m.params.requestId}) :
+          local ? call("Fetch.failRequest", {requestId:m.params.requestId, errorReason:"BlockedByClient"}) :
+          call("Fetch.fulfillRequest", {requestId:m.params.requestId, responseCode:200,
+            responseHeaders:[{name:"Content-Type", value:type},
+              {name:"Access-Control-Allow-Origin", value:origin}],
+            body:Buffer.from(stub).toString("base64")})).catch(e => errors.push(e));
+        if (local && !allowedLocal) errors.push({unexpectedLocalRequest: url, method});
+      }
+      if (m.method === "Page.frameNavigated" && !m.params.frame.parentId) navigations++;
+      if (m.method === "Network.responseReceived" && m.params.type === "Document") {
+        const headers = m.params.response.headers;
+        policies.push(Object.entries(headers).find(([key]) => key.toLowerCase() === "content-security-policy")?.[1]);
+      }
+      if (m.method === "Runtime.exceptionThrown") {
+        const details = m.params.exceptionDetails;
+        if (negativeControl && isExpectedEvalError(details)) expectedEvalErrors.push(details);
+        else errors.push(details);
+      }
+    });
+    const evaluate = async expression => {
+      const r = await call("Runtime.evaluate", {expression, returnByValue:true});
+      assert.ok(!r.exceptionDetails, JSON.stringify(r.exceptionDetails)); return r.result.value;
+    };
+    const until = async expression => {
+      for (let i = 0; i < 150; i++) { if (await evaluate(expression)) return; await sleep(40); }
+      throw new Error("Timed out: " + expression);
+    };
+    await call("Page.enable"); await call("Runtime.enable"); await call("Network.enable");
+    await call("Network.setBypassServiceWorker", {bypass:true});
+    await call("Page.addScriptToEvaluateOnNewDocument", {source:`
+      window.__policyViolations = [];
+      document.addEventListener('securitypolicyviolation', e => {
+        window.__policyViolations.push({directive:e.effectiveDirective, blocked:e.blockedURI});
+      });
+    `});
+    await call("Fetch.enable", {patterns:[{urlPattern:"*"}]});
+    return {call, evaluate, until, external, sessions, tags, policies,
+      navigationCount: () => navigations};
+  }
+  const primary = await connectTarget(tabs.find(tab => tab.type === "page"));
+  const {call, evaluate, until, external, sessions, tags, policies} = primary;
   const noTracker = () => {
     assert.deepEqual(tags, [], "Nimbata must not download without optional consent");
     assert.deepEqual(sessions, [], "No session before optional consent");
@@ -206,7 +217,115 @@ try {
     assert.equal(external.some(url => /whatconverts|ksrndkehqnwntyxlhgto/i.test(url)), false);
     console.log(`PASS ${width}px: consent, persistence, revocation and synthetic Nimbata runtime/session under actual CSP`);
   }
-  negativeControl = true;
+   // Separate CDP targets: globals, runtimes and request accounting are isolated,
+   // while the default browser context shares localStorage like ordinary tabs.
+   const secondTarget = await (await fetch(`http://127.0.0.1:${port}/json/new?about:blank`,
+     {method:"PUT"})).json();
+   const second = await connectTarget(secondTarget);
+   await second.call("Page.navigate", {url:origin});
+   await second.until("window.__nimbataSession==='synthetic-session-ok'");
+   await until("window.__nimbataSession==='synthetic-session-ok'");
+   assert.equal(await second.evaluate("document.readyState"), "complete");
+   await Promise.all([primary, second].map(tab => tab.until(
+     "!!document.querySelector('script[src=\"https://cdn.userway.org/widget.js\"]')")));
+   const bootedCounts = [primary, second].map(tab => ({
+     navigations:tab.navigationCount(), tags:tab.tags.length, sessions:tab.sessions.length,
+     accessibility:tab.external.filter(url => url === "https://cdn.userway.org/widget.js").length
+   }));
+   // Reject from one tab; both already-running documents must be replaced once.
+   await evaluate("elhCookieSettings();document.getElementById('elh-cc-decl').click()");
+   for (const [i, tab] of [primary, second].entries()) {
+     await tab.until("document.readyState==='complete' && !!window.elhCookieSettings && !window.__elhAnalyticsBooted && localStorage.getItem('elh_cc')==='essential'");
+     await tab.until("!!document.querySelector('script[src=\"https://cdn.userway.org/widget.js\"]')");
+     await sleep(250);
+     assert.equal(tab.navigationCount(), bootedCounts[i].navigations + 1, "Exactly one reload per running tab");
+     assert.equal(tab.tags.length, bootedCounts[i].tags, "No tracker download during cross-tab withdrawal");
+     assert.equal(tab.sessions.length, bootedCounts[i].sessions, "No session during cross-tab withdrawal");
+     assert.equal(tab.external.filter(url => url === "https://cdn.userway.org/widget.js").length,
+       bootedCounts[i].accessibility + 1, "Essential accessibility loads in the replacement document");
+     assert.equal(await tab.evaluate("window.__nimbataDownloaded"), undefined);
+     assert.equal(await tab.evaluate("!!document.getElementById('elh-cc')"), false);
+   }
+   const essentialCounts = [primary, second].map(tab => ({
+     navigations:tab.navigationCount(), external:tab.external.length
+   }));
+   await second.evaluate("elhCookieSettings()");
+   // Repeated values, unrelated keys and sessionStorage must not reload or boot.
+   await evaluate(`localStorage.setItem('elh_cc','essential');
+     localStorage.setItem('unrelated','all');sessionStorage.setItem('elh_cc','all')`);
+   await sleep(200);
+   assert.equal(await second.evaluate("document.getElementById('elh-tog-all').checked"), false);
+   await evaluate("elhCookieSettings();document.getElementById('elh-cc-okbtn').click()");
+   await until("window.__nimbataSession==='synthetic-session-ok'");
+   await second.until("!document.getElementById('elh-cc')");
+   await sleep(200);
+   assert.equal(second.navigationCount(), essentialCounts[1].navigations);
+   assert.equal(second.external.length, essentialCounts[1].external, "Remote acceptance must not start optional providers");
+   assert.equal(await second.evaluate("window.__elhAnalyticsBooted"), undefined);
+   assert.equal(await second.evaluate("elhTrackEvent('phone_click', {page:'/'})"), false);
+   // A local acceptance still starts exactly one session in that tab.
+   const secondSessions = second.sessions.length;
+   await second.evaluate("elhCookieSettings();document.getElementById('elh-cc-okbtn').click()");
+   await second.until("window.__nimbataSession==='synthetic-session-ok'");
+   assert.equal(second.sessions.length, secondSessions + 1);
+   // Deleting consent also withdraws permission. Ignore stale event payloads:
+   // clear() reports key=null and the current stored value is authoritative.
+   for (const operation of ["localStorage.removeItem('elh_cc')", "localStorage.clear()"]) {
+     const counts = [primary, second].map(tab => tab.navigationCount());
+     await evaluate(operation);
+     // The writing document gets no storage event; the receiving tab must stop.
+     await second.until("document.readyState==='complete' && !!document.getElementById('elh-cc') && !window.__elhAnalyticsBooted");
+     await sleep(200);
+     assert.equal(second.navigationCount(), counts[1] + 1, "Removed consent reloads a running receiving tab once");
+     assert.equal(primary.navigationCount(), counts[0], "Storage events do not fire in the writer");
+     await second.until("!!document.querySelector('script[src=\"https://cdn.userway.org/widget.js\"]')");
+     const inactiveCount = second.navigationCount();
+     await evaluate("localStorage.setItem('elh_cc','essential')");
+     await second.until("!document.getElementById('elh-cc')");
+     assert.equal(second.navigationCount(), inactiveCount, "Inactive tab does not reload on withdrawal");
+     await second.evaluate("elhCookieSettings();document.getElementById('elh-cc-okbtn').click()");
+     await second.until("window.__nimbataSession==='synthetic-session-ok'");
+   }
+   // Hold an initially consented document's scheduled load callback, then revoke
+   // and re-accept elsewhere before it can run. No delayed accidental boot.
+   const delayed = await second.call("Page.addScriptToEvaluateOnNewDocument", {source:`
+     const listen = window.addEventListener;
+     window.addEventListener = function(type, callback, options) {
+       if (type === 'load' && callback.name === 'bootAnalytics') {
+         window.__releaseAnalyticsLoad = callback;
+       } else { return listen.call(this, type, callback, options); }
+     };
+   `});
+   await second.call("Page.reload");
+   await second.until("document.readyState==='complete' && !!window.__releaseAnalyticsLoad");
+   await second.call("Page.removeScriptToEvaluateOnNewDocument", {identifier:delayed.identifier});
+   const delayedNavigations = second.navigationCount(), delayedTags = second.tags.length;
+   await evaluate("localStorage.setItem('elh_cc','essential')");
+   await second.until("localStorage.getItem('elh_cc')==='essential'");
+   // A storage-event barrier ensures the withdrawal was delivered before grant.
+   await second.evaluate(`window.__storageSeen=false;
+     window.addEventListener('storage',()=>window.__storageSeen=true,{once:true})`);
+   await evaluate("localStorage.setItem('barrier','ready')");
+   await second.until("window.__storageSeen");
+   await evaluate("localStorage.setItem('elh_cc','all')");
+   await second.until("localStorage.getItem('elh_cc')==='all'");
+   await sleep(150);
+   await second.evaluate("window.__releaseAnalyticsLoad()");
+   await sleep(150);
+   assert.equal(second.tags.length, delayedTags, "A pending load cannot boot after remote withdrawal and re-acceptance");
+   assert.equal(second.navigationCount(), delayedNavigations, "Unbooted tab does not reload");
+   assert.equal(await second.evaluate("window.__elhAnalyticsBooted"), undefined);
+   // Stale payloads and another storage area cannot revoke the actual all choice.
+   const stableNavigation = primary.navigationCount();
+   await evaluate(`window.dispatchEvent(new StorageEvent('storage',
+     {key:'elh_cc',newValue:'essential',storageArea:localStorage}));
+     window.dispatchEvent(new StorageEvent('storage',
+     {key:'elh_cc',newValue:'essential',storageArea:sessionStorage}));`);
+   await sleep(150);
+   assert.equal(primary.navigationCount(), stableNavigation, "Ignore stale payload and sessionStorage");
+   await call("Target.closeTarget", {targetId:secondTarget.id});
+   console.log("PASS shared-storage targets: cross-tab withdrawal, one reload, no remote boot, removal/clear and essential accessibility");
+   negativeControl = true;
   external.length = tags.length = sessions.length = 0;
   const seed = await call("Page.addScriptToEvaluateOnNewDocument", {source:"localStorage.removeItem('elh_cc');"});
   await call("Page.navigate", {url:origin + "/no-eval"});
@@ -227,7 +346,7 @@ try {
   assert.deepEqual(errors, []);
   console.log("SENTINEL: test-cookie-browser.mjs OK");
 } finally {
-  ws?.close(); browser.kill("SIGTERM");
+   sockets.forEach(socket => socket.close()); browser.kill("SIGTERM");
   if (browser.exitCode === null) await new Promise(resolve => browser.once("exit", resolve));
   server.stdin.end();
   if (server.exitCode === null) await new Promise(resolve => server.once("exit", resolve));

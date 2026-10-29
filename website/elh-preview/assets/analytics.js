@@ -12,11 +12,12 @@
   window.__elhAnalyticsInitialized = true;
   var KEY = 'elh_cc';
   var consent = null;
+  var consentReloadRequested = false;
   try { consent = localStorage.getItem(KEY); } catch (e) {}
 
   /* ── Replit custom events (privacy-safe and consent-aware) ───────────── */
   function analyticsConsentGranted() {
-    try { return localStorage.getItem(KEY) === 'all'; }
+    try { return !consentReloadRequested && localStorage.getItem(KEY) === 'all'; }
     catch (e) { return false; }
   }
 
@@ -264,7 +265,7 @@
   }
 
   function bootAnalytics() {
-    if (!analyticsConsentGranted() || window.__elhAnalyticsBooted) { return; }
+    if (consent !== 'all' || !analyticsConsentGranted() || window.__elhAnalyticsBooted) { return; }
     window.__elhAnalyticsBooted = true;
     // Inject preconnect hints now that consent is confirmed
     var preconnects = [
@@ -351,20 +352,54 @@
   }
 
   /* ── Save preference + act on it ───────────────────────────────────── */
+  function closeCookiePanel() {
+    var bar = document.getElementById('elh-cc');
+    if (bar) { bar.remove(); }
+    if (bar && cookieReturnFocus && cookieReturnFocus.isConnected) { cookieReturnFocus.focus(); }
+    cookieReturnFocus = null;
+  }
+
+  function reloadWithoutTrackers(force) {
+    // Already-loaded third-party scripts cannot be unloaded reliably. A fresh
+    // document applies an essential-only choice before any optional boot.
+    if ((!force && !window.__elhAnalyticsBooted) || consentReloadRequested) { return false; }
+    consentReloadRequested = true;
+    window.location.reload();
+    return true;
+  }
+
   function saveConsent(level) {
     var previous = null;
     try { previous = localStorage.getItem(KEY); } catch (e) {}
+    consent = level;
     try { localStorage.setItem(KEY, level); } catch (e) {}
-    var bar = document.getElementById('elh-cc');
-    if (bar) { bar.remove(); }
-    if (cookieReturnFocus && cookieReturnFocus.isConnected) { cookieReturnFocus.focus(); }
-    // Already-loaded third-party scripts cannot be unloaded reliably. A fresh
-    // document applies an essential-only choice before any optional boot.
-    if (previous === 'all' && level === 'essential') { window.location.reload(); return; }
+    closeCookiePanel();
+    // Preserve local withdrawal's fresh-document behavior even while tracker
+    // loading is pending; remote withdrawal reloads only a booted document.
+    if (level !== 'all' && reloadWithoutTrackers(previous === 'all')) { return; }
     if (level === 'all') { loadAnalytics(); }
   }
 
   var cookieReturnFocus = null;
+
+  window.addEventListener('storage', function (event) {
+    // sessionStorage and unrelated localStorage changes are not consent changes.
+    if (event.key !== KEY && event.key !== null) { return; }
+    var current;
+    try {
+      if (event.storageArea !== window.localStorage) { return; }
+      // Events may be queued behind newer choices; never trust a stale payload.
+      current = localStorage.getItem(KEY);
+    } catch (e) { return; }
+    if (current !== 'all') {
+      consent = current;
+      if (reloadWithoutTrackers()) { return; }
+    }
+    // Remote acceptance updates the panel, but does not authorize a new boot
+    // in a document that has not itself accepted optional use.
+    if (current === 'all' || current === 'essential') { closeCookiePanel(); }
+    else if (document.readyState !== 'loading') { showBanner(); }
+  });
 
   /* ── Inject CSS (idempotent) ─────────────────────────────────────────── */
   function ensureCSS() {
