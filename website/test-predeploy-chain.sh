@@ -210,6 +210,81 @@ if not (is_target and os.environ["CHAIN_MODE"] == "missing"):
         if mode == "failure":
             assert "Submission analytics check failed" in result.stdout, result.stdout
         print(f"PASS: isolated configured publish build analytics: {mode}")
+
+    # Run an unchanged copy without --isolated to exercise the local shell loop.
+    # Stub its Python preflight to avoid recursively running this harness, and
+    # replace the publishing wrapper entirely: no application command can run.
+    local_root = root / "local-smoke"
+    local_root.mkdir()
+    local_site = local_root / "elh-preview"
+    local_site.mkdir()
+    (local_site / "dummy.html").write_text("<!doctype html><title>Fixture only</title>\n")
+    (local_root / "test-predeploy-chain.sh").write_text(smoke)
+    local_log = local_root / "commands.log"
+    local_bin = local_root / "bin"
+    local_bin.mkdir()
+    local_tmp = local_root / "tmp"
+    local_tmp.mkdir()
+    preflight_stub = f"#!{sys.executable}\n" + '''
+import os
+from pathlib import Path
+import sys
+command = Path(sys.argv[0]).name
+if command != "python3" or sys.argv[1:] != ["-", os.environ["LOCAL_ROOT"]]:
+    sys.exit("Unexpected application command: " + repr(sys.argv))
+sys.stdin.read()
+with open(os.environ["LOCAL_LOG"], "a") as output:
+    output.write("preflight-stub\\n")
+'''
+    for name in ("python3", "node", "npm"):
+        executable = local_bin / name
+        executable.write_text(preflight_stub)
+        executable.chmod(0o755)
+    (local_root / "elh-predeploy.sh").write_text('''#!/usr/bin/env bash
+set -euo pipefail
+[[ "$PWD" == "$LOCAL_ROOT/elh-preview" ]] || exit 99
+printf '%s\\n' wrapper-stub >> "$LOCAL_LOG"
+while IFS= read -r value; do
+  if [[ "$value" != "$LOCAL_OMITTED" ]]; then
+    printf '%s\\n' "$value"
+  fi
+done <<< "$LOCAL_SENTINELS"
+exit "$LOCAL_STATUS"
+''')
+    local_env = dict(os.environ,
+                     PATH=str(local_bin) + os.pathsep + os.environ["PATH"],
+                     LOCAL_ROOT=str(local_root), LOCAL_LOG=str(local_log),
+                     LOCAL_SENTINELS="\n".join(local_sentinels),
+                     TMPDIR=str(local_tmp))
+    local_cases = [("complete output", "", 0)]
+    local_cases += [("missing " + value, value, 0) for value in local_sentinels]
+    local_cases += [("wrapper failure", "", 37),
+                    ("wrapper failure with missing sentinel", local_sentinels[0], 37)]
+    before = {p.relative_to(local_site): p.read_bytes() for p in local_site.rglob("*") if p.is_file()}
+    for label, omitted, status in local_cases:
+        local_log.write_text("")
+        result = subprocess.run(
+            [shutil.which("bash"), str(local_root / "test-predeploy-chain.sh")],
+            cwd=root, env=dict(local_env, LOCAL_OMITTED=omitted, LOCAL_STATUS=str(status)),
+            text=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, timeout=30)
+        expected_status = status or (1 if omitted else 0)
+        assert result.returncode == expected_status, f"{label}: {result.stdout}"
+        assert local_log.read_text().splitlines() == ["preflight-stub", "wrapper-stub"], result.stdout
+        if status:
+            assert f"Pre-deploy chain FAILED (exit {status})" in result.stdout, result.stdout
+            assert "Verifying sentinel self-tests" not in result.stdout, result.stdout
+        else:
+            assert "Verifying sentinel self-tests" in result.stdout, result.stdout
+            for value in local_sentinels:
+                marker = "  ✗  MISSING: " if value == omitted else "  ✓  "
+                assert marker + value in result.stdout.splitlines(), f"{label}: {result.stdout}"
+            if omitted:
+                assert "One or more sentinel self-tests did not run" in result.stdout, result.stdout
+        assert ("All pre-deploy checks PASSED" in result.stdout) == (expected_status == 0), result.stdout
+        after = {p.relative_to(local_site): p.read_bytes() for p in local_site.rglob("*") if p.is_file()}
+        assert after == before, f"{label}: changed local site fixture"
+        assert not list(local_tmp.iterdir()), f"{label}: leaked smoke-test output"
+        print(f"PASS: isolated local smoke branch: {label}")
 print("SENTINEL: test-predeploy-chain.sh isolated checks OK")
 PY
 
