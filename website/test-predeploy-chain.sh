@@ -155,7 +155,12 @@ if is_target and os.environ["CHAIN_MODE"] == "failure":
 if not (is_target and os.environ["CHAIN_MODE"] == "missing"):
     for sentinel in os.environ["CHAIN_SENTINELS"].splitlines():
         if sentinel.split(": ", 1)[1].split(" ", 1)[0] in command:
-            print(sentinel)
+            if is_target and os.environ["CHAIN_MODE"] == "prefixed":
+                print("Diagnostic: expected " + sentinel)
+            elif is_target and os.environ["CHAIN_MODE"] == "suffixed":
+                print(sentinel + " (not actually completed)")
+            else:
+                print(sentinel)
 '''
     for name in ("node", "python3", "npm", "cookie-stub"):
         executable = bindir / name
@@ -167,6 +172,7 @@ if not (is_target and os.environ["CHAIN_MODE"] == "missing"):
                CHAIN_SENTINELS="\n".join(sentinels))
     scenarios = [(retry, sentinel, "success"),
                  (retry, sentinel, "failure"), (retry, sentinel, "missing"),
+                 (retry, sentinel, "prefixed"), (retry, sentinel, "suffixed"),
                  (ack, ack_sentinel, "failure"), (ack, ack_sentinel, "missing"),
                  (phone_config, phone_config_sentinel, "success"),
                  (phone_config, phone_config_sentinel, "failure"),
@@ -190,15 +196,17 @@ if not (is_target and os.environ["CHAIN_MODE"] == "missing"):
         actual = log.read_text().splitlines()
         expected = commands[:commands.index(target) + 1] if mode == "failure" else commands
         assert actual == expected, f"{mode}: wrong command order: {actual}"
-        expected_status = {"success": 0, "failure": 37, "missing": 1}[mode]
+        expected_status = {"success": 0, "failure": 37, "missing": 1,
+                           "prefixed": 1, "suffixed": 1}[mode]
         assert result.returncode == expected_status, f"{mode}: {result.stdout}"
         if mode == "failure":
             assert "Injected check failure: " + target in result.stdout
             assert "Pre-deploy chain FAILED (exit 37)" in result.stdout
-        if mode == "missing":
+        if mode in ("missing", "prefixed", "suffixed"):
             assert "MISSING: " + target_sentinel in result.stdout, result.stdout
             missing = re.findall(r"^\s*✗  MISSING: (.+)$", result.stdout, re.M)
             assert missing == [target_sentinel], f"Expected only target output missing: {result.stdout}"
+            assert "All pre-deploy checks and sentinel self-tests PASSED" not in result.stdout
         after = {p.relative_to(site): p.read_bytes() for p in site.rglob("*") if p.is_file()}
         assert after == before, f"{mode}: changed publication fixture"
         print(f"PASS: isolated pre-deploy chain {target}: {mode}")
@@ -265,6 +273,10 @@ printf '%s\\n' wrapper-stub >> "$LOCAL_LOG"
 while IFS= read -r value; do
   if [[ "$value" != "$LOCAL_OMITTED" ]]; then
     printf '%s\\n' "$value"
+  elif [[ "$LOCAL_MODE" == "prefixed" ]]; then
+    printf 'Diagnostic: expected %s\\n' "$value"
+  elif [[ "$LOCAL_MODE" == "suffixed" ]]; then
+    printf '%s (not actually completed)\\n' "$value"
   fi
 done <<< "$LOCAL_SENTINELS"
 exit "$LOCAL_STATUS"
@@ -274,16 +286,21 @@ exit "$LOCAL_STATUS"
                      LOCAL_ROOT=str(local_root), LOCAL_LOG=str(local_log),
                      LOCAL_SENTINELS="\n".join(local_sentinels),
                      TMPDIR=str(local_tmp))
-    local_cases = [("complete output", "", 0)]
-    local_cases += [("missing " + value, value, 0) for value in local_sentinels]
-    local_cases += [("wrapper failure", "", 37),
-                    ("wrapper failure with missing sentinel", local_sentinels[0], 37)]
+    local_cases = [("complete output", "", 0, "success")]
+    # Every required completion must be a whole line, not a diagnostic that
+    # merely contains it. Exercise both boundaries in the real local shell loop.
+    local_cases += [(mode + " " + value, value, 0, mode)
+                    for value in local_sentinels
+                    for mode in ("missing", "prefixed", "suffixed")]
+    local_cases += [("wrapper failure", "", 37, "success"),
+                    ("wrapper failure with missing sentinel", local_sentinels[0], 37, "missing")]
     before = {p.relative_to(local_site): p.read_bytes() for p in local_site.rglob("*") if p.is_file()}
-    for label, omitted, status in local_cases:
+    for label, omitted, status, mode in local_cases:
         local_log.write_text("")
         result = subprocess.run(
             [shutil.which("bash"), str(local_root / "test-predeploy-chain.sh")],
-            cwd=root, env=dict(local_env, LOCAL_OMITTED=omitted, LOCAL_STATUS=str(status)),
+            cwd=root, env=dict(local_env, LOCAL_OMITTED=omitted,
+                               LOCAL_STATUS=str(status), LOCAL_MODE=mode),
             text=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, timeout=30)
         expected_status = status or (1 if omitted else 0)
         assert result.returncode == expected_status, f"{label}: {result.stdout}"
@@ -400,7 +417,8 @@ SENTINELS=(
 
 SENTINEL_FAIL=0
 for sentinel in "${SENTINELS[@]}"; do
-  if grep -qF "$sentinel" "$TMPOUT"; then
+  # Only a standalone completion line counts, never quoted diagnostic text.
+  if grep -qxF "$sentinel" "$TMPOUT"; then
     echo "  ✓  $sentinel"
   else
     echo "  ✗  MISSING: $sentinel"

@@ -124,7 +124,8 @@ SENTINELS=(
 
 SENTINEL_FAIL=0
 for sentinel in "${SENTINELS[@]}"; do
-  if grep -qF "$sentinel" "$TMPOUT"; then
+  # Only a standalone completion line counts, never quoted diagnostic text.
+  if grep -qxF "$sentinel" "$TMPOUT"; then
     echo "  ✓  $sentinel"
   else
     echo "  ✗  MISSING: $sentinel"
