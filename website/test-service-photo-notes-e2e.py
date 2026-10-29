@@ -178,6 +178,43 @@ class ServicePhotoNoteTests(unittest.TestCase):
         prefix = (service_preview.PUBLIC_ASSET_PREFIX if production
                   else service_preview.ASSET_PREFIX)
         image_url = prefix + IMAGE_NAME
+        responsive_fixture = ""
+        if contextual:
+            # Disposable markup only: exercise responsive images and embedded
+            # provenance without editing public pages or Journal releases.
+            responsive_urls = (
+                image_url + "?variant=small",
+                image_url + "?variant=large",
+                image_url + "?variant=fallback",
+            )
+            responsive_alt = "Fixture caregiver beside a sunlit window"
+            provenance = {
+                "@context": "https://schema.org",
+                "@type": "ImageObject",
+                "contentUrl": responsive_urls[2],
+                "creator": {"@type": "Person", "name": "Fixture author"},
+                "creditText": "Fixture image provenance",
+                "acquireLicensePage": "https://example.org/service-photo",
+                "license": "https://www.pexels.com/license/",
+                "sha256": self.digest,
+            }
+            provenance_json = json.dumps(provenance, indent=2)
+            responsive_fixture = (
+                '<figure id="responsive-photo-fixture">\n'
+                '<picture data-provenance="fixture-service-photo">\n'
+                f'<source type="image/webp" media="(min-width: 640px)" '
+                f'srcset="{responsive_urls[0]} 640w, {responsive_urls[1]} 1280w" '
+                'sizes="(min-width: 960px) 50vw, 100vw">\n'
+                f'<img src="{responsive_urls[2]}" '
+                f'srcset="{responsive_urls[0]} 1x, {responsive_urls[1]} 2x" '
+                f'alt="{responsive_alt}" width="120" height="80">\n'
+                '</picture>\n'
+                '<figcaption><p class="service-photo-context">'
+                'Keep this ordinary photo context paragraph.</p></figcaption>\n'
+                '</figure>\n'
+                '<script type="application/ld+json" id="fixture-image-provenance">\n'
+                + provenance_json + '\n</script>\n'
+            )
         target = (self.public / "services" if production else self.previews) / (SLUG + ".html")
         clean_build = None
         for cycle in range(3):
@@ -189,6 +226,9 @@ class ServicePhotoNoteTests(unittest.TestCase):
                     self.assertEqual(generated, clean_build)
                 clean_build = generated
                 generated = generated.replace(service_preview.ASSET_PREFIX, prefix)
+                if contextual:
+                    self.assertEqual(generated.count("</main>"), 1)
+                    generated = generated.replace("</main>", responsive_fixture + "</main>")
                 self.assertGreater(generated.count(image_url), 0)
                 # Simulate an older generated artifact on every rebuild. Neither
                 # request-time path may rewrite this on-disk source.
@@ -263,6 +303,19 @@ class ServicePhotoNoteTests(unittest.TestCase):
                                     f' data-reading-topic="fixture">{RELATED_LABEL}</a>',
                                     document)
                                 self.assertEqual(related_path.read_bytes(), related_bytes)
+                                # Both identity and decompressed gzip must retain
+                                # the entire fixture verbatim, not just img tags.
+                                self.assertEqual(document.count(responsive_fixture), 1)
+                                for url in responsive_urls:
+                                    self.assertEqual(document.count(url), generated.count(url))
+                                self.assertEqual(
+                                    document.count(f'alt="{responsive_alt}"'), 1)
+                                metadata = re.findall(
+                                    r'<script type="application/ld\+json" '
+                                    r'id="fixture-image-provenance">\n(.*?)\n</script>',
+                                    document, re.S)
+                                self.assertEqual(metadata, [provenance_json])
+                                self.assertEqual(json.loads(metadata[0]), provenance)
                             else:
                                 self.assertEqual(self.render_links.call_count, render_calls)
                             self.assertEqual(document.count(image_url), generated.count(image_url))
