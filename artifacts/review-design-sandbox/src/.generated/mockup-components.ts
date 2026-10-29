@@ -29,6 +29,7 @@ export const modules: ModuleMap = {
   "./components/mockups/elh-patient-guide/PresenceInside.tsx": () => import("../components/mockups/elh-patient-guide/PresenceInside.tsx"),
   "./components/mockups/elh-patient-guide/TogetherPremium.tsx": () => import("../components/mockups/elh-patient-guide/TogetherPremium.tsx"),
   "./components/mockups/elh-patient-guide/TogetherPrintSpreads.tsx": () => import("../components/mockups/elh-patient-guide/TogetherPrintSpreads.tsx"),
+  "./components/mockups/elh-realtop-thank-you/ThankYouReview.tsx": () => import("../components/mockups/elh-realtop-thank-you/ThankYouReview.tsx"),
   "./components/mockups/elh-service-photo-options/EdgeToEdge.tsx": () => import("../components/mockups/elh-service-photo-options/EdgeToEdge.tsx"),
   "./components/mockups/elh-service-photo-options/Rounded.tsx": () => import("../components/mockups/elh-service-photo-options/Rounded.tsx"),
   "./components/mockups/elh-service-photo-options/SoftBlend.tsx": () => import("../components/mockups/elh-service-photo-options/SoftBlend.tsx"),

@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <meta name="referrer" content="no-referrer">
+  <title>Eternal Life Hospice — RealTop implementation brief</title>
+  <style>
+    * { box-sizing: border-box; }
+    html { background: #f7f4ed; color: #343434; }
+    body { max-width: 1100px; margin: 0 auto; padding: 42px 48px; font: 15px/1.5 Arial, sans-serif; }
+    header { border-bottom: 2px solid #b5a171; padding-bottom: 18px; margin-bottom: 22px; }
+    .eyebrow { margin: 0 0 8px; font-size: 11px; letter-spacing: .14em; font-weight: bold; color: #634562; }
+    h1 { margin: 0 0 8px; color: #442645; font: 32px/1.15 Georgia, serif; }
+    .intro { margin: 0; }
+    .columns { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
+    section { break-inside: avoid; margin: 0 0 18px; }
+    h2 { font-size: 16px; margin: 0 0 7px; color: #442645; }
+    p { margin: 0 0 9px; }
+    ul { margin: 0; padding-left: 18px; }
+    li { margin-bottom: 7px; }
+    code { font-size: .85em; overflow-wrap: anywhere; }
+    .status { border-left: 3px solid #b5a171; padding-left: 12px; }
+    footer { margin-top: 15px; padding-top: 12px; border-top: 1px solid #d6cec0; font-size: 11px; }
+    @media (max-width: 650px) {
+      body { padding: 28px 22px; }
+      .columns { grid-template-columns: 1fr; gap: 0; }
+    }
+    @page { size: letter landscape; margin: 0; }
+    @media print {
+      html { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+      body { width: 11in; max-width: none; margin: 0; padding: .35in .48in; font-size: 10.5pt; line-height: 1.36; }
+      header { margin-bottom: 15px; padding-bottom: 12px; }
+      h1 { font-size: 25pt; }
+      h2 { font-size: 12pt; }
+      section { margin-bottom: 13px; }
+      .columns { gap: 28px; }
+      li { margin-bottom: 5px; }
+      footer { font-size: 8.5pt; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <p class="eyebrow">ETERNAL LIFE HOSPICE · REALTOP HANDOFF</p>
+    <h1>Connect the confirmation. Protect the request.</h1>
+    <p class="intro">Design review only. The attached page does not submit forms, send email or fire tracking events. Nothing has been published or connected to the live campaign form.</p>
+  </header>
+  <main class="columns">
+    <div>
+      <section>
+        <h2>01 · Show only after confirmed receipt</h2>
+        <p>RealTop must display the approved design only after the actual form provider confirms the request was accepted and saved. Submission attempts, button clicks and URL parameters are not proof of receipt.</p>
+        <p>Failed or pending submissions must retain the form and honest retry/call guidance. Direct visits without verified submission must show neutral guidance, not claim receipt.</p>
+      </section>
+      <section>
+        <h2>02 · Count the lead once</h2>
+        <p>Inspect existing Google Ads tracking before adding an event. Choose one confirmed-success trigger, not separate events on both the form and thank-you page.</p>
+        <p><code>AW-18384023405/JC8lCKGQ9qsdEO3el75E</code><br>Supplied value: <strong>1.0 USD</strong>. Respect tracking consent.</p>
+        <p>Refresh, back/forward navigation and duplicate callbacks must not create another lead or conversion.</p>
+      </section>
+    </div>
+    <div>
+      <section>
+        <h2>03 · Preserve privacy and approved copy</h2>
+        <p>Do not put personal or medical information into URLs, analytics or browser logs. If needed, deduplicate with a non-personal opaque receipt reference.</p>
+        <p>The design retains the external page's <strong>805.953.7273</strong>, linked to <code>tel:+18059537273</code>. It does not change main-site phone placements.</p>
+        <p>No customer email is connected by this package. Any later acknowledgment requires a separate company-Gmail integration and approved wording.</p>
+      </section>
+      <section>
+        <h2>04 · Approve, connect, then verify</h2>
+        <ul>
+          <li>Eternal approves the copy and design before publication.</li>
+          <li>RealTop connects the verified success flow and removes the review disclosure only for the approved live implementation.</li>
+          <li>Test accepted, failed, pending and duplicate submissions with authorized synthetic data; preserve mobile and keyboard access.</li>
+          <li>Confirm receipt at the form provider and one eligible Ads conversion. No real requests or test calls without authorization.</li>
+        </ul>
+      </section>
+    </div>
+  </main>
+  <footer class="status">FOR REVIEW · External campaign: eternal-life-hospice.rt-go.com · Main-site changes do not automatically change this form. The included HTML is a visual reference, not a production submission handler.</footer>
+</body>
+</html>

@@ -2590,3 +2590,31 @@ mtime_ms = 1793158128138
 storage_uri = "gcs://replit-rams-assets-kirk/rams/assets/repl:e1b2f643-7869-4565-af0e-10c34575ee8d/626d011c-adc2-486f-9e24-8cdc22d5ca5a/290ba9a2-2242-4c19-a4b9-be46f1fbaa47"
 storage_version_token = "1793158178981752"
 content_type = "application/octet-stream"
+
+[[outputs]]
+id = "J0p85No5y1k550b6oTrrK"
+uri = "file://generated-artifacts/realtop-thank-you/ELH-RealTop-Thank-You-Review.pdf"
+type = "pdf"
+title = "RealTop — Thank-you Page Review"
+description = "Two-page PDF: the branded thank-you design and implementation requirements. Ready to forward to RealTop; review only, not live."
+logical_id = "30c0b8e4-dade-4781-a7c9-b9d697fd3af8"
+content_hash = "sha256:12de73c878ee57f37af83cb7ad971cf19351c317787067cfaef23b209cf03df2"
+size = 186583
+mtime_ms = 1793241825560
+storage_uri = "gcs://replit-rams-assets-kirk/rams/assets/repl:e1b2f643-7869-4565-af0e-10c34575ee8d/30c0b8e4-dade-4781-a7c9-b9d697fd3af8/70a85b23-7276-455a-876b-f4cd61f0ae0d"
+storage_version_token = "1793241877153706"
+content_type = "application/pdf"
+
+[[outputs]]
+id = "l4CNwjcdK_ndXO_y2jTX4"
+uri = "file://generated-artifacts/realtop-thank-you/ELH-RealTop-Thank-You-Review-Handoff.zip"
+type = "unspecified"
+title = "RealTop — HTML Handoff Package"
+description = "Responsive self-contained HTML, the review PDF and implementation notes. No tracking scripts, email sending or live submission connection."
+logical_id = "ca8ad465-c03f-4441-a2e9-16331a999fb0"
+content_hash = "sha256:dc81bb70724c9ea92ebd035491cda688447054bafbe3415c7898f2cff5134659"
+size = 204522
+mtime_ms = 1793241825566
+storage_uri = "gcs://replit-rams-assets-kirk/rams/assets/repl:e1b2f643-7869-4565-af0e-10c34575ee8d/ca8ad465-c03f-4441-a2e9-16331a999fb0/00f1efb8-7d98-4a67-968c-9c9e87607ed1"
+storage_version_token = "1793241877814152"
+content_type = "application/octet-stream"
