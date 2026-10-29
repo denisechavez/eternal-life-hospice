@@ -4,6 +4,8 @@
 Run: python3 website/test-service-photo-notes-e2e.py
 """
 from contextlib import ExitStack
+from email.parser import BytesParser
+from email.utils import formatdate
 import hashlib
 from http.server import ThreadingHTTPServer
 import importlib.util
@@ -11,6 +13,7 @@ import json
 import os
 from pathlib import Path
 import re
+import socket
 import tempfile
 from threading import Thread
 import unittest
@@ -106,6 +109,26 @@ class ServicePhotoNoteTests(unittest.TestCase):
             self.assertEqual(path.read_bytes(), self.image_bytes)
             self.assertEqual(hashlib.sha256(path.read_bytes()).hexdigest(), self.digest)
 
+    def read_head(self, port, path, headers):
+        # HTTP clients normally discard HEAD bodies, hiding server regressions.
+        # Read through connection close to assert the actual wire body is empty.
+        request = (
+            f"HEAD {path} HTTP/1.1\r\nHost: 127.0.0.1:{port}\r\n"
+            "Connection: close\r\n"
+            + "".join(f"{key}: {value}\r\n" for key, value in headers.items())
+            + "\r\n"
+        )
+        with socket.create_connection(("127.0.0.1", port), timeout=5) as connection:
+            connection.sendall(request.encode("ascii"))
+            chunks = []
+            while chunk := connection.recv(65536):
+                chunks.append(chunk)
+        head, body = b"".join(chunks).split(b"\r\n\r\n", 1)
+        status, fields = head.split(b"\r\n", 1)
+        self.assertEqual(status.split()[1], b"200")
+        self.assertEqual(body, b"", "HEAD must not send any body bytes")
+        return BytesParser().parsebytes(fields + b"\r\n\r\n")
+
     def exercise(self, production):
         self.stack.enter_context(patch.dict(
             os.environ, {"REPLIT_DEPLOYMENT": "1" if production else "0"}))
@@ -143,30 +166,57 @@ class ServicePhotoNoteTests(unittest.TestCase):
                 before = target.read_bytes()
                 self.assertEqual(legacy.count('class="journal-photo-credit"'), 2)
                 clean_response = None
+                modified = target.stat().st_mtime
+                conditions = (
+                    ("unconditional", None),
+                    ("older", formatdate(modified - 86400, usegmt=True)),
+                    ("matching", formatdate(modified, usegmt=True)),
+                    ("newer", formatdate(modified + 86400, usegmt=True)),
+                )
                 for suffix in ("", ".html?refresh=1", ""):
-                    calls = self.transform.call_count
-                    request = Request(origin + ROUTE + suffix,
-                                      headers={"Cache-Control": "no-cache"})
-                    with urlopen(request, timeout=5) as response:
-                        self.assertEqual(response.status, 200)
-                        self.assertIn("text/html", response.headers["Content-Type"])
-                        self.assertIsNone(response.headers.get("X-Journal-Revision"))
-                        if production:
-                            self.assertIn("must-revalidate", response.headers["Cache-Control"])
-                        else:
-                            self.assertEqual(response.headers["Cache-Control"], "no-store")
-                        body = response.read()
-                        self.assertEqual(int(response.headers["Content-Length"]), len(body))
-                    self.assertGreater(self.transform.call_count, calls)
-                    document = body.decode()
-                    self.assert_clean(document)
-                    self.assertEqual(document.count(image_url), generated.count(image_url))
-                    self.assertEqual(re.findall(r"<img\b[^>]*>", document),
-                                     re.findall(r"<img\b[^>]*>", generated))
-                    if clean_response is not None:
-                        self.assertEqual(document, clean_response)
-                    clean_response = document
-                    self.assertEqual(target.read_bytes(), before)
+                    for condition, date in conditions:
+                        with self.subTest(suffix=suffix, condition=condition):
+                            headers = {"Cache-Control": "no-cache"}
+                            if date is not None:
+                                headers["If-Modified-Since"] = date
+                            calls = self.transform.call_count
+                            request = Request(origin + ROUTE + suffix, headers=headers)
+                            # Presentation-filtered pages deliberately return a
+                            # fresh 200 even when the source mtime matches.
+                            with urlopen(request, timeout=5) as response:
+                                self.assertEqual(response.status, 200)
+                                get_headers = response.headers
+                                self.assertIn("text/html", get_headers["Content-Type"])
+                                self.assertIsNone(get_headers.get("X-Journal-Revision"))
+                                if production:
+                                    self.assertIn("must-revalidate", get_headers["Cache-Control"])
+                                else:
+                                    self.assertEqual(get_headers["Cache-Control"], "no-store")
+                                body = response.read()
+                                self.assertEqual(int(get_headers["Content-Length"]), len(body))
+                            self.assertGreater(self.transform.call_count, calls)
+                            self.assertLess(len(body), len(before))
+                            document = body.decode()
+                            self.assert_clean(document)
+                            self.assertEqual(document.count(image_url), generated.count(image_url))
+                            self.assertEqual(re.findall(r"<img\b[^>]*>", document),
+                                             re.findall(r"<img\b[^>]*>", generated))
+                            if clean_response is not None:
+                                self.assertEqual(document, clean_response)
+                            clean_response = document
+                            self.assertEqual(target.read_bytes(), before)
+
+                            calls = self.transform.call_count
+                            head_headers = self.read_head(
+                                server.server_port, ROUTE + suffix, headers)
+                            self.assertGreater(self.transform.call_count, calls)
+                            for name in ("Content-Length", "Content-Type", "Cache-Control",
+                                         "X-Journal-Revision"):
+                                self.assertEqual(head_headers.get(name), get_headers.get(name),
+                                                 f"HEAD/GET {name} mismatch")
+                            self.assertEqual(int(head_headers["Content-Length"]), len(body))
+                            self.assertEqual(target.read_bytes(), before)
+                            self.assert_preserved()
                     with urlopen(origin + image_url, timeout=5) as response:
                         self.assertEqual(response.read(), self.image_bytes)
                     self.assert_preserved()
