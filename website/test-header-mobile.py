@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
-"""Browser regression guard for the ELH header at phone widths.
+"""Browser regression guard for the ELH header and direct Request Care action.
 
 Starts a private local static server, drives the installed Chromium through the
 DevTools protocol, and verifies both the canonical homepage and a generated
-city page at 320px and 390px. No third-party Python or Node packages are needed.
+city page at 320px, 390px and desktop. No third-party Python or Node packages
+are needed. Checks navigation only; no care requests are submitted.
 """
 
 import base64
@@ -24,8 +25,8 @@ from urllib.request import urlopen
 
 
 ROOT = Path(__file__).resolve().parent / "elh-preview"
-PAGES = ("/index.html", "/hospice-torrance-ca.html")
-WIDTHS = (320, 390)
+PAGES = ("/", "/index.html", "/hospice-torrance-ca.html")
+WIDTHS = (320, 390, 1280)
 
 
 class QuietHandler(SimpleHTTPRequestHandler):
@@ -196,6 +197,137 @@ CHECK_EXPRESSION = r"""
 })()
 """
 
+CARE_NAV_EXPRESSION = r"""
+(async () => {
+  const nav = document.querySelector('#hdr nav');
+  const contact = nav.querySelector('.nav-group--contact');
+  const care = contact && contact.querySelector(':scope > .nav-parent');
+  const visible = el => !!(el && el.getClientRects().length &&
+    getComputedStyle(el).display !== 'none' &&
+    getComputedStyle(el).visibility !== 'hidden');
+  const dropdowns = [...nav.querySelectorAll('.nav-group')]
+    .filter(group => group !== contact);
+  const expectedSections = ['hospice-care', 'services', 'resources', 'service-areas', 'about'];
+  const exercise = async group => {
+    const toggle = group.querySelector('.nav-toggle');
+    const submenu = group.querySelector('.nav-sub');
+    const parent = group.querySelector('.nav-parent');
+    if (!toggle || !submenu || !parent) return false;
+    const href = parent.getAttribute('href');
+    toggle.click();
+    // Desktop visibility transitions need a rendering frame before inspection.
+    const deadline = performance.now() + 1000;
+    while (!visible(submenu) && performance.now() < deadline) {
+      await new Promise(resolve => requestAnimationFrame(resolve));
+    }
+    const opened = toggle.getAttribute('aria-expanded') === 'true' &&
+      toggle.getAttribute('aria-controls') === submenu.id &&
+      group.classList.contains('expanded') && visible(submenu) &&
+      [...submenu.querySelectorAll('a[href]')].some(visible) &&
+      visible(toggle) && parent.tagName === 'A' && !!href &&
+      !nav.querySelector('.nav-group.expanded:not([data-section="' +
+        group.dataset.section + '"])');
+    toggle.click();
+    return opened && toggle.getAttribute('aria-expanded') === 'false' &&
+      !group.classList.contains('expanded') && parent.getAttribute('href') === href;
+  };
+  let otherDropdownsUsable = true;
+  for (const section of expectedSections) {
+    const group = dropdowns.find(group => group.dataset.section === section);
+    if (!group || !await exercise(group)) otherDropdownsUsable = false;
+  }
+  // Main's shared header now makes Request Care direct on non-homepages too.
+  // Pin that current baseline rather than restoring the retired city dropdown.
+  const contactStructure = !!contact && !!care &&
+    !contact.querySelector('.nav-toggle, .nav-sub') &&
+    !care.hasAttribute('aria-expanded') && !care.hasAttribute('aria-controls') &&
+    !care.hasAttribute('aria-haspopup');
+  return {
+    otherDropdownsUsable,
+    contactStructure,
+    careDestination: !!care && care.tagName === 'A' &&
+      care.textContent.trim() === 'Request Care' &&
+      care.getAttribute('href') === '/?lead=family#leadcap',
+    careVisible: visible(care)
+  };
+})()
+"""
+
+
+def evaluate(client, expression):
+    return client.call(
+        "Runtime.evaluate",
+        {"expression": expression, "returnByValue": True, "awaitPromise": True},
+    )["result"].get("value")
+
+
+def wait_for(client, expression, timeout=5):
+    deadline = time.monotonic() + timeout
+    while time.monotonic() < deadline:
+        if evaluate(client, expression):
+            return True
+        time.sleep(0.05)
+    return False
+
+
+def press_key(client, key, code, virtual_key):
+    for kind in ("keyDown", "keyUp"):
+        client.call("Input.dispatchKeyEvent", {
+            "type": kind, "key": key, "code": code,
+            "windowsVirtualKeyCode": virtual_key,
+            **({"text": "\r"} if key == "Enter" and kind == "keyDown" else {}),
+        })
+
+
+def check_care_navigation(client, mobile):
+    checks = {}
+    # Deliberately start in a different audience on the homepage. This catches
+    # a lost query parameter even though Family is the markup's initial default.
+    if evaluate(client, "!!document.querySelector('.lead-cat[data-cat=\"voice\"]')"):
+        evaluate(client, "document.querySelector('.lead-cat[data-cat=\"voice\"]').click()")
+        checks["non-family audience selected before navigation"] = evaluate(client, (
+            "document.querySelector('.lead-cat.active').dataset.cat === 'voice' && "
+            "document.querySelector('.lead-form.show').dataset.form === 'voice'"
+        ))
+
+    # Open mobile navigation using the keyboard, not a synthetic link click.
+    if mobile:
+        evaluate(client, "document.querySelector('#hdr .menu-btn').focus()")
+        press_key(client, "Enter", "Enter", 13)
+    result = evaluate(client, CARE_NAV_EXPRESSION)
+    checks.update(result)
+    if mobile:
+        checks["keyboard opens mobile menu"] = evaluate(client, (
+            "document.querySelector('#hdr').classList.contains('nav-open') && "
+            "document.querySelector('#hdr .menu-btn').getAttribute('aria-expanded') === 'true'"
+        ))
+
+    # Start at the first top-level link and traverse native tab order. The care
+    # action must be reachable and Enter must follow its URL without opening a menu.
+    evaluate(client, "document.querySelector('#hdr nav a').focus()")
+    care_focused = False
+    for _ in range(50):
+        if evaluate(client, (
+            "document.activeElement.matches('#hdr .nav-group--contact > .nav-parent')"
+        )):
+            care_focused = True
+            break
+        press_key(client, "Tab", "Tab", 9)
+    checks["Request Care reachable by Tab"] = care_focused
+    if care_focused:
+        press_key(client, "Enter", "Enter", 13)
+        checks["Enter arrives at Family care form"] = wait_for(client, r"""
+          location.pathname === '/' && location.search === '?lead=family' &&
+          location.hash === '#leadcap' &&
+          document.readyState === 'complete' &&
+          document.querySelectorAll('.lead-cat.active').length === 1 &&
+          document.querySelector('.lead-cat.active').dataset.cat === 'family' &&
+          document.querySelectorAll('.lead-form.show').length === 1 &&
+          document.querySelector('.lead-form.show').dataset.form === 'family' &&
+          getComputedStyle(document.querySelector('.lead-form.show')).display !== 'none'
+        """)
+    return checks
+
 
 def browser_binary():
     configured = os.environ.get("CHROME_BIN") or os.environ.get("CHROMIUM_BIN")
@@ -252,6 +384,7 @@ def main():
         try:
             client = DevTools(wait_for_page_debugger(debug_port))
             client.call("Page.enable")
+            client.call("Page.bringToFront")
             for page in PAGES:
                 for width in WIDTHS:
                     client.call(
@@ -260,7 +393,7 @@ def main():
                             "width": width,
                             "height": 844,
                             "deviceScaleFactor": 1,
-                            "mobile": True,
+                            "mobile": width < 1000,
                         },
                     )
                     client.call(
@@ -270,24 +403,15 @@ def main():
                     # The homepage has substantial deferred content; wait for the
                     # shared header enhancer to create disclosure controls before
                     # exercising them.
-                    for _ in range(20):
-                        ready = client.call(
-                            "Runtime.evaluate",
-                            {
-                                "expression": (
-                                    "document.readyState !== 'loading' && "
-                                    "!!document.querySelector('#hdr .nav-toggle')"
-                                ),
-                                "returnByValue": True,
-                            },
-                        )["result"].get("value")
-                        if ready:
-                            break
-                        time.sleep(0.05)
-                    result = client.call(
-                        "Runtime.evaluate",
-                        {"expression": CHECK_EXPRESSION, "returnByValue": True},
-                    )["result"]["value"]
+                    ready = wait_for(client, (
+                        "document.readyState === 'complete' && "
+                        f"location.pathname === {json.dumps(page)} && "
+                        "!!document.querySelector('#hdr .nav-toggle')"
+                    ))
+                    if not ready:
+                        failures.append((page, width, ["header did not become ready"], {}))
+                        continue
+                    result = evaluate(client, CHECK_EXPRESSION) if width < 1000 else {}
                     checks = {
                         "no horizontal clipping": (
                             result.get("headerScrollWidth") <= width
@@ -305,7 +429,8 @@ def main():
                         "submenu opens accessibly": result.get("submenuOpened"),
                         "Hospice Care landing page remains linked": result.get("parentNavigable"),
                         "menu closes": result.get("closed"),
-                    }
+                    } if width < 1000 else {}
+                    checks.update(check_care_navigation(client, width < 1000))
                     broken = [label for label, passed in checks.items() if not passed]
                     if result.get("error"):
                         broken.append(result["error"])
@@ -324,7 +449,7 @@ def main():
             server.shutdown()
 
     if failures:
-        print("\n❌ Mobile header browser regression(s):")
+        print("\n❌ Header browser regression(s):")
         for page, width, broken, result in failures:
             print(f"  {page} at {width}px: {', '.join(broken)}")
             print(f"    metrics: {json.dumps(result, sort_keys=True)}")

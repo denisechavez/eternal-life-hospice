@@ -3,6 +3,17 @@ name: Mobile browser verification
 description: Limits of synthetic pointer checks in headless mobile emulation.
 ---
 
+Native keyboard checks need a foreground browser target as well as a focused
+element.
+
+**Why:** Headless Chromium can report the expected active element while the
+document itself lacks focus; an initial Enter then focuses the document
+without activating the button, producing a false navigation failure.
+
+**How to apply:** Bring the target forward before keyboard checks and send
+native key events with Enter's carriage-return text. Do not replace a failed
+keyboard activation with a synthetic click and claim keyboard coverage.
+
 Do not interpret a failed coordinate-based click in headless mobile emulation
 as proof of a broken destination. Check the actual URL and compare layout
 and visual viewport dimensions before changing application links.
