@@ -298,3 +298,9 @@ test('homepage professional-contact forms are not counted as care or referral re
     assert.equal(app.outcomes()[0].data.submission_type, kind);
   }
 });
+
+// node:test sets the exit status after all asynchronous tests finish.
+// Never signal completion from an after hook that also runs on failed tests.
+process.on('exit', code => {
+  if (code === 0) console.log('SENTINEL: test-submission-analytics.cjs OK');
+});

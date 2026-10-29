@@ -28,6 +28,7 @@ import shutil
 import subprocess
 import sys
 import tempfile
+import tomllib
 
 source = Path(sys.argv[1])
 retry = "node --experimental-websocket ../test-care-brief-signup-retry.mjs"
@@ -40,6 +41,8 @@ phone_config = "python3 ../test-website-phone-config.py"
 phone_sentinel = "SENTINEL: test-website-phone.py OK"
 tracker = "python3 ../test-tracker-policy.py"
 tracker_sentinel = "SENTINEL: test-tracker-policy.py OK"
+analytics = "node ../test-submission-analytics.cjs"
+analytics_sentinel = "SENTINEL: test-submission-analytics.cjs OK"
 sentinel = "SENTINEL: test-care-brief-signup-retry.mjs browser checks OK"
 wrapper = (source / "elh-predeploy.sh").read_text()
 chain = wrapper.split("set +o pipefail\n(\n", 1)[1].split("\n) 2>&1", 1)[0]
@@ -52,6 +55,10 @@ assert wrapper.count('"' + sentinel + '"') == 1, "Wrapper must require retry sen
 assert commands.count(ack) == 1, "Acknowledgment suite must run exactly once"
 assert commands.count(tracker) == 1, "Tracker policy suite must run exactly once"
 assert wrapper.count('"' + tracker_sentinel + '"') == 1, "Wrapper must require tracker policy sentinel"
+assert commands.count(analytics) == 1, "Synthetic submission analytics suite must run exactly once"
+assert commands.index(analytics) < commands.index("node assets/build-search-index.js --check")
+assert not any("test-intake-nimbata.mjs" in command for command in commands), "Keep live browser tracking checks separate from synthetic publishing checks"
+assert wrapper.count('"' + analytics_sentinel + '"') == 1, "Wrapper must require submission analytics sentinel"
 assert commands.index(ack) < commands.index("node assets/build-search-index.js --check")
 assert wrapper.count('"' + ack_sentinel + '"') == 1, "Wrapper must require acknowledgment sentinel"
 assert commands.count(phone) == 1, "Phone-role suite must run exactly once"
@@ -64,7 +71,15 @@ smoke = (source / "test-predeploy-chain.sh").read_text()
 assert smoke.count('  "' + sentinel + '"') == 1, "Smoke test must require retry sentinel"
 assert smoke.count('  "' + ack_sentinel + '"') == 1, "Smoke test must require acknowledgment sentinel"
 assert smoke.count('  "' + phone_sentinel + '"') == 1, "Smoke test must require phone sentinel"
+assert smoke.count('  "' + analytics_sentinel + '"') == 1, "Smoke test must require submission analytics sentinel"
 sentinels = re.findall(r'^  "(SENTINEL: .+)"$', wrapper, re.M)
+publish = (source / "build-published-site.sh").read_text()
+config = tomllib.loads((source.parent / ".replit").read_text())
+assert config["deployment"]["build"] == ["bash", "website/build-published-site.sh"]
+publish_analytics = "node website/test-submission-analytics.cjs"
+assert publish.count(publish_analytics) == 1, "Configured publish build must run analytics exactly once"
+assert analytics_sentinel in publish, "Configured publish build must require analytics completion"
+assert "test-intake-nimbata.mjs" not in publish, "Publish build must not run browser tracking checks"
 
 with tempfile.TemporaryDirectory(prefix="elh-predeploy-chain-") as temp:
     root = Path(temp)
@@ -94,7 +109,7 @@ if not (is_target and os.environ["CHAIN_MODE"] == "missing"):
         if sentinel.split(": ", 1)[1].split(" ", 1)[0] in command:
             print(sentinel)
 '''
-    for name in ("node", "python3", "cookie-stub"):
+    for name in ("node", "python3", "npm", "cookie-stub"):
         executable = bindir / name
         executable.write_text(stub)
         executable.chmod(0o755)
@@ -106,7 +121,9 @@ if not (is_target and os.environ["CHAIN_MODE"] == "missing"):
                  (retry, sentinel, "failure"), (retry, sentinel, "missing"),
                  (ack, ack_sentinel, "failure"), (ack, ack_sentinel, "missing"),
                  (phone, phone_sentinel, "failure"), (phone, phone_sentinel, "missing"),
-                 (tracker, tracker_sentinel, "failure"), (tracker, tracker_sentinel, "missing")]
+                 (tracker, tracker_sentinel, "failure"), (tracker, tracker_sentinel, "missing"),
+                 (analytics, analytics_sentinel, "success"),
+                 (analytics, analytics_sentinel, "failure"), (analytics, analytics_sentinel, "missing")]
     for target, target_sentinel, mode in scenarios:
         log.write_text("")
         before = {p.relative_to(site): p.read_bytes() for p in site.rglob("*") if p.is_file()}
@@ -126,6 +143,32 @@ if not (is_target and os.environ["CHAIN_MODE"] == "missing"):
         after = {p.relative_to(site): p.read_bytes() for p in site.rglob("*") if p.is_file()}
         assert after == before, f"{mode}: changed publication fixture"
         print(f"PASS: isolated pre-deploy chain {target}: {mode}")
+    # Exercise the actual .replit build entry point without installs, app APIs
+    # or builds. Failures must stop before even the advisory SEO check runs.
+    website = root / "website"
+    website.mkdir()
+    (website / "build-published-site.sh").write_text(publish)
+    (website / "check-studio-regressions.sh").write_text("exit 0\n")
+    publish_commands = [
+        publish_analytics,
+        "python3 website/check-prepublish-seo.py",
+        "npm ci --ignore-scripts --no-audit --no-fund",
+        "npm ci --prefix artifacts/review-design-sandbox --no-audit --no-fund",
+        "node website/build-studio.mjs --published",
+    ]
+    for mode in ("success", "failure", "missing"):
+        log.write_text("")
+        result = subprocess.run([shutil.which("bash"), "website/build-published-site.sh"],
+                                cwd=root, env=dict(env, CHAIN_MODE=mode, TARGET_COMMAND=publish_analytics),
+                                text=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+        expected = publish_commands if mode == "success" else [publish_analytics]
+        assert log.read_text().splitlines() == expected, result.stdout
+        assert result.returncode == {"success": 0, "failure": 37, "missing": 1}[mode], result.stdout
+        if mode == "missing":
+            assert "MISSING: " + analytics_sentinel in result.stdout, result.stdout
+        if mode == "failure":
+            assert "Submission analytics check failed" in result.stdout, result.stdout
+        print(f"PASS: isolated configured publish build analytics: {mode}")
 print("SENTINEL: test-predeploy-chain.sh isolated checks OK")
 PY
 
@@ -194,6 +237,7 @@ SENTINELS=(
   "SENTINEL: check-city-scripts.py self-test OK"
   "SENTINEL: check-analytics-version.py self-test OK"
   "SENTINEL: test-tracker-policy.py OK"
+  "SENTINEL: test-submission-analytics.cjs OK"
   "SENTINEL: check-structured-data.py self-test OK"
   "SENTINEL: check-blog-schema.py self-test OK"
   "SENTINEL: check-og-metadata.py self-test OK"

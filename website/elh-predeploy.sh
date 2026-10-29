@@ -37,6 +37,7 @@ set +o pipefail
   python3 ../check-city-scripts.py
   python3 ../check-analytics-version.py
   python3 ../test-tracker-policy.py
+  node ../test-submission-analytics.cjs
   python3 ../check-structured-data.py
   python3 ../check-blog-schema.py
   python3 ../check-og-metadata.py
@@ -94,6 +95,7 @@ SENTINELS=(
   "SENTINEL: check-city-scripts.py self-test OK"
   "SENTINEL: check-analytics-version.py self-test OK"
   "SENTINEL: test-tracker-policy.py OK"
+  "SENTINEL: test-submission-analytics.cjs OK"
   "SENTINEL: check-structured-data.py self-test OK"
   "SENTINEL: check-blog-schema.py self-test OK"
   "SENTINEL: check-og-metadata.py self-test OK"
