@@ -33,11 +33,6 @@ export function AmethystAssurance() {
           </p>
           <p className="aa-privacy">To help protect your privacy and the privacy of your loved one, please avoid sending medical details by email. Our care team can guide you to an appropriate way to share this information.</p>
         </div>
-        <div className="aa-ornament" aria-hidden="true">
-          <span />
-          <span />
-          <span />
-        </div>
       </section>
 
       <section className="aa-contact" aria-labelledby="aa-contact-title">
