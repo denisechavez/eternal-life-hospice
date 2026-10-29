@@ -263,6 +263,10 @@ for dirpath, dirs, files in os.walk(ROOT):
 
         # Standard presence checks
         for key, (token, label) in REQUIRED.items():
+            # The homepage uses the approved direct-care mobile navigation build.
+            # Other pages retain the shared header version checked above.
+            if key == "header_js" and rel == "index.html":
+                token = "header.js?v=20261028-care-direct"
             if key == "no_stale_url":
                 if token in html:
                     page_fails.append(f"STALE URL: {token} found")

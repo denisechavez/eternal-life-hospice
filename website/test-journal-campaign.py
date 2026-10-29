@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Focused invariants for the Eternal Journal publication campaign."""
 import importlib.util
+import hashlib
 import io
 import json
 import os
@@ -11,7 +12,7 @@ import tempfile
 import unittest
 from contextlib import contextmanager
 from unittest.mock import patch
-from datetime import date, timedelta
+from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent
@@ -20,7 +21,9 @@ spec = importlib.util.spec_from_file_location("journal_builder", ROOT / "build-j
 builder = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(builder)
 from devserver import PrettyURLHandler
-from journal_test_fixtures import approved_fixture_releases
+import journal_release
+import journal_workspace_preview
+import analytics_assets
 
 
 class JournalCampaignTests(unittest.TestCase):
@@ -29,11 +32,47 @@ class JournalCampaignTests(unittest.TestCase):
         cls.articles = builder.load_articles()
 
     def setUp(self):
-        # Every fixture below is explicitly approved for the layout/date tests.
-        # Real unapproved gating is exercised by test-journal-release.py.
-        fixture = patch("journal_release.released", side_effect=approved_fixture_releases)
-        fixture.start()
-        self.addCleanup(fixture.stop)
+        directory = tempfile.TemporaryDirectory()
+        self.addCleanup(directory.cleanup)
+        root = Path(directory.name)
+        manifest = root / "manifest.json"
+        manifest.write_text(json.dumps({
+            "timezone": "America/Los_Angeles",
+            "articles": [a for a in self.articles if a.get("publicationStatus") != "archived"],
+        }))
+        # Layout fixtures explicitly release staged copies, never owner approvals
+        # or frozen production history. A workspace's verified-public overlay is
+        # intentionally NOT rewound by ELH_JOURNAL_DATE, so isolate its cache too.
+        for fixture in (
+            patch.dict(os.environ, {"REPLIT_DEPLOYMENT": "0", "ELH_JOURNAL_DATE": "2026-09-21"}),
+            patch("devserver.JOURNAL_MANIFEST", str(manifest)),
+            patch.object(journal_workspace_preview, "CACHE", root / "absent-preview.json"),
+            patch.object(journal_release, "released", side_effect=self.synthetic_releases),
+            patch.object(journal_release, "connect",
+                         side_effect=AssertionError("Campaign tests must not access approval storage")),
+        ):
+            fixture.start()
+            self.addCleanup(fixture.stop)
+
+    def synthetic_releases(self):
+        """Explicit synthetic approval of the campaign/legacy layout fixtures.
+
+        Date-only eligibility here sets up archive tests; it is not an imitation
+        of the authoritative 06:30 release clock (covered independently below).
+        """
+        today = PrettyURLHandler._journal_today()
+        import devserver
+        records = {}
+        for article in self.articles + builder.LEGACY_POSTS:
+            if article.get("publicationStatus") == "archived" or article["date"] > (today or ""):
+                continue
+            path = Path(devserver.ROOT) / "blog" / (article["slug"] + ".html")
+            document = path.read_text()
+            records[article["slug"]] = {
+                "date": article["date"], "html": document,
+                "revision": hashlib.sha256(document.encode()).hexdigest(),
+            }
+        return records, True
 
     def test_inline_editorial_links_are_safe_and_contextual(self):
         self.assertEqual(
@@ -338,6 +377,9 @@ class JournalCampaignTests(unittest.TestCase):
                           path.read_text(), count=1)
             page = re.sub(r'(<h1>Published edited heading</h1>)<p>[\s\S]*?</p>',
                           r'\1<p>Published edited summary.</p>', page, count=1)
+            # Build refreshes analytics-asset URLs by design. Start with a current
+            # URL so this assertion isolates preservation of editorial bytes.
+            page = analytics_assets.refresh_html(page)
             path.write_text(page)
             with patch.object(builder.subprocess, "run"):
                 for sync in (builder.build, builder.refresh_images):
@@ -497,7 +539,7 @@ class JournalCampaignTests(unittest.TestCase):
                         handler = PrettyURLHandler.__new__(PrettyURLHandler)
                         handler.command = "GET"
                         handler.wfile = io.BytesIO()
-                        records, healthy = approved_fixture_releases()
+                        records, healthy = self.synthetic_releases()
                         if article["date"] <= today:
                             records[article["slug"]] = {"date":article["date"],
                                 "revision":"explicitly-approved-new-story-fixture","html":""}
@@ -651,7 +693,13 @@ class JournalCampaignTests(unittest.TestCase):
                               "url": "/blog/later-story"}],
             }))
             try:
-                with patch("devserver.JOURNAL_MANIFEST", str(manifest_path)):
+                row = {"date": "2027-01-02", "revision": "a" * 64,
+                       "html": "<h1>Synthetic later story</h1>"}
+                def later_release():
+                    return ({"later-story": row} if
+                            PrettyURLHandler._journal_today() >= row["date"] else {}), True
+                with patch("devserver.JOURNAL_MANIFEST", str(manifest_path)), \
+                     patch.object(journal_release, "released", side_effect=later_release):
                     os.environ["ELH_JOURNAL_DATE"] = "2027-01-01"
                     self.assertTrue(PrettyURLHandler._future_journal_path("/blog/later-story"))
                     os.environ["ELH_JOURNAL_DATE"] = "2027-01-02"
@@ -661,6 +709,112 @@ class JournalCampaignTests(unittest.TestCase):
                     os.environ.pop("ELH_JOURNAL_DATE", None)
                 else:
                     os.environ["ELH_JOURNAL_DATE"] = old
+
+    def test_synthetic_archive_and_discovery_use_released_copy_not_due_drafts(self):
+        """Release membership, not today's date or staged copy, grants visibility."""
+        def article(slug, title, day="2026-11-01"):
+            return {"slug": slug, "title": title, "date": day,
+                    "description": title + " summary.", "category": "Family Support",
+                    "readMinutes": 4, "heroImage": "/assets/img/synthetic.jpg"}
+
+        approved = article("synthetic-approved", "Frozen approved heading")
+        pending = dict(approved, title="UNAPPROVED_REPLACEMENT",
+                       description="UNAPPROVED_SUMMARY")
+        draft = article("synthetic-draft", "UNAPPROVED_DUE_STORY")
+        future = article("synthetic-future", "UNRELEASED_FUTURE_STORY", "2026-11-02")
+        archived = article("synthetic-archived", "ARCHIVED_SOURCE")
+        archived["publicationStatus"] = "archived"
+        active = [pending, draft, future]
+        all_articles = active + [archived]
+        schema = {"@type": "Blog", "blogPost": [
+            {"url": builder.BASE_URL + a["slug"], "headline": a["title"]}
+            for a in all_articles]}
+        # The staged archive deliberately contains both unapproved and archived
+        # entries so filtering assertions cannot pass because inputs are absent.
+        staged = ('<html><head><script type="application/ld+json">' +
+                  json.dumps(schema) + '</script></head><body>' +
+                  builder.card(future, True) + '<section><div class="rgrid">' +
+                  "".join(builder.card(a) for a in all_articles) +
+                  '</div></section></body></html>')
+        document = ('<section class="hero"><h1>' + approved["title"] +
+                    '</h1><p>' + approved["description"] + '</p></section>')
+        released = {approved["slug"]: {"date": approved["date"], "html": document,
+                                     "revision": hashlib.sha256(document.encode()).hexdigest()}}
+        with tempfile.TemporaryDirectory() as directory:
+            public = Path(directory)
+            (public / "assets").mkdir()
+            (public / "blog.html").write_text(staged)
+            search = [{"url": "/blog/" + a["slug"], "title": a["title"]} for a in all_articles]
+            search.append({"url": "/family-guide", "title": "Family Guide"})
+            (public / "assets/search-index.json").write_text(json.dumps(search))
+            (public / "sitemap.xml").write_text('<urlset>' + "".join(
+                f'<url><loc>{builder.BASE_URL}{a["slug"]}</loc></url>' for a in all_articles
+            ) + '<url><loc>https://eternallifehospice.com/family-guide</loc></url></urlset>')
+            manifest = public / "manifest.json"
+            manifest.write_text(json.dumps({"timezone": "America/Los_Angeles",
+                                           "articles": all_articles}))
+            before = {p: p.read_bytes() for p in public.rglob("*") if p.is_file()}
+            with patch("devserver.ROOT", str(public)), \
+                 patch("devserver.JOURNAL_MANIFEST", str(manifest)), \
+                 patch.dict(os.environ, {"ELH_JOURNAL_DATE": "2026-11-01"}), \
+                 patch.object(journal_release, "released", return_value=(released, True)):
+                self.assertFalse(PrettyURLHandler._future_journal_path("/blog/synthetic-approved"))
+                for a in (draft, future, archived):
+                    self.assertTrue(PrettyURLHandler._future_journal_path("/blog/" + a["slug"]))
+                for relative in ("blog.html", "assets/search-index.json", "sitemap.xml"):
+                    with self.subTest(artifact=relative):
+                        handler = PrettyURLHandler.__new__(PrettyURLHandler)
+                        handler.command = "GET"
+                        handler.wfile = io.BytesIO()
+                        statuses = []
+                        handler.send_response = statuses.append
+                        handler.send_header = lambda *_: None
+                        handler.end_headers = lambda: None
+                        self.assertTrue(handler._send_journal_artifact(str(public / relative)))
+                        self.assertEqual(statuses, [200])
+                        body = handler.wfile.getvalue().decode()
+                        self.assertIn("/blog/synthetic-approved", body)
+                        for hidden in (draft["slug"], future["slug"], archived["slug"],
+                                       pending["title"], pending["description"]):
+                            self.assertNotIn(hidden, body)
+                        if relative != "sitemap.xml":
+                            self.assertIn(approved["title"], body)
+                            self.assertIn(approved["description"], body)
+                        if relative != "blog.html":
+                            self.assertIn("/family-guide", body)
+                        else:
+                            self.assertEqual(body.count('<div class="blog-featured"'), 1)
+                            self.assertNotIn('class="rc" data-publish-date=', body)
+            self.assertEqual(before, {p: p.read_bytes() for p in before})
+
+
+class PublicationClockTests(unittest.TestCase):
+    """Clock checks do not use the date-only layout-release fixture."""
+
+    def test_local_date_uses_pacific_day_not_utc_day(self):
+        for instant, expected in (
+            (datetime(2026, 9, 22, 6, 59, tzinfo=timezone.utc), "2026-09-21"),
+            (datetime(2026, 9, 22, 7, 0, tzinfo=timezone.utc), "2026-09-22"),
+            (datetime(2026, 11, 2, 7, 59, tzinfo=timezone.utc), "2026-11-01"),
+            (datetime(2026, 11, 2, 8, 0, tzinfo=timezone.utc), "2026-11-02"),
+        ):
+            with self.subTest(instant=instant), \
+                 patch.dict(os.environ, {"REPLIT_DEPLOYMENT": "0", "ELH_JOURNAL_DATE": ""}), \
+                 patch("devserver.datetime") as clock:
+                clock.now.side_effect = lambda zone: instant.astimezone(zone)
+                self.assertEqual(PrettyURLHandler._journal_today(), expected)
+
+    def test_date_override_is_workspace_only_and_invalid_dates_fail_closed(self):
+        instant = datetime(2026, 11, 2, 15, 0, tzinfo=timezone.utc)
+        with patch.dict(os.environ, {"REPLIT_DEPLOYMENT": "0", "ELH_JOURNAL_DATE": "2027-01-02"}):
+            self.assertEqual(PrettyURLHandler._journal_today(), "2027-01-02")
+        with patch.dict(os.environ, {"REPLIT_DEPLOYMENT": "0", "ELH_JOURNAL_DATE": "2026-02-30"}):
+            self.assertIsNone(PrettyURLHandler._journal_today())
+            self.assertTrue(PrettyURLHandler._future_journal_path("/blog/synthetic-approved"))
+        with patch.dict(os.environ, {"REPLIT_DEPLOYMENT": "1", "ELH_JOURNAL_DATE": "2027-01-02"}), \
+             patch("devserver.datetime") as clock:
+            clock.now.side_effect = lambda zone: instant.astimezone(zone)
+            self.assertEqual(PrettyURLHandler._journal_today(), "2026-11-02")
 
 
 if __name__ == "__main__":
