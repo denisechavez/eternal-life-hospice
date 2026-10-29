@@ -49,7 +49,7 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: center bottom;
+  object-position: center 67%;
 }
 
 .qw-scene-shade {
@@ -324,7 +324,7 @@
   }
 
   .qw-landscape {
-    object-position: 49% bottom;
+    object-position: 49% 67%;
   }
 
   .qw-brand {

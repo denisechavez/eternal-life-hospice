@@ -8,7 +8,11 @@ export function QuietWelcome() {
       <section className="qw-scene" aria-label="A reassuring moment of support, with two people holding hands">
         <img
           className="qw-landscape"
-          src={`${base}images/quiet-welcome-care-hands.webp`}
+          src={`${base}images/quiet-welcome-care-original.jpg`}
+          width={1080}
+          height={1350}
+          fetchPriority="high"
+          decoding="async"
           alt=""
           aria-hidden="true"
         />
