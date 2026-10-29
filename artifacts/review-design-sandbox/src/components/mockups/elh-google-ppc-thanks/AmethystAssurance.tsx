@@ -31,7 +31,7 @@ export function AmethystAssurance() {
           <p className="aa-reassurance">
             A member of our care team will contact you to discuss your needs and next steps.
           </p>
-          <p className="aa-privacy">Please avoid sending medical details by email.</p>
+          <p className="aa-privacy">To help protect your privacy and the privacy of your loved one, please avoid sending medical details by email. Our care team can guide you to an appropriate way to share this information.</p>
         </div>
         <div className="aa-ornament" aria-hidden="true">
           <span />

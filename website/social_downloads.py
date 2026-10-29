@@ -6,6 +6,14 @@ from urllib.parse import urlsplit
 
 ROOT = Path(__file__).resolve().parents[1]
 FILES = {
+    "ELH-Google-PPC-Three-Thank-You-Options.pdf": (
+        "google-ppc-three-options/ELH-Google-PPC-Three-Thank-You-Options.pdf",
+        "application/pdf",
+    ),
+    "ELH-Google-PPC-Three-Thank-You-Options-Handoff.zip": (
+        "google-ppc-three-options/ELH-Google-PPC-Three-Thank-You-Options-Handoff.zip",
+        "application/zip",
+    ),
     "Eternal-Manual-Social-October-27-31-2026.zip": (
         "Eternal-Manual-Social-October-27-31-2026.zip", "application/zip"
     ),

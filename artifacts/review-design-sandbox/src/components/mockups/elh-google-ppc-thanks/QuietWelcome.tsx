@@ -43,7 +43,7 @@ export function QuietWelcome() {
             <span>your request.</span>
           </h1>
           <p className="qw-body">A member of our care team will contact you to discuss your needs and next steps.</p>
-          <p className="qw-privacy">Please avoid sending medical details by email.</p>
+          <p className="qw-privacy">To help protect your privacy and the privacy of your loved one, please avoid sending medical details by email. Our care team can guide you to an appropriate way to share this information.</p>
           <a className="qw-return" href="https://eternallifehospice.com/">
             <span>Return to Eternal Life Hospice</span>
             <span className="qw-arrow" aria-hidden="true">↗</span>
@@ -57,9 +57,6 @@ export function QuietWelcome() {
             <p className="qw-contact-copy">We're here for you 24 hours a day, 7 days a week.</p>
             <a className="qw-phone" href="tel:+18054099262">Call 805.409.9262</a>
           </div>
-          <svg className="qw-sprig" viewBox="0 0 100 100" aria-hidden="true">
-            <path d="M21 89C43 71 58 46 70 13M42 68c-14-1-23-9-27-21 14-1 24 6 27 21Zm14-23c-1-15 5-26 17-33 4 14-2 25-17 33Zm-1 2c13-8 26-8 39 0-10 11-24 11-39 0Z" />
-          </svg>
         </aside>
       </section>
 

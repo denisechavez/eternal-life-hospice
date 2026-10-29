@@ -5,6 +5,18 @@ description: How to produce print-ready PDFs for Eternal Life Hospice from HTML.
 
 # Print-ready files
 
+For desktop review PDFs exported from responsive web designs, restrict mobile
+breakpoints to `@media screen and (...)` in the export stylesheet, and set the
+headless browser viewport explicitly.
+
+**Why:** A desktop canvas layout can print as a stacked mobile layout even when
+the PDF paper dimensions are desktop-sized; a successful page-count check does
+not establish visual fidelity.
+
+**How to apply:** Keep responsive rules in the downloadable browser HTML, but
+exclude screen-only breakpoints from its print layout. Inspect rendered PDF
+pages, not just the browser screenshot or PDF metadata.
+
 Deliverables go in repo-root `exports/`, filed by type (NOT in
 `website/elh-preview/`, which is the deployed site): `exports/print/` for
 print-ready PDFs (rack cards, flyers, brochures), `exports/decks/` for

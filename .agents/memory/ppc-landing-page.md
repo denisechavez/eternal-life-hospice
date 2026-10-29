@@ -54,3 +54,12 @@ publication remained separate, uncompleted steps.
 
 **How to apply:** Preserve the workspace-only boundary even when the artwork
 looks production-ready. Obtain publication and integration approval separately.
+
+The owner approved the expanded Google PPC privacy note covering both the
+visitor and their loved one, with guidance to ask the care team how to share
+medical details appropriately rather than by email.
+
+**Why:** This was explicitly approved during the thank-you design review.
+
+**How to apply:** Preserve that approved wording in the Google PPC options and
+handoff. This approval does not authorize rewriting separate email templates.

@@ -32,7 +32,7 @@ export function PersonalLetter() {
             next steps.
           </p>
           <p className="elh-letter-privacy">
-            Please avoid sending medical details by email.
+            To help protect your privacy and the privacy of your loved one, please avoid sending medical details by email. Our care team can guide you to an appropriate way to share this information.
           </p>
           <a
             className="elh-letter-return"
