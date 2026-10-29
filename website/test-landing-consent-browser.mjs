@@ -10,8 +10,10 @@ assert.notEqual(process.env.REPLIT_DEPLOYMENT, "1", "Never run fixtures in produ
 assert.equal(typeof WebSocket, "function", "Node 20 needs --experimental-websocket");
 const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
 const profile = await mkdtemp(join(tmpdir(), "elh-landing-consent-"));
-let server, browser, ws, origin, sequence = 0, serverLog = "", browserLog = "";
-const pending = new Map(), errors = [], requests = [], documents = [];
+let server, browser, ws, origin, proxyPort, mainSession, sequence = 0, serverLog = "", browserLog = "";
+const pending = new Map(), errors = [], requests = [], observed = [], documents = [];
+const targets = new Map(), policyViolations = [];
+let expectedMutation = false;
 const essentialWidget = "https://cdn.userway.org/widget.js";
 // Hubs and representative detail pages use distinct public rendering paths.
 // Keep this explicit and independent of the fixture's server-side allowlist.
@@ -32,7 +34,11 @@ try {
       output += chunk;
       if (!output.includes("\n")) return;
       clearTimeout(timer);
-      try { resolve(`http://127.0.0.1:${JSON.parse(output.split("\n")[0]).port}`); }
+      try {
+        const fixture = JSON.parse(output.split("\n")[0]);
+        proxyPort = fixture.proxyPort;
+        resolve(`http://127.0.0.1:${fixture.port}`);
+      }
       catch (error) { reject(error); }
     });
   });
@@ -51,65 +57,156 @@ try {
       assert.equal((await fetch(origin + path, {method})).status, 405, `${method} ${path} denied`);
     }
   }
+  const audit = async () => (await fetch(origin + "/__consent-audit")).json();
+  // Exercise the independent proxy without DNS or any outbound connection.
+  const proxyControl = await fetch(`http://127.0.0.1:${proxyPort}/deny-control`);
+  assert.equal(proxyControl.status, 403);
+  assert.ok((await audit()).proxy.some(r => r.url === "/deny-control"));
+  const baselineAudit = (await audit()).requests.length;
   browser = spawn(process.env.CHROMIUM_BIN || "chromium", [
     "--headless", "--no-sandbox", "--disable-dev-shm-usage",
-    "--disable-background-networking", "--disable-component-update", "--no-proxy-server",
+    "--disable-background-networking", "--disable-component-update",
+    `--proxy-server=http://127.0.0.1:${proxyPort}`,
+    `--proxy-bypass-list=<-loopback>;127.0.0.1:${new URL(origin).port}`,
+    "--disable-quic",
     "--host-resolver-rules=MAP * ~NOTFOUND, EXCLUDE 127.0.0.1",
-    "--no-first-run", "--remote-debugging-port=0", `--user-data-dir=${profile}`, "about:blank"
+    "--no-first-run", "--remote-debugging-port=0", `--user-data-dir=${profile}`,
+    "http://consent-transport.invalid/__consent-proxy-control"
   ], {stdio:["ignore", "ignore", "pipe"]});
   browser.stderr.on("data", chunk => { browserLog = (browserLog + chunk).slice(-4000); });
-  let port;
+  let port, browserPath;
   for (let i = 0; i < 300; i++) {
     if (browser.exitCode !== null) throw new Error("Chromium exited: " + browserLog);
-    try { port = Number((await readFile(join(profile, "DevToolsActivePort"), "utf8")).split("\n")[0]); break; }
+    try {
+      const lines = (await readFile(join(profile, "DevToolsActivePort"), "utf8")).split("\n");
+      port = Number(lines[0]); browserPath = lines[1]; break;
+    }
     catch { await sleep(50); }
   }
   assert.ok(port, browserLog);
+  // Deliberately run this canary BEFORE installing any CDP interception.
+  // The browser must use the deny proxy even for a wholly unobserved target.
+  let proxyCanary;
+  for (let i = 0; i < 200; i++) {
+    proxyCanary = (await audit()).proxy.find(r =>
+      r.url === "http://consent-transport.invalid/__consent-proxy-control");
+    if (proxyCanary) break;
+    await sleep(40);
+  }
+  assert.equal(proxyCanary?.status, 403, "Unintercepted browser transport denied independently");
   const tabs = await (await fetch(`http://127.0.0.1:${port}/json/list`)).json();
-  ws = new WebSocket(tabs.find(tab => tab.type === "page").webSocketDebuggerUrl);
+  const pageId = tabs.find(tab => tab.type === "page").id;
+  ws = new WebSocket(`ws://127.0.0.1:${port}${browserPath}`);
   await new Promise((resolve, reject) => {
     ws.addEventListener("open", resolve, {once:true});
     ws.addEventListener("error", reject, {once:true});
   });
-  const call = (method, params = {}) => new Promise((resolve, reject) => {
+  const call = (method, params = {}, sessionId = mainSession) => new Promise((resolve, reject) => {
     const id = ++sequence;
     const timer = setTimeout(() => {
       pending.delete(id); reject(new Error("CDP timeout: " + method));
     }, 10000);
     pending.set(id, {resolve, reject, timer});
-    ws.send(JSON.stringify({id, method, params}));
+    ws.send(JSON.stringify({id, method, params, ...(sessionId ? {sessionId} : {})}));
   });
+  const attach = async ({sessionId, targetInfo}) => {
+    const target = {type:targetInfo.type, ready:false};
+    targets.set(sessionId, target);
+    if (targetInfo.targetId === pageId) mainSession = sessionId;
+    // Pause before a worker/OOPIF can execute. Recursively attach to its
+    // descendants; browser-level auto-attach alone does not cover grandchildren.
+    await call("Target.setAutoAttach", {autoAttach:true, waitForDebuggerOnStart:true, flatten:true}, sessionId);
+    await call("Network.enable", {}, sessionId);
+    await call("Network.setCacheDisabled", {cacheDisabled:true}, sessionId);
+    await call("Network.setBypassServiceWorker", {bypass:true}, sessionId);
+    await call("Runtime.enable", {}, sessionId);
+    await call("Log.enable", {}, sessionId);
+    if (["worker", "shared_worker", "service_worker"].includes(targetInfo.type)) {
+      // Chromium's dedicated-worker target has no Fetch domain. Block its
+      // entire network before resuming, while Network still reports attempts.
+      await call("Network.setBlockedURLs", {urls:["*"]}, sessionId);
+      target.transport = "blocked";
+    } else {
+      await call("Fetch.enable", {patterns:[{urlPattern:"*"}]}, sessionId);
+      target.transport = "synthetic";
+    }
+    if (["page", "iframe"].includes(targetInfo.type)) {
+      await call("Page.enable", {}, sessionId);
+      await call("Page.addScriptToEvaluateOnNewDocument", {source:`
+        window.__consentPolicyViolations = [];
+        document.addEventListener('securitypolicyviolation', e => {
+          window.__consentPolicyViolations.push({directive:e.effectiveDirective, blocked:e.blockedURI});
+          console.debug('__consent_csp__' + JSON.stringify({directive:e.effectiveDirective, blocked:e.blockedURI}));
+        });
+      `}, sessionId);
+    }
+    target.ready = true;
+    await call("Runtime.runIfWaitingForDebugger", {}, sessionId);
+  };
   ws.addEventListener("message", event => {
     const m = JSON.parse(event.data), p = pending.get(m.id);
     if (p) {
       clearTimeout(p.timer); pending.delete(m.id);
       m.error ? p.reject(new Error(JSON.stringify(m.error))) : p.resolve(m.result);
     }
+    if (m.method === "Target.attachedToTarget") {
+      attach(m.params).catch(error => errors.push(String(error)));
+      return;
+    }
     if (m.method === "Runtime.exceptionThrown") errors.push(m.params.exceptionDetails);
-    if (m.method === "Network.responseReceived" && m.params.type === "Document")
+    if (m.method === "Runtime.consoleAPICalled") {
+      for (const arg of m.params.args || []) {
+        if (typeof arg.value === "string" && arg.value.startsWith("__consent_csp__"))
+          policyViolations.push({sessionId:m.sessionId, ...JSON.parse(arg.value.slice(15))});
+      }
+    }
+    if (m.method === "Log.entryAdded" && m.params.entry.source === "security")
+      policyViolations.push({sessionId:m.sessionId, text:m.params.entry.text});
+    if (m.method === "Network.requestWillBeSent")
+      observed.push({url:m.params.request.url, method:m.params.request.method,
+        requestId:m.params.requestId, sessionId:m.sessionId, type:targets.get(m.sessionId)?.type});
+    if (m.method === "Network.loadingFailed") {
+      const request = observed.findLast(r => r.requestId === m.params.requestId &&
+        r.sessionId === m.sessionId);
+      if (request) request.blockedReason = m.params.blockedReason;
+    }
+    if (m.method === "Network.responseReceived" && m.params.type === "Document" &&
+        m.sessionId === mainSession && new URL(m.params.response.url).origin === origin)
       documents.push(m.params.response);
     if (m.method !== "Fetch.requestPaused") return;
     const {requestId, request, resourceType} = m.params;
-    requests.push({url:request.url, method:request.method, resourceType});
+    const entry = {url:request.url, method:request.method, resourceType,
+      sessionId:m.sessionId, type:targets.get(m.sessionId)?.type, action:null, completed:false};
+    requests.push(entry);
     const url = new URL(request.url), local = url.origin === origin;
-    const allowed = local && request.method === "GET" && (
+    const allowed = local && (request.method === "GET" && (
       publicPages.includes(url.pathname) || url.pathname === "/api/google-reviews" ||
       url.pathname.startsWith("/assets/")
-    );
+    ) || (expectedMutation && request.method === "POST" &&
+      url.pathname === "/assets/__consent-redirect-mutation"));
     // Every provider response is synthetic, including the sole permitted
     // essential widget. Unknown providers are recorded (and fail the check),
     // never forwarded. All other local APIs and all mutations fail closed.
-    const response = allowed ? call("Fetch.continueRequest", {requestId}) :
-      local ? call("Fetch.failRequest", {requestId, errorReason:"BlockedByClient"}) :
-      call("Fetch.fulfillRequest", {
+    entry.action = allowed ? "fixture" : local ? "blocked" : "synthetic";
+    const frameProbe = request.url === "https://cdn.userway.org/__consent-frame";
+    const body = frameProbe ? `<script>
+      fetch('https://www.google-analytics.com/g/collect?probe=frame',
+        {method:'POST', mode:'no-cors', body:'synthetic'});
+    </script>` : resourceType === "Script" ?
+      "globalThis.__syntheticProviderExecutions=(globalThis.__syntheticProviderExecutions||0)+1;" : "";
+    const send = (method, params) => call(method, params, m.sessionId);
+    const response = allowed ? send("Fetch.continueRequest", {requestId}) :
+      local ? send("Fetch.failRequest", {requestId, errorReason:"BlockedByClient"}) :
+      send("Fetch.fulfillRequest", {
         requestId, responseCode:200,
-        responseHeaders:[{name:"Content-Type", value:resourceType === "Script" ?
-          "text/javascript" : "text/plain"}, {name:"Access-Control-Allow-Origin", value:origin}],
-        body:Buffer.from(resourceType === "Script" ?
-          "window.__syntheticProviderExecutions=(window.__syntheticProviderExecutions||0)+1;" : "").toString("base64")
+        responseHeaders:[{name:"Content-Type", value:frameProbe ? "text/html" :
+          resourceType === "Script" ? "text/javascript" : "text/plain"},
+          {name:"Access-Control-Allow-Origin", value:"*"}],
+        body:Buffer.from(body).toString("base64")
       });
-    response.catch(error => errors.push(String(error)));
-    if (local && !allowed && url.pathname !== "/favicon.ico")
+    response.then(() => { entry.completed = true; }).catch(error => errors.push(String(error)));
+    if (local && !allowed && url.pathname !== "/favicon.ico" &&
+        !(expectedMutation && url.pathname === "/api/form-submit" && request.method === "POST"))
       errors.push({unexpectedLocalRequest:request.url, method:request.method});
   });
   const evaluate = async expression => {
@@ -124,19 +221,14 @@ try {
     }
     throw new Error("Timed out: " + expression);
   };
-  await call("Page.enable"); await call("Runtime.enable"); await call("Network.enable");
-  await call("Network.setCacheDisabled", {cacheDisabled:true});
-  await call("Network.setBypassServiceWorker", {bypass:true});
-  await call("Fetch.enable", {patterns:[{urlPattern:"*"}]});
-  await call("Page.addScriptToEvaluateOnNewDocument", {source:`
-    window.__consentPolicyViolations = [];
-    document.addEventListener('securitypolicyviolation', e => {
-      window.__consentPolicyViolations.push({directive:e.effectiveDirective, blocked:e.blockedURI});
-    });
-  `});
+  await call("Target.setAutoAttach", {autoAttach:true, waitForDebuggerOnStart:true, flatten:true}, null);
+  for (let i = 0; i < 200 && !targets.get(mainSession)?.ready; i++) await sleep(40);
+  assert.ok(targets.get(mainSession)?.ready, "Main target armed before navigation");
 
   const visit = async path => {
     requests.length = 0;
+    observed.length = 0;
+    policyViolations.length = 0;
     const previousDocuments = documents.length;
     await call("Page.navigate", {url:origin + path});
     await until("document.readyState==='complete' && typeof elhCookieSettings==='function'");
@@ -165,13 +257,14 @@ try {
     assert.ok(requests.some(r => new URL(r.url).pathname === "/assets/analytics.js"), "Real shared loader served");
   };
   const assertNoTracking = async () => {
-    assert.deepEqual(requests.filter(r => new URL(r.url).origin !== origin &&
+    assert.deepEqual(observed.filter(r => new URL(r.url).origin !== origin &&
       r.url !== essentialWidget), [], "No optional third-party request before consent");
     assert.equal(await evaluate(`!!(window.__elhAnalyticsBooted ||
       (window.dataLayer || []).some(x => ['config','event','js'].includes(x[0])) ||
       window.clarity || window.Brevo || window.beTracker || window.__nimbataDownloaded)`),
     false, "No inline tracking initialization before consent");
     assert.deepEqual(await evaluate("window.__consentPolicyViolations"), [], "No hidden CSP-blocked bypass");
+    assert.deepEqual(policyViolations, [], "No CSP-blocked bypass in any target");
     const cookies = await call("Network.getAllCookies");
     assert.deepEqual(cookies.cookies, [], "No tracking cookies on synthetic first/essential-only visit");
     assert.deepEqual(errors, [], "No page/runtime or forbidden API failures");
@@ -202,19 +295,69 @@ try {
   }
   for (const path of publicPages) {
     for (const consent of [null, "essential"]) {
-      for (const probe of ["inline", "tag"]) {
+      for (const probe of ["inline", "tag", "frame", "worker", "beacon", "redirect", "redirect-mutation"]) {
+        expectedMutation = probe === "redirect-mutation";
         const seed = await call("Page.addScriptToEvaluateOnNewDocument", {source:consent ?
           "localStorage.setItem('elh_cc','essential')" : "localStorage.removeItem('elh_cc')"});
         try { await visit(`${path}?__consent_probe=${probe}`); }
         finally { await call("Page.removeScriptToEvaluateOnNewDocument", {identifier:seed.identifier}); }
-        await assert.rejects(assertNoTracking, probe === "inline" ?
-          /No inline tracking initialization/ : /No optional third-party request/,
-        `Must detect ${probe} bypass on ${path} with ${consent || "fresh"} consent`);
+        if (probe === "redirect-mutation") {
+          assert.ok(requests.some(r => new URL(r.url).pathname === "/api/form-submit" &&
+            r.method === "POST" && r.action === "blocked" && r.completed),
+          "307 mutation destination blocked before the fixture receives it");
+        } else {
+          await assert.rejects(assertNoTracking, probe === "inline" ?
+            /No inline tracking initialization/ : /No optional third-party request/,
+          `Must detect ${probe} bypass on ${path} with ${consent || "fresh"} consent`);
+        }
+        if (["frame", "worker", "beacon", "redirect"].includes(probe)) {
+          const destination = `https://www.google-analytics.com/g/collect?probe=${probe}`;
+          const observation = observed.find(r => r.url === destination);
+          assert.ok(observation, "Independent network observer reports attempt");
+          const attempt = requests.find(r => r.url === destination);
+          if (probe === "worker") {
+            assert.equal(observation.blockedReason, "inspector", "Worker attempt blocked before transport");
+            assert.equal(targets.get(observation.sessionId)?.transport, "blocked");
+            assert.equal(attempt, undefined, "Worker block needs no synthetic provider response");
+          } else {
+            assert.ok(attempt, `${probe} tracking attempt must actually reach interception`);
+            assert.equal(attempt.action, "synthetic");
+            assert.equal(attempt.completed, true, `${probe} synthetic response completed`);
+          }
+          if (["frame", "worker"].includes(probe)) {
+            assert.notEqual(observation.sessionId, mainSession, `${probe} attempt outside main target`);
+            assert.equal(observation.type, probe === "frame" ? "iframe" : "worker");
+          }
+          if (probe === "beacon") assert.equal(attempt.resourceType, "Ping");
+        }
+        assert.ok(requests.every(r => r.completed), "Every paused request resolved");
+        assert.ok(requests.every(r => new URL(r.url).origin === origin ||
+          r.action === "synthetic"), "No external request was continued");
+        assert.equal(await evaluate("localStorage.getItem('elh_cc')"), consent,
+          "Adversarial probe never grants or changes consent");
+        assert.deepEqual(policyViolations, [], "Transport probes run under unchanged CSP");
+        assert.deepEqual(errors, [], "No concealed runtime/interception failure");
+        expectedMutation = false;
       }
     }
   }
+  const finalAudit = await audit();
+  const browserAudit = finalAudit.requests.slice(baselineAudit);
+  assert.deepEqual(browserAudit.filter(r => r.path.startsWith("/api/") &&
+    r.path !== "/api/google-reviews"), [], "No intake/API attempts reach even the deny-only fixture handler");
+  assert.deepEqual(browserAudit.filter(r => r.method !== "GET" &&
+    !(r.method === "POST" && r.path === "/assets/__consent-redirect-mutation")), [],
+  "No non-fixture mutations");
+  assert.ok(browserAudit.some(r => r.path === "/assets/__consent-redirect"), "Real fixture 307 exercised");
+  assert.ok(browserAudit.some(r => r.path === "/assets/__consent-worker.js"), "Real fixture worker exercised");
+  // Chromium may speculatively CONNECT for a frame even when its document
+  // response is intercepted. Such connections must be denied, never tunneled.
+  assert.ok(finalAudit.proxy.every(r => r.status === 403), "Proxy never forwards any request or CONNECT");
+  assert.deepEqual(finalAudit.proxy.filter(r => /google-analytics/.test(r.url)), [],
+    "Tracking payloads never reach proxy: intercepted synthetically or blocked in worker");
   assert.deepEqual(errors, []);
-  console.log(`PASS negative controls: inline and external-tag bypasses caught on all ${publicPages.length} pages, fresh and essential-only`);
+  console.log(`PASS negative controls: inline, tag, cross-origin frame, worker, beacon and redirect bypasses caught on all ${publicPages.length} pages, fresh and essential-only`);
+  console.log("PASS transport isolation: all-target synthetic responses, deny-only proxy, blocked mutation redirects and unchanged consent/permissions");
   console.log("SENTINEL: test-landing-consent-browser.mjs OK");
 } finally {
   for (const p of pending.values()) { clearTimeout(p.timer); p.reject(new Error("Browser shutting down")); }
