@@ -25,9 +25,9 @@ description: Verified canonical Google Business Profiles for Eternal and Westlak
 - **How to apply:** do not keep correcting only the phone. Escalate the hybrid CID to Google Business Profile support as an incorrect merge, providing both legal names, suites, phones, domains and distinct Place IDs/CIDs.
 
 ## Google Business Profile call tracking
-- Eternal’s dedicated WhatConverts number for Google Business Profile is `(805) 410-1151`; it forwards to Eternal’s permanent main number `(805) 953-7273`.
-- **Why:** the tracking number measures Google Business Profile calls while the permanent main number preserves Eternal’s identity and citation consistency.
-- **How to apply:** use `(805) 410-1151` as the Google profile phone. If Google exposes an additional-number field, retain `(805) 953-7273` there; if the profile allows only one number, keep `(805) 953-7273` canonical on the website and citations. Do not publish the tracking number as Eternal’s canonical website phone.
+- On 2026-10-28 the owner explicitly approved `(805) 409-9262` as the Google Business Profile number and authorized updating the identity check. This supersedes the former approved Google profile number `(805) 410-1151`.
+- **Why:** Google reported the new number and the owner confirmed this was intentional, rather than an unwanted identity change.
+- **How to apply:** expect `(805) 409-9262` for Eternal’s Google profile while preserving all other approved identity fields and Westlake’s separate profile. This approval does not authorize further website phone-placement changes, removal of `(805) 953-7273` from existing placements or changes to provider forwarding/account history.
 
 ## Identity-monitor approval boundary
 - A newly observed Google profile value is not, by itself, authorization to change the approved identity-monitor baseline. Confirm intentional phone changes with the owner before accepting them.
