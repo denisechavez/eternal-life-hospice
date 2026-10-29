@@ -71,6 +71,10 @@ def _valid_journal_date(value):
 
 # Internal-only routes for the workspace canvas hub (never published to the site):
 CANVAS_HUB = os.path.join(BASE, "canvas-hub")
+GOOGLE_PPC_REVIEW_SOURCE = os.path.join(
+    BASE, "..", "artifacts", "review-design-sandbox", "public",
+    "elh-realtop-thank-you-review.html",
+)
 GROWTH_INTELLIGENCE_REPORTER = os.path.join(
     BASE, "growth-intelligence-reporting.mjs"
 )
@@ -132,6 +136,32 @@ LEGACY_PAGE_REDIRECTS = {
 
 
 class PrettyURLHandler(http.server.SimpleHTTPRequestHandler):
+    def _google_ppc_review(self):
+        """Serve only the specific review file, and only in the workspace."""
+        path = urlsplit(self.path).path
+        if not path.startswith("/__reviews-mockup/"):
+            return False
+        if (is_production_deployment() or
+                path != "/__reviews-mockup/elh-realtop-thank-you-review.html"):
+            self.send_error(404)
+            return True
+        try:
+            with open(GOOGLE_PPC_REVIEW_SOURCE, "rb") as source:
+                body = source.read()
+        except OSError:
+            self.send_error(503, "Review preview unavailable")
+            return True
+        self.send_response(200)
+        self.send_header("Content-Type", "text/html; charset=utf-8")
+        self.send_header("Content-Length", str(len(body)))
+        self.send_header("Cache-Control", "no-store")
+        self.send_header("X-Robots-Tag", "noindex, nofollow")
+        self.send_header("Referrer-Policy", "no-referrer")
+        self.end_headers()
+        if self.command != "HEAD":
+            self.wfile.write(body)
+        return True
+
     def _preview_chrome(self, document, route=None):
         route = route if route is not None else urlsplit(self.path).path
         route = route.rstrip("/").removesuffix(".html") or "/"
@@ -800,6 +830,8 @@ class PrettyURLHandler(http.server.SimpleHTTPRequestHandler):
         return True
 
     def do_HEAD(self):
+        if self._google_ppc_review():
+            return
         if service_preview.serve(self, self._service_preview_chrome):
             return
         if social_downloads.serve(self):
@@ -832,6 +864,8 @@ class PrettyURLHandler(http.server.SimpleHTTPRequestHandler):
         super().do_HEAD()
 
     def do_GET(self):
+        if self._google_ppc_review():
+            return
         if service_preview.serve(self, self._service_preview_chrome):
             return
         if social_downloads.serve(self):
