@@ -1,0 +1,432 @@
+@font-face {
+  font-family: "ELH Fraunces";
+  src: url("/__reviews-mockup/fonts/fraunces-latin.woff2") format("woff2");
+  font-style: normal;
+  font-weight: 400 700;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "ELH Jost";
+  src: url("/__reviews-mockup/fonts/inline-3c986c6628.woff2") format("woff2");
+  font-style: normal;
+  font-weight: 400 700;
+  font-display: swap;
+}
+
+.aa-page,
+.aa-page * {
+  box-sizing: border-box;
+}
+
+.aa-page {
+  --aa-plum: #432440;
+  --aa-plum-deep: #351a35;
+  --aa-plum-light: #684c67;
+  --aa-cream: #f6f1e8;
+  --aa-paper: #fbf8f2;
+  --aa-gold: #b5a279;
+  --aa-gold-light: #d9cbb0;
+  --aa-ink: #3f3940;
+  --aa-muted: #655d63;
+  min-height: 100dvh;
+  padding: 0 clamp(18px, 5.4vw, 84px);
+  color: var(--aa-ink);
+  background:
+    radial-gradient(ellipse at 50% 48%, rgba(255, 255, 255, .56), transparent 65%),
+    var(--aa-cream);
+  font-family: "ELH Jost", "Trebuchet MS", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+.aa-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  width: min(100%, 1210px);
+  min-height: 112px;
+  margin: 0 auto;
+}
+
+.aa-brand {
+  display: inline-flex;
+  align-items: center;
+  min-height: 64px;
+  flex: 0 0 auto;
+  border-radius: 3px;
+}
+
+.aa-brand:focus-visible,
+.aa-call:focus-visible,
+.aa-return:focus-visible {
+  outline: 3px solid var(--aa-gold);
+  outline-offset: 4px;
+}
+
+.aa-logo {
+  display: block;
+  width: 94px;
+  height: auto;
+}
+
+.aa-disclosure {
+  max-width: 360px;
+  margin: 0;
+  padding: 8px 12px;
+  border: 1px solid rgba(67, 36, 64, .16);
+  border-radius: 999px;
+  color: #5f535d;
+  font-size: 11px;
+  letter-spacing: .025em;
+  line-height: 1.35;
+  text-align: center;
+}
+
+.aa-confirmation {
+  position: relative;
+  display: grid;
+  min-height: 410px;
+  place-items: center;
+  overflow: hidden;
+  width: min(100%, 1210px);
+  margin: 0 auto;
+  padding: clamp(48px, 7vw, 86px) clamp(24px, 9vw, 140px);
+  border: 1px solid rgba(181, 162, 121, .65);
+  background:
+    radial-gradient(ellipse at 50% 115%, rgba(122, 88, 116, .30), transparent 58%),
+    linear-gradient(135deg, var(--aa-plum) 0%, #4b2a49 52%, var(--aa-plum-deep) 100%);
+  color: var(--aa-paper);
+  text-align: center;
+}
+
+.aa-confirmation::before,
+.aa-confirmation::after {
+  position: absolute;
+  width: 290px;
+  height: 290px;
+  border: 1px solid rgba(217, 203, 176, .2);
+  border-radius: 50%;
+  content: "";
+  pointer-events: none;
+}
+
+.aa-confirmation::before {
+  top: -188px;
+  left: -124px;
+}
+
+.aa-confirmation::after {
+  right: -162px;
+  bottom: -216px;
+  width: 390px;
+  height: 390px;
+}
+
+.aa-confirmation-inner {
+  position: relative;
+  z-index: 1;
+  width: min(100%, 790px);
+}
+
+.aa-mark {
+  display: grid;
+  width: 54px;
+  height: 54px;
+  margin: 0 auto 24px;
+  place-items: center;
+  border: 1px solid rgba(217, 203, 176, .75);
+  border-radius: 50%;
+  color: #e1d2b3;
+  background: rgba(251, 248, 242, .07);
+}
+
+.aa-mark svg {
+  width: 25px;
+  height: 25px;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.7;
+}
+
+.aa-kicker,
+.aa-contact-label {
+  margin: 0;
+  color: #ddcfb2;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .19em;
+  line-height: 1.45;
+  text-transform: uppercase;
+}
+
+.aa-confirmation h1 {
+  max-width: 760px;
+  margin: 18px auto 0;
+  color: #fffaf1;
+  font-family: "ELH Fraunces", Georgia, serif;
+  font-size: clamp(38px, 5.4vw, 68px);
+  font-weight: 500;
+  letter-spacing: -.04em;
+  line-height: 1.06;
+  text-wrap: balance;
+}
+
+.aa-reassurance {
+  max-width: 660px;
+  margin: 23px auto 0;
+  color: #f2ecdf;
+  font-size: clamp(16px, 1.7vw, 19px);
+  line-height: 1.65;
+}
+
+.aa-privacy {
+  margin: 16px 0 0;
+  color: #e1d5c7;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.aa-ornament {
+  position: absolute;
+  z-index: 1;
+  right: clamp(24px, 5vw, 66px);
+  bottom: 31px;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  opacity: .7;
+}
+
+.aa-ornament span {
+  display: block;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--aa-gold-light);
+}
+
+.aa-ornament span:nth-child(2) {
+  width: 27px;
+  height: 1px;
+  border-radius: 0;
+}
+
+.aa-contact {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 36px;
+  width: min(100%, 930px);
+  margin: 0 auto;
+  padding: 47px clamp(0px, 2vw, 26px) 40px;
+  border-bottom: 1px solid rgba(67, 36, 64, .16);
+}
+
+.aa-contact-copy {
+  min-width: 0;
+}
+
+.aa-contact-label {
+  color: #806b48;
+  letter-spacing: .15em;
+}
+
+.aa-contact h2 {
+  margin: 9px 0 0;
+  color: var(--aa-plum);
+  font-family: "ELH Fraunces", Georgia, serif;
+  font-size: clamp(26px, 3vw, 36px);
+  font-weight: 500;
+  letter-spacing: -.025em;
+  line-height: 1.15;
+}
+
+.aa-contact-description {
+  margin: 10px 0 0;
+  color: #5c5359;
+  font-size: 16px;
+  line-height: 1.55;
+}
+
+.aa-call {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 240px;
+  min-height: 56px;
+  flex: 0 0 auto;
+  gap: 12px;
+  padding: 12px 22px;
+  border: 1px solid #b5a279;
+  border-radius: 2px;
+  color: #fffaf2;
+  background: var(--aa-plum);
+  box-shadow: 0 5px 16px rgba(67, 36, 64, .12);
+  font-size: 17px;
+  font-weight: 600;
+  letter-spacing: .015em;
+  text-decoration: none;
+  transition: background-color .18s ease, transform .18s ease;
+}
+
+.aa-call:hover {
+  background: #573652;
+  transform: translateY(-1px);
+}
+
+.aa-call svg {
+  width: 19px;
+  height: 19px;
+  flex: 0 0 auto;
+  stroke: #e1d2b3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.6;
+}
+
+.aa-footer {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+  width: min(100%, 1210px);
+  margin: 0 auto;
+  padding: 24px 0 30px;
+}
+
+.aa-tagline {
+  margin: 0 0 6px;
+  color: var(--aa-plum);
+  font-family: "ELH Fraunces", Georgia, serif;
+  font-size: 18px;
+  font-weight: 500;
+  letter-spacing: -.015em;
+}
+
+.aa-footer address {
+  color: var(--aa-muted);
+  font-size: 12px;
+  font-style: normal;
+  letter-spacing: .01em;
+  line-height: 1.55;
+}
+
+.aa-return {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  gap: 10px;
+  color: var(--aa-plum);
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: color .18s ease, transform .18s ease;
+}
+
+.aa-return:hover {
+  color: #806b48;
+  transform: translateX(2px);
+}
+
+.aa-return svg {
+  width: 19px;
+  height: 19px;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.4;
+}
+
+@media (max-width: 700px) {
+  .aa-page {
+    padding: 0 16px;
+  }
+
+  .aa-header {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 13px;
+    min-height: 0;
+    padding: 20px 0 17px;
+  }
+
+  .aa-brand {
+    min-height: 48px;
+  }
+
+  .aa-logo {
+    width: 77px;
+  }
+
+  .aa-disclosure {
+    max-width: none;
+    align-self: stretch;
+    border-radius: 2px;
+    font-size: 10px;
+  }
+
+  .aa-confirmation {
+    min-height: 0;
+    padding: 44px 22px 54px;
+  }
+
+  .aa-confirmation h1 {
+    margin-top: 16px;
+    font-size: clamp(36px, 10vw, 50px);
+    line-height: 1.04;
+  }
+
+  .aa-reassurance {
+    margin-top: 19px;
+    font-size: 16px;
+    line-height: 1.6;
+  }
+
+  .aa-privacy {
+    margin-top: 15px;
+    font-size: 12px;
+  }
+
+  .aa-ornament {
+    right: 20px;
+    bottom: 18px;
+  }
+
+  .aa-contact {
+    align-items: stretch;
+    flex-direction: column;
+    gap: 23px;
+    padding: 34px 2px 30px;
+  }
+
+  .aa-contact h2 {
+    font-size: clamp(27px, 8vw, 34px);
+  }
+
+  .aa-contact-description {
+    font-size: 15px;
+  }
+
+  .aa-call {
+    width: 100%;
+    min-height: 56px;
+  }
+
+  .aa-footer {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 18px;
+    padding: 21px 0 28px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .aa-call,
+  .aa-return {
+    transition: none;
+  }
+}

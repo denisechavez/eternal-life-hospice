@@ -34,3 +34,13 @@ contacted RealTop to request the correction.
 **How to apply:** Verify the external visible number, click-to-call destination
 and attribution when access is available. This campaign-specific correction does
 not authorize changing main-site placements or approved acknowledgment emails.
+
+Use **“Thank you. We have received your request.”** for Google PPC thank-you
+headlines, not “We’ve” or “We've.”
+
+**Why:** The owner explicitly requested the expanded wording while asking for
+three canvas concepts.
+
+**How to apply:** Keep this acknowledgment wording consistent across campaign
+thank-you design variants and any later approved implementation; it does not
+authorize rewriting separately approved emails.

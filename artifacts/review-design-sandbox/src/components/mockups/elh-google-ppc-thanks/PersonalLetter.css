@@ -1,0 +1,388 @@
+@font-face {
+  font-family: "ELH Letter Fraunces";
+  src: url("/__reviews-mockup/fonts/fraunces-latin.woff2") format("woff2");
+  font-style: normal;
+  font-weight: 400 700;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "ELH Letter Jost";
+  src: url("/__reviews-mockup/fonts/inline-3c986c6628.woff2") format("woff2");
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "ELH Letter Jost";
+  src: url("/__reviews-mockup/fonts/inline-a3c2438bfe.woff2") format("woff2");
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+}
+
+.elh-letter-page {
+  --letter-cream: #f6f1e8;
+  --letter-paper: #fbf8f2;
+  --letter-plum: #381b37;
+  --letter-gold: #886735;
+  --letter-gold-pale: #d9c59b;
+  --letter-ink: #382f35;
+  --letter-muted: #71676d;
+  --letter-line: #ded5c7;
+
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-height: 100dvh;
+  overflow: hidden;
+  border: 1px solid rgba(169, 132, 69, 0.23);
+  color: var(--letter-ink);
+  background:
+    radial-gradient(ellipse at 50% 44%, rgba(255, 255, 255, 0.58), transparent 60%),
+    var(--letter-paper);
+  box-shadow: 0 20px 60px rgba(56, 27, 55, 0.08);
+  font-family: "ELH Letter Jost", "Trebuchet MS", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+.elh-letter-page *,
+.elh-letter-page *::before,
+.elh-letter-page *::after {
+  box-sizing: border-box;
+}
+
+.elh-letter-disclosure {
+  position: absolute;
+  z-index: 2;
+  top: 0;
+  right: 0;
+  padding: 12px 21px 11px 25px;
+  color: #f8f3ea;
+  background: var(--letter-plum);
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 0.075em;
+  line-height: 1.3;
+}
+
+.elh-letter-disclosure::before {
+  position: absolute;
+  top: 0;
+  left: -12px;
+  width: 24px;
+  height: 100%;
+  background: var(--letter-plum);
+  content: "";
+  transform: skewX(-20deg);
+}
+
+.elh-letter-masthead {
+  display: flex;
+  align-items: center;
+  min-height: 124px;
+  padding: 24px 7.5%;
+  border-bottom: 1px solid var(--letter-line);
+}
+
+.elh-letter-logo {
+  display: block;
+  width: 114px;
+  height: auto;
+  object-fit: contain;
+}
+
+.elh-letter-brand-name {
+  margin: 0 0 0 22px;
+  color: var(--letter-plum);
+  font-family: "ELH Letter Fraunces", Georgia, serif;
+  font-size: 21px;
+  font-weight: 500;
+  letter-spacing: -0.025em;
+}
+
+.elh-letter-content {
+  display: grid;
+  flex: 1;
+  grid-template-columns: minmax(0, 1.16fr) minmax(285px, 0.84fr);
+  align-items: center;
+  gap: clamp(48px, 8vw, 112px);
+  padding: 70px 10.5% 78px;
+}
+
+.elh-letter-message {
+  max-width: 605px;
+}
+
+.elh-letter-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 0 0 20px;
+  color: var(--letter-gold);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.19em;
+  line-height: 1.4;
+  text-transform: uppercase;
+}
+
+.elh-letter-eyebrow::before {
+  width: 28px;
+  height: 1px;
+  background: var(--letter-gold);
+  content: "";
+}
+
+.elh-letter-page h1 {
+  max-width: 640px;
+  margin: 0;
+  color: var(--letter-plum);
+  font-family: "ELH Letter Fraunces", Georgia, serif;
+  font-size: clamp(44px, 5.5vw, 66px);
+  font-weight: 500;
+  letter-spacing: -0.045em;
+  line-height: 1.03;
+}
+
+.elh-letter-body {
+  max-width: 480px;
+  margin: 25px 0 0;
+  color: #594f55;
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 1.68;
+}
+
+.elh-letter-privacy {
+  max-width: 440px;
+  margin: 22px 0 0;
+  color: var(--letter-muted);
+  font-size: 13px;
+  line-height: 1.55;
+}
+
+.elh-letter-return {
+  display: inline-flex;
+  align-items: center;
+  min-height: 48px;
+  gap: 11px;
+  margin-top: 27px;
+  color: var(--letter-plum);
+  font-size: 14px;
+  font-weight: 500;
+  text-decoration-color: var(--letter-gold);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 5px;
+  transition: color 160ms ease;
+}
+
+.elh-letter-return:hover {
+  color: #775d2f;
+}
+
+.elh-letter-return:focus-visible,
+.elh-letter-phone:focus-visible {
+  border-radius: 2px;
+  outline: 3px solid #886735;
+  outline-offset: 5px;
+}
+
+.elh-letter-arrow {
+  font-size: 19px;
+  line-height: 1;
+  transition: transform 160ms ease;
+}
+
+.elh-letter-return:hover .elh-letter-arrow {
+  transform: translateX(3px);
+}
+
+.elh-letter-availability {
+  position: relative;
+  padding: 36px 0 37px 35px;
+  border-left: 1px solid var(--letter-gold-pale);
+}
+
+.elh-letter-availability::before {
+  position: absolute;
+  top: 0;
+  left: -1px;
+  width: 1px;
+  height: 49px;
+  background: var(--letter-gold);
+  content: "";
+}
+
+.elh-letter-availability-kicker {
+  margin: 0 0 9px;
+  color: var(--letter-gold);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.17em;
+  text-transform: uppercase;
+}
+
+.elh-letter-page h2 {
+  margin: 0;
+  color: var(--letter-plum);
+  font-family: "ELH Letter Fraunces", Georgia, serif;
+  font-size: clamp(25px, 2.7vw, 33px);
+  font-weight: 500;
+  letter-spacing: -0.025em;
+  line-height: 1.18;
+}
+
+.elh-letter-availability-copy {
+  max-width: 270px;
+  margin: 14px 0 15px;
+  color: #625860;
+  font-size: 15px;
+  line-height: 1.55;
+}
+
+.elh-letter-phone {
+  display: inline-flex;
+  align-items: center;
+  min-height: 48px;
+  color: var(--letter-plum);
+  font-size: 23px;
+  font-weight: 400;
+  letter-spacing: 0.015em;
+  line-height: 1.3;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: color 160ms ease;
+}
+
+.elh-letter-phone:hover {
+  color: #775d2f;
+}
+
+.elh-letter-footer {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 22px 7.5% 24px;
+  border-top: 1px solid var(--letter-line);
+}
+
+.elh-letter-tagline {
+  margin: 0 0 5px;
+  color: var(--letter-plum);
+  font-family: "ELH Letter Fraunces", Georgia, serif;
+  font-size: 17px;
+  font-weight: 500;
+  letter-spacing: -0.015em;
+}
+
+.elh-letter-footer address {
+  color: var(--letter-muted);
+  font-size: 11px;
+  font-style: normal;
+  letter-spacing: 0.015em;
+  line-height: 1.5;
+}
+
+.elh-letter-footer-note {
+  margin: 0 0 1px;
+  color: var(--letter-muted);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-align: right;
+  text-transform: uppercase;
+}
+
+@media (max-width: 760px) {
+  .elh-letter-page {
+    min-height: 100dvh;
+  }
+
+  .elh-letter-disclosure {
+    position: relative;
+    top: auto;
+    right: auto;
+    padding: 10px 12px;
+    font-size: 9px;
+    text-align: center;
+  }
+
+  .elh-letter-disclosure::before {
+    display: none;
+  }
+
+  .elh-letter-masthead {
+    min-height: 106px;
+    padding: 25px 7%;
+  }
+
+  .elh-letter-logo {
+    width: 84px;
+  }
+
+  .elh-letter-brand-name {
+    margin-left: 13px;
+    font-size: 17px;
+  }
+
+  .elh-letter-content {
+    grid-template-columns: 1fr;
+    gap: 44px;
+    padding: 52px 8% 46px;
+  }
+
+  .elh-letter-page h1 {
+    font-size: clamp(43px, 11vw, 58px);
+  }
+
+  .elh-letter-body {
+    margin-top: 20px;
+    font-size: 17px;
+  }
+
+  .elh-letter-availability {
+    padding: 25px 0 3px 24px;
+  }
+
+  .elh-letter-page h2 {
+    font-size: 29px;
+  }
+
+  .elh-letter-footer {
+    align-items: flex-start;
+    flex-direction: column;
+    padding: 20px 8% 24px;
+  }
+
+  .elh-letter-footer-note {
+    text-align: left;
+  }
+}
+
+@media (max-width: 380px) {
+  .elh-letter-disclosure {
+    font-size: 9px;
+    letter-spacing: 0.04em;
+  }
+
+  .elh-letter-brand-name {
+    max-width: 104px;
+    font-size: 15px;
+  }
+
+  .elh-letter-content {
+    padding-top: 45px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .elh-letter-return,
+  .elh-letter-arrow,
+  .elh-letter-phone {
+    transition: none;
+  }
+}
