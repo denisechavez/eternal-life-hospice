@@ -23,6 +23,21 @@ PROXY_AUDIT = []
 WORKER = """fetch('https://www.google-analytics.com/g/collect?probe=worker',
 {method:'POST', mode:'no-cors', body:'synthetic'})
 .then(() => postMessage('done'), () => postMessage('blocked'));"""
+NEW_TAB = """<!doctype html><html><head><title>Synthetic consent tab</title>
+<script>
+window.__newTabProbe = {
+  armed: window.__consentHarnessArmed,
+  consent: localStorage.getItem('elh_cc'),
+  topLevel: window === window.top
+};
+window.dataLayer = [['config', 'G-SYNTHETIC-NEW-TAB']];
+window.__newTabProbe.done = false;
+Promise.all([
+  fetch('https://www.google-analytics.com/g/collect?probe=new-tab',
+    {method:'POST', mode:'no-cors', body:'synthetic'}).catch(() => {}),
+  fetch('/api/form-submit', {method:'POST', body:'synthetic'}).catch(() => {})
+]).then(() => { window.__newTabProbe.done = true; });
+</script></head><body>Synthetic negative control only</body></html>"""
 
 
 class DenyProxy(http.server.BaseHTTPRequestHandler):
@@ -53,6 +68,9 @@ class LandingConsentFixture(PrettyURLHandler):
             document += '<iframe hidden src="https://cdn.userway.org/__consent-frame"></iframe>'
         elif probe == "worker":
             document += '<script>window.__probeWorker = new Worker("/assets/__consent-worker.js");</script>'
+        elif probe == "new-tab":
+            document += """<script>window.__openConsentProbe = () =>
+              !!window.open('/assets/__consent-new-tab.html', '_blank');</script>"""
         elif probe == "beacon":
             document += """<script>navigator.sendBeacon(
               'https://www.google-analytics.com/g/collect?probe=beacon', 'synthetic');</script>"""
@@ -73,6 +91,10 @@ class LandingConsentFixture(PrettyURLHandler):
             body = WORKER.encode()
             self.send_response(200)
             self.send_header("Content-Type", "text/javascript")
+        elif path == "/assets/__consent-new-tab.html" and self.command == "GET":
+            body = NEW_TAB.encode()
+            self.send_response(200)
+            self.send_header("Content-Type", "text/html")
         elif (path, self.command) in (
             ("/assets/__consent-redirect", "GET"),
             ("/assets/__consent-redirect-mutation", "POST"),
