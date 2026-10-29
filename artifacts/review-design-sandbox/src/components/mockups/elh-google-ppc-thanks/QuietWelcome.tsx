@@ -5,10 +5,10 @@ export function QuietWelcome() {
 
   return (
     <main className="quiet-welcome">
-      <section className="qw-scene" aria-label="A peaceful view of a green mountain valley">
+      <section className="qw-scene" aria-label="A reassuring moment of support, with two people holding hands">
         <img
           className="qw-landscape"
-          src={`${base}images/quiet-welcome-mountain-garden.jpg`}
+          src={`${base}images/quiet-welcome-care-hands.webp`}
           alt=""
           aria-hidden="true"
         />
