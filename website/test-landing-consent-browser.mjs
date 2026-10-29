@@ -67,7 +67,8 @@ try {
     "--headless", "--no-sandbox", "--disable-dev-shm-usage",
     "--disable-background-networking", "--disable-component-update",
     `--proxy-server=http://127.0.0.1:${proxyPort}`,
-    `--proxy-bypass-list=<-loopback>;127.0.0.1:${new URL(origin).port}`,
+    // Only static HTTP requests bypass the proxy, never same-origin WS.
+    `--proxy-bypass-list=<-loopback>;${origin}`,
     "--disable-quic",
     "--host-resolver-rules=MAP * ~NOTFOUND, EXCLUDE 127.0.0.1",
     "--no-first-run", "--remote-debugging-port=0", `--user-data-dir=${profile}`,
@@ -166,8 +167,23 @@ try {
       policyViolations.push({sessionId:m.sessionId, text:m.params.entry.text});
     if (m.method === "Network.requestWillBeSent")
       observed.push({url:m.params.request.url, method:m.params.request.method,
+        resourceType:m.params.type, requestId:m.params.requestId,
+        sessionId:m.sessionId, type:targets.get(m.sessionId)?.type,
+        armed:targets.get(m.sessionId)?.ready});
+    // WebSocket handshakes bypass Fetch.requestPaused and requestWillBeSent.
+    // Observe the native transport, not a test wrapper around the constructor.
+    if (m.method === "Network.webSocketCreated")
+      observed.push({url:m.params.url, transport:"WebSocket",
         requestId:m.params.requestId, sessionId:m.sessionId, type:targets.get(m.sessionId)?.type,
         armed:targets.get(m.sessionId)?.ready});
+    if (["Network.webSocketWillSendHandshakeRequest", "Network.webSocketHandshakeResponseReceived",
+      "Network.webSocketFrameReceived", "Network.webSocketFrameError", "Network.webSocketClosed"].includes(m.method)) {
+      const request = observed.findLast(r => r.requestId === m.params.requestId &&
+        r.sessionId === m.sessionId);
+      if (request) {
+        request[m.method.slice("Network.".length)] = m.params;
+      }
+    }
     if (m.method === "Network.loadingFailed") {
       const request = observed.findLast(r => r.requestId === m.params.requestId &&
         r.sessionId === m.sessionId);
@@ -180,7 +196,11 @@ try {
     }
     if (m.method !== "Fetch.requestPaused") return;
     const {requestId, request, resourceType} = m.params;
-    const entry = {url:request.url, method:request.method, resourceType,
+    // Fetch classifies EventSource as XHR in some Chromium versions; its
+    // native Accept header identifies the stream without replacing its API.
+    const eventStream = Object.entries(request.headers).some(([name, value]) =>
+      name.toLowerCase() === "accept" && value === "text/event-stream");
+    const entry = {url:request.url, method:request.method, resourceType, eventStream,
       sessionId:m.sessionId, type:targets.get(m.sessionId)?.type, action:null, completed:false};
     requests.push(entry);
     const url = new URL(request.url), local = url.origin === origin;
@@ -203,7 +223,9 @@ try {
     const response = allowed ? send("Fetch.continueRequest", {requestId}) :
       local ? send("Fetch.failRequest", {requestId, errorReason:"BlockedByClient"}) :
       send("Fetch.fulfillRequest", {
-        requestId, responseCode:200,
+        // 204 is a synthetic terminal EventSource response: no real stream,
+        // successful open or automatic reconnect can hide behind the probe.
+        requestId, responseCode:eventStream ? 204 : 200,
         responseHeaders:[{name:"Content-Type", value:frameProbe ? "text/html" :
           resourceType === "Script" ? "text/javascript" : "text/plain"},
           {name:"Access-Control-Allow-Origin", value:"*"}],
@@ -304,9 +326,11 @@ try {
   }
   for (const path of publicPages) {
     for (const consent of [null, "essential"]) {
-      for (const probe of ["inline", "tag", "frame", "worker", "new-tab", "beacon", "redirect", "redirect-mutation"]) {
+      for (const probe of ["inline", "tag", "frame", "worker", "new-tab", "beacon", "redirect",
+        "redirect-mutation", "websocket", "eventsource"]) {
         expectedMutation = probe === "redirect-mutation";
         expectedNewTab = probe === "new-tab";
+        const proxyStart = (await audit()).proxy.length;
         const seed = await call("Page.addScriptToEvaluateOnNewDocument", {source:consent ?
           "localStorage.setItem('elh_cc','essential')" : "localStorage.removeItem('elh_cc')"});
         try { await visit(`${path}?__consent_probe=${probe}`); }
@@ -359,9 +383,13 @@ try {
             /No inline tracking initialization/ : /No optional third-party request/,
           `Must detect ${probe} bypass on ${path} with ${consent || "fresh"} consent`);
         }
-        if (["frame", "worker", "new-tab", "beacon", "redirect"].includes(probe)) {
+        if (["frame", "worker", "new-tab", "beacon", "redirect", "eventsource", "websocket"].includes(probe)) {
+          if (["websocket", "eventsource"].includes(probe))
+            await until(`window.__consentTransportEvents.includes('error') &&
+              window.__consentTransport.readyState === ${probe === "websocket" ? 3 : 2}`);
           const destination = `https://www.google-analytics.com/g/collect?probe=${probe}`;
-          const observation = observed.find(r => r.url === destination);
+          const socketDestination = origin.replace("http", "ws") + "/assets/__consent-websocket?probe=websocket";
+          const observation = observed.find(r => r.url === (probe === "websocket" ? socketDestination : destination));
           assert.ok(observation, "Independent network observer reports attempt");
           assert.equal(observation.armed, true, "Target armed before tracking attempt");
           const attempt = requests.find(r => r.url === destination);
@@ -369,6 +397,29 @@ try {
             assert.equal(observation.blockedReason, "inspector", "Worker attempt blocked before transport");
             assert.equal(targets.get(observation.sessionId)?.transport, "blocked");
             assert.equal(attempt, undefined, "Worker block needs no synthetic provider response");
+          } else if (probe === "websocket") {
+            assert.equal(observation.transport, "WebSocket");
+            assert.ok(observation.webSocketFrameError, "Native socket transport failed");
+            assert.ok(observation.webSocketClosed, "Native socket transport terminated");
+            assert.notEqual(observation.webSocketHandshakeResponseReceived?.response.status, 101,
+              "No successful socket upgrade");
+            assert.equal(observation.webSocketFrameReceived, undefined, "No socket payload received");
+            assert.equal(requests.some(r => r.url === socketDestination), false,
+              "Socket denial is independent of Fetch interception");
+            const denied = (await audit()).proxy.slice(proxyStart).filter(r =>
+              (r.method === "CONNECT" && r.url === new URL(origin).host) ||
+              (r.upgrade === "websocket" && r.url.endsWith("/assets/__consent-websocket?probe=websocket")));
+            assert.equal(denied.length, 1, "Proxy denies exactly one socket tunnel or upgrade handshake");
+            assert.equal(denied[0].status, 403);
+            if (denied[0].method === "CONNECT") {
+              // Chromium tunnels even ws:// through an HTTP proxy. Denial
+              // happens before an HTTP upgrade can be sent inside the tunnel.
+              assert.equal(observation.webSocketWillSendHandshakeRequest, undefined,
+                "Denied tunnel prevents the socket handshake entirely");
+            } else {
+              assert.equal(denied[0].method, "GET");
+              assert.ok(observation.webSocketWillSendHandshakeRequest, "Native upgrade handshake attempted");
+            }
           } else {
             assert.ok(attempt, `${probe} tracking attempt must actually reach interception`);
             assert.equal(attempt.action, "synthetic");
@@ -386,6 +437,17 @@ try {
             assert.equal(attempt.method, "POST");
           }
           if (probe === "beacon") assert.equal(attempt.resourceType, "Ping");
+          if (probe === "eventsource") {
+            assert.equal(observation.resourceType, "EventSource", "Native stream request observed");
+            assert.equal(attempt.eventStream, true, "Native stream intercepted before transport");
+          }
+          if (["websocket", "eventsource"].includes(probe)) {
+            const events = await evaluate("window.__consentTransportEvents");
+            assert.equal(events.filter(e => e === "error").length, 1, "One terminal transport failure");
+            assert.ok(!events.includes("open") && !events.includes("message"), "No live stream or payload");
+            assert.deepEqual((await call("Network.getAllCookies")).cookies, [],
+              "Long-lived transport probes never create tracking cookies");
+          }
         }
         assert.ok(requests.every(r => r.completed), "Every paused request resolved");
         assert.ok(requests.every(r => new URL(r.url).origin === origin ||
@@ -414,13 +476,15 @@ try {
   assert.ok(browserAudit.some(r => r.path === "/assets/__consent-worker.js"), "Real fixture worker exercised");
   assert.equal(browserAudit.filter(r => r.path === "/assets/__consent-new-tab.html").length,
     publicPages.length * 2, "Real window.open document exercised on every page and consent state");
+  assert.ok(!browserAudit.some(r => r.path === "/assets/__consent-websocket"),
+    "Socket handshakes never reach even the isolated static fixture");
   // Chromium may speculatively CONNECT for a frame even when its document
   // response is intercepted. Such connections must be denied, never tunneled.
   assert.ok(finalAudit.proxy.every(r => r.status === 403), "Proxy never forwards any request or CONNECT");
   assert.deepEqual(finalAudit.proxy.filter(r => /google-analytics/.test(r.url)), [],
     "Tracking payloads never reach proxy: intercepted synthetically or blocked in worker");
   assert.deepEqual(errors, []);
-  console.log(`PASS negative controls: inline, tag, cross-origin frame, worker, new tab, beacon and redirect bypasses caught on all ${publicPages.length} pages, fresh and essential-only`);
+  console.log(`PASS negative controls: inline, tag, cross-origin frame, worker, new tab, beacon, redirect, WebSocket and EventSource bypasses caught on all ${publicPages.length} pages, fresh and essential-only`);
   console.log("PASS transport isolation: all-target synthetic responses, deny-only proxy, blocked mutation redirects and unchanged consent/permissions");
   console.log("SENTINEL: test-landing-consent-browser.mjs OK");
 } finally {

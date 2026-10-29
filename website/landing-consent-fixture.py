@@ -43,7 +43,8 @@ Promise.all([
 class DenyProxy(http.server.BaseHTTPRequestHandler):
     """Independent fail-closed boundary for targets CDP might not intercept."""
     def do_GET(self):
-        PROXY_AUDIT.append({"method": self.command, "url": self.path, "status": 403})
+        PROXY_AUDIT.append({"method": self.command, "url": self.path, "status": 403,
+                            "upgrade": self.headers.get("Upgrade", "").lower()})
         self.send_error(403, "No outbound transport in consent regression")
 
     do_CONNECT = do_POST = do_PUT = do_PATCH = do_DELETE = do_OPTIONS = do_HEAD = do_GET
@@ -74,6 +75,25 @@ class LandingConsentFixture(PrettyURLHandler):
         elif probe == "beacon":
             document += """<script>navigator.sendBeacon(
               'https://www.google-analytics.com/g/collect?probe=beacon', 'synthetic');</script>"""
+        elif probe in ("websocket", "eventsource"):
+            # Same-origin WS is permitted by the unchanged public CSP. The
+            # browser's HTTP-only proxy bypass must NOT bypass this handshake.
+            transport = (
+                'new WebSocket(location.origin.replace("http", "ws") + '
+                '"/assets/__consent-websocket?probe=websocket")'
+                if probe == "websocket" else
+                'new EventSource("https://www.google-analytics.com/g/collect?probe=eventsource")'
+            )
+            document += f"""<script>
+              window.__consentTransportEvents = [];
+              window.__consentTransport = {transport};
+              for (const name of ['open', 'message', 'error', 'close']) {{
+                window.__consentTransport.addEventListener(name, () => {{
+                  window.__consentTransportEvents.push(name);
+                  if (name === 'error') window.__consentTransport.close();
+                }});
+              }}
+            </script>"""
         elif probe in ("redirect", "redirect-mutation"):
             document += f"""<script>fetch('/assets/__consent-{probe}', {{
               method:'{'POST' if probe == 'redirect-mutation' else 'GET'}',
