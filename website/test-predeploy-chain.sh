@@ -25,6 +25,7 @@ import os
 from pathlib import Path
 import re
 import shutil
+import shlex
 import subprocess
 import sys
 import tempfile
@@ -72,7 +73,44 @@ assert smoke.count('  "' + sentinel + '"') == 1, "Smoke test must require retry 
 assert smoke.count('  "' + ack_sentinel + '"') == 1, "Smoke test must require acknowledgment sentinel"
 assert smoke.count('  "' + phone_sentinel + '"') == 1, "Smoke test must require phone sentinel"
 assert smoke.count('  "' + analytics_sentinel + '"') == 1, "Smoke test must require submission analytics sentinel"
-sentinels = re.findall(r'^  "(SENTINEL: .+)"$', wrapper, re.M)
+
+def required_sentinels(script):
+    arrays = re.findall(r"^SENTINELS=\(\n(.*?)^\)", script, re.M | re.S)
+    assert len(arrays) == 1, "Expected exactly one required SENTINELS array"
+    values = shlex.split(arrays[0], comments=True)
+    assert values and all(value.startswith("SENTINEL: ") for value in values), "Invalid sentinel list"
+    assert len(values) == len(set(values)), "Duplicate required sentinel"
+    return values
+
+
+def assert_sentinel_parity(required, local):
+    missing = sorted(set(required) - set(local))
+    extra = sorted(set(local) - set(required))
+    assert not (missing or extra), f"Local sentinel drift: missing={missing}; extra={extra}"
+
+
+sentinels = required_sentinels(wrapper)
+local_sentinels = required_sentinels(smoke)
+assert_sentinel_parity(sentinels, local_sentinels)
+# Prove the parity assertion catches every omission and future wrapper-only
+# additions, without running checks, APIs or publication generators.
+for omitted in sentinels:
+    try:
+        assert_sentinel_parity(sentinels, [value for value in local_sentinels if value != omitted])
+    except AssertionError as error:
+        assert omitted in str(error)
+    else:
+        raise AssertionError("Parity assertion accepted missing sentinel: " + omitted)
+future_sentinel = "SENTINEL: future-required-guard.py OK"
+for required, local in ((sentinels + [future_sentinel], local_sentinels),
+                        (sentinels, local_sentinels + [future_sentinel])):
+    try:
+        assert_sentinel_parity(required, local)
+    except AssertionError as error:
+        assert future_sentinel in str(error)
+    else:
+        raise AssertionError("Parity assertion accepted sentinel drift")
+print(f"PASS: local sentinel parity and omission checks ({len(sentinels)} required guards)")
 publish = (source / "build-published-site.sh").read_text()
 config = tomllib.loads((source.parent / ".replit").read_text())
 assert config["deployment"]["build"] == ["bash", "website/build-published-site.sh"]
@@ -124,6 +162,9 @@ if not (is_target and os.environ["CHAIN_MODE"] == "missing"):
                  (tracker, tracker_sentinel, "failure"), (tracker, tracker_sentinel, "missing"),
                  (analytics, analytics_sentinel, "success"),
                  (analytics, analytics_sentinel, "failure"), (analytics, analytics_sentinel, "missing")]
+    for script in ("test-journal-campaign.py", "test-google-reviews.py", "test-replit-chat-coverage.py"):
+        for mode in ("failure", "missing"):
+            scenarios.append((f"python3 ../{script}", f"SENTINEL: {script} OK", mode))
     for target, target_sentinel, mode in scenarios:
         log.write_text("")
         before = {p.relative_to(site): p.read_bytes() for p in site.rglob("*") if p.is_file()}
@@ -251,12 +292,15 @@ SENTINELS=(
   "SENTINEL: check-footer-parity.py self-test OK"
   "SENTINEL: check-agency-separation.py OK"
   "SENTINEL: test-service-publication.py OK"
+  "SENTINEL: test-journal-campaign.py OK"
+  "SENTINEL: check-internal-links.py self-test OK"
+  "SENTINEL: test-internal-link-journeys.py browser checks OK"
+  "SENTINEL: test-google-reviews.py OK"
+  "SENTINEL: test-replit-chat-coverage.py OK"
   "SENTINEL: test-public-artifact-exposure.py OK"
   "SENTINEL: test-growth-intelligence-access.py OK"
   "SENTINEL: test-acknowledgments.py OK"
   "SENTINEL: test-website-phone.py OK"
-  "SENTINEL: check-internal-links.py self-test OK"
-  "SENTINEL: test-internal-link-journeys.py browser checks OK"
 )
 
 SENTINEL_FAIL=0
