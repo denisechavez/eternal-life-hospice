@@ -50,7 +50,7 @@ def main():
     design = DESIGN.read_text()
     if "<script" in design.lower():
         raise RuntimeError("Review HTML must not contain scripts or tracking.")
-    if 'tel:+18059537273' not in design:
+    if 'tel:+18054099262' not in design:
         raise RuntimeError("Missing the approved external-page phone link.")
     if "noindex" not in design or "Not connected to the live form" not in design:
         raise RuntimeError("The review status and indexing protection are required.")

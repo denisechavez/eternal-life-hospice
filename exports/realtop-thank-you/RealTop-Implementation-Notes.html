@@ -30,11 +30,11 @@
     @page { size: letter landscape; margin: 0; }
     @media print {
       html { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
-      body { width: 11in; max-width: none; margin: 0; padding: .35in .48in; font-size: 10.5pt; line-height: 1.36; }
-      header { margin-bottom: 15px; padding-bottom: 12px; }
-      h1 { font-size: 25pt; }
-      h2 { font-size: 12pt; }
-      section { margin-bottom: 13px; }
+      body { width: 11in; max-width: none; margin: 0; padding: .28in .4in; font-size: 10pt; line-height: 1.25; }
+      header { margin-bottom: 12px; padding-bottom: 9px; }
+      h1 { font-size: 23pt; }
+      h2 { font-size: 11pt; }
+      section { margin-bottom: 10px; }
       .columns { gap: 28px; }
       li { margin-bottom: 5px; }
       footer { font-size: 8.5pt; }
@@ -44,38 +44,49 @@
 <body>
   <header>
     <p class="eyebrow">ETERNAL LIFE HOSPICE · GOOGLE PPC HANDOFF</p>
-    <h1>Connect the confirmation. Protect the request.</h1>
-    <p class="intro">Design review only: nothing is published or connected to the live form. RealTop helps explain PPC; the form administrator has not been confirmed. These files do not submit forms, send email or fire tracking events.</p>
+    <h1>Google PPC · Thank-you page handoff</h1>
+    <p class="intro">For RealTop to review and coordinate with the form administrator. Design review only: nothing is published or connected. RealTop’s administrative access is not assumed. These files do not submit forms, send email or fire tracking events.</p>
   </header>
   <main class="columns">
     <div>
       <section>
-        <h2>01 · Show only after confirmed receipt</h2>
-        <p>The form must display the approved design only after its provider confirms the request was accepted and saved. Submission attempts, button clicks and URL parameters are not proof of receipt.</p>
-        <p>Failed or pending submissions must retain the form and honest retry/call guidance. Direct visits without verified submission must show neutral guidance, not claim receipt.</p>
+        <h2>01 · What we need from RealTop</h2>
+        <ul>
+          <li>Confirm who manages the landing page and form, the form provider and who can change its success settings.</li>
+          <li>Confirm whether it supports a success redirect, an inline thank-you screen or a verified success callback. Share relevant setup instructions—not passwords or credentials.</li>
+          <li>Confirm where requests are saved and routed, how successful receipt is reported and who can coordinate an authorized synthetic test.</li>
+          <li>Confirm the existing Google Ads conversion trigger and Nimbata setup so we avoid duplicate tracking or conflicting phone replacement.</li>
+        </ul>
       </section>
       <section>
-        <h2>02 · Count the lead once</h2>
-        <p>Inspect existing Google Ads tracking before adding an event. Choose one confirmed-success trigger, not separate events on both the form and thank-you page.</p>
-        <p><code>AW-18384023405/JC8lCKGQ9qsdEO3el75E</code><br>Supplied value: <strong>1.0 USD</strong>. Respect tracking consent.</p>
-        <p>Refresh, back/forward navigation and duplicate callbacks must not create another lead or conversion.</p>
+        <h2>02 · Fast confirmation, no intentional delay</h2>
+        <p>Show “Sending your request…” immediately. Display the thank-you screen as soon as the form provider confirms the request was accepted and saved; do not wait for staff review, email delivery or analytics.</p>
+        <p>Actual response time must be measured in testing. Failed or pending submissions keep honest status and retry/call guidance. A click or URL parameter alone is not proof of receipt.</p>
+      </section>
+      <section>
+        <h2>03 · Correct the campaign phone</h2>
+        <p>The owner has requested that the landing-page number change to <strong>805.409.9262</strong>. This review now uses the same number, linked to <code>tel:+18054099262</code>.</p>
+        <p>Please confirm the visible number, click-to-call link and Nimbata routing/attribution agree. Do not change main-site or approved email phone placements through this handoff.</p>
       </section>
     </div>
     <div>
       <section>
-        <h2>03 · Preserve privacy and approved copy</h2>
-        <p>Do not put personal or medical information into URLs, analytics or browser logs. If needed, deduplicate with a non-personal opaque receipt reference.</p>
-        <p>The design retains the external page's <strong>805.953.7273</strong>, linked to <code>tel:+18059537273</code>. It does not change main-site phone placements.</p>
-        <p>No customer email is connected by this package. Any later acknowledgment requires a separate company-Gmail integration and approved wording.</p>
+        <h2>04 · Count the lead once</h2>
+        <p>Inspect existing tracking; choose one confirmed-success event owner, not events on both the form and thank-you page.</p>
+        <p><code>AW-18384023405/JC8lCKGQ9qsdEO3el75E</code><br>Supplied value: <strong>1.0 USD</strong>. Respect tracking consent. Refresh, back/forward navigation and repeated callbacks must not duplicate leads or conversions.</p>
+        <p>Direct visits without verified submission must show neutral guidance, not claim receipt. Use only a non-personal opaque reference if needed; never put personal or medical details into URLs, analytics or browser logs.</p>
       </section>
       <section>
-        <h2>04 · Approve, connect, then verify</h2>
+        <h2>05 · Hosting, approval and verification</h2>
         <ul>
-          <li>Eternal approves the copy and design before publication.</li>
-          <li>The person with form-settings access configures the verified success flow. Remove the review disclosure only for the approved live implementation.</li>
-          <li>Test accepted, failed, pending and duplicate submissions with authorized synthetic data; preserve mobile and keyboard access.</li>
-          <li>Confirm receipt at the form provider and one eligible Ads conversion. No real requests or test calls without authorization.</li>
+          <li>Confirm the final HTTPS thank-you URL and hosting arrangement. This packet is not a live endpoint; a file created here alone cannot redirect the external form.</li>
+          <li>Eternal approves publication; the form administrator connects the verified success flow. Remove the review disclosure only in the approved live version.</li>
+          <li>Test accepted, failed, pending, direct-visit and duplicate states; verify receipt, response time, mobile links and one eligible conversion. No real requests or test calls without authorization.</li>
         </ul>
+      </section>
+      <section>
+        <h2>06 · Email is separate</h2>
+        <p>This screen does not send an email. Any acknowledgment requires its own approved company-Gmail integration, not Brevo. Do not hold up the thank-you screen while email is sent.</p>
       </section>
     </div>
   </main>

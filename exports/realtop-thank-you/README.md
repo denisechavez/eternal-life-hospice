@@ -31,11 +31,29 @@ Need to speak with someone now?
 
 We're here for you 24 hours a day, 7 days a week.
 
-Call 805.953.7273
+Call 805.409.9262
 
-The phone link is `tel:+18059537273`. This preserves the number currently
-displayed on the external campaign page. Do not change the main website's
-805.409.9262 placements as part of this handoff.
+The phone link is `tel:+18054099262`. The owner has asked RealTop to revise
+the external landing page from its landline to this tracking number. The review
+now matches that requested correction; it does not establish that the live
+landing page has been updated. Main-site and approved email phone placements
+are outside this handoff.
+
+## Information requested from RealTop
+
+- Identify the landing-page/form administrator and form provider.
+- Confirm available success redirect, inline confirmation or verified callback
+  settings and share setup documentation, not credentials.
+- Confirm where requests are saved/routed and how the form reports acceptance.
+- Confirm existing Google Ads conversion ownership and Nimbata phone replacement.
+- Coordinate a final HTTPS thank-you URL and hosting arrangement with Eternal.
+  Creating this file alone does not connect the external form.
+- Identify the person who can run an authorized synthetic test and verify receipt,
+  response time, mobile click-to-call and conversion deduplication.
+
+Show a sending status immediately and the confirmation as soon as acceptance is
+verified, with no intentional delay. Staff review, email and analytics must not
+block the thank-you screen. Measure actual timing during testing.
 
 ## Google PPC integration requirements
 

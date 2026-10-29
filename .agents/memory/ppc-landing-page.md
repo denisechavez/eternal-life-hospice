@@ -22,3 +22,15 @@ receipt confirmations. Confirm who has form-settings access before configuring
 an approved design to appear after a verified successful submission. Providing
 a mockup or PDF does not establish that a request was received or that a
 conversion or email was delivered.
+
+The owner has requested that RealTop revise the external Google PPC landing
+page from the landline to the tracking number **805.409.9262**. Match campaign
+thank-you review materials to that requested number, without claiming the
+external page has already changed.
+
+**Why:** The owner observed the landline on the campaign page and separately
+contacted RealTop to request the correction.
+
+**How to apply:** Verify the external visible number, click-to-call destination
+and attribution when access is available. This campaign-specific correction does
+not authorize changing main-site placements or approved acknowledgment emails.
