@@ -57,3 +57,23 @@ HTML exposed actual cached restores in the same Chromium session.
 **How to apply:** Test both reload and cached restoration without changing deployed
 headers or API no-store protection. Report cache misses explicitly when the browser
 cannot restore a document; never label a fallback reload as a cache hit.
+
+Independent CDP test visits must force a new document when reusing a URL with
+the same query and fragment.
+
+**Why:** Chromium can treat that navigation as same-document, retaining an
+accepted form and old consent state despite a new test case.
+
+**How to apply:** Navigate through a neutral document or explicitly reload.
+Clear origin storage before the next analytics boot; do not assume that a
+successful navigation command proves a fresh document.
+
+CDP can omit the exception object for an uncaught error in an external script.
+
+**Why:** Chromium reported the deliberate tracker failure through the exception
+text and script URL, without an exception description. Requiring the object
+mistook a correctly injected failure for a missing failure.
+
+**How to apply:** Allow only the exact synthetic error text together with its
+expected script URL (or matching stack frame). Keep every unrelated exception
+fatal; never broadly suppress browser errors in failure-injection tests.

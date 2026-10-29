@@ -44,6 +44,13 @@ window.turnstile = {
   remove() { window.intakeFixture.removed++; }
 };`;
 
+export const nimbataFixtureURL = "https://cdn.dni.nimbata.com/72680137074.min.js";
+export const nimbataFailureScript = `
+window.intakeFixture.nimbataExecuted = true;
+throw new Error("Synthetic Nimbata SDK failure");
+//# sourceURL=${nimbataFixtureURL}
+`;
+
 export const fixtureBootstrap = `
 window.intakeFixture = {challenge:"success", renders:0, removed:0, scriptFailure:false};
 // Test-only lifecycle evidence; no submitted values are copied into storage.

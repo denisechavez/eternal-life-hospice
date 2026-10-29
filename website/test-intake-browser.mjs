@@ -4,12 +4,15 @@
 // --real-security-only runs the actual verifier/proxy regressions without
 // repeating the longer, independent history and storage-restoration UI suite.
 // --mobile-security-only limits that regression to a fresh mobile context.
+// --nimbata-only runs only synthetic UI/tracker regressions, with no real backend.
 import assert from "node:assert/strict";
 import {spawn} from "node:child_process";
 import {mkdtemp, readFile, rm} from "node:fs/promises";
 import {tmpdir} from "node:os";
 import {join} from "node:path";
-import {startIntakeFixture, fixtureBootstrap, turnstileFixture} from "./intake-browser-fixture.mjs";
+import {startIntakeFixture, fixtureBootstrap, turnstileFixture,
+  nimbataFixtureURL, nimbataFailureScript} from "./intake-browser-fixture.mjs";
+import {runNimbataRegression} from "./test-intake-nimbata.mjs";
 
 assert.notEqual(process.env.REPLIT_DEPLOYMENT, "1", "Never run browser fixtures in production");
 assert.equal(typeof WebSocket, "function", "Node 20 needs --experimental-websocket");
@@ -21,6 +24,8 @@ const browserErrors = [], transportErrors = [];
 let id = 0, currentCase = "startup";
 let postOriginOverride; // CDP-only negative cases; normal requests remain untouched.
 let attackerOrigin;
+const nimbataOnly = process.argv.includes("--nimbata-only");
+let trackerCase;
 try {
   fixture = await startIntakeFixture();
   browser = spawn(process.env.CHROMIUM_BIN || "chromium", ["--headless", "--no-sandbox",
@@ -57,7 +62,19 @@ try {
       if (message.error) handler.reject(new Error(JSON.stringify(message.error)));
       else handler.resolve(message.result);
     }
-    if (message.method === "Runtime.exceptionThrown") browserErrors.push(message.params.exceptionDetails);
+    if (message.method === "Runtime.exceptionThrown") {
+      const details = message.params.exceptionDetails;
+      const fromNimbata = details.url === nimbataFixtureURL ||
+        details.stackTrace?.callFrames.some(frame => frame.url === nimbataFixtureURL);
+      if (trackerCase?.mode === "throws" && fromNimbata &&
+          (details.text === "Uncaught Error: Synthetic Nimbata SDK failure" ||
+           details.exception?.description?.startsWith("Error: Synthetic Nimbata SDK failure\n"))) {
+        trackerCase.exceptions++;
+      } else {
+        browserErrors.push(details);
+        if (trackerCase) trackerCase.unexpectedExceptions.push(details);
+      }
+    }
     if (message.method === "Fetch.requestPaused") {
       const {requestId, request} = message.params;
       const url = new URL(request.url);
@@ -78,6 +95,27 @@ try {
             return call("Fetch.continueRequest", {requestId, headers});
           }
           return call("Fetch.continueRequest", {requestId});
+        }
+        if (trackerCase) {
+          trackerCase.external.push({url: request.url, body: request.postData || ""});
+          if (request.url === nimbataFixtureURL) {
+            trackerCase.requests++;
+            if (trackerCase.mode === "blocked")
+              return call("Fetch.failRequest", {requestId, errorReason: "BlockedByClient"});
+            if (trackerCase.mode === "timeout") {
+              trackerCase.held.push(requestId);
+              return; // Remain genuinely in flight throughout the secured submission.
+            }
+            return call("Fetch.fulfillRequest", {requestId, responseCode: 200,
+              responseHeaders: [{name: "Content-Type", value: "text/javascript"}],
+              body: Buffer.from(nimbataFailureScript).toString("base64")});
+          }
+          // Neutralize unrelated Metricool's onload hook rather than allowing an
+          // empty SDK to cause a second, unrelated exception in this matrix.
+          if (url.origin === "https://tracker.metricool.com")
+            return call("Fetch.fulfillRequest", {requestId, responseCode: 200,
+              responseHeaders: [{name: "Content-Type", value: "text/javascript"}],
+              body: Buffer.from("window.beTracker={t(){}};").toString("base64")});
         }
         if (url.origin === attackerOrigin) {
           return call("Fetch.fulfillRequest", {requestId, responseCode: 200,
@@ -221,7 +259,9 @@ try {
   await call("Runtime.enable");
   await call("Emulation.setEmulatedMedia", {features: [{name: "prefers-reduced-motion", value: "reduce"}]});
   await call("Fetch.enable", {patterns: [{urlPattern: "*"}]});
-  await call("Page.addScriptToEvaluateOnNewDocument", {source: fixtureBootstrap});
+  await call("Page.addScriptToEvaluateOnNewDocument", {
+    source: `if (location.origin === ${JSON.stringify(fixture.origin)}) { ${fixtureBootstrap} }`
+  });
 
   const historyCacheMisses = [], historyModeSkips = [];
   ws.addEventListener("message", event => {
@@ -249,7 +289,7 @@ try {
       fields: {'input[id$="-name"]': "Synthetic Chat", 'input[id$="-phone"]': "2025550190",
         'input[id$="-email"]': "chat@example.invalid", 'textarea': "Synthetic chat only"}}
   ];
-  if (!process.argv.includes("--real-security-only") && !process.argv.includes("--mobile-security-only")) {
+  if (!nimbataOnly && !process.argv.includes("--real-security-only") && !process.argv.includes("--mobile-security-only")) {
   for (const outcome of ["accepted", "interrupted", "unreadable", "unconfirmed", "server-error", "module-unavailable",
     "pending-reload", "pending-navigation", "pending-history", "pending-history-cacheable"])
   for (const mobile of [false, true]) for (const flow of flows) {
@@ -895,6 +935,12 @@ try {
   console.log("PASS all seven request choices: unchanged order, stable IDs and founder-to-form selection");
   }
 
+  if (!process.argv.includes("--real-security-only") && !process.argv.includes("--mobile-security-only")) {
+    await runNimbataRegression({fixture, flows, call, evaluate, until, activate, fill, focus, sleep,
+      setCase(label, tracker) {currentCase = label;trackerCase = tracker;}});
+    trackerCase = undefined;
+  }
+
   // Unlike UI failure injection above, every request below traverses the real
   // devserver handler, signed-token verifier and disposable PostgreSQL schema.
   attackerOrigin = fixture.origin.replace("127.0.0.1", "localhost");
@@ -906,7 +952,7 @@ try {
   const postOptions = fields => ({method: "POST",
     headers: {"Content-Type": "application/x-www-form-urlencoded"},
     body: new URLSearchParams(fields).toString()});
-  for (const mobile of (process.argv.includes("--mobile-security-only") ? [true] : [false, true])) {
+  for (const mobile of (nimbataOnly ? [] : process.argv.includes("--mobile-security-only") ? [true] : [false, true])) {
     currentCase = `real security ${mobile ? "mobile" : "desktop"}`;
     console.log(`CHECK ${currentCase}: starting actual verifier/proxy regression`);
     await fixture.useRealSecurity();
