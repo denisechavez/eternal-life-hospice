@@ -32,6 +32,10 @@ import tempfile
 import tomllib
 
 source = Path(sys.argv[1])
+# Exercise the real phone/footer completion runners before wrapper output stubs.
+# This regression mocks unittest results, not their completion output.
+subprocess.run([sys.executable, "-B", str(source / "test-contact-suite-runners.py")],
+               check=True)
 retry = "node --experimental-websocket ../test-care-brief-signup-retry.mjs"
 layout = "node --experimental-websocket ../test-care-brief-layout.mjs"
 footer = "python3 ../check-footer-parity.py"
