@@ -30,8 +30,8 @@
   Array.prototype.forEach.call(groups, function (group, index) {
     var parent = group.querySelector('.nav-parent');
     var submenu = group.querySelector('.nav-sub');
-    // On the landing page, Request Care is a direct action, not a menu.
-    if (isHome && group.classList.contains('nav-group--contact')) {
+    // Request Care is a direct action on every page, not a dropdown menu.
+    if (group.classList.contains('nav-group--contact')) {
       if (submenu) submenu.remove();
       var contactToggle = group.querySelector('.nav-toggle');
       if (contactToggle) contactToggle.remove();

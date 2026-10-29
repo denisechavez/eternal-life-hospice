@@ -202,23 +202,8 @@ def check_metadata():
 
 
 def render_photo_credit(credit):
-    """Keep license-required attribution without optional stock-photo notes."""
-    if not credit:
-        return ""
-    optional_license_urls = {
-        "https://www.pexels.com/license",
-        "https://creativecommons.org/publicdomain/mark/1.0",
-        "https://creativecommons.org/publicdomain/zero/1.0/deed.en",
-    }
-    if credit["licenseUrl"].rstrip("/") in optional_license_urls:
-        return ""
-    return (
-        '<p class="journal-photo-credit"><small>Photo: '
-        f'{esc(credit["author"])} / '
-        f'<a href="{esc(credit["sourceUrl"])}" rel="noopener">{esc(credit.get("sourceName", "Wikimedia Commons"))}</a> &middot; '
-        f'<a href="{esc(credit["licenseUrl"])}" rel="noopener">{esc(credit["license"])}</a>. '
-        'Resized for display.</small></p>'
-    )
+    """Keep provenance in article metadata, not in visible credit notes."""
+    return ""
 
 
 def refresh_photo_credits(articles):
@@ -566,7 +551,7 @@ if __name__ == "__main__":
     mode.add_argument("--images-only", action="store_true",
                         help="Update existing post images and archive cards without replacing article text")
     mode.add_argument("--photo-credits-only", action="store_true",
-                      help="Remove optional photo notes and retain concise required license attribution")
+                      help="Remove visible photo-credit notes without changing images or source records")
     mode.add_argument("--archive-only", action="store_true",
                       help="Sync archive cards and Blog schema from visible article copy; do not modify articles")
     mode.add_argument("--check-metadata", action="store_true",

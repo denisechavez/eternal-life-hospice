@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Photo presentation must honor licenses and preserve approval snapshots."""
+"""Photo-note presentation must preserve images, source records and snapshots."""
 import json
 from pathlib import Path
 import re
@@ -28,19 +28,15 @@ class PhotoNoteTests(unittest.TestCase):
             self.assertEqual(public_html("<h1>Title</h1>" + note(url) + "<p>Body.</p>"),
                              "<h1>Title</h1><p>Body.</p>")
 
-    def test_required_and_unknown_credits_remain(self):
+    def test_all_visible_credits_are_removed_without_replacing_images(self):
         for url in (
             "https://creativecommons.org/licenses/by-sa/4.0",
             "https://creativecommons.org/licenses/by/2.0/",
             "https://example.org/custom-license",
         ):
-            output = public_html(note(url))
-            self.assertIn("Photo: Photographer", output)
-            self.assertIn('href="https://example.org/photo"', output)
-            self.assertIn(url, output)
-            self.assertIn("Resized for display.", output)
-            self.assertNotIn("Illustrative photograph", output)
-            self.assertNotIn("does not depict", output)
+            image = '<img src="/assets/img/original.jpg" alt="Original photo">'
+            output = public_html(image + note(url))
+            self.assertEqual(output, image)
             self.assertEqual(public_html(output), output)
 
     def test_unrelated_copy_is_not_removed(self):
@@ -57,6 +53,7 @@ class PhotoNoteTests(unittest.TestCase):
         for slug, row in records.items():
             source = row["html"]
             rendered = public_html(source)
+            self.assertNotIn('class="journal-photo-credit"', rendered, slug)
             self.assertNotIn("Illustrative photograph:", rendered, slug)
             self.assertNotIn("does not depict an Eternal patient", rendered, slug)
             self.assertEqual(pattern.sub("", rendered), pattern.sub("", source), slug)

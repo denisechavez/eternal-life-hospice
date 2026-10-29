@@ -54,19 +54,16 @@ class JournalCampaignTests(unittest.TestCase):
             self.assertEqual(builder.render_photo_credit({"licenseUrl": license_url}), "")
         self.assertEqual(builder.render_photo_credit(None), "")
 
-    def test_required_photo_attribution_is_retained_and_escaped(self):
+    def test_photo_source_metadata_is_preserved_but_not_rendered(self):
         credit = {
             "author": "Author & Photographer",
             "sourceUrl": "https://commons.wikimedia.org/wiki/File:Example.jpg",
             "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
             "license": "CC BY-SA 4.0",
         }
-        rendered = builder.render_photo_credit(credit)
-        for expected in ("Author &amp; Photographer", credit["sourceUrl"],
-                         credit["licenseUrl"], credit["license"], "Resized for display."):
-            self.assertIn(expected, rendered)
-        self.assertNotIn("Illustrative photograph", rendered)
-        self.assertNotIn("does not depict", rendered)
+        original = dict(credit)
+        self.assertEqual(builder.render_photo_credit(credit), "")
+        self.assertEqual(credit, original)
 
     def test_photo_note_refresh_only_changes_credit_and_is_idempotent(self):
         with tempfile.TemporaryDirectory() as directory:
