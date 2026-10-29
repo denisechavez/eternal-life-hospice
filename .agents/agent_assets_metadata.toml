@@ -2666,13 +2666,13 @@ id = "N50m9jdgJ6XGzot-WFgnJ"
 uri = "file://generated-artifacts/google-ppc-three-options/ELH-Google-PPC-Three-Thank-You-Options-Handoff.zip"
 type = "unspecified"
 title = "Updated RealTop Handoff ZIP"
-description = "Before launch section removed from the README, handoff notes and PDF. All three designs are unchanged."
+description = "README.md and all references to it removed. Includes three HTML designs, implementation notes and the updated PDF."
 logical_id = "31a2db7e-67c1-47f9-aae0-b9ecf7da9002"
-content_hash = "sha256:00d45866521fbf707b8197425a641f74c04fcd070881c540e4d500cebb4ed97d"
-size = 2550133
-mtime_ms = 1793248153875
-storage_uri = "gcs://replit-rams-assets-kirk/rams/assets/repl:e1b2f643-7869-4565-af0e-10c34575ee8d/31a2db7e-67c1-47f9-aae0-b9ecf7da9002/2831fb52-eac0-438f-9fb0-beecac57e0ff"
-storage_version_token = "1793248163230226"
+content_hash = "sha256:4028633a3bf08723f55800ee160db29adb34cd8f2fccb6f4a4cf8bca505b5b84"
+size = 2548144
+mtime_ms = 1793248271554
+storage_uri = "gcs://replit-rams-assets-kirk/rams/assets/repl:e1b2f643-7869-4565-af0e-10c34575ee8d/31a2db7e-67c1-47f9-aae0-b9ecf7da9002/aefc7d45-65e6-4ea7-8518-3a0b5eadb996"
+storage_version_token = "1793248280244228"
 content_type = "application/octet-stream"
 
 [[outputs]]

@@ -13,7 +13,6 @@ import zipfile
 ROOT = Path(__file__).resolve().parents[1]
 SANDBOX = ROOT / "artifacts/review-design-sandbox"
 COMPONENTS = SANDBOX / "src/components/mockups/elh-google-ppc-thanks"
-README = ROOT / "exports/google-ppc-thank-you-options/README.md"
 OUTPUT = ROOT / "generated-artifacts/google-ppc-three-options"
 STEM = "ELH-Google-PPC-Three-Thank-You-Options"
 OPTIONS = (
@@ -159,7 +158,7 @@ required. These files have not yet been connected to the external landing-page f
 <p>1 · Personal Letter<br>2 · Amethyst Assurance<br>3 · Quiet Welcome</p>
 <p>Each HTML file is self-contained with embedded fonts and images. Open locally
 for desktop and mobile review. No scripts, form handling or conversion events
-are included. Detailed instructions are in README.md.</p>
+are included.</p>
 <h2>What we need from the form administrator</h2><ul>
 <li>Form provider, saved/accepted success response and available redirect or callback.</li>
 <li>Who controls the landing page, where requests go and who can verify receipt.</li>
@@ -218,9 +217,7 @@ def main():
         run(["pdfunite", *pages, packet])
         if page_count(packet) != 4:
             raise ValueError("Comparison PDF must contain exactly four pages")
-        readme = stage / "README.md"
-        readme.write_text(README.read_text())
-        deliverables += [notes, readme, packet]
+        deliverables += [notes, packet]
         archive = OUTPUT / f"{STEM}-Handoff.zip"
         with zipfile.ZipFile(archive, "w", zipfile.ZIP_DEFLATED) as bundle:
             for path in deliverables:
