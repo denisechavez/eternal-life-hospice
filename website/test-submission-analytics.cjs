@@ -78,12 +78,15 @@ function setup(isReferral, consent = 'all', formName = 'elh-family') {
       createElement: element
     },
     URL, URLSearchParams, crypto: webcrypto,
-    FormData: class {
-      forEach(callback) {
-        callback(formName, 'form-name');
-        callback('private@example.test', 'email');
-        callback('PRIVATE-NAME', 'name');
-        callback('PRIVATE-CLINICAL-NOTE', 'message');
+    // Seed synthetic fields without a browser DOM, but retain native get/set,
+    // iteration and multipart semantics if a handler passes FormData directly.
+    FormData: class extends globalThis.FormData {
+      constructor() {
+        super();
+        this.set('form-name', formName);
+        this.set('email', 'private@example.test');
+        this.set('name', 'PRIVATE-NAME');
+        this.set('message', 'PRIVATE-CLINICAL-NOTE');
       }
     },
     fetch(url, options) {

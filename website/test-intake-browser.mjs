@@ -5,6 +5,7 @@
 // repeating the longer, independent history and storage-restoration UI suite.
 // --mobile-security-only limits that regression to a fresh mobile context.
 // --nimbata-only runs only synthetic UI/tracker regressions, with no real backend.
+// --consent-only runs just permission-change regressions, also entirely synthetic.
 import assert from "node:assert/strict";
 import {spawn} from "node:child_process";
 import {mkdtemp, readFile, rm} from "node:fs/promises";
@@ -12,7 +13,7 @@ import {tmpdir} from "node:os";
 import {join} from "node:path";
 import {startIntakeFixture, fixtureBootstrap, turnstileFixture,
   nimbataFixtureURL, nimbataFailureScript} from "./intake-browser-fixture.mjs";
-import {runNimbataRegression} from "./test-intake-nimbata.mjs";
+import {runNimbataRegression, runConsentChangeRegression} from "./test-intake-nimbata.mjs";
 
 assert.notEqual(process.env.REPLIT_DEPLOYMENT, "1", "Never run browser fixtures in production");
 assert.equal(typeof WebSocket, "function", "Node 20 needs --experimental-websocket");
@@ -25,6 +26,8 @@ let id = 0, currentCase = "startup";
 let postOriginOverride; // CDP-only negative cases; normal requests remain untouched.
 let attackerOrigin;
 const nimbataOnly = process.argv.includes("--nimbata-only");
+const consentOnly = process.argv.includes("--consent-only");
+const isolatedTrackingOnly = nimbataOnly || consentOnly;
 let trackerCase;
 try {
   fixture = await startIntakeFixture();
@@ -75,6 +78,9 @@ try {
         if (trackerCase) trackerCase.unexpectedExceptions.push(details);
       }
     }
+    if (message.method === "Runtime.bindingCalled" &&
+        message.params.name === "__intakePageEvidence" && trackerCase)
+      trackerCase.documents.push(JSON.parse(message.params.payload));
     if (message.method === "Fetch.requestPaused") {
       const {requestId, request} = message.params;
       const url = new URL(request.url);
@@ -84,6 +90,10 @@ try {
         url.pathname === "/turnstile/v0/api.js";
       (async () => {
         if (local) {
+          if (url.pathname === "/__fixture__/load-barrier" && trackerCase?.delayLoad) {
+            trackerCase.loadHeld.push(requestId);
+            return;
+          }
           if (url.pathname === "/assets/intake-security.js" && fixture.state.moduleFailure)
             return call("Fetch.failRequest", {requestId, errorReason: "Failed"});
           if (request.method === "POST" && url.pathname === "/api/form-submit" &&
@@ -259,6 +269,7 @@ try {
   await call("Runtime.enable");
   await call("Emulation.setEmulatedMedia", {features: [{name: "prefers-reduced-motion", value: "reduce"}]});
   await call("Fetch.enable", {patterns: [{urlPattern: "*"}]});
+  await call("Runtime.addBinding", {name: "__intakePageEvidence"});
   await call("Page.addScriptToEvaluateOnNewDocument", {
     source: `if (location.origin === ${JSON.stringify(fixture.origin)}) { ${fixtureBootstrap} }`
   });
@@ -289,7 +300,7 @@ try {
       fields: {'input[id$="-name"]': "Synthetic Chat", 'input[id$="-phone"]': "2025550190",
         'input[id$="-email"]': "chat@example.invalid", 'textarea': "Synthetic chat only"}}
   ];
-  if (!nimbataOnly && !process.argv.includes("--real-security-only") && !process.argv.includes("--mobile-security-only")) {
+  if (!isolatedTrackingOnly && !process.argv.includes("--real-security-only") && !process.argv.includes("--mobile-security-only")) {
   for (const outcome of ["accepted", "interrupted", "unreadable", "unconfirmed", "server-error", "module-unavailable",
     "pending-reload", "pending-navigation", "pending-history", "pending-history-cacheable"])
   for (const mobile of [false, true]) for (const flow of flows) {
@@ -936,8 +947,10 @@ try {
   }
 
   if (!process.argv.includes("--real-security-only") && !process.argv.includes("--mobile-security-only")) {
-    await runNimbataRegression({fixture, flows, call, evaluate, until, activate, fill, focus, sleep,
-      setCase(label, tracker) {currentCase = label;trackerCase = tracker;}});
+    const trackingHarness = {fixture, flows, call, evaluate, until, activate, fill, focus, sleep,
+      setCase(label, tracker) {currentCase = label;trackerCase = tracker;}};
+    if (!consentOnly) await runNimbataRegression(trackingHarness);
+    await runConsentChangeRegression(trackingHarness);
     trackerCase = undefined;
   }
 
@@ -952,7 +965,7 @@ try {
   const postOptions = fields => ({method: "POST",
     headers: {"Content-Type": "application/x-www-form-urlencoded"},
     body: new URLSearchParams(fields).toString()});
-  for (const mobile of (nimbataOnly ? [] : process.argv.includes("--mobile-security-only") ? [true] : [false, true])) {
+  for (const mobile of (isolatedTrackingOnly ? [] : process.argv.includes("--mobile-security-only") ? [true] : [false, true])) {
     currentCase = `real security ${mobile ? "mobile" : "desktop"}`;
     console.log(`CHECK ${currentCase}: starting actual verifier/proxy regression`);
     await fixture.useRealSecurity();

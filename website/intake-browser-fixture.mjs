@@ -57,6 +57,15 @@ window.intakeFixture = {challenge:"success", renders:0, removed:0, scriptFailure
 window.intakeFixture.documentId = crypto.randomUUID();
 window.intakeFixture.pageShows = [];
 addEventListener("pageshow", event => window.intakeFixture.pageShows.push(event.persisted));
+// Preserve evidence from the document destroyed by the REAL cookie-settings
+// reload. The CDP binding exists only in this isolated browser harness.
+addEventListener("pagehide", () => {
+  if (typeof window.__intakePageEvidence === "function")
+    window.__intakePageEvidence(JSON.stringify({
+      documentId: window.intakeFixture.documentId,
+      google: (window.dataLayer || []).map(args => Array.from(args))
+    }));
+});
 // Only accelerate the module's two-minute timeout; keep its minimum-age wait real.
 const originalTimeout = window.setTimeout.bind(window);
 window.setTimeout = (callback, ms, ...args) =>
@@ -68,7 +77,7 @@ export async function startIntakeFixture() {
   const root = resolve("website/elh-preview");
   const state = {security: [], posts: [], violations: [], held: null, securityFailure: false,
     submitResponse: null, hold: false, assets: [], realSecurity: false, realRequests: [],
-    historyCacheable: false};
+    historyCacheable: false, delayLoad: false};
   let backend;
   let backendPort;
   let backendLog = "";
@@ -185,6 +194,12 @@ export async function startIntakeFixture() {
     if (!file.startsWith(root + sep)) {response.writeHead(403);response.end();return;}
     try {
       let content = await readFile(file);
+      if (state.delayLoad && extname(file) === ".html") {
+        // A same-origin, intercepted image keeps window.load pending without
+        // mocking readyState, gtag, analytics or the cookie-settings handlers.
+        content = Buffer.from(content.toString("utf8").replace("</body>",
+          '<img hidden src="/__fixture__/load-barrier" alt=""></body>'));
+      }
       if (path === "/assets/chat.js" || path === "/assets/intake-security.js") {
         // Mirror the production handler's website-only source projection.
         content = Buffer.from(websitePhone.publicPhoneText(content.toString("utf8")));

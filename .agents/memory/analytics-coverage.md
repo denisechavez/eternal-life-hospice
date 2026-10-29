@@ -131,3 +131,14 @@ response policy. Installation alone did not prove that the tracker ran.
 **How to apply:** Test script and connection permissions for the configured
 provider endpoints, and check browser network responses when changing trackers.
 Keep permissions specific rather than allowing arbitrary third-party hosts.
+
+When verifying permission withdrawal that reloads the page, retain tracking
+evidence from the departing document as well as checking the new document.
+
+**Why:** A fresh document has an empty event queue even if the previous one
+already emitted a conversion. Checking only the reloaded page can therefore
+give a false privacy assurance.
+
+**How to apply:** Exercise the actual settings controls and reload, capture
+outgoing-document events without storing entered data, and distinguish a late
+response to an abandoned submission from a confirmed result on the new page.
