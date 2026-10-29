@@ -23,6 +23,19 @@ class TrackerPolicyTests(unittest.TestCase):
     def test_active_nimbata_script_is_allowed(self):
         self.assertIn("https://cdn.dni.nimbata.com", self.policy()["script-src"])
 
+    def test_nimbata_generated_attribution_rules_are_allowed(self):
+        # The configured vendor tag uses new Function before opening a session.
+        # A successful CDN download alone does not establish runtime access.
+        self.assertIn("'unsafe-eval'", self.policy()["script-src"])
+
+    def test_runtime_permission_does_not_expand_external_host_access(self):
+        policy = self.policy()
+        self.assertEqual(policy["default-src"], ["'self'"])
+        for directive in ("script-src", "connect-src"):
+            self.assertNotIn("*", policy[directive])
+            self.assertNotIn("https:", policy[directive])
+            self.assertNotIn("data:", policy[directive])
+
     def test_nimbata_configured_session_endpoint_is_allowed(self):
         self.assertIn("https://dakvo8z10w4va.cloudfront.net", self.policy()["connect-src"])
 

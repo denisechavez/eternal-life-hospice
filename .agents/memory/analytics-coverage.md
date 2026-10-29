@@ -142,3 +142,16 @@ give a false privacy assurance.
 **How to apply:** Exercise the actual settings controls and reload, capture
 outgoing-document events without storing entered data, and distinguish a late
 response to an abandoned submission from a confirmed result on the new page.
+
+The owner explicitly approved the site-wide `unsafe-eval` tradeoff for
+Nimbata on October 28, 2026, after being told it weakens script protection
+for every allowed script, not just Nimbata.
+
+**Why:** The configured vendor tag generates attribution-rule functions at
+runtime. Its CDN returned HTTP 200, but the strict policy still stopped it
+before it opened a tracking session.
+
+**How to apply:** Preserve optional consent and specific provider host
+permissions. Check successful session traffic, not only script downloads.
+Do not treat this approval as permission for additional trackers, form
+capture, live test calls, routing changes or broader security relaxations.

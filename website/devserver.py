@@ -710,9 +710,11 @@ class PrettyURLHandler(http.server.SimpleHTTPRequestHandler):
             "X-Frame-Options": "SAMEORIGIN",
             "Referrer-Policy": "strict-origin-when-cross-origin",
             "Permissions-Policy": "geolocation=(), microphone=(), camera=()",
+            # Owner approved unsafe-eval for Nimbata's generated attribution
+            # rules. CSP cannot restrict this permission to one vendor.
             "Content-Security-Policy": (
                 "default-src 'self'; "
-                "script-src 'self' 'unsafe-inline' "
+                "script-src 'self' 'unsafe-inline' 'unsafe-eval' "
                 "https://i.replit.com https://www.googletagmanager.com "
                 "https://www.clarity.ms https://scripts.clarity.ms "
                 "https://cdn.brevo.com https://sibautomation.com "
