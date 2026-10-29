@@ -72,6 +72,7 @@
 - [SEO advisory checks](seo-advisory-checks.md) — report-only before publishing; private reports, explicit breadcrumb fixes and no automatic page or menu renaming.
 - [Mobile browser verification](mobile-browser-verification.md) — distinguish anchor navigation checks from physical tap checks when layout and visual viewport sizes differ.
 - [Accessibility-tree assertions](accessibility-tree-assertions.md) — reconstruct announcement text through child IDs, not flat response order.
+- [Browser exception shapes](browser-exception-shapes.md) — expected-error matching must handle both CDP exception descriptions and text-only errors without hiding unrelated failures.
 - [Intake proxy binding](intake-proxy-binding.md) — live security-token client bindings can change between requests even when preview is stable; separate browser verification from network abuse limits.
 - [Client acknowledgment delivery](client-acknowledgment-delivery.md) — company Gmail only, never Brevo fallback; preserve approved letters and leave internal/marketing routes unchanged.
 - [Website phone roles](website-phone-roles.md) — retain both numbers in their existing placements; owner declined footer restoration after the audit; preserve approved emails and signed Journal sources.

@@ -49,6 +49,8 @@ footer_contact = "python3 ../test-footer-contact.py"
 footer_contact_sentinel = "SENTINEL: test-footer-contact.py OK"
 tracker = "python3 ../test-tracker-policy.py"
 tracker_sentinel = "SENTINEL: test-tracker-policy.py OK"
+tracker_browser = "node --experimental-websocket ../test-cookie-browser.mjs"
+tracker_browser_sentinel = "SENTINEL: test-cookie-browser.mjs OK"
 analytics = "node ../test-submission-analytics.cjs"
 analytics_sentinel = "SENTINEL: test-submission-analytics.cjs OK"
 sentinel = "SENTINEL: test-care-brief-signup-retry.mjs browser checks OK"
@@ -62,6 +64,9 @@ assert commands.index(retry) < commands.index("node assets/build-search-index.js
 assert wrapper.count('"' + sentinel + '"') == 1, "Wrapper must require retry sentinel"
 assert commands.count(ack) == 1, "Acknowledgment suite must run exactly once"
 assert commands.count(tracker) == 1, "Tracker policy suite must run exactly once"
+assert commands.count(tracker_browser) == 1, "Synthetic tracker runtime suite must run exactly once"
+assert commands.index(tracker_browser) == commands.index(tracker) + 1
+assert wrapper.count('"' + tracker_browser_sentinel + '"') == 1, "Require browser runtime sentinel"
 assert wrapper.count('"' + tracker_sentinel + '"') == 1, "Wrapper must require tracker policy sentinel"
 assert commands.count(analytics) == 1, "Synthetic submission analytics suite must run exactly once"
 assert commands.index(analytics) < commands.index("node assets/build-search-index.js --check")
@@ -186,6 +191,9 @@ if not (is_target and os.environ["CHAIN_MODE"] == "missing"):
                  (footer_contact, footer_contact_sentinel, "failure"),
                  (footer_contact, footer_contact_sentinel, "missing"),
                  (tracker, tracker_sentinel, "failure"), (tracker, tracker_sentinel, "missing"),
+                 (tracker_browser, tracker_browser_sentinel, "success"),
+                 (tracker_browser, tracker_browser_sentinel, "failure"),
+                 (tracker_browser, tracker_browser_sentinel, "missing"),
                  (analytics, analytics_sentinel, "success"),
                  (analytics, analytics_sentinel, "failure"), (analytics, analytics_sentinel, "missing")]
     for script in ("test-journal-campaign.py", "test-google-reviews.py", "test-replit-chat-coverage.py"):
@@ -392,6 +400,7 @@ SENTINELS=(
   "SENTINEL: check-city-scripts.py self-test OK"
   "SENTINEL: check-analytics-version.py self-test OK"
   "SENTINEL: test-tracker-policy.py OK"
+  "SENTINEL: test-cookie-browser.mjs OK"
   "SENTINEL: test-submission-analytics.cjs OK"
   "SENTINEL: check-structured-data.py self-test OK"
   "SENTINEL: check-blog-schema.py self-test OK"
