@@ -7,6 +7,8 @@ PHONE = re.compile(
     rf'<a class="fc-line(?: no-swap| fc-direct)*" href="tel:{MAIN_TEL}">.*?</a>', re.S,
 )
 STYLESHEET = '<link rel="stylesheet" href="/assets/footer-contact.css?v=20261023-nowrap">'
+INSURANCE_HREF = "/resources/medicare-hospice-benefit#insurance"
+INSURANCE_LINK = f'<a href="{INSURANCE_HREF}">Insurance &amp; Coverage</a>'
 
 
 def update_main_number(document):
@@ -24,6 +26,13 @@ def public_html(document):
         return document
     def update(match):
         footer = match.group()
+        # Apply at response time too, including immutable approved Journal pages.
+        if f'href="{INSURANCE_HREF}"' not in footer:
+            footer = re.sub(
+                r"(<h2(?:\s[^>]*)?>Resources</h2>)",
+                lambda heading: heading.group() + INSURANCE_LINK,
+                footer, count=1,
+            )
         phones = list(PHONE.finditer(footer))
         if not phones:
             return footer

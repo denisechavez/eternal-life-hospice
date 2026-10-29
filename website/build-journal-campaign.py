@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import html
 import argparse
+import hashlib
 import json
 import re
 import subprocess
@@ -200,6 +201,76 @@ def check_metadata():
     return issues
 
 
+def render_photo_credit(credit):
+    """Keep license-required attribution without optional stock-photo notes."""
+    if not credit:
+        return ""
+    optional_license_urls = {
+        "https://www.pexels.com/license",
+        "https://creativecommons.org/publicdomain/mark/1.0",
+        "https://creativecommons.org/publicdomain/zero/1.0/deed.en",
+    }
+    if credit["licenseUrl"].rstrip("/") in optional_license_urls:
+        return ""
+    return (
+        '<p class="journal-photo-credit"><small>Photo: '
+        f'{esc(credit["author"])} / '
+        f'<a href="{esc(credit["sourceUrl"])}" rel="noopener">{esc(credit.get("sourceName", "Wikimedia Commons"))}</a> &middot; '
+        f'<a href="{esc(credit["licenseUrl"])}" rel="noopener">{esc(credit["license"])}</a>. '
+        'Resized for display.</small></p>'
+    )
+
+
+def refresh_photo_credits(articles):
+    """Refresh only generated credit blocks, preserving all other article HTML."""
+    updated_count = 0
+    for article in articles:
+        path = OUT / f'{article["slug"]}.html'
+        if not path.exists() or not article.get("photoCredit"):
+            continue
+        text = path.read_text(encoding="utf-8")
+        credit = render_photo_credit(article["photoCredit"])
+        updated = re.sub(
+            r'<p class="journal-photo-credit">.*?</p>\n?',
+            lambda match: credit + ("\n" if credit and match[0].endswith("\n") else ""),
+            text,
+            flags=re.DOTALL,
+        )
+        if updated != text:
+            path.write_text(updated, encoding="utf-8")
+            updated_count += 1
+    return updated_count
+
+
+def refresh_review_photo_credits(articles, review_path):
+    """Apply the same presentation to staged review copies, not approval pins."""
+    if not review_path.exists():
+        return 0
+    document = json.loads(review_path.read_text(encoding="utf-8"))
+    records = {article["slug"]: article for article in articles}
+    updated_count = 0
+    for slug, draft in document.get("articles", {}).items():
+        credit = records.get(slug, {}).get("photoCredit")
+        original = draft.get("reviewHtml")
+        if not credit or not original:
+            continue
+        replacement = render_photo_credit(credit)
+        updated = re.sub(
+            r'<p class="journal-photo-credit">.*?</p>\n?',
+            lambda match: replacement + (
+                "\n" if replacement and match[0].endswith("\n") else ""),
+            original, flags=re.DOTALL,
+        )
+        if updated != original:
+            draft["reviewHtml"] = updated
+            draft["revision"] = hashlib.sha256(updated.encode()).hexdigest()[:12]
+            updated_count += 1
+    if updated_count:
+        review_path.write_text(json.dumps(document, indent=2, ensure_ascii=False) + "\n",
+                               encoding="utf-8")
+    return updated_count
+
+
 def render_body(article):
     bits = [
         f'<section class="hero hero--photo" style="background-image:url(\'..{esc(article["heroImage"])}\')">',
@@ -212,16 +283,9 @@ def render_body(article):
         f'&middot; {article["readMinutes"]} min read</div>',
         f'<p class="lede">{render_inline(article["lede"])}</p>',
     ]
-    credit = article.get("photoCredit")
+    credit = render_photo_credit(article.get("photoCredit"))
     if credit:
-        bits.append(
-            '<p class="journal-photo-credit"><small>Illustrative photograph: '
-            f'{esc(credit["author"])} / '
-            f'<a href="{esc(credit["sourceUrl"])}" rel="noopener">{esc(credit.get("sourceName", "Wikimedia Commons"))}</a> &middot; '
-            f'<a href="{esc(credit["licenseUrl"])}" rel="noopener">{esc(credit["license"])}</a>. '
-            'Resized for display. The photograph does not depict an Eternal patient or service encounter.'
-            '</small></p>'
-        )
+        bits.append(credit)
     for section in article["sections"]:
         bits.append(f'<h2>{esc(section["heading"])}</h2>')
         bits.extend(f"<p>{render_inline(paragraph)}</p>" for paragraph in section["paragraphs"])
@@ -464,6 +528,7 @@ def build(articles):
         path = OUT / f'{article["slug"]}.html'
         if not path.exists():
             path.write_text(render_post(article, template), encoding="utf-8")
+    refresh_photo_credits(active_articles)
     from internal_links import render_links
     for article in active_articles:
         path = OUT / f'{article["slug"]}.html'
@@ -500,6 +565,8 @@ if __name__ == "__main__":
     mode = parser.add_mutually_exclusive_group()
     mode.add_argument("--images-only", action="store_true",
                         help="Update existing post images and archive cards without replacing article text")
+    mode.add_argument("--photo-credits-only", action="store_true",
+                      help="Remove optional photo notes and retain concise required license attribution")
     mode.add_argument("--archive-only", action="store_true",
                       help="Sync archive cards and Blog schema from visible article copy; do not modify articles")
     mode.add_argument("--check-metadata", action="store_true",
@@ -512,6 +579,12 @@ if __name__ == "__main__":
             print("\n".join(issues))
             raise SystemExit(1)
         print("Journal article metadata matches visible hero copy (no files changed)")
+    elif args.photo_credits_only:
+        articles = load_articles()
+        print(f"Updated photo notes in {refresh_photo_credits(articles)} Journal entries")
+        count = refresh_review_photo_credits(
+            articles, ROOT / "content" / "seo-journal-review.json")
+        print(f"Updated photo notes in {count} staged review copies; approval records unchanged")
     elif args.archive_only:
         articles = load_articles()
         write_archive([a for a in articles if a.get("publicationStatus") != "archived"], articles)

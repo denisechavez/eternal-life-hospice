@@ -45,6 +45,66 @@ class JournalCampaignTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             builder.render_inline('[Unsafe](//example.com)')
 
+    def test_optional_photo_notes_are_not_rendered(self):
+        for license_url in (
+            "https://www.pexels.com/license/",
+            "https://creativecommons.org/publicdomain/mark/1.0/",
+            "https://creativecommons.org/publicdomain/zero/1.0/deed.en",
+        ):
+            self.assertEqual(builder.render_photo_credit({"licenseUrl": license_url}), "")
+        self.assertEqual(builder.render_photo_credit(None), "")
+
+    def test_required_photo_attribution_is_retained_and_escaped(self):
+        credit = {
+            "author": "Author & Photographer",
+            "sourceUrl": "https://commons.wikimedia.org/wiki/File:Example.jpg",
+            "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+            "license": "CC BY-SA 4.0",
+        }
+        rendered = builder.render_photo_credit(credit)
+        for expected in ("Author &amp; Photographer", credit["sourceUrl"],
+                         credit["licenseUrl"], credit["license"], "Resized for display."):
+            self.assertIn(expected, rendered)
+        self.assertNotIn("Illustrative photograph", rendered)
+        self.assertNotIn("does not depict", rendered)
+
+    def test_photo_note_refresh_only_changes_credit_and_is_idempotent(self):
+        with tempfile.TemporaryDirectory() as directory:
+            posts = Path(directory)
+            page = posts / "example.html"
+            original = ('<h1>Approved title</h1>\n'
+                        '<p class="journal-photo-credit"><small>Old note</small></p>\n'
+                        '<p>Approved article copy.</p>\n')
+            page.write_text(original)
+            articles = [{"slug": "example", "photoCredit": {
+                "licenseUrl": "https://www.pexels.com/license/",
+            }}]
+            with patch.object(builder, "OUT", posts):
+                self.assertEqual(builder.refresh_photo_credits(articles), 1)
+                self.assertEqual(page.read_text(),
+                                 '<h1>Approved title</h1>\n<p>Approved article copy.</p>\n')
+                self.assertEqual(builder.refresh_photo_credits(articles), 0)
+
+    def test_review_photo_refresh_preserves_copy_and_changes_revision(self):
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "review.json"
+            original = ('<h1>Approved title</h1>\n'
+                        '<p class="journal-photo-credit">Old note</p>\n'
+                        '<p>Article copy.</p>')
+            path.write_text(json.dumps({"articles": {"example": {
+                "reviewHtml": original, "revision": "old", "date": "2026-10-28",
+            }}}))
+            articles = [{"slug": "example", "photoCredit": {
+                "licenseUrl": "https://www.pexels.com/license/",
+            }}]
+            self.assertEqual(builder.refresh_review_photo_credits(articles, path), 1)
+            saved = json.loads(path.read_text())["articles"]["example"]
+            self.assertEqual(saved["reviewHtml"],
+                             '<h1>Approved title</h1>\n<p>Article copy.</p>')
+            self.assertNotEqual(saved["revision"], "old")
+            self.assertEqual(saved["date"], "2026-10-28")
+            self.assertEqual(builder.refresh_review_photo_credits(articles, path), 0)
+
     @contextmanager
     def archive_fixture(self):
         with tempfile.TemporaryDirectory() as directory:

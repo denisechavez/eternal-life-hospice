@@ -29,6 +29,30 @@ class FooterContactTests(unittest.TestCase):
         source = Path(__file__).with_name("elh-preview") / "care-brief.html"
         self.assertIn("signup", Page(source.read_text()).ids)
 
+    def test_insurance_link_is_added_without_changing_article_or_repeating(self):
+        source = ('<html><head></head><body><p>Approved article copy.</p>'
+                  '<footer id="site-footer"><div class="foot-col"><h2>Resources</h2>'
+                  '<a href="/family-guide">Family Guide</a></div></footer></body></html>')
+        updated = footer_contact.public_html(source)
+        self.assertIn('<p>Approved article copy.</p>', updated)
+        self.assertEqual(updated.count(footer_contact.INSURANCE_LINK), 1)
+        self.assertEqual(footer_contact.public_html(updated), updated)
+
+    def test_insurance_link_is_in_canonical_and_all_existing_footer_variants(self):
+        self.assertIn(footer_contact.INSURANCE_LINK, FOOTER_HTML)
+        public = Path(__file__).with_name("elh-preview")
+        checked = 0
+        for source in public.rglob("*.html"):
+            if "assets" in source.relative_to(public).parts:
+                continue
+            footer = footer_contact.FOOTER.search(source.read_text())
+            if footer and "<h2>Resources</h2>" in footer.group():
+                rendered = footer_contact.public_html(footer.group())
+                self.assertEqual(rendered.count(footer_contact.INSURANCE_LINK), 1,
+                                 str(source.relative_to(public)))
+                checked += 1
+        self.assertGreater(checked, 50)
+
     def test_canonical_and_city_generators(self):
         self.assert_contact(FOOTER_HTML)
         self.assert_signup(FOOTER_HTML)

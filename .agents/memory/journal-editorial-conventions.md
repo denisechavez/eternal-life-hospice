@@ -16,8 +16,17 @@ images that do not look AI-generated.
 the continuation through December 31, 2026.
 
 **How to apply:** Prefer licensed real photographs and do not reuse an article
-hero across the new collection. Preserve image disclosures and source credits
-in the complete article presented for Studio approval.
+hero across the new collection. Retain source and license records internally.
+Do not display optional stock-photo notes, such as “Illustrative photograph” or
+“The photograph does not depict an Eternal patient or service encounter.”
+Keep concise attribution where the image license requires it.
+
+Apply this presentation rule to served older release snapshots as well as new
+drafts, without rewriting frozen documents or renewing approval records.
+
+**Why:** The owner requested removal of these notes from blog entries; that
+editorial choice does not waive third-party image licensing requirements.
+Cleaning draft files alone leaves older published snapshots visibly unchanged.
 
 Preserve the established Journal image presentation when adding new articles.
 

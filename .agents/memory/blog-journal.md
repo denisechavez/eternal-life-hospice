@@ -5,8 +5,17 @@ description: How the ELH "Eternal Journal" blog is structured, its conventions, 
 
 # The Eternal Journal (blog)
 
-The site's blog is branded **"The Eternal Journal"** (display label "Journal"),
-URL root **/blog**. Index = `blog.html` (root-level, inline-free — links the shared
+The site's approved public display name is **"The Eternal Journal/Blog"**.
+Keep the URL root **/blog** and existing article URLs unchanged.
+
+**Why:** The owner explicitly confirmed this exact replacement name. It remains
+separate from The Eternal Care Brief.
+
+**How to apply:** Use the complete display name in public navigation, headings,
+footers and metadata. Preserve existing approval snapshots; refresh shared
+branding at response time rather than invalidating signed articles.
+
+Index = `blog.html` (root-level, inline-free — links the shared
 `assets/elh.css`). Posts live in `blog/<slug>.html` and use the **same template
 convention as `resources/` sub-pages**: `../assets/...` + `../<page>` relative
 paths, `.article/.lede/.ask/.note-panel/.kicker/.cta/.related/.rgrid/.rc` classes,

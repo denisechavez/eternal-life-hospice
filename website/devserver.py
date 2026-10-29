@@ -17,6 +17,8 @@ import socket
 import subprocess
 import sys
 import footer_contact
+import journal_branding
+import journal_photo_notes
 import website_phone
 import analytics_assets
 import journal_workspace_preview
@@ -163,16 +165,17 @@ class PrettyURLHandler(http.server.SimpleHTTPRequestHandler):
         return True
 
     def _preview_chrome(self, document, route=None):
+        document = journal_photo_notes.public_html(document)
         route = route if route is not None else urlsplit(self.path).path
         route = route.rstrip("/").removesuffix(".html") or "/"
         # Approved navigation can inject its own phone pills; normalize last.
-        return website_phone.public_html(
+        return journal_branding.public_html(website_phone.public_html(
             analytics_assets.refresh_html(service_preview.decorate(
                 site_breadcrumbs.decorate(footer_contact.public_html(document), route),
                 route
             )),
             route
-        )
+        ))
 
     def _service_preview_chrome(self, document):
         return self._preview_chrome(
