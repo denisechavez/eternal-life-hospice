@@ -233,7 +233,11 @@ class ServicePhotoNoteTests(unittest.TestCase):
         self.assertEqual(body, b"", "HEAD must not send any body bytes")
         return BytesParser().parsebytes(fields + b"\r\n\r\n")
 
-    def exercise(self, production, contextual=False):
+    def exercise(self, production, contextual=False, transition=None):
+        if transition not in (None, "destinations", "inventory"):
+            raise ValueError("Unknown inventory transition")
+        if transition:
+            self.assertTrue(contextual, "Inventory transitions need contextual fixtures")
         self.stack.enter_context(patch.dict(
             os.environ, {"REPLIT_DEPLOYMENT": "1" if production else "0"}))
         pages = {}
@@ -339,13 +343,23 @@ class ServicePhotoNoteTests(unittest.TestCase):
                 # Simulate an older generated artifact on every rebuild. Neither
                 # request-time path may rewrite this on-disk source.
                 legacy = generated.replace("</main>", OLD_NOTE + OLD_NOTE + "</main>")
+                if transition == "destinations":
+                    # Model an already-built recommendation slot as well as
+                    # links generated fresh from an unlinked source.
+                    stale_slot = (
+                        internal_links.START
+                        + '\n<section class="elh-related"><h2>Continue exploring</h2>'
+                        + f'<a href="{RELATED_ROUTE}">{RELATED_LABEL}</a></section>\n'
+                        + internal_links.END + "\n"
+                    )
+                    legacy = legacy.replace("</main>", stale_slot + "</main>")
                 target.write_text(legacy)
                 before = target.read_bytes()
                 self.assertEqual(legacy.count('class="journal-photo-credit"'), 2)
                 if contextual:
                     pages[ROUTE] = (target, legacy, internal_links.PageParser(legacy))
-                    self.assertNotIn(internal_links.START, legacy)
-                clean_response = None
+                    self.assertEqual(legacy.count(internal_links.START),
+                                     int(transition == "destinations"))
                 modified = target.stat().st_mtime
                 conditions = (
                     ("unconditional", None),
@@ -353,14 +367,34 @@ class ServicePhotoNoteTests(unittest.TestCase):
                     ("matching", formatdate(modified, usegmt=True)),
                     ("newer", formatdate(modified + 86400, usegmt=True)),
                 )
-                requests = [(suffix, encoding)
+                # Each phase runs on this same server, without rebuilding or
+                # rewriting the source between eligible-inventory changes.
+                phases = (True, False, True, False) if transition else (True,)
+                responses = {}
+                requests = [(eligible, suffix, encoding)
+                            for eligible in phases
                             for suffix in ("", ".html?refresh=1", "")
                             for encoding in (("identity", "gzip") if contextual
                                              else ("identity",))]
-                for suffix, encoding in requests:
+                for eligible, suffix, encoding in requests:
+                    if transition:
+                        if eligible:
+                            pages[RELATED_ROUTE] = (
+                                related_path, related_html, internal_links.PageParser(related_html))
+                            pages[ROUTE] = (target, legacy, internal_links.PageParser(legacy))
+                        elif transition == "inventory":
+                            pages.clear()
+                        else:
+                            pages.pop(RELATED_ROUTE, None)
+                        self.assertEqual(RELATED_ROUTE in pages, eligible)
+                        if transition == "inventory":
+                            self.assertEqual(bool(pages), eligible)
+                    rendered = contextual and (not transition or eligible
+                                               or transition == "destinations")
                     for condition, date in conditions:
                         with self.subTest(suffix=suffix, condition=condition,
-                                          encoding=encoding):
+                                          encoding=encoding, eligible=eligible,
+                                          transition=transition):
                             headers = {"Cache-Control": "no-cache",
                                        "Accept-Encoding": encoding}
                             if date is not None:
@@ -382,9 +416,11 @@ class ServicePhotoNoteTests(unittest.TestCase):
                                 wire_body = response.read()
                                 self.assertEqual(int(get_headers["Content-Length"]),
                                                  len(wire_body))
-                                if contextual:
+                                if rendered:
                                     self.assertEqual(get_headers["Vary"], "Accept-Encoding")
-                                if encoding == "gzip":
+                                else:
+                                    self.assertIsNone(get_headers.get("Vary"))
+                                if encoding == "gzip" and rendered:
                                     self.assertEqual(get_headers["Content-Encoding"], "gzip")
                                     body = gzip.decompress(wire_body)
                                 else:
@@ -395,19 +431,32 @@ class ServicePhotoNoteTests(unittest.TestCase):
                                 self.assertLess(len(body), len(before))
                             document = body.decode()
                             self.assert_clean(document)
-                            if contextual:
+                            if rendered:
                                 self.assertEqual(self.render_links.call_count, render_calls + 1)
                                 self.assertEqual(self.render_links.call_args.args[0], legacy)
                                 self.assertEqual(self.render_links.call_args.args[1], ROUTE)
                                 self.assertIs(self.render_links.call_args.kwargs["pages"], pages)
                                 self.journal_pages.assert_called()
-                                self.assertEqual(document.count('class="elh-related"'), 1)
-                                self.assertEqual(document.count(internal_links.START), 1)
-                                self.assertIn(
-                                    f'<a href="{RELATED_ROUTE}" data-reading-source="{ROUTE}"'
-                                    f' data-reading-destination="{RELATED_ROUTE}"'
-                                    f' data-reading-topic="fixture">{RELATED_LABEL}</a>',
-                                    document)
+                                self.assertEqual(document.count('class="elh-related"'),
+                                                 int(eligible))
+                                self.assertEqual(
+                                    document.count(internal_links.START),
+                                    int(eligible or transition == "destinations"))
+                            else:
+                                self.assertEqual(self.render_links.call_count, render_calls)
+                            if contextual:
+                                if eligible:
+                                    self.assertIn(
+                                        f'<a href="{RELATED_ROUTE}" data-reading-source="{ROUTE}"'
+                                        f' data-reading-destination="{RELATED_ROUTE}"'
+                                        f' data-reading-topic="fixture">{RELATED_LABEL}</a>',
+                                        document)
+                                else:
+                                    for stale in (RELATED_ROUTE, RELATED_LABEL,
+                                                  'class="elh-related"', "Continue exploring"):
+                                        self.assertNotIn(stale, document)
+                                    if not rendered:
+                                        self.assertNotIn(internal_links.START, document)
                                 self.assertEqual(related_path.read_bytes(), related_bytes)
                                 # Both identity and decompressed gzip must retain
                                 # the entire fixture verbatim, not just img tags.
@@ -422,20 +471,21 @@ class ServicePhotoNoteTests(unittest.TestCase):
                                     document, re.S)
                                 self.assertEqual(metadata, [provenance_json])
                                 self.assertEqual(json.loads(metadata[0]), provenance)
-                            else:
-                                self.assertEqual(self.render_links.call_count, render_calls)
                             self.assertEqual(document.count(image_url), generated.count(image_url))
                             self.assertEqual(re.findall(r"<img\b[^>]*>", document),
                                              re.findall(r"<img\b[^>]*>", generated))
-                            if clean_response is not None:
-                                self.assertEqual(document, clean_response)
-                            clean_response = document
+                            if eligible in responses:
+                                self.assertEqual(document, responses[eligible])
+                            responses[eligible] = document
                             self.assertEqual(target.read_bytes(), before)
 
                             calls = self.transform.call_count
+                            render_calls = self.render_links.call_count
                             head_headers = self.read_head(
                                 server.server_port, ROUTE + suffix, headers)
                             self.assertGreater(self.transform.call_count, calls)
+                            self.assertEqual(self.render_links.call_count,
+                                             render_calls + int(rendered))
                             for name in ("Content-Length", "Content-Type", "Cache-Control",
                                          "X-Journal-Revision", "Content-Encoding", "Vary"):
                                 self.assertEqual(head_headers.get(name), get_headers.get(name),
@@ -443,6 +493,9 @@ class ServicePhotoNoteTests(unittest.TestCase):
                             self.assertEqual(int(head_headers["Content-Length"]), len(wire_body))
                             self.assertEqual(target.read_bytes(), before)
                             self.assert_preserved()
+                            # All service paths must stay independent of release
+                            # storage, including after the inventory empties.
+                            devserver.PrettyURLHandler._released_journal.assert_not_called()
                     with urlopen(origin + image_url, timeout=5) as response:
                         self.assertEqual(response.read(), self.image_bytes)
                     self.assert_preserved()
@@ -452,6 +505,9 @@ class ServicePhotoNoteTests(unittest.TestCase):
                     for path, original in candidate_bytes.items():
                         self.assertEqual(path.read_bytes(), original)
                     self.assert_preserved()
+                if transition:
+                    self.assertEqual(set(responses), {True, False})
+                    self.assertNotEqual(responses[True], responses[False])
 
     def test_workspace_service_preview_after_rebuilds(self):
         self.exercise(production=False)
