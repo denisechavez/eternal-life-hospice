@@ -155,3 +155,28 @@ before it opened a tracking session.
 permissions. Check successful session traffic, not only script downloads.
 Do not treat this approval as permission for additional trackers, form
 capture, live test calls, routing changes or broader security relaxations.
+
+## PPC evaluation scope
+
+The owner expects Nimbata to support review of ads, keywords, forms and landing
+pages, not just phone calls.
+
+**Why:** The owner corrected an overly narrow, call-only description during PPC
+planning.
+
+**How to apply:** Consider call and form attribution and campaign, keyword and
+landing-page reporting when scoping PPC analysis. Verify the account's enabled
+features and integrations rather than assuming a script installation proves a
+complete automated audit. Existing consent and form-capture approval boundaries
+still apply.
+
+The owner's standing goal is to run repeatable PPC audits inside Replit rather
+than depend on an external auditing service.
+
+**Why:** The owner explicitly requested in-house auditing for future campaign
+reviews on October 28, 2026.
+
+**How to apply:** Develop evidence-based internal audit workflows using actual
+campaign reports or supported authorized data connections. Replacing the audit
+service does not authorize removing call-routing providers, changing advertising
+spend or claiming that unavailable account data has been verified.
