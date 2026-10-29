@@ -13,6 +13,12 @@ const profile = await mkdtemp(join(tmpdir(), "elh-landing-consent-"));
 let server, browser, ws, origin, sequence = 0, serverLog = "", browserLog = "";
 const pending = new Map(), errors = [], requests = [], documents = [];
 const essentialWidget = "https://cdn.userway.org/widget.js";
+// Hubs and representative detail pages use distinct public rendering paths.
+// Keep this explicit and independent of the fixture's server-side allowlist.
+const publicPages = [
+  "/", "/refer", "/services", "/services/in-home-hospice-care",
+  "/resources", "/resources/when-is-it-time"
+];
 try {
   server = spawn("python3", [new URL("./landing-consent-fixture.py", import.meta.url).pathname],
     {stdio:["pipe", "pipe", "pipe"]});
@@ -33,9 +39,17 @@ try {
   // Verify the server-side guard independently of browser interception.
   for (const [path, method] of [
     ["/api/form-submit", "POST"], ["/api/chat", "POST"],
-    ["/api/form-security", "GET"], ["/", "POST"], ["/api/coverage", "GET"]
+    ["/api/form-security", "GET"], ["/", "POST"], ["/api/coverage", "GET"],
+    ["/api/newsletter-subscribe", "POST"], ["/api/unlisted", "GET"],
+    ["/services/not-allowlisted", "GET"], ["/resources/not-allowlisted", "GET"],
+    ["/__service-preview-assets/hero.webp", "GET"]
   ]) {
     assert.equal((await fetch(origin + path, {method})).status, 405, `${method} ${path} denied`);
+  }
+  for (const path of publicPages) {
+    for (const method of ["HEAD", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"]) {
+      assert.equal((await fetch(origin + path, {method})).status, 405, `${method} ${path} denied`);
+    }
   }
   browser = spawn(process.env.CHROMIUM_BIN || "chromium", [
     "--headless", "--no-sandbox", "--disable-dev-shm-usage",
@@ -79,7 +93,7 @@ try {
     requests.push({url:request.url, method:request.method, resourceType});
     const url = new URL(request.url), local = url.origin === origin;
     const allowed = local && request.method === "GET" && (
-      ["/", "/refer", "/api/google-reviews"].includes(url.pathname) ||
+      publicPages.includes(url.pathname) || url.pathname === "/api/google-reviews" ||
       url.pathname.startsWith("/assets/")
     );
     // Every provider response is synthetic, including the sole permitted
@@ -140,7 +154,14 @@ try {
       "Real production CSP must reach each document without test relaxations");
     assert.equal(headers["permissions-policy"], "geolocation=(), microphone=(), camera=()");
     assert.equal(headers["x-content-type-options"], "nosniff");
+    assert.match(headers["content-type"], /text\/html/);
     assert.equal(await evaluate("document.querySelectorAll('h1').length"), 1, "Full public page");
+    assert.equal(await evaluate("document.querySelectorAll('link[rel=canonical]').length"), 1);
+    assert.equal(await evaluate("document.querySelector('link[rel=canonical]').href"),
+      "https://eternallifehospice.com" + new URL(path, origin).pathname,
+      "Expected public landing page, not a redirect or fallback");
+    assert.equal(await evaluate("document.documentElement.outerHTML.includes('/__service-preview-assets/')"),
+      false, "Public rendering must not inject workspace preview assets");
     assert.ok(requests.some(r => new URL(r.url).pathname === "/assets/analytics.js"), "Real shared loader served");
   };
   const assertNoTracking = async () => {
@@ -158,7 +179,7 @@ try {
 
   for (const width of [1280, 390]) {
     await call("Emulation.setDeviceMetricsOverride", {width,height:800,deviceScaleFactor:1,mobile:width<500});
-    for (const path of ["/", "/refer"]) {
+    for (const [index, path] of publicPages.entries()) {
       await call("Storage.clearDataForOrigin", {origin, storageTypes:"all"});
       await visit(path);
       assert.equal(await evaluate("localStorage.getItem('elh_cc')"), null);
@@ -172,14 +193,14 @@ try {
       assert.equal(await evaluate("localStorage.getItem('elh_cc')"), "essential");
       assert.equal(await evaluate("!!document.getElementById('elh-cc')"), false);
       await assertNoTracking();
-      await visit(path === "/" ? "/refer" : "/");
+      await visit(publicPages[(index + 1) % publicPages.length]);
       assert.equal(await evaluate("!!document.getElementById('elh-cc')"), false);
       assert.equal(await evaluate("localStorage.getItem('elh_cc')"), "essential");
       await assertNoTracking();
       console.log(`PASS ${width}px ${path}: first visit, essential-only reload and cross-page persistence`);
     }
   }
-  for (const path of ["/", "/refer"]) {
+  for (const path of publicPages) {
     for (const consent of [null, "essential"]) {
       for (const probe of ["inline", "tag"]) {
         const seed = await call("Page.addScriptToEvaluateOnNewDocument", {source:consent ?
@@ -193,7 +214,7 @@ try {
     }
   }
   assert.deepEqual(errors, []);
-  console.log("PASS negative controls: inline and external-tag bypasses caught on both pages, fresh and essential-only");
+  console.log(`PASS negative controls: inline and external-tag bypasses caught on all ${publicPages.length} pages, fresh and essential-only`);
   console.log("SENTINEL: test-landing-consent-browser.mjs OK");
 } finally {
   for (const p of pending.values()) { clearTimeout(p.timer); p.reject(new Error("Browser shutting down")); }

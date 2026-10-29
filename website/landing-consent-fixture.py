@@ -11,6 +11,14 @@ from urllib.parse import parse_qs, unquote, urlsplit
 from devserver import PrettyURLHandler, ROOT
 
 
+# Deliberately independent of the browser allowlist: never open all service or
+# resource routes (or an API handler) just to exercise representative pages.
+PUBLIC_PAGES = frozenset({
+    "/", "/refer", "/services", "/services/in-home-hospice-care",
+    "/resources", "/resources/when-is-it-time",
+})
+
+
 class LandingConsentFixture(PrettyURLHandler):
     def _preview_chrome(self, document, route=None):
         document = super()._preview_chrome(document, route)
@@ -36,7 +44,7 @@ class LandingConsentFixture(PrettyURLHandler):
             self.wfile.write(body)
             return
         asset = (Path(ROOT) / path.lstrip("/")).resolve()
-        if path in ("/", "/refer") or (
+        if path in PUBLIC_PAGES or (
             path.startswith("/assets/") and
             asset.is_relative_to((Path(ROOT) / "assets").resolve()) and asset.is_file()
         ):
