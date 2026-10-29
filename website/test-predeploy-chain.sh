@@ -39,7 +39,10 @@ ack = "python3 ../test-acknowledgments.py"
 ack_sentinel = "SENTINEL: test-acknowledgments.py OK"
 phone = "python3 ../test-website-phone.py"
 phone_config = "python3 ../test-website-phone-config.py"
+phone_config_sentinel = "SENTINEL: test-website-phone-config.py OK"
 phone_sentinel = "SENTINEL: test-website-phone.py OK"
+footer_contact = "python3 ../test-footer-contact.py"
+footer_contact_sentinel = "SENTINEL: test-footer-contact.py OK"
 tracker = "python3 ../test-tracker-policy.py"
 tracker_sentinel = "SENTINEL: test-tracker-policy.py OK"
 analytics = "node ../test-submission-analytics.cjs"
@@ -64,14 +67,21 @@ assert commands.index(ack) < commands.index("node assets/build-search-index.js -
 assert wrapper.count('"' + ack_sentinel + '"') == 1, "Wrapper must require acknowledgment sentinel"
 assert commands.count(phone) == 1, "Phone-role suite must run exactly once"
 assert commands.count(phone_config) == 1, "Phone configuration suite must run exactly once"
+assert commands.count(footer_contact) == 1, "Footer contact suite must run exactly once"
 assert commands.index(phone_config) == commands.index(ack) + 1, "Phone configuration guard must follow acknowledgment guard"
 assert commands.index(phone) == commands.index(phone_config) + 1, "Phone guard must follow configuration guard"
+assert commands.index(footer_contact) == commands.index(phone) + 1, "Footer contact guard must follow phone guard"
+assert commands.index(footer_contact) < commands.index("node assets/build-search-index.js --check")
 assert commands.index(phone) < commands.index("node assets/build-search-index.js --check")
 assert wrapper.count('"' + phone_sentinel + '"') == 1, "Wrapper must require phone sentinel"
+assert wrapper.count('"' + phone_config_sentinel + '"') == 1, "Wrapper must require phone configuration sentinel"
+assert wrapper.count('"' + footer_contact_sentinel + '"') == 1, "Wrapper must require footer contact sentinel"
 smoke = (source / "test-predeploy-chain.sh").read_text()
 assert smoke.count('  "' + sentinel + '"') == 1, "Smoke test must require retry sentinel"
 assert smoke.count('  "' + ack_sentinel + '"') == 1, "Smoke test must require acknowledgment sentinel"
 assert smoke.count('  "' + phone_sentinel + '"') == 1, "Smoke test must require phone sentinel"
+assert smoke.count('  "' + phone_config_sentinel + '"') == 1, "Smoke test must require phone configuration sentinel"
+assert smoke.count('  "' + footer_contact_sentinel + '"') == 1, "Smoke test must require footer contact sentinel"
 assert smoke.count('  "' + analytics_sentinel + '"') == 1, "Smoke test must require submission analytics sentinel"
 
 def required_sentinels(script):
@@ -158,7 +168,13 @@ if not (is_target and os.environ["CHAIN_MODE"] == "missing"):
     scenarios = [(retry, sentinel, "success"),
                  (retry, sentinel, "failure"), (retry, sentinel, "missing"),
                  (ack, ack_sentinel, "failure"), (ack, ack_sentinel, "missing"),
+                 (phone_config, phone_config_sentinel, "success"),
+                 (phone_config, phone_config_sentinel, "failure"),
+                 (phone_config, phone_config_sentinel, "missing"),
                  (phone, phone_sentinel, "failure"), (phone, phone_sentinel, "missing"),
+                 (footer_contact, footer_contact_sentinel, "success"),
+                 (footer_contact, footer_contact_sentinel, "failure"),
+                 (footer_contact, footer_contact_sentinel, "missing"),
                  (tracker, tracker_sentinel, "failure"), (tracker, tracker_sentinel, "missing"),
                  (analytics, analytics_sentinel, "success"),
                  (analytics, analytics_sentinel, "failure"), (analytics, analytics_sentinel, "missing")]
@@ -181,6 +197,8 @@ if not (is_target and os.environ["CHAIN_MODE"] == "missing"):
             assert "Pre-deploy chain FAILED (exit 37)" in result.stdout
         if mode == "missing":
             assert "MISSING: " + target_sentinel in result.stdout, result.stdout
+            missing = re.findall(r"^\s*✗  MISSING: (.+)$", result.stdout, re.M)
+            assert missing == [target_sentinel], f"Expected only target output missing: {result.stdout}"
         after = {p.relative_to(site): p.read_bytes() for p in site.rglob("*") if p.is_file()}
         assert after == before, f"{mode}: changed publication fixture"
         print(f"PASS: isolated pre-deploy chain {target}: {mode}")
@@ -375,7 +393,9 @@ SENTINELS=(
   "SENTINEL: test-public-artifact-exposure.py OK"
   "SENTINEL: test-growth-intelligence-access.py OK"
   "SENTINEL: test-acknowledgments.py OK"
+  "SENTINEL: test-website-phone-config.py OK"
   "SENTINEL: test-website-phone.py OK"
+  "SENTINEL: test-footer-contact.py OK"
 )
 
 SENTINEL_FAIL=0

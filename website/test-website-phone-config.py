@@ -179,4 +179,8 @@ console.log(JSON.stringify(["805.409.9262", "tel:18054099262", "+1-805-953-7273"
 
 
 if __name__ == "__main__":
-    unittest.main()
+    result = unittest.main(verbosity=2, exit=False).result
+    passed = result.wasSuccessful() and not result.skipped and result.testsRun > 0
+    if passed:
+        print("SENTINEL: test-website-phone-config.py OK")
+    raise SystemExit(0 if passed else 1)

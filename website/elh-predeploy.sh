@@ -117,7 +117,9 @@ SENTINELS=(
   "SENTINEL: test-public-artifact-exposure.py OK"
   "SENTINEL: test-growth-intelligence-access.py OK"
   "SENTINEL: test-acknowledgments.py OK"
+  "SENTINEL: test-website-phone-config.py OK"
   "SENTINEL: test-website-phone.py OK"
+  "SENTINEL: test-footer-contact.py OK"
 )
 
 SENTINEL_FAIL=0

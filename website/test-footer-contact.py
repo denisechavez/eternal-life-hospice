@@ -76,4 +76,8 @@ class FooterContactTests(unittest.TestCase):
 
 
 if __name__ == "__main__":
-    unittest.main()
+    result = unittest.main(verbosity=2, exit=False).result
+    passed = result.wasSuccessful() and not result.skipped and result.testsRun > 0
+    if passed:
+        print("SENTINEL: test-footer-contact.py OK")
+    raise SystemExit(0 if passed else 1)
