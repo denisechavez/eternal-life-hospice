@@ -1,3 +1,4 @@
+- [External PPC landing page](ppc-landing-page.md) — owner identified rt-go.com campaign page; main-site changes do not automatically update its form or confirmation flow.
 - [Project Constitution](project-constitution.md) — referrals+admissions first; conversion beats aesthetics; usability beats complexity; never recommend a feature that doesn't grow census.
 - [Request Care CTA](request-care-cta.md) — Request Care sends families to the landing-page Family · Seeking care form.
 - [Physicians & Referrals CTA](referral-cta.md) — provider links open the Send a referral card, not the top of the referral page.
