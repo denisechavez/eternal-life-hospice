@@ -6,6 +6,15 @@ from urllib.parse import urlsplit
 
 ROOT = Path(__file__).resolve().parents[1]
 FILES = {
+    "01-Personal-Letter.html": (
+        "google-ppc-three-options/01-Personal-Letter.html", "text/html; charset=utf-8"
+    ),
+    "02-Amethyst-Assurance.html": (
+        "google-ppc-three-options/02-Amethyst-Assurance.html", "text/html; charset=utf-8"
+    ),
+    "03-Quiet-Welcome.html": (
+        "google-ppc-three-options/03-Quiet-Welcome.html", "text/html; charset=utf-8"
+    ),
     "ELH-Google-PPC-Three-Thank-You-Options.pdf": (
         "google-ppc-three-options/ELH-Google-PPC-Three-Thank-You-Options.pdf",
         "application/pdf",

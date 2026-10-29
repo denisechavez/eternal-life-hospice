@@ -2674,3 +2674,45 @@ mtime_ms = 1793245340586
 storage_uri = "gcs://replit-rams-assets-kirk/rams/assets/repl:e1b2f643-7869-4565-af0e-10c34575ee8d/31a2db7e-67c1-47f9-aae0-b9ecf7da9002/1e2c64c4-7771-4433-90f7-a83efeb18bba"
 storage_version_token = "1793245401910064"
 content_type = "application/octet-stream"
+
+[[outputs]]
+id = "ukivnDqmEwciihe8P38xz"
+uri = "file://generated-artifacts/google-ppc-three-options/01-Personal-Letter.html"
+type = "html"
+title = "Personal Letter — HTML"
+description = "Self-contained thank-you page with embedded fonts and logo."
+logical_id = "ef6920b2-27a7-42da-84dd-2e7cc6004045"
+content_hash = "sha256:7df008bc3fe20aa6155d76dee7fe1d8a1b176d426e8efd53dd74c7e8c9943ce6"
+size = 423872
+mtime_ms = 1793245340593
+storage_uri = "gcs://replit-rams-assets-kirk/rams/assets/repl:e1b2f643-7869-4565-af0e-10c34575ee8d/ef6920b2-27a7-42da-84dd-2e7cc6004045/2678fabf-e63b-4180-883b-00be8c1e5736"
+storage_version_token = "1793247021543174"
+content_type = "text/html"
+
+[[outputs]]
+id = "Slcgv8cQjIvMrwZX-PLla"
+uri = "file://generated-artifacts/google-ppc-three-options/02-Amethyst-Assurance.html"
+type = "html"
+title = "Amethyst Assurance — HTML"
+description = "Self-contained thank-you page with embedded fonts and logo."
+logical_id = "e4c292ea-1753-4d7b-8ee9-7d2d4b8974b1"
+content_hash = "sha256:fdeeec2c8244f10214fe563bb19a7e263ce604d823f36b87eabd46669a37c9b6"
+size = 411398
+mtime_ms = 1793245340595
+storage_uri = "gcs://replit-rams-assets-kirk/rams/assets/repl:e1b2f643-7869-4565-af0e-10c34575ee8d/e4c292ea-1753-4d7b-8ee9-7d2d4b8974b1/75871995-36b4-4031-bc97-7a0f755b63ff"
+storage_version_token = "1793247022408353"
+content_type = "text/html"
+
+[[outputs]]
+id = "_BH8p-HEhvw01CKxrRMha"
+uri = "file://generated-artifacts/google-ppc-three-options/03-Quiet-Welcome.html"
+type = "html"
+title = "Quiet Welcome — HTML"
+description = "Self-contained thank-you page with embedded fonts, logo and care photograph."
+logical_id = "c7c81159-4ed4-4b05-a1de-2668785730bd"
+content_hash = "sha256:1ba5b2ec0342cee3eee13bb513e0df8a5d2e733975d9d16adfd65a33835859ab"
+size = 320688
+mtime_ms = 1793245340597
+storage_uri = "gcs://replit-rams-assets-kirk/rams/assets/repl:e1b2f643-7869-4565-af0e-10c34575ee8d/c7c81159-4ed4-4b05-a1de-2668785730bd/e0ed3ad4-f406-4d29-a7c9-12cbc1fefa14"
+storage_version_token = "1793247023205334"
+content_type = "text/html"
