@@ -25,7 +25,7 @@ CANONICAL_PLACE_ID = "ChIJteBBU6vdfEcRqUfOqdzxmoc"
 WESTLAKE_PLACE_ID = "ChIJrRDxvAsl6IARsRyNjEqD2U8"
 APPROVED_ETERNAL_IDENTITY = {
     "displayName": "Eternal Life Hospice",
-    "nationalPhoneNumber": "(805) 410-1151",
+    "nationalPhoneNumber": "(805) 409-9262",
     "websiteDomain": "eternallifehospice.com",
     "formattedAddress": (
         "4165 E Thousand Oaks Blvd Ste 325B, Westlake Village, CA 91362, USA"
